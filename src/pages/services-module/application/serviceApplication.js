@@ -42,7 +42,7 @@ function ServiceApplication() {
     schemeAmount: "",
     sanctionNumber: "",
     approvalStageId: "",
-    userMasterId: "",
+    userId: "",
     periodFrom: new Date("2023-04-01"),
     periodTo: new Date("2024-03-31"),
   });
@@ -110,8 +110,6 @@ function ServiceApplication() {
   };
 
   console.log("new dev data", developedArea);
-
-
 
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
@@ -254,9 +252,6 @@ function ServiceApplication() {
   //   }
   // };
 
-
-  
-
   const [showModal, setShowModal] = useState(false);
   const [pendingPostData, setPendingPostData] = useState(null);
 
@@ -355,13 +350,17 @@ function ServiceApplication() {
   //   getSubSchemeList();
   // }, []);
 
-   // to get sc-sub-scheme-details by sc-scheme-details
-   const [approvalStageBeforeNextStepListData, setApprovalStageBeforeNextStepListData] = useState(
-    []
-  );
+  // to get sc-sub-scheme-details by sc-scheme-details
+  const [
+    approvalStageBeforeNextStepListData,
+    setApprovalStageBeforeNextStepListData,
+  ] = useState([]);
   const getApprovalBeforeStageNextStepList = (subSchemeId) => {
     api
-      .post(baseURLDBT + `service/getNextStepDetailsBeforeSubmitBySubSchemeId?subSchemeId=${subSchemeId}`)
+      .post(
+        baseURLDBT +
+          `service/getNextStepDetailsBeforeSubmitBySubSchemeId?subSchemeId=${subSchemeId}`
+      )
       .then((response) => {
         if (response.data.content) {
           setApprovalStageBeforeNextStepListData(response.data.content);
@@ -539,17 +538,16 @@ function ServiceApplication() {
 
   const [districtId, setDistrictId] = useState(null);
   const [talukId, setTalukId] = useState(null);
-  const [userFromDistrictData, setUserFromDistrictData] = useState(
-    []
-  );
+  const [userFromDistrictData, setUserFromDistrictData] = useState([]);
 
-    //  to get data from api
-   const getIdList = () => {
+  //  to get data from api
+  const getIdList = () => {
     setLoading(true);
     const response = api
       .get(baseURLMasterData + `userMaster/get-join/${id}`)
       .then((response) => {
-        setData(response.data.content);
+        setDistrictId(response.data.content.districtId);
+        setTalukId(response.data.content.talukId);
         setLoading(false);
       })
       .catch((err) => {
@@ -564,11 +562,17 @@ function ServiceApplication() {
     getIdList();
   }, [id]);
 
- 
-
-  const getUserFromDistrictList = (subSchemeId,approvalStageId,districtId,talukId) => {
+  const getUserFromDistrictList = (
+    subSchemeId,
+    approvalStageId,
+    districtId,
+    talukId
+  ) => {
     api
-      .post(baseURLDBT + `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`)
+      .post(
+        baseURLDBT +
+          `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`
+      )
       .then((response) => {
         if (response.data.content) {
           setUserFromDistrictData(response.data.content);
@@ -579,15 +583,6 @@ function ServiceApplication() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
-
-  useEffect(() => {
-    if (id) {
-      getIdList();
-    }
-  }, [id]);
-  
-
- 
 
   const getCategoryList = () => {
     api
@@ -625,7 +620,7 @@ function ServiceApplication() {
     getVendorList();
   }, []);
 
-   // to get User Master
+  // to get User Master
   // const [userListData, setUserListData] = useState([]);
 
   // const getUserList = () => {
@@ -643,24 +638,22 @@ function ServiceApplication() {
   //   getUserList();
   // }, []);
 
-   const [approvalListData, setApprovalListData] = useState([]);
+  const [approvalListData, setApprovalListData] = useState([]);
 
-   const getApprovalList = () => {
-     const response = api
-       .get(baseURLMasterData + `scApprovalStage/get-all`)
-       .then((response) => {
-         setApprovalListData(response.data.content.scApprovalStage);
-       })
-       .catch((err) => {
-         setApprovalListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getApprovalList();
-   }, []);
+  const getApprovalList = () => {
+    const response = api
+      .get(baseURLMasterData + `scApprovalStage/get-all`)
+      .then((response) => {
+        setApprovalListData(response.data.content.scApprovalStage);
+      })
+      .catch((err) => {
+        setApprovalListData([]);
+      });
+  };
 
-
+  useEffect(() => {
+    getApprovalList();
+  }, []);
 
   // to get uploadable documents
   const [docListData, setDocListData] = useState([]);
@@ -676,7 +669,7 @@ function ServiceApplication() {
       });
   };
 
-  console.log("where",docListData);
+  console.log("where", docListData);
 
   // const getDocList = () => {
   //   api
@@ -688,7 +681,6 @@ function ServiceApplication() {
   //       setDocListData([]);
   //     });
   // };
-
 
   useEffect(() => {
     getDocList();
@@ -729,6 +721,17 @@ function ServiceApplication() {
     }
   }, [data.scHeadAccountId, data.scCategoryId, data.scSubSchemeDetailsId]);
 
+  useEffect(() => {
+    if (data.scSchemeDetailsId && data.approvalStageId) {
+      getUserFromDistrictList(
+        data.scSchemeDetailsId,
+        data.approvalStageId,
+        districtId,
+        talukId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.approvalStageId]);
+
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
@@ -764,7 +767,7 @@ function ServiceApplication() {
     const transformedData = Object.keys(developedArea).map((id) => ({
       // landDeveloped: developedLand.landDeveloped,
       // landDetailId: parseInt(id),
-      ...developedArea[id],    
+      ...developedArea[id],
     }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -786,7 +789,7 @@ function ServiceApplication() {
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        componentId:data.scComponentId,
+        componentId: data.scComponentId,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
@@ -799,7 +802,7 @@ function ServiceApplication() {
         periodTo: data.periodTo,
         vendorId: equipment.vendorId,
         description: equipment.description,
-        loggedInUserId:localStorage.getItem("userMasterId")
+        loggedInUserId: localStorage.getItem("userMasterId"),
       };
 
       if (data.equordev === "land") {
@@ -914,7 +917,6 @@ function ServiceApplication() {
   console.log(amountValue);
 
   const generateAcknowledgment = async (applicationFormId) => {
-  
     try {
       const response = await api.post(
         baseURLReport + `getBlankSample`,
@@ -929,8 +931,6 @@ function ServiceApplication() {
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
-
-     
     } catch (error) {
       // console.log("error", error);
     }
@@ -1025,7 +1025,6 @@ function ServiceApplication() {
   //   }
   //   });
   // };
-  
 
   // const saveApplication = (post) => {
   //   api
@@ -1050,7 +1049,6 @@ function ServiceApplication() {
   //       }
   //     });
   // };
-  
 
   const uploadFileConfirm = (post) => {
     Swal.fire({
@@ -1061,7 +1059,7 @@ function ServiceApplication() {
       confirmButtonText: "Yes",
       cancelButtonText: "Later",
     }).then((result) => {
-      if (result.value) { 
+      if (result.value) {
         api
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
@@ -1072,7 +1070,9 @@ function ServiceApplication() {
               setApplicationId(response.data.content.applicationDocumentId);
               clear();
               // Call the acknowledgment API after a successful response
-            generateAcknowledgment(response.data.content.applicationDocumentId);
+              generateAcknowledgment(
+                response.data.content.applicationDocumentId
+              );
               handleShowModal();
 
               setValidated(false);
@@ -1104,8 +1104,10 @@ function ServiceApplication() {
               setApplicationId(response.data.content.applicationDocumentId);
               // add acknowledgement API here
 
-        // Call the acknowledgment API after a successful response
-            generateAcknowledgment(response.data.content.applicationDocumentId);
+              // Call the acknowledgment API after a successful response
+              generateAcknowledgment(
+                response.data.content.applicationDocumentId
+              );
 
               // generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
@@ -1178,8 +1180,8 @@ function ServiceApplication() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       } else {
-      setDisable(true);
-    }
+        setDisable(true);
+      }
       // api
       //   .post(baseURLRegistration + `farmer/get-farmer-details`, {
       //     fruitsId: data.fruitsId,
@@ -1215,58 +1217,58 @@ function ServiceApplication() {
       //       // }
 
       api
-      .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-        fruitsId: data.fruitsId,
-      })
-      .then((response) => {
-        if (response.data.content.farmerResponse) {
-          setData((prev) => ({
-            ...prev,
-            farmerId: response.data.content.farmerResponse.farmerId,
-          }));
-          setFarmerDetails((prev) => ({
-            ...prev,
-            farmerName: response.data.content.farmerResponse.firstName,
-            // districtName:
-            //   response.data.content.farmerAddressDTOList &&
-            //   response.data.content.farmerAddressDTOList.length > 0
-            //     ? response.data.content.farmerAddressDTOList[0].districtName
-            //     : "",
-            // talukName:
-            //   response.data.content.farmerAddressDTOList &&
-            //   response.data.content.farmerAddressDTOList.length > 0
-            //     ? response.data.content.farmerAddressDTOList[0].talukName
-            //     : "",
-            // hobli:
-            //   response.data.content.farmerAddressDTOList &&
-            //   response.data.content.farmerAddressDTOList.length > 0
-            //     ? response.data.content.farmerAddressDTOList[0].hobliName
-            //     : "",
-            // village:
-            //   response.data.content.farmerAddressDTOList &&
-            //   response.data.content.farmerAddressDTOList.length > 0
-            //     ? response.data.content.farmerAddressDTOList[0].villageName
-            //     : "",
-          }));
-          if (response.data.content.farmerAddressDTOList.length > 0) {
+        .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+          fruitsId: data.fruitsId,
+        })
+        .then((response) => {
+          if (response.data.content.farmerResponse) {
+            setData((prev) => ({
+              ...prev,
+              farmerId: response.data.content.farmerResponse.farmerId,
+            }));
             setFarmerDetails((prev) => ({
               ...prev,
-              address:
-                response.data.content.farmerAddressDTOList[0].addressText,
+              farmerName: response.data.content.farmerResponse.firstName,
+              // districtName:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].districtName
+              //     : "",
+              // talukName:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].talukName
+              //     : "",
+              // hobli:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].hobliName
+              //     : "",
+              // village:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].villageName
+              //     : "",
             }));
+            if (response.data.content.farmerAddressDTOList.length > 0) {
+              setFarmerDetails((prev) => ({
+                ...prev,
+                address:
+                  response.data.content.farmerAddressDTOList[0].addressText,
+              }));
+            }
+            setShowFarmerDetails(true);
           }
-          setShowFarmerDetails(true);
-        }
-        console.log("landdetails", response.data);
-        if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
-        }
-      })
-      .catch((err) => {
-        setLandDetailsList([]);
-      });
-  }
-};
+          console.log("landdetails", response.data);
+          if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+            setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+          }
+        })
+        .catch((err) => {
+          setLandDetailsList([]);
+        });
+    }
+  };
 
   const LandDetailsColumns = [
     {
@@ -1601,37 +1603,37 @@ function ServiceApplication() {
     },
   };
 
-    // Display Image
-    const [documentAttachments, setDocumentAttachments] = useState({});
-    const handleAttachFileChange = (e, documentId) => {
-      if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        setDocumentAttachments((prevState) => ({
-          ...prevState,
-          [documentId]: file,
-        }));
-      } else {
-        setDocumentAttachments((prevState) => ({
-          ...prevState,
-          [documentId]: null,
-        }));
-        // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-        // document.getElementById("hdAttachFiles").value = "";
-      }
-      // setPhotoFile(file);
-    };
-  
-    console.log("showdevplease", developedArea);
-  
-    const handleRemoveImage = (documentId) => {
-      const updatedDocument = { ...documentAttachments };
-      delete updatedDocument[documentId];
-      setDocumentAttachments(updatedDocument);
-      document.getElementById(`attImage${documentId}`).value = "";
+  // Display Image
+  const [documentAttachments, setDocumentAttachments] = useState({});
+  const handleAttachFileChange = (e, documentId) => {
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setDocumentAttachments((prevState) => ({
+        ...prevState,
+        [documentId]: file,
+      }));
+    } else {
+      setDocumentAttachments((prevState) => ({
+        ...prevState,
+        [documentId]: null,
+      }));
       // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-    };
+      // document.getElementById("hdAttachFiles").value = "";
+    }
+    // setPhotoFile(file);
+  };
 
-    const [uploadedDocuments, setUploadedDocuments] = useState([]);
+  console.log("showdevplease", developedArea);
+
+  const handleRemoveImage = (documentId) => {
+    const updatedDocument = { ...documentAttachments };
+    delete updatedDocument[documentId];
+    setDocumentAttachments(updatedDocument);
+    document.getElementById(`attImage${documentId}`).value = "";
+    // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+  };
+
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
 
   const [uploadStatus, setUploadStatus] = useState({});
 
@@ -1640,12 +1642,12 @@ function ServiceApplication() {
       applicationFormId: applicationId,
       documentTypeId: documentId,
     };
-  
+
     try {
       const formData = new FormData();
       // formData.append("multipartFile", documentAttachments[documentId]);
       formData.append("multipartFile", document);
-  
+
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
         formData,
@@ -1656,42 +1658,42 @@ function ServiceApplication() {
           },
         }
       );
-  
+
       console.log("File upload response:", response.data);
-  
+
       // Show SweetAlert success message after successful upload
       // SweetAlert success function
-  Swal.fire({
-    icon: "success",
-    title: "File uploaded successfully",
-  });
-  
-  // setIsUploaded(true);
-  // Update the upload status for this specific document
-  setUploadStatus((prevStatus) => ({
-    ...prevStatus,
-    [documentId]: true, // Mark this document as uploaded
-  }));
-   // Add the uploaded document to the list of uploaded documents
-  //  setUploadedDocuments((prevDocs) => [
-  //   ...prevDocs,
-  //   {
-  //     documentId,
-  //     documentName: document.name,
-  //   },
-  // ]);
-  // Modify the setUploadedDocuments to include documentMasterName
-setUploadedDocuments((prevDocs) => [
-  ...prevDocs,
-  {
-    documentId,
-    documentName: document.name,
-    documentMasterName: docListData.find(
-      (list) => list.documentMasterId === documentId
-    )?.documentMasterName, // Find and store the documentMasterName
-    documentFile: document, // Store the file itself for image preview
-  },
-]);
+      Swal.fire({
+        icon: "success",
+        title: "File uploaded successfully",
+      });
+
+      // setIsUploaded(true);
+      // Update the upload status for this specific document
+      setUploadStatus((prevStatus) => ({
+        ...prevStatus,
+        [documentId]: true, // Mark this document as uploaded
+      }));
+      // Add the uploaded document to the list of uploaded documents
+      //  setUploadedDocuments((prevDocs) => [
+      //   ...prevDocs,
+      //   {
+      //     documentId,
+      //     documentName: document.name,
+      //   },
+      // ]);
+      // Modify the setUploadedDocuments to include documentMasterName
+      setUploadedDocuments((prevDocs) => [
+        ...prevDocs,
+        {
+          documentId,
+          documentName: document.name,
+          documentMasterName: docListData.find(
+            (list) => list.documentMasterId === documentId
+          )?.documentMasterName, // Find and store the documentMasterName
+          documentFile: document, // Store the file itself for image preview
+        },
+      ]);
     } catch (error) {
       console.error("Error uploading file:", error);
       Swal.fire({
@@ -1702,7 +1704,6 @@ setUploadedDocuments((prevDocs) => [
     }
   };
 
-
   const [uploadDocuments, setUploadDocuments] = useState({
     applicationFormId: "",
     documentTypeId: "",
@@ -1712,29 +1713,28 @@ setUploadedDocuments((prevDocs) => [
   const handleDocumentInputs = (e) => {
     let { name, value } = e.target;
     // setUploadDocuments({ ...uploadDocuments, [name]: value });
-    setUploadDocuments(prev=>({...prev,  [name]: value }));
+    setUploadDocuments((prev) => ({ ...prev, [name]: value }));
   };
 
-   //Display Document
-   const [document, setDocument] = useState("");
+  //Display Document
+  const [document, setDocument] = useState("");
 
-   const handleDocumentChange = (e) => {
-     const file = e.target.files[0];
-     setDocument(file);
-     setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
+  const handleDocumentChange = (e) => {
+    const file = e.target.files[0];
+    setDocument(file);
+    setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
     //  setPhotoFile(file);
-   };
+  };
   //  console.log("nodappa",document);
   //  console.log("nodappa2",uploadDocuments);
 
- 
-   // Upload Image to S3 Bucket
+  // Upload Image to S3 Bucket
   //  const handleFileDocumentUpload = async (scApplicationFormDocumentDetailId) => {
   //    const parameters = `farmerBankAccountId=${scApplicationFormDocumentDetailId}`;
   //    try {
   //      const formData = new FormData();
   //      formData.append("multipartFile", document);
- 
+
   //      const response = await api.post(
   //        baseURLDBT + `farmer-bank-account/upload-photo?${parameters}`,
   //        formData,
@@ -1749,9 +1749,6 @@ setUploadedDocuments((prevDocs) => [
   //      console.error("Error uploading file:", error);
   //    }
   //  };
-
-
-   
 
   return (
     <Layout title="Application Form">
@@ -1834,7 +1831,7 @@ setUploadedDocuments((prevDocs) => [
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                        <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
                           <td style={styles.ctstyle}> Addres:</td>
                           <td>{farmerDetails.address}</td>
@@ -2261,78 +2258,82 @@ setUploadedDocuments((prevDocs) => [
                         </Col>
 
                         <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Approval Stage
-                        {/* <span className="text-danger">*</span> */}
-                      </Form.Label>
-                      <Col>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="approvalStageId"
-                            value={data.approvalStageId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // required
-                            isInvalid={
-                              data.approvalStageId === undefined ||
-                              data.approvalStageId === "0"
-                            }
-                          >
-                            <option value="">Select Approval Stage</option>
-                            {approvalStageBeforeNextStepListData.map((list) => (
-                              <option
-                                key={list.approvalStageId}
-                                value={list.approvalStageId}
-                              >
-                                {list.approvalStageName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Col>
-                    </Form.Group>
-                  </Col>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Approval Stage
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="approvalStageId"
+                                  value={data.approvalStageId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.approvalStageId === undefined ||
+                                    data.approvalStageId === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Approval Stage
+                                  </option>
+                                  {approvalStageBeforeNextStepListData.map(
+                                    (list) => (
+                                      <option
+                                        key={list.approvalStageId}
+                                        value={list.approvalStageId}
+                                      >
+                                        {list.approvalStageName}
+                                      </option>
+                                    )
+                                  )}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Approval Stage Name is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
+                          </Form.Group>
+                        </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                       User Master
-                       {/* <span className="text-danger">*</span> */}
-                      </Form.Label>
-                      <Col>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="userMasterId"
-                            value={data.userMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // required
-                            isInvalid={
-                              data.userMasterId === undefined ||
-                              data.userMasterId === "0"
-                            }
-                          >
-                            <option value="">Select User</option>
-                            {userFromDistrictData.map((list) => (
-                              <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
-                              >
-                                {list.username}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          {/* <Form.Control.Feedback type="invalid">
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              User Master
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="userId"
+                                  value={data.userId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.userId === undefined ||
+                                    data.userId === "0"
+                                  }
+                                >
+                                  <option value="">Select User</option>
+                                  {userFromDistrictData.map((list) => (
+                                    <option
+                                      key={list.userId}
+                                      value={list.userId}
+                                    >
+                                      {list.userName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
                             Approval Stage Name is required
                           </Form.Control.Feedback> */}
-                        </div>
-                      </Col>
-                    </Form.Group>
-                  </Col>
+                              </div>
+                            </Col>
+                          </Form.Group>
+                        </Col>
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -2768,249 +2769,261 @@ setUploadedDocuments((prevDocs) => [
                 </> 
               ) : (
                 ""
-              )} */} 
+              )} */}
 
-   <Card className="mt-1">
-  <Row className="ms-1 mt-2">
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="land">
-        <Col sm={1}>
-          <Form.Check
-            type="radio"
-            name="equordev"
-            value="constructedArea"
-            checked={data.equordev === "constructedArea"}
-            onChange={handleInputs}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2" id="land">
-          Constructed Area
-        </Form.Label>
-      </Form.Group>
-    </Col>
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="equip">
-        <Col sm={1}>
-          <Form.Check
-            type="radio"
-            name="equordev"
-            value="equipment"
-            checked={data.equordev === "equipment"}
-            onChange={handleInputs}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2" id="equip">
-          Equipment Purchase
-        </Form.Label>
-      </Form.Group>
-    </Col>
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="land">
-        <Col sm={1}>
-          <Form.Check
-            type="radio"
-            name="equordev"
-            value="land"
-            checked={data.equordev === "land"}
-            onChange={handleInputs}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2" id="land">
-          Land Wise
-        </Form.Label>
-      </Form.Group>
-    </Col>
-  </Row>
-</Card>
-
-{/* Common Sanction Amount Section */}
-<Block className="mt-3">
-  <Card>
-    <Card.Header style={{ fontWeight: "bold" }}>
-      Sanction Amount
-    </Card.Header>
-    <Card.Body>
-      <Row className="g-gs">
-        <Col lg="4">
-          <Form.Group className="form-group mt-n3">
-            <Form.Label htmlFor="landDeveloped">
-              Unit Price
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Control
-                id="landDeveloped"
-                type="text"
-                name="unitPrice"
-                value={amountValue.unitPrice}
-                onChange={handleDevelopedLandInputs}
-                placeholder="Enter Unit Price"
-                readOnly
-              />
-              <Form.Control.Feedback type="invalid">
-                Unit Price is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
-        <Col lg="4">
-          <Form.Group className="form-group mt-n3">
-            <Form.Label htmlFor="expectedAmount">
-              Subsidy Amount
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Control
-                id="expectedAmount"
-                type="text"
-                name="expectedAmount"
-                value={data.expectedAmount}
-                onChange={handleInputs}
-                placeholder="Enter Expected Amount"
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                Subsidy Amount is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
-      </Row>
-    </Card.Body>
-  </Card>
-</Block>
-
-{/* Conditional Section Rendering */}
-{data.equordev === "constructedArea" && (
-  <Block className="mt-3">
-    <Card>
-      <Card.Header style={{ fontWeight: "bold" }}>
-        Constructed Area
-      </Card.Header>
-      <Card.Body>
-        <Row className="g-gs">
-          <Col lg="4">
-            <Form.Group className="form-group mt-n3">
-              <Form.Label htmlFor="landDeveloped">
-                Unit
-                <span className="text-danger">*</span>
-              </Form.Label>
-              <div className="form-control-wrap">
-                <Form.Control
-                  id="landDeveloped"
-                  type="text"
-                  name="landDeveloped"
-                  value={developedLand.landDeveloped}
-                  onChange={handleDevelopedLandInputs}
-                  placeholder="Enter Unit"
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Unit Quantity is required
-                </Form.Control.Feedback>
-              </div>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-  </Block>
-)}
-
-{data.equordev === "equipment" && (
-  <Block className="mt-3">
-    <Card>
-      <Card.Header style={{ fontWeight: "bold" }}>
-        Equipment Purchase
-      </Card.Header>
-      <Card.Body>
-        <Row className="g-gs">
-          <Col lg="4">
-            <Form.Group className="form-group mt-n3">
-              <Form.Label>
-                Vendor Name
-                <span className="text-danger">*</span>
-              </Form.Label>
-              <div className="form-control-wrap">
-                <Form.Select
-                  name="vendorId"
-                  value={equipment.vendorId}
-                  onChange={handleEquipmentInputs}
-                  required
-                  isInvalid={
-                    equipment.vendorId === undefined ||
-                    equipment.vendorId === "0"
-                  }
-                >
-                  <option value="">Select Vendor Name</option>
-                  {scVendorListData.map((list) => (
-                    <option
-                      key={list.scVendorId}
-                      value={list.scVendorId}
+              <Card className="mt-1">
+                <Row className="ms-1 mt-2">
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="land"
                     >
-                      {list.name}
-                    </option>
-                  ))}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">
-                  Vendor Name is required
-                </Form.Control.Feedback>
-              </div>
-            </Form.Group>
-          </Col>
-          <Col lg="4">
-            <Form.Group className="form-group mt-n3">
-              <Form.Label htmlFor="description">
-                Description
-                <span className="text-danger">*</span>
-              </Form.Label>
-              <div className="form-control-wrap">
-                <Form.Control
-                  id="description"
-                  type="text"
-                  name="description"
-                  value={equipment.description}
-                  onChange={handleEquipmentInputs}
-                  placeholder="Enter Description"
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Description is required
-                </Form.Control.Feedback>
-              </div>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-  </Block>
-)}
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="equordev"
+                          value="constructedArea"
+                          checked={data.equordev === "constructedArea"}
+                          onChange={handleInputs}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2" id="land">
+                        Constructed Area
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="equip"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="equordev"
+                          value="equipment"
+                          checked={data.equordev === "equipment"}
+                          onChange={handleInputs}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2" id="equip">
+                        Equipment Purchase
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="land"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="equordev"
+                          value="land"
+                          checked={data.equordev === "land"}
+                          onChange={handleInputs}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2" id="land">
+                        Land Wise
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card>
 
-{data.equordev === "land" && data.with === "withLand" && landDetailsList.length > 0 && (
-  <Block className="mt-3">
-    <Card>
-      <Card.Header style={{ fontWeight: "bold" }}>
-        Land Wise
-      </Card.Header>
-      <Card.Body>
-        {/* Display land-related details like the DataTable here */}
-        <Row>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={LandDetailsForDevColumns}
-            data={landDetailsList}
-            highlightOnHover
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Row>
-      </Card.Body>
-    </Card>
-  </Block>
-)}
+              {/* Common Sanction Amount Section */}
+              <Block className="mt-3">
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    Sanction Amount
+                  </Card.Header>
+                  <Card.Body>
+                    <Row className="g-gs">
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="landDeveloped">
+                            Unit Price
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="landDeveloped"
+                              type="text"
+                              name="unitPrice"
+                              value={amountValue.unitPrice}
+                              onChange={handleDevelopedLandInputs}
+                              placeholder="Enter Unit Price"
+                              readOnly
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Unit Price is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="expectedAmount">
+                            Subsidy Amount
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="expectedAmount"
+                              type="text"
+                              name="expectedAmount"
+                              value={data.expectedAmount}
+                              onChange={handleInputs}
+                              placeholder="Enter Expected Amount"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Subsidy Amount is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Block>
 
+              {/* Conditional Section Rendering */}
+              {data.equordev === "constructedArea" && (
+                <Block className="mt-3">
+                  <Card>
+                    <Card.Header style={{ fontWeight: "bold" }}>
+                      Constructed Area
+                    </Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              Unit
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="landDeveloped"
+                                type="text"
+                                name="landDeveloped"
+                                value={developedLand.landDeveloped}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Unit"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Unit Quantity is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+              )}
 
+              {data.equordev === "equipment" && (
+                <Block className="mt-3">
+                  <Card>
+                    <Card.Header style={{ fontWeight: "bold" }}>
+                      Equipment Purchase
+                    </Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Vendor Name
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="vendorId"
+                                value={equipment.vendorId}
+                                onChange={handleEquipmentInputs}
+                                required
+                                isInvalid={
+                                  equipment.vendorId === undefined ||
+                                  equipment.vendorId === "0"
+                                }
+                              >
+                                <option value="">Select Vendor Name</option>
+                                {scVendorListData.map((list) => (
+                                  <option
+                                    key={list.scVendorId}
+                                    value={list.scVendorId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Vendor Name is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="description">
+                              Description
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={equipment.description}
+                                onChange={handleEquipmentInputs}
+                                placeholder="Enter Description"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Description is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+              )}
+
+              {data.equordev === "land" &&
+                data.with === "withLand" &&
+                landDetailsList.length > 0 && (
+                  <Block className="mt-3">
+                    <Card>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        Land Wise
+                      </Card.Header>
+                      <Card.Body>
+                        {/* Display land-related details like the DataTable here */}
+                        <Row>
+                          <DataTable
+                            tableClassName="data-table-head-light table-responsive"
+                            columns={LandDetailsForDevColumns}
+                            data={landDetailsList}
+                            highlightOnHover
+                            progressPending={loading}
+                            theme="solarized"
+                            customStyles={customStyles}
+                          />
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Block>
+                )}
 
               <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -3031,7 +3044,7 @@ setUploadedDocuments((prevDocs) => [
           </Form>
         </Block>
       </Row>
-      
+
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>
@@ -3121,58 +3134,60 @@ setUploadedDocuments((prevDocs) => [
             </div>
           ))} */}
           <Block className="mt-3">
-              <Row>
-                <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label><strong>Documents</strong></Form.Label>
-                        <Form.Select
-                          name="documentTypeId"
-                          value={uploadDocuments.documentTypeId}
-                          onChange={handleDocumentInputs}
-                        >
-                          <option value="">Choose Document Type</option>
-                          {docListData.map((list) => (
-                            <option
-                              key={list.documentMasterId}
-                              value={list.documentMasterId}
-                            >
-                              {list.documentMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
-
-                <Col lg="6">
+            <Row>
+              <Col lg="6">
                 <Form.Group className="form-group">
-                        <Form.Label htmlFor="accountImagePath">
-                          Upload Documents(PDF/jpg/png)(Max:2mb)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="documentPath"
-                            name="documentPath"
-                            // value={data.photoPath}
-                            onChange={handleDocumentChange}
-                          />
-                        </div>
-                      </Form.Group>
+                  <Form.Label>
+                    <strong>Documents</strong>
+                  </Form.Label>
+                  <Form.Select
+                    name="documentTypeId"
+                    value={uploadDocuments.documentTypeId}
+                    onChange={handleDocumentInputs}
+                  >
+                    <option value="">Choose Document Type</option>
+                    {docListData.map((list) => (
+                      <option
+                        key={list.documentMasterId}
+                        value={list.documentMasterId}
+                      >
+                        {list.documentMasterName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {document ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(document)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </Form.Group>
-                      </Col>
-              </Row>
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="accountImagePath">
+                    Upload Documents(PDF/jpg/png)(Max:2mb)
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      type="file"
+                      id="documentPath"
+                      name="documentPath"
+                      // value={data.photoPath}
+                      onChange={handleDocumentChange}
+                    />
+                  </div>
+                </Form.Group>
 
-              {/* {uploadedDocuments.length > 0 && (
+                <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                  {document ? (
+                    <img
+                      style={{ height: "100px", width: "100px" }}
+                      src={URL.createObjectURL(document)}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
+
+            {/* {uploadedDocuments.length > 0 && (
     <div className="mt-3">
       <h5>Uploaded Documents</h5>
       <ul>
@@ -3185,55 +3200,62 @@ setUploadedDocuments((prevDocs) => [
     </div>
   )} */}
 
-  {uploadedDocuments.length > 0 && (
-  <div className="mt-3">
-    <h5>Uploaded Documents</h5>
-    <ul>
-      {uploadedDocuments.map((doc, index) => (
-        <li key={index} className="d-flex align-items-center">
-          {/* Show the image if it's available */}
-          {doc.documentFile && (
-            <img
-              src={URL.createObjectURL(doc.documentFile)}
-              alt={doc.documentName}
-              style={{ height: "100px", width: "100px", marginRight: "10px" }}
-            />
-          )}
-          {/* Show the document master name */}
-          {/* <span>Document Type: {doc.documentMasterName }</span> */}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+            {uploadedDocuments.length > 0 && (
+              <div className="mt-3">
+                <h5>Uploaded Documents</h5>
+                <ul>
+                  {uploadedDocuments.map((doc, index) => (
+                    <li key={index} className="d-flex align-items-center">
+                      {/* Show the image if it's available */}
+                      {doc.documentFile && (
+                        <img
+                          src={URL.createObjectURL(doc.documentFile)}
+                          alt={doc.documentName}
+                          style={{
+                            height: "100px",
+                            width: "100px",
+                            marginRight: "10px",
+                          }}
+                        />
+                      )}
+                      {/* Show the document master name */}
+                      {/* <span>Document Type: {doc.documentMasterName }</span> */}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </Block>
 
-            </Block>
-
-            {/* <Col lg="12"> */}
-            <div className="gap-col mt-1">
+          {/* <Col lg="12"> */}
+          <div className="gap-col mt-1">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 {/* <Button type="submit" variant="success">
                   Upload Documents
                 </Button> */}
                 <Button
-                type="button"
-                variant="primary"
-                onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
-                disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
-              >
-                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
-              </Button>
-                </li>
-        </ul>
-      </div>
+                  type="button"
+                  variant="primary"
+                  onClick={() =>
+                    handleAttachFileUpload(uploadDocuments.documentTypeId)
+                  }
+                  disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+                >
+                  {uploadStatus[uploadDocuments.documentTypeId]
+                    ? "Uploaded"
+                    : "Upload"}
+                </Button>
+              </li>
+            </ul>
+          </div>
         </Modal.Body>
       </Modal>
 
       <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>Break Up</Modal.Title>
-        </Modal.Header> 
+        </Modal.Header>
         <Modal.Body></Modal.Body>
       </Modal>
     </Layout>
