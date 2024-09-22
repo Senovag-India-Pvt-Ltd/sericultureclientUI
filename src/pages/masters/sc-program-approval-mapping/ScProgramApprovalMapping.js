@@ -168,6 +168,7 @@ function ScProgramApprovalMapping() {
       scApprovalStageId: "",
       // designationId: "",
       stepName: "",
+      action: "",
     });
     designationClear();
   };
@@ -661,6 +662,7 @@ function ScProgramApprovalMapping() {
                                       </div>
                                     </td>
                                     <td>{item.name}</td>
+                                    <td>{item.amount}</td>
                                     {/* <td>{item.scHeadAccountName}</td>
                                   <td>{item.shareInPercentage}</td> */}
                                   </tr>
@@ -748,7 +750,7 @@ function ScProgramApprovalMapping() {
                       id="amount"
                       name="amount"
                       type="number"
-                      value={data.amount}
+                      value={designationDetails.amount}
                       onChange={handleMapInputs}
                       placeholder="Enter Amount"
                     />
@@ -823,6 +825,22 @@ function ScProgramApprovalMapping() {
                     <Form.Control.Feedback type="invalid">
                       Designation is required
                     </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">Amount</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="amount"
+                      name="amount"
+                      type="number"
+                      value={designationDetails.amount}
+                      onChange={handleMapInputs}
+                      placeholder="Enter Amount"
+                    />
                   </div>
                 </Form.Group>
               </Col>

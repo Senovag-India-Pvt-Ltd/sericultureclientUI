@@ -355,6 +355,30 @@ function ServiceApplication() {
   //   getSubSchemeList();
   // }, []);
 
+   // to get sc-sub-scheme-details by sc-scheme-details
+   const [approvalStageBeforeNextStepListData, setApprovalStageBeforeNextStepListData] = useState(
+    []
+  );
+  const getApprovalBeforeStageNextStepList = (subSchemeId) => {
+    api
+      .post(baseURLDBT + `service/getNextStepDetailsBeforeSubmitBySubSchemeId?subSchemeId=${subSchemeId}`)
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalStageBeforeNextStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageBeforeNextStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSubSchemeDetailsId) {
+      getApprovalBeforeStageNextStepList(data.scSubSchemeDetailsId);
+    }
+  }, [data.scSubSchemeDetailsId]);
+
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
@@ -986,8 +1010,8 @@ function ServiceApplication() {
         api
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
             } else {
               // saveSuccess(response.data.receiptNo);
               setApplicationId(response.data.content.applicationDocumentId);
@@ -2201,12 +2225,12 @@ setUploadedDocuments((prevDocs) => [
                             }
                           >
                             <option value="">Select Approval Stage</option>
-                            {approvalListData.map((list) => (
+                            {approvalStageBeforeNextStepListData.map((list) => (
                               <option
-                                key={list.scApprovalStageId}
-                                value={list.scApprovalStageId}
+                                key={list.approvalStageId}
+                                value={list.approvalStageId}
                               >
-                                {list.stageName}
+                                {list.approvalStageName}
                               </option>
                             ))}
                           </Form.Select>
@@ -2247,9 +2271,9 @@ setUploadedDocuments((prevDocs) => [
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Approval Stage Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Col>
                     </Form.Group>

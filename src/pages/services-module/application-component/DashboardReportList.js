@@ -25,6 +25,7 @@ import api from "../../../services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DashboardReportList() {
   const { id } = useParams();
@@ -41,13 +42,10 @@ function DashboardReportList() {
     stepId: "",
   });
 
-  const [rejectReason, setRejectReason] = useState({
-    rejectReasonWorkFlowMasterId: "",
-    reason: "",
-  });
+  
 
   const handleDateChange = (date, type) => {
-    setPushToDBTData({ ...data, [type]: date });
+    setActionData({ ...data, [type]: date });
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -69,17 +67,17 @@ function DashboardReportList() {
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
 
+  const [showModal3, setShowModal3] = useState(false);
+
+  const handleShowModal3 = () => setShowModal3(true);
+  const handleCloseModal3 = () => setShowModal3(false);
+
  
   const handleInputs = (e) => {
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-
-  const handlePushToDBTInputs = (e) => {
-    let { name, value } = e.target;
-    setPushToDBTData({ ...data, [name]: value });
-  };
 
   const getList = () => {
     setLoading(true);
@@ -113,15 +111,105 @@ function DashboardReportList() {
   //   stepId: "",
   // });
 
+   // to get sc-sub-scheme-details by sc-scheme-details
+   const [approvalStageAfterNextStepListData, setApprovalStageAfterNextStepListData] = useState(
+    []
+  );
+  const getApprovalAfterStageNextStepList = (subSchemeId,approvalStageId) => {
+    api
+      .post(baseURLDBT + `service/getNextStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`)
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalStageAfterNextStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageAfterNextStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  // useEffect(() => {
+  //   if (data.scSubSchemeDetailsId) {
+  //     getApprovalBeforeStageNextStepList(data.scSubSchemeDetailsId);
+  //   }
+  // }, [data.scSubSchemeDetailsId]);
+
+  const [applicationFormId, setApplicationFormId] = useState(null);
+
   const [actionFarmerData, setActionFarmerData] = useState({});
 
+  // const getActionFarmerList = (fid) => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+  //       {},
+  //       // { params: { userId: 27, stepId: 1 } }
+  //       {
+  //         params: {
+  //           userId: localStorage.getItem("userMasterId"),
+  //           stepId: id,
+  //           fid: fid,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setActionFarmerData(response.data.content);
+  //       const scApplicationFormIds = response.data.content.map(
+  //         (item) => item.scApplicationFormId
+  //       );
+
+  //       // Extract and set the applicationDocumentId
+  //     const applicationDocumentId = data[0]?.applicationDocumentId;
+  //     setApplicationFormId(applicationDocumentId); // Set applicationFormId here
+
+  //       // Extract categoryId and componentId
+  //     const categoryId = response.data.content[0]?.categoryId;
+  //     const componentId = response.data.content[0]?.componentId;
+      
+  //     // Fetch DBT List using extracted categoryId and componentId
+  //     if (categoryId && componentId) {
+  //       getPushToDBTList(categoryId, componentId);
+  //     }
+
+  //       // Extract categoryId and componentId
+  //       const subSchemeId = response.data.content[0]?.subSchemeId;
+  //       const approvalStageId = response.data.content[0]?.approvalStageId;
+        
+  //       // Fetch DBT List using extracted categoryId and componentId
+  //       if (subSchemeId && approvalStageId) {
+  //         getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
+  //       }
+
+  //       // Extract and set the applicationDocumentId
+  //       const applicationDocumentId =
+  //         response.data.content[0]?.applicationDocumentId;
+
+  //       // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
+  //       setUploadDocuments((prev) => ({
+  //         ...prev,
+  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+  //       }));
+
+  //       setSanctionOrderData((prev) => ({
+  //         ...prev,
+  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+  //       }));
+  //       // setAllApplicationIds(scApplicationFormIds);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setActionFarmerData({});
+  //       setLoading(false);
+  //     });
+  // };
   const getActionFarmerList = (fid) => {
     setLoading(true);
     api
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: 27, stepId: 1 } }
         {
           params: {
             userId: localStorage.getItem("userMasterId"),
@@ -131,26 +219,42 @@ function DashboardReportList() {
         }
       )
       .then((response) => {
-        setActionFarmerData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
-        );
-
+        const data = response.data.content; // Store the response data in a variable
+        setActionFarmerData(data);
+        
         // Extract and set the applicationDocumentId
-        const applicationDocumentId =
-          response.data.content[0]?.applicationDocumentId;
-
+        const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+        setApplicationFormId(applicationDocumentId); // Set applicationFormId here
+  
+        // Extract categoryId and componentId
+        const categoryId = data[0]?.categoryId;
+        const componentId = data[0]?.componentId;
+        
+        // Fetch DBT List using extracted categoryId and componentId
+        if (categoryId && componentId) {
+          getPushToDBTList(categoryId, componentId);
+        }
+  
+        // Extract subSchemeId and approvalStageId
+        const subSchemeId = data[0]?.subSchemeId;
+        const approvalStageId = data[0]?.approvalStageId;
+        
+        // Fetch DBT List using extracted subSchemeId and approvalStageId
+        if (subSchemeId && approvalStageId) {
+          getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
+        }
+  
         // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
         setUploadDocuments((prev) => ({
           ...prev,
           applicationFormId: applicationDocumentId, // Set applicationDocumentId here
         }));
-
+  
         setSanctionOrderData((prev) => ({
           ...prev,
           applicationFormId: applicationDocumentId, // Set applicationDocumentId here
         }));
-        // setAllApplicationIds(scApplicationFormIds);
+  
         setLoading(false);
       })
       .catch((err) => {
@@ -158,6 +262,40 @@ function DashboardReportList() {
         setLoading(false);
       });
   };
+  
+
+  // to get push to dbt details
+  const [pushToDBTListData, setPushToDBTListListData] = useState(
+    []
+  );
+  const getPushToDBTList = (categoryId,componentId) => {
+    api
+      .post(baseURLDBT + `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}`)
+      .then((response) => {
+        if (response.data.content) {
+          const dbtData = response.data.content;
+
+        // Assuming subsidy amount is in dbtData, update actionData
+        setActionData((prevData) => ({
+          ...prevData,
+          subsidyAmount: dbtData.subsidyAmount || '' // adjust according to your actual data structure
+        }));
+          setPushToDBTListListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setPushToDBTListListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  // useEffect(() => {
+  //   if (data.scSubSchemeDetailsId) {
+  //     getPushToDBTListList(data.scSubSchemeDetailsId);
+  //   }
+  // }, [data.scSubSchemeDetailsId]);
+
+
 
   // to get uploadable documents
   const [docListData, setDocListData] = useState([]);
@@ -240,44 +378,125 @@ function DashboardReportList() {
         // setUserListData([]);
       });
   };
+ 
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      api
-        .post(baseURLDBT + `service/updateApplicationStatus`)
-        .then((response) => {
-          if (response.data.content.errorCode) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            getList();
-          }
-        })
-        .catch((err) => {
-          saveError(err.response.data.validationErrors);
-        });
-      setValidated(true);
+  const generateWorkOrderAcknowledgment = async (applicationFormId) => {
+  
+    try {
+      const response = await api.post(
+        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        {
+          applicationFormId: applicationFormId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+     
+    } catch (error) {
+      // console.log("error", error);
     }
   };
 
-  const handleRejectInputs = (e) => {
+    // to get Financial Year
+    const [rejectReasonListData, setRejectReasonListData] = useState([]);
+
+    const getRejectReasonList = () => {
+      api
+        .get(baseURLMasterData + `rejectReasonWorkFlowMaster/get-all`)
+        .then((response) => {
+          setRejectReasonListData(
+            response.data.content.rejectReasonWorkFlowMaster
+          );
+        })
+        .catch((err) => {
+          setRejectReasonListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getRejectReasonList();
+    }, []);
+
+  const handleActionInputs = (e) => {
     let { name, value } = e.target;
-    setInspectionData({ ...inspectionData, [name]: value });
+    setActionData({ ...actionData, [name]: value });
   };
 
-  const [inspectionData, setInspectionData] = useState({
-    comment: "",
-    rejectReasonWorkflowMasterId: "",
+  const [actionData, setActionData] = useState({
     applicationFormId: "",
+    workOrderNumber: "",
+    sanctionOrderNumber: "",
+    lat: "",
+    lon: "",
+    description: "",
+    rejectedReasonId: "",
+    userId: "",
+    stepId: "",
+    paymentTo: "",
+    paymentMethod: "",
+    dateOfPayment: "",
+    referenceNo: "",
+    subsidyAmount: "",
   });
 
-  const postInspectionData = (event) => {
+  // const postActionData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+
+  //     const sendPost = {
+  //       description: actionData.comment,
+  //       rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+  //       applicationFormId: actionData.applicationFormId,
+  //       workOrderNumber: actionData.workOrderNumber,
+  //       sanctionOrderNumber: actionData.sanctionOrderNumber,
+  //       userId: actionData.userId,
+  //       stepId: actionData.stepId,
+  //       paymentTo: actionData.paymentTo,
+  //       paymentMethod: actionData.paymentMethod,
+  //       dateOfPayment: actionData.dateOfPayment,
+  //       referenceNo: actionData.referenceNo,
+  //     };
+  //     api
+  //       .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
+  //       .then((response) => {
+  //         if (response.data.errorCode === -1) {
+  //           saveError(response.data.errorMessages[0]);
+  //         } else if (response.data.content && response.data.content.error) {
+  //           saveError(response.data.content.error_description);
+  //         } else {
+  //           saveSuccess();
+  //           clear();
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (
+  //           err.response &&
+  //           err.response &&
+  //           err.response.data &&
+  //           err.response.data.validationErrors
+  //         ) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             saveError(err.response.data.validationErrors);
+  //           }
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
+  const postActionData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -285,40 +504,73 @@ function DashboardReportList() {
       setValidated(true);
     } else {
       event.preventDefault();
-
+  
       const sendPost = {
-        description: inspectionData.comment,
-        rejectedReasonId: inspectionData.rejectReasonWorkflowMasterId,
-        applicationFormId: inspectionData.applicationFormId,
+        description: actionData.comment,
+        rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+        // applicationFormId: actionData.applicationFormId,
+        applicationFormId: applicationFormId,
+        workOrderNumber: actionData.workOrderNumber,
+        sanctionOrderNumber: actionData.sanctionOrderNumber,
+        userId: actionData.userId,
+        stepId: actionData.stepId,
+        paymentTo: actionData.paymentTo,
+        paymentMethod: actionData.paymentMethod,
+        dateOfPayment: actionData.dateOfPayment,
+        referenceNo: actionData.referenceNo,
       };
-      api
-        .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
-        .then((response) => {
-          if (response.data.errorCode === -1) {
-            saveError(response.data.errorMessages[0]);
-          } else if (response.data.content && response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+  
+      let apiCall;
+  
+      if (actionFarmerData.length > 0) {
+        const workFlowType = actionFarmerData[0].workFlowType;
+  
+        if (workFlowType === "WORKORDER") {
+          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+        } else if (workFlowType === "SANCTIONORDER") {
+          apiCall = api.post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost);
+        } else if (workFlowType === "PUSHTODBT") {
+          apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
+        }
+      }
+  
+      if (apiCall) {
+        apiCall
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.errorMessages[0]);
+            } else if (response.data.error) {
+              saveError(response.data.error_description);
+            } else {
+
+               // Generate the acknowledgment after a successful work order update
+            if (actionFarmerData[0].workFlowType === "WORKORDER") {
+              generateWorkOrderAcknowledgment(applicationFormId);
             }
-          }
-        });
+              
+              saveSuccess();
+            
+              clear();
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+  
       setValidated(true);
     }
   };
+  
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -341,33 +593,28 @@ function DashboardReportList() {
     });
   };
 
-  const clear = (e) => {
-    e.preventDefault();
-    window.location.reload();
-    // setAllApplicationIds([]);
-    // setUnselectedApplicationIds([]);
-    // setAllApplicationIds([]);
+  const clear = () => {
+    setActionData({
+     applicationFormId: "",
+    workOrderNumber: "",
+    sanctionOrderNumber: "",
+    lat: "",
+    lon: "",
+    description: "",
+    rejectedReasonId: "",
+    userId: "",
+    stepId: "",
+    paymentTo: "",
+    paymentMethod: "",
+    dateOfPayment: "",
+    referenceNo: "",
+    subsidyAmount: "",
+    });
+    setApplicationFormId(null);
+    // Add other states that need to be reset
   };
 
-  // to get Financial Year
-  const [rejectReasonListData, setRejectReasonListData] = useState([]);
 
-  const getRejectReasonList = () => {
-    api
-      .get(baseURLMasterData + `rejectReasonWorkFlowMaster/get-all`)
-      .then((response) => {
-        setRejectReasonListData(
-          response.data.content.rejectReasonWorkFlowMaster
-        );
-      })
-      .catch((err) => {
-        setRejectReasonListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRejectReasonList();
-  }, []);
 
   //  // Display Image
   //  const [documentAttachments, setDocumentAttachments] = useState({});
@@ -527,7 +774,7 @@ function DashboardReportList() {
             variant="primary"
             size="sm"
             onClick={() =>
-              handleShowModal(row.fruitsId, row.applicationDocumentId)
+              handleShowModal(row.fruitsId,row.applicationDocumentId)
             }
             className="me-2" // Adds space between buttons
           >
@@ -586,13 +833,66 @@ function DashboardReportList() {
     },
   };
 
-  const [pushToDBTData, setPushToDBTData] = useState({
-    paymentTo: "",
-    paymentMethod: "",
-    dateOfPayment: "",
-    referenceNo: "",
-  });
+  const modalCustomStyles = { 
+    rows: {
+      style: {
+        minHeight: "45px",
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        fontWeight: "bold",  // Make header font bold
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        fontWeight: "bold",  // Make cell font bold
+      },
+    },
+  };
 
+const modalStyles = {
+  modalHeader: {
+    backgroundColor: "#0a2463", // Dark blue background
+    color: "white",
+    padding: "8px 15px", // Adjusted padding to reduce header size
+    fontSize: "18px",
+    fontWeight: "bold",
+    borderTopLeftRadius: "8px",
+    borderTopRightRadius: "8px",
+    lineHeight: "1.2", // Adjust line-height to reduce height
+  },
+  modalBody: {
+    backgroundColor: "rgb(248, 248, 249)",
+    color: "black",
+    padding: "20px",
+  },
+  formGroupLabel: {
+    fontWeight: "bold",  // Bold form label
+    fontSize: "16px",
+  },
+  selectInput: {
+    fontWeight: "bold",  // Bold text inside select
+    padding: "10px",
+  },
+  formControl: {
+    fontWeight: "bold",  // Bold text for inputs
+    padding: "10px",
+  },
+  modalTitle: {
+    fontSize: "18px",  // Reduced font size for the title
+    fontWeight: "bold",  // Keep the title bold
+  },
+};
+
+ 
   const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
 
   const handleDocumentClick = async (documentPath) => {
@@ -844,13 +1144,13 @@ function DashboardReportList() {
             </h1>
           ) : (
             <>
-              <Accordion defaultActiveKey="0">
-                <Accordion.Item eventKey="0">
-                  <Form
+            <Form
                     noValidate
                     validated={validated}
-                    onSubmit={postInspectionData}
+                    onSubmit={postActionData}
                   >
+              <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
                     <Accordion.Header
                       style={{
                         backgroundColor: "#0F6CBE",
@@ -1048,9 +1348,9 @@ function DashboardReportList() {
                                   <Form.Select
                                     name="rejectReasonWorkflowMasterId"
                                     value={
-                                      inspectionData.rejectReasonWorkflowMasterId
+                                      actionData.rejectReasonWorkflowMasterId
                                     }
-                                    onChange={handleRejectInputs}
+                                    onChange={handleActionInputs}
                                   >
                                     <option value="">
                                       Select Reject Reason
@@ -1077,8 +1377,8 @@ function DashboardReportList() {
                                     id="comment"
                                     type="text"
                                     name="comment"
-                                    value={inspectionData.comment}
-                                    onChange={handleRejectInputs}
+                                    value={actionData.comment}
+                                    onChange={handleActionInputs}
                                     placeholder="Enter Description"
                                   />
                                 </Form.Group>
@@ -1088,15 +1388,14 @@ function DashboardReportList() {
                         </Card>
                       </Block>
 
-                      <Col lg="12">
+                      {/* <Col lg="12">
                         <div className="d-flex justify-content-center gap-2">
                           <Button type="submit" variant="success">
                             Submit
                           </Button>
                         </div>
-                      </Col>
+                      </Col> */}
                     </Accordion.Body>
-                  </Form>
                 </Accordion.Item>
 
                 {/* Work Order Details Accordion */}
@@ -1124,20 +1423,94 @@ function DashboardReportList() {
                                   <strong>Work Order No.</strong>
                                 </Form.Label>
                                 <Form.Control
-                                  id="description"
+                                  id="workOrderNumber"
                                   type="text"
-                                  name="workOrder"
-                                  value={data.workOrder}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Work Order 1"
+                                  name="workOrderNumber"
+                                  value={actionData.workOrderNumber}
+                                  onChange={handleActionInputs}
+                                  placeholder="Enter Work Order NO."
                                 />
                               </Form.Group>
                             </Col>
+
+                            <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Approval Stage
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="stepId"
+                            value={actionData.stepId}
+                            onChange={handleActionInputs}
+                            onBlur={() => handleActionInputs}
+                            // required
+                            // isInvalid={
+                            //   actionData.approvalStageId === undefined ||
+                            //   actionData.approvalStageId === "0"
+                            // }
+                          >
+                            <option value="">Select Approval Stage</option>
+                            {approvalStageAfterNextStepListData.map((list) => (
+                              <option
+                                key={list.approvalStageId}
+                                value={list.approvalStageId}
+                              >
+                                {list.approvalStageName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                       User 
+                       {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userId"
+                            value={actionData.userId}
+                            onChange={handleActionInputs}
+                            onBlur={() => handleActionInputs}
+                            // required
+                            // isInvalid={
+                            //   actionData.userId === undefined ||
+                            //   actionData.userId === "0"
+                            // }
+                          >
+                            <option value="">Select User</option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
                           </Row>
                         </Block>
 
                         {/* <Col lg="12"> */}
-                        <div className="gap-col mt-1">
+                        {/* <div className="gap-col mt-1">
                           <ul className="d-flex align-items-center justify-content-center gap g-3">
                             <li>
                               <Button type="submit" variant="success">
@@ -1145,7 +1518,7 @@ function DashboardReportList() {
                               </Button>
                             </li>
                           </ul>
-                        </div>
+                        </div> */}
                         {/* </Col> */}
                       </Accordion.Body>
                     </Accordion.Item>
@@ -1174,11 +1547,11 @@ function DashboardReportList() {
                               <strong>Sanction Order No.</strong>
                             </Form.Label>
                             <Form.Control
-                              id="sanctionOrder"
+                              id="sanctionOrderNumber"
                               type="text"
-                              name="sanctionOrder"
-                              value={data.sanctionOrder}
-                              onChange={handleInputs}
+                              name="sanctionOrderNumber"
+                              value={actionData.sanctionOrderNumber}
+                              onChange={handleActionInputs}
                               placeholder="Enter Sanction Order NO."
                             />
                           </Form.Group>
@@ -1322,12 +1695,80 @@ function DashboardReportList() {
                   </Accordion.Header>
                   <Accordion.Body>
                     <Block className="mt-3">
-                      <Row>
+                    <Card
+                          className="mt-4"
+                          style={{
+                            border: "none",
+                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          <Card.Body>
+                            <div style={{ overflowX: "auto" }}>
+                              <table
+                                className="table small table-bordered table-hover"
+                                style={{ tableLayout: "fixed" }}
+                              >
+                                <thead style={{ backgroundColor: "#27488A" }}>
+                                  <tr>
+                                    {[
+                                      "Scheme Quota Name",
+                                      "Component Name",
+                                      "Allocated Amount",
+                                      "Share Percentage",
+                                      "Subsidy Amount",
+                                      "Action",
+                                    ].map((header) => (
+                                      <th
+                                        key={header}
+                                        style={{ width: "10%", color: "white" }}
+                                      >
+                                        {header}
+                                      </th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {pushToDBTListData?.length > 0 ? (
+                                    pushToDBTListData.map((pushDBTList, index) => (
+                                      <tr key={index}>
+                                        {[
+                                          "schemeQuotaName",
+                                          "schemeComponentName",
+                                          "allocatedAmount",
+                                          "shareInPercentage",
+                                          "subsidyAmount",
+                                        ].map((key) => (
+                                          <td
+                                            key={key}
+                                            style={{ wordBreak: "break-word" }}
+                                          >
+                                            {pushDBTList[key] || "N/A"}
+                                          </td>
+                                        ))}
+                                        <td> {/* Add button in Action column */}
+                                        <Button variant="primary" onClick={() => handleShowModal3(index)}>
+                                          Add
+                                        </Button>
+                                      </td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="10" className="text-center">
+                                        No Details Available
+                                      </td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      {/* <Row>
                       <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-4">
                               <Form.Label>
                               Payment To
-                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -1346,18 +1787,18 @@ function DashboardReportList() {
                                   <option value="Farmer">Farmer</option>
                                   <option value="Vendor">Vendor</option>
                                 </Form.Select>
-                                {/* <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type="invalid">
                                 Test Results is required
-                                </Form.Control.Feedback> */}
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-4">
                               <Form.Label>
                               Payment Method
-                                {/* <span className="text-danger">*</span> */}
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -1379,9 +1820,9 @@ function DashboardReportList() {
                                   <option value="CHEQUE">CHEQUE</option>
                                   <option value="ONLINE">ONLINE</option>
                                 </Form.Select>
-                                {/* <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type="invalid">
                                 Test Results is required
-                                </Form.Control.Feedback> */}
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -1394,7 +1835,7 @@ function DashboardReportList() {
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="numberOfCocoonsCB">
                               Reference No
-                                {/* <span className="text-danger">*</span> */}
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1406,9 +1847,9 @@ function DashboardReportList() {
                                   placeholder="Enter Reference No "
                                   // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type="invalid">
                                 Cocoon's Purchased (in Kg's / Nos) is required
-                                </Form.Control.Feedback> */}
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -1417,7 +1858,7 @@ function DashboardReportList() {
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="dateOfMothEmergence">
                                 Date Of Payment
-                                {/* <span className="text-danger">*</span> */}
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -1437,19 +1878,21 @@ function DashboardReportList() {
                                   className="form-control"
                                   // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type="invalid">
                                   Date of moth emergence is required
-                                </Form.Control.Feedback> */}
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
                           </>
                           )}
-                      </Row>
+                      </Row> */}
+
+                      
                     </Block>
 
                     {/* <Col lg="12"> */}
-                    <div className="gap-col mt-1">
+                    {/* <div className="gap-col mt-1">
                       <ul className="d-flex align-items-center justify-content-center gap g-3">
                         <li>
                         <div className="d-flex justify-content-center gap-2">
@@ -1459,16 +1902,25 @@ function DashboardReportList() {
                         </div>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                     {/* </Col> */}
                   </Accordion.Body>
                 </Accordion.Item>
                   )}
               </Accordion>
-            </>
-          )}
 
+              <Col lg="12">
+            <div className="d-flex justify-content-center gap-2 mt-3">
+              <Button type="submit" variant="success">
+                Submit
+              </Button>
+            </div>
+          </Col>
+        </Form>
+      </>
+    )}
         </Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
@@ -1607,6 +2059,167 @@ function DashboardReportList() {
             </div>
           </div>
           {/* ))} */}
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
+        <Modal.Header style={modalStyles.modalHeader} closeButton>
+          <Modal.Title style={modalStyles.modalTitle}>Add Payment Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={modalStyles.modalBody}>
+          {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
+          <Row>
+                      <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label style={modalStyles.formGroupLabel}>
+                              Payment To
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="paymentTo"
+                                  value={actionData.paymentTo}
+                                  onChange={handleActionInputs}
+                                  style={modalStyles.selectInput}
+                                  // required
+                                  // isInvalid={
+                                  //   data.testResults === undefined ||
+                                  //   data.testResults === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select Payment To
+                                  </option>
+                                  <option value="Farmer">Farmer</option>
+                                  <option value="Vendor">Vendor</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Test Results is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label style={modalStyles.formGroupLabel}>
+                              Payment Method
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="paymentMethod"
+                                  value={actionData.paymentMethod}
+                                  onChange={handleActionInputs}
+                                  style={modalStyles.selectInput}
+                                  // required
+                                  // isInvalid={
+                                  //   data.testResults === undefined ||
+                                  //   data.testResults === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select Payment Method
+                                  </option>
+                                  <option value="CASH">CASH</option>
+                                  <option value="DBT">DBT</option>
+                                  <option value="CASH">CASH</option>
+                                  <option value="CHEQUE">CHEQUE</option>
+                                  <option value="ONLINE">ONLINE</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Test Results is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label style={modalStyles.formGroupLabel}>
+                              Subsidy Amount
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="subsidyAmount"
+                                  name="subsidyAmount"
+                                  value={actionData.subsidyAmount}
+                                  onChange={handleActionInputs}
+                                  type="text"
+                                  placeholder="Enter Subsidy Amount "
+                                  style={modalStyles.formControl}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Cocoon's Purchased (in Kg's / Nos) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                         
+
+                          {["CASH", "CHEQUE", "ONLINE"].includes(actionData.paymentMethod) && (
+                            <>
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label style={modalStyles.formGroupLabel}>
+                              Reference No
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="referenceNo"
+                                  name="referenceNo"
+                                  value={actionData.referenceNo}
+                                  onChange={handleActionInputs}
+                                  type="text"
+                                  placeholder="Enter Reference No "
+                                  style={modalStyles.formControl}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Cocoon's Purchased (in Kg's / Nos) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label style={modalStyles.formGroupLabel}>
+                                Date Of Payment
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={actionData.dateOfPayment}
+                                  onChange={(date) =>
+                                    handleDateChange(
+                                      date,
+                                      "dateOfMothEmergence"
+                                    )
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // minDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Date of moth emergence is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          </>
+                          )}
+                      </Row>
+
         </Modal.Body>
       </Modal>
 
