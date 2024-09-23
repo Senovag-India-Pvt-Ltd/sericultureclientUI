@@ -77,15 +77,6 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
-  const [assignData, setAssignData] = useState({
-    userId: "",
-  }); 
-
-  const handleAssignInputs = (e) => {
-    let { name, value } = e.target;
-    setAssignData({ ...data, [name]: value });
-  };
-
 
 
   // const [actionListData, setActionListData] = useState({
@@ -251,6 +242,13 @@ function DashboardReportList() {
         const scApplicationFormIds = response.data.content.map(
           (item) => item.scApplicationFormId
         );
+
+        const data = response.data.content; // Store the response data in a variable
+        setAssignData(data);
+
+        // Extract and set the applicationDocumentId
+        const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+        setApplicationFormId(applicationDocumentId);
 
          // Extract subSchemeId and approvalStageId
          const subSchemeId = data[0]?.subSchemeId;
@@ -524,6 +522,63 @@ function DashboardReportList() {
     setActionData({ ...actionData, [name]: value });
   };
 
+  const [assignData, setAssignData] = useState({
+    applicationFormId:"",
+    userId: "",
+  }); 
+
+  const handleAssignInputs = (e) => {
+    let { name, value } = e.target;
+    setAssignData({ ...assignData, [name]: value });
+  };
+
+//   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+// setApplicationFormId(applicationDocumentId);
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+
+      // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
+
+      const sendPost = {
+        applicationFormId,
+        userId: assignData.userId,
+      };
+      api
+        .post(baseURLDBT + `service/workOrderUpdate`, sendPost)
+        .then((response) => {
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data && response.data.error) {
+            saveError(response.data.error_description);
+          } else {
+            saveAssignSuccess();
+            clear();
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
   const [actionData, setActionData] = useState({
     applicationFormId: "",
     workOrderNumber: "",
@@ -541,56 +596,7 @@ function DashboardReportList() {
     subsidyAmount: "",
   });
 
-  // const postActionData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-
-  //     const sendPost = {
-  //       description: actionData.comment,
-  //       rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
-  //       applicationFormId: actionData.applicationFormId,
-  //       workOrderNumber: actionData.workOrderNumber,
-  //       sanctionOrderNumber: actionData.sanctionOrderNumber,
-  //       userId: actionData.userId,
-  //       stepId: actionData.stepId,
-  //       paymentTo: actionData.paymentTo,
-  //       paymentMethod: actionData.paymentMethod,
-  //       dateOfPayment: actionData.dateOfPayment,
-  //       referenceNo: actionData.referenceNo,
-  //     };
-  //     api
-  //       .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
-  //       .then((response) => {
-  //         if (response.data.errorCode === -1) {
-  //           saveError(response.data.errorMessages[0]);
-  //         } else if (response.data.content && response.data.content.error) {
-  //           saveError(response.data.content.error_description);
-  //         } else {
-  //           saveSuccess();
-  //           clear();
-  //           setValidated(false);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (
-  //           err.response &&
-  //           err.response &&
-  //           err.response.data &&
-  //           err.response.data.validationErrors
-  //         ) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             saveError(err.response.data.validationErrors);
-  //           }
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
+ 
 
   const postActionData = (event) => {
     const form = event.currentTarget;
@@ -667,6 +673,13 @@ function DashboardReportList() {
     }
   };
   
+  const saveAssignSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Assigned successfully",
+      text: message,
+    });
+  };
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -809,7 +822,7 @@ function DashboardReportList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleShowModal4(row.userId)}
+            onClick={() => handleShowModal4(row.applicationDocumentId)}
             className="me-2" // Adds space between buttons
             // disabled={data.userMasterId ? false : true}
           >
@@ -2275,14 +2288,19 @@ const modalStyles = {
           <Modal.Title style={modalStyles.modalTitle}>User</Modal.Title>
         </Modal.Header>
         <Modal.Body style={modalStyles.modalBody}>
+        <Form
+                    noValidate
+                    validated={validated}
+                    onSubmit={postData}
+                  >
           {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
           <Row>
-                <Col lg="6">
-                <Form.Group className="form-group">
-                <Form.Label style={modalStyles.formGroupLabel}>
-                  User
-                    {/* <span className="text-danger">*</span> */}
-                  </Form.Label>
+            <Col lg="6">
+            <Form.Group className="form-group">
+              <Form.Label style={modalStyles.formGroupLabel}>
+                User
+                  {/* <span className="text-danger">*</span> */}
+                </Form.Label>
               <div className="form-control-wrap">
               <Form.Select
                 name="userId"
@@ -2301,7 +2319,16 @@ const modalStyles = {
             </div>
           </Form.Group>
       </Col>
+
+      <Col lg="12">
+            <div className="d-flex justify-content-center gap-2 mt-3">
+              <Button type="submit" variant="success">
+                Assign
+              </Button>
+            </div>
+          </Col>
                       </Row>
+                      </Form>
 
         </Modal.Body>
       </Modal>
