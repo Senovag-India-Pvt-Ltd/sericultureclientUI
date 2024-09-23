@@ -722,15 +722,15 @@ function ServiceApplication() {
   }, [data.scHeadAccountId, data.scCategoryId, data.scSubSchemeDetailsId]);
 
   useEffect(() => {
-    if (data.scSchemeDetailsId && data.approvalStageId) {
+    if (data.scSubSchemeDetailsId && data.approvalStageId) {
       getUserFromDistrictList(
-        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId,
         data.approvalStageId,
         districtId,
         talukId
       );
     }
-  }, [data.scSchemeDetailsId, data.approvalStageId]);
+  }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
   let name, value;
   const handleInputs = (e) => {
