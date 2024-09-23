@@ -767,6 +767,20 @@ function DashboardReportList() {
       hide: "md",
     },
     {
+      name: "Mobile Number",
+      selector: (row) => row.mobileNumber,
+      cell: (row) => <span>{row.mobileNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Head of Account",
       selector: (row) => row.headAccountName,
       cell: (row) => <span>{row.headAccountName}</span>,
@@ -824,6 +838,7 @@ function DashboardReportList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
   ];
 
