@@ -1491,7 +1491,7 @@ function AllApplicationList() {
 
 {viewDetailsData?.workflowDetails?.length > 0 ? (
           viewDetailsData.workflowDetails.map((workFlow, index) => (
-            <Accordion.Item eventKey={index + 1} key={index}>
+            <Accordion.Item eventKey={index + 2} key={index}>
               <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
                         className="mb-2">Work Flow Details</Accordion.Header>
               <Accordion.Body>

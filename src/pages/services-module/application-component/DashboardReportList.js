@@ -40,7 +40,7 @@ function DashboardReportList() {
   const [data, setData] = useState({
     userMasterId: "",
     stepId: "",
-  });
+  }); 
 
   
 
@@ -72,39 +72,12 @@ function DashboardReportList() {
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
 
- 
-  const handleInputs = (e) => {
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
 
 
-  const getList = () => {
-    setLoading(true);
-    api
-      .post(
-        baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-        {},
-        // { params: { userId: 27, stepId: 1 } }
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
-        );
-        // setAllApplicationIds(scApplicationFormIds);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setListData({});
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
 
   // const [actionListData, setActionListData] = useState({
   //   userMasterId: "",
@@ -202,8 +175,102 @@ function DashboardReportList() {
   //     .catch((err) => {
   //       setActionFarmerData({});
   //       setLoading(false);
-  //     });
+  //     });userFromDistrictData
   // };
+
+  const [userId, setId] = useState(localStorage.getItem("userMasterId"));
+
+  const [districtId, setDistrictId] = useState(null);
+  const [talukId, setTalukId] = useState(null);
+  const [designationId, setDesignationId] = useState(null);
+  const [userFromDistrictData, setUserFromDistrictData] = useState([]);
+
+  //  to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLMasterData + `userMaster/get-join/${userId}`)
+      .then((response) => {
+        setDistrictId(response.data.content.districtId);
+        setTalukId(response.data.content.talukId);
+        setDesignationId(response.data.content.designationId);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
+      });
+  };
+
+ 
+  const getUserFromDistrictList = (
+    subSchemeId,
+    approvalStageId,
+    districtId,
+    talukId
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setUserFromDistrictData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setUserFromDistrictData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  
+  const getList = () => {
+    setLoading(true);
+    api
+      .post(
+        baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+        {},
+        // { params: { userId: 27, stepId: 1 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+        const scApplicationFormIds = response.data.content.map(
+          (item) => item.scApplicationFormId
+        );
+
+        const data = response.data.content; // Store the response data in a variable
+        setAssignData(data);
+
+        // Extract and set the applicationDocumentId
+        const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+        setApplicationFormId(applicationDocumentId);
+
+         // Extract subSchemeId and approvalStageId
+         const subSchemeId = data[0]?.subSchemeId;
+         const approvalStageId = data[0]?.approvalStageId;
+
+           if (subSchemeId && approvalStageId && districtId && talukId) {
+          getUserFromDistrictList(subSchemeId, approvalStageId, districtId, talukId);
+        }
+   
+        // setAllApplicationIds(scApplicationFormIds);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const getActionFarmerList = (fid) => {
     setLoading(true);
     api
@@ -243,6 +310,13 @@ function DashboardReportList() {
         if (subSchemeId && approvalStageId) {
           getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
         }
+
+        // if (subSchemeId && approvalStageId) {
+        //   getUserFromDistrictList(subSchemeId, approvalStageId);
+        // }
+        if (subSchemeId && approvalStageId && districtId && talukId) {
+          getUserFromDistrictList(subSchemeId, approvalStageId, districtId, talukId);
+        }
   
         // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
         setUploadDocuments((prev) => ({
@@ -262,10 +336,22 @@ function DashboardReportList() {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    getIdList();
+  }, [userId]);
+
+
+  useEffect(() => {
+    if (districtId && talukId) {
+      // Call getActionFarmerList after districtId and talukId are available
+      getActionFarmerList();
+    }
+  }, [districtId, talukId]);
   
 
   // to get push to dbt details
-  const [pushToDBTListData, setPushToDBTListListData] = useState(
+  const [pushToDBTListData, setPushToDBTListData] = useState(
     []
   );
   const getPushToDBTList = (categoryId,componentId) => {
@@ -280,11 +366,31 @@ function DashboardReportList() {
           ...prevData,
           subsidyAmount: dbtData.subsidyAmount || '' // adjust according to your actual data structure
         }));
-          setPushToDBTListListData(response.data.content);
+        setPushToDBTListData(response.data.content);
         }
       })
       .catch((err) => {
-        setPushToDBTListListData([]);
+        setPushToDBTListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+   // to get push to dbt details
+   const [checkApprovalListData, setCheckApprovalListData] = useState(
+    []
+  );
+  const getCheckApprovalList = (approvalStageId,designationId,schemeAmount) => {
+    api
+      .post(baseURLDBT + `service/checkApprovalPower?approvalStageId=${approvalStageId}&designationId=${designationId}&schemeAmount=${schemeAmount}`)
+      .then((response) => {
+        if (response.data.content) {
+          const dbtData = response.data.content;
+
+        setCheckApprovalListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setCheckApprovalListData([]);
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
@@ -339,46 +445,34 @@ function DashboardReportList() {
   const [validated, setValidated] = useState(false);
 
   // to get userList
-  const [userListData, setUserListData] = useState([]);
+  // const [userListData, setUserListData] = useState([]);
 
-  const getUserList = () => {
-    const response = api
-      .get(baseURLMasterData + `userMaster/get-all`)
-      .then((response) => {
-        setUserListData(response.data.content.userMaster);
-      })
-      .catch((err) => {
-        setUserListData([]);
-      });
-  };
+  // const getUserList = () => {
+  //   const response = api
+  //     .get(baseURLMasterData + `userMaster/get-all`)
+  //     .then((response) => {
+  //       setUserListData(response.data.content.userMaster);
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
 
-  const assign = (workFlowId) => {
-    const postData = {
-      requestType: "SUBSIDY_PRE_INSPECTION",
-      requestTypeId: workFlowId,
-      userMasterId: data.userMasterId,
-      // userMasterId: 114,
-    };
-
-    api
-      .post(baseURLDBT + `service/assignInspection`, postData)
-      .then((response) => {
-        // setUserListData(response.data.content.userMaster);
-        Swal.fire({
-          icon: "success",
-          title: "Task Assigned for Inspection",
-        });
-        getList();
-      })
-      .catch((err) => {
-        // setUserListData([]);
-      });
-  };
  
+
+  // useEffect(() => {
+  //   if (data.scSubSchemeDetailsId && data.approvalStageId) {
+  //     getUserFromDistrictList(
+        
+  //       districtId,
+  //       talukId
+  //     );
+  //   }
+  // }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
   const generateWorkOrderAcknowledgment = async (applicationFormId) => {
   
@@ -428,6 +522,63 @@ function DashboardReportList() {
     setActionData({ ...actionData, [name]: value });
   };
 
+  const [assignData, setAssignData] = useState({
+    applicationFormId:"",
+    userId: "",
+  }); 
+
+  const handleAssignInputs = (e) => {
+    let { name, value } = e.target;
+    setAssignData({ ...assignData, [name]: value });
+  };
+
+//   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+// setApplicationFormId(applicationDocumentId);
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+
+      // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
+
+      const sendPost = {
+        applicationFormId,
+        userId: assignData.userId,
+      };
+      api
+        .post(baseURLDBT + `service/workOrderUpdate`, sendPost)
+        .then((response) => {
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data && response.data.error) {
+            saveError(response.data.error_description);
+          } else {
+            saveAssignSuccess();
+            clear();
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
   const [actionData, setActionData] = useState({
     applicationFormId: "",
     workOrderNumber: "",
@@ -445,56 +596,7 @@ function DashboardReportList() {
     subsidyAmount: "",
   });
 
-  // const postActionData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-
-  //     const sendPost = {
-  //       description: actionData.comment,
-  //       rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
-  //       applicationFormId: actionData.applicationFormId,
-  //       workOrderNumber: actionData.workOrderNumber,
-  //       sanctionOrderNumber: actionData.sanctionOrderNumber,
-  //       userId: actionData.userId,
-  //       stepId: actionData.stepId,
-  //       paymentTo: actionData.paymentTo,
-  //       paymentMethod: actionData.paymentMethod,
-  //       dateOfPayment: actionData.dateOfPayment,
-  //       referenceNo: actionData.referenceNo,
-  //     };
-  //     api
-  //       .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
-  //       .then((response) => {
-  //         if (response.data.errorCode === -1) {
-  //           saveError(response.data.errorMessages[0]);
-  //         } else if (response.data.content && response.data.content.error) {
-  //           saveError(response.data.content.error_description);
-  //         } else {
-  //           saveSuccess();
-  //           clear();
-  //           setValidated(false);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (
-  //           err.response &&
-  //           err.response &&
-  //           err.response.data &&
-  //           err.response.data.validationErrors
-  //         ) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             saveError(err.response.data.validationErrors);
-  //           }
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
+ 
 
   const postActionData = (event) => {
     const form = event.currentTarget;
@@ -574,6 +676,13 @@ function DashboardReportList() {
     }
   };
   
+  const saveAssignSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Assigned successfully",
+      text: message,
+    });
+  };
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -619,36 +728,6 @@ function DashboardReportList() {
 
 
 
-  //  // Display Image
-  //  const [documentAttachments, setDocumentAttachments] = useState({});
-  //  const handleAttachFileChange = (e, documentId) => {
-  //    if (e.target.files.length > 0) {
-  //      const file = e.target.files[0];
-  //      setDocumentAttachments((prevState) => ({
-  //        ...prevState,
-  //        [documentId]: file,
-  //      }));
-  //    } else {
-  //      setDocumentAttachments((prevState) => ({
-  //        ...prevState,
-  //        [documentId]: null,
-  //      }));
-  //      // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-  //      // document.getElementById("hdAttachFiles").value = "";
-  //    }
-  //    // setPhotoFile(file);
-  //  };
-
-  //  const handleRemoveImage = (documentId) => {
-  //   const updatedDocument = { ...documentAttachments };
-  //   delete updatedDocument[documentId];
-  //   setDocumentAttachments(updatedDocument);
-  //   document.getElementById(`attImage${documentId}`).value = "";
-  //   // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-  // };
-
-  // const [applicationId, setApplicationId] = useState("");
-
   const [viewDetailsData, setViewDetailsData] = useState({
     applicationDetails: [],
     landDetails: [],
@@ -690,9 +769,30 @@ function DashboardReportList() {
 
   const ApplicationDataColumns = [
     {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mobile Number",
+      selector: (row) => row.mobileNumber,
+      cell: (row) => <span>{row.mobileNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -717,48 +817,7 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Minimum Quantity",
-    //   selector: (row) => row.minQty,
-    //   cell: (row) => <span>{row.minQty}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-
-    // {
-    //   name: "Maximum Quantity",
-    //   selector: (row) => row.maxQty,
-    //   cell: (row) => <span>{row.maxQty}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Assign To",
-      cell: (row) => (
-        <div className="text-start w-100">
-          <Form.Group className="form-group">
-            <div className="form-control-wrap">
-              <Form.Select
-                name="userMasterId"
-                value={data.userMasterId}
-                // onChange={(e) => handleListInput(e, row)}
-                onChange={handleInputs}
-                // onBlur={() => handleInputs}
-              >
-                <option value="">Select User</option>
-                {userListData.map((list) => (
-                  <option key={list.userMasterId} value={list.userMasterId}>
-                    {list.username}
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </div>
-      ),
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Action",
       cell: (row) => (
@@ -766,11 +825,11 @@ function DashboardReportList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => assign(row.workFlowId)}
+            onClick={() => handleShowModal4(row.applicationDocumentId)}
             className="me-2" // Adds space between buttons
-            disabled={data.userMasterId ? false : true}
+            // disabled={data.userMasterId ? false : true}
           >
-            Assign
+           Re-Assign
           </Button>
 
           <Button
@@ -795,6 +854,7 @@ function DashboardReportList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
   ];
 
@@ -1493,18 +1553,18 @@ const modalStyles = {
                             // }
                           >
                             <option value="">Select User</option>
-                            {userListData.map((list) => (
+                            {userFromDistrictData.map((list) => (
                               <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
+                                key={list.userId}
+                                value={list.userId}
                               >
-                                {list.username}
+                                {list.userName}
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Approval Stage Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Col>
                     </Form.Group>
@@ -2222,6 +2282,56 @@ const modalStyles = {
                           </>
                           )}
                       </Row>
+
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+        <Modal.Header style={modalStyles.modalHeader} closeButton>
+          <Modal.Title style={modalStyles.modalTitle}>User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={modalStyles.modalBody}>
+        <Form
+                    noValidate
+                    validated={validated}
+                    onSubmit={postData}
+                  >
+          {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
+          <Row>
+            <Col lg="6">
+            <Form.Group className="form-group">
+              <Form.Label style={modalStyles.formGroupLabel}>
+                User
+                  {/* <span className="text-danger">*</span> */}
+                </Form.Label>
+              <div className="form-control-wrap">
+              <Form.Select
+                name="userId"
+                value={assignData.userId}
+                // onChange={(e) => handleListInput(e, row)}
+                onChange={handleAssignInputs}
+                // onBlur={() => handleInputs}
+              >
+                <option value="">Select User</option>
+                {userFromDistrictData.map((list) => (
+                  <option key={list.userId} value={list.userId}>
+                    {list.userName}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+          </Form.Group>
+      </Col>
+
+      <Col lg="12">
+            <div className="d-flex justify-content-center gap-2 mt-3">
+              <Button type="submit" variant="success">
+                Assign
+              </Button>
+            </div>
+          </Col>
+                      </Row>
+                      </Form>
 
         </Modal.Body>
       </Modal>
