@@ -523,14 +523,17 @@ function DashboardReportList() {
       let apiCall;
   
       if (actionFarmerData.length > 0) {
-        const workFlowType = actionFarmerData[0].workFlowType;
-  
-        if (workFlowType === "WORKORDER") {
+        // const workFlowType = actionFarmerData[0].workFlowType;
+        // Need to ask Sathish sir do we need to call multiple APIs based on work flow types
+        if (actionFarmerData[0].workOrder) {
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
-        } else if (workFlowType === "SANCTIONORDER") {
+        } else if (actionFarmerData[0].sanctionOrder) {
           apiCall = api.post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost);
-        } else if (workFlowType === "PUSHTODBT") {
+        } else if (actionFarmerData[0].pushToDbt) {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
+        }else if (actionFarmerData[0].financialDelegation){
+          // Here need to call service/checkApprovalPower API
+          apiCall = api.post(baseURLDBT + `service/financialDelegation`, sendPost);
         }
       }
   
