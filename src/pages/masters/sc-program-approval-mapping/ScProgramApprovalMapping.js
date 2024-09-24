@@ -712,7 +712,7 @@ function ScProgramApprovalMapping() {
             <Row className="g-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">Designation</Form.Label>
+                  <Form.Label htmlFor="sordfl">Designation<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="designationId"
@@ -744,7 +744,7 @@ function ScProgramApprovalMapping() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="program">Amount</Form.Label>
+                  <Form.Label htmlFor="program">Amount<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="amount"
@@ -753,6 +753,7 @@ function ScProgramApprovalMapping() {
                       value={designationDetails.amount}
                       onChange={handleMapInputs}
                       placeholder="Enter Amount"
+                      required
                     />
                   </div>
                 </Form.Group>
