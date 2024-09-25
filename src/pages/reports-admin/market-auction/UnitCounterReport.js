@@ -12,62 +12,71 @@ import api from "../../../services/auth/api";
 
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+
+
 
 function UnitCounterReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
-    reportFromDate: new Date(),
+    // reportFromDate: new Date(),
+    fromDate: "",
+    toDate: "",
+    reelerNumber: "",
   });
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
+  const [realReelerId, setRealReelerId] = useState("");
 
-  // let name, value;
-  // const handleInputs = (e) => {
-  //   name = e.target.name;
-  //   value = e.target.value;
-  //   setData({ ...data, [name]: value });
-  // };
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
 
-  const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, reportFromDate: date }));
+  
+  const handleFromDateChange = (date) => {
+    setData((prev) => ({ ...prev, fromDate: date }));
+  };
+  const handleToDateChange = (date) => {
+    setData((prev) => ({ ...prev, toDate: date }));
   };
   useEffect(() => {
-    handleDateChange(new Date());
+    handleFromDateChange(new Date());
+    handleToDateChange(new Date());
+
   }, []);
-  // const _header = { "Content-Type": "application/json", accept: "*/*" };
-  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `caste/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+
   const [counterData, setCounterData] = useState([]);
 
   const postData = (event) => {
-    const { marketId, godownId, reportFromDate } = data;
-    const newDate = reportFromDate;
-    const formattedDate =
-      newDate.getFullYear() +
+    const { marketId, godownId, reelerNumber, fromDate, toDate  } = data;
+    const fDate = new Date(fromDate);
+    const tDate = new Date(toDate);
+    const formattedFromDate =
+      fDate.getFullYear() +
       "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      (fDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      newDate.getDate().toString().padStart(2, "0");
+      fDate.getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+      tDate.getFullYear() +
+      "-" +
+      (tDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      tDate.getDate().toString().padStart(2, "0");
+
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -81,7 +90,9 @@ function UnitCounterReport() {
         .post(baseURLMarket + `auction/report/getUnitCounterReport`, {
           marketId: marketId,
           godownId: godownId,
-          reportFromDate: formattedDate,
+          fromDate: formattedFromDate,
+          toDate: formattedToDate,
+          reelerNumber:reelerNumber,
         })
         .then((response) => {
           if (response.data.errorCode === 0) {
@@ -98,24 +109,33 @@ function UnitCounterReport() {
     }
   };
 
+ 
   const exportCsv = (e) => {
-    const { marketId,godownId,reportFromDate  } = data;
-    const newDate = new Date();
-    const formattedDate =
-    reportFromDate.getFullYear() +
+    const { marketId,godownId ,fromDate, toDate, reelerNumber } = data;
+    const formattedFromDate =
+      fromDate.getFullYear() +
       "-" +
-      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
+      (fromDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      reportFromDate.getDate().toString().padStart(2, "0");
-     
+      fromDate.getDate().toString().padStart(2, "0");
+    const formattedToDate =
+      toDate.getFullYear() +
+      "-" +
+      (toDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      toDate.getDate().toString().padStart(2, "0");
+
     api
       .post(
         baseURLReport + `excel-report/unit-counter-report`,
         {
             // startDate: data.startDate,
             godownId: godownId,
-            reportFromDate: formattedDate,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
             marketId: marketId,
+            reelerNumber: reelerNumber,
+
           },
           {
           responseType: 'blob',
@@ -199,40 +219,51 @@ function UnitCounterReport() {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="">
-                    <Form.Group as={Row} className="form-group">
-                      {/* <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={3}>
+                     
+                       <Form.Group as={Row} className="form-group">
+                      
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>Reeler Number</Form.Label>
+                      <Col sm={2}>
                         <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
+                          id="reelerNumber"
+                          name="reelerNumber"
+                          value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot ID"
-                          required
+                          placeholder="Enter Reeler Number"
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
-                        </Form.Control.Feedback>
-                      </Col> */}
-                      <Form.Label column sm={1}>
-                        Date
-                        <span className="text-danger">*</span>
+                        {/* <Form.Control.Feedback type="invalid">
+                          Reeler Number is required.
+                        </Form.Control.Feedback> */}
+                      </Col>
+                      <Form.Label column sm={1}>From Date<span className="text-danger">*</span>
                       </Form.Label>
-                      <Col sm={2}>
+                      <Col sm={1}>
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.reportFromDate}
-                            onChange={handleDateChange}
+                            selected={data.fromDate}
+                            onChange={handleFromDateChange}
                             className="form-control"
                             maxDate={new Date()}
                           />
                         </div>
                       </Col>
-                      <Col sm={2}>
+                      <Form.Label column sm={1}>To Date<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={1}>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            selected={data.toDate}
+                            onChange={handleToDateChange}
+                            className="form-control"
+                            maxDate={new Date()}
+                          />
+                        </div>
+                      </Col>
+                      <Col sm={1}>
                         {/* <Button
                           type="button"
                           variant="primary"
@@ -242,7 +273,7 @@ function UnitCounterReport() {
                           Generate Report
                         </Button>
                       </Col>
-                      <Col sm={2}>   
+                      <Col sm={1}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
                         Export
                     </Button>
