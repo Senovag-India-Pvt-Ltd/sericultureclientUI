@@ -854,6 +854,7 @@ import InspectionTypeList from "../pages/masters/inspection-type/InspectionTypeL
 import InspectionTypeView from "../pages/masters/inspection-type/InspectionTypeView";
 import InspectionTypeEdit from "../pages/masters/inspection-type/InspectionTypeEdit";
 import DashboardReportList from "../pages/services-module/application-component/DashboardReportList";
+import WithoutFruitsIdStakeHolderEdit from "../pages/stake-holder/WithoutFruitsIdStakeHolderEdit";
 // Admin and Reports
 
 function Router() {
@@ -1047,6 +1048,7 @@ function Router() {
               element={<StakeHolderViewPage />}
             />
             <Route path="stake-holder-edit/:id" element={<StakeHolderEdit />} />
+            <Route path="without-fruits-id-stake-holder-edit/:id" element={<WithoutFruitsIdStakeHolderEdit />} />
             <Route
               path="issue-new-reeler-license"
               element={<NewReelerLicense />}
