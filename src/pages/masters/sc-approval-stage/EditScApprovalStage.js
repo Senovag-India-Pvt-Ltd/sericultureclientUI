@@ -25,11 +25,18 @@ function EditScApprovalStage() {
     setData({ ...data, [name]: value });
   };
 
+  // const handleCheckBox = (e) => {
+  //   const { name, value, checked } = e.target;
+  //   setData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
   const handleCheckBox = (e) => {
-    const { name, value, checked } = e.target;
+    const { name, checked } = e.target; // Get the name and checked state from the event
     setData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: checked, // Dynamically update the correct field based on the checkbox name
     }));
   };
 
@@ -42,6 +49,11 @@ function EditScApprovalStage() {
       stageNameInKannada: data.stageNameInKannada,
       workFlowType: data.workFlowType,
       action: data.action,
+      workOrder: data.workOrder,
+      sanctionOrder: data.sanctionOrder,
+      inspection: data.inspection,
+      pushToDbt: data.pushToDbt,
+      financialDelegation: data.financialDelegation,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -62,6 +74,11 @@ function EditScApprovalStage() {
               stageNameInKannada: "",
               workFlowType: "",
               action: "",
+              workOrder:"",
+              sanctionOrder:"",
+              inspection:"",
+              pushToDbt:"",
+              financialDelegation:"",
             });
             setValidated(false);
           }
@@ -81,6 +98,11 @@ function EditScApprovalStage() {
       stageNameInKannada: "",
       workFlowType: "",
       action: "",
+      workOrder:"",
+      sanctionOrder:"",
+      inspection:"",
+      pushToDbt:"",
+      financialDelegation:"",
     });
   };
 
@@ -235,82 +257,102 @@ function EditScApprovalStage() {
                   </Col>
                     </Row>
                     <Row>
-                      <Col lg="1">
-                        <Form.Group as={Row} className="form-group mt-4">
-                          <Col sm={1}>
-                            <Form.Check
-                              type="radio"
-                              name="workFlowType"
-                              value="INSPECTION"
-                              id="weighmentTripletGeneration"
-                              checked={data.workFlowType === "INSPECTION"}
-                              onChange={handleCheckBox}
-                              // Optional: disable the checkbox in view mode
-                              // defaultChecked
-                            />
-                          </Col>
-                          <Form.Label column sm={8} className="mt-n2">
-                            Inspection
-                          </Form.Label>
-                        </Form.Group>
+                    <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="inspection"
+                          checked={data.inspection}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
                       </Col>
-                      <Col lg="1">
-                        <Form.Group as={Row} className="form-group mt-4">
-                          <Col sm={1}>
-                            <Form.Check
-                              type="radio"
-                              name="workFlowType"
-                              value="WORKORDER"
-                              id="weighmentTripletGeneration"
-                              checked={data.workFlowType === "WORKORDER"}
-                              onChange={handleCheckBox}
-                              // Optional: disable the checkbox in view mode
-                              // defaultChecked
-                            />
-                          </Col>
-                          <Form.Label column sm={8} className="mt-n2">
-                            Work Order
-                          </Form.Label>
-                        </Form.Group>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Inspection
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="workOrder"
+                          checked={data.workOrder}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
                       </Col>
-                      <Col lg="1">
-                        <Form.Group as={Row} className="form-group mt-4">
-                          <Col sm={1}>
-                            <Form.Check
-                              type="radio"
-                              name="workFlowType"
-                              value="SANCTIONORDER"
-                              id="weighmentTripletGeneration"
-                              checked={data.workFlowType === "SANCTIONORDER"}
-                              onChange={handleCheckBox}
-                              // Optional: disable the checkbox in view mode
-                              // defaultChecked
-                            />
-                          </Col>
-                          <Form.Label column sm={8} className="mt-n2">
-                            Sanction Order
-                          </Form.Label>
-                        </Form.Group>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Work Order
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="sanctionOrder"
+                          checked={data.sanctionOrder}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
                       </Col>
-                      <Col lg="1">
-                        <Form.Group as={Row} className="form-group mt-4">
-                          <Col sm={1}>
-                            <Form.Check
-                              type="radio"
-                              name="workFlowType"
-                              value="PUSHTODBT"
-                              id="weighmentTripletGeneration"
-                              checked={data.workFlowType === "PUSHTODBT"}
-                              onChange={handleCheckBox}
-                              // Optional: disable the checkbox in view mode
-                              // defaultChecked
-                            />
-                          </Col>
-                          <Form.Label column sm={8} className="mt-n2">
-                            Push to DBT
-                          </Form.Label>
-                        </Form.Group>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Sanction Order
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="pushToDbt"
+                          checked={data.pushToDbt}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
                       </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Push to DBT
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="financialDelegation"
+                          checked={data.financialDelegation}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Financial Delegation
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
                     </Row>
                   </>
                 )}

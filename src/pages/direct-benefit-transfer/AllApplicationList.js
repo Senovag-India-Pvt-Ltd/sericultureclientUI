@@ -21,10 +21,10 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function AllApplicationList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 35;
+  const countPerPage = 30;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, pageSize: countPerPage } };
   const [applicationDetails, setApplicationDetails] = useState([]);
 
   // const [data, setData] = useState({
@@ -251,12 +251,11 @@ function AllApplicationList() {
       api
         .post(
           baseURLDBT + `service/getAllApplicationsListForDbt`,
-          {},
-          { params: {userMasterId: localStorage.getItem("userMasterId"), },}
+          {},{params:{..._params.params,userMasterId:localStorage.getItem("userMasterId")}}
         )
         .then((response) => {
           setListData(response.data.content);
-          // setTotalRows(response.data.content.totalItems);
+          setTotalRows(response.data.totalRecords);
           setLoading(false);
         })
         .catch((err) => {
