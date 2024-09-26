@@ -1630,7 +1630,7 @@ function DashboardReportList() {
                           Sanction Order Details
                         </Accordion.Header>
                         <Accordion.Body>
-                          <Block className="mt-3">
+                          <Block className="mt-n4">
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -1792,7 +1792,7 @@ function DashboardReportList() {
                           Push To DBT
                         </Accordion.Header>
                         <Accordion.Body>
-                          <Block className="mt-3">
+                          <Block className="mt-n5">
                             <Card
                               className="mt-4"
                               style={{
