@@ -1074,7 +1074,7 @@ function DashboardReportList() {
       );
       Swal.fire({
         icon: "success",
-        title: "File uploaded successfully",
+        title: "File Uploaded successfully",
       });
 
       setUploadStatus((prevStatus) => ({
