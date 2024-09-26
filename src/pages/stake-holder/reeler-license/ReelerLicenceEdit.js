@@ -985,9 +985,9 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        Assign To Inspect<span className="text-danger">*</span>
+                        Assign To Inspect
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1010,11 +1010,33 @@ function ReelerLicenceEdit() {
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Assign To Inspect is required
-                          </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
+
+<Form.Group className="form-group mt-3">
+  <Form.Label>
+    Assign To Inspect
+  </Form.Label>
+  <div className="form-control-wrap">
+    <Form.Select
+      name="assignToInspectId"
+      value={data.assignToInspectId}
+      onChange={handleInputs}
+      onBlur={() => handleInputs}
+    >
+      <option value="">Select Assign To Inspect</option>
+      {userListData.map((list) => (
+        <option
+          key={list.userMasterId}
+          value={list.userMasterId}
+        >
+          {list.username}
+        </option>
+      ))}
+    </Form.Select>
+  </div>
+</Form.Group>
+
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>
                           TSC<span className="text-danger">*</span>

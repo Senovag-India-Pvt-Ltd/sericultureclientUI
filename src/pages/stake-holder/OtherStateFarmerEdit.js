@@ -828,7 +828,7 @@ function OtherStateFarmerEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -843,7 +843,32 @@ function OtherStateFarmerEdit() {
                             <option value="3">Third Gender</option>
                           </Form.Select>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
+
+<Form.Group className="form-group mt-3">
+  <Form.Label htmlFor="genderId">
+    {t("gender")}<span className="text-danger">*</span>
+  </Form.Label>
+  <div className="form-control-wrap">
+    <Form.Select
+      id="genderId"  // Added id for accessibility
+      name="genderId"
+      value={data.genderId}
+      onChange={handleInputs}
+      required
+    >
+      <option value="">{t("select_gender")}</option>
+      <option value="1">Male</option>
+      <option value="2">Female</option>
+      <option value="3">Third Gender</option>
+    </Form.Select>
+    <Form.Control.Feedback type="invalid">
+      {t("gender_required")}
+    </Form.Control.Feedback>
+  </div>
+</Form.Group>
+
+
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
