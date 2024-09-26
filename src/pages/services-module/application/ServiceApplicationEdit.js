@@ -40,6 +40,8 @@ function ServiceApplicationEdit() {
     scComponentId: "",
     schemeAmount: "",
     sanctionNumber: "",
+    spacingId: "",
+    hectareId: "",
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -169,6 +171,29 @@ function ServiceApplicationEdit() {
             console.error("Error deleting file:", error);
           }
         };
+
+        const [schemeDetails, setSchemeDetails] = useState({});
+const [schemeId, setSchemeId] = useState("");
+
+// Get data from API
+const getAreaDetailsList = () => {
+  setLoading(true);
+  api
+    .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+    .then((response) => {
+      setSchemeDetails(response.data.content); // Store response data in state
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+    });
+};
+
+useEffect(() => {
+  if (schemeId) {
+    getAreaDetailsList();
+  }
+}, [schemeId]);
         
 
   const [farmerDetails, setFarmerDetails] = useState({
@@ -198,6 +223,10 @@ function ServiceApplicationEdit() {
           schemeAmount: datas.schemeAmount,
           sanctionNumber: datas.sanctionNo,
           scSubSchemeType: datas.componentType,
+          vendorId: datas.vendorId,
+          description: datas.description,
+          hectareId: datas.hectareId,
+          spacingId: datas.spacingId,
           periodFrom: new Date("2023-04-01"),
           periodTo: new Date("2024-03-31"),
         }));
@@ -562,6 +591,46 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       return newIds;
     });
   };
+
+   // to get scheme-Quota-details
+   const [spacingListData, setSpacingDetailsListData] = useState(
+    []
+  );
+
+  const getSpacingList = () => {
+    api
+      .get(baseURLMasterData + `spacingMaster/get-all`)
+      .then((response) => {
+        setSpacingDetailsListData(response.data.content.spacingMaster);
+      })
+      .catch((err) => {
+        setSpacingDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSpacingList();
+  }, []);
+
+  // to get scheme-Quota-details
+  const [hectareListData, setHectareListData] = useState(
+    []
+  );
+
+  const getHectareList = () => {
+    api
+      .get(baseURLMasterData + `hectareMaster/get-all`)
+      .then((response) => {
+        setHectareListData(response.data.content.hectareMaster);
+      })
+      .catch((err) => {
+        setHectareListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHectareList();
+  }, []);
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -935,6 +1004,9 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if (name === "scSchemeDetailsId") {
+      setSchemeId(value);  // Trigger fetching scheme details
+    }
   };
 
   const handleDevelopedLandInputs = (e) => {
@@ -985,6 +1057,10 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         financialYearMasterId: data.financialYearMasterId,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
+        vendorId: equipment.vendorId,
+        spacingId: data.spacingId,
+        hectareId: data.hectareId,
+        description: equipment.description,
         devAcre: 0,
         devGunta: 0,
         devFGunta: 0,
@@ -1015,8 +1091,11 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       api
         .post(baseURLDBT + `service/editServiceApplicationForm`, sendPost)
         .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
+          
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data && response.data.error) {
+            saveError(response.data.error_description);
           } else {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
@@ -1123,6 +1202,10 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       scComponentId: "",
       schemeAmount: "",
       sanctionNumber: "",
+      spacingId: "",
+      hectareId: "",
+      vendorId: "",
+      description: ""
     });
   
     // Clear developed land details
@@ -1278,6 +1361,27 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       },
     }));
   };
+
+  const handleCheckbox = (e) => {
+    const { value, checked } = e.target;
+  
+    if (checked) {
+      // Add the selected option to the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: [...prevData.equordev, value],
+      }));
+    } else {
+      // Remove the unchecked option from the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: prevData.equordev.filter((item) => item !== value),
+      }));
+    }
+  };
+  
+  
+
 
   const LandDetailsForDevColumns = [
     {
@@ -2104,6 +2208,75 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           </Form.Group>
                         </Col>
 
+                              {/* Conditionally Render Spacing Field */}
+                    {/* {schemeDetails.spacing && ( */}
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="spacing">
+                            Spacing <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="spacingId"
+                              value={data.spacingId}
+                              onChange={handleInputs}
+                              required
+                              isInvalid={
+                                data.spacingId === undefined || data.spacingId === "0"
+                              }
+                            >
+                              <option value="">Select Spacing</option>
+                              {spacingListData && spacingListData.length > 0
+                                ? spacingListData.map((list) => (
+                                    <option key={list.spacingId} value={list.spacingId}>
+                                      {list.spacingName}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Spacing is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    {/* )} */}
+
+                    {/* Conditionally Render Hectare Field */}
+                    {/* {schemeDetails.hectare && ( */}
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="hectare">
+                            Hectare <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="hectareId"
+                              value={data.hectareId}
+                              onChange={handleInputs}
+                              required
+                              isInvalid={
+                                data.hectareId === undefined || data.hectareId === "0"
+                              }
+                            >
+                              <option value="">Select Hectare</option>
+                              {hectareListData && hectareListData.length > 0
+                                ? hectareListData.map((list) => (
+                                    <option key={list.hectareId} value={list.hectareId}>
+                                      {list.hectareName}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Hectare is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    {/* )} */}
+
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
@@ -2436,51 +2609,74 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 </Card>
               </Block>
 
-              {/* <Block className="mt-3">
-                <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
-                    Vendors List
-                  </Card.Header>
-                  <Card.Body>
-                    <Row className="g-gs">
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label>
-                            Vendor Name<span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="scVendorId"
-                              value={data.scVendorId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // multiple
-                              required
-                              isInvalid={
-                                data.scVendorId === undefined ||
-                                data.scVendorId === "0"
-                              }
-                            >
-                              <option value="">Select Vendor Name</option>
-                              {scVendorListData.map((list) => (
-                                <option
-                                  key={list.scVendorId}
-                                  value={list.scVendorId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                              Vendor Name is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Block> */}
+              {/* {data.equordev.includes("equipment") && ( */}
+                {/* <Block className="mt-3">
+                  <Card>
+                    <Card.Header style={{ fontWeight: "bold" }}>
+                      Equipment Purchase
+                    </Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Vendor Name
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="vendorId"
+                                value={equipment.vendorId}
+                                onChange={handleEquipmentInputs}
+                                required
+                                isInvalid={
+                                  equipment.vendorId === undefined ||
+                                  equipment.vendorId === "0"
+                                }
+                              >
+                                <option value="">Select Vendor Name</option>
+                                {scVendorListData.map((list) => (
+                                  <option
+                                    key={list.scVendorId}
+                                    value={list.scVendorId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Vendor Name is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="description">
+                              Description
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={equipment.description}
+                                onChange={handleEquipmentInputs}
+                                placeholder="Enter Description"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Description is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block> */}
+              {/* )} */}
               {data.with === "withLand" && landDetailsList.length > 0 ? (
                 <>
                   <Block className="mt-3">
