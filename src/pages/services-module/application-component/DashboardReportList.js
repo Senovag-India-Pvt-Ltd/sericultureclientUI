@@ -42,8 +42,19 @@ function DashboardReportList() {
     stepId: "",
   });
 
+  const [schemeDataListIds, setSchemeDataListIds] = useState([]);
+
+  console.log("schemeDataListIds", schemeDataListIds);
+
   const handleDateChange = (date, type) => {
-    setPushToDbtData((prev) => ({ ...prev, [type]: date }));
+    const formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0");
+    console.log("formattedDate", formattedDate);
+    setPushToDbtData((prev) => ({ ...prev, [type]: formattedDate }));
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -53,6 +64,7 @@ function DashboardReportList() {
     setShowModal(true);
     getActionFarmerList(fid); // Call getList with userId and stepId
   };
+
   const handleCloseModal = () => setShowModal(false);
 
   const [showModal1, setShowModal1] = useState(false);
@@ -67,13 +79,72 @@ function DashboardReportList() {
 
   const [showModal3, setShowModal3] = useState(false);
 
-  const handleShowModal3 = () => setShowModal3(true);
+  // const handleShowModal3 = () => setShowModal3(true);
+  const handleShowModal3 = (index) => {
+    setDbtPushedList((prev) => prev.filter((_, i) => i !== index));
+    setShowModal3(true);
+  };
+
   const handleCloseModal3 = () => setShowModal3(false);
 
   const [showModal4, setShowModal4] = useState(false);
 
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
+
+  const schemeDetailsListColumn = [
+    {
+      name: "Select",
+      selector: "select",
+      cell: (row, i) => (
+        <input
+          type="checkbox"
+          name="selectedLand"
+          value={i}
+          checked={schemeDataListIds.includes(i)}
+          onChange={() => handleCheckboxChange(i)}
+        />
+      ),
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      button: true,
+    },
+    {
+      name: "Scheme Quota Name",
+      selector: (row) => row.schemeQuotaName,
+      cell: (row) => <span>{row.schemeQuotaName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Name",
+      selector: (row) => row.schemeComponentName,
+      cell: (row) => <span>{row.schemeComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Allocated Amount",
+      selector: (row) => row.allocatedAmount,
+      cell: (row) => <span>{row.allocatedAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Share Percentage",
+      selector: (row) => row.shareInPercentage,
+      cell: (row) => <span>{row.shareInPercentage}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Subsidy Amount",
+      selector: (row) => row.subsidyAmount,
+      cell: (row) => <span>{row.subsidyAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
 
   // const [actionListData, setActionListData] = useState({
   //   userMasterId: "",
@@ -292,6 +363,12 @@ function DashboardReportList() {
         const data = response.data.content; // Store the response data in a variable
         setActionFarmerData(data);
 
+        if (data.financialDelegation) {
+          // TODO: call checkApprovalPower api if it returns true then show modal window
+          // else show alert message that "You don't have permission to approve this application transfer to higher authority"
+          // later need to click on reassign button to reassign the application to higher authority
+        }
+
         // Extract and set the applicationDocumentId
         const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
         setApplicationFormId(applicationDocumentId); // Set applicationFormId here
@@ -436,12 +513,13 @@ function DashboardReportList() {
   const [allApplicationIds, setAllApplicationIds] = useState([]);
 
   const handleCheckboxChange = (_id) => {
-    if (applicationIds.includes(_id)) {
-      const dataList = [...applicationIds];
+    if (schemeDataListIds.includes(_id)) {
+      const dataList = [...schemeDataListIds];
       const newDataList = dataList.filter((data) => data !== _id);
-      setApplicationIds(newDataList);
+      console.log("newDataList", newDataList);
+      setSchemeDataListIds(newDataList);
     } else {
-      setApplicationIds((prev) => [...prev, _id]);
+      setSchemeDataListIds((prev) => [...prev, _id]);
     }
   };
 
@@ -609,7 +687,7 @@ function DashboardReportList() {
     schemeAmount: "",
   });
 
-  const [dbtPushedList,setDbtPushedList] = useState([]);
+  const [dbtPushedList, setDbtPushedList] = useState([]);
 
   const addToList = (e) => {
     e.preventDefault();
@@ -622,10 +700,9 @@ function DashboardReportList() {
       schemeAmount: "",
     });
     handleCloseModal3();
-  }
+  };
 
-  console.log("dbtPushedList",dbtPushedList);
-
+  // console.log("dbtPushedList",dbtPushedList);
 
   const postActionData = (event) => {
     const form = event.currentTarget;
@@ -1632,6 +1709,17 @@ function DashboardReportList() {
                         <Accordion.Body>
                           <Block className="mt-3">
                             <Row>
+                              <DataTable
+                                tableClassName="data-table-head-light table-responsive"
+                                columns={schemeDetailsListColumn}
+                                data={pushToDBTListData}
+                                highlightOnHover
+                                progressPending={loading}
+                                theme="solarized"
+                                customStyles={customStyles}
+                              />
+                            </Row>
+                            <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -2307,7 +2395,11 @@ function DashboardReportList() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
-                        selected={pushToDbtData.dateOfPayment}
+                        selected={
+                          pushToDbtData.dateOfPayment
+                            ? new Date(pushToDbtData.dateOfPayment)
+                            : null
+                        }
                         onChange={(date) =>
                           handleDateChange(date, "dateOfPayment")
                         }
