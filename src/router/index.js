@@ -855,6 +855,13 @@ import InspectionTypeView from "../pages/masters/inspection-type/InspectionTypeV
 import InspectionTypeEdit from "../pages/masters/inspection-type/InspectionTypeEdit";
 import DashboardReportList from "../pages/services-module/application-component/DashboardReportList";
 import WithoutFruitsIdStakeHolderEdit from "../pages/stake-holder/WithoutFruitsIdStakeHolderEdit";
+import Spacing from "../pages/masters/spacing/Spacing";
+import SpacingEdit from "../pages/masters/spacing/SpacingEdit";
+import SpacingList from "../pages/masters/spacing/SpacingList";
+import Hectare from "../pages/masters/hectare/Hectares";
+import HectareEdit from "../pages/masters/hectare/HectareEdit";
+import HectareList from "../pages/masters/hectare/HectareList";
+import Hectares from "../pages/masters/hectare/Hectares";
 // Admin and Reports
 
 function Router() {
@@ -1861,10 +1868,26 @@ function Router() {
               element={<FinancialYearEdit />}
             />
             <Route path="financial-year-list" element={<FinancialYearList />} />
+
             <Route
               path="financial-year-view/:id"
               element={<FinancialYearView />}
             />
+
+            <Route path="spacing" element={<Spacing />} />
+            <Route
+              path="spacing-edit/:id"
+              element={<SpacingEdit />}P
+            />
+            <Route path="spacing-list" element={<SpacingList />} />
+
+            <Route path="hectare" element={<Hectares />} />
+            <Route
+              path="hectare-edit/:id"
+              element={< HectareEdit/>}
+            />
+            <Route path="hectare-list" element={<HectareList />} />
+
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
             <Route path="caste-list" element={<CasteList />} />

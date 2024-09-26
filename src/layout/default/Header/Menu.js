@@ -362,6 +362,8 @@ function Menu() {
     Admin_Master_Service_Approving_Authority: false,
     Admin_Master_Service_Category: false,
     Admin_Master_Service_Approval_Stage: false,
+    Admin_Master_Service_Spacing: false,
+    Admin_Master_Service_Hectare: false,
     Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
@@ -2524,6 +2526,22 @@ function Menu() {
                             <MenuItemLink
                               text="Approval Stage"
                               to="/seriui/sc-approval-stage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Spacing ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Spacing"
+                              to="/seriui/spacing"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Hectare ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Hectare"
+                              to="/seriui/hectare"
                             />
                           </MenuItem>
                         ) : null}

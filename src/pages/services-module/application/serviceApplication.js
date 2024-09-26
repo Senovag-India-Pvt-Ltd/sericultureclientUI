@@ -27,7 +27,7 @@ function ServiceApplication() {
   const [data, setData] = useState({
     with: "withLand",
     subinc: "subsidy",
-    equordev: "land",
+    equordev: ["land"],
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
@@ -43,6 +43,8 @@ function ServiceApplication() {
     sanctionNumber: "",
     approvalStageId: "",
     userId: "",
+    spacingId: "",
+    hectareId: "",
     periodFrom: new Date("2023-04-01"),
     periodTo: new Date("2024-03-31"),
   });
@@ -70,6 +72,69 @@ function ServiceApplication() {
   useEffect(() => {
     getSchemeQuotaList();
   }, []);
+
+  // to get scheme-Quota-details
+  const [spacingListData, setSpacingDetailsListData] = useState(
+    []
+  );
+
+  const getSpacingList = () => {
+    api
+      .get(baseURLMasterData + `spacingMaster/get-all`)
+      .then((response) => {
+        setSpacingDetailsListData(response.data.content.spacingMaster);
+      })
+      .catch((err) => {
+        setSpacingDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSpacingList();
+  }, []);
+
+  // to get scheme-Quota-details
+  const [hectareListData, setHectareListData] = useState(
+    []
+  );
+
+  const getHectareList = () => {
+    api
+      .get(baseURLMasterData + `hectareMaster/get-all`)
+      .then((response) => {
+        setHectareListData(response.data.content.hectareMaster);
+      })
+      .catch((err) => {
+        setHectareListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHectareList();
+  }, []);
+
+  const [schemeDetails, setSchemeDetails] = useState({});
+const [schemeId, setSchemeId] = useState("");
+
+// Get data from API
+const getAreaDetailsList = () => {
+  setLoading(true);
+  api
+    .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+    .then((response) => {
+      setSchemeDetails(response.data.content); // Store response data in state
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+    });
+};
+
+useEffect(() => {
+  if (schemeId) {
+    getAreaDetailsList();
+  }
+}, [schemeId]);
 
   const [developedLand, setDevelopedLand] = useState({
     landDeveloped: "",
@@ -745,6 +810,9 @@ function ServiceApplication() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if (name === "scSchemeDetailsId") {
+      setSchemeId(value);  // Trigger fetching scheme details
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -763,20 +831,92 @@ function ServiceApplication() {
     setEquipment({ ...equipment, [name]: value });
   };
 
+  // const postData = (event) => {
+  //   const transformedData = Object.keys(developedArea).map((id) => ({
+  //     // landDeveloped: developedLand.landDeveloped,
+  //     // landDetailId: parseInt(id),
+  //     ...developedArea[id],
+  //   }));
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     const sendPost = {
+  //       approvalStageId: data.approvalStageId,
+  //       userMasterId: data.userId,
+  //       farmerId: data.farmerId,
+  //       fruitsId: data.fruitsId,
+  //       payToVendor: equipment.payToVendor,
+  //       headOfAccountId: data.scHeadAccountId,
+  //       schemeId: data.scSchemeDetailsId,
+  //       subSchemeId: data.scSubSchemeDetailsId,
+  //       categoryId: data.scCategoryId,
+  //       landDetailId: landDetailsIds[0],
+  //       talukId: landData.talukId,
+  //       newFarmer: true,
+  //       componentId: data.scComponentId,
+  //       // expectedAmount: data.expectedAmount,
+  //       financialYearMasterId: data.financialYearMasterId,
+  //       devAcre: 0,
+  //       devGunta: 0,
+  //       devFGunta: 0,
+  //       schemeAmount: data.schemeAmount,
+  //       sanctionNumber: data.sanctionNumber,
+  //       initialAmount: data.expectedAmount,
+  //       periodFrom: data.periodFrom,
+  //       periodTo: data.periodTo,
+  //       vendorId: equipment.vendorId,
+  //       spacingId: data.spacingId,
+  //       hectareId: data.hectareId,
+  //       description: equipment.description,
+  //       loggedInUserId: localStorage.getItem("userMasterId"),
+  //     };
+
+  //     if (data.equordev === "land") {
+  //       // sendPost.applicationFormLandDetailRequestList = [
+  //       //   {
+  //       //     // unitTypeMasterId: developedLand.unitType,
+  //       //     landDeveloped: developedLand.landDeveloped,
+  //       //   },
+  //       // ];
+  //       sendPost.dbtFarmerLandDetailsRequestList = transformedData;
+  //     } else if (data.equordev === "equipment") {
+  //       sendPost.applicationFormLineItemRequestList = [
+  //         {
+  //           // unitTypeMasterId: equipment.unitType,
+  //           lineItemComment: equipment.description,
+  //           cost: equipment.price,
+  //           vendorId: equipment.vendorId,
+  //         },
+  //       ];
+  //     }
+
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     }
+  //     uploadFileConfirm(sendPost);
+  //   }
+  // };
+
   const postData = (event) => {
-    const transformedData = Object.keys(developedArea).map((id) => ({
-      // landDeveloped: developedLand.landDeveloped,
-      // landDetailId: parseInt(id),
-      ...developedArea[id],
-    }));
+    event.preventDefault(); // Prevent the default form submission
     const form = event.currentTarget;
+
+    // Validate the form
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      const sendPost = {
+        event.stopPropagation();
+        setValidated(true);
+        return; // Exit if the form is not valid
+    }
+
+    const transformedData = Object.keys(developedArea).map((id) => ({
+        ...developedArea[id],
+    }));
+
+    const sendPost = {
         approvalStageId: data.approvalStageId,
         userMasterId: data.userId,
         farmerId: data.farmerId,
@@ -790,7 +930,6 @@ function ServiceApplication() {
         talukId: landData.talukId,
         newFarmer: true,
         componentId: data.scComponentId,
-        // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
         devGunta: 0,
@@ -801,35 +940,37 @@ function ServiceApplication() {
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
         vendorId: equipment.vendorId,
+        spacingId: data.spacingId,
+        hectareId: data.hectareId,
         description: equipment.description,
         loggedInUserId: localStorage.getItem("userMasterId"),
-      };
+    };
 
-      if (data.equordev === "land") {
-        // sendPost.applicationFormLandDetailRequestList = [
-        //   {
-        //     // unitTypeMasterId: developedLand.unitType,
-        //     landDeveloped: developedLand.landDeveloped,
-        //   },
-        // ];
-        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
-      } else if (data.equordev === "equipment") {
-        sendPost.applicationFormLineItemRequestList = [
-          {
-            // unitTypeMasterId: equipment.unitType,
-            lineItemComment: equipment.description,
-            cost: equipment.price,
-            vendorId: equipment.vendorId,
-          },
-        ];
-      }
-
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-      uploadFileConfirm(sendPost);
+    // Check what checkboxes are selected and build the request accordingly
+    if (data.equordev.includes("land")) {
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
     }
-  };
+    if (data.equordev.includes("equipment")) {
+        sendPost.applicationFormLineItemRequestList = [
+            {
+                lineItemComment: equipment.description,
+                cost: equipment.price,
+                vendorId: equipment.vendorId,
+            },
+        ];
+    }
+    // if (data.equordev.includes("constructedArea")) {
+    //     // Handle constructedArea data if needed
+    // }
+
+    // Check the fruitsId length constraint
+    if (data.fruitsId.length !== 16) {
+        return;
+    }
+
+    uploadFileConfirm(sendPost);
+};
+
 
   const [amountValue, setAmountValue] = useState({
     maxAmount: "",
@@ -976,6 +1117,8 @@ function ServiceApplication() {
       farmerId: "",
       approvalStageId: "",
       userId: "",
+      spacingId: "",
+      hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
       periodFrom: new Date("2023-04-01"),
@@ -1063,8 +1206,10 @@ function ServiceApplication() {
         api
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
+            if (response.data.errorCode === -1) {
+              saveError(response.data.errorMessages[0]);
+            } else if (response.data && response.data.error) {
+              saveError(response.data.error_description);
             } else {
               // saveSuccess(response.data.receiptNo);
               setApplicationId(response.data.content.applicationDocumentId);
@@ -1098,7 +1243,9 @@ function ServiceApplication() {
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
             if (response.data.errorCode === -1) {
-              saveError(response.data.message);
+              saveError(response.data.errorMessages[0]);
+            } else if (response.data && response.data.error) {
+              saveError(response.data.error_description);
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
@@ -1725,6 +1872,43 @@ function ServiceApplication() {
     setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
     //  setPhotoFile(file);
   };
+
+  // const handleCheckbox = (e) => {
+  //   const { value, checked } = e.target;
+  
+  //   if (checked) {
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       equordev: [...prevData.equordev, value],
+  //     }));
+  //   } else {
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       equordev: prevData.equordev.filter((item) => item !== value),
+  //     }));
+  //   }
+  // };
+
+  const handleCheckbox = (e) => {
+    const { value, checked } = e.target;
+  
+    if (checked) {
+      // Add the selected option to the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: [...prevData.equordev, value],
+      }));
+    } else {
+      // Remove the unchecked option from the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: prevData.equordev.filter((item) => item !== value),
+      }));
+    }
+  };
+  
+  
+
   //  console.log("nodappa",document);
   //  console.log("nodappa2",uploadDocuments);
 
@@ -1988,6 +2172,76 @@ function ServiceApplication() {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        {/* Conditionally Render Spacing Field */}
+                    {schemeDetails.spacing && (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="spacing">
+                            Spacing <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="spacingId"
+                              value={data.spacingId}
+                              onChange={handleInputs}
+                              required
+                              isInvalid={
+                                data.spacingId === undefined || data.spacingId === "0"
+                              }
+                            >
+                              <option value="">Select Spacing</option>
+                              {spacingListData && spacingListData.length > 0
+                                ? spacingListData.map((list) => (
+                                    <option key={list.spacingId} value={list.spacingId}>
+                                      {list.spacingName}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Spacing is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
+
+                    {/* Conditionally Render Hectare Field */}
+                    {schemeDetails.hectare && (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="hectare">
+                            Hectare <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="hectareId"
+                              value={data.hectareId}
+                              onChange={handleInputs}
+                              required
+                              isInvalid={
+                                data.hectareId === undefined || data.hectareId === "0"
+                              }
+                            >
+                              <option value="">Select Hectare</option>
+                              {hectareListData && hectareListData.length > 0
+                                ? hectareListData.map((list) => (
+                                    <option key={list.hectareId} value={list.hectareId}>
+                                      {list.hectareName}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Hectare is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
+
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
@@ -2771,7 +3025,7 @@ function ServiceApplication() {
                 ""
               )} */}
 
-              <Card className="mt-1">
+              {/* <Card className="mt-1">
                 <Row className="ms-1 mt-2">
                   <Col lg="2">
                     <Form.Group
@@ -2801,7 +3055,7 @@ function ServiceApplication() {
                     >
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
+                          type="checkbox"
                           name="equordev"
                           value="equipment"
                           checked={data.equordev === "equipment"}
@@ -2821,7 +3075,7 @@ function ServiceApplication() {
                     >
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
+                          type="checkbox"
                           name="equordev"
                           value="land"
                           checked={data.equordev === "land"}
@@ -2834,7 +3088,60 @@ function ServiceApplication() {
                     </Form.Group>
                   </Col>
                 </Row>
-              </Card>
+              </Card> */}
+              <Card className="mt-1">
+  <Row className="ms-1 mt-2">
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="constructedArea">
+        <Col sm={1}>
+          <Form.Check
+            type="checkbox"
+            name="equordev"
+            value="constructedArea"
+            checked={data.equordev.includes("constructedArea")}
+            onChange={handleCheckbox}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2">
+          Constructed Area
+        </Form.Label>
+      </Form.Group>
+    </Col>
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="equipment">
+        <Col sm={1}>
+          <Form.Check
+            type="checkbox"
+            name="equordev"
+            value="equipment"
+            checked={data.equordev.includes("equipment")}
+            onChange={handleCheckbox}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2">
+          Equipment Purchase
+        </Form.Label>
+      </Form.Group>
+    </Col>
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="land">
+        <Col sm={1}>
+          <Form.Check
+            type="checkbox"
+            name="equordev"
+            value="land"
+            checked={data.equordev.includes("land")}
+            onChange={handleCheckbox}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2">
+          Land Wise
+        </Form.Label>
+      </Form.Group>
+    </Col>
+  </Row>
+</Card>
+
 
               {/* Common Sanction Amount Section */}
               <Block className="mt-3">
@@ -2894,7 +3201,7 @@ function ServiceApplication() {
               </Block>
 
               {/* Conditional Section Rendering */}
-              {data.equordev === "constructedArea" && (
+              {data.equordev.includes("constructedArea")&& (
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
@@ -2930,7 +3237,7 @@ function ServiceApplication() {
                 </Block>
               )}
 
-              {data.equordev === "equipment" && (
+              {data.equordev.includes("equipment") && (
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
@@ -2999,7 +3306,7 @@ function ServiceApplication() {
                 </Block>
               )}
 
-              {data.equordev === "land" &&
+              {data.equordev.includes("land")&&
                 data.with === "withLand" &&
                 landDetailsList.length > 0 && (
                   <Block className="mt-3">
