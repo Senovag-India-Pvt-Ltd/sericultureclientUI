@@ -47,6 +47,9 @@ function StakeHolderList() {
     if (data.searchBy === "2") {
       joinColumnType = 2;
     }
+    if (data.searchBy === "3") {
+      joinColumnType = 3;
+    }
     // console.log(joinColumn);
     const parameters = {
       params: {
@@ -259,6 +262,13 @@ function StakeHolderList() {
       hide: "md",
     },
     {
+      name: "Farmer Bank Account Number",
+      selector: (row) => row.farmerBankAccountNumber,
+      cell: (row) => <span>{row.farmerBankAccountNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "DOB",
       selector: (row) => row.dob,
       cell: (row) => <span>{formatDate(row.dob)}</span>,
@@ -358,6 +368,8 @@ function StakeHolderList() {
                       <option value="0">Farmer Number</option>
                       <option value="1">Fruits ID</option>
                       <option value="2">Mobile Number</option>
+                      <option value="3">Farmer Bank Account Number</option>
+
                     </Form.Select>
                   </div>
                 </Col>
