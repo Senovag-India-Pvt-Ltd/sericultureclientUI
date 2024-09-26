@@ -56,6 +56,8 @@ function ScSchemeDetailsEdit() {
                 schemeStartDate:null,
                 schemeEndDate:null,
                 dbtCode: "",
+                hectare: "",
+                spacing: "",
             });
             setValidated(false);
           }
@@ -83,6 +85,8 @@ function ScSchemeDetailsEdit() {
         schemeStartDate:null,
         schemeEndDate:null,
         dbtCode: "",
+        hectare: "",
+        spacing: "",
     });
   };
 
@@ -108,6 +112,14 @@ function ScSchemeDetailsEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  const handleCheckBox = (e) => {
+    const { name, checked } = e.target; // Get the name and checked state from the event
+    setData((prev) => ({
+      ...prev,
+      [name]: checked, // Dynamically update the correct field based on the checkbox name
+    }));
+  };
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -181,6 +193,7 @@ function ScSchemeDetailsEdit() {
                     Loading...
                   </h1>
                 ) : (
+                  <>
                   <Row className="g-gs">
                     <Col lg="6">
                     <Form.Group className="form-group">
@@ -302,11 +315,49 @@ function ScSchemeDetailsEdit() {
                             </div>
                       </Form.Group>
                     </Col>
+                    </Row>
 
-                  </Row>
-                )}
+                    <Row>
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="hectare"
+                          value={data.hectare}
+                          id="weighmentTripletGeneration"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Hectare
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="spacing"
+                          value={data.spacing}
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Spacing
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                </>
+                )}    
               </Card.Body>
+              
             </Card>
+
+            
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
