@@ -309,7 +309,7 @@ function ScSchemeDetails() {
                         <Form.Check
                           type="checkbox"
                           name="hectare"
-                          value={data.hectare}
+                          checked={data.hectare}
                           id="weighmentTripletGeneration"
                           onChange={handleCheckBox}
                         />
@@ -326,7 +326,7 @@ function ScSchemeDetails() {
                         <Form.Check
                           type="checkbox"
                           name="spacing"
-                          value={data.spacing}
+                          checked={data.spacing}
                           onChange={handleCheckBox}
                         />
                       </Col>

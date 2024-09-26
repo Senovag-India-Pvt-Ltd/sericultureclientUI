@@ -18,6 +18,11 @@ function ScApprovalStage() {
     stageNameInKannada: "",
     workFlowType:"",
     action:"",
+    workOrder:"",
+    sanctionOrder:"",
+    inspection:"",
+    pushToDbt:"",
+    financialDelegation:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -50,6 +55,11 @@ function ScApprovalStage() {
               stageNameInKannada: "",
               workFlowType:"",
               action:"",
+              workOrder:"",
+              sanctionOrder:"",
+              inspection:"",
+              pushToDbt:"",
+              financialDelegation:"",
             });
             setValidated(false);
           }
@@ -69,16 +79,29 @@ function ScApprovalStage() {
       stageNameInKannada: "",
       workFlowType:"",
       action:"",
+      workOrder:"",
+      sanctionOrder:"",
+      inspection:"",
+      pushToDbt:"",
+      financialDelegation:"",
     });
   };
 
-  const handleCheckBox = (e) =>{
-    const {name,value,checked} = e.target;
-    setData((prev)=>({
+  // const handleCheckBox = (e) =>{
+  //   const {name,value,checked} = e.target;
+  //   setData((prev)=>({
+  //     ...prev,
+  //     [name]:value
+  //   }))
+  // }
+
+  const handleCheckBox = (e) => {
+    const { name, checked } = e.target; // Get the name and checked state from the event
+    setData((prev) => ({
       ...prev,
-      [name]:value
-    }))
-  }
+      [name]: checked, // Dynamically update the correct field based on the checkbox name
+    }));
+  };
 
   console.log("see this",data);
 
@@ -213,9 +236,9 @@ function ScApprovalStage() {
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
-                          name="workFlowType"
-                          value="INSPECTION"
+                          type="checkbox"
+                          name="inspection"
+                          checked={data.inspection}
                           id="weighmentTripletGeneration"
                           // checked={data.weighmentTripletGeneration}
                           onChange={handleCheckBox}
@@ -232,9 +255,9 @@ function ScApprovalStage() {
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
-                          name="workFlowType"
-                          value="WORKORDER"
+                          type="checkbox"
+                          name="workOrder"
+                          checked={data.workOrder}
                           id="weighmentTripletGeneration"
                           // checked={data.weighmentTripletGeneration}
                           onChange={handleCheckBox}
@@ -251,9 +274,9 @@ function ScApprovalStage() {
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
-                          name="workFlowType"
-                          value="SANCTIONORDER"
+                          type="checkbox"
+                          name="sanctionOrder"
+                          checked={data.sanctionOrder}
                           id="weighmentTripletGeneration"
                           // checked={data.weighmentTripletGeneration}
                           onChange={handleCheckBox}
@@ -270,9 +293,9 @@ function ScApprovalStage() {
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
-                          type="radio"
-                          name="workFlowType"
-                          value="PUSHTODBT"
+                          type="checkbox"
+                          name="pushToDbt"
+                          checked={data.pushToDbt}
                           id="weighmentTripletGeneration"
                           // checked={data.weighmentTripletGeneration}
                           onChange={handleCheckBox}
@@ -282,6 +305,26 @@ function ScApprovalStage() {
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
                         Push to DBT
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="financialDelegation"
+                          checked={data.financialDelegation}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Financial Delegation
                       </Form.Label>
                     </Form.Group>
                   </Col>
