@@ -1151,7 +1151,7 @@ function DashboardReportList() {
       );
       Swal.fire({
         icon: "success",
-        title: "File uploaded successfully",
+        title: "File Uploaded successfully",
       });
 
       setUploadStatus((prevStatus) => ({
@@ -1693,7 +1693,7 @@ function DashboardReportList() {
                     )}
                   {actionFarmerData.length > 0 &&
                     actionFarmerData[0].sanctionOrder && (
-                      <Accordion.Item eventKey="transaction">
+                      <Accordion.Item eventKey="sanction">
                         <Accordion.Header
                           style={{
                             backgroundColor: "#0F6CBE",
@@ -1707,7 +1707,7 @@ function DashboardReportList() {
                           Sanction Order Details
                         </Accordion.Header>
                         <Accordion.Body>
-                          <Block className="mt-3">
+                          <Block className="mt-n4">
                             <Row>
                               <DataTable
                                 tableClassName="data-table-head-light table-responsive"
@@ -1880,7 +1880,7 @@ function DashboardReportList() {
                           Push To DBT
                         </Accordion.Header>
                         <Accordion.Body>
-                          <Block className="mt-3">
+                          <Block className="mt-n5">
                             <Card
                               className="mt-4"
                               style={{
@@ -2789,7 +2789,7 @@ function DashboardReportList() {
 
               {viewDetailsData?.workflowDetails?.length > 0 ? (
                 viewDetailsData.workflowDetails.map((workFlow, index) => (
-                  <Accordion.Item eventKey={index + 1} key={index}>
+                  <Accordion.Item eventKey={index + 2} key={index}>
                     <Accordion.Header
                       style={{
                         backgroundColor: "#0F6CBE",
