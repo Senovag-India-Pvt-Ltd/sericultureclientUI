@@ -1616,7 +1616,7 @@ function DashboardReportList() {
                     )}
                   {actionFarmerData.length > 0 &&
                     actionFarmerData[0].sanctionOrder && (
-                      <Accordion.Item eventKey="transaction">
+                      <Accordion.Item eventKey="sanction">
                         <Accordion.Header
                           style={{
                             backgroundColor: "#0F6CBE",
