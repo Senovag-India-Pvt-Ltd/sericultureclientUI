@@ -92,6 +92,45 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
+  const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
+    useState([]);
+  // const receiveData = (data,i) => {
+  //   console.log("i",i);
+
+  //   setSendApplicationFormServiceData(prev=>[...prev,data]);
+  //   handleShowModal3(i);
+  //  };
+
+  //  const receiveData = (data, i) => {
+  //   console.log("i", i);
+
+  //   setSendApplicationFormServiceData((prev) => {
+  //     const updatedData = [...prev,...actionFarmerData];
+  //     updatedData[i] = {...data,actionFarmerData};
+  //     return updatedData;
+  //   });
+
+  //   handleShowModal3(i);
+  // };
+
+  const receiveData = (data, i) => {
+    console.log("i", i);
+    setPushToDbtData((prev) => ({ ...prev, row: i }));
+    setSendApplicationFormServiceData((prev) => {
+      const updatedData = [...prev];
+      if (i < updatedData.length) {
+        updatedData[i] = { ...data, ...actionFarmerData[0] };
+      } else {
+        updatedData.push({ ...data, ...actionFarmerData[0] });
+      }
+      return updatedData;
+    });
+
+    handleShowModal3(i);
+  };
+
+  console.log("sendApplicationFormServiceData", sendApplicationFormServiceData);
+
   const schemeDetailsListColumn = [
     {
       name: "Select",
@@ -102,7 +141,7 @@ function DashboardReportList() {
           name="selectedLand"
           value={i}
           checked={schemeDataListIds.includes(i)}
-          onChange={() => handleCheckboxChange(i)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -144,6 +183,24 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Action",
+      cell: (row, i) => (
+        <>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => receiveData(row, i)}
+            className="ms-1"
+          >
+            Add
+          </Button>
+        </>
+      ),
+      sortable: true,
+      hide: "md",
+      grow: 2,
+    },
   ];
 
   // const [actionListData, setActionListData] = useState({
@@ -182,6 +239,8 @@ function DashboardReportList() {
   const [applicationFormId, setApplicationFormId] = useState(null);
 
   const [actionFarmerData, setActionFarmerData] = useState({});
+
+  console.log("actionFarmerData", actionFarmerData);
 
   // const getActionFarmerList = (fid) => {
   //   setLoading(true);
@@ -512,14 +571,22 @@ function DashboardReportList() {
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
   const [allApplicationIds, setAllApplicationIds] = useState([]);
 
-  const handleCheckboxChange = (_id) => {
+  const handleCheckboxChange = (_id, data) => {
+    console.log("handleCheckboxChange", data);
     if (schemeDataListIds.includes(_id)) {
       const dataList = [...schemeDataListIds];
       const newDataList = dataList.filter((data) => data !== _id);
+      const newSendApplicationFormServiceData =
+        sendApplicationFormServiceData.filter((_, index) => index !== _id);
       console.log("newDataList", newDataList);
       setSchemeDataListIds(newDataList);
+      setSendApplicationFormServiceData(newSendApplicationFormServiceData);
     } else {
       setSchemeDataListIds((prev) => [...prev, _id]);
+      setSendApplicationFormServiceData((prev) => [
+        ...prev,
+        ...actionFarmerData,
+      ]);
     }
   };
 
@@ -680,6 +747,7 @@ function DashboardReportList() {
   });
 
   const [pushToDbtData, setPushToDbtData] = useState({
+    row: "",
     paymentTo: "",
     paymentMethod: "",
     dateOfPayment: "",
@@ -692,7 +760,16 @@ function DashboardReportList() {
   const addToList = (e) => {
     e.preventDefault();
     setDbtPushedList((prev) => [...prev, pushToDbtData]);
+    setSendApplicationFormServiceData((prev) => {
+      const updatedData = [...prev];
+      updatedData[pushToDbtData.row] = {
+        ...updatedData[pushToDbtData.row],
+        ...pushToDbtData,
+      };
+      return updatedData;
+    });
     setPushToDbtData({
+      row: "",
       paymentTo: "",
       paymentMethod: "",
       dateOfPayment: "",
