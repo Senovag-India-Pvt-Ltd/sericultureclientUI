@@ -2489,7 +2489,7 @@ function StakeHolderEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
                           {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
@@ -2501,9 +2501,54 @@ function StakeHolderEdit() {
                             onChange={handleImageChange}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
+                              <Form.Group className="form-group mt-3">
+  <Form.Label htmlFor="photoPath">
+    Farmer Photo (PDF/jpg/png) (Max: 2mb)
+  </Form.Label>
+  <div className="form-control-wrap">
+    <Form.Control
+      type="file"
+      id="photoPath"
+      name="photoPath"
+      onChange={handleImageChange}
+    />
+  </div>
+</Form.Group>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+<Form.Group className="form-group mt-3 d-flex justify-content-center">
+  {image ? (
+    <>
+      {image.type.startsWith('image/') || 
+        image.name.endsWith('.jpeg') || 
+        image.name.endsWith('.jpg') || 
+        image.name.endsWith('.png') ? (
+        <img
+          style={{ height: "300px", width: "auto", objectFit: "cover" }}
+          src={URL.createObjectURL(image)}
+          alt="Uploaded Image"
+        />
+      ) : image.type === 'application/pdf' ? (
+        <embed
+          src={URL.createObjectURL(image)}
+          type="application/pdf"
+          width="300px"
+          height="300px"
+        />
+      ) : image.name.endsWith('.docx') ? (
+        <p>Preview not available for .docx files. File name: {image.name}</p>
+      ) : (
+        <p>Preview not available for this file type: {image.name}</p>
+      )}
+    </>
+  ) : (
+    <p>No file selected or file was canceled.</p>
+  )}
+</Form.Group>
+
+
+
+                      {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {image ? (
                           <img
                             style={{ height: "100px", width: "100px" }}
@@ -2518,7 +2563,7 @@ function StakeHolderEdit() {
                             />
                           )
                         )}
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
                   </Row>
                 </Card.Body>
@@ -2957,7 +3002,7 @@ function StakeHolderEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
                           Upload Bank Passbok
                         </Form.Label>
@@ -2970,9 +3015,52 @@ function StakeHolderEdit() {
                             onChange={handleDocumentChange}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
+                      <Form.Group className="form-group mt-3">
+  <Form.Label htmlFor="accountImagePath">
+    Upload Bank Passbook (PDF/jpg/png)
+  </Form.Label>
+  <div className="form-control-wrap">
+    <Form.Control
+      type="file"
+      id="accountImagePath"
+      name="accountImagePath"
+      onChange={handleDocumentChange}
+    />
+  </div>
+</Form.Group>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+{/* Preview section for uploaded file */}
+<Form.Group className="form-group mt-3 d-flex justify-content-center">
+  {document ? (
+    <>
+      {document.type.startsWith('image/') || 
+        document.name.endsWith('.jpeg') || 
+        document.name.endsWith('.jpg') || 
+        document.name.endsWith('.png') ? (
+        <img
+          style={{ height: "300px", width: "auto", objectFit: "cover" }}
+          src={URL.createObjectURL(document)}
+          alt="Uploaded Image"
+        />
+      ) : document.type === 'application/pdf' ? (
+        <embed
+          src={URL.createObjectURL(document)}
+          type="application/pdf"
+          width="300px"
+          height="300px"
+        />
+      ) : (
+        <p>Preview not available for this file type: {document.name}</p>
+      )}
+    </>
+  ) : (
+    <p>No file selected or file was canceled.</p>
+  )}
+</Form.Group>
+
+
+                      {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {document ? (
                           <img
                             style={{ height: "100px", width: "100px" }}
@@ -2987,7 +3075,7 @@ function StakeHolderEdit() {
                             />
                           )
                         )}
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
                   </Row>
                 </Card.Body>
