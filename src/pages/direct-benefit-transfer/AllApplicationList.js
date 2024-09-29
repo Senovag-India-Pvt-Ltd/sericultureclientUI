@@ -1244,6 +1244,14 @@ function AllApplicationList() {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
                 </tr>
                 <tr>
+                  <td style={styles.ctstyle}>Hectare:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.hectareName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Spacing:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.spacingName || 'N/A'}</td>
+                </tr>
+                <tr>
                   <td style={styles.ctstyle}>Period From:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.periodFrom || 'N/A'}</td>
                 </tr>
