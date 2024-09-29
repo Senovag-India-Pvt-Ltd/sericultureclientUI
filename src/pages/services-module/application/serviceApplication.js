@@ -2017,7 +2017,7 @@ useEffect(() => {
                         <tr>
                           <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Addres:</td>
+                          <td style={styles.ctstyle}> Address:</td>
                           <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
