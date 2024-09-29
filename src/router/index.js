@@ -862,6 +862,26 @@ import Hectare from "../pages/masters/hectare/Hectares";
 import HectareEdit from "../pages/masters/hectare/HectareEdit";
 import HectareList from "../pages/masters/hectare/HectareList";
 import Hectares from "../pages/masters/hectare/Hectares";
+import CropStatus from "../pages/masters/crop-status/CropStatus";
+import CropStatusView from "../pages/masters/crop-status/CropStatusView";
+import CropStatusEdit from "../pages/masters/crop-status/CropStatusEdit";
+import CropStatusList from "../pages/masters/crop-status/CropStatusList";
+import CropInspectionType from "../pages/masters/crop-inspection-type/CropInspectionType";
+import CropInspectionTypeList from "../pages/masters/crop-inspection-type/CropInspectionTypeList";
+import CropInspectionTypeView from "../pages/masters/crop-inspection-type/CropInspectionTypeView";
+import CropInspectionTypeEdit from "../pages/masters/crop-inspection-type/CropInspectionTypeEdit";
+import ReasonList from "../pages/masters/reason/ReasonList";
+import Reason from "../pages/masters/reason/Reason";
+import ReasonView from "../pages/masters/reason/ReasonView";
+import ReasonEdit from "../pages/masters/reason/ReasonEdit";
+import MountList from "../pages/masters/mount/MountList";
+import MountView from "../pages/masters/mount/MountView";
+import MountEdit from "../pages/masters/mount/MountEdit";
+import Mount from "../pages/masters/mount/Mount";
+import DiseaseStatus from "../pages/masters/disease-status/DiseaseStatus";
+import DiseaseStatusView from "../pages/masters/disease-status/DiseaseStatusView";
+import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit";
+import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
 // Admin and Reports
 
 function Router() {
@@ -2240,6 +2260,33 @@ function Router() {
               path="relationship-edit/:id"
               element={<RelationshipEdit />}
             />
+
+   <Route path="cropStatus" element={<CropStatus />} />
+            <Route path="crop-status-list" element={<CropStatusList />} />
+            <Route path="crop-status-view/:id" element={<CropStatusView/>} />
+            <Route path="crop-status-edit/:id" element={<CropStatusEdit />} />
+
+            <Route path="cropInspectionType" element={<CropInspectionType />} />
+            <Route path="crop-inspection-type-list" element={<CropInspectionTypeList />} />
+            <Route path="crop-inspection-type-view/:id" element={<CropInspectionTypeView/>} />
+            <Route path="crop-inspection-type-edit/:id" element={<CropInspectionTypeEdit />} />
+
+
+            <Route path="reason" element={<Reason/>} />
+            <Route path="reason-list" element={<ReasonList/>} />
+            <Route path="reason-view/:id" element={<ReasonView/>} />
+            <Route path="reason-edit/:id" element={<ReasonEdit />} />
+
+            <Route path="mount" element={<Mount/>} />
+            <Route path="mount-list" element={<MountList />} />
+            <Route path="mount-view/:id" element={<MountView/>} />
+            <Route path="mount-edit/:id" element={<MountEdit />} />
+
+            <Route path="disease-status" element={<DiseaseStatus/>} />
+            <Route path="disease-status-list" element={<DiseaseStatusList />} />
+            <Route path="disease-status-view/:id" element={<DiseaseStatusView/>} />
+            <Route path="disease-status-edit/:id" element={<DiseaseStatusEdit />} />
+
             <Route path="state" element={<State />} />
             <Route path="state-list" element={<StateList />} />
             <Route path="state-view/:id" element={<StateView />} />
