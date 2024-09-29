@@ -393,6 +393,12 @@ function Menu() {
 
     Admin_Master_Garden: false,
     Admin_Master_Garden_Line: false,
+    Admin_Master_Garden_Crop_Status: false,
+    Admin_Master_Garden_Crop_Inspection_Type: false,
+    Admin_Master_Garden_Reason: false,
+    Admin_Master_Garden_Mount: false,
+    Admin_Master_Garden_Disease_Status: false,
+
     Admin_Master_Garden_Grainage: false,
     Admin_Master_Garden_Disinfectant: false,
     Admin_Master_Garden_Generation_Number: false,
@@ -2759,6 +2765,46 @@ function Menu() {
                             <MenuItemLink
                               text="Line Name"
                               to="/seriui/lineName"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Crop_Status ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Crop Status"
+                              to="/seriui/cropStatus"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Crop_Inspection_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Crop Inspection Type"
+                              to="/seriui/cropInspectionType"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Reason ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reason"
+                              to="/seriui/reason"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Mount ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Mount"
+                              to="/seriui/mount"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Disease_Status ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Disease Status"
+                              to="/seriui/disease-status"
                             />
                           </MenuItem>
                         ) : null}
