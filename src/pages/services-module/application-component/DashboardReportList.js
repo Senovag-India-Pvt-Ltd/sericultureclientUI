@@ -852,7 +852,7 @@ function DashboardReportList() {
         userId: assignData.userId,
       };
       api
-        .post(baseURLDBT + `service/workOrderUpdate`, sendPost)
+        .post(baseURLDBT + `service/reassignToUser`, sendPost)
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
