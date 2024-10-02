@@ -882,6 +882,7 @@ import DiseaseStatus from "../pages/masters/disease-status/DiseaseStatus";
 import DiseaseStatusView from "../pages/masters/disease-status/DiseaseStatusView";
 import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit";
 import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
+import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
 // Admin and Reports
 
 function Router() {
@@ -3182,6 +3183,13 @@ function Router() {
 
             {/* Display All Lot */}
             {/* <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} /> */}
+
+
+            {/* Seed Cocoon Market */}
+            <Route
+              path="seed-cocoon-inward"
+              element={<SeedCocoonInward />}
+            />
 
             {/* Market Exception Time */}
             <Route
