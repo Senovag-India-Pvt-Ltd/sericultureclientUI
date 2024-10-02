@@ -36,10 +36,52 @@ function SeedCocoonInward() {
     { value: "mobileNumber", label: "MOBILE NUMBER" },
   ];
 
-  // Below for modal window
+  // Below for modal window for personal details
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  // Below for modal window for FC details
+  const [showModalFC, setShowModalFC] = useState(false);
+  const handleShowModalFC = () => setShowModalFC(true);
+  const handleCloseModalFC = () => setShowModalFC(false);
+
+  // Below for modal window for Crop details
+  const [showModalCrop, setShowModalCrop] = useState(false);
+  const handleShowModalCrop = () => setShowModalCrop(true);
+  const handleCloseModalCrop = () => setShowModalCrop(false);
+
+  // Below for modal window for Initial Weighment
+  const [showModalWeighment, setShowModalWeighment] = useState(false);
+  const handleShowModalWeighment = () => setShowModalWeighment(true);
+  const handleCloseModalWeighment = () => setShowModalWeighment(false);
+
+  // For handle Date
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  // handle intial Weighment
+  const [validatedInitialWeighment, setValidatedInitialWeighment] =
+    useState(false);
+  const handleinitialWeighment = (e) => {
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidatedInitialWeighment(true);
+    } else {
+      e.preventDefault();
+      // setFamilyMembersList((prev) => [...prev, familyMembers]);
+      // setFamilyMembers({
+      //   relationshipId: "",
+      //   farmerFamilyName: "",
+      // });
+      setShowModalWeighment(false);
+      setValidatedInitialWeighment(false);
+    }
+    // e.preventDefault();
+  };
 
   const [validated, setValidated] = useState(false);
   const [validatedDisplay, setValidatedDisplay] = useState(false);
@@ -241,6 +283,7 @@ function SeedCocoonInward() {
     numberOfLot: "",
     numberOfSmallBin: 0,
     numberOfBigBin: 1,
+    dob: new Date(),
   });
   console.log(data);
 
@@ -310,74 +353,75 @@ function SeedCocoonInward() {
       setValidated(true);
     } else {
       event.preventDefault();
-      try {
-        const addGodown = localStorage.getItem("godownId")
-          ? localStorage.getItem("godownId")
-          : 0;
-        const response = await api.post(baseURL + `auction/allot`, {
-          ...data,
-          godownId: addGodown,
-        });
-        if (response.data.errorCode === 0) {
-          setSourceData(response.data.content);
-          increment(response.data.content.farmerId);
-          if (response.data.content.allotedLotList) {
-            setAllotedLotList(response.data.content.allotedLotList);
-          } else {
-            setAllotedLotList([]);
-          }
+      generateBiddingSlip(1);
+      // try {
+      //   const addGodown = localStorage.getItem("godownId")
+      //     ? localStorage.getItem("godownId")
+      //     : 0;
+      //   const response = await api.post(baseURL + `auction/allot`, {
+      //     ...data,
+      //     godownId: addGodown,
+      //   });
+      //   if (response.data.errorCode === 0) {
+      //     setSourceData(response.data.content);
+      //     increment(response.data.content.farmerId);
+      //     if (response.data.content.allotedLotList) {
+      //       setAllotedLotList(response.data.content.allotedLotList);
+      //     } else {
+      //       setAllotedLotList([]);
+      //     }
 
-          if (response.data.content.allotedBigBinList) {
-            setBigBinList(response.data.content.allotedBigBinList);
-          } else {
-            setBigBinList([]);
-          }
+      //     if (response.data.content.allotedBigBinList) {
+      //       setBigBinList(response.data.content.allotedBigBinList);
+      //     } else {
+      //       setBigBinList([]);
+      //     }
 
-          if (response.data.content.allotedSmallBinList) {
-            setSmallBinList(response.data.content.allotedSmallBinList);
-          } else {
-            setSmallBinList([]);
-          }
+      //     if (response.data.content.allotedSmallBinList) {
+      //       setSmallBinList(response.data.content.allotedSmallBinList);
+      //     } else {
+      //       setSmallBinList([]);
+      //     }
 
-          if (
-            response.data.content.allotedLotList.length ||
-            response.data.content.allotedLotList
-          ) {
-            const list = response.data.content.allotedLotList;
-            const openWindows = [];
-            for (const item of list) {
-              const promise = generateBiddingSlip(item);
-              openWindows.push(promise);
-            }
-            await Promise.all(openWindows);
-          }
+      //     if (
+      //       response.data.content.allotedLotList.length ||
+      //       response.data.content.allotedLotList
+      //     ) {
+      //       const list = response.data.content.allotedLotList;
+      //       const openWindows = [];
+      //       for (const item of list) {
+      //         const promise = generateBiddingSlip(item);
+      //         openWindows.push(promise);
+      //       }
+      //       await Promise.all(openWindows);
+      //     }
 
-          if (response.data.content) {
-            let allotedBigBinList;
-            let allotedSmallBinList;
-            if (response.data.content.allotedBigBinList) {
-              allotedBigBinList = response.data.content.allotedBigBinList;
-            } else {
-              allotedBigBinList = [];
-            }
+      //     if (response.data.content) {
+      //       let allotedBigBinList;
+      //       let allotedSmallBinList;
+      //       if (response.data.content.allotedBigBinList) {
+      //         allotedBigBinList = response.data.content.allotedBigBinList;
+      //       } else {
+      //         allotedBigBinList = [];
+      //       }
 
-            if (response.data.content.allotedSmallBinList) {
-              allotedSmallBinList = response.data.content.allotedSmallBinList;
-            } else {
-              allotedSmallBinList = [];
-            }
+      //       if (response.data.content.allotedSmallBinList) {
+      //         allotedSmallBinList = response.data.content.allotedSmallBinList;
+      //       } else {
+      //         allotedSmallBinList = [];
+      //       }
 
-            saveSuccess(allotedBigBinList, allotedSmallBinList);
-          } else {
-            saveError(response.data.errorMessages[0].message);
-          }
-        } else if (response.data.errorCode === -1) {
-          saveError(response.data.errorMessages[0].message);
-        }
-      } catch (err) {
-        // setData({});
-        // saveError();
-      }
+      //       saveSuccess(allotedBigBinList, allotedSmallBinList);
+      //     } else {
+      //       saveError(response.data.errorMessages[0].message);
+      //     }
+      //   } else if (response.data.errorCode === -1) {
+      //     saveError(response.data.errorMessages[0].message);
+      //   }
+      // } catch (err) {
+      //   // setData({});
+      //   // saveError();
+      // }
       setValidated(true);
     }
   };
@@ -543,16 +587,21 @@ function SeedCocoonInward() {
       newDate.getDate().toString().padStart(2, "0");
 
     try {
-      const response = await api.post(
-        baseURLReport + `getfarmercopy-kannada`,
+      const response = await axios.post(
+        // baseURLReport + `getfarmercopy-kannada`,
+        `https://e-reshme.karnataka.gov.in/reports/marketreport/getfarmercopy-kannada`,
+
         {
-          marketId: data.marketId,
-          godownId: data.godownId,
+          marketId: 1,
+          godownId: 0,
           allottedLotId: allotedLotId,
-          auctionDate: formattedDate,
+          auctionDate: "2024-10-01",
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
+          headers: {
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MSwicGhvbmVOdW1iZXIiOiI2MzY2MTI1ODY5Iiwicm9sZUlkIjoxLCJ1c2VyVHlwZSI6MCwidXNlck1hc3RlcklkIjo1OTMsInVzZXJuYW1lIjoibWFya2V0IiwibWFya2V0SWQiOjEsInN1YiI6Im1hcmtldCIsImlhdCI6MTcyNzg4MjM5OCwiZXhwIjoxNzI5NjgyMzk4fQ.sdw6GLGYq0SwrCvtLNvoWyBnwBrmAy0CNW8rkZ8Pu40"
+          }
         }
       );
 
@@ -810,7 +859,10 @@ function SeedCocoonInward() {
                         <Col lg="3">
                           <Form.Group as={Row} className="form-group">
                             <Form.Label column sm={12}>
-                              <div className="d-flex align-items-center">
+                              <div
+                                className="d-flex align-items-center"
+                                onClick={handleShowModalFC}
+                              >
                                 <Icon name="info-fill" size="lg"></Icon>
                                 <span>FC Details</span>
                               </div>
@@ -822,7 +874,10 @@ function SeedCocoonInward() {
                         <Col lg="3">
                           <Form.Group as={Row} className="form-group">
                             <Form.Label column sm={12}>
-                              <div className="d-flex align-items-center">
+                              <div
+                                className="d-flex align-items-center"
+                                onClick={handleShowModalCrop}
+                              >
                                 <Icon name="info-fill" size="lg"></Icon>
                                 <span>Crop Details</span>
                               </div>
@@ -834,7 +889,10 @@ function SeedCocoonInward() {
                         <Col lg="3">
                           <Form.Group as={Row} className="form-group">
                             <Form.Label column sm={12}>
-                              <div className="d-flex align-items-center">
+                              <div
+                                className="d-flex align-items-center"
+                                onClick={handleShowModalWeighment}
+                              >
                                 <Icon name="info-fill" size="lg"></Icon>
                                 <span>Initial Weighment</span>
                               </div>
@@ -844,13 +902,23 @@ function SeedCocoonInward() {
                       </Row>
                     </Card.Body>
                   </Card>
+
+                  <div className="gap-col mt-1">
+                    <ul className="d-flex align-items-center justify-content-center gap g-3">
+                      <li>
+                        <Button type="submit" variant="primary" >
+                          Submit
+                        </Button>
+                      </li>
+                    </ul>
+                  </div>
                 </Col>
               </Row>
             </div>
           </Row>
         </Form>
       </Block>
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Personal Details</Modal.Title>
         </Modal.Header>
@@ -862,44 +930,236 @@ function SeedCocoonInward() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Farmer Number:</td>
-                      <td>{farmerNumber}</td>
+                      {/* <td>{farmerNumber}</td> */}
+                      <td>00004825062024</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Farmer Name:</td>
-                      <td>{farmerDetails && farmerDetails.firstName}</td>
+                      {/* <td>{farmerDetails && farmerDetails.firstName}</td> */}
+                      <td>SHIVANNA</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Father's/Husband's Name:</td>
-                      <td>{farmerDetails && farmerDetails.fatherName}</td>
+                      {/* <td>{farmerDetails && farmerDetails.fatherName}</td> */}
+                      <td>Veerabhadraiah</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Gender:</td>
-                      <td>
+                      {/* <td>
                         {farmerDetails && farmerDetails.genderId === 1
                           ? "Male"
                           : farmerDetails && farmerDetails.genderId === 2
                           ? "Female"
                           : "Other"}
-                      </td>
+                      </td> */}
+                      <td>Male</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Phone Number:</td>
-                      <td>{farmerDetails && farmerDetails.mobileNumber}</td>
+                      {/* <td>{farmerDetails && farmerDetails.mobileNumber}</td> */}
+                      <td>9632297390</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Farmer Address:</td>
-                      <td>
+                      {/* <td>
                         {farmerAddress &&
                           farmerAddress.length > 0 &&
                           farmerAddress[0].addressText &&
                           farmerAddress[0].addressText}
-                      </td>
+                      </td> */}
+                      <td>S BYADARAHALLI</td>
                     </tr>
                   </tbody>
                 </table>
               </Col>
             </Row>
           </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>FC Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex flex-column justify-content-center">
+            <Row className="g-5">
+              <Col
+                lg="12"
+                className="d-flex flex-column justify-content-center align-items-center"
+              >
+                <h3>Fitness Certificate</h3>
+                <img
+                  src="https://5.imimg.com/data5/ANDROID/Default/2024/7/434434494/XL/GV/OX/14251721/prod-20240712-2228471980760355427493851-jpg-1000x1000.jpg"
+                  alt="FC Details"
+                  width="300"
+                  height="300"
+                />
+              </Col>
+            </Row>
+            <Row className="g-5">
+              <Col
+                lg="12"
+                className="d-flex justify-content-center align-items-center"
+              >
+                <Form.Group className="form-group mt-3">
+                  <Form.Label style={{ fontSize: "20px" }}>
+                    Confirmed
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Row className="d-flex align-items-center">
+                      <Col lg="auto">
+                        <Form.Check
+                          type="radio"
+                          id="yes"
+                          name="subsidyAvailed"
+                          label="Yes"
+                          value="yes"
+                          // onChange={handleChange}
+                          // checked={selected === "yes"}
+                        />
+                      </Col>
+                      <Col lg="auto">
+                        <Form.Check
+                          type="radio"
+                          id="no"
+                          value="no"
+                          name="subsidyAvailed"
+                          defaultChecked
+                          // onChange={handleChange}
+                          // checked={selected === "no"}
+                          label="No"
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                </Form.Group>
+              </Col>
+            </Row>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Crop Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex justify-content-center">
+            <Row
+              className="g-5 d-flex justify-content-center"
+              style={{ width: "100%" }}
+            >
+              <Col lg="6">
+                <table
+                  className="table small table-bordered"
+                  style={{ width: "100%" }}
+                >
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> No of DFL's:</td>
+                      <td>200</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Lot No.:</td>
+                      <td>MAG003</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Source(Grainage Name):</td>
+                      <td>CV</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Variety(Field Name):</td>
+                      <td>Magadi</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Parental Level:</td>
+                      <td>P3</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showModalWeighment}
+        onHide={handleCloseModalWeighment}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Crop Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form
+            noValidate
+            validated={validatedInitialWeighment}
+            onSubmit={handleinitialWeighment}
+          >
+            <Row className="g-3">
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerFamilyName">
+                    Initial Weighment in Kg's
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="farmerFamilyName"
+                      name="farmerFamilyName"
+                      // value={familyMembers.farmerFamilyName}
+                      // onChange={handleFMInputs}
+                      type="text"
+                      placeholder="Enter Initial Weighment in Kg's"
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Name is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Market Date</Form.Label>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.dob}
+                      onChange={(date) => handleDateChange(date, "dob")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      maxDate={new Date()}
+                      minDate={new Date()}
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <div className="d-flex gap g-2 justify-content-center">
+                  <div className="gap-col">
+                    {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
+                    <Button type="submit" variant="primary">
+                      Add
+                    </Button>
+                  </div>
+                  <div className="gap-col">
+                    <Button
+                      variant="secondary"
+                      onClick={handleCloseModalWeighment}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
         </Modal.Body>
       </Modal>
     </Layout>

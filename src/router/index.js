@@ -883,6 +883,7 @@ import DiseaseStatusView from "../pages/masters/disease-status/DiseaseStatusView
 import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit";
 import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
 import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
+import BasePriceFixation from "../pages/seed-cocoon-martket/BasePriceFixation";
 // Admin and Reports
 
 function Router() {
@@ -3190,6 +3191,12 @@ function Router() {
               path="seed-cocoon-inward"
               element={<SeedCocoonInward />}
             />
+
+            <Route
+              path="base-price-fixation"
+              element={<BasePriceFixation />}
+            />
+
 
             {/* Market Exception Time */}
             <Route
