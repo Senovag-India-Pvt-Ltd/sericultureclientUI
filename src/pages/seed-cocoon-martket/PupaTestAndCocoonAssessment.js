@@ -21,7 +21,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function SeedCocoonInward() {
+function PupaTestAndCocoonAssessment() {
   const [farmerDetails, setFarmerDetails] = useState({});
   const [farmerAddress, setFarmerAddress] = useState({});
   const [loading, setLoading] = useState(false);
@@ -734,11 +734,11 @@ function SeedCocoonInward() {
   };
 
   return (
-    <Layout title="Seed Cocoon E-Inward" show="true">
+    <Layout title="Pupa test and assessment" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed Cocoon E-Inward</Block.Title>
+            <Block.Title tag="h2">Pupa test and assessment</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -1166,4 +1166,4 @@ function SeedCocoonInward() {
   );
 }
 
-export default SeedCocoonInward;
+export default PupaTestAndCocoonAssessment;

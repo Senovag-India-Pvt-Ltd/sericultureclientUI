@@ -884,6 +884,7 @@ import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit
 import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
 import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
 import BasePriceFixation from "../pages/seed-cocoon-martket/BasePriceFixation";
+import PupaTestAndCocoonAssessment from "../pages/seed-cocoon-martket/PupaTestAndCocoonAssessment";
 // Admin and Reports
 
 function Router() {
@@ -3195,6 +3196,11 @@ function Router() {
             <Route
               path="base-price-fixation"
               element={<BasePriceFixation />}
+            />
+
+            <Route
+              path="pupa-test-and-assessment"
+              element={<PupaTestAndCocoonAssessment />}
             />
 
 
