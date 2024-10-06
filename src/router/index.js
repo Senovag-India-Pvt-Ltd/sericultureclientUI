@@ -886,6 +886,8 @@ import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
 import BasePriceFixation from "../pages/seed-cocoon-martket/BasePriceFixation";
 import PupaTestAndCocoonAssessment from "../pages/seed-cocoon-martket/PupaTestAndCocoonAssessment";
 import TraderActivate from "../pages/stake-holder/trader-license/TraderActivate";
+import PupaAndCocoonAssessmentPage from "../pages/seed-cocoon-martket/PupaAndCocconAssessmentPage";
+import FinalWeighment from "../pages/seed-cocoon-martket/FinalWeighment";
 // Admin and Reports
 
 function Router() {
@@ -3203,6 +3205,15 @@ function Router() {
             <Route
               path="pupa-test-and-assessment"
               element={<PupaTestAndCocoonAssessment />}
+            />
+
+            <Route
+              path="pupa-test-and-assessment-page"
+              element={<PupaAndCocoonAssessmentPage />}
+            />
+            <Route
+              path="final-weighment-page"
+              element={<FinalWeighment />}
             />
 
 

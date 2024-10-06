@@ -22,9 +22,8 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PupaTestAndCocoonAssessment() {
-  const [farmerDetails, setFarmerDetails] = useState({});
-  const [farmerAddress, setFarmerAddress] = useState({});
-  const [loading, setLoading] = useState(false);
+
+
   const [farmer, setFarmer] = useState({
     text: "",
     select: "mobileNumber",
