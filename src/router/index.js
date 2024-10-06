@@ -885,6 +885,7 @@ import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList
 import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
 import BasePriceFixation from "../pages/seed-cocoon-martket/BasePriceFixation";
 import PupaTestAndCocoonAssessment from "../pages/seed-cocoon-martket/PupaTestAndCocoonAssessment";
+import TraderActivate from "../pages/stake-holder/trader-license/TraderActivate";
 // Admin and Reports
 
 function Router() {
@@ -3131,6 +3132,7 @@ function Router() {
             {/* Role Pages */}
             <Route path="role-pages" element={<RolePages />} />
             <Route path="activate-reeler" element={<ReelerActivate />} />
+            <Route path="activate-trader" element={<TraderActivate />} />
 
             {/* Flex Time  */}
             <Route path="flex-time" element={<FlexTime />} />
