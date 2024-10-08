@@ -1624,56 +1624,6 @@ function DashboardReportList() {
                                   />
                                 </Form.Group>
                               </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </Block>
-
-                      {/* <Col lg="12">
-                        <div className="d-flex justify-content-center gap-2">
-                          <Button type="submit" variant="success">
-                            Submit
-                          </Button>
-                        </div>
-                      </Col> */}
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  {/* Work Order Details Accordion */}
-                  {actionFarmerData.length > 0 &&
-                    actionFarmerData[0].workOrder && (
-                      <Accordion.Item eventKey="transaction">
-                        <Accordion.Header
-                          style={{
-                            backgroundColor: "#0F6CBE",
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: "3px",
-                            borderRadius: "5px",
-                          }}
-                          className="mb-3"
-                        >
-                          Work Order Details
-                        </Accordion.Header>
-                        <Accordion.Body>
-                          <Block className="mt-3">
-                            <Row>
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Work Order No.</strong>
-                                  </Form.Label>
-                                  <Form.Control
-                                    id="workOrderNumber"
-                                    type="text"
-                                    name="workOrderNumber"
-                                    value={actionData.workOrderNumber}
-                                    onChange={handleActionInputs}
-                                    placeholder="Enter Work Order NO."
-                                  />
-                                </Form.Group>
-                              </Col>
-
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -1751,6 +1701,56 @@ function DashboardReportList() {
                                   </Col>
                                 </Form.Group>
                               </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Block>
+
+                      {/* <Col lg="12">
+                        <div className="d-flex justify-content-center gap-2">
+                          <Button type="submit" variant="success">
+                            Submit
+                          </Button>
+                        </div>
+                      </Col> */}
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* Work Order Details Accordion */}
+                  {actionFarmerData.length > 0 &&
+                    actionFarmerData[0].workOrder && (
+                      <Accordion.Item eventKey="transaction">
+                        <Accordion.Header
+                          style={{
+                            backgroundColor: "#0F6CBE",
+                            color: "white",
+                            fontWeight: "bold",
+                            padding: "3px",
+                            borderRadius: "5px",
+                          }}
+                          className="mb-3"
+                        >
+                          Work Order Details
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          <Block className="mt-3">
+                            <Row>
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    <strong>Work Order No.</strong>
+                                  </Form.Label>
+                                  <Form.Control
+                                    id="workOrderNumber"
+                                    type="text"
+                                    name="workOrderNumber"
+                                    value={actionData.workOrderNumber}
+                                    onChange={handleActionInputs}
+                                    placeholder="Enter Work Order NO."
+                                  />
+                                </Form.Group>
+                              </Col>
+
                             </Row>
                           </Block>
 
