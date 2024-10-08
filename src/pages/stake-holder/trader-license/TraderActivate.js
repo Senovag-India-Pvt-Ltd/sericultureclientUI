@@ -18,7 +18,7 @@ function TraderActivate() {
     traderLicenseId: "",
     username: "",
     password: "",
-    mobileNumber: "",
+    phoneNumber: "",
     emailId: "",
     roleId: "",
     marketMasterId: localStorage.getItem("marketId"),
@@ -37,7 +37,7 @@ function TraderActivate() {
     traderLicenseId: "",
     username: "",
     password: "",
-    mobileNumber: "",
+    phoneNumber: "",
     emailId: "",
     roleId: "",
     marketMasterId: localStorage.getItem("marketId"),
@@ -56,7 +56,7 @@ function TraderActivate() {
       traderLicenseId: i.userTypeId,
       marketMasterId: i.marketMasterId,
       username: i.username,
-      mobileNumber: i.mobileNumber,
+      phoneNumber: i.phoneNumber,
       deviceId: i.deviceId,
       userTypeId: i.userMasterId,
     }));
@@ -86,11 +86,11 @@ function TraderActivate() {
       setShow(false);
     }
 
-    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+    if (name === "phoneNumber" && (value.length < 10 || value.length > 10)) {
       // console.log("hellohello");
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
-    } else if (name === "mobileNumber" && value.length === 10) {
+    } else if (name === "phoneNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -112,11 +112,11 @@ function TraderActivate() {
       getConfigureUser(value);
     }
 
-    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+    if (name === "phoneNumber" && (value.length < 10 || value.length > 10)) {
       // console.log("hellohello");
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
-    } else if (name === "mobileNumber" && value.length === 10) {
+    } else if (name === "phoneNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -136,7 +136,7 @@ function TraderActivate() {
       setValidated(true);
     } else {
       event.preventDefault();
-      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+      if (data.phoneNumber.length < 10 || data.phoneNumber.length > 10) {
         return;
       }
       api
@@ -150,7 +150,7 @@ function TraderActivate() {
               traderLicenseId: "",
               username: "",
               password: "",
-              mobileNumber: "",
+              phoneNumber: "",
               emailId: "",
               roleId: "",
               marketMasterId: localStorage.getItem("marketId"),
@@ -264,10 +264,10 @@ function TraderActivate() {
       setValidatedEdit(true);
     } else {
       event.preventDefault();
-      console.log(editData.mobileNumber);
+      console.log(editData.phoneNumber);
       if (
-        editData.mobileNumber.length < 10 ||
-        editData.mobileNumber.length > 10
+        editData.phoneNumber.length < 10 ||
+        editData.phoneNumber.length > 10
       ) {
         return;
       }
@@ -282,7 +282,7 @@ function TraderActivate() {
               traderLicenseId: "",
               username: "",
               password: "",
-              mobileNumber: "",
+              phoneNumber: "",
               emailId: "",
               roleId: "",
               marketMasterId: localStorage.getItem("marketId"),
@@ -355,7 +355,7 @@ function TraderActivate() {
       traderLicenseId: "",
       username: "",
       password: "",
-      mobileNumber: "",
+      phoneNumber: "",
       emailId: "",
       roleId: "",
       marketMasterId: localStorage.getItem("marketId"),
@@ -371,7 +371,7 @@ function TraderActivate() {
       traderLicenseId: "",
       username: "",
       password: "",
-      mobileNumber: "",
+      phoneNumber: "",
       emailId: "",
       roleId: "",
       marketMasterId: localStorage.getItem("marketId"),
@@ -493,8 +493,8 @@ function TraderActivate() {
     },
     {
       name: "Mobile Number",
-      selector: (row) => row.mobileNumber,
-      cell: (row) => <span>{row.mobileNumber}</span>,
+      selector: (row) => row.phoneNumber,
+      cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
@@ -855,14 +855,14 @@ function TraderActivate() {
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="mobileNumber">
+                      <Form.Label htmlFor="phoneNumber">
                         Mobile number<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="mobileNumber"
-                          name="mobileNumber"
-                          value={data.mobileNumber}
+                          id="phoneNumber"
+                          name="phoneNumber"
+                          value={data.phoneNumber}
                           onChange={handleInputs}
                           type="text"
                           maxLength="10"
@@ -878,7 +878,7 @@ function TraderActivate() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="mobileNumber">
+                      <Form.Label htmlFor="phoneNumber">
                         Device ID<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -900,7 +900,7 @@ function TraderActivate() {
 
                   {/* <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="mobileNumber">
+                      <Form.Label htmlFor="phoneNumber">
                       trader Initial Wallet Amount<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1109,14 +1109,14 @@ function TraderActivate() {
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mobileNumber">
+                        <Form.Label htmlFor="phoneNumber">
                           Mobile number<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="mobileNumber"
-                            name="mobileNumber"
-                            value={editData.mobileNumber}
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={editData.phoneNumber}
                             onChange={handleEditInputs}
                             type="text"
                             maxLength="10"
@@ -1132,7 +1132,7 @@ function TraderActivate() {
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mobileNumber">
+                        <Form.Label htmlFor="phoneNumber">
                           Device ID<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
