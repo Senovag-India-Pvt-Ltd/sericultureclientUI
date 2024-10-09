@@ -411,6 +411,7 @@ function Menu() {
     Admin_Master_Auction_Market: false,
     Admin_Master_Auction_Godown: false,
     Admin_Master_Auction_Activate_Reeler: false,
+    Admin_Master_Auction_Activate_Trader: false,
     Admin_Master_Auction_Crate: false,
     Admin_Master_Auction_Race: false,
     Admin_Master_Auction_Source: false,
@@ -2883,6 +2884,14 @@ function Menu() {
                             <MenuItemLink
                               text="Activate Reeler"
                               to="/seriui/activate-reeler"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Activate_Trader ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Activate Trader"
+                              to="/seriui/activate-trader"
                             />
                           </MenuItem>
                         ) : null}
