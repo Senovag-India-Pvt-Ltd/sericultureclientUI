@@ -4,6 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
+import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
@@ -14,35 +15,24 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function BasePriceFixation() {
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
   const navigate = useNavigate();
 
   const [data, setData] = useState({
-    allotedLotId: "",
-    amount: "",
-    farmerFirstName: "",
-    farmerMiddleName: "",
-    farmerLastName: "",
-    farmerFruitsId: "",
-    reelerName: "",
-    reelerFruitsId: "",
-    reelingLicenseNumber: "",
-    reelerAuctionId: "",
-    marketDate: new Date(),
-    price: "",
+    marketId: localStorage.getItem("marketId"),
+    fixationDate: new Date(),
+    pricePerKg: "",
   });
 
   const [validated, setValidated] = useState(false);
+  const [isActive,setIsActive] = useState(false);
 
   const { id } = useParams();
-  // const [data] = useState(EducationDatas);
-
-  // let name, value;
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   name = e.target.name;
-  //   value = e.target.value;
-  //   setData({ ...data, [name]: value });
-  // };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -51,9 +41,10 @@ function BasePriceFixation() {
   const acceptSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Accepted successfully",
-      text: "Auction Accepted Successfully",
+      title: "Price Added successfully",
+      // text: "Auction Accepted Successfully",
     });
+    setIsActive(true);
   };
 
   const acceptError = (message = "Something went wrong!") => {
@@ -70,48 +61,24 @@ function BasePriceFixation() {
     });
   };
 
-  const [farmerAuction, setFarmerAuction] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [highestBid, setHighestBid] = useState({
-    marketId: localStorage.getItem("marketId"),
-    allottedLotId: "",
-    godownId: localStorage.getItem("godownId"),
-  });
-  const [showAccept, setShowAccept] = useState(false);
-
-  // console.log(highestBid);
-  console.log(showAccept);
-
-  const [isActive, setIsActive] = useState(false);
-  const display = (event) => {
-    const formattedDate =
-      data.marketDate.getDate() +
-      "/" +
-      (data.marketDate.getMonth() + 1) +
-      "/" +
-      data.marketDate.getFullYear();
-    event.preventDefault();
-    // debugger;
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      setIsActive(true);
-      setHardCodeDataList([
-        { date: formattedDate, price: data.price },
-        ...hardCodeDataList,
-      ]);
-      Swal.fire({
-        icon: "success",
-        title: "Price Added successfully",
-        // text: "Auction Accepted Successfully",
+  const getList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURL1 + `cocoon/getLast10daysBasePrice`, _params)
+      .then((response) => {
+        setListData(response.data.content);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
       });
-    }
   };
+
+  useEffect(() => {
+    getList();
+  }, [page]);
 
   const handleLotIdInputs = (e) => {
     // debugger;
@@ -119,136 +86,162 @@ function BasePriceFixation() {
     setData({ ...data, [name]: value });
   };
 
-  const [res, setRes] = useState({});
+ 
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+//   const postData = (event) => {
+//     const form = event.currentTarget;
+    
+//     if (form.checkValidity() === false) {
+//         event.preventDefault();
+//         event.stopPropagation();
+//         setValidated(true);
+//     } else {
+//         event.preventDefault();
 
-  const [acceptData, setAcceptData] = useState({
-    reelerAuctionId: "",
-  });
+//         api.post(baseURL1 + `cocoon/saveBasePriceKGLot`, {
+//             ...data,
+//         })
+//         .then((response) => {
+//             if (response.data.errorCode === 0) {
+//                 acceptSuccess();
+//             } else if (response.data.errorCode === -1) {
+//                 // Check if content exists and use it, otherwise use errorMessages
+//                 if (response.data.content) {
+//                     acceptError(response.data.content);
+//                 } else if (response.data.errorMessages.length > 0) {
+//                     acceptError(response.data.errorMessages[0].message);
+//                 } else {
+//                     acceptError(); // Default error if no specific message
+//                 }
+//             }
+//         })
+//         .catch((err) => {
+//             acceptError(); // Handle the error if the API call fails
+//         });
+//     }
+// };
 
-  const [hardCodeDataList, setHardCodeDataList] = useState([
-    {
-      date: "01/01/2023",
-      price: "230",
-    },
-    {
-      date: "01/02/2023",
-      price: "430",
-    },
-    {
-      date: "01/01/2024",
-      price: "530",
-    },
-  ]);
+const postData = (event) => {
+  const form = event.currentTarget;
 
-  // const postData = (e) => {
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+  } else {
+    event.preventDefault();
 
-  //   axios
-  //     .post(baseURL1 + `auction/reeler/acceptReelerBidForGivenLot`, acceptData, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       setData(response.data.content);
-  //       acceptSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setAcceptData({});
-  //       acceptError();
-  //     });
-  // };
-
-  const postData = (e) => {
-    // Check if reelerAuctionId is not empty or undefined
-    if (farmerAuction && farmerAuction.reelerAuctionId) {
-      setAcceptData({
-        ...acceptData,
-        reelerAuctionId: farmerAuction.reelerAuctionId,
-      });
-      api
-        .post(baseURL1 + `auction/reeler/acceptReelerBidForGivenLot`, {
-          ...highestBid,
-          bidAcceptedBy: localStorage.getItem("username"),
-        })
-        .then((response) => {
-          // setData(response.data.content);
-          if (response.data.errorCode === 0) {
-            // debugger
-            acceptSuccess();
-            setShowAccept(false);
-          } else if (response.data.errorCode === -1) {
-            acceptError(response.data.errorMessages[0].message);
-          }
-        })
-        .catch((err) => {
-          // setAcceptData({});
-          acceptError();
-        });
-    } else {
-      // Handle the case where reelerAuctionId is empty or undefined
-      console.error("reelerAuctionId is empty or undefined");
-    }
-  };
-
-  // to get Bid Rejection
-  const [bidRejectionListData, setBidRejectionListData] = useState([]);
-
-  const getBidRejectionList = () => {
-    const response = api
-      .get(baseURL + `reason-bid-reject-master/get-all`)
+    api
+      .post(baseURL1 + `cocoon/saveBasePriceKGLot`, {
+        ...data,
+      })
       .then((response) => {
-        setBidRejectionListData(response.data.content.reasonBidRejectMaster);
+        if (response.data.errorCode === 0) {
+          acceptSuccess();
+          getList(); // Refresh the table with the new data
+          setData({
+            marketId: localStorage.getItem("marketId"),
+            fixationDate: new Date(),
+            pricePerKg: "",
+          }); // Optionally reset the form
+        } else if (response.data.errorCode === -1) {
+          if (response.data.content) {
+            acceptError(response.data.content);
+          } else if (response.data.errorMessages.length > 0) {
+            acceptError(response.data.errorMessages[0].message);
+          } else {
+            acceptError(); // Default error if no specific message
+          }
+        }
       })
       .catch((err) => {
-        setBidRejectionListData([]);
+        acceptError(); // Handle the error if the API call fails
       });
-  };
+  }
+};
 
-  useEffect(() => {
-    getBidRejectionList();
-  }, []);
 
-  // to get Market
-  //  const [marketListData, setMarketListData] = useState([]);
+// const customStyles = {
+//   rows: {
+//     style: {
+//       minHeight: "45px", // override the row height
+//     },
+//   },
+//   headCells: {
+//     style: {
+//       backgroundColor: "#1e67a8",
+//       color: "#fff",
+//       fontSize: "14px",
+//       paddingLeft: "8px", // override the cell padding for head cells
+//       paddingRight: "8px",
+//     },
+//   },
+//   cells: {
+//     style: {
+//       paddingLeft: "8px", // override the cell padding for data cells
+//       paddingRight: "8px",
+//     },
+//   },
+// };
+const customStyles = {
+  rows: {
+    style: {
+      minHeight: "30px", // Row height
+    },
+  },
+  headCells: {
+    style: {
+      backgroundColor: "#1e67a8", // Header background color
+      color: "#fff", // Header text color
+      borderStyle: "solid",
+      borderWidth: "1px",
+      borderColor: "black", // Header cell border color
+      paddingLeft: "8px",
+      paddingRight: "8px",
+    },
+  },
+  cells: {
+    style: {
+      borderStyle: "solid",
+      borderWidth: "1px",
+      borderColor: "black", // Data cell border color
+      paddingTop: "3px",
+      paddingBottom: "3px",
+      paddingLeft: "8px",
+      paddingRight: "8px",
+      textAlign: "left", // Set alignment to left for all cells
+    },
+  },
+};
 
-  //  const getMarketList = () => {
-  //     const response = api
-  //      .get(baseURL + `marketMaster/get-all`)
-  //      .then((response) => {
-  //        setMarketListData(response.data.content.marketMaster);
-  //      })
-  //      .catch((err) => {
-  //        setMarketListData([]);
-  //      });
-  //  };
 
-  //  useEffect(() => {
-  //    getMarketList();
-  //  }, []);
-
-  // to get Godown
-  // const [godownListData, setGodownListData] = useState([]);
-  // const getGodownList = (_id) => {
-  //   api
-  //     .get(baseURL + `godown/get-by-market-master-id/${_id}`)
-  //     .then((response) => {
-  //       setGodownListData(response.data.content.godown);
-  //       // setTotalRows(response.data.content.totalItems);
-  //       if (response.data.content.error) {
-  //         setGodownListData([]);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setGodownListData([]);
-  //       // alert(err.response.data.errorMessages[0].message[0].message);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (highestBid.marketId) {
-  //     getGodownList(highestBid.marketId);
-  //   }
-  // }, [highestBid.marketId]);
+const UserDataColumns = [
+  {
+    name: "Sl.No.",
+    selector: (row) => row.marketId,
+    cell: (row,i) => <span>{i+1}</span>,
+    sortable: true,
+    width: "80px",
+    hide: "md",
+  },
+  {
+    name: "Fixation Date",
+    selector: (row) => row.fixationDate,
+    cell: (row) => <span>{row.fixationDate}</span>,
+    sortable: true,
+    // width: "100",
+    hide: "md",
+  },
+  {
+    name: "Price Per Kg",
+    selector: (row) => row.pricePerKg,
+    cell: (row) => <span>{row.pricePerKg}</span>,
+    sortable: true,
+    // width: "100",
+    hide: "md",
+  },
+ 
+];
 
   return (
     <Layout title="Base Price Fixation" show="true">
@@ -286,20 +279,21 @@ function BasePriceFixation() {
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="8">
-                  <Form noValidate validated={validated} onSubmit={display}>
+                  <Form noValidate validated={validated} onSubmit={postData}>
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Price<span className="text-danger">*</span>
+                        Price
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <Col sm={2}>
                         <Form.Control
-                          id="price"
-                          name="price"
-                          value={data.price}
+                          id="pricePerKg"
+                          name="pricePerKg"
+                          value={data.pricePerKg}
                           onChange={handleLotIdInputs}
                           type="number"
                           placeholder="Enter Price"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Price is required.
@@ -310,9 +304,9 @@ function BasePriceFixation() {
                       </Form.Label>
                       <Col sm={4} className="ms-n5">
                         <DatePicker
-                          selected={data.marketDate}
+                          selected={data.fixationDate}
                           onChange={(date) =>
-                            handleDateChange(date, "marketDate")
+                            handleDateChange(date, "fixationDate")
                           }
                           peekNextMonth
                           showMonthDropdown
@@ -320,16 +314,12 @@ function BasePriceFixation() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
-                          maxDate={new Date()}
-                          //   minDate={new Date()}
+                          maxDate={new Date()} // Maximum date set to today
+                          minDate={new Date()} // Minimum date set to today
                         />
                       </Col>
                       <Col sm={2} className="ms-n5">
-                        {/* <Button
-                          type="button"
-                          variant="primary"
-                          onClick={display}
-                        > */}
+                       
                         <Button type="submit" variant="primary">
                           Submit
                         </Button>
@@ -339,64 +329,39 @@ function BasePriceFixation() {
                 </Col>
                 {/* added New End */}
               </Row>
+             
             </Card.Body>
           </Card>
-
-          <div
-            className={isActive ? "d-flex justify-content-center" : "d-none"}
-          >
-            <Row className="g-gs pt-2" style={{ width: "80%" }}>
-              <Col lg="6" style={{ width: "100%" }}>
-                <table
-                  className="table table-striped table-bordered"
-                  style={{ backgroundColor: "white" }}
-                >
-                  <thead>
-                    <tr>
-                      <th
-                        style={{
-                          backgroundColor: "#0f6cbe",
-                          color: "#fff",
-                        }}
-                        // colSpan="1"
-                      >
-                        S.No
-                      </th>
-                      <th
-                        style={{
-                          backgroundColor: "#0f6cbe",
-                          color: "#fff",
-                        }}
-                        // colSpan="2"
-                      >
-                        Date
-                      </th>
-                      <th
-                        style={{
-                          backgroundColor: "#0f6cbe",
-                          color: "#fff",
-                        }}
-                        // colSpan="2"
-                      >
-                        Price/Kg
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {hardCodeDataList.map((item, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.date}</td>
-                        <td>{item.price}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
-          </div>
         </Row>
-        {/* </Form> */}
+
+
+{isActive ? (
+  
+              <Row className="mt-3">
+                <Col lg="4">
+  <DataTable
+    tableClassName="data-table-head-light table-responsive"
+    columns={UserDataColumns}
+    data={listData}
+    highlightOnHover
+    // pagination
+    // paginationServer
+    // paginationTotalRows={totalRows}
+    // paginationPerPage={countPerPage}
+    // paginationComponentOptions={{
+    //   noRowsPerPage: true,
+    // }}
+    // onChangePage={(page) => setPage(page - 1)}
+    progressPending={loading}
+    theme="solarized"
+    customStyles={customStyles}
+  />
+  </Col>
+  </Row>
+ 
+) : (
+  ""
+)}
       </Block>
     </Layout>
   );

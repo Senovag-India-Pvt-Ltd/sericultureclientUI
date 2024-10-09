@@ -240,6 +240,16 @@ function Menu() {
     Market_SeedMarket_Bulk_Send_To_Payment: false,
     Market_SeedMarket_Payment_Statement: false,
 
+    Market_SeedCocoonMarket: false,
+    Market_SeedCocoonMarket_Inward: false,
+    Market_SeedCocoonMarket_Base_Price_Fixation: false,
+    Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
+
+    Market_SeedCocoonMarket_Payment: false,
+    Market_SeedCocoonMarket_Ready_For_Payment: false,
+    Market_SeedCocoonMarket_Bulk_Send_To_Payment: false,
+    Market_SeedCocoonMarket_Payment_Statement: false,
+
     SeedDFL: false,
     SeedDFL_BSF: false,
     SeedDFL_BSF_Garden_Farm: false,
@@ -1395,6 +1405,7 @@ function Menu() {
   ) : null}
 </MenuItem>
 
+
 <MenuItem>
   {showMenu.Market_SeedMarket_Payment ? (
     <MenuItem sub>
@@ -1426,6 +1437,45 @@ function Menu() {
             <MenuItemLink
               text="Payment Statement"
               to="/seriui/payment-statement-for-seed-market"
+            />
+          </MenuItem>
+        ) : null}
+      </MenuSub>
+    </MenuItem>
+  ) : null}
+</MenuItem>
+
+<MenuItem>
+  {showMenu.Market_SeedCocoonMarket ? (
+    <MenuItem sub>
+      <MenuItemLink
+        text="Seed Cocoon Market"
+        onClick={menuToggle}
+        onMouseEnter={menuHover}
+        sub
+      />
+      <MenuSub>
+        {showMenu.Market_SeedCocoonMarket_Inward ? (
+          <MenuItem>
+            <MenuItemLink
+              text="e-Inward"
+              to="/seriui/seed-cocoon-inward"
+            />
+          </MenuItem>
+        ) : null}
+        {showMenu.Market_SeedCocoonMarket_Base_Price_Fixation ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Base Price Fixation"
+              to="/seriui/base-price-fixation"
+            />
+          </MenuItem>
+        ) : null}
+        {showMenu.Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Pupa Test And Cocoon Assessment Page"
+              to="/seriui/pupa-test-and-assessment-page"
             />
           </MenuItem>
         ) : null}
