@@ -1,14 +1,28 @@
+// import { Card, Form, Row, Col, Button } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+// import Swal from "sweetalert2/src/sweetalert2.js";
+// import { useNavigate } from "react-router-dom";
+// import Layout from "../../layout/default";
+// import Block from "../../components/Block/Block";
+import DatePicker from "react-datepicker";
+// import { Icon } from "../../../components";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+
+// // import api from "../../../services/auth/api";
+// import api from "../../../src/services/auth/api";
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2/src/sweetalert2.js";
+import { createTheme } from "react-data-table-component";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import DatePicker from "react-datepicker";
-import { Icon } from "../../../components";
-import { useState, useEffect } from "react";
+import React from "react";
+import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import api from "../../../services/auth/api";
+import api from "../../../src/services/auth/api";
 
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -16,7 +30,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 
 
-function UnitCounterReport() {
+function ReelerMFReports() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
@@ -87,7 +101,7 @@ function UnitCounterReport() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLMarket + `auction/report/getUnitCounterReport`, {
+        .post(baseURLMarket + `auction/report/getReelerMFReport`, {
           marketId: marketId,
           godownId: godownId,
           fromDate: formattedFromDate,
@@ -127,7 +141,7 @@ function UnitCounterReport() {
 
     api
       .post(
-        baseURLReport + `excel-report/unit-counter-report`,
+        baseURLReport + `excel-report/reeler-mf-report`,
         {
             // startDate: data.startDate,
             godownId: godownId,
@@ -179,11 +193,11 @@ function UnitCounterReport() {
     });
   };
   return (
-    <Layout title="Unit Counter Report">
+    <Layout title="Reeler MF Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Unit Counter Report</Block.Title>
+            <Block.Title tag="h2">Reeler MF Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -312,6 +326,15 @@ function UnitCounterReport() {
                     >
                       <thead>
                         <tr>
+                        <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                           Serial Number
+                          </th>
                           <th
                             style={{
                               backgroundColor: "#0f6cbe",
@@ -319,7 +342,7 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                          Total Lots
+                           Lot No
                           </th>
                           <th
                             style={{
@@ -384,20 +407,13 @@ function UnitCounterReport() {
                           >
                             MF Amt
                           </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            counter
-                          </th>
+                          
                         </tr>
                       </thead>
                       <tbody>
                         {counterData.map((list, i) => (
                           <tr key={i}>
+                            <td>{list.serialNumber}</td>
                             <td>{list.allottedLotId}</td>
                             <td>{list.lotTransactionDate}</td>
                             <td>{list.reelerLicense}</td>
@@ -412,7 +428,7 @@ function UnitCounterReport() {
                                 ).toFixed(2)
                               )}
                             </td>
-                            <td>---</td>
+                            {/* <td>---</td> */}
                           </tr>
                         ))}
                         {/* {
@@ -515,4 +531,4 @@ function UnitCounterReport() {
   );
 }
 
-export default UnitCounterReport;
+export default ReelerMFReports;

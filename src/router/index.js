@@ -882,6 +882,9 @@ import DiseaseStatus from "../pages/masters/disease-status/DiseaseStatus";
 import DiseaseStatusView from "../pages/masters/disease-status/DiseaseStatusView";
 import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit";
 import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
+import ReelerMFReports from "../pages/reports-admin/ReelerMFReports";
+import RaceWiseAbstractReport from "../pages/reports-admin/RaceWiseAbstractReport";
+
 // Admin and Reports
 
 function Router() {
@@ -3141,6 +3144,8 @@ function Router() {
             {/* Reports */}
             <Route path="pending-reports" element={<PendingReport />} />
             <Route path="unit-counter-report" element={<UnitCounterReport />} />
+            <Route path="reeler-mf-report" element={<ReelerMFReports />} />
+
             <Route
               path="farmer-transaction-report"
               element={<FarmerTransactionReport />}
@@ -3172,6 +3177,8 @@ function Router() {
             <Route path="reeler-mf" element={<ReelerMfReport />} />
             <Route path="unit-mf" element={<UnitMf />} />
             <Route path="reeler-abstract" element={<ReelerAbstract />} />
+            <Route path="race-wise-abstract" element={<RaceWiseAbstractReport/>} />
+
             <Route path="reeler-purchase" element={<ReelerPurchase />} />
             {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
             <Route
