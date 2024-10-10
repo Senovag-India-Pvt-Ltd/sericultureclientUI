@@ -197,7 +197,7 @@ function Menu() {
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
     Services_Dbt_Application: false,
-    
+
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
     // Services_Apply_Incentives: false,
@@ -411,6 +411,7 @@ function Menu() {
     Admin_Master_Auction_Market: false,
     Admin_Master_Auction_Godown: false,
     Admin_Master_Auction_Activate_Reeler: false,
+    Admin_Master_Auction_Activate_Trader: false,
     Admin_Master_Auction_Crate: false,
     Admin_Master_Auction_Race: false,
     Admin_Master_Auction_Source: false,
@@ -1068,7 +1069,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            
+
             {showMenu.Services_Dbt_Application ? (
               <MenuItem>
                 <MenuItemLink
@@ -1077,7 +1078,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            
+
             {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink
@@ -1271,6 +1272,14 @@ function Menu() {
                 <MenuItemLink text="e-Inward" to="/seriui/bidding-slip" />
               </MenuItem>
             ) : null}
+            {showMenu.Market_Bidding ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="e-Inward (Silk Market)"
+                  to="/seriui/silk-bidding-slip"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Market_Accept_Farmer_Auction ? (
               <MenuItem>
                 <MenuItemLink
@@ -1289,7 +1298,13 @@ function Menu() {
                 <MenuItemLink text="e-Weighment" to="/seriui/weighment" />
               </MenuItem>
             ) : null}
-            {showMenu.Market_Gatepass ? (
+
+            {showMenu.Market_Weighment ? (
+              <MenuItem>
+                <MenuItemLink text="e-Weighment (Silk Market)" to="/seriui/weighment-for-silk-market" />
+              </MenuItem>
+            ) : null}
+            {showMenu.Market_Gatepass ? ( 
               <MenuItem>
                 <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
               </MenuItem>
@@ -1328,7 +1343,6 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                   
                   </MenuSub>
                 </MenuItem>
               ) : null}
@@ -1363,78 +1377,76 @@ function Menu() {
                 </MenuItem>
               ) : null}
             </MenuItem> */}
-  <MenuItem>
-  {showMenu.Market_SeedMarket ? (
-    <MenuItem sub>
-      <MenuItemLink
-        text="Seed Market"
-        onClick={menuToggle}
-        onMouseEnter={menuHover}
-        sub
-      />
-      <MenuSub>
-        {showMenu.Market_SeedMarket_Weighment ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Weighment"
-              to="/seriui/weighment-for-seed-market"
-            />
-          </MenuItem>
-        ) : null}
-        {showMenu.Market_SeedMarket_Lot_Distribution ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Lot Distribution "
-              to="/seriui/lot-groupage"
-            />
-          </MenuItem>
-        ) : null}
-      </MenuSub>
-    </MenuItem>
-  ) : null}
-</MenuItem>
+            <MenuItem>
+              {showMenu.Market_SeedMarket ? (
+                <MenuItem sub>
+                  <MenuItemLink
+                    text="Seed Market"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_SeedMarket_Weighment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Weighment"
+                          to="/seriui/weighment-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedMarket_Lot_Distribution ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Lot Distribution "
+                          to="/seriui/lot-groupage"
+                        />
+                      </MenuItem>
+                    ) : null}
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
 
-<MenuItem>
-  {showMenu.Market_SeedMarket_Payment ? (
-    <MenuItem sub>
-      <MenuItemLink
-        text="e-Payment For Seed Market"
-        onClick={menuToggle}
-        onMouseEnter={menuHover}
-        sub
-      />
-      <MenuSub>
-        {showMenu.Market_SeedMarket_Ready_For_Payment ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Ready for Payment"
-              to="/seriui/ready-for-payment-for-seed-market"
-            />
-          </MenuItem>
-        ) : null}
-        {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Bulk Send to Payment"
-              to="/seriui/bulk-send-to-payment-for-seed-market"
-            />
-          </MenuItem>
-        ) : null}
-        {showMenu.Market_SeedMarket_Payment_Statement ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Payment Statement"
-              to="/seriui/payment-statement-for-seed-market"
-            />
-          </MenuItem>
-        ) : null}
-      </MenuSub>
-    </MenuItem>
-  ) : null}
-</MenuItem>
+            <MenuItem>
+              {showMenu.Market_SeedMarket_Payment ? (
+                <MenuItem sub>
+                  <MenuItemLink
+                    text="e-Payment For Seed Market"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_SeedMarket_Ready_For_Payment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Ready for Payment"
+                          to="/seriui/ready-for-payment-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Bulk Send to Payment"
+                          to="/seriui/bulk-send-to-payment-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedMarket_Payment_Statement ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Payment Statement"
+                          to="/seriui/payment-statement-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
 
-
-            
             {showMenu.Market_Reject ? (
               <MenuItem>
                 <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
@@ -2412,8 +2424,6 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        
-                        
                         {/* {showMenu.Admin_Master_Service_Program ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2478,7 +2488,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {/* {showMenu.Admin_Master_Service_Head_of_Account_Category ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2537,18 +2547,12 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
-                            <MenuItemLink
-                              text="Spacing"
-                              to="/seriui/spacing"
-                            />
+                            <MenuItemLink text="Spacing" to="/seriui/spacing" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Hectare ? (
                           <MenuItem>
-                            <MenuItemLink
-                              text="Hectare"
-                              to="/seriui/hectare"
-                            />
+                            <MenuItemLink text="Hectare" to="/seriui/hectare" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_User_Hierarchy_Mapping ? (
@@ -2583,7 +2587,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {/* {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2592,8 +2596,8 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null} */}
-                        
-                        {showMenu.Admin_Master_Service_Activity? (
+
+                        {showMenu.Admin_Master_Service_Activity ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Activity"
@@ -2786,18 +2790,12 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Garden_Reason ? (
                           <MenuItem>
-                            <MenuItemLink
-                              text="Reason"
-                              to="/seriui/reason"
-                            />
+                            <MenuItemLink text="Reason" to="/seriui/reason" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Mount ? (
                           <MenuItem>
-                            <MenuItemLink
-                              text="Mount"
-                              to="/seriui/mount"
-                            />
+                            <MenuItemLink text="Mount" to="/seriui/mount" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Disease_Status ? (
@@ -2883,6 +2881,14 @@ function Menu() {
                             <MenuItemLink
                               text="Activate Reeler"
                               to="/seriui/activate-reeler"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Activate_Trader ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Activate Trader"
+                              to="/seriui/activate-trader"
                             />
                           </MenuItem>
                         ) : null}

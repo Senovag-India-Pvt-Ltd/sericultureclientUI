@@ -24,6 +24,8 @@ function NewTraderLicense() {
     districtId: "",
     stateId: "",
     address: "",
+    marketMasterId: "",
+    mobileNumber:"",
     premisesDescription: "",
     applicationDate: "2023-11-09T12:59:58.303+00:00",
     applicationNumber: "",
@@ -66,7 +68,8 @@ function NewTraderLicense() {
       api
         .post(baseURL2 + `trader-license/add`, data)
         .then((response) => {
-          saveSuccess();
+          const arnNumber = response.data.content.arnNumber;
+          saveSuccess(arnNumber);
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
@@ -78,6 +81,8 @@ function NewTraderLicense() {
             lastName: "",
             fatherName: "",
             districtId: "",
+            marketMasterId: "",
+            mobileNumber:"",
             stateId: "",
             address: "",
             premisesDescription: "",
@@ -122,6 +127,8 @@ function NewTraderLicense() {
       districtId: "",
       stateId: "",
       address: "",
+      marketMasterId: "",
+      mobileNumber:"",
       premisesDescription: "",
       applicationDate: "2023-11-09T12:59:58.303+00:00",
       applicationNumber: "",
@@ -135,6 +142,25 @@ function NewTraderLicense() {
       silkType: "",
     });
   };
+
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
+
+  const getMarketList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMarketList();
+  }, []);
+
   // to get traderType Unit
   const [traderTypeListData, setTraderTypeListData] = useState([]);
 
@@ -334,6 +360,22 @@ function NewTraderLicense() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
+                      <Form.Label htmlFor="fatherName">
+                        Mobile Number
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="mobileNumber"
+                          name="mobileNumber"
+                          value={data.mobileNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Mobile Number"
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
                       <Form.Label>State</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -387,6 +429,42 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+
+                    {/* <Col lg="6"> */}
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  {/* </Col> */}
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="premisesDescription">

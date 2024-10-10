@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { reference } from "@popperjs/core";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -43,6 +44,8 @@ function DashboardReportList() {
   });
 
   const [schemeDataListIds, setSchemeDataListIds] = useState([]);
+  const [recordFromAppForm, setRecordFromAppForm] = useState([]);
+  const [permission, setPermission] = useState(false);
 
   console.log("schemeDataListIds", schemeDataListIds);
 
@@ -62,7 +65,7 @@ function DashboardReportList() {
   // const handleShowModal = () => setShowModal(true);
   const handleShowModal = (fid) => {
     setShowModal(true);
-    getActionFarmerList(fid); // Call getList with userId and stepId
+    // getActionFarmerList(fid); // Call getList with userId and stepId
   };
 
   const handleCloseModal = () => setShowModal(false);
@@ -91,6 +94,10 @@ function DashboardReportList() {
 
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
+
+  const checkToShowModal = (fid) => {
+    getActionFarmerList(fid);
+  };
 
   const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
     useState([]);
@@ -122,6 +129,26 @@ function DashboardReportList() {
         updatedData[i] = { ...data, ...actionFarmerData[0] };
       } else {
         updatedData.push({ ...data, ...actionFarmerData[0] });
+      }
+      return updatedData;
+    });
+
+    handleShowModal3(i);
+  };
+
+  const receiveDataForPushToDbt = (data, i) => {
+    console.log("i", i);
+    setPushToDbtData((prev) => ({ ...prev, row: i }));
+    setSendApplicationFormServiceData((prev) => {
+      console.log("prevdata", prev);
+      console.log("datadata", data);
+      const updatedData = [...prev];
+      if (i < updatedData.length) {
+        // updatedData[i] = { ...data, ...actionFarmerData[0] };
+        updatedData[i] = { ...data };
+      } else {
+        // updatedData.push({ ...data, ...actionFarmerData[0] });
+        updatedData.push({ ...data });
       }
       return updatedData;
     });
@@ -200,6 +227,77 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
       grow: 2,
+    },
+  ];
+
+  const schemeDetailsPushToDbtListColumn = [
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row, i) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={i}
+    //       checked={schemeDataListIds.includes(i)}
+    //       onChange={() => handleCheckboxChange(i, row)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
+    {
+      name: "Scheme Quota Name",
+      selector: (row) => row.schemeQuotaName,
+      cell: (row) => <span>{row.schemeQuotaName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Name",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    // {
+    //   name: "Allocated Amount",
+    //   selector: (row) => row.allocatedAmount,
+    //   cell: (row) => <span>{row.allocatedAmount}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Share Percentage",
+    //   selector: (row) => row.shareInPercentage,
+    //   cell: (row) => <span>{row.shareInPercentage}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name: "Subsidy Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Action",
+      cell: (row, i) => (
+        <>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => receiveDataForPushToDbt(row, i)}
+            className="ms-1"
+          >
+            Add
+          </Button>
+        </>
+      ),
+      sortable: true,
+      hide: "md",
     },
   ];
 
@@ -318,12 +416,13 @@ function DashboardReportList() {
   //  to get data from api
   const getIdList = () => {
     setLoading(true);
-    const response = api
+    api
       .get(baseURLMasterData + `userMaster/get-join/${userId}`)
       .then((response) => {
         setDistrictId(response.data.content.districtId);
         setTalukId(response.data.content.talukId);
         setDesignationId(response.data.content.designationId);
+        getList(response.data.content.districtId,response.data.content.talukId);
         setLoading(false);
       })
       .catch((err) => {
@@ -356,19 +455,62 @@ function DashboardReportList() {
       });
   };
 
-  const getList = () => {
+  // const getList = () => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+  //       {},
+  //       // { params: { userId: 27, stepId: 1 } }
+  //       { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content);
+  //       const scApplicationFormIds = response.data.content.map(
+  //         (item) => item.scApplicationFormId
+  //       );
+
+  //       const data = response.data.content; // Store the response data in a variable
+  //       setAssignData(data);
+
+  //       // Extract and set the applicationDocumentId
+  //       const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+  //       setApplicationFormId(applicationDocumentId);
+
+  //       // Extract subSchemeId and approvalStageId
+  //       const subSchemeId = data[0]?.subSchemeId;
+  //       const approvalStageId = data[0]?.approvalStageId;
+  //       getIdList();
+  //       if (subSchemeId && approvalStageId && districtId && talukId) {
+  //         getUserFromDistrictList(
+  //           subSchemeId,
+  //           approvalStageId,
+  //           districtId,
+  //           talukId
+  //         );
+  //       }
+
+  //       // setAllApplicationIds(scApplicationFormIds);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getList = async (district,taluk) => {
     setLoading(true);
-    api
-      .post(
-        baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-        {},
-        // { params: { userId: 27, stepId: 1 } }
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
-      )
-      .then((response) => {
+    try {
+        const response = await api.post(
+            baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+            {},
+            { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+        );
+        
         setListData(response.data.content);
         const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
+            (item) => item.scApplicationFormId
         );
 
         const data = response.data.content; // Store the response data in a variable
@@ -382,26 +524,30 @@ function DashboardReportList() {
         const subSchemeId = data[0]?.subSchemeId;
         const approvalStageId = data[0]?.approvalStageId;
 
-        if (subSchemeId && approvalStageId && districtId && talukId) {
-          getUserFromDistrictList(
-            subSchemeId,
-            approvalStageId,
-            districtId,
-            talukId
-          );
+        if (subSchemeId && approvalStageId && district && taluk) {
+            await getUserFromDistrictList(
+                subSchemeId,
+                approvalStageId,
+                district,
+                taluk
+            );
         }
 
         // setAllApplicationIds(scApplicationFormIds);
-        setLoading(false);
-      })
-      .catch((err) => {
+    } catch (err) {
         setListData({});
+    } finally {
         setLoading(false);
-      });
-  };
+    }
+};
+
+// useEffect(() => {
+  
+// }, [userId]);
 
   useEffect(() => {
-    getList();
+     getIdList();
+    //  getList();
   }, []);
 
   const getActionFarmerList = (fid) => {
@@ -420,21 +566,64 @@ function DashboardReportList() {
       )
       .then((response) => {
         const data = response.data.content; // Store the response data in a variable
+        const recordData = data[0];
         setActionFarmerData(data);
 
-        if (data.financialDelegation) {
-          // TODO: call checkApprovalPower api if it returns true then show modal window
-          // else show alert message that "You don't have permission to approve this application transfer to higher authority"
-          // later need to click on reassign button to reassign the application to higher authority
+        console.log("data", data);
+
+        if (recordData.financialDelegation) {
+          api
+            .post(
+              baseURLDBT + `service/checkApprovalPower`,
+              {},
+              {
+                params: {
+                  approvalStageId: recordData.approvalStageId,
+                  designationId,
+                  schemeAmount: recordData.schemeAmount,
+                },
+              }
+            )
+            .then((response) => {
+              if (response.data) {
+                handleShowModal(fid);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title:
+                    "You don't have permission to approve this application re-assign to higher authority",
+                });
+              }
+            })
+            .catch((err) => {});
+        } else {
+          handleShowModal(fid);
+        }
+
+        if (recordData.pushToDbt) {
+          api
+            .post(
+              baseURLDBT +
+                `service/getApplicationDetailsFromScApplicationFormServiceId`,
+              { scApplicationFormServiceId: recordData.applicationDocumentId }
+            )
+            .then((response) => {
+              setRecordFromAppForm(
+                response.data.content[0].applicationDetailsResponses
+              );
+            })
+            .catch((err) => {
+              setRecordFromAppForm([]);
+            });
         }
 
         // Extract and set the applicationDocumentId
-        const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+        const applicationDocumentId = recordData?.applicationDocumentId; // Use data variable here
         setApplicationFormId(applicationDocumentId); // Set applicationFormId here
 
         // Extract categoryId and componentId
-        const categoryId = data[0]?.categoryId;
-        const componentId = data[0]?.componentId;
+        const categoryId = recordData?.categoryId;
+        const componentId = recordData?.componentId;
 
         // Fetch DBT List using extracted categoryId and componentId
         if (categoryId && componentId) {
@@ -442,8 +631,8 @@ function DashboardReportList() {
         }
 
         // Extract subSchemeId and approvalStageId
-        const subSchemeId = data[0]?.subSchemeId;
-        const approvalStageId = data[0]?.approvalStageId;
+        const subSchemeId = recordData?.subSchemeId;
+        const approvalStageId = recordData?.approvalStageId;
 
         // Fetch DBT List using extracted subSchemeId and approvalStageId
         if (subSchemeId && approvalStageId) {
@@ -481,16 +670,14 @@ function DashboardReportList() {
       });
   };
 
-  useEffect(() => {
-    getIdList();
-  }, [userId]);
+ 
 
-  useEffect(() => {
-    if (districtId && talukId) {
-      // Call getActionFarmerList after districtId and talukId are available
-      getActionFarmerList();
-    }
-  }, [districtId, talukId]);
+  // useEffect(() => {
+  //   if (districtId && talukId) {
+  //     // Call getActionFarmerList after districtId and talukId are available
+  //     getActionFarmerList();
+  //   }
+  // }, [districtId, talukId]);
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
@@ -583,10 +770,15 @@ function DashboardReportList() {
       setSendApplicationFormServiceData(newSendApplicationFormServiceData);
     } else {
       setSchemeDataListIds((prev) => [...prev, _id]);
-      setSendApplicationFormServiceData((prev) => [
-        ...prev,
-        ...actionFarmerData,
-      ]);
+      // setSendApplicationFormServiceData((prev) => [
+      //   ...prev,
+      //   ...actionFarmerData,
+      // ]);
+      setSendApplicationFormServiceData((prev) => {
+        const updatedData = [...prev];
+        updatedData[_id] = { ...data, ...actionFarmerData[0] };
+        return updatedData;
+      });
     }
   };
 
@@ -706,7 +898,7 @@ function DashboardReportList() {
         userId: assignData.userId,
       };
       api
-        .post(baseURLDBT + `service/workOrderUpdate`, sendPost)
+        .post(baseURLDBT + `service/reassignToUser`, sendPost)
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
@@ -790,27 +982,55 @@ function DashboardReportList() {
     } else {
       event.preventDefault();
 
-      const sendPost = {
-        description: actionData.comment,
-        rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
-        // applicationFormId: actionData.applicationFormId,
-        applicationFormId: applicationFormId,
-        workOrderNumber: actionData.workOrderNumber,
-        sanctionOrderNumber: actionData.sanctionOrderNumber,
-        userId: actionData.userId,
-        stepId: actionData.stepId,
-        pushToDBTRequestList: dbtPushedList,
-        // paymentTo: actionData.paymentTo,
-        // paymentMethod: actionData.paymentMethod,
-        // dateOfPayment: actionData.dateOfPayment,
-        // referenceNo: actionData.referenceNo,
-      };
+      const sendResponse = sendApplicationFormServiceData.map((item) => {
+        return {
+          schemeQuotaId: item.schemeQuotaId,
+          schemeAmount: item.schemeAmount,
+          paymentTo: item.paymentTo,
+          paymentMethod: item.paymentMethod,
+          dateOfPayment: item.dateOfPayment,
+          referenceNo: item.referenceNo,
+        };
+      });
+
+      let sendPost;
+      if (actionFarmerData[0].pushToDbt) {
+        const sendData = sendApplicationFormServiceData.map((item) => {
+          return {
+            applicationFormId: item.scApplicationFormId,
+            schemeAmount: item.schemeAmount,
+            paymentTo: item.paymentTo,
+            paymentMethod: item.paymentMethod,
+            dateOfPayment: item.dateOfPayment,
+            referenceNo: item.referenceNo,
+          };
+        });
+        sendPost = sendData;
+      } else {
+        sendPost = {
+          description: actionData.comment,
+          rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+          // applicationFormId: actionData.applicationFormId,
+          applicationFormId: applicationFormId,
+          workOrderNumber: actionData.workOrderNumber,
+          sanctionOrderNumber: actionData.sanctionOrderNumber,
+          userId: actionData.userId,
+          stepId: actionData.stepId,
+          pushToDBTRequestList: sendResponse,
+          // pushToDBTRequestList: dbtPushedList,
+          // paymentTo: actionData.paymentTo,
+          // paymentMethod: actionData.paymentMethod,
+          // dateOfPayment: actionData.dateOfPayment,
+          // referenceNo: actionData.referenceNo,
+        };
+      }
 
       let apiCall;
 
       if (actionFarmerData.length > 0) {
         // const workFlowType = actionFarmerData[0].workFlowType;
-        // Need to ask Sathish sir do we need to call multiple APIs based on work flow types
+        // Need to ask Sathish do we need to call multiple APIs based on work flow types
+
         if (actionFarmerData[0].workOrder) {
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
         }
@@ -1008,7 +1228,7 @@ function DashboardReportList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleShowModal4(row.applicationDocumentId)}
+            onClick={() => handleShowModal4()}
             className="me-2" // Adds space between buttons
             // disabled={data.userMasterId ? false : true}
           >
@@ -1019,7 +1239,9 @@ function DashboardReportList() {
             variant="primary"
             size="sm"
             onClick={() =>
-              handleShowModal(row.fruitsId, row.applicationDocumentId)
+              // handleShowModal(row.fruitsId, row.applicationDocumentId)
+              // checkToShowModal(row.fruitsId, row.applicationDocumentId)
+              checkToShowModal(row.fruitsId)
             }
             className="me-2" // Adds space between buttons
           >
@@ -1624,6 +1846,84 @@ function DashboardReportList() {
                                   />
                                 </Form.Group>
                               </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    Approval Stage
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <Col>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="stepId"
+                                        value={actionData.stepId}
+                                        onChange={handleActionInputs}
+                                        onBlur={() => handleActionInputs}
+                                        // required
+                                        // isInvalid={
+                                        //   actionData.approvalStageId === undefined ||
+                                        //   actionData.approvalStageId === "0"
+                                        // }
+                                      >
+                                        <option value="">
+                                          Select Approval Stage
+                                        </option>
+                                        {approvalStageAfterNextStepListData.map(
+                                          (list) => (
+                                            <option
+                                              key={list.approvalStageId}
+                                              value={list.approvalStageId}
+                                            >
+                                              {list.approvalStageName}
+                                            </option>
+                                          )
+                                        )}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        Approval Stage Name is required
+                                      </Form.Control.Feedback>
+                                    </div>
+                                  </Col>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    User
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <Col>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="userId"
+                                        value={actionData.userId}
+                                        onChange={handleActionInputs}
+                                        onBlur={() => handleActionInputs}
+                                        // required
+                                        // isInvalid={
+                                        //   actionData.userId === undefined ||
+                                        //   actionData.userId === "0"
+                                        // }
+                                      >
+                                        <option value="">Select User</option>
+                                        {userFromDistrictData.map((list) => (
+                                          <option
+                                            key={list.userId}
+                                            value={list.userId}
+                                          >
+                                            {list.userName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      {/* <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback> */}
+                                    </div>
+                                  </Col>
+                                </Form.Group>
+                              </Col>
                             </Row>
                           </Card.Body>
                         </Card>
@@ -1796,7 +2096,7 @@ function DashboardReportList() {
                                 customStyles={customStyles}
                               />
                             </Row>
-                            <Row>
+                            <Row className="mt-2">
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -1966,7 +2266,7 @@ function DashboardReportList() {
                               }}
                             >
                               <Card.Body>
-                                <div style={{ overflowX: "auto" }}>
+                                {/* <div style={{ overflowX: "auto" }}>
                                   <table
                                     className="table small table-bordered table-hover"
                                     style={{ tableLayout: "fixed" }}
@@ -2018,7 +2318,6 @@ function DashboardReportList() {
                                               ))}
                                               <td>
                                                 {" "}
-                                                {/* Add button in Action column */}
                                                 <Button
                                                   variant="primary"
                                                   onClick={() =>
@@ -2043,7 +2342,18 @@ function DashboardReportList() {
                                       )}
                                     </tbody>
                                   </table>
-                                </div>
+                                </div> */}
+                                <Row>
+                                  <DataTable
+                                    tableClassName="data-table-head-light table-responsive"
+                                    columns={schemeDetailsPushToDbtListColumn}
+                                    data={recordFromAppForm}
+                                    highlightOnHover
+                                    progressPending={loading}
+                                    theme="solarized"
+                                    customStyles={customStyles}
+                                  />
+                                </Row>
                               </Card.Body>
                             </Card>
                             {/* <Row>
@@ -2231,7 +2541,7 @@ function DashboardReportList() {
         </Card>
       </Block>
 
-      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+      <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Upload Documents</Modal.Title>
         </Modal.Header>
