@@ -2094,12 +2094,12 @@ function Menu() {
                   to="/seriui/track-current-status"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.Inspection_Supply_of_Disinfectants_to_Farmers ? (
               <MenuItem>
                 <MenuItemLink
                   text="Supply of disinfectants to farmers"
-                  to="/seriui/inspect-supply-disinfectants"
+                  to="/seriui/supply-of-disinfectants"
                 />
               </MenuItem>
             ) : null}
@@ -2110,7 +2110,7 @@ function Menu() {
                   to="/seriui/implementation-mgnrega"
                 />
               </MenuItem>
-            ) : null} */}
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
