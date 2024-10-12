@@ -186,11 +186,18 @@ useEffect(() => {
     },
     {
       name: "Quantity Supplied",
-      selector: (row) => row.suppliedDate,
-      cell: (row) => <span>{row.suppliedDate}</span>,
+      selector: (row) => row.quantitySupplied,
+      cell: (row) => <span>{row.quantitySupplied}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+        name: "Date Of Supply",
+        selector: (row) => row.supplyDate,
+        cell: (row) => <span>{row.supplyDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
     {
       name: "Size Of Rearing House",
       selector: (row) => row.sizeOfRearingHouse,
