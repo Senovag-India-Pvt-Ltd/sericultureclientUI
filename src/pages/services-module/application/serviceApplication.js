@@ -2185,7 +2185,7 @@ useEffect(() => {
                               name="spacingId"
                               value={data.spacingId}
                               onChange={handleInputs}
-                              required
+                              // required
                               isInvalid={
                                 data.spacingId === undefined || data.spacingId === "0"
                               }
@@ -2199,9 +2199,9 @@ useEffect(() => {
                                   ))
                                 : ""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Spacing is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -2219,7 +2219,7 @@ useEffect(() => {
                               name="hectareId"
                               value={data.hectareId}
                               onChange={handleInputs}
-                              required
+                              // required
                               isInvalid={
                                 data.hectareId === undefined || data.hectareId === "0"
                               }
@@ -2233,9 +2233,9 @@ useEffect(() => {
                                   ))
                                 : ""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Hectare is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>

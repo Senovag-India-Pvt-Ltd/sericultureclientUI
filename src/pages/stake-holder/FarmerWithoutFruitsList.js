@@ -103,15 +103,15 @@ function FarmerWithoutFruitsList() {
     // navigate("/seriui/state");
   };
 
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/stake-holder-edit/${_id}`);
-    // navigate("/seriui/state");
-  };
-
   // const handleUpdate = (_id) => {
-  //   navigate(`/seriui/without-fruits-id-stake-holder-edit/${_id}`);
+  //   navigate(`/seriui/stake-holder-edit/${_id}`);
   //   // navigate("/seriui/state");
   // };
+
+  const handleUpdate = (_id) => {
+    navigate(`/seriui/without-fruits-id-stake-holder-edit/${_id}`);
+    // navigate("/seriui/state");
+  };
 
   const deleteError = () => {
     Swal.fire({

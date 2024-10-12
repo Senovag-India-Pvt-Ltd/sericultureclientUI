@@ -168,6 +168,14 @@ function NewTraderLicenseView() {
                         <td style={styles.ctstyle}>Silk Type:</td>
                         <td>{NewTraderLicense.silkType}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Market:</td>
+                        <td>{NewTraderLicense.marketMasterName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Mobile Number:</td>
+                        <td>{NewTraderLicense.mobileNumber}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

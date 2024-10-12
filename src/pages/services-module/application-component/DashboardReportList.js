@@ -416,12 +416,13 @@ function DashboardReportList() {
   //  to get data from api
   const getIdList = () => {
     setLoading(true);
-    const response = api
+    api
       .get(baseURLMasterData + `userMaster/get-join/${userId}`)
       .then((response) => {
         setDistrictId(response.data.content.districtId);
         setTalukId(response.data.content.talukId);
         setDesignationId(response.data.content.designationId);
+        getList(response.data.content.districtId,response.data.content.talukId);
         setLoading(false);
       })
       .catch((err) => {
@@ -454,19 +455,62 @@ function DashboardReportList() {
       });
   };
 
-  const getList = () => {
+  // const getList = () => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+  //       {},
+  //       // { params: { userId: 27, stepId: 1 } }
+  //       { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content);
+  //       const scApplicationFormIds = response.data.content.map(
+  //         (item) => item.scApplicationFormId
+  //       );
+
+  //       const data = response.data.content; // Store the response data in a variable
+  //       setAssignData(data);
+
+  //       // Extract and set the applicationDocumentId
+  //       const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+  //       setApplicationFormId(applicationDocumentId);
+
+  //       // Extract subSchemeId and approvalStageId
+  //       const subSchemeId = data[0]?.subSchemeId;
+  //       const approvalStageId = data[0]?.approvalStageId;
+  //       getIdList();
+  //       if (subSchemeId && approvalStageId && districtId && talukId) {
+  //         getUserFromDistrictList(
+  //           subSchemeId,
+  //           approvalStageId,
+  //           districtId,
+  //           talukId
+  //         );
+  //       }
+
+  //       // setAllApplicationIds(scApplicationFormIds);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getList = async (district,taluk) => {
     setLoading(true);
-    api
-      .post(
-        baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-        {},
-        // { params: { userId: 27, stepId: 1 } }
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
-      )
-      .then((response) => {
+    try {
+        const response = await api.post(
+            baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+            {},
+            { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+        );
+
         setListData(response.data.content);
         const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
+            (item) => item.scApplicationFormId
         );
 
         const data = response.data.content; // Store the response data in a variable
@@ -480,26 +524,30 @@ function DashboardReportList() {
         const subSchemeId = data[0]?.subSchemeId;
         const approvalStageId = data[0]?.approvalStageId;
 
-        if (subSchemeId && approvalStageId && districtId && talukId) {
-          getUserFromDistrictList(
-            subSchemeId,
-            approvalStageId,
-            districtId,
-            talukId
-          );
+        if (subSchemeId && approvalStageId && district && taluk) {
+            await getUserFromDistrictList(
+                subSchemeId,
+                approvalStageId,
+                district,
+                taluk
+            );
         }
 
         // setAllApplicationIds(scApplicationFormIds);
-        setLoading(false);
-      })
-      .catch((err) => {
+    } catch (err) {
         setListData({});
+    } finally {
         setLoading(false);
-      });
-  };
+    }
+};
+
+// useEffect(() => {
+
+// }, [userId]);
 
   useEffect(() => {
-    getList();
+     getIdList();
+    //  getList();
   }, []);
 
   const getActionFarmerList = (fid) => {
@@ -548,7 +596,7 @@ function DashboardReportList() {
               }
             })
             .catch((err) => {});
-        }else{
+        } else {
           handleShowModal(fid);
         }
 
@@ -622,9 +670,7 @@ function DashboardReportList() {
       });
   };
 
-  useEffect(() => {
-    getIdList();
-  }, [userId]);
+
 
   // useEffect(() => {
   //   if (districtId && talukId) {
@@ -948,7 +994,7 @@ function DashboardReportList() {
       });
 
       let sendPost;
-      if(actionFarmerData[0].pushToDbt){
+      if (actionFarmerData[0].pushToDbt) {
         const sendData = sendApplicationFormServiceData.map((item) => {
           return {
             applicationFormId: item.scApplicationFormId,
@@ -959,8 +1005,8 @@ function DashboardReportList() {
             referenceNo: item.referenceNo,
           };
         });
-        sendPost= sendData;
-      }else{
+        sendPost = sendData;
+      } else {
         sendPost = {
           description: actionData.comment,
           rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
@@ -978,8 +1024,6 @@ function DashboardReportList() {
           // referenceNo: actionData.referenceNo,
         };
       }
-
-       
 
       let apiCall;
 
@@ -1184,7 +1228,7 @@ function DashboardReportList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleShowModal4(row.applicationDocumentId)}
+            onClick={() => handleShowModal4()}
             className="me-2" // Adds space between buttons
             // disabled={data.userMasterId ? false : true}
           >

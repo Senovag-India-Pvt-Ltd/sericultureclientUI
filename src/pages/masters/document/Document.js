@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import React from "react";
-import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -25,7 +25,7 @@ function Document() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (e) => {
-    axios
+    api
       .post(baseURL + `documentMaster/add`, data, {
         headers: _header,
       })
@@ -60,19 +60,7 @@ function Document() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Documents</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Documents
-                </li>
-              </ol>
-            </nav>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -99,7 +87,7 @@ function Document() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Form action="#">
           <Row className="g-3 ">
             {/* <Card>

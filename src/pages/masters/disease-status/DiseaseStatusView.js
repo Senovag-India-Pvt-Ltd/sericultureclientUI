@@ -4,11 +4,12 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DocumentsView() {
+function DiseaseStatusView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,7 +20,7 @@ function DocumentsView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [Documents, setDocuments] = useState({});
+  const [DiseaseStatus, setDiseaseStatus] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -29,37 +30,34 @@ function DocumentsView() {
   // }, [id, data]);
   const getIdList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `documentMaster/get/${id}`)
+    const response = api
+      .get(baseURL + `diseaseStatus/get/${id}`)
       .then((response) => {
-        setDocuments(response.data.content);
+        setDiseaseStatus(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setDocuments({});
+        setDiseaseStatus({});
         setLoading(false);
       });
   };
-
-  // console.log(getIdList());
 
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="Documents View" content="container">
+    <Layout title="Disease Status View" content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Documents View</Block.Title>
-            
+            <Block.Title tag="h2">Disease Status View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/documents-list"
+                  to="/seriui/disease-status-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +66,7 @@ function DocumentsView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/documents-list"
+                  to="/seriui/disease-status-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +80,7 @@ function DocumentsView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>Documents Details</Card.Header>
+          <Card.Header>Disease Status Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,11 +93,15 @@ function DocumentsView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{Documents.documentMasterId}</td>
+                        <td>{DiseaseStatus.diseaseStatusId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Documents:</td>
-                        <td>{Documents.documentMasterName}</td>
+                        <td style={styles.ctstyle}> Disease Status Name:</td>
+                        <td>{DiseaseStatus.name}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Description:</td>
+                        <td>{DiseaseStatus.description}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -113,4 +115,4 @@ function DocumentsView() {
   );
 }
 
-export default DocumentsView;
+export default DiseaseStatusView;
