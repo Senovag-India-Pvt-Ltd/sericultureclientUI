@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -25,7 +25,7 @@ function DocumentList() {
 
   const getList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `documentMaster/list`, _params)
       .then((response) => {
         setListData(response.data.content.documentMaster);
@@ -69,7 +69,7 @@ function DocumentList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        axios
+        api
           .delete(baseURL + `documentMaster/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
@@ -141,17 +141,7 @@ function DocumentList() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Document List</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Caste List</Link></li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  List
-                </li>
-              </ol>
-            </nav>
+           
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -178,7 +168,7 @@ function DocumentList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className= "mt-n4">
         <Card>
           <DataTable
             title="Document List"

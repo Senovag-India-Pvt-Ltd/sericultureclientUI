@@ -345,6 +345,7 @@ function Menu() {
     Admin_Master_Land_Machine_Type: false,
 
     Admin_Master_Service: false,
+    Admin_Master_Service_Document: false,
     Admin_Master_Service_Department: false,
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Program: false,
@@ -2427,6 +2428,14 @@ function Menu() {
                             <MenuItemLink
                               text="Scheme Details"
                               to="/seriui/sc-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Document ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Document"
+                              to="/seriui/document"
                             />
                           </MenuItem>
                         ) : null}

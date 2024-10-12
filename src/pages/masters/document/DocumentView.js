@@ -4,7 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -29,7 +29,7 @@ function DocumentsView() {
   // }, [id, data]);
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `documentMaster/get/${id}`)
       .then((response) => {
         setDocuments(response.data.content);
@@ -53,19 +53,7 @@ function DocumentsView() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Documents View</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/documents-list">State List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Documents View
-                </li>
-              </ol>
-            </nav>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
