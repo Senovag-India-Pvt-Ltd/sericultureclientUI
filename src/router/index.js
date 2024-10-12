@@ -892,6 +892,9 @@ import WeighmentForSilkMarket from "../pages/market-and-auction-silk/WeighmentFo
 import SupplyOfDisinfectantsToFarmers from "../pages/chawki-management/SupplyOfDisinfectantsToFarmer";
 import SupplyOfDisinfectantsList from "../pages/chawki-management/SupplyOfDisinfectantsList";
 import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/SupplyOfDisinfectantsToFarmerEdit";
+import MgnregaSchemeEdit from "../pages/chawki-management/MgnregaSchemeEdit";
+import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
+import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
 // Admin and Reports
 
 function Router() {
@@ -1703,6 +1706,15 @@ function Router() {
             <Route
               path="supply-of-disinfectants-list"
               element={<SupplyOfDisinfectantsList />}
+            />
+            <Route
+              path="mgnerga-scheme-edit/:id"
+              element={<MgnregaSchemeEdit />}
+            />
+            <Route path="mgnerga-scheme" element={<MgnregaScheme />} />
+            <Route
+              path="mgnrega-scheme-list" 
+              element={<MgnregaSchemeList />}
             />
             <Route
               path="supply-of-disinfectants-edit/:id"

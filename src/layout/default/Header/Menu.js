@@ -2107,7 +2107,7 @@ function Menu() {
               <MenuItem>
                 <MenuItemLink
                   text="Implementation of MGNREGA"
-                  to="/seriui/implementation-mgnrega"
+                  to="/seriui/mgnerga-scheme"
                 />
               </MenuItem>
             ) : null}
