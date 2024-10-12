@@ -283,7 +283,7 @@ const UserDataColumns = [
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
                         Price
-                        {/* <span className="text-danger">*</span> */}
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
                         <Form.Control
@@ -293,7 +293,7 @@ const UserDataColumns = [
                           onChange={handleLotIdInputs}
                           type="number"
                           placeholder="Enter Price"
-                          // required
+                          required
                         />
                         <Form.Control.Feedback type="invalid">
                           Price is required.
