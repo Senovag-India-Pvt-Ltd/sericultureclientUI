@@ -882,6 +882,17 @@ import DiseaseStatus from "../pages/masters/disease-status/DiseaseStatus";
 import DiseaseStatusView from "../pages/masters/disease-status/DiseaseStatusView";
 import DiseaseStatusEdit from "../pages/masters/disease-status/DiseaseStatusEdit";
 import DiseaseStatusList from "../pages/masters/disease-status/DiseaseStatusList";
+import SeedCocoonInward from "../pages/seed-cocoon-martket/SeedCocoonInward";
+import BasePriceFixation from "../pages/seed-cocoon-martket/BasePriceFixation";
+import PupaTestAndCocoonAssessment from "../pages/seed-cocoon-martket/PupaTestAndCocoonAssessment";
+import TraderActivate from "../pages/stake-holder/trader-license/TraderActivate";
+import PupaAndCocoonAssessmentPage from "../pages/seed-cocoon-martket/PupaAndCocconAssessmentPage";
+import FinalWeighment from "../pages/seed-cocoon-martket/FinalWeighment";
+import ReelerBiddingSlip from "../pages/market-and-auction-silk/ReelerBiddingSlip";
+import WeighmentForSilkMarket from "../pages/market-and-auction-silk/WeighmentForSilkMarket";
+import ReelerMFReports from "../pages/reports-admin/ReelerMFReports";
+import RaceWiseAbstractReport from "../pages/reports-admin/RaceWiseAbstractReport";
+
 // Admin and Reports
 
 function Router() {
@@ -1075,7 +1086,10 @@ function Router() {
               element={<StakeHolderViewPage />}
             />
             <Route path="stake-holder-edit/:id" element={<StakeHolderEdit />} />
-            <Route path="without-fruits-id-stake-holder-edit/:id" element={<WithoutFruitsIdStakeHolderEdit />} />
+            <Route
+              path="without-fruits-id-stake-holder-edit/:id"
+              element={<WithoutFruitsIdStakeHolderEdit />}
+            />
             <Route
               path="issue-new-reeler-license"
               element={<NewReelerLicense />}
@@ -1156,7 +1170,7 @@ function Router() {
             <Route path="trainer-page-list" element={<TrainerPageList />} />
             <Route path="trainer-page-view/:id" element={<TrainerPageView />} />
 
-            <Route path="query-test" element={<Query/>} />
+            <Route path="query-test" element={<Query />} />
 
             <Route
               path="training-deputation-tracker"
@@ -1178,10 +1192,7 @@ function Router() {
               path="farmer-wise-report"
               element={<FarmerRegistrationList />}
             />
-            <Route
-              path="reeler-wise-report"
-              element={<ReelerCountList />}
-            />
+            <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route
               path="direct-fruits-details"
               element={<DirectFruitsDetails />}
@@ -1205,7 +1216,10 @@ function Router() {
               element={<ApplicationDashboard />}
             />
             <Route path="dbt-application" element={<DbtApplication />} />
-            <Route path="dashboard-report-list/:id" element={<DashboardReportList />} />
+            <Route
+              path="dashboard-report-list/:id"
+              element={<DashboardReportList />}
+            />
             <Route path="pull-back" element={<PullBack />} />
             <Route
               path="all-application-list"
@@ -1222,7 +1236,7 @@ function Router() {
               path="district-wise-farmer-count-list"
               element={<DistrictWiseFarmerCountList />}
             />
-             <Route
+            <Route
               path="district-wise-reeler-count-list"
               element={<DistrictWiseReelerCountList />}
             />
@@ -1895,17 +1909,11 @@ function Router() {
             />
 
             <Route path="spacing" element={<Spacing />} />
-            <Route
-              path="spacing-edit/:id"
-              element={<SpacingEdit />}P
-            />
+            <Route path="spacing-edit/:id" element={<SpacingEdit />} P />
             <Route path="spacing-list" element={<SpacingList />} />
 
             <Route path="hectare" element={<Hectares />} />
-            <Route
-              path="hectare-edit/:id"
-              element={< HectareEdit/>}
-            />
+            <Route path="hectare-edit/:id" element={<HectareEdit />} />
             <Route path="hectare-list" element={<HectareList />} />
 
             <Route path="head-of-account" element={<HeadOfAccount />} />
@@ -1914,9 +1922,18 @@ function Router() {
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
             <Route path="inspection-type" element={<InspectionType />} />
-            <Route path="inspection-type-list" element={<InspectionTypeList />} />
-            <Route path="inspection-type-view/:id" element={<InspectionTypeView/>} />
-            <Route path="inspection-type-edit/:id" element={<InspectionTypeEdit />} />
+            <Route
+              path="inspection-type-list"
+              element={<InspectionTypeList />}
+            />
+            <Route
+              path="inspection-type-view/:id"
+              element={<InspectionTypeView />}
+            />
+            <Route
+              path="inspection-type-edit/:id"
+              element={<InspectionTypeEdit />}
+            />
             <Route path="department" element={<Department />} />
             <Route path="department-list" element={<DepartmentList />} />
             <Route path="department-view/:id" element={<DepartmentView />} />
@@ -2261,31 +2278,45 @@ function Router() {
               element={<RelationshipEdit />}
             />
 
-   <Route path="cropStatus" element={<CropStatus />} />
+            <Route path="cropStatus" element={<CropStatus />} />
             <Route path="crop-status-list" element={<CropStatusList />} />
-            <Route path="crop-status-view/:id" element={<CropStatusView/>} />
+            <Route path="crop-status-view/:id" element={<CropStatusView />} />
             <Route path="crop-status-edit/:id" element={<CropStatusEdit />} />
 
             <Route path="cropInspectionType" element={<CropInspectionType />} />
-            <Route path="crop-inspection-type-list" element={<CropInspectionTypeList />} />
-            <Route path="crop-inspection-type-view/:id" element={<CropInspectionTypeView/>} />
-            <Route path="crop-inspection-type-edit/:id" element={<CropInspectionTypeEdit />} />
+            <Route
+              path="crop-inspection-type-list"
+              element={<CropInspectionTypeList />}
+            />
+            <Route
+              path="crop-inspection-type-view/:id"
+              element={<CropInspectionTypeView />}
+            />
+            <Route
+              path="crop-inspection-type-edit/:id"
+              element={<CropInspectionTypeEdit />}
+            />
 
-
-            <Route path="reason" element={<Reason/>} />
-            <Route path="reason-list" element={<ReasonList/>} />
-            <Route path="reason-view/:id" element={<ReasonView/>} />
+            <Route path="reason" element={<Reason />} />
+            <Route path="reason-list" element={<ReasonList />} />
+            <Route path="reason-view/:id" element={<ReasonView />} />
             <Route path="reason-edit/:id" element={<ReasonEdit />} />
 
-            <Route path="mount" element={<Mount/>} />
+            <Route path="mount" element={<Mount />} />
             <Route path="mount-list" element={<MountList />} />
-            <Route path="mount-view/:id" element={<MountView/>} />
+            <Route path="mount-view/:id" element={<MountView />} />
             <Route path="mount-edit/:id" element={<MountEdit />} />
 
-            <Route path="disease-status" element={<DiseaseStatus/>} />
+            <Route path="disease-status" element={<DiseaseStatus />} />
             <Route path="disease-status-list" element={<DiseaseStatusList />} />
-            <Route path="disease-status-view/:id" element={<DiseaseStatusView/>} />
-            <Route path="disease-status-edit/:id" element={<DiseaseStatusEdit />} />
+            <Route
+              path="disease-status-view/:id"
+              element={<DiseaseStatusView />}
+            />
+            <Route
+              path="disease-status-edit/:id"
+              element={<DiseaseStatusEdit />}
+            />
 
             <Route path="state" element={<State />} />
             <Route path="state-list" element={<StateList />} />
@@ -3089,6 +3120,10 @@ function Router() {
               path="weighment-for-seed-market"
               element={<WeighmentForSeedMarket />}
             />
+            <Route
+              path="weighment-for-silk-market"
+              element={<WeighmentForSilkMarket />}
+            />
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
 
@@ -3101,7 +3136,10 @@ function Router() {
 
             {/* Admin and Reports */}
             <Route path="report-admin" element={<ReportsAdmin />} />
-            <Route path="district-monthly-report" element={<DistrictAndTalukWiseMonthlyReport />} />
+            <Route
+              path="district-monthly-report"
+              element={<DistrictAndTalukWiseMonthlyReport />}
+            />
             <Route path="average-report" element={<AverageReport />} />
             <Route path="audio-visual-report" element={<AudioVisualReport />} />
             <Route path="27-b-report" element={<BReport />} />
@@ -3128,6 +3166,7 @@ function Router() {
             {/* Role Pages */}
             <Route path="role-pages" element={<RolePages />} />
             <Route path="activate-reeler" element={<ReelerActivate />} />
+            <Route path="activate-trader" element={<TraderActivate />} />
 
             {/* Flex Time  */}
             <Route path="flex-time" element={<FlexTime />} />
@@ -3141,6 +3180,8 @@ function Router() {
             {/* Reports */}
             <Route path="pending-reports" element={<PendingReport />} />
             <Route path="unit-counter-report" element={<UnitCounterReport />} />
+            <Route path="reeler-mf-report" element={<ReelerMFReports />} />
+
             <Route
               path="farmer-transaction-report"
               element={<FarmerTransactionReport />}
@@ -3172,6 +3213,8 @@ function Router() {
             <Route path="reeler-mf" element={<ReelerMfReport />} />
             <Route path="unit-mf" element={<UnitMf />} />
             <Route path="reeler-abstract" element={<ReelerAbstract />} />
+            <Route path="race-wise-abstract" element={<RaceWiseAbstractReport/>} />
+
             <Route path="reeler-purchase" element={<ReelerPurchase />} />
             {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
             <Route
@@ -3182,6 +3225,26 @@ function Router() {
 
             {/* Display All Lot */}
             {/* <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} /> */}
+
+            {/* Silk Market */}
+
+            <Route path="silk-bidding-slip" element={<ReelerBiddingSlip />} />
+
+            {/* Seed Cocoon Market */}
+            <Route path="seed-cocoon-inward" element={<SeedCocoonInward />} />
+
+            <Route path="base-price-fixation" element={<BasePriceFixation />} />
+
+            <Route
+              path="pupa-test-and-assessment"
+              element={<PupaTestAndCocoonAssessment />}
+            />
+
+            <Route
+              path="pupa-test-and-assessment-page"
+              element={<PupaAndCocoonAssessmentPage />}
+            />
+            <Route path="final-weighment-page" element={<FinalWeighment />} />
 
             {/* Market Exception Time */}
             <Route
