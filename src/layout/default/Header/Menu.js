@@ -1514,6 +1514,30 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
+                    {showMenu.Market_SeedCocoonMarket_Inward ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Inward"
+                          to="/seriui/seed-cocoon-inward"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedCocoonMarket_Base_Price_Fixation ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Base Price Fixation"
+                          to="/seriui/base-price-fixation"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Pupa Test And Cocoon Assessment Page"
+                          to="/seriui/pupa-test-and-assessment-page"
+                        />
+                      </MenuItem>
+                    ) : null}
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
