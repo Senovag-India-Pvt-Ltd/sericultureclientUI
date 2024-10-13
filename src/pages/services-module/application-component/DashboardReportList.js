@@ -973,6 +973,114 @@ function DashboardReportList() {
 
   // console.log("dbtPushedList",dbtPushedList);
 
+  // const postActionData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+
+  //     const sendResponse = sendApplicationFormServiceData.map((item) => {
+  //       return {
+  //         schemeQuotaId: item.schemeQuotaId,
+  //         schemeAmount: item.schemeAmount,
+  //         paymentTo: item.paymentTo,
+  //         paymentMethod: item.paymentMethod,
+  //         dateOfPayment: item.dateOfPayment,
+  //         referenceNo: item.referenceNo,
+  //       };
+  //     });
+
+  //     let sendPost;
+  //     if (actionFarmerData[0].pushToDbt) {
+  //       const sendData = sendApplicationFormServiceData.map((item) => {
+  //         return {
+  //           applicationFormId: item.scApplicationFormId,
+  //           schemeAmount: item.schemeAmount,
+  //           paymentTo: item.paymentTo,
+  //           paymentMethod: item.paymentMethod,
+  //           dateOfPayment: item.dateOfPayment,
+  //           referenceNo: item.referenceNo,
+  //         };
+  //       });
+  //       sendPost = sendData;
+  //     } else {
+  //       sendPost = {
+  //         description: actionData.comment,
+  //         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+  //         // applicationFormId: actionData.applicationFormId,
+  //         applicationFormId: applicationFormId,
+  //         workOrderNumber: actionData.workOrderNumber,
+  //         sanctionOrderNumber: actionData.sanctionOrderNumber,
+  //         userId: actionData.userId,
+  //         stepId: actionData.stepId,
+  //         pushToDBTRequestList: sendResponse,
+  //         // pushToDBTRequestList: dbtPushedList,
+  //         // paymentTo: actionData.paymentTo,
+  //         // paymentMethod: actionData.paymentMethod,
+  //         // dateOfPayment: actionData.dateOfPayment,
+  //         // referenceNo: actionData.referenceNo,
+  //       };
+  //     }
+
+  //     let apiCall;
+
+  //     if (actionFarmerData.length > 0) {
+  //       // const workFlowType = actionFarmerData[0].workFlowType;
+  //       // Need to ask Sathish do we need to call multiple APIs based on work flow types
+
+  //       if (actionFarmerData[0].workOrder) {
+  //         apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+  //       }
+  //       if (actionFarmerData[0].sanctionOrder) {
+  //         apiCall = api.post(
+  //           baseURLDBT + `service/sanctionOrderUpdate`,
+  //           sendPost
+  //         );
+  //       }
+  //       if (actionFarmerData[0].pushToDbt) {
+  //         apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
+  //       }
+  //     }
+
+  //     if (apiCall) {
+  //       apiCall
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //           } else if (response.data.error) {
+  //             saveError(response.data.error_description);
+  //           } else {
+  //             // Generate the acknowledgment after a successful work order update
+  //             if (actionFarmerData[0].workOrder) {
+  //               generateWorkOrderAcknowledgment(applicationFormId);
+  //             }
+
+  //             saveSuccess();
+
+  //             clear();
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+  //     }
+
+  //     setValidated(true);
+  //   }
+  // };
+
   const postActionData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -981,7 +1089,7 @@ function DashboardReportList() {
       setValidated(true);
     } else {
       event.preventDefault();
-
+  
       const sendResponse = sendApplicationFormServiceData.map((item) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
@@ -992,7 +1100,7 @@ function DashboardReportList() {
           referenceNo: item.referenceNo,
         };
       });
-
+  
       let sendPost;
       if (actionFarmerData[0].pushToDbt) {
         const sendData = sendApplicationFormServiceData.map((item) => {
@@ -1010,27 +1118,25 @@ function DashboardReportList() {
         sendPost = {
           description: actionData.comment,
           rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
-          // applicationFormId: actionData.applicationFormId,
           applicationFormId: applicationFormId,
           workOrderNumber: actionData.workOrderNumber,
           sanctionOrderNumber: actionData.sanctionOrderNumber,
           userId: actionData.userId,
           stepId: actionData.stepId,
           pushToDBTRequestList: sendResponse,
-          // pushToDBTRequestList: dbtPushedList,
-          // paymentTo: actionData.paymentTo,
-          // paymentMethod: actionData.paymentMethod,
-          // dateOfPayment: actionData.dateOfPayment,
-          // referenceNo: actionData.referenceNo,
         };
       }
-
+  
       let apiCall;
-
-      if (actionFarmerData.length > 0) {
-        // const workFlowType = actionFarmerData[0].workFlowType;
-        // Need to ask Sathish do we need to call multiple APIs based on work flow types
-
+  
+      // Check if all conditions are null/false, if so, call inspection update API
+      if (
+        !actionFarmerData[0].pushToDbt &&
+        !actionFarmerData[0].sanctionOrder &&
+        !actionFarmerData[0].workOrder
+      ) {
+        apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+      } else {
         if (actionFarmerData[0].workOrder) {
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
         }
@@ -1044,7 +1150,7 @@ function DashboardReportList() {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
         }
       }
-
+  
       if (apiCall) {
         apiCall
           .then((response) => {
@@ -1057,9 +1163,8 @@ function DashboardReportList() {
               if (actionFarmerData[0].workOrder) {
                 generateWorkOrderAcknowledgment(applicationFormId);
               }
-
+  
               saveSuccess();
-
               clear();
               setValidated(false);
             }
@@ -1076,10 +1181,11 @@ function DashboardReportList() {
             }
           });
       }
-
+  
       setValidated(true);
     }
   };
+  
 
   const saveAssignSuccess = (message) => {
     Swal.fire({
@@ -1572,11 +1678,11 @@ function DashboardReportList() {
   };
 
   return (
-    <Layout title="Pre-Inspection List">
+    <Layout title="List Of Application">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Pre-Inspection List</Block.Title>
+            <Block.Title tag="h2">List Of Application</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1834,7 +1940,7 @@ function DashboardReportList() {
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
-                                    <strong>Description</strong>
+                                    <strong>Remarks/Description</strong>
                                   </Form.Label>
                                   <Form.Control
                                     id="comment"
@@ -3174,76 +3280,77 @@ function DashboardReportList() {
                 </Accordion.Body>
               </Accordion.Item>
 
-              {viewDetailsData?.workflowDetails?.length > 0 ? (
-                viewDetailsData.workflowDetails.map((workFlow, index) => (
-                  <Accordion.Item eventKey={index + 2} key={index}>
-                    <Accordion.Header
-                      style={{
-                        backgroundColor: "#0F6CBE",
-                        color: "white",
-                        fontWeight: "bold",
-                      }}
-                      className="mb-2"
-                    >
-                      Work Flow Details
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>Step Name:</td>
-                            <td>{workFlow.stepName || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Status:</td>
-                            <td>{workFlow.status || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Assigned By:</td>
-                            <td>{workFlow.assignedBy || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Reject Reason:</td>
-                            <td>{workFlow.rejectReason || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Rejected By:</td>
-                            <td>{workFlow.rejectReason || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Comment:</td>
-                            <td>{workFlow.comment || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Reason:</td>
-                            <td>{workFlow.reason || "N/A"}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Assigned To:</td>
-                            <td>{workFlow.assignedTo || "N/A"}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                ))
-              ) : (
-                <Accordion.Item eventKey="land">
-                  <Accordion.Header
-                    style={{
-                      backgroundColor: "#0F6CBE",
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                    className="mb-2"
-                  >
-                    Work Flow Details
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    No Work Flow Details Available
-                  </Accordion.Body>
-                </Accordion.Item>
-              )}
+             {viewDetailsData?.workflowDetails?.length > 0 ? (
+            <Accordion.Item eventKey="workflow-details">
+              <Accordion.Header
+                style={{
+                  backgroundColor: "#0F6CBE",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                className="mb-2"
+              >
+                Work Flow Details
+              </Accordion.Header>
+              <Accordion.Body>
+                {viewDetailsData.workflowDetails.map((workFlow, index) => (
+                  <table className="table small table-bordered" key={index}>
+                    <tbody>
+                      <tr>
+                        <td style={styles.ctstyle}>Step Name:</td>
+                        <td>{workFlow.stepName || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Status:</td>
+                        <td>{workFlow.status || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Assigned By:</td>
+                        <td>{workFlow.assignedBy || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Reject Reason:</td>
+                        <td>{workFlow.rejectReason || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Rejected By:</td>
+                        <td>{workFlow.rejectReason || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ ...styles.ctstyle, fontWeight: 'bold', color: 'green' }}>Comment:</td>
+                        <td style={{ fontWeight: 'bold', color: 'green' }}>{workFlow.comment || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Reason:</td>
+                        <td>{workFlow.reason || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Assigned To:</td>
+                        <td>{workFlow.assignedTo || "N/A"}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                ))}
+              </Accordion.Body>
+            </Accordion.Item>
+          ) : (
+            <Accordion.Item eventKey="land">
+              <Accordion.Header
+                style={{
+                  backgroundColor: "#0F6CBE",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                className="mb-2"
+              >
+                Work Flow Details
+              </Accordion.Header>
+              <Accordion.Body>
+                No Work Flow Details Available
+              </Accordion.Body>
+            </Accordion.Item>
+          )}
+
 
               <Accordion.Item eventKey="transaction">
                 <Accordion.Header
