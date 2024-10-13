@@ -21,7 +21,6 @@ function PupaAndCocoonAssessmentPage() {
     meltPercentage: "",
     pupaTestResult: "",
     cocoonAssessmentResult: "",
-    pupaCocoonStatus: "",
   });
 
 const [listData, setListData] = useState([]);
@@ -54,6 +53,13 @@ useEffect(() => {
     getList();
   }, []);
 
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
   const [validated, setValidated] = useState(false);
 
   const postData = (event) => {
@@ -67,16 +73,23 @@ useEffect(() => {
       event.preventDefault();
   
       api
-        .post(baseURL1 + `cocoon/saveBasePriceKGLot`, {
+        .post(baseURL1 + `cocoon/savePupaTestAndCocoonAssessmentResult`, {
           ...data,
         })
         .then((response) => {
           if (response.data.errorCode === 0) {
             saveSuccess();
             setData({
-              marketId: localStorage.getItem("marketId"),
-              fixationDate: new Date(),
-              pricePerKg: "",
+             marketAuctionId: "",
+            testDate: "",
+            noOfCocoonTakenForExamination: "",
+            noOfDflFromFc: "",
+            diseaseFree: "",
+            diseaseType: "",
+            noOfCocoonPerKg: "",
+            meltPercentage: "",
+            pupaTestResult: "",
+            cocoonAssessmentResult: "",
             }); // Optionally reset the form
           } else if (response.data.errorCode === -1) {
             if (response.data.content) {
@@ -257,6 +270,12 @@ const saveError = (message = "Something went wrong!") => {
       </Block.Head>
 
       <Block>
+      <Form
+          noValidate
+          validated={validated}
+          onSubmit={postData}
+          className="mt-2"
+        >
         <Row className="g-3">
           <Card>
             <Card.Body>
@@ -280,39 +299,39 @@ const saveError = (message = "Something went wrong!") => {
                       {listData.map((item, index) => (
                         <tr key={index}>
                         <td>
-          <Button variant="primary" onClick={() => handleShowModalAssesment(item)}>Assess Now</Button>
-        </td>
-        <td>{item.fruitsId}</td>
-        <td>{item.firstName}</td>
-        <td>{item.mobileNumber}</td>
-        <td>
-          <div className="d-flex align-items-center" onClick={() => openModalWithDetails(item)}>
-            <Icon name="info-fill" size="lg"></Icon>
-            <span>Address Details</span>
-          </div>
-        </td>
-        <td>
-          <div className="d-flex align-items-center" onClick={() => openModalWithCropDetails(item)}>
-            <Icon name="info-fill" size="lg"></Icon>
-            <span>Crop Details</span>
-          </div>
-        </td>
-        <td>
-          <div className="d-flex align-items-center" onClick={() => openModalWithFCDetails(item)}>
-            <Icon name="info-fill" size="lg"></Icon>
-            <span>FC Details</span>
-          </div>
-        </td>
-        <td>
-          <div className="d-flex align-items-center" onClick={() => openModalWithWeighmentDetails(item)}>
-            <Icon name="info-fill" size="lg"></Icon>
-            <span>Weighment Details</span>
-          </div>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</Table>
+                      <Button variant="primary" onClick={() => handleShowModalAssesment(item)}>Assess Now</Button>
+                        </td>
+                        <td>{item.fruitsId}</td>
+                        <td>{item.firstName}</td>
+                        <td>{item.mobileNumber}</td>
+                        <td>
+                          <div className="d-flex align-items-center" onClick={() => openModalWithDetails(item)}>
+                            <Icon name="info-fill" size="lg"></Icon>
+                            <span>Address Details</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center" onClick={() => openModalWithCropDetails(item)}>
+                            <Icon name="info-fill" size="lg"></Icon>
+                            <span>Crop Details</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center" onClick={() => openModalWithFCDetails(item)}>
+                            <Icon name="info-fill" size="lg"></Icon>
+                            <span>FC Details</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center" onClick={() => openModalWithWeighmentDetails(item)}>
+                            <Icon name="info-fill" size="lg"></Icon>
+                            <span>Weighment Details</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
                 </Col>
               </Row>
             </Card.Body>
@@ -525,9 +544,9 @@ const saveError = (message = "Something went wrong!") => {
                   <div className="form-control-wrap">
                     <Form.Control
                       id="farmerFamilyName"
-                      name="farmerFamilyName"
-                      // value={familyMembers.farmerFamilyName}
-                      // onChange={handleFMInputs}
+                      name="noOfCocoonTakenForExamination"
+                      value={data.noOfCocoonTakenForExamination}
+                      onChange={handleInputs}
                       type="text"
                       placeholder="Enter No. of Cocoons Taken for Examination"
                       // required
@@ -547,10 +566,10 @@ const saveError = (message = "Something went wrong!") => {
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
-                      id="farmerFamilyName"
-                      name="farmerFamilyName"
-                      // value={familyMembers.farmerFamilyName}
-                      // onChange={handleFMInputs}
+                      id="noOfDflFromFc"
+                      name="noOfDflFromFc"
+                      value={data.noOfDflFromFc}
+                      onChange={handleInputs}
                       type="text"
                       placeholder="Enter No. of DFL’s from FC"
                       // required
@@ -601,9 +620,12 @@ const saveError = (message = "Something went wrong!") => {
             <Form.Group className="mt-3">
               <Form.Label>Disease Type</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter Disease Name"
-                name="diseaseName"
+                 id="diseaseType"
+                  name="diseaseType"
+                  value={data.diseaseType}
+                  onChange={handleInputs}
+                  type="text"
+                  placeholder="Enter Disease Type"
               />
             </Form.Group>
           )}
@@ -617,10 +639,10 @@ const saveError = (message = "Something went wrong!") => {
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
-                      id="farmerFamilyName"
-                      name="farmerFamilyName"
-                      // value={familyMembers.farmerFamilyName}
-                      // onChange={handleFMInputs}
+                      id="noOfCocoonPerKg"
+                      name="noOfCocoonPerKg"
+                      value={data.noOfCocoonPerKg}
+                      onChange={handleInputs}
                       type="text"
                       placeholder="No. of Cocoons per Kg."
                       // required
@@ -636,10 +658,10 @@ const saveError = (message = "Something went wrong!") => {
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
-                      id="farmerFamilyName"
-                      name="farmerFamilyName"
-                      // value={familyMembers.farmerFamilyName}
-                      // onChange={handleFMInputs}
+                      id="meltPercentage"
+                      name="meltPercentage"
+                      value={data.meltPercentage}
+                      onChange={handleInputs}
                       type="text"
                       placeholder="Melt %"
                       // required
@@ -672,6 +694,7 @@ const saveError = (message = "Something went wrong!") => {
           </Form>
         </Modal.Body>
       </Modal>
+      </Form>
       </Block>
     </Layout>
   );
