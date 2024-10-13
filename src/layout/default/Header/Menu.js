@@ -240,6 +240,16 @@ function Menu() {
     Market_SeedMarket_Bulk_Send_To_Payment: false,
     Market_SeedMarket_Payment_Statement: false,
 
+    Market_SeedCocoonMarket: false,
+    Market_SeedCocoonMarket_Inward: false,
+    Market_SeedCocoonMarket_Base_Price_Fixation: false,
+    Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
+
+    Market_SeedCocoonMarket_Payment: false,
+    Market_SeedCocoonMarket_Ready_For_Payment: false,
+    Market_SeedCocoonMarket_Bulk_Send_To_Payment: false,
+    Market_SeedCocoonMarket_Payment_Statement: false,
+
     SeedDFL: false,
     SeedDFL_BSF: false,
     SeedDFL_BSF_Garden_Farm: false,

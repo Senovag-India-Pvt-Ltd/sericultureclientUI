@@ -101,7 +101,6 @@ import ExternalUnitRegisterEdit from "../pages/stake-holder/external-units/Exter
 import ServiceApplication from "../pages/services-module/application/serviceApplication";
 import TrackDflProcurement from "../pages/services-module/TrackDflProcurement";
 import TrackingMulberryStatus from "../pages/services-module/TrackingMulberryStatus";
-import SupplyOfDisinfectants from "../pages/services-module/SupplyOfDisinfectants";
 import ProvidingIncentives from "../pages/services-module/ProvidingIncentives";
 import ProvidingSubsidy from "../pages/services-module/ProvidingSubsidy";
 import PreparationDcBills from "../pages/services-module/PreparationDcBills";
@@ -893,6 +892,12 @@ import WeighmentForSilkMarket from "../pages/market-and-auction-silk/WeighmentFo
 import ReelerMFReports from "../pages/reports-admin/ReelerMFReports";
 import RaceWiseAbstractReport from "../pages/reports-admin/RaceWiseAbstractReport";
 
+import SupplyOfDisinfectantsToFarmers from "../pages/chawki-management/SupplyOfDisinfectantsToFarmer";
+import SupplyOfDisinfectantsList from "../pages/chawki-management/SupplyOfDisinfectantsList";
+import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/SupplyOfDisinfectantsToFarmerEdit";
+import MgnregaSchemeEdit from "../pages/chawki-management/MgnregaSchemeEdit";
+import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
+import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
 // Admin and Reports
 
 function Router() {
@@ -1265,10 +1270,7 @@ function Router() {
               path="track-mulberry-status"
               element={<TrackingMulberryStatus />}
             />
-            <Route
-              path="supply-disinfectants"
-              element={<SupplyOfDisinfectants />}
-            />
+
             <Route
               path="providing-incentives"
               element={<ProvidingIncentives />}
@@ -1702,6 +1704,24 @@ function Router() {
             <Route
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
+            />
+            <Route path="supply-of-disinfectants" element={<SupplyOfDisinfectantsToFarmers />} />
+            <Route
+              path="supply-of-disinfectants-list"
+              element={<SupplyOfDisinfectantsList />}
+            />
+            <Route
+              path="mgnerga-scheme-edit/:id"
+              element={<MgnregaSchemeEdit />}
+            />
+            <Route path="mgnerga-scheme" element={<MgnregaScheme />} />
+            <Route
+              path="mgnrega-scheme-list"
+              element={<MgnregaSchemeList />}
+            />
+            <Route
+              path="supply-of-disinfectants-edit/:id"
+              element={<SupplyOfDisinfectantsToFarmerEdit />}
             />
 
             {/* Inspection */}
