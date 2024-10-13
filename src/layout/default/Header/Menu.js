@@ -1268,49 +1268,52 @@ function Menu() {
               <MenuItemLink text="e-Register" to="#" />
             </MenuItem>
           ) : null} */}
-            {showMenu.Market_Bidding ? (
+            {/* {showMenu.Market_Bidding ? (
               <MenuItem>
                 <MenuItemLink text="e-Inward" to="/seriui/bidding-slip" />
               </MenuItem>
-            ) : null}
-            {showMenu.Market_Bidding ? (
+            ) : null} */}
+            {/* {showMenu.Market_Bidding ? (
               <MenuItem>
                 <MenuItemLink
                   text="e-Inward (Silk Market)"
                   to="/seriui/silk-bidding-slip"
                 />
               </MenuItem>
-            ) : null}
-            {showMenu.Market_Accept_Farmer_Auction ? (
+            ) : null} */}
+            {/* {showMenu.Market_Accept_Farmer_Auction ? (
               <MenuItem>
                 <MenuItemLink
                   text="e-Acceptance"
                   to="/seriui/accept-former-auction"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {/* {showMenu.Market_Auction ? (
             <MenuItem>
               <MenuItemLink text="e-Auction" to="/seriui/reject-lot" />
             </MenuItem>
           ) : null} */}
-            {showMenu.Market_Weighment ? (
+            {/* {showMenu.Market_Weighment ? (
               <MenuItem>
                 <MenuItemLink text="e-Weighment" to="/seriui/weighment" />
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
-            {showMenu.Market_Weighment ? (
+            {/* {showMenu.Market_Weighment ? (
               <MenuItem>
-                <MenuItemLink text="e-Weighment (Silk Market)" to="/seriui/weighment-for-silk-market" />
+                <MenuItemLink
+                  text="e-Weighment (Silk Market)"
+                  to="/seriui/weighment-for-silk-market"
+                />
               </MenuItem>
-            ) : null}
-            {showMenu.Market_Gatepass ? ( 
+            ) : null} */}
+            {/* {showMenu.Market_Gatepass ? (
               <MenuItem>
                 <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
               </MenuItem>
-            ) : null}
-            <MenuItem>
+            ) : null} */}
+            {/* <MenuItem>
               {showMenu.Market_Payment ? (
                 <MenuItem sub>
                   <MenuItemLink
@@ -1347,7 +1350,7 @@ function Menu() {
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
+            </MenuItem> */}
             {/* <MenuItem>
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
@@ -1382,6 +1385,103 @@ function Menu() {
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
+                    text="Commercial Market"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_Bidding ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Inward"
+                          to="/seriui/bidding-slip"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Accept_Farmer_Auction ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Acceptance"
+                          to="/seriui/accept-former-auction"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Weighment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Weighment"
+                          to="/seriui/weighment"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Gatepass ? (
+                      <MenuItem>
+                        <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
+                      </MenuItem>
+                    ) : null}
+                    {/* <MenuItem> */}
+                    {showMenu.Market_Payment ? (
+                      <MenuItem sub>
+                        <MenuItemLink
+                          text="e-Payment"
+                          onClick={menuToggle}
+                          onMouseEnter={menuHover}
+                          sub
+                        />
+                        <MenuSub>
+                          {showMenu.Market_Payment_Ready_for_Payment ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Ready for Payment"
+                                to="/seriui/ready-for-payment"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Market_Payment_Bulk_Send_To_Bank ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Bulk Send to Bank"
+                                to="/seriui/bulk-send-to-bank"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Market_Payment_Bank_Statement ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Bank Statement"
+                                to="/seriui/bank-statement"
+                              />
+                            </MenuItem>
+                          ) : null}
+                        </MenuSub>
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Reject ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Reject Lot"
+                          to="/seriui/reject-lot"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Show_Lot ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Show Lot Details"
+                          to="/seriui/display-all-lot"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {/* </MenuItem> */}
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
+            <MenuItem>
+              {showMenu.Market_SeedMarket ? (
+                <MenuItem sub>
+                  <MenuItemLink
                     text="Seed Market"
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
@@ -1404,12 +1504,78 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
+                    {showMenu.Market_SeedMarket_Payment ? (
+                      <MenuItem sub>
+                        <MenuItemLink
+                          text="e-Payment For Seed Market"
+                          onClick={menuToggle}
+                          onMouseEnter={menuHover}
+                          sub
+                        />
+                        <MenuSub>
+                          {showMenu.Market_SeedMarket_Ready_For_Payment ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Ready for Payment"
+                                to="/seriui/ready-for-payment-for-seed-market"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Bulk Send to Payment"
+                                to="/seriui/bulk-send-to-payment-for-seed-market"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Market_SeedMarket_Payment_Statement ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text="Payment Statement"
+                                to="/seriui/payment-statement-for-seed-market"
+                              />
+                            </MenuItem>
+                          ) : null}
+                        </MenuSub>
+                      </MenuItem>
+                    ) : null}
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
+            <MenuItem>
+              {showMenu.Market_SeedMarket ? (
+                <MenuItem sub>
+                  <MenuItemLink
+                    text="Silk Market"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_Bidding ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Inward (Silk Market)"
+                          to="/seriui/silk-bidding-slip"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Weighment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="e-Weighment (Silk Market)"
+                          to="/seriui/weighment-for-silk-market"
+                        />
+                      </MenuItem>
+                    ) : null}
                   </MenuSub>
                 </MenuItem>
               ) : null}
             </MenuItem>
 
-            <MenuItem>
+            {/* <MenuItem>
               {showMenu.Market_SeedMarket_Payment ? (
                 <MenuItem sub>
                   <MenuItemLink
@@ -1446,9 +1612,9 @@ function Menu() {
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
+            </MenuItem> */}
 
-            {showMenu.Market_Reject ? (
+            {/* {showMenu.Market_Reject ? (
               <MenuItem>
                 <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
               </MenuItem>
@@ -1460,15 +1626,15 @@ function Menu() {
                   to="/seriui/display-all-lot"
                 />
               </MenuItem>
-            ) : null}
-            {showMenu.Market_Reeler_Initial_Amount ? (
+            ) : null} */}
+            {/* {showMenu.Market_Reeler_Initial_Amount ? (
               <MenuItem>
                 <MenuItemLink
                   text="Reeler Initial Amount"
                   to="/seriui/reeler-initial-amount"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {/* {showMenu.Market_Permit ? (
             <MenuItem>
               <MenuItemLink text="e-Permit" to="#" />
