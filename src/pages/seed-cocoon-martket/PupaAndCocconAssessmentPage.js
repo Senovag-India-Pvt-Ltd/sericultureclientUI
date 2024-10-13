@@ -23,6 +23,11 @@ function PupaAndCocoonAssessmentPage() {
     cocoonAssessmentResult: "",
   });
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+
 const [listData, setListData] = useState([]);
 const [page, setPage] = useState(0);
 const countPerPage = 5;
@@ -31,20 +36,25 @@ const [loading, setLoading] = useState(false);
 const [farmerDetails, setFarmerDetails] = useState({});
 const _params = { params: { pageNumber: page, size: countPerPage } };
 
+const [marketAuctionId, setMarketAuctionId] = useState("");
 const getList = () => {
   setLoading(true);
 
-  const response = api
+  api
     .get(baseURL1 + `cocoon/getPupaCocoonAssessmentList`)
     .then((response) => {
       console.log(response.data);
       setListData(response.data);
-      setFarmerDetails()
-      // setTotalRows(response.data.content.totalItems);
+      
+      // Assuming you're getting a list, pick the first item's marketAuctionId for demonstration.
+      if (response.data.length > 0) {
+        setMarketAuctionId(response.data[0].marketAuctionId); // Set the marketAuctionId
+      }
+
       setLoading(false);
     })
     .catch((err) => {
-      // setListData({});
+      console.error(err);
       setLoading(false);
     });
 };
@@ -64,48 +74,62 @@ useEffect(() => {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
     } else {
-      event.preventDefault();
-  
-      api
-        .post(baseURL1 + `cocoon/savePupaTestAndCocoonAssessmentResult`, {
-          ...data,
-        })
-        .then((response) => {
-          if (response.data.errorCode === 0) {
-            saveSuccess();
-            setData({
-             marketAuctionId: "",
-            testDate: "",
-            noOfCocoonTakenForExamination: "",
-            noOfDflFromFc: "",
-            diseaseFree: "",
-            diseaseType: "",
-            noOfCocoonPerKg: "",
-            meltPercentage: "",
-            pupaTestResult: "",
-            cocoonAssessmentResult: "",
-            }); // Optionally reset the form
-          } else if (response.data.errorCode === -1) {
-            if (response.data.content) {
-              saveError(response.data.content);
-            } else if (response.data.errorMessages.length > 0) {
-              saveError(response.data.errorMessages[0].message);
-            } else {
-              saveError(); // Default error if no specific message
-            }
-          }
-        })
-        .catch((err) => {
-          saveError(); // Handle the error if the API call fails
-        });
+        event.preventDefault();
+
+        api
+            .post(baseURL1 + `cocoon/savePupaTestAndCocoonAssessmentResult`, {
+                ...data,
+                marketAuctionId: marketAuctionId, // Use the marketAuctionId from state
+            })
+            .then((response) => {
+                // Destructure the response to get relevant fields
+                const { errorCode, content } = response.data;
+
+                // Access the nested errorCode and content from body
+                const nestedErrorCode = content?.body?.errorCode; // Accessing the nested errorCode
+                const nestedContent = content?.body?.content; // Accessing the nested content message
+
+                // Check if the response indicates success
+                if (nestedErrorCode === 0) {
+                    // Success condition based on nested errorCode
+                    saveSuccess();
+                    setData({
+                        marketAuctionId: "",
+                        testDate: "",
+                        noOfCocoonTakenForExamination: "",
+                        noOfDflFromFc: "",
+                        diseaseFree: "",
+                        diseaseType: "",
+                        noOfCocoonPerKg: "",
+                        meltPercentage: "",
+                        pupaTestResult: "",
+                        cocoonAssessmentResult: "",
+                    }); // Optionally reset the form
+                } else if (nestedErrorCode === -1) {
+                    // Handle the case when an assessment has already been done
+                    if (nestedContent) {
+                        saveError(nestedContent); // Use the nested content message for errors
+                    } else {
+                        saveError(); // Default error if no specific message
+                    }
+                } else {
+                    // Handle unexpected error codes if necessary
+                    saveError("Unexpected error occurred.");
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                saveError(); // Handle the error if the API call fails
+            });
     }
-  };
+};
+
 
   // Below for modal window for personal details
   const [showModal, setShowModal] = useState(false);
@@ -129,8 +153,14 @@ useEffect(() => {
 
   // Below for modal window for Initial Weighment
   const [showModalAssesment, setShowModalAssesment] = useState(false);
-  const handleShowModalAssesment = () => setShowModalAssesment(true);
+  // const handleShowModalAssesment = () => setShowModalAssesment(true);
   const handleCloseModalAssesment = () => setShowModalAssesment(false);
+
+  const handleShowModalAssesment = (item) => {
+    setMarketAuctionId(item.marketAuctionId); // Set marketAuctionId from the selected item
+    setData(prevData => ({ ...prevData, marketAuctionId: item.marketAuctionId })); // Ensure data is set correctly
+    setShowModalAssesment(true);
+  };
 
   // Function to open modals with specific farmer details
 const openModalWithDetails = (item) => {
@@ -236,9 +266,17 @@ if (form.checkValidity() === false) {
   const [isDiseaseFree, setIsDiseaseFree] = useState("no"); // Initial state is "no"
 
   // Function to handle the change of radio buttons
+  // const handleRadioChange = (e) => {
+  //   setIsDiseaseFree(e.target.value);
+  // };
   const handleRadioChange = (e) => {
-    setIsDiseaseFree(e.target.value);
+    const { name, value } = e.target; // Use value for radio buttons
+    setData((prev) => ({
+      ...prev,
+      [name]: value, // Dynamically update the field based on the radio button's value
+    }));
   };
+  
 
   // Function to display the success message
 const saveSuccess = () => {
@@ -526,7 +564,7 @@ const saveError = (message = "Something went wrong!") => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Crop Details</Modal.Title>
+          <Modal.Title>Assess Now </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -549,7 +587,7 @@ const saveError = (message = "Something went wrong!") => {
                       onChange={handleInputs}
                       type="text"
                       placeholder="Enter No. of Cocoons Taken for Examination"
-                      // required
+                      required
                     />
                     {/* <Form.Control.Feedback type="invalid">
                       Name is required
@@ -572,7 +610,7 @@ const saveError = (message = "Something went wrong!") => {
                       onChange={handleInputs}
                       type="text"
                       placeholder="Enter No. of DFL’s from FC"
-                      // required
+                      required
                     />
                     {/* <Form.Control.Feedback type="invalid">
                       Name is required
@@ -581,56 +619,138 @@ const saveError = (message = "Something went wrong!") => {
                 </Form.Group>
               </Col>
 
-              {/* <Row className="g-5"> */}
-      <Col
-        lg="6"
-        // className="d-flex justify-content-center align-items-center"
-      >
-        <Form.Group className="form-group mt-3">
-          <Form.Label style={{ fontSize: "20px" }}>Disease Free</Form.Label>
-          <div className="form-control-wrap">
-            <Row className="d-flex align-items-center">
-              <Col lg="auto">
-                <Form.Check
-                  type="radio"
-                  id="yes"
-                  name="diseaseFree"
-                  label="Yes"
-                  value="yes"
-                  onChange={handleRadioChange}
-                  checked={isDiseaseFree === "yes"}
-                />
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerFamilyName">
+                  No. of Pupa Examined
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="pupaTestResult"
+                      name="pupaTestResult"
+                      value={data.pupaTestResult}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder="Enter No. of Pupa Examined"
+                      required
+                    />
+                    {/* <Form.Control.Feedback type="invalid">
+                      Name is required
+                    </Form.Control.Feedback> */}
+                  </div>
+                </Form.Group>
               </Col>
-              <Col lg="auto">
-                <Form.Check
-                  type="radio"
-                  id="no"
-                  value="no"
-                  name="diseaseFree"
-                  onChange={handleRadioChange}
-                  checked={isDiseaseFree === "no"}
-                  label="No"
-                />
-              </Col>
-            </Row>
-          </div>
 
-          {/* Conditionally render the disease name input field if "Yes" is selected */}
-          {isDiseaseFree === "yes" && (
-            <Form.Group className="mt-3">
-              <Form.Label>Disease Type</Form.Label>
-              <Form.Control
-                 id="diseaseType"
-                  name="diseaseType"
-                  value={data.diseaseType}
-                  onChange={handleInputs}
-                  type="text"
-                  placeholder="Enter Disease Type"
-              />
-            </Form.Group>
-          )}
-        </Form.Group>
-      </Col>
+              <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          Test Date
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.testDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "testDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            // required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+              <Col lg="6">
+              <Form.Group className="form-group mt-3">
+                <Form.Label style={{ fontSize: "20px" }}>Disease Free</Form.Label>
+                <div className="form-control-wrap">
+                  <Row className="d-flex align-items-center">
+                    <Col lg="auto">
+                      <Form.Check
+                        type="radio"
+                        id="yes"
+                        name="diseaseFree"
+                        label="Yes"
+                        value="true" // Set the value to "yes"
+                        checked={data.diseaseFree === "true"} // Check if the value in state is "yes"
+                        onChange={handleRadioChange} // Handle radio button change
+                      />
+                    </Col>
+                    <Col lg="auto">
+                      <Form.Check
+                        type="radio"
+                        id="no"
+                        name="diseaseFree"
+                        label="No"
+                        value="false" // Set the value to "no"
+                        checked={data.diseaseFree === "false"} // Check if the value in state is "no"
+                        onChange={handleRadioChange} // Handle radio button change
+                      />
+                    </Col>
+                  </Row>
+                </div>
+
+                {/* Conditionally render the disease name input field if "Yes" is selected */}
+                {data.diseaseFree === "true" && (
+                  <Col lg="6">
+                  <Form.Group className="mt-3">
+                    <Form.Label>Disease Type</Form.Label>
+                    <Form.Control
+                      id="diseaseType"
+                      name="diseaseType"
+                      value={data.diseaseType || ""}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder="Enter Disease Type"
+                    />
+                  </Form.Group>
+                  </Col>
+                )}
+              </Form.Group>
+            </Col>
+
+
+                
+
+                    <Block className="mt-3">
+                    <Card  className="mt-3"
+                          style={{
+                            border: "none",
+                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                          }}>
+                <Card.Header style={{
+                              // backgroundColor: "#0a2463",
+                              backgroundColor: "#0F6CBE",
+                              fontWeight: "bold",
+                              fontSize: "1.2rem",
+                              padding: "7px 12px",
+                              position: "relative",
+                              color: "white",
+                              overflow: "hidden",
+                            }}> <span>Cocoon Assessment</span>
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                fontSize: "3rem",
+                                color: "rgba(255, 255, 255, 0.1)", // Light watermark color
+                                zIndex: 0,
+                                pointerEvents: "none", // Allow interactions to pass through
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {/* Farmers Details */}
+                            </div></Card.Header>
+                <Card.Body>
+                <Row className="g-gs">
             <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
@@ -669,6 +789,12 @@ const saveError = (message = "Something went wrong!") => {
                   </div>
                 </Form.Group>
               </Col>
+              </Row>
+              </Card.Body>
+              </Card>
+              </Block>
+
+              
     {/* </Row> */}
 
 
