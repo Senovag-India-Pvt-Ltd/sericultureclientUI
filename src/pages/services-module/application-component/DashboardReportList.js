@@ -2080,11 +2080,10 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              <Col lg="6">
+                              {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
-                                    {/* <span className="text-danger">*</span> */}
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -2125,7 +2124,6 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     User
-                                    {/* <span className="text-danger">*</span> */}
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -2150,13 +2148,11 @@ function DashboardReportList() {
                                           </option>
                                         ))}
                                       </Form.Select>
-                                      {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                     
                                     </div>
                                   </Col>
                                 </Form.Group>
-                              </Col>
+                              </Col> */}
                             </Row>
                           </Block>
 
