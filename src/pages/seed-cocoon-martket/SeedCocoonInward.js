@@ -376,6 +376,37 @@ function SeedCocoonInward() {
   }, [data.marketId]);
 
   
+  // const generateBiddingSlip = async (allotedLotId) => {
+  //   const newDate = new Date();
+  //   const formattedDate =
+  //     newDate.getFullYear() +
+  //     "-" +
+  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     newDate.getDate().toString().padStart(2, "0");
+
+  //   try {
+  //     const response = await axios.post(
+  //       // baseURLReport + `getfarmercopy-kannada`,
+  //       `https://e-reshme.karnataka.gov.in/reports/marketreport/getfarmercopy-kannada`,
+
+  //       {
+  //         marketId: 1,
+  //         godownId: 0,
+  //         allottedLotId: allotedLotId,
+  //         auctionDate: "2024-10-01",
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //         headers: {
+  //           Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MSwicGhvbmVOdW1iZXIiOiI2MzY2MTI1ODY5Iiwicm9sZUlkIjoxLCJ1c2VyVHlwZSI6MCwidXNlck1hc3RlcklkIjo1OTMsInVzZXJuYW1lIjoibWFya2V0IiwibWFya2V0SWQiOjEsInN1YiI6Im1hcmtldCIsImlhdCI6MTcyNzg4MjM5OCwiZXhwIjoxNzI5NjgyMzk4fQ.sdw6GLGYq0SwrCvtLNvoWyBnwBrmAy0CNW8rkZ8Pu40"
+  //         }
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
   const generateBiddingSlip = async (allotedLotId) => {
     const newDate = new Date();
     const formattedDate =
@@ -386,21 +417,16 @@ function SeedCocoonInward() {
       newDate.getDate().toString().padStart(2, "0");
 
     try {
-      const response = await axios.post(
-        // baseURLReport + `getfarmercopy-kannada`,
-        `https://e-reshme.karnataka.gov.in/reports/marketreport/getfarmercopy-kannada`,
-
+      const response = await api.post(
+        baseURLReport + `getfarmercopy-kannada`,
         {
-          marketId: 1,
-          godownId: 0,
+          marketId: data.marketId,
+          godownId: data.godownId,
           allottedLotId: allotedLotId,
-          auctionDate: "2024-10-01",
+          auctionDate: formattedDate,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
-          headers: {
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MSwicGhvbmVOdW1iZXIiOiI2MzY2MTI1ODY5Iiwicm9sZUlkIjoxLCJ1c2VyVHlwZSI6MCwidXNlck1hc3RlcklkIjo1OTMsInVzZXJuYW1lIjoibWFya2V0IiwibWFya2V0SWQiOjEsInN1YiI6Im1hcmtldCIsImlhdCI6MTcyNzg4MjM5OCwiZXhwIjoxNzI5NjgyMzk4fQ.sdw6GLGYq0SwrCvtLNvoWyBnwBrmAy0CNW8rkZ8Pu40"
-          }
         }
       );
 
