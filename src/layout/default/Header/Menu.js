@@ -2249,6 +2249,22 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Inspection_Supply_of_Disinfectants_to_Farmers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Supply of disinfectants to farmers"
+                  to="/seriui/supply-of-disinfectants"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Inspection_Implementation_of_MGNREGA ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Implementation of MGNREGA"
+                  to="/seriui/mgnerga-scheme"
+                />
+              </MenuItem>
+            ) : null}
             {/* {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
