@@ -1,33 +1,21 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import axios from "axios";
-import api from "../../../src/services/auth/api";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function PreparationofeggsDFLs() {
-
-  const [validated, setValidated] = useState(false);
-
-  const [selectedLotType, setSelectedLotType] = useState("newLot");
-
-  const handleLotTypeChange = (event) => {
-    setSelectedLotType(event.target.value);
-  };
-
+function PreparationofeggsDFLsAdd() {
+  const { id } = useParams();
   const [data, setData] = useState({
     numberOfCocoonsCB: "",
     dateOfMothEmergence: "",
@@ -38,6 +26,7 @@ function PreparationofeggsDFLs() {
     dflsObtained: "",
     eggRecoveryPercentage: "",
     testResults: "",
+    certification: "",
     additionalRemarks: "",
     // varietyId: "",
     generationNumberId: "",
@@ -53,8 +42,10 @@ function PreparationofeggsDFLs() {
     eggSheetSerialNos:"",
     remainingDfls :"",
   });
+  const [loading, setLoading] = useState(false);
 
-  
+  const [validated, setValidated] = useState(false);
+
   let name, value;
   // const handleInputs = (e) => {
   //   name = e.target.name;
@@ -82,49 +73,71 @@ function PreparationofeggsDFLs() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
-  
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const [selectedLotType, setSelectedLotType] = useState("newLot");
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-        setValidated(true);
-    } else {
-        event.preventDefault();
+  const handleLotTypeChange = (event) => {
+    setSelectedLotType(event.target.value);
+  };
 
-        let apiUrl = "";
-        if (selectedLotType === "presentLot") {
-            apiUrl = `EggPreparation/preparation-of-present-lotno-dfls`;
-        } else if (selectedLotType === "newLot") {
-            apiUrl = `EggPreparation/add-info`;
+  const isDateOfMothEmergence = !!data.dateOfMothEmergence;
+  const isLaidOnDate = !!data.laidOnDate;
+
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     // event.stopPropagation();
+  //     api
+  //       .post(baseURLSeedDfl + `EggPreparation/preparation-of-present-lotno-dfls`, data)
+  //       .then((response) => {
+  //         //   const trScheduleId = response.data.content.trScheduleId;
+  //         //   if (trScheduleId) {
+  //         //     handlePPtUpload(trScheduleId);
+  //         //   }
+  //         if (response.data.error) {
+  //           updateError(response.data.message);
+  //         } else {
+  //           updateSuccess();
+  //           clear();
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         // const message = err.response.data.errorMessages[0].message[0].message;
+  //         updateError();
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
+  // Post data including preparationOfEggsId
+const postData = (event) => {
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+  } else {
+    event.preventDefault();
+    api
+      .post(baseURLSeedDfl + `EggPreparation/preparation-of-present-lotno-dfls`, data)
+      .then((response) => {
+        if (response.data.error) {
+          updateError(response.data.message);
+        } else {
+          updateSuccess();
+          clear(); // Clear the form or reset state after successful submission
         }
-
-        api
-            .post(baseURLSeedDfl + apiUrl, data)
-            .then((response) => {
-                if (response.data.error) {
-                    saveError(response.data.message);
-                } else {
-                    saveSuccess2(response.data.message, response.data.lotNumber);
-                    clear();
-                }
-            })
-            .catch((err) => {
-                if (
-                    err.response &&
-                    err.response.data &&
-                    err.response.data.validationErrors
-                ) {
-                    if (Object.keys(err.response.data.validationErrors).length > 0) {
-                        saveError(err.response.data.validationErrors);
-                    }
-                }
-            });
-        setValidated(true);
-    }
+      })
+      .catch((err) => {
+        updateError();
+      });
+    setValidated(true);
+  }
 };
 
   const clear = () => {
@@ -155,7 +168,50 @@ function PreparationofeggsDFLs() {
       remainingDfls :"",
     });
     setValidated(false);
+    // getIdList();
   };
+
+  // //   to get data from api
+  // const getIdList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLSeedDfl + `EggPreparation/get-info-by-id/${id}`)
+  //     .then((response) => {
+  //       setData(response.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  // }, [id]);
+
+  // Fetch data using the ID and set it in the state
+const getIdList = () => {
+  setLoading(true);
+  api
+    .get(baseURLSeedDfl + `EggPreparation/get-info-by-id/${id}`)
+    .then((response) => {
+      setData({ ...response.data, preparationOfEggsId: id }); // Set the data and include the ID as preparationOfEggsId
+      setLoading(false);
+    })
+    .catch((err) => {
+      setData({});
+      // Handle the error if needed
+      setLoading(false);
+    });
+};
+
+// Fetch data on component mount or when ID changes
+useEffect(() => {
+  getIdList();
+}, [id]);
 
    // to get Lot
    const [lotListData, setLotListData] = useState([]);
@@ -175,7 +231,62 @@ function PreparationofeggsDFLs() {
      getLotList();
    }, []);
 
-   // to get Lot
+
+   // to get Mulberry Variety
+   const [varietyListData, setVarietyListData] = useState([]);
+
+   const getVarietyList = () => {
+     const response = api
+       .get(baseURLMasterData + `mulberry-variety/get-all`)
+       .then((response) => {
+         setVarietyListData(response.data.content.mulberryVariety);
+       })
+       .catch((err) => {
+         setVarietyListData([]);
+       });
+   };
+
+   useEffect(() => {
+    getVarietyList();
+  }, []);
+
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+  
+  const getRaceList = () => {
+    const response = api
+      .get(baseURLMasterData + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
+  }, []);
+ 
+    // to get Generation Number
+    const [generationListData, setGenerationListData] = useState([]);
+ 
+    const getGenerationList = () => {
+      const response = api
+        .get(baseURLMasterData + `generationNumberMaster/get-all`)
+        .then((response) => {
+          setGenerationListData(response.data.content.generationNumberMaster);
+        })
+        .catch((err) => {
+         setGenerationListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getGenerationList();
+    }, []);
+
+    // to get Lot
    const [presentLotListData, setPresentLotListData] = useState([]);
 
    const getPresentLotList = () => {
@@ -192,99 +303,40 @@ function PreparationofeggsDFLs() {
    useEffect(() => {
      getPresentLotList();
    }, []);
-
-
-  // to get Mulberry Variety
-  const [varietyListData, setVarietyListData] = useState([]);
-
-  const getVarietyList = () => {
-    const response = api
-      .get(baseURLMasterData + `mulberry-variety/get-all`)
-      .then((response) => {
-        setVarietyListData(response.data.content.mulberryVariety);
-      })
-      .catch((err) => {
-        setVarietyListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getVarietyList();
-  }, []);
-
-
-   // to get Generation Number
-   const [generationListData, setGenerationListData] = useState([]);
-
-   const getGenerationList = () => {
-     const response = api
-       .get(baseURLMasterData + `generationNumberMaster/get-all`)
-       .then((response) => {
-         setGenerationListData(response.data.content.generationNumberMaster);
-       })
-       .catch((err) => {
-        setGenerationListData([]);
-       });
-   };
  
-   useEffect(() => {
-     getGenerationList();
-   }, []);
-
-   // to get Line Year
-   const [lineYearListData, setLineYearListData] = useState([]);
-
-   const getLineYearList = () => {
-     const response = api
-       .get(baseURLMasterData + `lineNameMaster/get-all`)
-       .then((response) => {
-         setLineYearListData(response.data.content.lineNameMaster);
-       })
-       .catch((err) => {
-        setLineYearListData([]);
-       });
-   };
+    // to get Line Year
+    const [lineYearListData, setLineYearListData] = useState([]);
  
-   useEffect(() => {
-     getLineYearList();
-   }, []);
-
-   // to get Race
-   const [raceListData, setRaceListData] = useState([]);
+    const getLineYearList = () => {
+      const response = api
+        .get(baseURLMasterData + `lineNameMaster/get-all`)
+        .then((response) => {
+          setLineYearListData(response.data.content.lineNameMaster);
+        })
+        .catch((err) => {
+         setLineYearListData([]);
+        });
+    };
   
-   const getRaceList = () => {
-     const response = api
-       .get(baseURLMasterData + `raceMaster/get-all`)
-       .then((response) => {
-         setRaceListData(response.data.content.raceMaster);
-       })
-       .catch((err) => {
-         setRaceListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getRaceList();
-   }, []);
+    useEffect(() => {
+      getLineYearList();
+    }, []);
+  const navigate = useNavigate();
 
-
-  const saveSuccess = (message) => {
+  const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: message,
+      title: "Updated successfully",
+      // text: "You clicked the button!",
     });
   };
-
-  const saveSuccess2 = (message, lotNo) => {
-    Swal.fire({
-      icon: "success",
-      title: message,
-      text: `Generated Lot Number is ${lotNo}`,
-    });
-  };
-
-  const saveError = (message) => {
+  const updateError = (message) => {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Save attempt was not successful",
+    //     text: message,
+    //   });
+    // };
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -298,15 +350,19 @@ function PreparationofeggsDFLs() {
     });
   };
 
- 
-
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
   return (
-    <Layout title="Preparation of Eggs (DFLs)">
+    <Layout title="Add Preparation of Eggs (DFLs)">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Preparation of Eggs (DFLs)</Block.Title>
-            
+            <Block.Title tag="h2">Add Preparation of Eggs (DFLs)</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -333,8 +389,9 @@ function PreparationofeggsDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
+     
       <Block className="mt-n4">
-      <Card>
+      {/* <Card>
           <Card.Body>
             <Row lg="12" className="g-gs">
               <Col lg="1">
@@ -373,7 +430,7 @@ function PreparationofeggsDFLs() {
               </Col>
             </Row>
           </Card.Body>
-        </Card>
+        </Card> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -381,7 +438,10 @@ function PreparationofeggsDFLs() {
                 <Col lg="12">
                   <Block>
                     <Card>
-                      <Card.Header> Preparation of Eggs (DFLs) </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Add Preparation of Eggs (DFLs){" "}
+                      </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         {/* <Col lg="4">
@@ -418,59 +478,7 @@ function PreparationofeggsDFLs() {
                   </Form.Group>
                 </Col> */}
 
-                {/* <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                     Cocoon Lot Number
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="parentLotNumber"
-                          value={data.parentLotNumber}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          // required
-                        >
-                          <option value="">Select Lot Number</option>
-                          {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option key={list.id} value={list.parentLotNumber}>
-                              {list.parentLotNumber}
-                            </option>
-                          ))): ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col> */}
-
-                {/* <Col lg="12">
-            <Form.Group className="form-group mt-n4">
-              <Form.Check
-                type="radio"
-                id="newLot"
-                name="lotType"
-                label="New Lot"
-                value="newLot"
-                checked={selectedLotType === "newLot"}
-                onChange={handleLotTypeChange}
-              />
-              <Form.Check
-                type="radio"
-                id="presentLot"
-                name="lotType"
-                label="Present Lot"
-                value="presentLot"
-                checked={selectedLotType === "presentLot"}
-                onChange={handleLotTypeChange}
-              />
-            </Form.Group>
-          </Col> */}
-
-          {selectedLotType === "presentLot" && (
+                {/* {selectedLotType === "presentLot" && ( */}
             <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -499,10 +507,10 @@ function PreparationofeggsDFLs() {
                     </Col>
                   </Form.Group>
                 </Col> 
-                    )}
+                    {/* )} */}
 
-                    {selectedLotType === "newLot" && (
-                      <Col lg="4">
+                    {/* {selectedLotType === "newLot" && ( */}
+                      {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                      Cocoon Lot Number
@@ -529,8 +537,8 @@ function PreparationofeggsDFLs() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> 
-                    )}
+                </Col>  */}
+                    {/* )} */}
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -562,8 +570,8 @@ function PreparationofeggsDFLs() {
                         </Col>
                       </Form.Group>
                     </Col>
-
-                      <Col lg="4">
+                    
+                    <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Line Details/year<span className="text-danger">*</span>
@@ -627,9 +635,8 @@ function PreparationofeggsDFLs() {
                         </Col>
                       </Form.Group>
                     </Col>
-
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfCocoonsCB">
                               Cocoon's Purchased (in Kg's / Nos)
                                 <span className="text-danger">*</span>
@@ -658,23 +665,28 @@ function PreparationofeggsDFLs() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.dateOfMothEmergence}
-                                  onChange={(date) =>
-                                    handleDateChange(
-                                      date,
-                                      "dateOfMothEmergence"
-                                    )
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  // minDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isDateOfMothEmergence && (
+                                  <DatePicker
+                                    selected={
+                                      new Date(data.dateOfMothEmergence) || null
+                                    }
+                                    onChange={(date) =>
+                                      handleDateChange(
+                                        date,
+                                        "dateOfMothEmergence"
+                                      )
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    // minDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
+
                                 <Form.Control.Feedback type="invalid">
                                   Date of moth emergence is required
                                 </Form.Control.Feedback>
@@ -689,20 +701,23 @@ function PreparationofeggsDFLs() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.laidOnDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "laidOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  // maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isLaidOnDate && (
+                                  <DatePicker
+                                    selected={new Date(data.laidOnDate) || null}
+                                    onChange={(date) =>
+                                      handleDateChange(date, "laidOnDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    // maxDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
+
                                 <Form.Control.Feedback type="invalid">
                                   Laid On Date is required
                                 </Form.Control.Feedback>
@@ -959,26 +974,6 @@ function PreparationofeggsDFLs() {
                             </Form.Group>
                           </Col>
 
-                          {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="testResults">
-                                Egg Sheet Serial Nos 
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="eggSheetSerialNos"
-                                  name="eggSheetSerialNos"
-                                  value={data.eggSheetSerialNos}
-                                  onChange={handleInputs}
-                                  type="number"
-                                  placeholder="Egg Sheet Serial Nos "
-                                  // required
-                                />
-                               
-                              </div>
-                            </Form.Group>-
-                          </Col> */}
-
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
@@ -1093,7 +1088,7 @@ function PreparationofeggsDFLs() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Save
+                          Update
                         </Button>
                       </li>
                       <li>
@@ -1105,7 +1100,7 @@ function PreparationofeggsDFLs() {
                           Clear
                         </Button>
                       </li>
-                      {/* <li>
+                {/* <li>
                   <Link
                     to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                     className="btn btn-secondary border-0"
@@ -1125,4 +1120,4 @@ function PreparationofeggsDFLs() {
   );
 }
 
-export default PreparationofeggsDFLs;
+export default PreparationofeggsDFLsAdd;

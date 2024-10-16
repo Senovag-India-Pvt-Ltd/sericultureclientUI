@@ -1,5 +1,6 @@
-import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Form, Row, Col, Button, Modal} from "react-bootstrap";
+import React from 'react';
+import { Link, useParams} from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
@@ -98,6 +99,8 @@ function PreparationofeggsDFLsList() {
     setBedDetails({ ...bedDetails, [name]: value });
   };
 
+
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -157,26 +160,55 @@ function PreparationofeggsDFLsList() {
     });
   };
 
+  // const getList = () => {
+  //   setLoading(true);
+
+  //   const response = api
+  //     .get(baseURLSeedDfl + `EggPreparation/get-info`)
+  //     .then((response) => {
+  //       // console.log(response.data)
+  //       setListData(response.data);
+  //       // setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getList();
+  // }, []);
+
   const getList = () => {
     setLoading(true);
-
-    const response = api
+  
+    api
       .get(baseURLSeedDfl + `EggPreparation/get-info`)
       .then((response) => {
-        // console.log(response.data)
+        // Assuming you want to get the preparationOfEggsId from the response
+        const preparationOfEggsId = response.data?.preparationOfEggsId;
+        
+        // Set the list data
         setListData(response.data);
-        // setTotalRows(response.data.content.totalItems);
+        
+        // Pass the preparationOfEggsId to another method or store it in the state
+        if (preparationOfEggsId) {
+          getIdList(preparationOfEggsId);
+        }
+  
         setLoading(false);
       })
       .catch((err) => {
-        // setListData({});
         setLoading(false);
       });
   };
-
+  
   useEffect(() => {
     getList();
   }, []);
+  
 
   const [bedDetails, setBedDetails] = useState({
     id: "",
@@ -220,6 +252,11 @@ function PreparationofeggsDFLsList() {
 
   const handleEdit = (_id) => {
     navigate(`/seriui/Preparation-of-eggs-DFLs-edit/${_id}`);
+    // navigate("/seriui/training Schedule");
+  };
+
+  const handleAddEggs = (_id) => {
+    navigate(`/seriui/Preparation-of-eggs-DFLs-add/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
@@ -313,6 +350,50 @@ function PreparationofeggsDFLsList() {
     },
   };
 
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+  };
+
+  const { preparationOfEggsId } = useParams();
+
+
+  const [showModal1, setShowModal1] = useState(false);
+
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal1 = () => setShowModal1(false);
+
+  const [prepareEggs, setPrepareEggs] = useState([]);
+
+  const getIdList = (preparationOfEggsId) => {
+    setLoading(true);
+    api
+      .get(`${baseURLSeedDfl}EggPreparation/get-preparation-of-present-lotno-dfls-by-preparationOfEggsId/${preparationOfEggsId}`)
+      .then((response) => {
+        if (response.data.length > 0) {
+          setPrepareEggs(response.data); // Set to the entire array
+        } else {
+          setPrepareEggs([]); // Handle empty response
+        }
+        setLoading(false);
+        handleShowModal1();
+      })
+      .catch((err) => {
+        console.error(err);
+        setPrepareEggs([]);
+        setLoading(false);
+      });
+  };
+  
+
+  
+  // useEffect(() => {
+  //   getIdList();
+  // }, [preparationOfEggsId]);
+
   const PreparationofeggsDFLsDataColumns = [
     {
       name: "Action",
@@ -335,19 +416,44 @@ function PreparationofeggsDFLsList() {
           >
             Edit
           </Button>
+        
+          <Button
+            variant="danger"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleAddEggs(row.id)}
+          >
+            Add DFLs
+          </Button>
           {/* <Button
             variant="danger"
             size="sm"
             className="ms-2"
-            onClick={() => deleteConfirm(row.id)}
+            onClick={() => getIdList(row.preparationOfEggsId)}
           >
-            Delete
+            View DFLs
           </Button> */}
+          <Button
+          variant="danger"
+          size="sm"
+          className="ms-2"
+          onClick={() => {
+            const preparationOfEggsId = row.id; // Use row.id instead of row.preparationOfEggsId
+            if (preparationOfEggsId) {
+              getIdList(preparationOfEggsId); // Call getIdList with the correct ID
+            } else {
+              console.error('preparationOfEggsId is undefined for this row:', row);
+              alert('Error: preparationOfEggsId is undefined!');
+            }
+          }}
+        >
+          View DFLs
+        </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      grow: 3,
     },
 
     // {
@@ -891,6 +997,134 @@ function PreparationofeggsDFLsList() {
           </Block>
         </Modal.Body>
       </Modal>
+
+      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+    <Modal.Header closeButton>
+        <Modal.Title>View DFL Details</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+        {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>
+        ) : (
+          <>
+            {/* <Card className="mt-3">
+                <Card.Header>View DFL Details</Card.Header>
+                <Card.Body> */}
+                    <Row className="g-gs">
+                        <Col lg="12">
+                            <table className="table small table-bordered">
+                                <tbody>
+                                    {prepareEggs.map((prepareEggs, index) => (
+                                        <React.Fragment key={index}>
+                                            <tr>
+                                                <td style={styles.ctstyle}>ID:</td>
+                                                <td>{prepareEggs.id}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Lot number:</td>
+                                                <td>{prepareEggs.lotNumber}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Number of Cocoons in Kg:</td>
+                                                <td>{prepareEggs.numberOfCocoonsCB}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Race:</td>
+                                                <td>{prepareEggs.raceName}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Generation Number:</td>
+                                                <td>{prepareEggs.generationNumber}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Line Name:</td>
+                                                <td>{prepareEggs.lineName}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Date of moth emergence:</td>
+                                                <td>{prepareEggs.dateOfMothEmergence}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Laid On Date:</td>
+                                                <td>{prepareEggs.laidOnDate}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Egg sheet serial number:</td>
+                                                <td>{prepareEggs.eggSheetSerialNumber}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Number of pairs:</td>
+                                                <td>{prepareEggs.numberOfPairs}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Number of Rejection:</td>
+                                                <td>{prepareEggs.numberOfRejection}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>DFLs obtained:</td>
+                                                <td>{prepareEggs.dflsObtained}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Egg Recovery %:</td>
+                                                <td>{prepareEggs.eggRecoveryPercentage}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Parent Lot Number:</td>
+                                                <td>{prepareEggs.parentLotNumber}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Selected Cocoon's in Nos:</td>
+                                                <td>{prepareEggs.selectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Rejected Cocoon's in Nos:</td>
+                                                <td>{prepareEggs.rejectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>No of Pairs (%) (Selected Cocoon's):</td>
+                                                <td>{prepareEggs.pairNoSelectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>No of Pairs (%) (Rejected Cocoon's):</td>
+                                                <td>{prepareEggs.pairNoRejectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Err %(Selected Cocoon's):</td>
+                                                <td>{prepareEggs.errPerSelectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Err %(Rejected Cocoon's):</td>
+                                                <td>{prepareEggs.errPerRejectedCocoonsNo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Remaining DFLs:</td>
+                                                <td>{prepareEggs.remainingDfls}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Test results:</td>
+                                                <td>{prepareEggs.testResults}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.ctstyle}>Additional remarks:</td>
+                                                <td>{prepareEggs.additionalRemarks}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="2" className="text-center">
+                                                    <strong>-------------------</strong>
+                                                </td>
+                                            </tr>
+                                        </React.Fragment>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </Col>
+                    </Row>
+                    {/* </Card.Body>
+                </Card> */}
+            </>
+        )}
+    </Modal.Body>
+</Modal>
     </Layout>
   );
 }
