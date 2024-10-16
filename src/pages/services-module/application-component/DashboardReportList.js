@@ -930,6 +930,7 @@ function DashboardReportList() {
     applicationFormId: "",
     workOrderNumber: "",
     sanctionOrderNumber: "",
+    sanctionAmount: "",
     lat: "",
     lon: "",
     description: "",
@@ -1957,7 +1958,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -1966,7 +1967,7 @@ function DashboardReportList() {
                                         value={actionData.stepId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
+                                        required
                                         // isInvalid={
                                         //   actionData.approvalStageId === undefined ||
                                         //   actionData.approvalStageId === "0"
@@ -1998,7 +1999,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     User
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -2007,7 +2008,7 @@ function DashboardReportList() {
                                         value={actionData.userId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
+                                        required
                                         // isInvalid={
                                         //   actionData.userId === undefined ||
                                         //   actionData.userId === "0"
@@ -2023,11 +2024,34 @@ function DashboardReportList() {
                                           </option>
                                         ))}
                                       </Form.Select>
-                                      {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                      <Form.Control.Feedback type="invalid">
+                            User is required
+                          </Form.Control.Feedback>
                                     </div>
                                   </Col>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    Subsidy Amount
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="schemeAmount"
+                                      name="schemeAmount"
+                                      value={actionData.schemeAmount}
+                                      onChange={handleActionInputs}
+                                      type="text"
+                                      placeholder="Enter Scheme Amount "
+                                      style={modalStyles.formControl}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                                  Cocoon's Purchased (in Kg's / Nos) is required
+                                                  </Form.Control.Feedback> */}
+                                  </div>
                                 </Form.Group>
                               </Col>
                             </Row>
