@@ -1542,7 +1542,7 @@ function DashboardReportList() {
 
     try {
       const formData = new FormData();
-      formData.append("multipartFile", document);
+      formData.append("multipartFile", documentDetails);
 
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
@@ -1569,11 +1569,11 @@ function DashboardReportList() {
         {
           documentId,
           // documentName: document.name,
-          documentName: document?.name || "Unknown Document",
+          documentName: documentDetails?.name || "Unknown Document",
           documentMasterName: docListData.find(
             (list) => list.documentMasterId === documentId
           )?.documentMasterName, // Find and store the documentMasterName
-          documentFile: document, // Store the file itself for image preview
+          documentFile: documentDetails, // Store the file itself for image preview
         },
       ]);
     } catch (error) {
@@ -1595,13 +1595,13 @@ function DashboardReportList() {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
 
   //Display Document
-  const [document, setDocument] = useState("");
+  const [documentDetails, setDocumentDetails] = useState("");
 
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       // Added null check
-      setDocument(file);
+      setDocumentDetails(file);
       setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
     }
   };
@@ -1957,7 +1957,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -1966,11 +1966,11 @@ function DashboardReportList() {
                                         value={actionData.stepId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
-                                        // isInvalid={
-                                        //   actionData.approvalStageId === undefined ||
-                                        //   actionData.approvalStageId === "0"
-                                        // }
+                                        required
+                                        isInvalid={
+                                          actionData.stepId === undefined ||
+                                          actionData.stepId === "0"
+                                        }
                                       >
                                         <option value="">
                                           Select Approval Stage
@@ -1998,7 +1998,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     User
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -2007,11 +2007,11 @@ function DashboardReportList() {
                                         value={actionData.userId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
-                                        // isInvalid={
-                                        //   actionData.userId === undefined ||
-                                        //   actionData.userId === "0"
-                                        // }
+                                        required
+                                        isInvalid={
+                                          actionData.userId === undefined ||
+                                          actionData.userId === "0"
+                                        }
                                       >
                                         <option value="">Select User</option>
                                         {userFromDistrictData.map((list) => (
@@ -2691,10 +2691,10 @@ function DashboardReportList() {
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                  {document ? (
+                  {documentDetails ? (
                     <img
                       style={{ height: "100px", width: "100px" }}
-                      src={URL.createObjectURL(document)}
+                      src={URL.createObjectURL(documentDetails)}
                     />
                   ) : (
                     ""
