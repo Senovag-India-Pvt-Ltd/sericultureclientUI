@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import { Card, Form, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import Layout from "../../layout/default";
+import { Link } from "react-router-dom";
 import Block from "../../components/Block/Block";
 import Icon from "../../components/Icon/Icon";
 import api from "../../../src/services/auth/api";
@@ -304,6 +305,15 @@ const saveError = (message = "Something went wrong!") => {
           <Block.HeadContent>
             <Block.Title tag="h2">Pupa Testing And Cocoon Assessment</Block.Title>
           </Block.HeadContent>
+          <li>
+                <Link
+                  to="/seriui/final-weighment-page"
+                  className="btn btn-primary d-none d-md-inline-flex"
+                >
+                  <Icon name="arrow-long-left" />
+                  <span>Final Weighment List</span>
+                </Link>
+              </li>
         </Block.HeadBetween>
       </Block.Head>
 

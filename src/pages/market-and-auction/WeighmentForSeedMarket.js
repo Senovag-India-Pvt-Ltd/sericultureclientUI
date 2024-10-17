@@ -1117,13 +1117,7 @@ const handleShowModalAssesment = () => {
                                 >
                                   Continue weighment
                                 </Button>
-                                <Button 
-                                  variant="primary" 
-                                  // style={{ backgroundColor: 'white', color: 'red', fontWeight: 'bold', borderColor: 'red' }} 
-                                  onClick={() => handleShowModalAssesment()}
-                                >
-                                  Click For Allottment Form
-                                </Button>
+                                
                               </td>
                             </tr>
                             <tr>
