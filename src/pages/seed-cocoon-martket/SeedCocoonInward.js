@@ -90,7 +90,7 @@ function SeedCocoonInward() {
   //     setValidatedDisplay(true);
   //   } else {
   //     event.preventDefault();
-  
+
   //     // Reset data state
   //     setData({
   //       farmerId: "",
@@ -107,19 +107,19 @@ function SeedCocoonInward() {
   //       marketId: localStorage.getItem("marketId"),
   //       godownId: localStorage.getItem("godownId") ? localStorage.getItem("godownId") : 0,
   //     });
-  
+
   //     setValidatedDisplay(false);
   //     setFarmerDetails({});
   //     setAllotedLotList([]);
   //     setBigBinList([]);
   //     setSmallBinList([]);
-  
+
   //     const { text, select } = farmer;
   //     let sendData = {
   //       text,
   //       type: select,
   //     };
-  
+
   //     setLoading(true);
   //     api
   //       .post(
@@ -130,7 +130,7 @@ function SeedCocoonInward() {
   //       .then((response) => {
   //         if (response.data && response.data.length > 0) {
   //           const farmerResponse = response.data[0]; // Accessing the first farmer's details
-  
+
   //           // Update state with farmer details
   //           setFarmerDetails(farmerResponse);
   //           setData((prev) => ({
@@ -140,7 +140,7 @@ function SeedCocoonInward() {
   //             lotVariety: farmerResponse.raceOfDfls,       // Set lotVariety from response
   //             lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
   //           }));
-  //           
+  //
   //           setLoading(false);
   //           setIsActive(true);
   //         } else {
@@ -163,7 +163,7 @@ function SeedCocoonInward() {
   //   }
   // };
   const display = (event) => {
-    const form = event.currentTarget; 
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -219,14 +219,14 @@ function SeedCocoonInward() {
               lotVariety: farmerResponse.raceOfDfls,       // Set lotVariety from response
               lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
             }));
-  
+
             setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
-            
+
             if (farmerResponse.fitnessCertificatePath) {
               // Automatically call the getDocumentFile function when the farmerId is received
               getDocumentFile(farmerResponse.fitnessCertificatePath);
             }
-  
+
             setLoading(false);
             setIsActive(true);
           } else {
@@ -248,8 +248,8 @@ function SeedCocoonInward() {
         });
     }
   };
-  
- 
+
+
   const handleFarmerIdInputs = (e) => {
     // debugger;
     let { name, value } = e.target;
@@ -717,8 +717,8 @@ function SeedCocoonInward() {
        console.error("Error fetching file:", error);
      }
    };
- 
-   
+
+
 
    const downloadFile = async (file) => {
     const parameters = `fileName=${file}`;
@@ -750,11 +750,11 @@ function SeedCocoonInward() {
     }
   };
 
- 
+
    // console.log(getIdList());
- 
+
   //  useEffect(() => {
-     
+
   //  }, [id]);
 
   return (
@@ -1019,7 +1019,7 @@ function SeedCocoonInward() {
             <tr>
                       <td style={styles.ctstyle}>Fitness Certificate:</td>
                       <td>
-                       
+
                         {selectedDocumentFile && (
                           <>
                           <img

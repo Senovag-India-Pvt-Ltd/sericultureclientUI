@@ -930,6 +930,7 @@ function DashboardReportList() {
     applicationFormId: "",
     workOrderNumber: "",
     sanctionOrderNumber: "",
+    sanctionAmount: "",
     lat: "",
     lon: "",
     description: "",
@@ -1971,6 +1972,11 @@ function DashboardReportList() {
                                           actionData.stepId === undefined ||
                                           actionData.stepId === "0"
                                         }
+                                        required
+                                        // isInvalid={
+                                        //   actionData.approvalStageId === undefined ||
+                                        //   actionData.approvalStageId === "0"
+                                        // }
                                       >
                                         <option value="">
                                           Select Approval Stage
@@ -2012,6 +2018,11 @@ function DashboardReportList() {
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
+                                        required
+                                        // isInvalid={
+                                        //   actionData.userId === undefined ||
+                                        //   actionData.userId === "0"
+                                        // }
                                       >
                                         <option value="">Select User</option>
                                         {userFromDistrictData.map((list) => (
@@ -2023,11 +2034,34 @@ function DashboardReportList() {
                                           </option>
                                         ))}
                                       </Form.Select>
-                                      {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                      <Form.Control.Feedback type="invalid">
+                            User is required
+                          </Form.Control.Feedback>
                                     </div>
                                   </Col>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    Subsidy Amount
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="schemeAmount"
+                                      name="schemeAmount"
+                                      value={actionData.schemeAmount}
+                                      onChange={handleActionInputs}
+                                      type="text"
+                                      placeholder="Enter Scheme Amount "
+                                      style={modalStyles.formControl}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                                  Cocoon's Purchased (in Kg's / Nos) is required
+                                                  </Form.Control.Feedback> */}
+                                  </div>
                                 </Form.Group>
                               </Col>
                             </Row>
