@@ -898,6 +898,7 @@ import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/Supply
 import MgnregaSchemeEdit from "../pages/chawki-management/MgnregaSchemeEdit";
 import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
 import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
+import PreparationofeggsDFLsAdd from "../pages/seed-and-dfl-managment/PreparationofeggsAddDFLs";
 // Admin and Reports
 
 function Router() {
@@ -1445,6 +1446,11 @@ function Router() {
             <Route
               path="Preparation-of-eggs-DFLs-edit/:id"
               element={<PreparationofeggsDFLsEdit />}
+            />
+
+<Route
+              path="Preparation-of-eggs-DFLs-add/:id"
+              element={<PreparationofeggsDFLsAdd />}
             />
 
             <Route
