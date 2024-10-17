@@ -20,11 +20,13 @@ const [dataLotList, setDataLotList] = useState([]);
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
-    buyerType: "Reeler",
+    buyerType: "RSP",
     buyerId: "",
     lotWeight: "",
     amount: "",
     soldAmount: "",
+    dflLotNumber: "",
+    averageYield: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -40,6 +42,8 @@ const [dataLotList, setDataLotList] = useState([]);
     lotWeight: "",
     amount: "",
     soldAmount: "",
+    dflLotNumber: "",
+    averageYield: "",
   })
  }
 
@@ -78,7 +82,7 @@ const handleDateChange = (date) => {
       setData(true);
     } else {
       e.preventDefault();
-      const buyerName = data.buyerType === "Reeler" ? data.reelerName : data.name;
+      const buyerName = data.buyerType === "RSP" ? data.licenseNumber : data.address;
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
      
       clean();
@@ -90,7 +94,9 @@ const handleDateChange = (date) => {
 
   const [farmerdetails,setFarmerDetails] = useState({
     farmerFirstName:"",
-    farmerMiddleName:"",
+    lotParentLevel:"",
+    price:"",
+    netWeight:"",
     farmerFruitsId:""
   })
 
@@ -126,7 +132,7 @@ const handleDateChange = (date) => {
       setShowModal1(false);
       setValidatedEdit(false);
       setData({
-        buyerType: "Reeler",
+        buyerType: "RSP",
         buyerId: "",
         lotWeight: "",
         amount: "",
@@ -139,16 +145,45 @@ const handleDateChange = (date) => {
   };
 
   let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   // setData({ ...data, [name]: value });
+  //   if(name ==='allottedLotId'){
+  //     setAllottedLotId(value);
+  //   }else{
+  //     setData({ ...data, [name]: value });
+  //   }
+  // };
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    // setData({ ...data, [name]: value });
-    if(name ==='allottedLotId'){
+    const { name, value } = e.target;
+  
+    // Update state for lotWeight and amount
+    const newData = { ...data, [name]: value };
+  
+    // Calculate total amount if both lotWeight and amount are present
+    if (newData.lotWeight && newData.amount) {
+      // Calculate total and fix to 2 decimal points, then convert to an integer
+      newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount)); 
+    } else {
+      newData.soldAmount = ''; // Clear soldAmount if inputs are missing
+    }
+  
+    // New logic for calculating averageYield
+    if (newData.lotWeight && newData.dflLotNumber) {
+      newData.averageYield = Math.floor(parseFloat(newData.lotWeight) / parseFloat(newData.dflLotNumber)).toFixed(2);
+    } else {
+      newData.averageYield = ''; // Clear averageYield if inputs are missing
+    }
+  
+    // Set the new state
+    if (name === 'allottedLotId') {
       setAllottedLotId(value);
-    }else{
-      setData({ ...data, [name]: value });
+    } else {
+      setData(newData);
     }
   };
+  
 //   const handleInputs = (e) => {
 //   const { name, value } = e.target;
 
@@ -283,8 +318,11 @@ const handleDateChange = (date) => {
             setFarmerDetails((prev) => ({
               ...prev,
               farmerFirstName: response.data.content[0].farmerFirstName,
-              farmerMiddleName: response.data.content[0].farmerMiddleName,
+              lotParentLevel: response.data.content[0].lotParentLevel,
               farmerFruitsId: response.data.content[0].farmerFruitsId,
+              price: response.data.content[0].price,
+              netWeight: response.data.content[0].netWeight,
+              dflLotNumber: response.data.content[0].dflLotNumber,
             }));
             setDataLotList(response.data.content);
             setShowFarmerDetails(true);
@@ -292,8 +330,11 @@ const handleDateChange = (date) => {
             setFarmerDetails((prev) => ({
               ...prev,
               farmerFirstName: response.data.content[0].farmerFirstName,
-              farmerMiddleName: response.data.content[0].farmerMiddleName,
+              lotParentLevel: response.data.content[0].lotParentLevel,
               farmerFruitsId: response.data.content[0].farmerFruitsId,
+              price: response.data.content[0].price,
+              netWeight: response.data.content[0].netWeight,
+              dflLotNumber: response.data.content[0].dflLotNumber,
             }));
             setShowFarmerDetails(true);
           }
@@ -364,6 +405,8 @@ const handleDateChange = (date) => {
             lotWeight: item.lotWeight,
             amount: item.amount,
             soldAmount: item.soldAmount,
+            dflLotNumber:item.dflLotNumber,
+             averageYield: item.averageYield,
             allottedLotId: allottedLotId,
             auctionDate: auctionDate
           }))
@@ -407,7 +450,9 @@ const handleDateChange = (date) => {
                 marketFee: "",
                 soldAmount: "",
                 allottedLotId: "",
-                auctionDate: ""
+                auctionDate: "",
+                dflLotNumber: "",
+                averageYield: "",
               });
               clear();
               setValidated(false);
@@ -471,7 +516,7 @@ const handleDateChange = (date) => {
     setData({
       ...data,
       buyerId: chooseId,
-      reelerName: chooseName,
+      address: chooseName,
       buyerName: chooseName,
     });
   };
@@ -483,7 +528,7 @@ const handleDateChange = (date) => {
     setData({
       ...data,
       buyerId: chooseId,
-      name: chooseName,
+      licenseNumber: chooseName,
       buyerName: chooseName,
     });
   };
@@ -498,7 +543,9 @@ const handleDateChange = (date) => {
         marketFee: "",
         soldAmount: "",
         allottedLotId: "",
-        auctionDate: ""
+        auctionDate: "",
+        dflLotNumber: "",
+        averageYield: "",
     });
   setFarmerDetails({
     farmerFirstName:"",
@@ -554,29 +601,45 @@ setAllottedLotId("");
   }, []);
 
   const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "10%",
-    },
-    top: {
+    cardHeader: {
       backgroundColor: "rgb(15, 108, 190, 1)",
       color: "rgb(255, 255, 255)",
-      width: "50%",
-      fontWeight: "bold",
-      fontSize: "25px",
+      fontSize: "20px",
+      padding: "7px",
       textAlign: "center",
+      borderTopLeftRadius: "8px",
+      borderTopRightRadius: "8px",
     },
-    bottom: {
+    cardBody: {
+      backgroundColor: "rgb(255, 255, 255)",
+      padding: "20px",
+      borderBottomLeftRadius: "8px",
+      borderBottomRightRadius: "8px",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "15px",
+    },
+    tableRow: {
+      borderBottom: "1px solid #ddd",
+    },
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249)",
+      color: "rgb(0, 0, 0)",
+      padding: "10px",
+      fontWeight: "600",
+    },
+    cell: {
+      padding: "10px",
+      textAlign: "left",
+      color: "#333",
+    },
+    boldText: {
       fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    sweetsize: {
-      width: "100px",
-      height: "100px",
     },
   };
+  
 
 
   const navigate = useNavigate();
@@ -693,25 +756,32 @@ setAllottedLotId("");
             {showFarmerDetails && (
                   <Col lg="12">
                   <Card>
-                    <Card.Header>Farmer Details</Card.Header>
-                    <Card.Body>
-                      <Row className="g-gs mt-1">
+                    <Card.Header style={styles.cardHeader}>Farmer Details</Card.Header>
+                    <Card.Body style={styles.cardBody}>
+                      <Row className="g-gs">
                         <Col lg="12">
-                          <table className="table small table-bordered">
+                          <table style={styles.table} className="table small table-bordered">
                             <tbody>
-                              <tr>
-                              <td style={styles.ctstyle}> Farmer Name:</td>
-                              <td>{farmerdetails.farmerFirstName}</td>
-                              <td style={styles.ctstyle}> Farmer Middle Name:</td>
-                              <td>{farmerdetails.farmerMiddleName}</td>
-                              <td style={styles.ctstyle}> Fruits Id :</td>
-                              <td>{farmerdetails.farmerFruitsId}</td>
-                             </tr>
+                              <tr style={styles.tableRow}>
+                                <td style={styles.ctstyle}>Fruits Id :</td>
+                                <td style={styles.cell}>{farmerdetails.farmerFruitsId}</td>
+                                <td style={styles.ctstyle}>Farmer Name:</td>
+                                <td style={styles.cell}>{farmerdetails.farmerFirstName}</td>
+                                <td style={styles.ctstyle}>Lot No:</td>
+                                <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
+                                <td style={styles.ctstyle}>DFL Lot No:</td>
+                                <td style={styles.cell}>{farmerdetails.dflLotNumber}</td>
+                                <td style={styles.ctstyle}>Price:</td>
+                                <td style={styles.cell}>{farmerdetails.price}</td>
+                                <td style={styles.ctstyle}>Final Weighment in Kgs:</td>
+                                <td style={styles.cell}>{farmerdetails.netWeight}</td>
+                                <td style={styles.ctstyle}>Remaining Cocoon in Kgs:</td>
+                                <td style={styles.cell}>{farmerdetails.netWeight}</td>
+                              </tr>
                             </tbody>
                           </table>
                         </Col>
                       </Row>
-                    
                     </Card.Body>
                   </Card>
                   </Col>
@@ -783,7 +853,7 @@ setAllottedLotId("");
                                   {/* <th></th> */}
                                   <th>Action</th>
                                   <th>Buyer Type</th>
-                                  <th>Buyer</th>
+                                  <th>License Number/Address</th>
                                   <th>Lot Weight</th>
                                   <th>Amount</th>
                                   {/* <th>Market Fee</th> */}
@@ -855,6 +925,14 @@ setAllottedLotId("");
                   <Button type="submit" variant="primary">
                     Save
                   </Button>
+
+                </li>
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    Store
+                  </Button>
+                  
                 </li>
                 <li>
                   {/* <Link
@@ -902,9 +980,11 @@ setAllottedLotId("");
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Budget Type</option>
-                            <option value="Reeler">Reeler</option>
-                            <option value="ExternalStakeHolders">External Stake Holders</option>
+                            <option value="">Select Buyer Type</option>
+                            <option value="RSP">RSP</option>
+                            <option value="NSSO">NSSO</option>
+                            <option value="Govt Grainage">Govt Grainage</option>
+                            <option value="Reeling">Reeling</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                           Buyer Type is required
@@ -988,54 +1068,56 @@ setAllottedLotId("");
                     ) : (
                       ""
                     )} */}
-                    {data.buyerType === "Reeler" || data.buyerType === "" ? (
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Reeler<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="buyerId"
-                            value={`${data.buyerId}_${data.reelerName}`}
-                            onChange={handleReelerOption}
-                            onBlur={() => handleReelerOption}
-                            required
-                            isInvalid={
-                              data.buyerId === undefined ||
-                              data.buyerId === "0"
-                            }
-                          >
-                            <option value="">Select Reeler</option>
-                            {reelerListData.map((list) => (
-                              <option
-                                key={`${list.reelerId}_${list.reelerName}`}
-                                value={`${list.reelerId}_${list.reelerName}`}
-                              >
-                                {list.reelerName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Reeler is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  ) : (
-                    ""
-                  )}
+                    <>
+                    {(data.buyerType === 'Govt Grainage' || data.buyerType === 'NSSO') && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                Address<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="buyerId"
+                                  value={`${data.buyerId}_${data.address}`}
+                                  onChange={handleReelerOption}
+                                  onBlur={() => handleReelerOption} // Make sure this is correctly set
+                                  required
+                                  isInvalid={
+                                    data.buyerId === undefined ||
+                                    data.buyerId === "0"
+                                  }
+                                >
+                                  <option value="">Select Address</option>
+                                  {externalListData.map((list) => (
+                                    <option
+                                      key={`${list.externalUnitRegistrationId}_${list.address}`}
+                                      value={`${list.externalUnitRegistrationId}_${list.address}`}
+                                    >
+                                      {list.address}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Address is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+                        {/* Ensure that there's a closing tag for the parent component here if needed */}
+                      </>
+                    {/* ); */}
 
-                  {data.buyerType === "ExternalStakeHolders" ? (
+                  {data.buyerType === "RSP" ? (
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          External Stake Holders<span className="text-danger">*</span>
+                          License Number<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="buyerId"
-                            value={`${data.buyerId}_${data.name}`}
+                            value={`${data.buyerId}_${data.licenseNumber}`}
                             onChange={handleExternalOption}
                             onBlur={() => handleExternalOption}
                             required
@@ -1044,18 +1126,18 @@ setAllottedLotId("");
                               data.buyerId === "0"
                             }
                           >
-                            <option value="">Select External Stake Holders</option>
+                            <option value="">Select License Number</option>
                             {externalListData.map((list) => (
                               <option
-                                key={`${list.externalUnitRegistrationId}_${list.name}`}
-                                value={`${list.externalUnitRegistrationId}_${list.name}`}
+                                key={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
+                                value={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
                               >
-                                {list.name}
+                                {list.licenseNumber}
                               </option>
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            External Stake Holders is required
+                            License Number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1065,9 +1147,9 @@ setAllottedLotId("");
                   )}
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Purchase Lot
+                      Quantity of Cocoons Allotted (In Kgs)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1077,20 +1159,68 @@ setAllottedLotId("");
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Lot Weight"
+                          placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Purchase Lot is required.
+                        Quantity of Cocoons Allotted (In Kgs) is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Amount Per Kg
+                       No Of DFL
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dflLotNumber"
+                          name="dflLotNumber"
+                          value={data.dflLotNumber}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder="Enter No Of DFL"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        No Of DFL is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="approxWeightPerCrate">
+                       Average Yield
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="averageYield"
+                          name="averageYield"
+                          value={data.averageYield}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder="Enter Average Yield"
+                          required
+                          readOnly
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Average Yield is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="approxWeightPerCrate">
+                        Price(In Rs.)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1100,43 +1230,22 @@ setAllottedLotId("");
                           value={data.amount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter  Amount Per Kg"
+                          placeholder="Enter Price(In Rs.)"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Amount Per Kg is required.
+                        Price(In Rs.) is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                        Market Fee
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="marketFee"
-                          name="marketFee"
-                          value={data.marketFee}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Market Fee"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Market Fee is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                 
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                       Sold Amount
+                       Total Amount
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1146,11 +1255,11 @@ setAllottedLotId("");
                           value={data.soldAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Sold Amount"
+                          placeholder="Enter Total Amount"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sold Amount is required.
+                        Total Amount is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1187,7 +1296,7 @@ setAllottedLotId("");
             onSubmit={(e) => handleUpdateLotDetails(e, lotId, data)}
           >
           <Row className="g-5 ">     
-                  <Col lg="6">
+          <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Buyer Type<span className="text-danger">*</span>
@@ -1204,9 +1313,11 @@ setAllottedLotId("");
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Budget Type</option>
-                            <option value="Reeler">Reeler</option>
-                            <option value="ExternalStakeHolders">External Stake Holders</option>
+                            <option value="">Select Buyer Type</option>
+                            <option value="RSP">RSP</option>
+                            <option value="NSSO">NSSO</option>
+                            <option value="Govt Grainage">Govt Grainage</option>
+                            <option value="Reeling">Reeling</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                           Buyer Type is required
@@ -1215,86 +1326,163 @@ setAllottedLotId("");
                       </Form.Group>
                     </Col>
 
-                  {data.buyerType === "Reeler" || data.buyerType === "" ? (
+                    {/* {data.buyerType === "Reeler" ||
+                    data.buyerType === "" ? (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            Reeler<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="buyerId"
+                              value={`{data.buyerId}_${data.reelerName}`}
+                              onChange={handleReelerOption}
+                              onBlur={() => handleReelerOption}
+                              required
+                              isInvalid={
+                                data.buyerId === undefined ||
+                                data.buyerId === "0"
+                              }
+                            >
+                              <option value="">Select Reeler</option>
+                              {reelerListData.map((list) => (
+                                <option
+                                  key={`{list.reelerId}_${list.reelerName}`}
+                                  value={list.reelerId}
+                                >
+                                  {list.reelerName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Reeler is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ) : (
+                      ""
+                    )}
+                    {data.buyerType === "ExternalStakeHolders" ? (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                          External Stake Holders<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="buyerId"
+                              value={`{data.buyerId}_${data.name}`}
+                              onChange={handleExternalOption}
+                              onBlur={() => handleExternalOption}
+                              required
+                              isInvalid={
+                                data.buyerId === undefined ||
+                                data.buyerId === "0"
+                              }
+                            >
+                              <option value="">Select External Stake Holders</option>
+                              {externalListData.map((list) => (
+                                <option
+                                  key={list.externalUnitRegistrationId}
+                                  value={`{list.externalUnitRegistrationId}_${list.name}`}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                            External Stake Holders is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ) : (
+                      ""
+                    )} */}
+                    <>
+                    {(data.buyerType === 'Govt Grainage' || data.buyerType === 'NSSO') && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                Address<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="buyerId"
+                                  value={`${data.buyerId}_${data.address}`}
+                                  onChange={handleReelerOption}
+                                  onBlur={() => handleReelerOption} // Make sure this is correctly set
+                                  required
+                                  isInvalid={
+                                    data.buyerId === undefined ||
+                                    data.buyerId === "0"
+                                  }
+                                >
+                                  <option value="">Select Address</option>
+                                  {externalListData.map((list) => (
+                                    <option
+                                      key={`${list.externalUnitRegistrationId}_${list.address}`}
+                                      value={`${list.externalUnitRegistrationId}_${list.address}`}
+                                    >
+                                      {list.address}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Address is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+                        {/* Ensure that there's a closing tag for the parent component here if needed */}
+                      </>
+                    {/* ); */}
+
+                  {data.buyerType === "RSP" ? (
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          License Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="buyerId"
+                            value={`${data.buyerId}_${data.licenseNumber}`}
+                            onChange={handleExternalOption}
+                            onBlur={() => handleExternalOption}
+                            required
+                            isInvalid={
+                              data.buyerId === undefined ||
+                              data.buyerId === "0"
+                            }
+                          >
+                            <option value="">Select License Number</option>
+                            {externalListData.map((list) => (
+                              <option
+                                key={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
+                                value={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
+                              >
+                                {list.licenseNumber}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            License Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  ) : (
+                    ""
+                  )}
+
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Reeler<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="buyerId"
-                          value={`${data.buyerId}_${data.reelerName}`}
-                          onChange={handleReelerOption}
-                          onBlur={() => handleReelerOption}
-                          required
-                          isInvalid={
-                            data.buyerId === undefined ||
-                            data.buyerId === "0"
-                          }
-                        >
-                          <option value="">Select Reeler</option>
-                          {reelerListData.map((list) => (
-                            <option
-                              key={`${list.reelerId}_${list.reelerName}`}
-                              value={`${list.reelerId}_${list.reelerName}`}
-                            >
-                              {list.reelerName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Reeler is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                ) : (
-                  ""
-                )}
-
-                {data.buyerType === "ExternalStakeHolders" ? (
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        External Stake Holders<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="buyerId"
-                          value={`${data.buyerId}_${data.name}`}
-                          onChange={handleExternalOption}
-                          onBlur={() => handleExternalOption}
-                          required
-                          isInvalid={
-                            data.buyerId === undefined ||
-                            data.buyerId === "0"
-                          }
-                        >
-                          <option value="">Select External Stake Holders</option>
-                          {externalListData.map((list) => (
-                            <option
-                              key={`${list.externalUnitRegistrationId}_${list.name}`}
-                              value={`${list.externalUnitRegistrationId}_${list.name}`}
-                            >
-                              {list.name}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          External Stake Holders is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                ) : (
-                  ""
-                )}
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Purchase Lot
+                      Quantity of Cocoons Allotted (In Kgs)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1304,20 +1492,69 @@ setAllottedLotId("");
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Lot Weight"
+                          placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Purchase Lot is required.
+                        Quantity of Cocoons Allotted (In Kgs) is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="approxWeightPerCrate">
+                       No Of DFL
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dflLotNumber"
+                          name="dflLotNumber"
+                          value={data.dflLotNumber}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder="Enter No Of DFL"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        No Of DFL is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Amount Per Kg
+                       Average Yield
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="averageYield"
+                          name="averageYield"
+                          value={data.averageYield}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder="Enter Average Yield"
+                          required
+                          readOnly
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Average Yield is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="approxWeightPerCrate">
+                        Price(In Rs.)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1327,11 +1564,11 @@ setAllottedLotId("");
                           value={data.amount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Amount Per Kg"
+                          placeholder="Enter Price(In Rs.)"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Amount Per Kg is required.
+                        Price(In Rs.) is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1361,9 +1598,9 @@ setAllottedLotId("");
                   </Col> */}
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                       Sold Amount
+                       Total Amount
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1373,11 +1610,11 @@ setAllottedLotId("");
                           value={data.soldAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Sold Amount"
+                          placeholder="Enter Total Amount"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sold Amount is required.
+                        Total Amount is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

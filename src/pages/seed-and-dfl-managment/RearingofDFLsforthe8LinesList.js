@@ -42,7 +42,7 @@ function RearingofDFLsforthe8LinesList() {
   const handleCloseModal1 = () => setShowModal1(false);
 
   const [validated, setValidated] = useState(false);
-  const { id } = useParams();
+
   const getList = () => {
     setLoading(true);
 

@@ -19,6 +19,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function SeedCocoonInward() {
   const [farmerDetails, setFarmerDetails] = useState({});
@@ -81,8 +82,88 @@ function SeedCocoonInward() {
 
   const [isActive, setIsActive] = useState(false);
  
+  // const display = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidatedDisplay(true);
+  //   } else {
+  //     event.preventDefault();
+  
+  //     // Reset data state
+  //     setData({
+  //       farmerId: "",
+  //       sourceMasterId: "",
+  //       raceMasterId: "",
+  //       dflCount: "",
+  //       estimatedWeight: "",
+  //       numberOfLot: "",
+  //       numberOfSmallBin: "",
+  //       numberOfBigBin: "",
+  //       dflLotNumber: "",  // Initial values are empty
+  //       lotVariety: "",
+  //       lotParentalLevel: "",
+  //       marketId: localStorage.getItem("marketId"),
+  //       godownId: localStorage.getItem("godownId") ? localStorage.getItem("godownId") : 0,
+  //     });
+  
+  //     setValidatedDisplay(false);
+  //     setFarmerDetails({});
+  //     setAllotedLotList([]);
+  //     setBigBinList([]);
+  //     setSmallBinList([]);
+  
+  //     const { text, select } = farmer;
+  //     let sendData = {
+  //       text,
+  //       type: select,
+  //     };
+  
+  //     setLoading(true);
+  //     api
+  //       .post(
+  //         baseURL2 +
+  //           `farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`,
+  //         sendData
+  //       )
+  //       .then((response) => {
+  //         if (response.data && response.data.length > 0) {
+  //           const farmerResponse = response.data[0]; // Accessing the first farmer's details
+  
+  //           // Update state with farmer details
+  //           setFarmerDetails(farmerResponse);
+  //           setData((prev) => ({
+  //             ...prev,
+  //             farmerId: farmerResponse.farmerId,
+  //             dflLotNumber: farmerResponse.numbersOfDfls,  // Set dflLotNumber from response
+  //             lotVariety: farmerResponse.raceOfDfls,       // Set lotVariety from response
+  //             lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
+  //           }));
+  //           
+  //           setLoading(false);
+  //           setIsActive(true);
+  //         } else {
+  //           searchError("No details found");
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.error("Error fetching farmer details:", err);
+  //         if (err.response?.data?.validationErrors) {
+  //           searchError(err.response.data.validationErrors);
+  //         } else {
+  //           Swal.fire({
+  //             icon: "warning",
+  //             title: "Details not Found",
+  //           });
+  //         }
+  //         setFarmerDetails({});
+  //         setLoading(false);
+  //       });
+  //   }
+  // };
   const display = (event) => {
-    const form = event.currentTarget;
+    const form = event.currentTarget; 
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -122,8 +203,7 @@ function SeedCocoonInward() {
       setLoading(true);
       api
         .post(
-          baseURL2 +
-            `farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`,
+          baseURL2 + `farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`,
           sendData
         )
         .then((response) => {
@@ -139,6 +219,14 @@ function SeedCocoonInward() {
               lotVariety: farmerResponse.raceOfDfls,       // Set lotVariety from response
               lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
             }));
+  
+            setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
+            
+            if (farmerResponse.fitnessCertificatePath) {
+              // Automatically call the getDocumentFile function when the farmerId is received
+              getDocumentFile(farmerResponse.fitnessCertificatePath);
+            }
+  
             setLoading(false);
             setIsActive(true);
           } else {
@@ -160,6 +248,7 @@ function SeedCocoonInward() {
         });
     }
   };
+  
  
   const handleFarmerIdInputs = (e) => {
     // debugger;
@@ -244,7 +333,7 @@ function SeedCocoonInward() {
       setValidated(true);
     } else {
       event.preventDefault();
-      generateBiddingSlip(1);
+      // generateBiddingSlip(1);
       try {
         const addGodown = localStorage.getItem("godownId")
           ? localStorage.getItem("godownId")
@@ -376,6 +465,53 @@ function SeedCocoonInward() {
   }, [data.marketId]);
 
   
+  // const generateBiddingSlip = async (allotedLotId) => {
+  //   const newDate = new Date();
+  //   const formattedDate =
+  //     newDate.getFullYear() +
+  //     "-" +
+  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     newDate.getDate().toString().padStart(2, "0");
+
+  //   try {
+  //     const response = await axios.post(
+  //       // baseURLReport + `getfarmercopy-kannada`,
+  //       `https://e-reshme.karnataka.gov.in/reports/marketreport/getfarmercopy-kannada`,
+
+  //       {
+  //         marketId: 1,
+  //         godownId: 0,
+  //         allottedLotId: allotedLotId,
+  //         auctionDate: "2024-10-01",
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //         headers: {
+  //           Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MSwicGhvbmVOdW1iZXIiOiI2MzY2MTI1ODY5Iiwicm9sZUlkIjoxLCJ1c2VyVHlwZSI6MCwidXNlck1hc3RlcklkIjo1OTMsInVzZXJuYW1lIjoibWFya2V0IiwibWFya2V0SWQiOjEsInN1YiI6Im1hcmtldCIsImlhdCI6MTcyNzg4MjM5OCwiZXhwIjoxNzI5NjgyMzk4fQ.sdw6GLGYq0SwrCvtLNvoWyBnwBrmAy0CNW8rkZ8Pu40"
+  //         }
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+
+  //     // const file = new Blob([response.data], { type: "application/pdf" });
+  //     // const fileURL = URL.createObjectURL(file);
+  //     // const printWindow = window.open(fileURL);
+  //     // if (printWindow) {
+  //     //   printWindow.onload = () => {
+  //     //     printWindow.print();
+  //     //   };
+  //     // } else {
+  //     //   console.error("Failed to open the print window.");
+  //     // }
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+
   const generateBiddingSlip = async (allotedLotId) => {
     const newDate = new Date();
     const formattedDate =
@@ -386,21 +522,16 @@ function SeedCocoonInward() {
       newDate.getDate().toString().padStart(2, "0");
 
     try {
-      const response = await axios.post(
-        // baseURLReport + `getfarmercopy-kannada`,
-        `https://e-reshme.karnataka.gov.in/reports/marketreport/getfarmercopy-kannada`,
-
+      const response = await api.post(
+        baseURLReport + `getfarmercopy-kannada`,
         {
-          marketId: 1,
-          godownId: 0,
+          marketId: data.marketId,
+          godownId: data.godownId,
           allottedLotId: allotedLotId,
-          auctionDate: "2024-10-01",
+          auctionDate: formattedDate,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
-          headers: {
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MSwicGhvbmVOdW1iZXIiOiI2MzY2MTI1ODY5Iiwicm9sZUlkIjoxLCJ1c2VyVHlwZSI6MCwidXNlck1hc3RlcklkIjo1OTMsInVzZXJuYW1lIjoibWFya2V0IiwibWFya2V0SWQiOjEsInN1YiI6Im1hcmtldCIsImlhdCI6MTcyNzg4MjM5OCwiZXhwIjoxNzI5NjgyMzk4fQ.sdw6GLGYq0SwrCvtLNvoWyBnwBrmAy0CNW8rkZ8Pu40"
-          }
         }
       );
 
@@ -422,6 +553,7 @@ function SeedCocoonInward() {
       // console.log("error", error);
     }
   };
+
 
   //  console.log(marketData);
   // console.log("farmerAddress", farmerAddress);
@@ -536,7 +668,7 @@ function SeedCocoonInward() {
     Swal.fire({
       icon: "success",
       title: "Bidding Slip has been generated",
-      // text: `Alloted Bin number ${big} ${small}`,
+      text: `Alloted Bin number ${big} ${small}`,
       width: 300,
       // customClass: styles.sweetsize,
     });
@@ -563,6 +695,67 @@ function SeedCocoonInward() {
       html: errorMessage,
     });
   };
+
+  const [fitnessCertificate, setFitnessCertificate] = useState({});
+
+   // To get Photo
+   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+
+   const getDocumentFile = async (file) => {
+     const parameters = `fileName=${file}`;
+     try {
+       const response = await api.get(
+         baseURLChawki + `api/s3/download?${parameters}`,
+         {
+           responseType: "arraybuffer",
+         }
+       );
+       const blob = new Blob([response.data]);
+       const url = URL.createObjectURL(blob);
+       setSelectedDocumentFile(url);
+     } catch (error) {
+       console.error("Error fetching file:", error);
+     }
+   };
+ 
+   
+
+   const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURLChawki + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
+ 
+   // console.log(getIdList());
+ 
+  //  useEffect(() => {
+     
+  //  }, [id]);
 
   return (
     <Layout title="Seed Cocoon E-Inward" show="true">
@@ -803,7 +996,7 @@ function SeedCocoonInward() {
       </Modal.Body>
     </Modal>
 
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+      {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>FC Details</Modal.Title>
         </Modal.Header>
@@ -823,6 +1016,31 @@ function SeedCocoonInward() {
                 />
               </Col>
             </Row>
+            <tr>
+                      <td style={styles.ctstyle}>Fitness Certificate:</td>
+                      <td>
+                       
+                        {selectedDocumentFile && (
+                          <>
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={selectedDocumentFile}
+                            alt="Selected File"
+                          />
+                          <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(fitnessCertificate.fitnessCertificatePath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
+                        )}
+                      </td>
+                    </tr>
             <Row className="g-5">
               <Col
                 lg="12"
@@ -864,7 +1082,39 @@ function SeedCocoonInward() {
             </Row>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+  <Modal.Header closeButton>
+    <Modal.Title>FC Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <div className="d-flex flex-column justify-content-center">
+      <tr>
+        <td style={styles.ctstyle}>Fitness Certificate:</td>
+        <td>
+          {selectedDocumentFile && (
+            <>
+              <img
+                style={{ height: "100px", width: "100px" }}
+                src={selectedDocumentFile}
+                alt="Selected File"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+              >
+                Download File
+              </Button>
+            </>
+          )}
+        </td>
+      </tr>
+    </div>
+  </Modal.Body>
+</Modal>
+
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
       <Modal.Header closeButton style={styles.modalHeader}>
         <Modal.Title style={styles.modalTitle}>Crop Details</Modal.Title>
@@ -890,12 +1140,12 @@ function SeedCocoonInward() {
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Source Name:</td>
+                    <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
                     <td>{farmerDetails?.dflsSource || 'N/A'}</td>
                   </tr>
                   <tr>
                     <td style={styles.ctstyle}>Variety:</td>
-                    <td>{farmerDetails?.raceOfDfls || 'N/A'}</td>
+                    <td>{farmerDetails?.raceName || 'N/A'}</td>
                   </tr>
                 </tbody>
               </table>
@@ -937,6 +1187,29 @@ function SeedCocoonInward() {
                     />
                     <Form.Control.Feedback type="invalid">
                       Initial Weight is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerFamilyName">
+                    No Of Lot
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      type="number"
+                      name="numberOfLot"
+                      min={0}
+                      value={data.numberOfLot}
+                      onChange={handleInputs}
+                      placeholder="Enter No Of Lot"
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                    No Of Lot is required
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

@@ -629,28 +629,42 @@ function BiddingSlip() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = (bigList, smallList) => {
-    let small;
-    let big;
-    if (bigList.length) {
-      big = ` Big ${bigList.join(",")}`;
-    } else {
-      big = "";
-    }
+  // const saveSuccess = (bigList, smallList) => {
+  //   let small;
+  //   let big;
+  //   if (bigList.length) {
+  //     big = ` Big ${bigList.join(",")}`;
+  //   } else {
+  //     big = "";
+  //   }
 
-    if (smallList.length) {
-      small = ` Small ${smallList.join(",")}`;
-    } else {
-      small = "";
-    }
+  //   if (smallList.length) {
+  //     small = ` Small ${smallList.join(",")}`;
+  //   } else {
+  //     small = "";
+  //   }
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Bidding Slip has been generated",
+  //     text: `Alloted Bin number ${big} ${small}`,
+  //     width: 300,
+  //     // customClass: styles.sweetsize,
+  //   });
+  // };
+
+  const saveSuccess = (bigList, smallList, allotedLotList) => {
+    let small = smallList.length ? ` Small ${smallList.join(",")}` : "";
+    let big = bigList.length ? ` Big ${bigList.join(",")}` : "";
+    let allotedLot = allotedLotList.length ? `Alloted Lot: ${allotedLotList.join(",")}` : "---";
+  
     Swal.fire({
       icon: "success",
       title: "Bidding Slip has been generated",
-      text: `Alloted Bin number ${big} ${small}`,
+      text: `Alloted Bin number ${big} ${small}\n${allotedLot}`,
       width: 300,
-      // customClass: styles.sweetsize,
     });
   };
+  
 
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
