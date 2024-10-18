@@ -97,7 +97,8 @@ const handleDateChange = (date) => {
     lotParentLevel:"",
     price:"",
     netWeight:"",
-    farmerFruitsId:""
+    farmerFruitsId:"",
+    initialWeighment:""
   })
 
   const handleDeleteLotDetails = (i) => {
@@ -322,7 +323,8 @@ const handleDateChange = (date) => {
               farmerFruitsId: response.data.content[0].farmerFruitsId,
               price: response.data.content[0].price,
               netWeight: response.data.content[0].netWeight,
-              dflLotNumber: response.data.content[0].dflLotNumber,
+              noOfDFLs: response.data.content[0].noOfDFLs,
+              initialWeighment: response.data.content[0].initialWeighment,
             }));
             setDataLotList(response.data.content);
             setShowFarmerDetails(true);
@@ -334,7 +336,8 @@ const handleDateChange = (date) => {
               farmerFruitsId: response.data.content[0].farmerFruitsId,
               price: response.data.content[0].price,
               netWeight: response.data.content[0].netWeight,
-              dflLotNumber: response.data.content[0].dflLotNumber,
+              noOfDFLs: response.data.content[0].noOfDFLs,
+              initialWeighment: response.data.content[0].initialWeighment,
             }));
             setShowFarmerDetails(true);
           }
@@ -770,9 +773,11 @@ setAllottedLotId("");
                                 <td style={styles.ctstyle}>Lot No:</td>
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
                                 <td style={styles.ctstyle}>DFL Lot No:</td>
-                                <td style={styles.cell}>{farmerdetails.dflLotNumber}</td>
+                                <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
                                 <td style={styles.ctstyle}>Price:</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
+                                <td style={styles.ctstyle}>Initial Weighment:</td>
+                                <td style={styles.cell}>{farmerdetails.initialWeighment}</td>
                                 <td style={styles.ctstyle}>Final Weighment in Kgs:</td>
                                 <td style={styles.cell}>{farmerdetails.netWeight}</td>
                                 <td style={styles.ctstyle}>Remaining Cocoon in Kgs:</td>
@@ -854,10 +859,11 @@ setAllottedLotId("");
                                   <th>Action</th>
                                   <th>Buyer Type</th>
                                   <th>License Number/Address</th>
-                                  <th>Lot Weight</th>
-                                  <th>Amount</th>
-                                  {/* <th>Market Fee</th> */}
-                                  <th>Sold Amount</th>
+                                  <th>Quantity of Cocoons(In Kgs)</th>
+                                  <th>No Of DFL</th>
+                                  <th>Average Yield</th>
+                                  <th>Price(In Rs.)</th>
+                                  <th>Total Amount</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -897,8 +903,10 @@ setAllottedLotId("");
                                   </td> */}
                                   <td>{item.buyerName}</td>
                                     <td>{item.lotWeight}</td>
-                                    <td>{item.amount}</td>
+                                    <td>{item.dflLotNumber}</td>
                                     {/* <td>{item.marketFee}</td> */}
+                                    <td>{item.averageYield}</td>
+                                    <td>{item.amount}</td>
                                     <td>{item.soldAmount}</td>
                                   </tr>
                                 ))}

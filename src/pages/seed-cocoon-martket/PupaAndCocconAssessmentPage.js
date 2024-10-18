@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import Swal from "sweetalert2/src/sweetalert2.js";
 
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function PupaAndCocoonAssessmentPage() {
   const [data, setData] = useState({
@@ -45,12 +46,22 @@ const getList = () => {
     .get(baseURL1 + `cocoon/getPupaCocoonAssessmentList`)
     .then((response) => {
       console.log(response.data);
+      const farmerResponse = response.data[0];
+      const farmerData = response.data;
       setListData(response.data);
       
       // Assuming you're getting a list, pick the first item's marketAuctionId for demonstration.
       if (response.data.length > 0) {
         setMarketAuctionId(response.data[0].marketAuctionId); // Set the marketAuctionId
       }
+      setFitnessCertificate(farmerResponse);
+
+      farmerData.forEach(farmerPhoto=>{
+        if(farmerPhoto.fitnessCertificatePath){
+          getDocumentFile(farmerPhoto.fitnessCertificatePath);
+        }
+      })
+
 
       setLoading(false);
     })
@@ -277,6 +288,62 @@ if (form.checkValidity() === false) {
       [name]: value, // Dynamically update the field based on the radio button's value
     }));
   };
+
+  
+  const [fitnessCertificate, setFitnessCertificate] = useState({});
+
+   // To get Photo
+   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+
+   const getDocumentFile = async (file) => {
+     const parameters = `fileName=${file}`;
+     try {
+       const response = await api.get(
+         baseURLChawki + `v1/api/s3/download?${parameters}`,
+         {
+           responseType: "arraybuffer",
+         }
+       );
+       const blob = new Blob([response.data]);
+       const url = URL.createObjectURL(blob);
+       setSelectedDocumentFile(url);
+     } catch (error) {
+       console.error("Error fetching file:", error);
+     }
+   };
+
+
+
+   const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURLChawki + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
   
 
   // Function to display the success message
@@ -355,7 +422,7 @@ const saveError = (message = "Something went wrong!") => {
                         <td>
                           <div className="d-flex align-items-center" onClick={() => openModalWithDetails(item)}>
                             <Icon name="info-fill" size="lg"></Icon>
-                            <span>Address Details</span>
+                            <span>Personal Details</span>
                           </div>
                         </td>
                         <td>
@@ -444,7 +511,7 @@ const saveError = (message = "Something went wrong!") => {
           <Modal.Title>FC Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex flex-column justify-content-center">
+          {/* <div className="d-flex flex-column justify-content-center">
             <Row className="g-5">
               <Col
                 lg="12"
@@ -498,7 +565,31 @@ const saveError = (message = "Something went wrong!") => {
                 </Form.Group>
               </Col>
             </Row>
-          </div>
+          </div> */}
+          <div className="d-flex flex-column justify-content-center">
+      <tr>
+        <td style={styles.ctstyle}>Fitness Certificate:</td>
+        <td>
+          {selectedDocumentFile && (
+            <>
+              <img
+                style={{ height: "100px", width: "100px" }}
+                src={selectedDocumentFile}
+                alt="Selected File"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+              >
+                Download File
+              </Button>
+            </>
+          )}
+        </td>
+      </tr>
+    </div>
         </Modal.Body>
       </Modal>
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
@@ -526,12 +617,12 @@ const saveError = (message = "Something went wrong!") => {
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Source Name:</td>
+                    <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
                     <td>{farmerDetails?.dflsSource || 'N/A'}</td>
                   </tr>
                   <tr>
                     <td style={styles.ctstyle}>Variety:</td>
-                    <td>{farmerDetails?.raceOfDfls || 'N/A'}</td>
+                    <td>{farmerDetails?.raceName || 'N/A'}</td>
                   </tr>
                 </tbody>
               </table>

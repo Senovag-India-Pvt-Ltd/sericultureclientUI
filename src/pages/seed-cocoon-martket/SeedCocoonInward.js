@@ -209,7 +209,7 @@ function SeedCocoonInward() {
         .then((response) => {
           if (response.data && response.data.length > 0) {
             const farmerResponse = response.data[0]; // Accessing the first farmer's details
-  
+            const farmerData = response.data;
             // Update state with farmer details
             setFarmerDetails(farmerResponse);
             setData((prev) => ({
@@ -220,12 +220,18 @@ function SeedCocoonInward() {
               lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
             }));
 
+
             setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
 
-            if (farmerResponse.fitnessCertificatePath) {
-              // Automatically call the getDocumentFile function when the farmerId is received
-              getDocumentFile(farmerResponse.fitnessCertificatePath);
-            }
+            // if (farmerData) {
+            //   // Automatically call the getDocumentFile function when the farmerId is received
+            //   getDocumentFile(farmerResponse.fitnessCertificatePath);
+            // }
+            farmerData.forEach(farmerPhoto=>{
+              if(farmerPhoto.fitnessCertificatePath){
+                getDocumentFile(farmerPhoto.fitnessCertificatePath);
+              }
+            })
 
             setLoading(false);
             setIsActive(true);
@@ -705,7 +711,7 @@ function SeedCocoonInward() {
      const parameters = `fileName=${file}`;
      try {
        const response = await api.get(
-         baseURLChawki + `api/s3/download?${parameters}`,
+         baseURLChawki + `v1/api/s3/download?${parameters}`,
          {
            responseType: "arraybuffer",
          }
