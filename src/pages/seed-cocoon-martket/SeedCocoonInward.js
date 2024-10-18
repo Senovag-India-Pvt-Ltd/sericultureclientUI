@@ -771,7 +771,7 @@ function SeedCocoonInward() {
     }
   
     if (lotList.length) {
-      lot = ` Allotted Lot Number(s): ${lotList.join(",")}`;
+      lot = ` Allotted Lot Number: ${lotList.join(",")}`;
     } else {
       lot = "";
     }
