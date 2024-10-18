@@ -37,7 +37,13 @@ function SeedCocoonInward() {
 
   // Below for modal window for FC details
   const [showModalFC, setShowModalFC] = useState(false);
-  const handleShowModalFC = () => setShowModalFC(true);
+  const handleShowModalFC = () => {
+    // getDocumentFile()
+    pathList.forEach(path =>{
+      getDocumentFile(path);
+  })
+    setShowModalFC(true);
+  }
   const handleCloseModalFC = () => setShowModalFC(false);
 
   // Below for modal window for Crop details
@@ -209,7 +215,7 @@ function SeedCocoonInward() {
         .then((response) => {
           if (response.data && response.data.length > 0) {
             const farmerResponse = response.data[0]; // Accessing the first farmer's details
-            const farmerData = response.data;
+            // const farmerData = response.data;
             // Update state with farmer details
             setFarmerDetails(farmerResponse);
             setData((prev) => ({
@@ -221,17 +227,18 @@ function SeedCocoonInward() {
             }));
 
 
-            setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
+            // setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
 
             // if (farmerData) {
             //   // Automatically call the getDocumentFile function when the farmerId is received
             //   getDocumentFile(farmerResponse.fitnessCertificatePath);
             // }
-            farmerData.forEach(farmerPhoto=>{
-              if(farmerPhoto.fitnessCertificatePath){
-                getDocumentFile(farmerPhoto.fitnessCertificatePath);
-              }
-            })
+            // farmerData.forEach(farmerPhoto=>{
+            //   if(farmerPhoto.fitnessCertificatePath){
+            //     getDocumentFile(farmerPhoto.fitnessCertificatePath);
+            //   }
+            // })
+            getIdList(farmerResponse.farmerId);
 
             setLoading(false);
             setIsActive(true);
@@ -253,6 +260,35 @@ function SeedCocoonInward() {
           setLoading(false);
         });
     }
+  };
+
+  const [prepareEggs, setPrepareEggs] = useState([]);
+  const [pathList,setPathList] = useState([]);
+
+  const getIdList = (farmerId) => {
+    setLoading(true);
+    api
+      .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
+      .then((response) => {
+        if (response.data.length > 0) {
+          const dataResponse = response.data;
+          setPrepareEggs(response.data); // Set to the entire array
+          dataResponse.forEach((data)=>{
+            if(data.fitnessCertificatePath){
+              setPathList((prev)=>([...prev,data.fitnessCertificatePath]));
+            }
+        })
+        } else {
+          setPrepareEggs([]); // Handle empty response
+        }
+        // setLoading(false);
+        // handleShowModal1();
+      })
+      .catch((err) => {
+        console.error(err);
+        setPrepareEggs([]);
+        setLoading(false);
+      });
   };
 
 
@@ -331,6 +367,86 @@ function SeedCocoonInward() {
   const [smallBinList, setSmallBinList] = useState([]);
 
   
+  // const postData = async (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     // generateBiddingSlip(1);
+  //     try {
+  //       const addGodown = localStorage.getItem("godownId")
+  //         ? localStorage.getItem("godownId")
+  //         : 0;
+  //       const response = await api.post(baseURL + `cocoon/reserveLot`, {
+  //         ...data,
+  //         godownId: addGodown,
+  //       });
+  //       if (response.data.errorCode === 0) {
+  //         setSourceData(response.data.content);
+  //         // increment(response.data.content.farmerId);
+  //         if (response.data.content.allotedLotList) {
+  //           setAllotedLotList(response.data.content.allotedLotList);
+  //         } else {
+  //           setAllotedLotList([]);
+  //         }
+
+  //         if (response.data.content.allotedBigBinList) {
+  //           setBigBinList(response.data.content.allotedBigBinList);
+  //         } else {
+  //           setBigBinList([]);
+  //         }
+
+  //         if (response.data.content.allotedSmallBinList) {
+  //           setSmallBinList(response.data.content.allotedSmallBinList);
+  //         } else {
+  //           setSmallBinList([]);
+  //         }
+
+  //         if (
+  //           response.data.content.allotedLotList.length ||
+  //           response.data.content.allotedLotList
+  //         ) {
+  //           const list = response.data.content.allotedLotList;
+  //           const openWindows = [];
+  //           for (const item of list) {
+  //             const promise = generateBiddingSlip(item);
+  //             openWindows.push(promise);
+  //           }
+  //           await Promise.all(openWindows);
+  //         }
+
+  //         if (response.data.content) {
+  //           let allotedBigBinList;
+  //           let allotedSmallBinList;
+  //           if (response.data.content.allotedBigBinList) {
+  //             allotedBigBinList = response.data.content.allotedBigBinList;
+  //           } else {
+  //             allotedBigBinList = [];
+  //           }
+
+  //           if (response.data.content.allotedSmallBinList) {
+  //             allotedSmallBinList = response.data.content.allotedSmallBinList;
+  //           } else {
+  //             allotedSmallBinList = [];
+  //           }
+
+  //           saveSuccess(allotedBigBinList, allotedSmallBinList);
+  //         } else {
+  //           saveError(response.data.errorMessages[0].message);
+  //         }
+  //       } else if (response.data.errorCode === -1) {
+  //         saveError(response.data.errorMessages[0].message);
+  //       }
+  //     } catch (err) {
+  //       // setData({});
+  //       // saveError();
+  //     }
+  //     setValidated(true);
+  //   }
+  // };
   const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -339,7 +455,6 @@ function SeedCocoonInward() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // generateBiddingSlip(1);
       try {
         const addGodown = localStorage.getItem("godownId")
           ? localStorage.getItem("godownId")
@@ -348,69 +463,28 @@ function SeedCocoonInward() {
           ...data,
           godownId: addGodown,
         });
+  
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
-          // increment(response.data.content.farmerId);
-          if (response.data.content.allotedLotList) {
-            setAllotedLotList(response.data.content.allotedLotList);
-          } else {
-            setAllotedLotList([]);
-          }
-
-          if (response.data.content.allotedBigBinList) {
-            setBigBinList(response.data.content.allotedBigBinList);
-          } else {
-            setBigBinList([]);
-          }
-
-          if (response.data.content.allotedSmallBinList) {
-            setSmallBinList(response.data.content.allotedSmallBinList);
-          } else {
-            setSmallBinList([]);
-          }
-
-          if (
-            response.data.content.allotedLotList.length ||
-            response.data.content.allotedLotList
-          ) {
-            const list = response.data.content.allotedLotList;
-            const openWindows = [];
-            for (const item of list) {
-              const promise = generateBiddingSlip(item);
-              openWindows.push(promise);
-            }
-            await Promise.all(openWindows);
-          }
-
-          if (response.data.content) {
-            let allotedBigBinList;
-            let allotedSmallBinList;
-            if (response.data.content.allotedBigBinList) {
-              allotedBigBinList = response.data.content.allotedBigBinList;
-            } else {
-              allotedBigBinList = [];
-            }
-
-            if (response.data.content.allotedSmallBinList) {
-              allotedSmallBinList = response.data.content.allotedSmallBinList;
-            } else {
-              allotedSmallBinList = [];
-            }
-
-            saveSuccess(allotedBigBinList, allotedSmallBinList);
-          } else {
-            saveError(response.data.errorMessages[0].message);
-          }
+  
+          const allotedLotList = response.data.content.allotedLotList || [];
+          const allotedBigBinList = response.data.content.allotedBigBinList || [];
+          const allotedSmallBinList = response.data.content.allotedSmallBinList || [];
+  
+          // Pass the alloted lot list, big bin list, and small bin list to saveSuccess
+          saveSuccess(allotedLotList, allotedBigBinList, allotedSmallBinList);
+          
         } else if (response.data.errorCode === -1) {
           saveError(response.data.errorMessages[0].message);
         }
       } catch (err) {
-        // setData({});
-        // saveError();
+        // Handle error
       }
       setValidated(true);
     }
   };
+  
+  
   console.log(allotedLotList);
   // to get Source
   const [sourceListData, setSourceListData] = useState([]);
@@ -657,29 +731,59 @@ function SeedCocoonInward() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = (bigList, smallList) => {
+  // const saveSuccess = (bigList, smallList) => {
+  //   let small;
+  //   let big;
+  //   if (bigList.length) {
+  //     big = ` Big ${bigList.join(",")}`;
+  //   } else {
+  //     big = "";
+  //   }
+
+  //   if (smallList.length) {
+  //     small = ` Small ${smallList.join(",")}`;
+  //   } else {
+  //     small = "";
+  //   }
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Bidding Slip has been generated",
+  //     text: `Alloted Bin number ${big} ${small}`,
+  //     width: 300,
+  //     // customClass: styles.sweetsize,
+  //   });
+  // };
+  const saveSuccess = (lotList, bigList, smallList) => {
     let small;
     let big;
+    let lot;
+  
     if (bigList.length) {
       big = ` Big ${bigList.join(",")}`;
     } else {
       big = "";
     }
-
+  
     if (smallList.length) {
       small = ` Small ${smallList.join(",")}`;
     } else {
       small = "";
     }
+  
+    if (lotList.length) {
+      lot = ` Allotted Lot Number(s): ${lotList.join(",")}`;
+    } else {
+      lot = "";
+    }
+  
     Swal.fire({
       icon: "success",
       title: "Bidding Slip has been generated",
-      text: `Alloted Bin number ${big} ${small}`,
+      text: `${lot} ${big} ${small}`,
       width: 300,
-      // customClass: styles.sweetsize,
     });
   };
-
+  
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
       icon: "error",
@@ -705,7 +809,7 @@ function SeedCocoonInward() {
   const [fitnessCertificate, setFitnessCertificate] = useState({});
 
    // To get Photo
-   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+   const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
 
    const getDocumentFile = async (file) => {
      const parameters = `fileName=${file}`;
@@ -718,7 +822,7 @@ function SeedCocoonInward() {
        );
        const blob = new Blob([response.data]);
        const url = URL.createObjectURL(blob);
-       setSelectedDocumentFile(url);
+       setSelectedDocumentFile(prev=>([...prev,url]));
      } catch (error) {
        console.error("Error fetching file:", error);
      }
@@ -727,6 +831,7 @@ function SeedCocoonInward() {
 
 
    const downloadFile = async (file) => {
+    console.log("file",file);
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
@@ -1098,11 +1203,14 @@ function SeedCocoonInward() {
       <tr>
         <td style={styles.ctstyle}>Fitness Certificate:</td>
         <td>
-          {selectedDocumentFile && (
-            <>
-              <img
+        {
+          selectedDocumentFile?.length > 0 && (
+            
+              selectedDocumentFile.map(file =>(
+                <>
+                <img
                 style={{ height: "100px", width: "100px" }}
-                src={selectedDocumentFile}
+                src={file}
                 alt="Selected File"
               />
               <Button
@@ -1113,8 +1221,12 @@ function SeedCocoonInward() {
               >
                 Download File
               </Button>
-            </>
-          )}
+              </>
+          ))
+            
+          )
+        }
+          
         </td>
       </tr>
     </div>

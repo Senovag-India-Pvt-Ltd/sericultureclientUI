@@ -47,22 +47,22 @@ const getList = () => {
     .then((response) => {
       console.log(response.data);
       const farmerResponse = response.data[0];
-      const farmerData = response.data;
+      // const farmerData = response.data;
       setListData(response.data);
       
       // Assuming you're getting a list, pick the first item's marketAuctionId for demonstration.
       if (response.data.length > 0) {
         setMarketAuctionId(response.data[0].marketAuctionId); // Set the marketAuctionId
       }
-      setFitnessCertificate(farmerResponse);
+      // setFitnessCertificate(farmerResponse);
 
-      farmerData.forEach(farmerPhoto=>{
-        if(farmerPhoto.fitnessCertificatePath){
-          getDocumentFile(farmerPhoto.fitnessCertificatePath);
-        }
-      })
+      // farmerData.forEach(farmerPhoto=>{
+      //   if(farmerPhoto.fitnessCertificatePath){
+      //     getDocumentFile(farmerPhoto.fitnessCertificatePath);
+      //   }
+      // })
 
-
+      getIdList(farmerResponse.farmerId);
       setLoading(false);
     })
     .catch((err) => {
@@ -148,10 +148,20 @@ useEffect(() => {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  // Below for modal window for FC details
-  const [showModalFC, setShowModalFC] = useState(false);
-  const handleShowModalFC = () => setShowModalFC(true);
-  const handleCloseModalFC = () => setShowModalFC(false);
+  // // Below for modal window for FC details
+  // const [showModalFC, setShowModalFC] = useState(false);
+  // const handleShowModalFC = () => setShowModalFC(true);
+  // const handleCloseModalFC = () => setShowModalFC(false);
+   // Below for modal window for FC details
+   const [showModalFC, setShowModalFC] = useState(false);
+   const handleShowModalFC = () => {
+     // getDocumentFile()
+     pathList.forEach(path =>{
+       getDocumentFile(path);
+   })
+     setShowModalFC(true);
+   }
+   const handleCloseModalFC = () => setShowModalFC(false);
 
   // Below for modal window for Crop details
   const [showModalCrop, setShowModalCrop] = useState(false);
@@ -194,6 +204,36 @@ const openModalWithWeighmentDetails = (item) => {
   setFarmerDetails(item); // Set the selected farmer's details
   handleShowModalWeighment(); // Open Weighment details modal
 };
+
+const [prepareEggs, setPrepareEggs] = useState([]);
+  const [pathList,setPathList] = useState([]);
+
+  const getIdList = (farmerId) => {
+    setLoading(true);
+    api
+      .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
+      .then((response) => {
+        if (response.data.length > 0) {
+          const dataResponse = response.data;
+          setPrepareEggs(response.data); // Set to the entire array
+          dataResponse.forEach((data)=>{
+            if(data.fitnessCertificatePath){
+              setPathList((prev)=>([...prev,data.fitnessCertificatePath]));
+            }
+        })
+        } else {
+          setPrepareEggs([]); // Handle empty response
+        }
+        // setLoading(false);
+        // handleShowModal1();
+      })
+      .catch((err) => {
+        console.error(err);
+        setPrepareEggs([]);
+        setLoading(false);
+      });
+  };
+
 
 // handle intial Weighment
 const [validatedInitialWeighment, setValidatedInitialWeighment] =
@@ -289,11 +329,10 @@ if (form.checkValidity() === false) {
     }));
   };
 
-  
   const [fitnessCertificate, setFitnessCertificate] = useState({});
 
    // To get Photo
-   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+   const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
 
    const getDocumentFile = async (file) => {
      const parameters = `fileName=${file}`;
@@ -306,7 +345,7 @@ if (form.checkValidity() === false) {
        );
        const blob = new Blob([response.data]);
        const url = URL.createObjectURL(blob);
-       setSelectedDocumentFile(url);
+       setSelectedDocumentFile(prev=>([...prev,url]));
      } catch (error) {
        console.error("Error fetching file:", error);
      }
@@ -315,6 +354,7 @@ if (form.checkValidity() === false) {
 
 
    const downloadFile = async (file) => {
+    console.log("file",file);
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
@@ -568,13 +608,16 @@ const saveError = (message = "Something went wrong!") => {
           </div> */}
           <div className="d-flex flex-column justify-content-center">
       <tr>
-        <td style={styles.ctstyle}>Fitness Certificate:</td>
+      <td style={styles.ctstyle}>Fitness Certificate:</td>
         <td>
-          {selectedDocumentFile && (
-            <>
-              <img
+        {
+          selectedDocumentFile?.length > 0 && (
+            
+              selectedDocumentFile.map(file =>(
+                <>
+                <img
                 style={{ height: "100px", width: "100px" }}
-                src={selectedDocumentFile}
+                src={file}
                 alt="Selected File"
               />
               <Button
@@ -585,8 +628,12 @@ const saveError = (message = "Something went wrong!") => {
               >
                 Download File
               </Button>
-            </>
-          )}
+              </>
+          ))
+            
+          )
+        }
+          
         </td>
       </tr>
     </div>

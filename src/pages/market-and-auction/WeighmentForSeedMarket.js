@@ -400,12 +400,16 @@ function WeighmentForSeedMarket() {
           );
           speak({ text: `Weighment Completed Successfully` });
         } else {
-          submitError(response.data.errorMessages);
-        }
+        //   submitError(response.data.errorMessages);
+        // }
+        const errorMsg = response.data.errorMessages[0]?.message[0]?.message || "Something went wrong!";
+        submitError(errorMsg);
+      }
         
       })
       .catch((err) => {
-        
+        const errorMsg = err.response.data.errorMessages[0]?.message[0]?.message || "Something went wrong!";
+        submitError(errorMsg);
       });
   };
 
