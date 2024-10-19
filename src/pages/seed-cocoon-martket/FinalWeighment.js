@@ -723,7 +723,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                   </tr>
                   <tr>
                     <td style={styles.ctstyle}>Variety:</td>
-                    <td>{farmerDetails?.raceOfDfls || 'N/A'}</td>
+                    <td>{farmerDetails?.raceName   || 'N/A'}</td>
                   </tr>
                 </tbody>
               </table>

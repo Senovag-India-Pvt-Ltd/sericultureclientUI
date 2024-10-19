@@ -440,6 +440,8 @@ const saveError = (message = "Something went wrong!") => {
                     <thead>
                       <tr style={{ backgroundColor: '#0f6cbe', color: 'white', fontWeight: 'bold' }}>
                         <th>Action</th>
+                        <th>Sl.No</th>
+                        <th>Date Of Issuance Of Bidding Slip</th>
                         <th>FID</th>
                         <th>Farmer Name</th>
                         <th>Phone Number</th>
@@ -456,6 +458,8 @@ const saveError = (message = "Something went wrong!") => {
                         <td>
                       <Button variant="primary" onClick={() => handleShowModalAssesment(item)}>Assess Now</Button>
                         </td>
+                        <td>{item.serialNumber}</td>
+                        <td>{item.marketAuctionDate}</td>
                         <td>{item.fruitsId}</td>
                         <td>{item.firstName}</td>
                         <td>{item.mobileNumber}</td>

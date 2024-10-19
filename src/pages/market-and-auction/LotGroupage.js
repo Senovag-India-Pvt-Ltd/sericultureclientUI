@@ -444,7 +444,7 @@ const handleDateChange = (date) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
             } else {
-              saveSuccess();
+              saveSuccess(response.data.content);
               setData({
                 buyerType: "",
                 buyerId: "",
@@ -646,15 +646,43 @@ setAllottedLotId("");
 
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  // const saveSuccess = (message) => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Saved successfully",
+  //     text: `Invoice Number ${message}`,
+  //   }).then(() => {
+  //     navigate("#");
+  //   });
+  // };
+  // const saveSuccess = (messages) => {
+  //   const invoiceDetails = messages
+  //     .map((item) => `${item.buyerType} = ${item.invoiceNumber}`)
+  //     .join("\n");
+  
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Saved successfully",
+  //     text: `Invoice Details:\n${invoiceDetails}`,
+  //   }).then(() => {
+  //     navigate("#");
+  //   });
+  // };
+  const saveSuccess = (messages) => {
+    const invoiceDetails = messages
+      .map((item) => `${item.buyerType} = ${item.invoiceNumber}`)
+      .join("<br>");
+  
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      html: `Invoice Details:<br>${invoiceDetails}`, // Use 'html' instead of 'text'
     }).then(() => {
       navigate("#");
     });
   };
+  
+  
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -864,6 +892,7 @@ setAllottedLotId("");
                                   <th>Average Yield</th>
                                   <th>Price(In Rs.)</th>
                                   <th>Total Amount</th>
+                                  <th>Invoice Number</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -908,6 +937,7 @@ setAllottedLotId("");
                                     <td>{item.averageYield}</td>
                                     <td>{item.amount}</td>
                                     <td>{item.soldAmount}</td>
+                                    <td>{item.inoviceNumber}</td>
                                   </tr>
                                 ))}
                               </tbody>
