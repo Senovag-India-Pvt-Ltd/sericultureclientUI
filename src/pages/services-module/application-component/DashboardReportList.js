@@ -1972,7 +1972,6 @@ function DashboardReportList() {
                                           actionData.stepId === undefined ||
                                           actionData.stepId === "0"
                                         }
-                                        required
                                         // isInvalid={
                                         //   actionData.approvalStageId === undefined ||
                                         //   actionData.approvalStageId === "0"
@@ -2018,7 +2017,6 @@ function DashboardReportList() {
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
-                                        required
                                         // isInvalid={
                                         //   actionData.userId === undefined ||
                                         //   actionData.userId === "0"
@@ -2044,7 +2042,7 @@ function DashboardReportList() {
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
-                                    Subsidy Amount
+                                  Eligible Subsidy
                                     {/* <span className="text-danger">*</span> */}
                                   </Form.Label>
                                   <div className="form-control-wrap">
@@ -2054,7 +2052,7 @@ function DashboardReportList() {
                                       value={actionData.schemeAmount}
                                       onChange={handleActionInputs}
                                       type="text"
-                                      placeholder="Enter Scheme Amount "
+                                      placeholder="Enter Eligible Subsidy Amount "
                                       style={modalStyles.formControl}
                                       // required
                                     />

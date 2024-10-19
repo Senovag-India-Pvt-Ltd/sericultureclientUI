@@ -937,7 +937,7 @@ setAllottedLotId("");
                                     <td>{item.averageYield}</td>
                                     <td>{item.amount}</td>
                                     <td>{item.soldAmount}</td>
-                                    <td>{item.inoviceNumber}</td>
+                                    <td>{item.invoiceNumber}</td>
                                   </tr>
                                 ))}
                               </tbody>

@@ -1935,11 +1935,11 @@ useEffect(() => {
   //  };
 
   return (
-    <Layout title="Application Form">
+    <Layout title="Scheme Details Form">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Application Form</Block.Title>
+            <Block.Title tag="h2">Scheme Details Form</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

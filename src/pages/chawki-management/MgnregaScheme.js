@@ -131,11 +131,11 @@ function MgnregaScheme() {
   };
 
   return (
-    <Layout title="Mgnrega Scheme Details">
+    <Layout title="MGNREGA Scheme Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Mgnrega Scheme Details</Block.Title>
+            <Block.Title tag="h2">MGNREGA Scheme Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -162,7 +162,7 @@ function MgnregaScheme() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         {/* <Form action="#"> */}
        
         <Form noValidate validated={validated} onSubmit={postData}>
@@ -198,7 +198,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Spacing Followed(In Feet)
+                        Sapling Followed(In Feet)
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -208,11 +208,11 @@ function MgnregaScheme() {
                             value={data.spacingFollwedFeet}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Spacing Followed(In Feet)"
+                            placeholder=" Enter Sapling Followed(In Feet)"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Spacing Followed(In Feet) is required
+                          Sapling Followed(In Feet) is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,7 +221,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Spacing Procured(Nos)
+                          Sapling Procured(Nos)
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -231,11 +231,11 @@ function MgnregaScheme() {
                             value={data.spacingProcuredNos}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Spacing Procured Nos"
+                            placeholder=" Enter Sapling Procured(Nos)"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Spacing Procured is required
+                            Sapling Procured(Nos) is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -254,7 +254,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                         Spacing Followed
+                        Sapling Followed
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -264,11 +264,11 @@ function MgnregaScheme() {
                             value={data.spacingFollowed}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Spacing Followed"
+                            placeholder=" Enter Sapling Followed"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Spacing Followed is required
+                          Sapling Followed is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -277,7 +277,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Spacing Procured
+                        Sapling Procured
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -287,11 +287,11 @@ function MgnregaScheme() {
                             value={data.spacingProcured}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Spacing Procured"
+                            placeholder=" Enter Sapling Procured"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Spacing Procured is required
+                          Sapling Procured is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

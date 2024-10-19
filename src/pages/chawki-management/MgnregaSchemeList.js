@@ -157,28 +157,28 @@ useEffect(() => {
         hide: "md",
       },
       {
-        name: "Spacing Followed(In Feet)",
+        name: "Sapling Followed(In Feet)",
         selector: (row) => row.spacingFollwedFeet,
         cell: (row) => <span>{row.spacingFollwedFeet}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Spacing Procured(Nos)",
+      name: "Sapling Procured(Nos)",
       selector: (row) => row.spacingProcuredNos,
       cell: (row) => <span>{row.spacingProcuredNos}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spacing Followed",
+      name: "Sapling Followed",
       selector: (row) => row.spacingFollowed,
       cell: (row) => <span>{row.spacingFollowed}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spacing Procured",
+      name: "Sapling Procured",
       selector: (row) => row.spacingProcured,
       cell: (row) => <span>{row.spacingProcured}</span>,
       sortable: true,
@@ -203,11 +203,11 @@ useEffect(() => {
   ];
 
   return (
-    <Layout title="List Of Mgnerga Scheme">
+    <Layout title="List Of MGNREGA Scheme">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Mgnerga Scheme</Block.Title>
+            <Block.Title tag="h2">List Of MGNREGA Scheme</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
