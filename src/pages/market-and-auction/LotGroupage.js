@@ -27,6 +27,7 @@ const [dataLotList, setDataLotList] = useState([]);
     soldAmount: "",
     dflLotNumber: "",
     averageYield: "",
+    lotParentLevel: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -44,6 +45,7 @@ const [dataLotList, setDataLotList] = useState([]);
     soldAmount: "",
     dflLotNumber: "",
     averageYield: "",
+    lotParentLevel: "",
   })
  }
 
@@ -140,7 +142,8 @@ const handleDateChange = (date) => {
         marketFee: "",
         soldAmount: "",
         allottedLotId: "",
-        auctionDate: ""
+        auctionDate: "",
+        lotParentLevel: "",
       });
     }
   };
@@ -279,6 +282,8 @@ const handleDateChange = (date) => {
   //         }
   // };
 
+  const [lotParentLevel, setLotParentLevel] = useState(null);
+
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
     return (
@@ -313,19 +318,25 @@ const handleDateChange = (date) => {
         )
         .then((response) => {
           const lotGroupageId = response.data.content[0].lotGroupageId;
+
+          // Extract lotParentLevel from the response
+        const newLotParentLevel = response.data.content[0].lotParentLevel;
+        setLotParentLevel(newLotParentLevel); // Set the new lotParentLeve
   
           if (lotGroupageId) {
             // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
             setFarmerDetails((prev) => ({
               ...prev,
               farmerFirstName: response.data.content[0].farmerFirstName,
-              lotParentLevel: response.data.content[0].lotParentLevel,
+              // lotParentLevel: response.data.content[0].lotParentLevel,
+              lotParentLevel: newLotParentLevel,
               farmerFruitsId: response.data.content[0].farmerFruitsId,
               price: response.data.content[0].price,
               netWeight: response.data.content[0].netWeight,
               noOfDFLs: response.data.content[0].noOfDFLs,
               initialWeighment: response.data.content[0].initialWeighment,
             }));
+            // setLotParentLevel(response.data.content[0].lotParentLevel,);
             setDataLotList(response.data.content);
             setShowFarmerDetails(true);
           } else {
@@ -363,8 +374,79 @@ const handleDateChange = (date) => {
         });
     }
   };
+
+  // const search = (event) => {
+  //   setDataLotList([]);
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setSearchValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     const formattedAuctionDate = formatAuctionDate(auctionDate);
+  //     api
+  //       .post(
+  //         baseURLMarket +
+  //           `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
+  //         {
+  //           allottedLotId: allottedLotId,
+  //           auctionDate: formattedAuctionDate,
+  //           marketId: localStorage.getItem("marketId"),
+  //           godownId: localStorage.getItem("godownId"),
+  //         }
+  //       )
+  //       .then((response) => {
+  //         // const lotGroupageId = response.data.content[0].lotGroupageId;
   
-   
+  //         // // Store lotParentLevel in state
+  //         // const currentFarmerDetails = {
+  //         //   farmerFirstName: response.data.content[0].farmerFirstName,
+  //         //   lotParentLevel: response.data.content[0].lotParentLevel,
+  //         //   farmerFruitsId: response.data.content[0].farmerFruitsId,
+  //         //   price: response.data.content.price,
+  //         //   netWeight: response.data.content.netWeight,
+  //         //   noOfDFLs: response.data.content.noOfDFLs,
+  //         //   initialWeighment: response.data.content.initialWeighment,
+  //         // };
+  //         const currentContent = response.data.content[0];
+  //         const lotGroupageId = currentContent.lotGroupageId;
+    
+  //         // Prepare farmer details while checking for undefined values
+  //         const currentFarmerDetails = {
+  //           farmerFirstName: currentContent.farmerFirstName,
+  //           lotParentLevel: currentContent.lotParentLevel,
+  //           farmerFruitsId: currentContent.farmerFruitsId,
+  //           price: currentContent.price,
+  //           netWeight: currentContent.netWeight,
+  //           noOfDFLs: currentContent.noOfDFLs,
+  //           initialWeighment: currentContent.initialWeighment,
+  //         };
+          
+  //         setLotParentLevel(currentFarmerDetails.lotParentLevel); // Save lotParentLevel
+  //         setFarmerDetails((prev) => ({ ...prev, ...currentFarmerDetails }));
+  //         setDataLotList(response.data.content);
+  //         setShowFarmerDetails(true);
+  //       })
+  //       .catch((err) => {
+  //         console.error("Error fetching farmer details:", err);
+  //         if (err.response && err.response.data && err.response.data.validationErrors) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             searchError(err.response.data.validationErrors);
+  //           }
+  //         } else {
+  //           Swal.fire({
+  //             icon: "warning",
+  //             title: "Details Not Found for This Lot and Auction Date",
+  //           });
+  //         }
+  //         setFarmerDetails({});
+  //         setLoading(false);
+  //       });
+  //   }
+  // };
+
+ 
  
    const searchError = (message = "Something went wrong!") => {
      let errorMessage;
@@ -392,6 +474,9 @@ const handleDateChange = (date) => {
       setValidated(true);
     } else {
       event.preventDefault();
+
+      // Format the auction date
+    const formattedAuctionDate = formatAuctionDate(auctionDate); 
   
       // Check if there is any lotGroupageId in the dataLotList
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
@@ -409,9 +494,12 @@ const handleDateChange = (date) => {
             amount: item.amount,
             soldAmount: item.soldAmount,
             dflLotNumber:item.dflLotNumber,
+            invoiceNumber:item.invoiceNumber,
              averageYield: item.averageYield,
             allottedLotId: allottedLotId,
-            auctionDate: auctionDate
+            // auctionDate: auctionDate,
+            auctionDate: formattedAuctionDate,
+            lotParentLevel: lotParentLevel 
           }))
         };
   
@@ -434,8 +522,15 @@ const handleDateChange = (date) => {
           });
       } else {
         // If no lotGroupageId is present, prepare the save request
+        // const sendPost = {
+        //   lotGroupageRequests: dataLotList,
+        // };
         const sendPost = {
-          lotGroupageRequests: dataLotList,
+          lotGroupageRequests: dataLotList.map(item => ({
+            ...item,
+            lotParentLevel: lotParentLevel,  // Include lotParentLevel
+            auctionDate: formatAuctionDate(item.auctionDate)  // Format and include auctionDate
+          })),
         };
   
         api
