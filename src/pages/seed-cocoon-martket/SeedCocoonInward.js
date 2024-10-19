@@ -470,6 +470,16 @@ function SeedCocoonInward() {
           const allotedLotList = response.data.content.allotedLotList || [];
           const allotedBigBinList = response.data.content.allotedBigBinList || [];
           const allotedSmallBinList = response.data.content.allotedSmallBinList || [];
+
+          // Call the generateBiddingSlip for each item in the allotedLotList
+        if (allotedLotList.length > 0) {
+          const openWindows = [];
+          for (const item of allotedLotList) {
+            const promise = generateBiddingSlip(item); // Assuming generateBiddingSlip takes an item as an argument
+            openWindows.push(promise);
+          }
+          await Promise.all(openWindows); // Wait for all bidding slips to be generated
+        }
   
           // Pass the alloted lot list, big bin list, and small bin list to saveSuccess
           saveSuccess(allotedLotList, allotedBigBinList, allotedSmallBinList);
@@ -603,7 +613,7 @@ function SeedCocoonInward() {
 
     try {
       const response = await api.post(
-        baseURLReport + `getfarmercopy-kannada`,
+        baseURLReport + `getfarmercopy-kannada-seed`,
         {
           marketId: data.marketId,
           godownId: data.godownId,

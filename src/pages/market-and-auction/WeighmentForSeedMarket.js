@@ -348,7 +348,7 @@ function WeighmentForSeedMarket() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        baseURLReport + `gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada-seed`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),
