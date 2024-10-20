@@ -189,6 +189,13 @@ function TraderTypeList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "No Of Device Allowed",
+      selector: (row) => row.noOfDeviceAllowed,
+      cell: (row) => <span>{row.noOfDeviceAllowed}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

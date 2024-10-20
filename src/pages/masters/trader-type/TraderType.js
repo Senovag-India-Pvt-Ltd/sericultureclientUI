@@ -15,6 +15,7 @@ function TraderType() {
   const [data, setData] = useState({
     traderTypeMasterName: "",
     traderTypeNameInKannada: "",
+    noOfDeviceAllowed: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -46,6 +47,7 @@ function TraderType() {
             setData({
               traderTypeMasterName: "",
               traderTypeNameInKannada: "",
+              noOfDeviceAllowed: "",
             });
             setValidated(false);
           }
@@ -63,6 +65,7 @@ function TraderType() {
     setData({
       traderTypeMasterName: "",
       traderTypeNameInKannada: "",
+      noOfDeviceAllowed: "",
     });
   };
 
@@ -167,6 +170,29 @@ function TraderType() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Trader Type Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="traderTypeMasterName">
+                      No Of Device Allowed
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="noOfDeviceAllowed"
+                          name="noOfDeviceAllowed"
+                          value={data.noOfDeviceAllowed}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter No Of Device Allowed"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        No Of Device Allowed is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

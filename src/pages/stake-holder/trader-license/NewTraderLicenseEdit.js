@@ -172,6 +172,24 @@ function NewTraderLicenseEdit() {
     getList();
   }, []);
 
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
+
+  const getMarketList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMarketList();
+  }, []);
+
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
 
@@ -268,20 +286,7 @@ function NewTraderLicenseEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                      {/* <Form.Group className="form-group">
-                        <Form.Label htmlFor="arnNumber">ARN Number</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="arnNumber"
-                            name="arnNumber"
-                            value={data.arnNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter ARN Number"
-                          />
-                        </div>
-                      </Form.Group> */}
-
+                      
                       <Form.Group className="form-group">
                         <Form.Label>
                           Trader Type<span className="text-danger">*</span>
@@ -313,7 +318,9 @@ function NewTraderLicenseEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="firstName">
                           Name of the Applicant
@@ -329,7 +336,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="fatherName">
                           Father's Name
@@ -345,7 +354,27 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
+                      <Form.Group className="form-group">
+                      <Form.Label htmlFor="fatherName">
+                        Mobile Number
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="mobileNumber"
+                          name="mobileNumber"
+                          value={data.mobileNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Mobile Number"
+                        />
+                      </div>
+                    </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>State</Form.Label>
                         <div className="form-control-wrap">
@@ -363,7 +392,9 @@ function NewTraderLicenseEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>District</Form.Label>
                         <div className="form-control-wrap">
@@ -386,7 +417,9 @@ function NewTraderLicenseEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="address">Address</Form.Label>
                         <div className="form-control-wrap">
@@ -400,7 +433,45 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="premisesDescription">
                           Premises Description
@@ -416,6 +487,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
                       <Form.Group className="form-group mt-3">
                         <Form.Label>Silk Type</Form.Label>
                         <div className="form-control-wrap">
@@ -434,14 +508,6 @@ function NewTraderLicenseEdit() {
                   </Col>
 
                     <Col lg="6">
-                      {/* <Form.Group className="form-group">
-                      <Form.Label>Application Date</Form.Label>
-                      <div className="form-control-wrap">
-                      <DatePicker selected={new Date("2023-11-21")}/>
-                      <DatePicker selected={data.applicationDate} onChange={handleDateChange} />
-                      </div>
-                    </Form.Group> */}
-
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="applicationNumber">
                           Application Number
@@ -457,7 +523,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="traderLicenseNumber">
                           Trader License Number
@@ -473,6 +541,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="representativeDetails">
                           Representative Details
@@ -488,7 +559,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="licenseFee">
                           License Fee
@@ -504,7 +577,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="licenseChallanNumber">
                           License Challan Number
@@ -520,7 +595,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="godownDetails">
                           Godown Details
@@ -536,7 +613,9 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
+                      </Col>
 
+                      <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="silkExchangeMahajar">
                           Corresponding Silk Exchange Mahajar

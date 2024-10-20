@@ -219,10 +219,11 @@ function NewTraderLicense() {
   }, [data.stateId]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (arnNumber) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
+      text: `Generated ARN Number is ${arnNumber}`,
       // text: "You clicked the button!",
     })
   };
@@ -326,7 +327,9 @@ function NewTraderLicense() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="firstName">
                         Name of the Applicant
@@ -342,7 +345,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="fatherName">
                         Father's Name
@@ -358,7 +363,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="fatherName">
                         Mobile Number
@@ -374,7 +381,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>State</Form.Label>
                       <div className="form-control-wrap">
@@ -392,7 +401,9 @@ function NewTraderLicense() {
                         </Form.Select>
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>District</Form.Label>
                       <div className="form-control-wrap">
@@ -415,7 +426,9 @@ function NewTraderLicense() {
                         </Form.Select>
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="address">Address</Form.Label>
                       <div className="form-control-wrap">
@@ -429,8 +442,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
-                    {/* <Col lg="6"> */}
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                         Market<span className="text-danger">*</span>
@@ -464,8 +478,9 @@ function NewTraderLicense() {
                         </div>
                       </Col>
                     </Form.Group>
-                  {/* </Col> */}
+                  </Col>
 
+                  <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="premisesDescription">
                         Premises Description
@@ -481,8 +496,11 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
-                    <Form.Group className="form-group mt-3">
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
                         <Form.Label>Silk Type</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -499,21 +517,8 @@ function NewTraderLicense() {
                       </Form.Group>
                   </Col>
 
-                  
-
-
-              
-
 
                   <Col lg="6">
-                    {/* <Form.Group className="form-group">
-                      <Form.Label>Application Date</Form.Label>
-                      <div className="form-control-wrap">
-                      <DatePicker selected={new Date("2023-11-21")}/>
-                      <DatePicker selected={data.applicationDate} onChange={handleDateChange} /> 
-                      </div>
-                    </Form.Group> */}
-
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="applicationNumber">
                         Application Number
@@ -529,7 +534,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="traderLicenseNumber">
                         Trader License Number
@@ -545,6 +552,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="representativeDetails">
                         Representative Details
@@ -560,7 +570,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="licenseFee">License Fee</Form.Label>
                       <div className="form-control-wrap">
@@ -574,7 +586,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="licenseChallanNumber">
                         License Challan Number
@@ -590,7 +604,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="godownDetails">
                         Godown Details
@@ -606,7 +622,9 @@ function NewTraderLicense() {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="silkExchangeMahajar">
                         Corresponding Silk Exchange Mahajar
