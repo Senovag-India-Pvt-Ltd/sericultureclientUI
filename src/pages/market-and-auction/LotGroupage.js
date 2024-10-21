@@ -104,6 +104,10 @@ const handleDateChange = (date) => {
       const buyerName = data.buyerType === "RSP" ? data.licenseNumber : data.address;
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
+
+      // Update total lot weight
+    setTotalLotWeight((prevTotal) => prevTotal + parseFloat(data.lotWeight || 0));
+
     setData((prevData) => ({
       ...prevData,
       buyerType: "RSP",
@@ -188,39 +192,70 @@ const handleDateChange = (date) => {
   //     setData({ ...data, [name]: value });
   //   }
   // };
+  // const handleInputs = (e) => {
+  //   const { name, value } = e.target;
+  
+  //   // Update state for lotWeight and amount
+  //   const newData = { ...data, [name]: value };
+  
+  //   // Calculate total amount if both lotWeight and amount are present
+  //   if (newData.lotWeight && newData.amount) {
+  //     // Calculate total and fix to 2 decimal points, then convert to an integer
+  //     newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount)); 
+  //   } else {
+  //     newData.soldAmount = ''; // Clear soldAmount if inputs are missing
+  //   }
+  
+
+  //   // Prevent editing 'amount' if it's already fetched
+  // if (name === 'amount' && data.amount) {
+  //   return; // Prevent updates to the price field
+  // }
+  
+  //   // Set the new state
+  //   if (name === 'allottedLotId') {
+  //     setAllottedLotId(value);
+  //   } else {
+  //     setData(newData);
+  //   }
+  // };
+
   const handleInputs = (e) => {
     const { name, value } = e.target;
   
     // Update state for lotWeight and amount
-    const newData = { ...data, [name]: value };
+    setData((prevData) => {
+      const newData = { ...prevData, [name]: value };
   
-    // Calculate total amount if both lotWeight and amount are present
-    if (newData.lotWeight && newData.amount) {
-      // Calculate total and fix to 2 decimal points, then convert to an integer
-      newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount)); 
-    } else {
-      newData.soldAmount = ''; // Clear soldAmount if inputs are missing
-    }
+      // Calculate soldAmount if both lotWeight and amount are present
+      if (newData.lotWeight && newData.amount) {
+        // Calculate total and fix to 2 decimal points, then convert to an integer
+        newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount));
+      } else {
+        newData.soldAmount = ''; // Clear soldAmount if inputs are missing
+      }
   
-    // New logic for calculating averageYield
-    if (newData.lotWeight && newData.dflLotNumber) {
-      newData.averageYield = Math.floor(parseFloat(newData.lotWeight) / parseFloat(newData.dflLotNumber)).toFixed(2);
-    } else {
-      newData.averageYield = ''; // Clear averageYield if inputs are missing
-    }
-
-    // Prevent editing 'amount' if it's already fetched
-  if (name === 'amount' && data.amount) {
-    return; // Prevent updates to the price field
-  }
+      // Prevent editing 'amount' if it's already fetched
+      if (name === 'amount' && prevData.amount) {
+        return prevData; // Return the previous state to prevent updates to the price field
+      }
   
-    // Set the new state
+      // Optionally, you can include the averageYield calculation here if needed
+      // if (newData.lotWeight && newData.dflLotNumber) {
+      //   newData.averageYield = (parseFloat(newData.lotWeight) / parseFloat(newData.dflLotNumber)).toFixed(2);
+      // } else {
+      //   newData.averageYield = ''; // Clear averageYield if inputs are missing
+      // }
+  
+      return newData; // Return the new data state
+    });
+  
+    // Set the new state for allottedLotId
     if (name === 'allottedLotId') {
       setAllottedLotId(value);
-    } else {
-      setData(newData);
     }
   };
+   
   
 //   const handleInputs = (e) => {
 //   const { name, value } = e.target;
@@ -384,6 +419,10 @@ const handleDateChange = (date) => {
               netWeight: response.data.content[0].netWeight,
               noOfDFLs: fetchedNoOfDFLs,
               initialWeighment: response.data.content[0].initialWeighment,
+              marketAuctionDate: response.data.content[0].marketAuctionDate,
+              soldCocoonInKgs : response.data.content[0].soldCocoonInKgs,
+              remainingCocoonWeight : response.data.content[0].remainingCocoonWeight,
+              lotWeightAfterWeighment : response.data.content[0].lotWeightAfterWeighment,
             }));
             // setLotParentLevel(response.data.content[0].lotParentLevel,);
            // Automatically set the fetched price in the data state
@@ -401,6 +440,10 @@ const handleDateChange = (date) => {
               netWeight: response.data.content[0].netWeight,
               noOfDFLs: response.data.content[0].noOfDFLs,
               initialWeighment: response.data.content[0].initialWeighment,
+              marketAuctionDate: response.data.content[0].marketAuctionDate,
+              soldCocoonInKgs : response.data.content[0].soldCocoonInKgs,
+              remainingCocoonWeight : response.data.content[0].remainingCocoonWeight,
+              lotWeightAfterWeighment : response.data.content[0].lotWeightAfterWeighment,
             }));
             setShowFarmerDetails(true);
           }
@@ -498,7 +541,10 @@ const handleDateChange = (date) => {
   //   }
   // };
 
- 
+  const [totalLotWeight, setTotalLotWeight] = useState(0);
+  // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
+  const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
+
  
    const searchError = (message = "Something went wrong!") => {
      let errorMessage;
@@ -554,6 +600,7 @@ const handleDateChange = (date) => {
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
+            remainingCocoonWeight: remainingCocoonWeight,
           }))
         };
   
@@ -584,7 +631,8 @@ const handleDateChange = (date) => {
             ...item,
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
-            dflLotNumber: noOfDFLs,   // Include lotParentLevel
+            dflLotNumber: noOfDFLs, 
+            remainingCocoonWeight: remainingCocoonWeight,  // Include lotParentLevel
             auctionDate: formatAuctionDate(item.auctionDate)  // Format and include auctionDate
           })),
         };
@@ -754,11 +802,51 @@ setAllottedLotId("");
         getExternalList();
   }, []);
 
+  // const styles = {
+  //   cardHeader: {
+  //     backgroundColor: "rgb(15, 108, 190, 1)",
+  //     color: "rgb(255, 255, 255)",
+  //     fontSize: "20px",
+  //     padding: "7px",
+  //     textAlign: "center",
+  //     borderTopLeftRadius: "8px",
+  //     borderTopRightRadius: "8px",
+  //   },
+  //   cardBody: {
+  //     backgroundColor: "rgb(255, 255, 255)",
+  //     padding: "20px",
+  //     borderBottomLeftRadius: "8px",
+  //     borderBottomRightRadius: "8px",
+  //   },
+  //   table: {
+  //     width: "100%",
+  //     borderCollapse: "collapse",
+  //     marginBottom: "15px",
+  //   },
+  //   tableRow: {
+  //     borderBottom: "1px solid #ddd",
+  //   },
+  //   ctstyle: {
+  //     backgroundColor: "rgb(248, 248, 249)",
+  //     color: "rgb(0, 0, 0)",
+  //     padding: "10px",
+  //     fontWeight: "600",
+  //   },
+  //   cell: {
+  //     padding: "10px",
+  //     textAlign: "left",
+  //     color: "#333",
+  //   },
+  //   boldText: {
+  //     fontWeight: "bold",
+  //   },
+  // };
+
   const styles = {
     cardHeader: {
       backgroundColor: "rgb(15, 108, 190, 1)",
       color: "rgb(255, 255, 255)",
-      fontSize: "20px",
+      fontSize: "18px", // Reduced font size for compact design
       padding: "7px",
       textAlign: "center",
       borderTopLeftRadius: "8px",
@@ -766,14 +854,14 @@ setAllottedLotId("");
     },
     cardBody: {
       backgroundColor: "rgb(255, 255, 255)",
-      padding: "20px",
+      padding: "15px", // Reduced padding for a more compact design
       borderBottomLeftRadius: "8px",
       borderBottomRightRadius: "8px",
     },
     table: {
       width: "100%",
       borderCollapse: "collapse",
-      marginBottom: "15px",
+      marginBottom: "10px", // Reduced margin between table and other elements
     },
     tableRow: {
       borderBottom: "1px solid #ddd",
@@ -781,20 +869,20 @@ setAllottedLotId("");
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249)",
       color: "rgb(0, 0, 0)",
-      padding: "10px",
+      padding: "8px", // Reduced padding to decrease row height
       fontWeight: "600",
+      width: "15%", // Adjusted width for a more even column layout
+      wordWrap: "break-word", // To prevent overflow
     },
     cell: {
-      padding: "10px",
+      padding: "8px", // Reduced padding for a more compact look
       textAlign: "left",
       color: "#333",
-    },
-    boldText: {
-      fontWeight: "bold",
+      width: "18%", // Adjusted width for consistent layout
+      wordWrap: "break-word", // Prevent overflow of long text
     },
   };
   
-
 
   const navigate = useNavigate();
   // const saveSuccess = (message) => {
@@ -945,24 +1033,36 @@ setAllottedLotId("");
                           <table style={styles.table} className="table small table-bordered">
                             <tbody>
                               <tr style={styles.tableRow}>
-                                <td style={styles.ctstyle}>Fruits Id :</td>
+                                <td style={styles.ctstyle}>Fruits Id:</td>
                                 <td style={styles.cell}>{farmerdetails.farmerFruitsId}</td>
                                 <td style={styles.ctstyle}>Farmer Name:</td>
                                 <td style={styles.cell}>{farmerdetails.farmerFirstName}</td>
+                                <td style={styles.ctstyle}>Bidding Slip Issued Date:</td>
+                                <td style={styles.cell}>{farmerdetails.marketAuctionDate}</td>
+                              </tr>
+                              <tr style={styles.tableRow}>
                                 <td style={styles.ctstyle}>Lot No:</td>
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
                                 <td style={styles.ctstyle}>No OF DFLs:</td>
                                 <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
                                 <td style={styles.ctstyle}>Price:</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
+                              </tr>
+                              <tr style={styles.tableRow}>
                                 <td style={styles.ctstyle}>Initial Weighment:</td>
                                 <td style={styles.cell}>{farmerdetails.initialWeighment}</td>
                                 <td style={styles.ctstyle}>Final Weighment in Kgs:</td>
-                                <td style={styles.cell}>{farmerdetails.netWeight}</td>
+                                <td style={styles.cell}>{farmerdetails.lotWeightAfterWeighment}</td>
                                 <td style={styles.ctstyle}>Average Yield:</td>
                                 <td style={styles.cell}>{farmerdetails.calculatedAverageYield}</td>
+                              </tr>
+                              <tr style={styles.tableRow}>
+                              <td style={styles.ctstyle}>Sold Cocoon in Kgs:</td>
+                                <td style={styles.cell}>{farmerdetails.soldCocoonInKgs}</td>
                                 <td style={styles.ctstyle}>Remaining Cocoon in Kgs:</td>
-                                <td style={styles.cell}>{farmerdetails.netWeight}</td>
+                                <td style={styles.cell}>{remainingCocoonWeight}</td>
+                                <td style={styles.ctstyle}>Remaining Cocoon in Store:</td>
+                                <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -970,18 +1070,15 @@ setAllottedLotId("");
                       </Row>
                     </Card.Body>
                   </Card>
+
+
                   </Col>
                 )}
 
 
-            {/* <div className={isActive ? "" : "d-none"}>      */}
-            
-                  {/* </div>  */}
-
-      {/* <Block className="mt-3"> */}
-      <Form noValidate validated={validated} onSubmit={postData}>
-      <Row className="g-1 ">
-      <Block className="mt-3">
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
+            <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
                  Buyers List
@@ -1000,7 +1097,7 @@ setAllottedLotId("");
                         <div className="form-control-wrap">
                           <ul className="">
                             <li>
-                              <Button
+                              {/* <Button
                                 className="d-md-none"
                                 size="md"
                                 variant="primary"
@@ -1015,6 +1112,27 @@ setAllottedLotId("");
                                 className="d-none d-md-inline-flex"
                                 variant="primary"
                                 onClick={handleShowModal}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button> */}
+                              <Button
+                                className="d-md-none"
+                                size="md"
+                                variant="primary"
+                                onClick={handleShowModal}
+                                disabled={totalLotWeight >= farmerdetails.netWeight}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button>
+                            </li>
+                            <li>
+                              <Button
+                                className="d-none d-md-inline-flex"
+                                variant="primary"
+                                onClick={handleShowModal}
+                                disabled={totalLotWeight >= farmerdetails.netWeight}
                               >
                                 <Icon name="plus" />
                                 <span>Add</span>
@@ -1408,60 +1526,63 @@ setAllottedLotId("");
                   </Col> */}
 
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                        Price(In Rs.)
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="amount"
-                          name="amount"
-                          value={data.amount}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Price(In Rs.)"
-                          required
-                          disabled={data.amount !== ""} 
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Price(In Rs.) is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  {data.buyerType !== "Reeling" && (
+          <>
+            <Col lg="6">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label htmlFor="amount">
+                  Price(In Rs.)
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="amount"
+                    name="amount"
+                    value={data.amount}
+                    onChange={handleInputs}
+                    type="number"
+                    placeholder="Enter Price(In Rs.)"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Price(In Rs.) is required.
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-                 
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                       Total Amount
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="soldAmount"
-                          name="soldAmount"
-                          value={data.soldAmount}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Total Amount"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Total Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+            <Col lg="6">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label htmlFor="soldAmount">
+                  Total Amount
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="soldAmount"
+                    name="soldAmount"
+                    value={data.soldAmount}
+                    onChange={handleInputs}
+                    type="number"
+                    placeholder="Enter Total Amount"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Total Amount is required.
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+          </>
+        )}
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
-                    <Button type="submit" variant="primary">
+                    <Button type="submit" variant="primary"
+                    // disabled={totalLotWeight >= farmerdetails.netWeight}
+                    >
                       Add
                     </Button>
                   </div>
@@ -1742,80 +1863,63 @@ setAllottedLotId("");
                     </Form.Group>
                   </Col> */}
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                        Price(In Rs.)
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="amount"
-                          name="amount"
-                          value={data.amount}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Price(In Rs.)"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Price(In Rs.) is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+          {data.buyerType !== "Reeling" && (
+          <>
+            <Col lg="6">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label htmlFor="amount">
+                  Price(In Rs.)
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="amount"
+                    name="amount"
+                    value={data.amount}
+                    onChange={handleInputs}
+                    type="number"
+                    placeholder="Enter Price(In Rs.)"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Price(In Rs.) is required.
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                        Market Fee
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="marketFee"
-                          name="marketFee"
-                          value={data.marketFee}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Market Fee"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Market Fee is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="approxWeightPerCrate">
-                       Total Amount
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="soldAmount"
-                          name="soldAmount"
-                          value={data.soldAmount}
-                          onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Total Amount"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Total Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+            <Col lg="6">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label htmlFor="soldAmount">
+                  Total Amount
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="soldAmount"
+                    name="soldAmount"
+                    value={data.soldAmount}
+                    onChange={handleInputs}
+                    type="number"
+                    placeholder="Enter Total Amount"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Total Amount is required.
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+          </>
+        )}
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
-                    <Button type="submit" variant="primary">
+                    <Button type="submit" variant="primary"
+                    // disabled={totalLotWeight >= farmerdetails.netWeight}
+                    >
                       Update
                     </Button>
                   </div>
