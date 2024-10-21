@@ -308,7 +308,7 @@ function SeedCocoonInward() {
     raceMasterId: "",
     dflCount: "",
     estimatedWeight: "",
-    numberOfLot: "",
+    numberOfLot: 1,
     numberOfSmallBin: 0,
     numberOfBigBin: 1,
     dflLotNumber: "",
@@ -323,37 +323,70 @@ function SeedCocoonInward() {
   // const [farmerDetails, setFarmerDetails] = useState({});
   // const [loading, setLoading] = useState(false);
 
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   // debugger;
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   // setData({ ...data, [name]: value });
+  //   setData((prevData) => {
+  //     let updatedData = { ...prevData, [name]: value };
+  //     if (name === "estimatedWeight") {
+  //       const weight = parseInt(value);
+  //       // console.log("hello", marketData.lotWeight);
+  //       // debugger;
+  //       if (isNaN(weight) || weight <= 0) {
+  //         updatedData = {
+  //           ...updatedData,
+  //           numberOfLot: "",
+  //           numberOfBigBin: 1,
+  //           numberOfSmallBin: 1,
+  //         };
+  //       } else if (weight >= marketData.lotWeight) {
+  //         updatedData = {
+  //           ...updatedData,
+  //           numberOfLot: Math.floor(weight / marketData.lotWeight) * 1,
+  //         };
+  //       } else if (weight < marketData.lotWeight) {
+  //         updatedData = { ...updatedData, numberOfLot: 1 };
+  //       }
+  //     }
+  //     return updatedData;
+  //   });
+  // };
+
   let name, value;
-  const handleInputs = (e) => {
-    // debugger;
-    name = e.target.name;
-    value = e.target.value;
-    // setData({ ...data, [name]: value });
-    setData((prevData) => {
-      let updatedData = { ...prevData, [name]: value };
-      if (name === "estimatedWeight") {
-        const weight = parseInt(value);
-        // console.log("hello", marketData.lotWeight);
-        // debugger;
-        if (isNaN(weight) || weight <= 0) {
-          updatedData = {
-            ...updatedData,
-            numberOfLot: "",
-            numberOfBigBin: 1,
-            numberOfSmallBin: 1,
-          };
-        } else if (weight >= marketData.lotWeight) {
-          updatedData = {
-            ...updatedData,
-            numberOfLot: Math.floor(weight / marketData.lotWeight) * 1,
-          };
-        } else if (weight < marketData.lotWeight) {
-          updatedData = { ...updatedData, numberOfLot: 1 };
-        }
+const handleInputs = (e) => {
+  name = e.target.name;
+  value = e.target.value;
+
+  setData((prevData) => {
+    let updatedData = { ...prevData, [name]: value };
+
+    if (name === "estimatedWeight") {
+      const weight = parseInt(value);
+
+      if (isNaN(weight) || weight <= 0) {
+        updatedData = {
+          ...updatedData,
+          numberOfLot: 1,
+          numberOfBigBin: 1,
+          numberOfSmallBin: 1,
+        };
+      } else if (weight >= marketData.lotWeight) {
+        updatedData = {
+          ...updatedData,
+          numberOfLot: 1, // Keep it as 1 instead of calculating based on weight
+        };
+      } else if (weight < marketData.lotWeight) {
+        updatedData = { ...updatedData, numberOfLot: 1 };
       }
-      return updatedData;
-    });
-  };
+    }
+
+    return updatedData;
+  });
+};
+
 
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, marketAuctionDate: newDate });

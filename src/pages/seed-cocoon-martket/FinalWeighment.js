@@ -448,7 +448,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className= "mt-n5">
       <Form
           noValidate
           validated={validated}
@@ -466,6 +466,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       <th style={{ width: '80px' }}>Action</th>
                       <th style={{ width: '50px' }}>Sl.No</th> {/* Custom width for Sl.No */}
                       <th style={{ width: '150px' }}>Date of Issuance of Bidding Slip</th>
+                      <th style={{ width: '150px' }}>Bidding Slip Lot NO.</th>
                       <th style={{ width: '150px' }}>FID</th>
                       <th style={{ width: '150px' }}>Farmer Name</th>
                       <th style={{ width: '150px' }}>Phone Number</th>
@@ -492,6 +493,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                         </td>
                         <td>{item.serialNumber}</td>
                         <td>{item.marketAuctionDate}</td>
+                        <td>{item.allottedLotId}</td>
                         <td>{item.fruitsId}</td>
                         <td>{item.firstName}</td>
                         <td>{item.mobileNumber}</td>
@@ -717,10 +719,10 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                     <td style={styles.ctstyle}>Lot No.:</td>
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td style={styles.ctstyle}>Source Name:</td>
                     <td>{farmerDetails?.dflsSource || 'N/A'}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td style={styles.ctstyle}>Variety:</td>
                     <td>{farmerDetails?.raceName   || 'N/A'}</td>
@@ -820,6 +822,15 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                   <tr>
                     <td style={styles.ctstyle}>Date:</td>
                     <td>{farmerDetails?.testDate || 'N/A'}</td>
+                    </tr>
+
+                    {/* <tr>
+                    <td style={styles.ctstyle}>Disease Free:</td>
+                    <td>{farmerDetails?.diseaseFree || 'N/A'}</td>
+                    </tr> */}
+                    <tr>
+                      <td style={styles.ctstyle}>Disease Free:</td>
+                      <td>{farmerDetails?.diseaseFree === "1" ? 'Yes' : 'No'}</td>
                     </tr>
 
                     <tr>

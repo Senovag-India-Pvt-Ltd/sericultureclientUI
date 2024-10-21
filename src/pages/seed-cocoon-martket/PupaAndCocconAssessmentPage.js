@@ -14,7 +14,7 @@ const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 function PupaAndCocoonAssessmentPage() {
   const [data, setData] = useState({
     marketAuctionId: "",
-    testDate: "",
+    testDate: new Date(),
     noOfCocoonTakenForExamination: "",
     noOfDflFromFc: "",
     diseaseFree: "",
@@ -390,7 +390,7 @@ if (form.checkValidity() === false) {
 const saveSuccess = () => {
   Swal.fire({
     icon: "success",
-    title: "Allotted successfully",
+    title: "Pupa Testing And Cocoon Assessment Completed  Successfully",
     text: "You Can Proceed To Allotment",
   });
 };
@@ -424,7 +424,7 @@ const saveError = (message = "Something went wrong!") => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className= "mt-n5">
       <Form
           noValidate
           validated={validated}
@@ -442,6 +442,7 @@ const saveError = (message = "Something went wrong!") => {
                         <th>Action</th>
                         <th>Sl.No</th>
                         <th>Date Of Issuance Of Bidding Slip</th>
+                        <th>Bidding Slip Lot No</th>
                         <th>FID</th>
                         <th>Farmer Name</th>
                         <th>Phone Number</th>
@@ -460,6 +461,7 @@ const saveError = (message = "Something went wrong!") => {
                         </td>
                         <td>{item.serialNumber}</td>
                         <td>{item.marketAuctionDate}</td>
+                        <td>{item.allottedLotId}</td>
                         <td>{item.fruitsId}</td>
                         <td>{item.firstName}</td>
                         <td>{item.mobileNumber}</td>
@@ -667,10 +669,10 @@ const saveError = (message = "Something went wrong!") => {
                     <td style={styles.ctstyle}>Lot No.:</td>
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
                     <td>{farmerDetails?.dflsSource || 'N/A'}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td style={styles.ctstyle}>Variety:</td>
                     <td>{farmerDetails?.raceName || 'N/A'}</td>
@@ -716,7 +718,7 @@ const saveError = (message = "Something went wrong!") => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Assess Now </Modal.Title>
+          <Modal.Title>Pupa Test </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -751,7 +753,7 @@ const saveError = (message = "Something went wrong!") => {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  No. of DFLs From the Fc
+                  No. of DFLs From the FC
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -812,6 +814,7 @@ const saveError = (message = "Something went wrong!") => {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            maxDate={new Date()}
                             // required
                           />
                         </div>
@@ -849,7 +852,7 @@ const saveError = (message = "Something went wrong!") => {
                 </div>
 
                 {/* Conditionally render the disease name input field if "Yes" is selected */}
-                {data.diseaseFree === "true" && (
+                {data.diseaseFree === "false" && (
                   <Col lg="6">
                   <Form.Group className="mt-3">
                     <Form.Label>Disease Type</Form.Label>

@@ -69,7 +69,24 @@ const handleDateChange = (date) => {
   const [validatedEdit, setValidatedEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
-  const handleShowModal = () => setShowModal(true);
+  // const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () => {
+    // Use the stored price directly when opening the modal
+    if (price) {
+      setData((prevData) => ({
+        ...prevData,
+        amount: price, // Automatically set the stored price
+      }));
+      // Open the modal to add new details
+      setShowModal(true);
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Price not available. Please perform a search first.",
+      });
+    }
+  };
+  
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal1 = () => setShowModal1(true);
   const handleCloseModal1 = () => setShowModal1(false);
@@ -86,7 +103,19 @@ const handleDateChange = (date) => {
       e.preventDefault();
       const buyerName = data.buyerType === "RSP" ? data.licenseNumber : data.address;
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
-     
+      // Reset the form for the next entry but keep the price (amount) intact
+    setData((prevData) => ({
+      ...prevData,
+      buyerType: "RSP",
+      buyerId: "",
+      lotWeight: "",
+      soldAmount: "",
+      dflLotNumber: "",
+      averageYield: "",
+      lotParentLevel: "",
+      // Keep the amount (price) if it's already set
+      amount: prevData.amount,
+    }));
       clean();
       setShowModal(false);
       setValidatedLot(false);
@@ -179,6 +208,11 @@ const handleDateChange = (date) => {
     } else {
       newData.averageYield = ''; // Clear averageYield if inputs are missing
     }
+
+    // Prevent editing 'amount' if it's already fetched
+  if (name === 'amount' && data.amount) {
+    return; // Prevent updates to the price field
+  }
   
     // Set the new state
     if (name === 'allottedLotId') {
@@ -283,6 +317,9 @@ const handleDateChange = (date) => {
   // };
 
   const [lotParentLevel, setLotParentLevel] = useState(null);
+  const [calculatedAverageYield, setCalculatedAverageYield] = useState(null);
+  const [noOfDFLs, setNoOfDFLs] = useState(null);
+  const [price, setPrice] = useState(0);
 
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
@@ -318,10 +355,20 @@ const handleDateChange = (date) => {
         )
         .then((response) => {
           const lotGroupageId = response.data.content[0].lotGroupageId;
-
+          const fetchedPrice = response.data.content[0].price;
+          const fetchedNoOfDFLs = response.data.content[0].noOfDFLs;
+          const fetchedAverageYield = response.data.content[0].calculatedAverageYield;
           // Extract lotParentLevel from the response
         const newLotParentLevel = response.data.content[0].lotParentLevel;
-        setLotParentLevel(newLotParentLevel); // Set the new lotParentLeve
+        setLotParentLevel(newLotParentLevel);
+        setCalculatedAverageYield(fetchedAverageYield);
+        setNoOfDFLs(fetchedNoOfDFLs);
+        setPrice(fetchedPrice); // Set the new lotParentLeve
+        setData((prevData) => ({
+          ...prevData,
+          amount: fetchedPrice,  // Automatically set price
+        }));
+
   
           if (lotGroupageId) {
             // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
@@ -331,12 +378,16 @@ const handleDateChange = (date) => {
               // lotParentLevel: response.data.content[0].lotParentLevel,
               lotParentLevel: newLotParentLevel,
               farmerFruitsId: response.data.content[0].farmerFruitsId,
-              price: response.data.content[0].price,
+              // price: response.data.content[0].price,
+              price: fetchedPrice,
+              calculatedAverageYield: fetchedAverageYield,
               netWeight: response.data.content[0].netWeight,
-              noOfDFLs: response.data.content[0].noOfDFLs,
+              noOfDFLs: fetchedNoOfDFLs,
               initialWeighment: response.data.content[0].initialWeighment,
             }));
             // setLotParentLevel(response.data.content[0].lotParentLevel,);
+           // Automatically set the fetched price in the data state
+            
             setDataLotList(response.data.content);
             setShowFarmerDetails(true);
           } else {
@@ -346,6 +397,7 @@ const handleDateChange = (date) => {
               lotParentLevel: response.data.content[0].lotParentLevel,
               farmerFruitsId: response.data.content[0].farmerFruitsId,
               price: response.data.content[0].price,
+              calculatedAverageYield: response.data.content[0].calculatedAverageYield,
               netWeight: response.data.content[0].netWeight,
               noOfDFLs: response.data.content[0].noOfDFLs,
               initialWeighment: response.data.content[0].initialWeighment,
@@ -493,13 +545,15 @@ const handleDateChange = (date) => {
             lotWeight: item.lotWeight,
             amount: item.amount,
             soldAmount: item.soldAmount,
-            dflLotNumber:item.dflLotNumber,
+            // dflLotNumber:item.dflLotNumber,
             invoiceNumber:item.invoiceNumber,
-             averageYield: item.averageYield,
+            //  averageYield: item.averageYield,
             allottedLotId: allottedLotId,
             // auctionDate: auctionDate,
             auctionDate: formattedAuctionDate,
-            lotParentLevel: lotParentLevel 
+            lotParentLevel: lotParentLevel,
+            averageYield: calculatedAverageYield,
+            dflLotNumber: noOfDFLs,
           }))
         };
   
@@ -528,7 +582,9 @@ const handleDateChange = (date) => {
         const sendPost = {
           lotGroupageRequests: dataLotList.map(item => ({
             ...item,
-            lotParentLevel: lotParentLevel,  // Include lotParentLevel
+            lotParentLevel: lotParentLevel,
+            averageYield: calculatedAverageYield,
+            dflLotNumber: noOfDFLs,   // Include lotParentLevel
             auctionDate: formatAuctionDate(item.auctionDate)  // Format and include auctionDate
           })),
         };
@@ -835,7 +891,7 @@ setAllottedLotId("");
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Lot Number<span className="text-danger">*</span>
+                        Bidding Slip Lot NO.<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -895,7 +951,7 @@ setAllottedLotId("");
                                 <td style={styles.cell}>{farmerdetails.farmerFirstName}</td>
                                 <td style={styles.ctstyle}>Lot No:</td>
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
-                                <td style={styles.ctstyle}>DFL Lot No:</td>
+                                <td style={styles.ctstyle}>No OF DFLs:</td>
                                 <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
                                 <td style={styles.ctstyle}>Price:</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
@@ -903,6 +959,8 @@ setAllottedLotId("");
                                 <td style={styles.cell}>{farmerdetails.initialWeighment}</td>
                                 <td style={styles.ctstyle}>Final Weighment in Kgs:</td>
                                 <td style={styles.cell}>{farmerdetails.netWeight}</td>
+                                <td style={styles.ctstyle}>Average Yield:</td>
+                                <td style={styles.cell}>{farmerdetails.calculatedAverageYield}</td>
                                 <td style={styles.ctstyle}>Remaining Cocoon in Kgs:</td>
                                 <td style={styles.cell}>{farmerdetails.netWeight}</td>
                               </tr>
@@ -983,8 +1041,8 @@ setAllottedLotId("");
                                   <th>Buyer Type</th>
                                   <th>License Number/Address</th>
                                   <th>Quantity of Cocoons(In Kgs)</th>
-                                  <th>No Of DFL</th>
-                                  <th>Average Yield</th>
+                                  {/* <th>No Of DFL</th>
+                                  <th>Average Yield</th> */}
                                   <th>Price(In Rs.)</th>
                                   <th>Total Amount</th>
                                   <th>Invoice Number</th>
@@ -1027,9 +1085,9 @@ setAllottedLotId("");
                                   </td> */}
                                   <td>{item.buyerName}</td>
                                     <td>{item.lotWeight}</td>
-                                    <td>{item.dflLotNumber}</td>
+                                    {/* <td>{item.dflLotNumber}</td> */}
                                     {/* <td>{item.marketFee}</td> */}
-                                    <td>{item.averageYield}</td>
+                                    {/* <td>{item.averageYield}</td> */}
                                     <td>{item.amount}</td>
                                     <td>{item.soldAmount}</td>
                                     <td>{item.invoiceNumber}</td>
@@ -1302,7 +1360,7 @@ setAllottedLotId("");
                     </Form.Group>
                   </Col>
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
                        No Of DFL
@@ -1323,9 +1381,9 @@ setAllottedLotId("");
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
                        Average Yield
@@ -1347,7 +1405,7 @@ setAllottedLotId("");
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
 
                   <Col lg="6">
@@ -1365,6 +1423,7 @@ setAllottedLotId("");
                           type="number"
                           placeholder="Enter Price(In Rs.)"
                           required
+                          disabled={data.amount !== ""} 
                         />
                         <Form.Control.Feedback type="invalid">
                         Price(In Rs.) is required.
@@ -1636,7 +1695,7 @@ setAllottedLotId("");
                   </Col>
 
                   
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
                        No Of DFL
@@ -1657,9 +1716,9 @@ setAllottedLotId("");
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
                        Average Yield
@@ -1681,8 +1740,7 @@ setAllottedLotId("");
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
-
+                  </Col> */}
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
