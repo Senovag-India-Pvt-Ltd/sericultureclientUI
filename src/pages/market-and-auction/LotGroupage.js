@@ -136,12 +136,24 @@ const handleDateChange = (date) => {
     initialWeighment:""
   })
 
-  const handleDeleteLotDetails = (i) => {
-    setDataLotList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
+  // const handleDeleteLotDetails = (i) => {
+  //   setDataLotList((prev) => {
+  //     const newArray = prev.filter((item, place) => place !== i);
+  //     return newArray;
+  //   });
+  // };
+  // Handle deleting a lot
+const handleDeleteLotDetails = (i) => {
+  setDataLotList((prev) => {
+    const deletedLotWeight = parseFloat(prev[i].lotWeight || 0);
+
+    // Subtract deleted lot weight from totalLotWeight
+    setTotalLotWeight((prevTotal) => prevTotal - deletedLotWeight);
+
+    const newArray = prev.filter((item, place) => place !== i);
+    return newArray;
+  });
+};  
 
   const [lotId, setLotId] = useState();
   const handleGetLotDetails = (i) => {
@@ -150,37 +162,74 @@ const handleDateChange = (date) => {
     setLotId(i);
   };
 
-  const handleUpdateLotDetails = (e, i, changes) => {
-      setDataLotList((prev) =>
-        prev.map((item, ix) => {
-          if (ix === i) {
-            return { ...item, ...changes };
-          }
-          return item;
-        })
-      ); const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        e.preventDefault();
-        e.stopPropagation();
-        setValidatedEdit(true);
-      } else {
-        e.preventDefault();
-      setShowModal1(false);
-      setValidatedEdit(false);
-      setData({
-        buyerType: "RSP",
-        buyerId: "",
-        lotWeight: "",
-        amount: "",
-        marketFee: "",
-        soldAmount: "",
-        allottedLotId: "",
-        auctionDate: "",
-        lotParentLevel: "",
-      });
-    }
-  };
+  // const handleUpdateLotDetails = (e, i, changes) => {
+  //     setDataLotList((prev) =>
+  //       prev.map((item, ix) => {
+  //         if (ix === i) {
+  //           return { ...item, ...changes };
+  //         }
+  //         return item;
+  //       })
+  //     ); const form = e.currentTarget;
+  //     if (form.checkValidity() === false) {
+  //       e.preventDefault();
+  //       e.stopPropagation();
+  //       setValidatedEdit(true);
+  //     } else {
+  //       e.preventDefault();
+  //     setShowModal1(false);
+  //     setValidatedEdit(false);
+  //     setData({
+  //       buyerType: "RSP",
+  //       buyerId: "",
+  //       lotWeight: "",
+  //       amount: "",
+  //       marketFee: "",
+  //       soldAmount: "",
+  //       allottedLotId: "",
+  //       auctionDate: "",
+  //       lotParentLevel: "",
+  //     });
+  //   }
+  // };
 
+  // Handle editing a lot
+const handleUpdateLotDetails = (e, i, changes) => {
+  const form = e.currentTarget;
+  if (form.checkValidity() === false) {
+    e.preventDefault();
+    e.stopPropagation();
+    setValidatedEdit(true);
+  } else {
+    e.preventDefault();
+
+    const previousLotWeight = parseFloat(dataLotList[i].lotWeight || 0);
+    const newLotWeight = parseFloat(changes.lotWeight || 0);
+
+    // Adjust the total lot weight based on the difference between the old and new weight
+    setTotalLotWeight((prevTotal) => prevTotal - previousLotWeight + newLotWeight);
+
+    // Update the lot details in the list
+    setDataLotList((prev) =>
+      prev.map((item, ix) => ix === i ? { ...item, ...changes } : item)
+    );
+
+    setShowModal1(false);
+    setValidatedEdit(false);
+
+    setData({
+      buyerType: "RSP",
+      buyerId: "",
+      lotWeight: "",
+      amount: "",
+      marketFee: "",
+      soldAmount: "",
+      allottedLotId: "",
+      auctionDate: "",
+      lotParentLevel: "",
+    });
+  }
+};
   let name, value;
   // const handleInputs = (e) => {
   //   name = e.target.name;
@@ -543,7 +592,14 @@ const handleDateChange = (date) => {
 
   const [totalLotWeight, setTotalLotWeight] = useState(0);
   // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
-  const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
+  // const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
+  // Conditionally update remainingCocoonWeight based on totalLotWeight
+const remainingCocoonWeight = totalLotWeight > 0 
+? farmerdetails.netWeight - totalLotWeight 
+: farmerdetails.netWeight;
+
+// Disable Add button if lotWeight exceeds remaining cocoon weight
+const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
 
  
    const searchError = (message = "Something went wrong!") => {
@@ -606,11 +662,20 @@ const handleDateChange = (date) => {
   
         api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
           .then(response => {
+            const updatedList = response.data.content;  // Fetch updated data
+
+            // Generate invoice details from the updated response data
+            const invoiceDetails = updatedList
+              .map(item => `${item.buyerType} = ${item.invoiceNumber ? item.invoiceNumber : 'No Invoice Available'}`)
+              .join("<br>");
+  
+            // Show the success message
             Swal.fire({
               icon: 'success',
-              title: 'Updated successfully'
+              title: 'Updated successfully',
+              html: `Invoice Details:<br>${invoiceDetails}`,  // Display invoice details in SweetAlert
             });
-            // Call clear() after successful update
+  
             clear();
             setValidated(false);
         })
@@ -1175,10 +1240,11 @@ setAllottedLotId("");
                                           variant="primary"
                                           size="sm"
                                           onClick={() => handleGetLotDetails(i)}
+                                          disabled={!!item.lotGroupageId}
                                         >
                                           Edit
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() =>
@@ -1188,7 +1254,7 @@ setAllottedLotId("");
                                           className="ms-2"
                                         >
                                           Delete
-                                        </Button>
+                                        </Button> */}
                                       </div>
                                     </td>
                                     <td>{item.buyerType}</td>
@@ -1470,9 +1536,10 @@ setAllottedLotId("");
                           type="number"
                           placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
                           required
+                          isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
                         />
                         <Form.Control.Feedback type="invalid">
-                        Quantity of Cocoons Allotted (In Kgs) is required.
+                        Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1582,6 +1649,7 @@ setAllottedLotId("");
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
                     <Button type="submit" variant="primary"
                     // disabled={totalLotWeight >= farmerdetails.netWeight}
+                    disabled={isAddDisabled}
                     >
                       Add
                     </Button>
@@ -1807,10 +1875,12 @@ setAllottedLotId("");
                           type="number"
                           placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
                           required
+                          isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
                         />
                         <Form.Control.Feedback type="invalid">
-                        Quantity of Cocoons Allotted (In Kgs) is required.
+                        Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon
                         </Form.Control.Feedback>
+                       
                       </div>
                     </Form.Group>
                   </Col>
@@ -1919,6 +1989,7 @@ setAllottedLotId("");
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
                     <Button type="submit" variant="primary"
                     // disabled={totalLotWeight >= farmerdetails.netWeight}
+                    disabled={isAddDisabled}
                     >
                       Update
                     </Button>
