@@ -490,7 +490,7 @@ function NewTraderLicenseEdit() {
                       </Col>
 
                       <Col lg="6">
-                      <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group">
                         <Form.Label>Silk Type</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
