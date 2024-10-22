@@ -347,7 +347,7 @@ function WeighmentForSilkMarket() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        baseURLReport + `gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada-silk`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),

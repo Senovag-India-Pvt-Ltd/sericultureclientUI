@@ -535,7 +535,7 @@ function ReelerBiddingSlip() {
 
     try {
       const response = await api.post(
-        baseURLReport + `getfarmercopy-kannada`,
+        baseURLReport + `getfarmercopy-kannada-silk`,
         {
           marketId: data.marketId,
           godownId: data.godownId,
