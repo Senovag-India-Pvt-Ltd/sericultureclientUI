@@ -328,6 +328,7 @@ function Menu() {
     Admin_Master_Registration_Education: false,
     Admin_Master_Registration_Relationship: false,
     Admin_Master_Registration_State: false,
+    Admin_Master_Registration_Farmer_Bank_Reason: false,
     Admin_Master_Registration_District: false,
     Admin_Master_Registration_Taluk: false,
     Admin_Master_Registration_Hobli: false,
@@ -2556,6 +2557,11 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_State ? (
                           <MenuItem>
                             <MenuItemLink text="State" to="/seriui/state" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Farmer_Bank_Reason ? (
+                          <MenuItem>
+                            <MenuItemLink text="Farmer Bank Reason" to="/seriui/farmerBankAccountReason" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_District ? (

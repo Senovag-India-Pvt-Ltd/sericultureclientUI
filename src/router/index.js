@@ -908,6 +908,10 @@ import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
 import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
 import PreparationofeggsDFLsAdd from "../pages/seed-and-dfl-managment/PreparationofeggsAddDFLs";
 import UpdateBankDetails from "../pages/masters/update-bank-details/UpdateBankDetails";
+import FarmerBankAccountReason from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReason";
+import FarmerBankAccountReasonList from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonList";
+import FarmerBankAccountReasonEdit from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonEdit";
+import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonView";
 // Admin and Reports
 
 function Router() {
@@ -2349,6 +2353,11 @@ function Router() {
             <Route path="reason-list" element={<ReasonList />} />
             <Route path="reason-view/:id" element={<ReasonView />} />
             <Route path="reason-edit/:id" element={<ReasonEdit />} />
+
+            <Route path="farmerBankAccountReason" element={<FarmerBankAccountReason />} />
+            <Route path="farmerBankAccountReason-list" element={<FarmerBankAccountReasonList />} />
+            <Route path="farmerBankAccountReason-view/:id" element={<FarmerBankAccountReasonView />} />
+            <Route path="farmerBankAccountReason-edit/:id" element={<FarmerBankAccountReasonEdit />} />
 
             <Route path="mount" element={<Mount />} />
             <Route path="mount-list" element={<MountList />} />
