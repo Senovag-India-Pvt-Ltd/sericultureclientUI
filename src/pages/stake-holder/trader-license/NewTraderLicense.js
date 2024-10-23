@@ -37,7 +37,6 @@ function NewTraderLicense() {
     silkExchangeMahajar: "",
     licenseNumberSequence: "",
     silkType: "",
-
   });
 
   const [validated, setValidated] = useState(false);

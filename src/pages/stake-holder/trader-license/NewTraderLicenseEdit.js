@@ -70,6 +70,8 @@ function NewTraderLicenseEdit() {
             silkExchangeMahajar: "",
             licenseNumberSequence: "",
             silkType: "", 
+            marketMasterId: "",
+            mobileNumber:"",
           });
           setValidated(false);
         }
@@ -112,6 +114,8 @@ function NewTraderLicenseEdit() {
       silkExchangeMahajar: "",
       licenseNumberSequence: "",
       silkType: "", 
+      marketMasterId: "",
+      mobileNumber:"",
     });
   };
 
@@ -273,7 +277,7 @@ function NewTraderLicenseEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n5">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
