@@ -101,7 +101,6 @@ import ExternalUnitRegisterEdit from "../pages/stake-holder/external-units/Exter
 import ServiceApplication from "../pages/services-module/application/serviceApplication";
 import TrackDflProcurement from "../pages/services-module/TrackDflProcurement";
 import TrackingMulberryStatus from "../pages/services-module/TrackingMulberryStatus";
-import SupplyOfDisinfectants from "../pages/services-module/SupplyOfDisinfectants";
 import ProvidingIncentives from "../pages/services-module/ProvidingIncentives";
 import ProvidingSubsidy from "../pages/services-module/ProvidingSubsidy";
 import PreparationDcBills from "../pages/services-module/PreparationDcBills";
@@ -901,6 +900,14 @@ import DashboardReportSilkType from "../pages/reports-admin/market-auction/Dashb
 import UnitCounterReportSilkType from "../pages/reports-admin/market-auction/UnitCounterReportSilkType";
 
 
+import SupplyOfDisinfectantsToFarmers from "../pages/chawki-management/SupplyOfDisinfectantsToFarmer";
+import SupplyOfDisinfectantsList from "../pages/chawki-management/SupplyOfDisinfectantsList";
+import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/SupplyOfDisinfectantsToFarmerEdit";
+import MgnregaSchemeEdit from "../pages/chawki-management/MgnregaSchemeEdit";
+import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
+import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
+import PreparationofeggsDFLsAdd from "../pages/seed-and-dfl-managment/PreparationofeggsAddDFLs";
+import UpdateBankDetails from "../pages/masters/update-bank-details/UpdateBankDetails";
 // Admin and Reports
 
 function Router() {
@@ -1273,10 +1280,7 @@ function Router() {
               path="track-mulberry-status"
               element={<TrackingMulberryStatus />}
             />
-            <Route
-              path="supply-disinfectants"
-              element={<SupplyOfDisinfectants />}
-            />
+
             <Route
               path="providing-incentives"
               element={<ProvidingIncentives />}
@@ -1464,6 +1468,11 @@ function Router() {
             <Route
               path="Preparation-of-eggs-DFLs-edit/:id"
               element={<PreparationofeggsDFLsEdit />}
+            />
+
+<Route
+              path="Preparation-of-eggs-DFLs-add/:id"
+              element={<PreparationofeggsDFLsAdd />}
             />
 
             <Route
@@ -1723,6 +1732,24 @@ function Router() {
             <Route
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
+            />
+            <Route path="supply-of-disinfectants" element={<SupplyOfDisinfectantsToFarmers />} />
+            <Route
+              path="supply-of-disinfectants-list"
+              element={<SupplyOfDisinfectantsList />}
+            />
+            <Route
+              path="mgnerga-scheme-edit/:id"
+              element={<MgnregaSchemeEdit />}
+            />
+            <Route path="mgnerga-scheme" element={<MgnregaScheme />} />
+            <Route
+              path="mgnrega-scheme-list"
+              element={<MgnregaSchemeList />}
+            />
+            <Route
+              path="supply-of-disinfectants-edit/:id"
+              element={<SupplyOfDisinfectantsToFarmerEdit />}
             />
 
             {/* Inspection */}
@@ -3188,6 +3215,7 @@ function Router() {
             <Route path="role-pages" element={<RolePages />} />
             <Route path="activate-reeler" element={<ReelerActivate />} />
             <Route path="activate-trader" element={<TraderActivate />} />
+            <Route path="update-bank-details" element={<UpdateBankDetails />} />
 
             {/* Flex Time  */}
             <Route path="flex-time" element={<FlexTime />} />

@@ -6,7 +6,6 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -349,7 +348,7 @@ function WeighmentForSeedMarket() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        baseURLReport + `gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada-seed`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),
@@ -401,12 +400,16 @@ function WeighmentForSeedMarket() {
           );
           speak({ text: `Weighment Completed Successfully` });
         } else {
-          submitError(response.data.errorMessages);
-        }
+        //   submitError(response.data.errorMessages);
+        // }
+        const errorMsg = response.data.errorMessages[0]?.message[0]?.message || "Something went wrong!";
+        submitError(errorMsg);
+      }
         
       })
       .catch((err) => {
-        
+        const errorMsg = err.response.data.errorMessages[0]?.message[0]?.message || "Something went wrong!";
+        submitError(errorMsg);
       });
   };
 
@@ -620,6 +623,14 @@ function WeighmentForSeedMarket() {
     }
   };
 
+  const navigate = useNavigate();
+const handleShowModalAssesment = () => {
+  // Any other logic before navigation (e.g., passing the item to state, showing modal, etc.)
+  
+  // Navigate to the desired route
+  navigate('/seriui/lot-groupage');
+};
+
   const deleteRow = (indexToDelete) => {
     // let weightAmount;
     let weightNet;
@@ -705,7 +716,7 @@ function WeighmentForSeedMarket() {
     },
   };
 
-  const navigate = useNavigate();
+
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -951,6 +962,13 @@ function WeighmentForSeedMarket() {
                                 >
                                   Submit
                                 </Button>
+                                <Button 
+                                  variant="primary" 
+                                  // style={{ backgroundColor: 'white', color: 'red', fontWeight: 'bold', borderColor: 'red' }} 
+                                  onClick={() => handleShowModalAssesment()}
+                                >
+                                  Click For Allottment Form
+                                </Button>
                               </td>
                             </tr>
                             <tr>
@@ -1103,6 +1121,7 @@ function WeighmentForSeedMarket() {
                                 >
                                   Continue weighment
                                 </Button>
+                                
                               </td>
                             </tr>
                             <tr>

@@ -1272,6 +1272,14 @@ function AllApplicationList() {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.villageName || 'N/A'}</td>
                 </tr>
                 <tr>
+                  <td style={styles.ctstyle}>Created Date:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.createdDate || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Modified Date:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.modifiedDate || 'N/A'}</td>
+                </tr>
+                <tr>
                   <td style={styles.ctstyle}>Application Status:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
                 </tr>

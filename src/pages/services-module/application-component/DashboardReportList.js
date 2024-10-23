@@ -507,7 +507,7 @@ function DashboardReportList() {
             {},
             { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
         );
-        
+
         setListData(response.data.content);
         const scApplicationFormIds = response.data.content.map(
             (item) => item.scApplicationFormId
@@ -542,7 +542,7 @@ function DashboardReportList() {
 };
 
 // useEffect(() => {
-  
+
 // }, [userId]);
 
   useEffect(() => {
@@ -670,7 +670,7 @@ function DashboardReportList() {
       });
   };
 
- 
+
 
   // useEffect(() => {
   //   if (districtId && talukId) {
@@ -930,6 +930,7 @@ function DashboardReportList() {
     applicationFormId: "",
     workOrderNumber: "",
     sanctionOrderNumber: "",
+    sanctionAmount: "",
     lat: "",
     lon: "",
     description: "",
@@ -1542,7 +1543,7 @@ function DashboardReportList() {
 
     try {
       const formData = new FormData();
-      formData.append("multipartFile", document);
+      formData.append("multipartFile", documentDetails);
 
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
@@ -1569,11 +1570,11 @@ function DashboardReportList() {
         {
           documentId,
           // documentName: document.name,
-          documentName: document?.name || "Unknown Document",
+          documentName: documentDetails?.name || "Unknown Document",
           documentMasterName: docListData.find(
             (list) => list.documentMasterId === documentId
           )?.documentMasterName, // Find and store the documentMasterName
-          documentFile: document, // Store the file itself for image preview
+          documentFile: documentDetails, // Store the file itself for image preview
         },
       ]);
     } catch (error) {
@@ -1595,13 +1596,13 @@ function DashboardReportList() {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
 
   //Display Document
-  const [document, setDocument] = useState("");
+  const [documentDetails, setDocumentDetails] = useState("");
 
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       // Added null check
-      setDocument(file);
+      setDocumentDetails(file);
       setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
     }
   };
@@ -1957,7 +1958,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -1966,7 +1967,11 @@ function DashboardReportList() {
                                         value={actionData.stepId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
+                                        required
+                                        isInvalid={
+                                          actionData.stepId === undefined ||
+                                          actionData.stepId === "0"
+                                        }
                                         // isInvalid={
                                         //   actionData.approvalStageId === undefined ||
                                         //   actionData.approvalStageId === "0"
@@ -1998,7 +2003,7 @@ function DashboardReportList() {
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     User
-                                    {/* <span className="text-danger">*</span> */}
+                                    <span className="text-danger">*</span>
                                   </Form.Label>
                                   <Col>
                                     <div className="form-control-wrap">
@@ -2007,7 +2012,11 @@ function DashboardReportList() {
                                         value={actionData.userId}
                                         onChange={handleActionInputs}
                                         onBlur={() => handleActionInputs}
-                                        // required
+                                        required
+                                        isInvalid={
+                                          actionData.userId === undefined ||
+                                          actionData.userId === "0"
+                                        }
                                         // isInvalid={
                                         //   actionData.userId === undefined ||
                                         //   actionData.userId === "0"
@@ -2023,11 +2032,34 @@ function DashboardReportList() {
                                           </option>
                                         ))}
                                       </Form.Select>
-                                      {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                      <Form.Control.Feedback type="invalid">
+                            User is required
+                          </Form.Control.Feedback>
                                     </div>
                                   </Col>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                  Eligible Subsidy
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="schemeAmount"
+                                      name="schemeAmount"
+                                      value={actionData.schemeAmount}
+                                      onChange={handleActionInputs}
+                                      type="text"
+                                      placeholder="Enter Eligible Subsidy Amount "
+                                      style={modalStyles.formControl}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                                  Cocoon's Purchased (in Kg's / Nos) is required
+                                                  </Form.Control.Feedback> */}
+                                  </div>
                                 </Form.Group>
                               </Col>
                             </Row>
@@ -2691,10 +2723,10 @@ function DashboardReportList() {
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                  {document ? (
+                  {documentDetails ? (
                     <img
                       style={{ height: "100px", width: "100px" }}
-                      src={URL.createObjectURL(document)}
+                      src={URL.createObjectURL(documentDetails)}
                     />
                   ) : (
                     ""

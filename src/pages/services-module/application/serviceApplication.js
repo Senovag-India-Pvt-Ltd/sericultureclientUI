@@ -74,9 +74,7 @@ function ServiceApplication() {
   }, []);
 
   // to get scheme-Quota-details
-  const [spacingListData, setSpacingDetailsListData] = useState(
-    []
-  );
+  const [spacingListData, setSpacingDetailsListData] = useState([]);
 
   const getSpacingList = () => {
     api
@@ -94,9 +92,7 @@ function ServiceApplication() {
   }, []);
 
   // to get scheme-Quota-details
-  const [hectareListData, setHectareListData] = useState(
-    []
-  );
+  const [hectareListData, setHectareListData] = useState([]);
 
   const getHectareList = () => {
     api
@@ -114,27 +110,27 @@ function ServiceApplication() {
   }, []);
 
   const [schemeDetails, setSchemeDetails] = useState({});
-const [schemeId, setSchemeId] = useState("");
+  const [schemeId, setSchemeId] = useState("");
 
-// Get data from API
-const getAreaDetailsList = () => {
-  setLoading(true);
-  api
-    .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
-    .then((response) => {
-      setSchemeDetails(response.data.content); // Store response data in state
-      setLoading(false);
-    })
-    .catch((err) => {
-      setLoading(false);
-    });
-};
+  // Get data from API
+  const getAreaDetailsList = () => {
+    setLoading(true);
+    api
+      .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+      .then((response) => {
+        setSchemeDetails(response.data.content); // Store response data in state
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
 
-useEffect(() => {
-  if (schemeId) {
-    getAreaDetailsList();
-  }
-}, [schemeId]);
+  useEffect(() => {
+    if (schemeId) {
+      getAreaDetailsList();
+    }
+  }, [schemeId]);
 
   const [developedLand, setDevelopedLand] = useState({
     landDeveloped: "",
@@ -811,7 +807,7 @@ useEffect(() => {
       e.target.classList.add("is-valid");
     }
     if (name === "scSchemeDetailsId") {
-      setSchemeId(value);  // Trigger fetching scheme details
+      setSchemeId(value); // Trigger fetching scheme details
     }
   };
 
@@ -907,57 +903,57 @@ useEffect(() => {
 
     // Validate the form
     if (form.checkValidity() === false) {
-        event.stopPropagation();
-        setValidated(true);
-        return; // Exit if the form is not valid
+      event.stopPropagation();
+      setValidated(true);
+      return; // Exit if the form is not valid
     }
 
     const transformedData = Object.keys(developedArea).map((id) => ({
-        ...developedArea[id],
+      ...developedArea[id],
     }));
 
     const sendPost = {
-        approvalStageId: data.approvalStageId,
-        userMasterId: data.userId,
-        farmerId: data.farmerId,
-        fruitsId: data.fruitsId,
-        payToVendor: equipment.payToVendor,
-        headOfAccountId: data.scHeadAccountId,
-        schemeId: data.scSchemeDetailsId,
-        subSchemeId: data.scSubSchemeDetailsId,
-        categoryId: data.scCategoryId,
-        landDetailId: landDetailsIds[0],
-        talukId: landData.talukId,
-        newFarmer: true,
-        componentId: data.scComponentId,
-        financialYearMasterId: data.financialYearMasterId,
-        devAcre: 0,
-        devGunta: 0,
-        devFGunta: 0,
-        schemeAmount: data.schemeAmount,
-        sanctionNumber: data.sanctionNumber,
-        initialAmount: data.expectedAmount,
-        periodFrom: data.periodFrom,
-        periodTo: data.periodTo,
-        vendorId: equipment.vendorId,
-        spacingId: data.spacingId,
-        hectareId: data.hectareId,
-        description: equipment.description,
-        loggedInUserId: localStorage.getItem("userMasterId"),
+      approvalStageId: data.approvalStageId,
+      userMasterId: data.userId,
+      farmerId: data.farmerId,
+      fruitsId: data.fruitsId,
+      payToVendor: equipment.payToVendor,
+      headOfAccountId: data.scHeadAccountId,
+      schemeId: data.scSchemeDetailsId,
+      subSchemeId: data.scSubSchemeDetailsId,
+      categoryId: data.scCategoryId,
+      landDetailId: landDetailsIds[0],
+      talukId: landData.talukId,
+      newFarmer: true,
+      componentId: data.scComponentId,
+      financialYearMasterId: data.financialYearMasterId,
+      devAcre: 0,
+      devGunta: 0,
+      devFGunta: 0,
+      schemeAmount: data.schemeAmount,
+      sanctionNumber: data.sanctionNumber,
+      initialAmount: data.expectedAmount,
+      periodFrom: data.periodFrom,
+      periodTo: data.periodTo,
+      vendorId: equipment.vendorId,
+      spacingId: data.spacingId,
+      hectareId: data.hectareId,
+      description: equipment.description,
+      loggedInUserId: localStorage.getItem("userMasterId"),
     };
 
     // Check what checkboxes are selected and build the request accordingly
     if (data.equordev.includes("land")) {
-        sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
+      sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
     }
     if (data.equordev.includes("equipment")) {
-        sendPost.applicationFormLineItemRequestList = [
-            {
-                lineItemComment: equipment.description,
-                cost: equipment.price,
-                vendorId: equipment.vendorId,
-            },
-        ];
+      sendPost.applicationFormLineItemRequestList = [
+        {
+          lineItemComment: equipment.description,
+          cost: equipment.price,
+          vendorId: equipment.vendorId,
+        },
+      ];
     }
     // if (data.equordev.includes("constructedArea")) {
     //     // Handle constructedArea data if needed
@@ -965,12 +961,11 @@ useEffect(() => {
 
     // Check the fruitsId length constraint
     if (data.fruitsId.length !== 16) {
-        return;
+      return;
     }
 
     uploadFileConfirm(sendPost);
-};
-
+  };
 
   const [amountValue, setAmountValue] = useState({
     maxAmount: "",
@@ -1786,7 +1781,8 @@ useEffect(() => {
 
   const handleAttachFileUpload = async (documentId) => {
     const param = {
-      applicationFormId: applicationId,
+      // applicationFormId: applicationId,
+      applicationFormId: 1,
       documentTypeId: documentId,
     };
 
@@ -1836,7 +1832,7 @@ useEffect(() => {
           documentId,
           documentName: document.name,
           documentMasterName: docListData.find(
-            (list) => list.documentMasterId === documentId
+            (list) => list.documentMasterId == documentId
           )?.documentMasterName, // Find and store the documentMasterName
           documentFile: document, // Store the file itself for image preview
         },
@@ -1869,13 +1865,13 @@ useEffect(() => {
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     setDocument(file);
-    setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
+    setUploadDocuments((prev) => ({ ...prev, documentPath: file?.name }));
     //  setPhotoFile(file);
   };
 
   // const handleCheckbox = (e) => {
   //   const { value, checked } = e.target;
-  
+
   //   if (checked) {
   //     setData((prevData) => ({
   //       ...prevData,
@@ -1891,7 +1887,7 @@ useEffect(() => {
 
   const handleCheckbox = (e) => {
     const { value, checked } = e.target;
-  
+
     if (checked) {
       // Add the selected option to the array
       setData((prevData) => ({
@@ -1906,8 +1902,6 @@ useEffect(() => {
       }));
     }
   };
-  
-  
 
   //  console.log("nodappa",document);
   //  console.log("nodappa2",uploadDocuments);
@@ -1935,11 +1929,11 @@ useEffect(() => {
   //  };
 
   return (
-    <Layout title="Application Form">
+    <Layout title="Scheme Details Form">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Application Form</Block.Title>
+            <Block.Title tag="h2">Scheme Details Form</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -2017,7 +2011,7 @@ useEffect(() => {
                         <tr>
                           <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Addres:</td>
+                          <td style={styles.ctstyle}> Address:</td>
                           <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
@@ -2174,73 +2168,80 @@ useEffect(() => {
                         </Col>
 
                         {/* Conditionally Render Spacing Field */}
-                    {schemeDetails.spacing && (
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="spacing">
-                            Spacing <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="spacingId"
-                              value={data.spacingId}
-                              onChange={handleInputs}
-                              // required
-                              isInvalid={
-                                data.spacingId === undefined || data.spacingId === "0"
-                              }
-                            >
-                              <option value="">Select Spacing</option>
-                              {spacingListData && spacingListData.length > 0
-                                ? spacingListData.map((list) => (
-                                    <option key={list.spacingId} value={list.spacingId}>
-                                      {list.spacingName}
-                                    </option>
-                                  ))
-                                : ""}
-                            </Form.Select>
-                            {/* <Form.Control.Feedback type="invalid">
+                        {schemeDetails.spacing && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="spacing">
+                                Spacing <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="spacingId"
+                                  value={data.spacingId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.spacingId === undefined ||
+                                    data.spacingId === "0"
+                                  }
+                                >
+                                  <option value="">Select Spacing</option>
+                                  {spacingListData && spacingListData.length > 0
+                                    ? spacingListData.map((list) => (
+                                        <option
+                                          key={list.spacingId}
+                                          value={list.spacingId}
+                                        >
+                                          {list.spacingName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
                               Spacing is required
                             </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
-                    {/* Conditionally Render Hectare Field */}
-                    {schemeDetails.hectare && (
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="hectare">
-                            Hectare <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="hectareId"
-                              value={data.hectareId}
-                              onChange={handleInputs}
-                              // required
-                              isInvalid={
-                                data.hectareId === undefined || data.hectareId === "0"
-                              }
-                            >
-                              <option value="">Select Hectare</option>
-                              {hectareListData && hectareListData.length > 0
-                                ? hectareListData.map((list) => (
-                                    <option key={list.hectareId} value={list.hectareId}>
-                                      {list.hectareName}
-                                    </option>
-                                  ))
-                                : ""}
-                            </Form.Select>
-                            {/* <Form.Control.Feedback type="invalid">
+                        {/* Conditionally Render Hectare Field */}
+                        {schemeDetails.hectare && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="hectare">
+                                Hectare <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="hectareId"
+                                  value={data.hectareId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.hectareId === undefined ||
+                                    data.hectareId === "0"
+                                  }
+                                >
+                                  <option value="">Select Hectare</option>
+                                  {hectareListData && hectareListData.length > 0
+                                    ? hectareListData.map((list) => (
+                                        <option
+                                          key={list.hectareId}
+                                          value={list.hectareId}
+                                        >
+                                          {list.hectareName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
                               Hectare is required
                             </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    )}
-
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -3090,58 +3091,69 @@ useEffect(() => {
                 </Row>
               </Card> */}
               <Card className="mt-1">
-  <Row className="ms-1 mt-2">
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="constructedArea">
-        <Col sm={1}>
-          <Form.Check
-            type="checkbox"
-            name="equordev"
-            value="constructedArea"
-            checked={data.equordev.includes("constructedArea")}
-            onChange={handleCheckbox}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2">
-          Constructed Area
-        </Form.Label>
-      </Form.Group>
-    </Col>
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="equipment">
-        <Col sm={1}>
-          <Form.Check
-            type="checkbox"
-            name="equordev"
-            value="equipment"
-            checked={data.equordev.includes("equipment")}
-            onChange={handleCheckbox}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2">
-          Equipment Purchase
-        </Form.Label>
-      </Form.Group>
-    </Col>
-    <Col lg="2">
-      <Form.Group as={Row} className="form-group" controlId="land">
-        <Col sm={1}>
-          <Form.Check
-            type="checkbox"
-            name="equordev"
-            value="land"
-            checked={data.equordev.includes("land")}
-            onChange={handleCheckbox}
-          />
-        </Col>
-        <Form.Label column sm={9} className="mt-n2">
-          Land Wise
-        </Form.Label>
-      </Form.Group>
-    </Col>
-  </Row>
-</Card>
-
+                <Row className="ms-1 mt-2">
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="constructedArea"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="equordev"
+                          value="constructedArea"
+                          checked={data.equordev.includes("constructedArea")}
+                          onChange={handleCheckbox}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2">
+                        Constructed Area
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="equipment"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="equordev"
+                          value="equipment"
+                          checked={data.equordev.includes("equipment")}
+                          onChange={handleCheckbox}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2">
+                        Equipment Purchase
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="land"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="equordev"
+                          value="land"
+                          checked={data.equordev.includes("land")}
+                          onChange={handleCheckbox}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2">
+                        Land Wise
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card>
 
               {/* Common Sanction Amount Section */}
               <Block className="mt-3">
@@ -3201,7 +3213,7 @@ useEffect(() => {
               </Block>
 
               {/* Conditional Section Rendering */}
-              {data.equordev.includes("constructedArea")&& (
+              {data.equordev.includes("constructedArea") && (
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
@@ -3306,7 +3318,7 @@ useEffect(() => {
                 </Block>
               )}
 
-              {data.equordev.includes("land")&&
+              {data.equordev.includes("land") &&
                 data.with === "withLand" &&
                 landDetailsList.length > 0 && (
                   <Block className="mt-3">
@@ -3442,7 +3454,7 @@ useEffect(() => {
           ))} */}
           <Block className="mt-3">
             <Row>
-              <Col lg="6">
+              <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label>
                     <strong>Documents</strong>
@@ -3465,7 +3477,7 @@ useEffect(() => {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="accountImagePath">
                     Upload Documents(PDF/jpg/png)(Max:2mb)
@@ -3492,6 +3504,29 @@ useEffect(() => {
                   )}
                 </Form.Group>
               </Col>
+              <Col lg="2">
+                <div className="gap-col mt-3">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="submit" variant="success">
+                  Upload Documents
+                </Button> */}
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={() =>
+                          handleAttachFileUpload(uploadDocuments.documentTypeId)
+                        }
+                        disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+                      >
+                        {uploadStatus[uploadDocuments.documentTypeId]
+                          ? "Uploaded"
+                          : "Upload"}
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Col>
             </Row>
 
             {/* {uploadedDocuments.length > 0 && (
@@ -3510,7 +3545,7 @@ useEffect(() => {
             {uploadedDocuments.length > 0 && (
               <div className="mt-3">
                 <h5>Uploaded Documents</h5>
-                <ul>
+                <ul className="d-flex justify-content-start">
                   {uploadedDocuments.map((doc, index) => (
                     <li key={index} className="d-flex align-items-center">
                       {/* Show the image if it's available */}
@@ -3535,27 +3570,27 @@ useEffect(() => {
           </Block>
 
           {/* <Col lg="12"> */}
-          <div className="gap-col mt-1">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                {/* <Button type="submit" variant="success">
-                  Upload Documents
-                </Button> */}
-                <Button
-                  type="button"
-                  variant="primary"
-                  onClick={() =>
-                    handleAttachFileUpload(uploadDocuments.documentTypeId)
-                  }
-                  disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
-                >
-                  {uploadStatus[uploadDocuments.documentTypeId]
+          {uploadedDocuments.length > 0 && (
+            <div className="gap-col mt-1">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    // onClick={() =>
+                    //   handleAttachFileUpload(uploadDocuments.documentTypeId)
+                    // }
+                    // disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+                  >
+                    {/* {uploadStatus[uploadDocuments.documentTypeId]
                     ? "Uploaded"
-                    : "Upload"}
-                </Button>
-              </li>
-            </ul>
-          </div>
+                    : "Upload"} */}
+                    Submit
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          )}
         </Modal.Body>
       </Modal>
 

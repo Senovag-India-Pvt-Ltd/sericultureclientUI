@@ -1947,11 +1947,11 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   };
 
   return (
-    <Layout title="Service Application Edit">
+    <Layout title=" Edit Scheme Details Form">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Service Application Edit</Block.Title>
+            <Block.Title tag="h2"> Edit Scheme Details Form</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
