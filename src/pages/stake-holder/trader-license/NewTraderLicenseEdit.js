@@ -324,6 +324,7 @@ function NewTraderLicenseEdit() {
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="firstName">
                           Name of the Applicant
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -333,7 +334,11 @@ function NewTraderLicenseEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Name of the Applicant"
+                            required
                           />
+                          <Form.Control.Feedback type="invalid">
+                          Name of the Applicant is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       </Col>
@@ -360,6 +365,7 @@ function NewTraderLicenseEdit() {
                       <Form.Group className="form-group">
                       <Form.Label htmlFor="fatherName">
                         Mobile Number
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -369,8 +375,13 @@ function NewTraderLicenseEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Mobile Number"
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                            Mobile Number is required
+                          </Form.Control.Feedback>
                       </div>
+                      
                     </Form.Group>
                     </Col>
 
@@ -529,6 +540,7 @@ function NewTraderLicenseEdit() {
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="traderLicenseNumber">
                           Trader License Number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -538,7 +550,11 @@ function NewTraderLicenseEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Trader License Number"
+                            required
                           />
+                          <Form.Control.Feedback type="invalid">
+                          Trader License Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       </Col>
@@ -572,7 +588,7 @@ function NewTraderLicenseEdit() {
                             name="licenseFee"
                             value={data.licenseFee}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
                             placeholder="Enter License Fee"
                           />
                         </div>
