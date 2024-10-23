@@ -62,6 +62,10 @@ function StakeHolderEdit() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+
+
+  const [lockBank,setLockBank] = useState(false);
+  
   const handleAddFamilyMembers = (e) => {
     const withFarmerId = {
       ...familyMembers,
@@ -442,6 +446,10 @@ function StakeHolderEdit() {
     });
   };
 
+  const handleBankCheckBox = (e) => {
+    setBank({ ...bank, lock: e.target.checked });
+  };
+
   const [bank, setBank] = useState({
     accountImagePath: "",
     farmerId: "",
@@ -449,6 +457,7 @@ function StakeHolderEdit() {
     farmerBankAccountNumber: "",
     farmerBankBranchName: "",
     farmerBankIfscCode: "",
+    lock : "",
   });
 
   const handleBankInputs = (e) => {
@@ -1033,6 +1042,7 @@ function StakeHolderEdit() {
       .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${id}`)
       .then((response) => {
         setBank(response.data.content);
+        setLockBank(response.data.content.lock);
         // setLoading(false);
         if (response.data.content.accountImagePath) {
           getDocumentFile(response.data.content.accountImagePath);
@@ -2928,6 +2938,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_bank_name")}
                             required
+                            disabled={bank.lock}
                           />
                           <Form.Control.Feedback type="invalid">
                             Bank Name is required
@@ -2949,6 +2960,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_branch_name")}
                             required
+                            disabled={bank.lock}
                           />
                           <Form.Control.Feedback type="invalid">
                             Branch Name is required
@@ -2972,6 +2984,7 @@ function StakeHolderEdit() {
                             maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
+                            disabled={bank.lock}
                           />
                           <Form.Control.Feedback type="invalid">
                             IFSC should contain 11 digits
@@ -2995,6 +3008,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_bank_account_number")}
                             required
+                            disabled={bank.lock}
                           />
                           <Form.Control.Feedback type="invalid">
                             Bank Account Number is required
@@ -3026,6 +3040,7 @@ function StakeHolderEdit() {
       id="accountImagePath"
       name="accountImagePath"
       onChange={handleDocumentChange}
+      disabled={bank.lock}
     />
   </div>
 </Form.Group>
@@ -3077,6 +3092,24 @@ function StakeHolderEdit() {
                         )}
                       </Form.Group> */}
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-4">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="checkbox"
+                      id="lock"
+                      checked={bank.lock}
+                      onChange={handleBankCheckBox}
+                      disabled={lockBank}
+                      // defaultChecked
+                    />
+                  </Col>
+                  <Form.Label column sm={11} className="mt-n2">
+                   Lock Bank Details
+                  </Form.Label>
+                </Form.Group>
+              </Col>
                   </Row>
                 </Card.Body>
               </Card>

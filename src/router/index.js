@@ -899,6 +899,7 @@ import MgnregaSchemeEdit from "../pages/chawki-management/MgnregaSchemeEdit";
 import MgnregaScheme from "../pages/chawki-management/MgnregaScheme";
 import MgnregaSchemeList from "../pages/chawki-management/MgnregaSchemeList";
 import PreparationofeggsDFLsAdd from "../pages/seed-and-dfl-managment/PreparationofeggsAddDFLs";
+import UpdateBankDetails from "../pages/masters/update-bank-details/UpdateBankDetails";
 // Admin and Reports
 
 function Router() {
@@ -3193,6 +3194,7 @@ function Router() {
             <Route path="role-pages" element={<RolePages />} />
             <Route path="activate-reeler" element={<ReelerActivate />} />
             <Route path="activate-trader" element={<TraderActivate />} />
+            <Route path="update-bank-details" element={<UpdateBankDetails />} />
 
             {/* Flex Time  */}
             <Route path="flex-time" element={<FlexTime />} />

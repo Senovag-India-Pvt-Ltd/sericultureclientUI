@@ -106,6 +106,7 @@ function StakeHolderRegister() {
       farmerBankAccountNumber: "",
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
+      lock: "",
     });
     setSearchValidated(false);
   };
@@ -158,6 +159,7 @@ function StakeHolderRegister() {
       farmerBankAccountNumber: "",
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
+      lock: "",
     });
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -816,6 +818,10 @@ function StakeHolderRegister() {
     setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
   };
 
+  const handleBankCheckBox = (e) => {
+    setBank({ ...bank, lock: e.target.checked });
+  };
+
   const [bank, setBank] = useState({
     accountImagePath: "",
     farmerId: "",
@@ -823,6 +829,7 @@ function StakeHolderRegister() {
     farmerBankAccountNumber: "",
     farmerBankBranchName: "",
     farmerBankIfscCode: "",
+    lock: "",
   });
 
   // const [farmerId, setFarmerId] = useState({
@@ -3198,6 +3205,23 @@ function StakeHolderRegister() {
                         )}
                       </Form.Group> */}
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-4">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="checkbox"
+                      id="lock"
+                      checked={bank.lock}
+                      onChange={handleBankCheckBox}
+                      // defaultChecked
+                    />
+                  </Col>
+                  <Form.Label column sm={11} className="mt-n2">
+                   Lock Bank Details
+                  </Form.Label>
+                </Form.Group>
+              </Col>
                   </Row>
                 </Card.Body>
               </Card>
