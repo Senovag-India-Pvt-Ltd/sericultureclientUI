@@ -432,35 +432,81 @@ function Menu() {
     Admin_Master_General_Activate_External: false,
 
     Admin_Report: false,
-    Admin_Report_Admin: false,
-    Admin_Report_Transaction: false,
-    Admin_Report_Dashboard: false,
-    Admin_Report_Abstract: false,
-    Admin_Report_District_Abstract: false,
-    Admin_Report_DTR_Blank_Report: false,
-    Admin_Report_DTR: false,
-    Admin_Report_Unit: false,
-    Admin_Report_District_Wise_Monthly_Report: false,
-    Admin_Report_Pending: false,
-    Admin_Report_Bidding_Report: false,
-    Admin_Report_Bidding_Reeler_Report: false,
-    Admin_Report_Farmer_Transaction_Report: false,
-    Admin_Report_District_Wise_Farmer_Count: false,
-    Admin_Report_District_Wise_Reeler_Count: false,
-    Admin_Report_Farmer_Wise: false,
-    Admin_Report_Reeler_Wise: false,
-    Admin_Report_Direct_From_Fruits: false,
-    Admin_Report_Reeler_Transaction_Report: false,
-    Admin_Report_GeneratedTriplet: false,
-    Admin_Report_GeneratedFarmerCopy: false,
-    Admin_Report_ReelerPendingReport: false,
-    Admin_Report_Average_Report: false,
-    Admin_Report_Audio_Visual_Report: false,
-    Admin_Report_B_Report: false,
-    Admin_Report_Monthly_Report: false,
-    Admin_Report_Market_Report: false,
-    Admin_Report_District_Report: false,
-    Admin_Report_Average_Cocoon_Report: false,
+
+    Admin_Report_Commercial_Market: false,
+    Admin_Report_Commercial_Market_Admin: false,
+    Admin_Report_Commercial_Market_Transaction: false,
+    Admin_Report_Commercial_Market_Dashboard: false,
+    Admin_Report_Commercial_Market_Abstract: false,
+    Admin_Report_Commercial_Market_District_Abstract: false,
+    Admin_Report_Commercial_Market_DTR_Blank_Report: false,
+    Admin_Report_Commercial_Market_DTR: false,
+    Admin_Report_Commercial_Market_Unit: false,
+    Admin_Report_Commercial_Market_District_Wise_Monthly_Report: false,
+    Admin_Report_Commercial_Market_Pending: false,
+    Admin_Report_Commercial_Market_Bidding_Report: false,
+    Admin_Report_Commercial_Market_Bidding_Reeler_Report: false,
+    Admin_Report_Commercial_Market_Farmer_Transaction_Report: false,
+    Admin_Report_Commercial_Market_District_Wise_Farmer_Count: false,
+    Admin_Report_Commercial_Market_District_Wise_Reeler_Count: false,
+    Admin_Report_Commercial_Market_Farmer_Wise: false,
+    Admin_Report_Commercial_Market_Reeler_Wise: false,
+    Admin_Report_Commercial_Market_Direct_From_Fruits: false,
+    Admin_Report_Commercial_Market_Reeler_Transaction_Report: false,
+    Admin_Report_Commercial_Market_GeneratedTriplet: false,
+    Admin_Report_Commercial_Market_GeneratedFarmerCopy: false,
+    Admin_Report_Commercial_Market_ReelerPendingReport: false,
+    Admin_Report_Commercial_Market_Average_Report: false,
+    Admin_Report_Commercial_Market_Audio_Visual_Report: false,
+    Admin_Report_Commercial_Market_B_Report: false,
+    Admin_Report_Commercial_Market_Monthly_Report: false,
+    Admin_Report_Commercial_Market_Market_Report: false,
+    Admin_Report_Commercial_Market_District_Report: false,
+    Admin_Report_Commercial_Market_Average_Cocoon_Report: false,
+
+
+    Admin_Report_Seed_Market: false,
+
+    Admin_Report_Silk_Type_Market: false,
+    Admin_Report_Silk_Type_Market_Dashboard: false,
+    Admin_Report_Silk_Type_DTR_Report: false,
+    Admin_Report_Silk_Type_Market_Blank_DTR_Report: false,
+    Admin_Report_Silk_Type_Market_Form_Report_Abstract: false,
+    Admin_Report_Silk_Type_Market_Form_District_Abstract_Report: false,
+    Admin_Report_Silk_Type_Market_District_Wise_Monthly: false,
+    Admin_Report_Silk_Type_Market_Unit_Counter_Report: false,
+
+
+
+    // Admin_Report_Admin: false,
+    // Admin_Report_Transaction: false,
+    // Admin_Report_Dashboard: false,
+    // Admin_Report_Abstract: false,
+    // Admin_Report_District_Abstract: false,
+    // Admin_Report_DTR_Blank_Report: false,
+    // Admin_Report_DTR: false,
+    // Admin_Report_Unit: false,
+    // Admin_Report_District_Wise_Monthly_Report: false,
+    // Admin_Report_Pending: false,
+    // Admin_Report_Bidding_Report: false,
+    // Admin_Report_Bidding_Reeler_Report: false,
+    // Admin_Report_Farmer_Transaction_Report: false,
+    // Admin_Report_District_Wise_Farmer_Count: false,
+    // Admin_Report_District_Wise_Reeler_Count: false,
+    // Admin_Report_Farmer_Wise: false,
+    // Admin_Report_Reeler_Wise: false,
+    // Admin_Report_Direct_From_Fruits: false,
+    // Admin_Report_Reeler_Transaction_Report: false,
+    // Admin_Report_GeneratedTriplet: false,
+    // Admin_Report_GeneratedFarmerCopy: false,
+    // Admin_Report_ReelerPendingReport: false,
+    // Admin_Report_Average_Report: false,
+    // Admin_Report_Audio_Visual_Report: false,
+    // Admin_Report_B_Report: false,
+    // Admin_Report_Monthly_Report: false,
+    // Admin_Report_Market_Report: false,
+    // Admin_Report_District_Report: false,
+    // Admin_Report_Average_Cocoon_Report: false,
   });
 
   // Old show menu using mapcode
@@ -576,6 +622,30 @@ function Menu() {
     if (data.includes("Admin_Master_Registration")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Admin_Master_Registration_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Report_Commercial_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Report_Commercial_Market_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Report_Seed_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Report_Seed_Market_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Report_Silk_Type_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Report_Silk_Type_Market_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -705,6 +775,42 @@ function Menu() {
         ...prevMenu,
         Admin_Report: true,
         Admin: true,
+      }));
+    }
+
+    const hasAdminReportCommercialMarket = data.some((item) =>
+      item.startsWith("Admin_Report_Commercial_Market_")
+    );
+    if (hasAdminReportCommercialMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Report: true,
+        Admin_Report_Commercial_Market: true,
+      }));
+    }
+
+    const hasAdminReportSeedCocoonMarket = data.some((item) =>
+      item.startsWith("Admin_Report_Seed_Cocoon_Market_")
+    );
+    if (hasAdminReportSeedCocoonMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Report: true,
+        Admin_Report_Seed_Cocoon_Market: true,
+      }));
+    }
+
+    const hasAdminReportSilkTypeMarket = data.some((item) =>
+      item.startsWith("Admin_Report_Silk_Type_Market_")
+    );
+    if (hasAdminReportSilkTypeMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Report: true,
+        Admin_Report_Silk_Type_Market: true,
       }));
     }
 
@@ -3253,7 +3359,109 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
-                  {showMenu.Admin_Report_Dashboard ? (
+
+                {showMenu.Admin_Report_Seed_Market? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Seed Market"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {/* {showMenu.Admin_Report_Seed_Market ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Land Holding Category"
+                              to="/seriui/land-category"
+                            />
+                          </MenuItem>
+                        ) : null} */}
+                        
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Silk_Type_Market? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Silk Exchange Market"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                      {showMenu.Admin_Report_Silk_Type_Market_Dashboard ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Dashboard Report"
+                              to="/seriui/dashboard-report-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Dtr Report"
+                              to="/seriui/dtr-online-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Silk_Type_Market_Blank_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Real Time Dtr Report"
+                              to="/seriui/blank-dtr-online-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Silk_Type_Market_Unit_Counter_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Unit Counter Report"
+                              to="/seriui/unit-counter-report-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {/* {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Abstract Report"
+                              to="/seriui/abstract-report-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Silk_Type_Market_Form_District_Abstract_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Abstract Report"
+                              to="/seriui/form-13-report-by-dist-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null} */}
+                        {showMenu.Admin_Report_Silk_Type_Market_District_Wise_Monthly ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Monthly Report"
+                              to="/seriui/district-monthly-report-silk-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                       
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                {showMenu.Admin_Report_Commercial_Market ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Commercial Market"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                      {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Dashboard"
@@ -3261,7 +3469,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Abstract ? (
+                  {showMenu.Admin_Report_Commercial_Market_Abstract ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Abstract Report"
@@ -3269,7 +3477,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_District_Abstract ? (
+                  {showMenu.Admin_Report_Commercial_Market_District_Abstract ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Wise Abstract Report"
@@ -3277,7 +3485,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_DTR_Blank_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_DTR_Blank_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Real Time DTR Report"
@@ -3285,12 +3493,12 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_DTR ? (
+                  {showMenu.Admin_Report_Commercial_Market_DTR ? (
                     <MenuItem>
                       <MenuItemLink text="DTR Online" to="/seriui/dtr-online" />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Unit ? (
+                  {showMenu.Admin_Report_Commercial_Market_Unit ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Unit Counter Report"
@@ -3298,7 +3506,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_District_Wise_Monthly_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Wise Monthly Report"
@@ -3306,7 +3514,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Pending ? (
+                  {showMenu.Admin_Report_Commercial_Market_Pending ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Pending Report"
@@ -3314,7 +3522,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Bidding_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Bidding_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Lot Wise Bidding Report"
@@ -3322,7 +3530,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Bidding_Reeler_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Bidding_Reeler_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Reeler Bidding Report"
@@ -3330,7 +3538,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Farmer_Transaction_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Farmer_Transaction_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Farmer Transaction Report"
@@ -3338,7 +3546,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_District_Wise_Farmer_Count ? (
+                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Farmer_Count ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Wise Farmer Count"
@@ -3346,7 +3554,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_District_Wise_Reeler_Count ? (
+                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Reeler_Count ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Wise Reeler Count"
@@ -3354,7 +3562,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Farmer_Wise ? (
+                  {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Farmer Wise Report"
@@ -3362,7 +3570,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Reeler_Wise ? (
+                  {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Reeler Wise Report"
@@ -3370,7 +3578,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Direct_From_Fruits ? (
+                  {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Farmer Details Direct From Fruits"
@@ -3378,7 +3586,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Reeler_Transaction_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Reeler_Transaction_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Reeler Transaction Report"
@@ -3386,7 +3594,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_GeneratedTriplet ? (
+                  {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Generated Triplet"
@@ -3394,7 +3602,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_GeneratedFarmerCopy ? (
+                  {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Generated Bidding Slip"
@@ -3402,7 +3610,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_ReelerPendingReport ? (
+                  {showMenu.Admin_Report_Commercial_Market_ReelerPendingReport ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Reeler Pending Report"
@@ -3410,7 +3618,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Average_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Average_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Average Report"
@@ -3418,7 +3626,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Audio_Visual_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Audio_Visual_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Audio Visual Report"
@@ -3426,7 +3634,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_B_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_B_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="27 B Report"
@@ -3434,7 +3642,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Monthly_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Monthly_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Monthly Report"
@@ -3442,7 +3650,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Market_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Market_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Market Report"
@@ -3450,7 +3658,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_District_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_District_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Report"
@@ -3458,7 +3666,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_Report_Average_Cocoon_Report ? (
+                  {showMenu.Admin_Report_Commercial_Market_Average_Cocoon_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Average Cocoon Report"
@@ -3466,7 +3674,10 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                </MenuSub>
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+                   </MenuSub>
               </MenuItem>
             ) : null}
           </MenuSub>
