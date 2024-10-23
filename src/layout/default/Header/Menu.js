@@ -334,6 +334,7 @@ function Menu() {
     Admin_Master_Registration_Village: false,
     Admin_Master_Registration_Trader_Type: false,
     Admin_Master_Registration_Farmer_Type: false,
+    Admin_Master_Registration_Update_Bank_Details: false,
     Admin_Master_Registration_Working_Institution: false,
     Admin_Master_Registration_User: false,
     Admin_Master_Registration_Designation: false,
@@ -2593,6 +2594,14 @@ function Menu() {
                             <MenuItemLink
                               text="Farmer Type"
                               to="/seriui/farmer-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Update_Bank_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Update Bank Details"
+                              to="/seriui/update-bank-details"
                             />
                           </MenuItem>
                         ) : null}

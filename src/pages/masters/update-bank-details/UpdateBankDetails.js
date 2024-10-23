@@ -302,9 +302,9 @@ function UpdateBankDetails() {
 
   const getFarmerBankReasonList = () => {
     const response = api
-      .get(baseURL1 + `marketMaster/get-all`)
+      .get(baseURL1 + `farmerBankAccountReason/get-all`)
       .then((response) => {
-        setFarmerBankReasonListData(response.data.content.marketMaster);
+        setFarmerBankReasonListData(response.data.content.farmerBankAccountReason);
       })
       .catch((err) => {
         setFarmerBankReasonListData([]);
@@ -566,10 +566,10 @@ function UpdateBankDetails() {
                           <option value="">Select Reason</option>
                           {farmerBankReasonData.map((list) => (
                             <option
-                              key={list.reasonMasterId}
-                              value={list.reasonMasterId}
+                              key={list.farmerBankAccountReasonId}
+                              value={list.farmerBankAccountReasonId}
                             >
-                              {list.reasonMasterName}
+                              {list.farmerBankAccountReason}
                             </option>
                           ))}
                         </Form.Select>
