@@ -3488,7 +3488,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {/* {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
+                        {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Abstract Report"
@@ -3503,7 +3503,7 @@ function Menu() {
                               to="/seriui/form-13-report-by-dist-silk-type"
                             />
                           </MenuItem>
-                        ) : null} */}
+                        ) : null}
                         {showMenu.Admin_Report_Silk_Type_Market_District_Wise_Monthly ? (
                           <MenuItem>
                             <MenuItemLink

@@ -891,8 +891,8 @@ import ReelerBiddingSlip from "../pages/market-and-auction-silk/ReelerBiddingSli
 import WeighmentForSilkMarket from "../pages/market-and-auction-silk/WeighmentForSilkMarket";
 import ReelerMFReports from "../pages/reports-admin/ReelerMFReports";
 import RaceWiseAbstractReport from "../pages/reports-admin/RaceWiseAbstractReport";
-// import AbstractReportSilkType from "../pages/reports-admin/AbstractReportSilkType";
-// import FormReportByDistSilkType from "../pages/reports-admin/market-auction/FormReportByDistSilkType";
+import AbstractReportSilkType from "../pages/reports-admin/AbstractReportSilkType";
+import FormReportByDistSilkType from "../pages/reports-admin/market-auction/FormReportByDistSilkType";
 import BlankDtrReportSilkType from "../pages/reports-admin/market-auction/BlankDtrReportSilkType";
 import DtrOnlineReportSilkType from "../pages/reports-admin/market-auction/DtrOnlineReportSilkType";
 import DistrictWiseMonthlyReportSilkType from "../pages/reports-admin/DistrictWiseMonthlyReportSilkType";
@@ -1356,7 +1356,7 @@ function Router() {
             />
             <Route path="district-monthly-report-silk-type" element={<DistrictWiseMonthlyReportSilkType />}/>
 
-            {/* <Route path="abstract-report-silk-type" element={<AbstractReportSilkType />} /> */}
+            <Route path="abstract-report-silk-type" element={<AbstractReportSilkType />} />
 
             <Route path="unit-counter-report-silk-type" element={<UnitCounterReportSilkType />} />
 
@@ -1364,7 +1364,7 @@ function Router() {
 
             <Route path="dtr-online-silk-type" element={< DtrOnlineReportSilkType/>} />
 
-            {/* <Route path="form-13-report-by-dist-silk-type" element={<FormReportByDistSilkType />}/> */}
+            <Route path="form-13-report-by-dist-silk-type" element={<FormReportByDistSilkType />}/>
 
             <Route path="dashboard-report-silk-type" element={<DashboardReportSilkType />} />
 
