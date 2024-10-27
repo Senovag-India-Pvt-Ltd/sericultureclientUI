@@ -31,6 +31,7 @@ function LineNameEdit() {
       lineNameId: id,
       lineName: data.lineName,
       lineNameInKannada: data.lineNameInKannada,
+      lineCode: data.lineCode,
       lineNameRepresentation: data.lineNameRepresentation,
     };
     const form = event.currentTarget;
