@@ -335,7 +335,6 @@ function Menu() {
     Admin_Master_Registration_Village: false,
     Admin_Master_Registration_Trader_Type: false,
     Admin_Master_Registration_Farmer_Type: false,
-    Admin_Master_Registration_Update_Bank_Details: false,
     Admin_Master_Registration_Working_Institution: false,
     Admin_Master_Registration_User: false,
     Admin_Master_Registration_Designation: false,
@@ -432,6 +431,7 @@ function Menu() {
     Admin_Master_Auction_Exception_Time: false,
     Admin_Master_Auction_Market_Type: false,
     Admin_Master_Auction_Reeler_Type: false,
+    Admin_Master_Auction_Update_Bank_Details: false,
     Admin_Master_Auction_External_Unit: false,
     Admin_Master_Auction_Empaneled_Vendor: false,
     Admin_Master_Auction_Reeler_Device_Mapping: false,
@@ -2603,14 +2603,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Registration_Update_Bank_Details ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Update Bank Details"
-                              to="/seriui/update-bank-details"
-                            />
-                          </MenuItem>
-                        ) : null}
+                        
                         {showMenu.Admin_Master_Registration_Working_Institution ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3285,6 +3278,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Auction_Update_Bank_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Update Bank Details"
+                              to="/seriui/update-bank-details"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Auction_External_Unit ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3488,7 +3489,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {/* {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
+                        {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Abstract Report"
@@ -3503,7 +3504,7 @@ function Menu() {
                               to="/seriui/form-13-report-by-dist-silk-type"
                             />
                           </MenuItem>
-                        ) : null} */}
+                        ) : null}
                         {showMenu.Admin_Report_Silk_Type_Market_District_Wise_Monthly ? (
                           <MenuItem>
                             <MenuItemLink

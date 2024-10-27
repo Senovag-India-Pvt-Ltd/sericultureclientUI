@@ -66,6 +66,11 @@ function ReelerBiddingSlip() {
         numberOfLot: "",
         numberOfSmallBin: "",
         numberOfBigBin: "",
+        unitDetails: "",
+        noOfBags: "",
+        form17JNo: "",
+        qualityOfSilkYarn: "",
+        silkType: "",
         marketId: localStorage.getItem("marketId"),
         godownId: localStorage.getItem("godownId")
           ? localStorage.getItem("godownId")
@@ -232,6 +237,11 @@ function ReelerBiddingSlip() {
     numberOfLot: "",
     numberOfSmallBin: 0,
     numberOfBigBin: 1,
+    unitDetails: "",
+    noOfBags: "",
+    form17JNo: "",
+    qualityOfSilkYarn: "",
+    silkType: "",
   });
   console.log(data);
 
@@ -840,25 +850,7 @@ function ReelerBiddingSlip() {
                             <Form.Label column sm={4}>
                               Race<span className="text-danger">*</span>
                             </Form.Label>
-                            {/* <Col sm={8}>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="raceMasterId"
-                                  value={data.raceMasterId}
-                                  onChange={handleInputs}
-                                >
-                                  <option value="0">Select Race</option>
-                                  {raceListData.map((list) => (
-                                    <option
-                                      key={list.raceMasterId}
-                                      value={list.raceMasterId}
-                                    >
-                                      {list.raceMasterName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                              </div>
-                            </Col> */}
+                           
                             <Col sm={8}>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -963,7 +955,8 @@ function ReelerBiddingSlip() {
                             id="dfl"
                           >
                             <Form.Label column sm={4}>
-                              No. of DFL's<span className="text-danger">*</span>
+                            Quantity of Silk traded
+                            (kgs)<span className="text-danger">*</span>
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control
@@ -972,11 +965,107 @@ function ReelerBiddingSlip() {
                                 min={0}
                                 value={data.dflCount}
                                 onChange={handleInputs}
-                                placeholder="Enter No. of DFL's"
+                                placeholder="Enter Quantity of Silk traded in (kgs)"
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                No of DFL's is required
+                              Quantity of Silk traded
+                              (kgs) is required
+                              </Form.Control.Feedback>
+                            </Col>
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Row}
+                            className="form-group mt-1"
+                            id="dfl"
+                          >
+                            <Form.Label column sm={4}>
+                            Testing Unit Details<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={8}>
+                              <Form.Control
+                                type="text"
+                                name="unitDetails"
+                                value={data.unitDetails}
+                                onChange={handleInputs}
+                                placeholder="Enter Testing Unit Details"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              Testing Unit Details is required
+                              </Form.Control.Feedback>
+                            </Col>
+                          </Form.Group>
+
+
+
+                          <Form.Group
+                            as={Row}
+                            className="form-group mt-1"
+                            id="dfl"
+                          >
+                            <Form.Label column sm={4}>
+                            No Of Bags<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={8}>
+                              <Form.Control
+                                type="number"
+                                name="noOfBags"
+                                value={data.noOfBags}
+                                onChange={handleInputs}
+                                placeholder="Enter No Of Bags"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              No Of Bags is required
+                              </Form.Control.Feedback>
+                            </Col>
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Row}
+                            className="form-group mt-1"
+                            id="dfl"
+                          >
+                            <Form.Label column sm={4}>
+                            Form 17J No.<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={8}>
+                              <Form.Control
+                                type="text"
+                                name="form17JNo"
+                                value={data.form17JNo}
+                                onChange={handleInputs}
+                                placeholder="Enter Form 17J No."
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              Form 17J No. is required
+                              </Form.Control.Feedback>
+                            </Col>
+                          </Form.Group>
+
+
+                          <Form.Group
+                            as={Row}
+                            className="form-group mt-1"
+                            id="dfl"
+                          >
+                            <Form.Label column sm={4}>
+                            Quality Of Silk Yarn<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={8}>
+                              <Form.Control
+                                type="text"
+                                name="qualityOfSilkYarn"
+                                value={data.qualityOfSilkYarn}
+                                onChange={handleInputs}
+                                placeholder="Enter Quality Of Silk Yarn"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              Quality Of Silk Yarn is required
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -1021,6 +1110,41 @@ function ReelerBiddingSlip() {
                               <Form.Control.Feedback type="invalid">
                                 Weight is required
                               </Form.Control.Feedback>
+                            </Col>
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Row}
+                            className="form-group mt-1"
+                            id="race"
+                          >
+                            <Form.Label column sm={4}>
+                              Silk Type<span className="text-danger">*</span>
+                            </Form.Label>
+                           
+                            <Col sm={8}>
+                              <div className="form-control-wrap">
+                              <Form.Select
+                            name="silkType"
+                            value={data.silkType}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.silkType === undefined ||
+                              data.silkType === "0"
+                            }
+                          >
+                            <option value="">Select Silk Type</option>
+                            <option value="ARM">ARM</option>
+                            <option value="MERM">MERM</option>
+                            <option value="Basin">Basin</option>
+                            <option value="Charkha">Charkha</option>
+                          </Form.Select>
+                             <Form.Control.Feedback type="invalid">
+                                Type Of Silk is required
+                              </Form.Control.Feedback>
+                              </div>
                             </Col>
                           </Form.Group>
 
