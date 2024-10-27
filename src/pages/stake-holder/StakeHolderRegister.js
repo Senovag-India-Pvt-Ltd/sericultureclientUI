@@ -57,8 +57,7 @@ function StakeHolderRegister() {
     tscMasterId: "",
   });
 
-  console.log("checkData", data);
-  
+  const [bankCheck, setBankCheck] = useState("This field is required");
   const [searchValidated, setSearchValidated] = useState(false);
   const [disable, setDisable] = useState(false);
   const clear = (event) => {
@@ -104,6 +103,7 @@ function StakeHolderRegister() {
       farmerId: "",
       farmerBankName: "",
       farmerBankAccountNumber: "",
+      reenterFarmerBankAccountNumber: "",
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
       lock: "",
@@ -113,7 +113,6 @@ function StakeHolderRegister() {
 
   //  console.log("data",data.photoPath);
   // const [disable, setDisable] = useState(false);
-  
 
   const search = (event) => {
     setData({
@@ -157,6 +156,7 @@ function StakeHolderRegister() {
       farmerId: "",
       farmerBankName: "",
       farmerBankAccountNumber: "",
+      reenterFarmerBankAccountNumber: "",
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
       lock: "",
@@ -827,6 +827,7 @@ function StakeHolderRegister() {
     farmerId: "",
     farmerBankName: "",
     farmerBankAccountNumber: "",
+    reenterFarmerBankAccountNumber: "",
     farmerBankBranchName: "",
     farmerBankIfscCode: "",
     lock: "",
@@ -875,18 +876,57 @@ function StakeHolderRegister() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-    if(name === "farmerBankIfscCode"){
-      setBank({ ...bank, [name]: value.toUpperCase() });
+
+    if (
+      name === "farmerBankAccountNumber" ||
+      name === "reenterFarmerBankAccountNumber"
+    ) {
+      if (name === "farmerBankAccountNumber") {
+        if (value !== bank.reenterFarmerBankAccountNumber) {
+          e.target.classList.add("is-invalid");
+          setBankCheck("Bank Account Mismatch");
+          if (!bank.reenterFarmerBankAccountNumber) {
+            document
+              .getElementById("reenterFarmerBankAccountNumber")
+              .classList.remove("is-invalid");
+            e.target.classList.remove("is-invalid");
+          }
+        } else {
+          e.target.classList.remove("is-invalid");
+          e.target.classList.add("is-valid");
+          document
+            .getElementById("reenterFarmerBankAccountNumber")
+            .classList.remove("is-invalid");
+        }
+      } else {
+        if (value !== bank.farmerBankAccountNumber) {
+          e.target.classList.add("is-invalid");
+          setBankCheck("Bank Account Mismatch");
+          if (!bank.farmerBankAccountNumber) {
+            document
+              .getElementById("farmerBankAccountNumber")
+              .classList.remove("is-invalid");
+            e.target.classList.remove("is-invalid");
+          }
+        } else {
+          e.target.classList.remove("is-invalid");
+          e.target.classList.add("is-valid");
+          document
+            .getElementById("farmerBankAccountNumber")
+            .classList.remove("is-invalid");
+        }
+      }
     }
-    else if(name === "farmerBankBranchName"){
+
+    if (name === "farmerBankIfscCode") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else if(name === "farmerBankName"){
+    } else if (name === "farmerBankBranchName") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else{
+    } else if (name === "farmerBankName") {
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    } else {
       setBank({ ...bank, [name]: value });
-    } 
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -1081,6 +1121,11 @@ function StakeHolderRegister() {
       if (
         bank.farmerBankIfscCode.length < 11 ||
         bank.farmerBankIfscCode.length > 11
+      ) {
+        return;
+      }
+      if (
+        bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber
       ) {
         return;
       }
@@ -2020,11 +2065,11 @@ function StakeHolderRegister() {
     });
   };
   //Display Document
-  const [document, setDocument] = useState("");
+  const [documentFile, setDocumentFile] = useState("");
 
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
-    setDocument(file);
+    setDocumentFile(file);
     setBank((prev) => ({ ...prev, accountImagePath: file.name }));
     // setPhotoFile(file);
   };
@@ -2034,7 +2079,7 @@ function StakeHolderRegister() {
     const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
     try {
       const formData = new FormData();
-      formData.append("multipartFile", document);
+      formData.append("multipartFile", documentFile);
 
       const response = await api.post(
         baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
@@ -2669,49 +2714,58 @@ function StakeHolderRegister() {
                         )}
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
-  <Form.Label htmlFor="photoPath">
-    Farmer Photo (PDF/jpg/png) (Max: 2mb)
-  </Form.Label>
-  <div className="form-control-wrap">
-    <Form.Control
-      type="file"
-      id="photoPath"
-      name="photoPath"
-      onChange={handleImageChange}
-    />
-  </div>
-</Form.Group>
+                        <Form.Label htmlFor="photoPath">
+                          Farmer Photo (PDF/jpg/png) (Max: 2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="photoPath"
+                            name="photoPath"
+                            onChange={handleImageChange}
+                          />
+                        </div>
+                      </Form.Group>
 
-<Form.Group className="form-group mt-3 d-flex justify-content-center">
-  {image ? (
-    <>
-      {image.type.startsWith('image/') || 
-        image.name.endsWith('.jpeg') || 
-        image.name.endsWith('.jpg') || 
-        image.name.endsWith('.png') ? (
-        <img
-          style={{ height: "300px", width: "auto", objectFit: "cover" }}
-          src={URL.createObjectURL(image)}
-          alt="Uploaded Image"
-        />
-      ) : image.type === 'application/pdf' ? (
-        <embed
-          src={URL.createObjectURL(image)}
-          type="application/pdf"
-          width="300px"
-          height="300px"
-        />
-      ) : image.name.endsWith('.docx') ? (
-        <p>Preview not available for .docx files. File name: {image.name}</p>
-      ) : (
-        <p>Preview not available for this file type: {image.name}</p>
-      )}
-    </>
-  ) : (
-    <p>No file selected or file was canceled.</p>
-  )}
-</Form.Group>
-
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {image ? (
+                          <>
+                            {image.type.startsWith("image/") ||
+                            image.name.endsWith(".jpeg") ||
+                            image.name.endsWith(".jpg") ||
+                            image.name.endsWith(".png") ? (
+                              <img
+                                style={{
+                                  height: "300px",
+                                  width: "auto",
+                                  objectFit: "cover",
+                                }}
+                                src={URL.createObjectURL(image)}
+                                alt="Uploaded Image"
+                              />
+                            ) : image.type === "application/pdf" ? (
+                              <embed
+                                src={URL.createObjectURL(image)}
+                                type="application/pdf"
+                                width="300px"
+                                height="300px"
+                              />
+                            ) : image.name.endsWith(".docx") ? (
+                              <p>
+                                Preview not available for .docx files. File
+                                name: {image.name}
+                              </p>
+                            ) : (
+                              <p>
+                                Preview not available for this file type:{" "}
+                                {image.name}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p>No file selected or file was canceled.</p>
+                        )}
+                      </Form.Group>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -3125,12 +3179,33 @@ function StakeHolderRegister() {
                             name="farmerBankAccountNumber"
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
-                            type="text"
+                            type="password"
                             placeholder={t("enter_bank_account_number")}
                             required
                           />
-                          <Form.Control.Feedback type="invalid">
-                            Bank Account Number is required
+                          <Form.Control.Feedback id="enter" type="invalid">
+                            {bankCheck}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="reenterFarmerBankAccountNumber">
+                          {t("reenter_bank_account_number")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reenterFarmerBankAccountNumber"
+                            name="reenterFarmerBankAccountNumber"
+                            value={bank.reenterFarmerBankAccountNumber}
+                            onChange={handleBankInputs}
+                            type="text"
+                            placeholder={t("reenter_bank_account_number")}
+                            required
+                          />
+                          <Form.Control.Feedback id="reenter" type="invalid">
+                            {bankCheck}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -3150,49 +3225,55 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group> */}
 
-<Form.Group className="form-group mt-3">
-  <Form.Label htmlFor="accountImagePath">
-    Upload Bank Passbook (PDF/jpg/png)(Max:2mb)
-  </Form.Label>
-  <div className="form-control-wrap">
-    <Form.Control
-      type="file"
-      id="accountImagePath"
-      name="accountImagePath"
-      onChange={handleDocumentChange}
-    />
-  </div>
-</Form.Group>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="accountImagePath">
+                          Upload Bank Passbook (PDF/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="accountImagePath"
+                            name="accountImagePath"
+                            onChange={handleDocumentChange}
+                          />
+                        </div>
+                      </Form.Group>
 
-{/* Preview section for uploaded file */}
-<Form.Group className="form-group mt-3 d-flex justify-content-center">
-  {document ? (
-    <>
-      {document.type.startsWith('image/') || 
-        document.name.endsWith('.jpeg') || 
-        document.name.endsWith('.jpg') || 
-        document.name.endsWith('.png') ? (
-        <img
-          style={{ height: "300px", width: "auto", objectFit: "cover" }}
-          src={URL.createObjectURL(document)}
-          alt="Uploaded Image"
-        />
-      ) : document.type === 'application/pdf' ? (
-        <embed
-          src={URL.createObjectURL(document)}
-          type="application/pdf"
-          width="300px"
-          height="300px"
-        />
-      ) : (
-        <p>Preview not available for this file type: {document.name}</p>
-      )}
-    </>
-  ) : (
-    <p>No file selected or file was canceled.</p>
-  )}
-</Form.Group>
-
+                      {/* Preview section for uploaded file */}
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {documentFile ? (
+                          <>
+                            {documentFile.type.startsWith("image/") ||
+                            documentFile.name.endsWith(".jpeg") ||
+                            documentFile.name.endsWith(".jpg") ||
+                            documentFile.name.endsWith(".png") ? (
+                              <img
+                                style={{
+                                  height: "300px",
+                                  width: "auto",
+                                  objectFit: "cover",
+                                }}
+                                src={URL.createObjectURL(documentFile)}
+                                alt="Uploaded Image"
+                              />
+                            ) : documentFile.type === "application/pdf" ? (
+                              <embed
+                                src={URL.createObjectURL(documentFile)}
+                                type="application/pdf"
+                                width="300px"
+                                height="300px"
+                              />
+                            ) : (
+                              <p>
+                                Preview not available for this file type:{" "}
+                                {documentFile.name}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p>No file selected or file was canceled.</p>
+                        )}
+                      </Form.Group>
 
                       {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {document ? (
@@ -3207,21 +3288,21 @@ function StakeHolderRegister() {
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group as={Row} className="form-group mt-4">
-                  <Col sm={1}>
-                    <Form.Check
-                      type="checkbox"
-                      id="lock"
-                      checked={bank.lock}
-                      onChange={handleBankCheckBox}
-                      // defaultChecked
-                    />
-                  </Col>
-                  <Form.Label column sm={11} className="mt-n2">
-                   Lock Bank Details
-                  </Form.Label>
-                </Form.Group>
-              </Col>
+                      <Form.Group as={Row} className="form-group">
+                        <Col sm={1}>
+                          <Form.Check
+                            type="checkbox"
+                            id="lock"
+                            checked={bank.lock}
+                            onChange={handleBankCheckBox}
+                            // defaultChecked
+                          />
+                        </Col>
+                        <Form.Label column sm={11} className="mt-n1">
+                          Lock Bank Details
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>

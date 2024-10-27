@@ -62,10 +62,8 @@ function StakeHolderEdit() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+  const [lockBank, setLockBank] = useState(false);
 
-
-  const [lockBank,setLockBank] = useState(false);
-  
   const handleAddFamilyMembers = (e) => {
     const withFarmerId = {
       ...familyMembers,
@@ -450,14 +448,17 @@ function StakeHolderEdit() {
     setBank({ ...bank, lock: e.target.checked });
   };
 
+  const [bankCheck, setBankCheck] = useState("This field is required");
+
   const [bank, setBank] = useState({
     accountImagePath: "",
     farmerId: "",
     farmerBankName: "",
     farmerBankAccountNumber: "",
+    reenterFarmerBankAccountNumber: "",
     farmerBankBranchName: "",
     farmerBankIfscCode: "",
-    lock : "",
+    lock: "",
   });
 
   const handleBankInputs = (e) => {
@@ -477,18 +478,57 @@ function StakeHolderEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-    if(name === "farmerBankIfscCode"){
-      setBank({ ...bank, [name]: value.toUpperCase() });
+
+    if (
+      name === "farmerBankAccountNumber" ||
+      name === "reenterFarmerBankAccountNumber"
+    ) {
+      if (name === "farmerBankAccountNumber") {
+        if (value !== bank.reenterFarmerBankAccountNumber) {
+          e.target.classList.add("is-invalid");
+          setBankCheck("Bank Account Mismatch");
+          if (!bank.reenterFarmerBankAccountNumber) {
+            document
+              .getElementById("reenterFarmerBankAccountNumber")
+              .classList.remove("is-invalid");
+            e.target.classList.remove("is-invalid");
+          }
+        } else {
+          e.target.classList.remove("is-invalid");
+          e.target.classList.add("is-valid");
+          document
+            .getElementById("reenterFarmerBankAccountNumber")
+            .classList.remove("is-invalid");
+        }
+      } else {
+        if (value !== bank.farmerBankAccountNumber) {
+          e.target.classList.add("is-invalid");
+          setBankCheck("Bank Account Mismatch");
+          if (!bank.farmerBankAccountNumber) {
+            document
+              .getElementById("farmerBankAccountNumber")
+              .classList.remove("is-invalid");
+            e.target.classList.remove("is-invalid");
+          }
+        } else {
+          e.target.classList.remove("is-invalid");
+          e.target.classList.add("is-valid");
+          document
+            .getElementById("farmerBankAccountNumber")
+            .classList.remove("is-invalid");
+        }
+      }
     }
-    else if(name === "farmerBankBranchName"){
+
+    if (name === "farmerBankIfscCode") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else if(name === "farmerBankName"){
+    } else if (name === "farmerBankBranchName") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else{
+    } else if (name === "farmerBankName") {
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    } else {
       setBank({ ...bank, [name]: value });
-    } 
+    }
   };
 
   const handleCheckBox = (e) => {
@@ -787,7 +827,7 @@ function StakeHolderEdit() {
   //       //   // } else {
   //       // api
   //       //       .post(`${baseURLFarmer}farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`, { fruitsId: data.fruitsId })
-  //           //  "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number", 
+  //           //  "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
   //           //   { fruitsId: data.fruitsId }
   //           // )
   //           api
@@ -838,7 +878,7 @@ function StakeHolderEdit() {
   const search = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    
+
     if (form.checkValidity() === false) {
       event.stopPropagation();
       setSearchValidated(true);
@@ -847,7 +887,7 @@ function StakeHolderEdit() {
         return;
       }
       setDisableSearch(true);
-  
+
       api
         .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
           fruitsId: data.fruitsId,
@@ -859,7 +899,7 @@ function StakeHolderEdit() {
               ...prev,
               ...result.data.content.farmerResponse,
             }));
-  
+
             // Update farmer address list, ensuring 'prev' and 'farmerAddressList' are arrays
             setFarmerAddressList((prev) => [
               ...(Array.isArray(prev) ? prev : []),
@@ -867,17 +907,19 @@ function StakeHolderEdit() {
                 ? result.data.content.farmerAddressList
                 : []),
             ]);
-  
+
             // Prepare modified land details
-            const modified = result.data.content.farmerLandDetailsDTOList.map((detail) => ({
-              ...detail,
-              stateId: detail.stateId === 0 ? null : detail.stateId,
-              districtId: detail.districtId === 0 ? null : detail.districtId,
-              talukId: detail.talukId === 0 ? null : detail.talukId,
-              hobliId: detail.hobliId === 0 ? null : detail.hobliId,
-              villageId: detail.villageId === 0 ? null : detail.villageId,
-            }));
-  
+            const modified = result.data.content.farmerLandDetailsDTOList.map(
+              (detail) => ({
+                ...detail,
+                stateId: detail.stateId === 0 ? null : detail.stateId,
+                districtId: detail.districtId === 0 ? null : detail.districtId,
+                talukId: detail.talukId === 0 ? null : detail.talukId,
+                hobliId: detail.hobliId === 0 ? null : detail.hobliId,
+                villageId: detail.villageId === 0 ? null : detail.villageId,
+              })
+            );
+
             // Update farmer land list, ensuring 'prev' and 'modified' are arrays
             setFarmerLandList((prev) => [
               ...(Array.isArray(prev) ? prev : []),
@@ -895,8 +937,6 @@ function StakeHolderEdit() {
         });
     }
   };
-  
-
 
   const searchError = (message) => {
     Swal.fire({
@@ -924,6 +964,12 @@ function StakeHolderEdit() {
       if (
         bank.farmerBankIfscCode.length < 11 ||
         bank.farmerBankIfscCode.length > 11
+      ) {
+        return;
+      }
+
+      if (
+        bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber
       ) {
         return;
       }
@@ -1094,7 +1140,7 @@ function StakeHolderEdit() {
   //   getBankDetails();
   // }, [id]);
   const [disableSearch, setDisableSearch] = useState(true);
-  const [editFruits,setEditFruits] = useState(true);
+  const [editFruits, setEditFruits] = useState(true);
   const getIdList = () => {
     api
       .get(baseURL2 + `farmer/get/${id}`)
@@ -1104,11 +1150,14 @@ function StakeHolderEdit() {
           getFile(response.data.content.photoPath);
         }
         // Check condition to enable or disable search button
-        if (!response.data.content.isOtherStateFarmer && response.data.content.fruitsId === null) {
+        if (
+          !response.data.content.isOtherStateFarmer &&
+          response.data.content.fruitsId === null
+        ) {
           setDisableSearch(false);
-          setEditFruits(false)
+          setEditFruits(false);
         } else {
-          setDisableSearch(true); 
+          setDisableSearch(true);
         }
       })
       .catch((err) => {
@@ -1814,11 +1863,11 @@ function StakeHolderEdit() {
   };
 
   //Display Document
-  const [document, setDocument] = useState("");
+  const [documentDetails, setDocumentDetails] = useState("");
 
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
-    setDocument(file);
+    setDocumentDetails(file);
     setBank((prev) => ({ ...prev, accountImagePath: file.name }));
     // setPhotoFile(file);
   };
@@ -1827,7 +1876,7 @@ function StakeHolderEdit() {
     const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
     try {
       const formData = new FormData();
-      formData.append("multipartFile", document);
+      formData.append("multipartFile", documentDetails);
 
       const response = await api.post(
         baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
@@ -1953,34 +2002,34 @@ function StakeHolderEdit() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-        {/* <Form noValidate validated={validated} onSubmit={postData}> */}
+          {/* <Form noValidate validated={validated} onSubmit={postData}> */}
           {/* <Row className="g-1"> */}
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        {t("FRUITS ID")}
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          type="text"
-                          maxLength="16"
-                          placeholder={t("Enter FRUITS ID")}
-                          readOnly ={editFruits}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID should contain 16 digits.
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      {t("FRUITS ID")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        type="text"
+                        maxLength="16"
+                        placeholder={t("Enter FRUITS ID")}
+                        readOnly={editFruits}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID should contain 16 digits.
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
                       <Button
                         type="submit"
                         variant="primary"
@@ -1989,15 +2038,15 @@ function StakeHolderEdit() {
                       >
                         {t("search")}
                       </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            </Form>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
 
-          <Form noValidate validated={validated} onSubmit={postData}>
+        <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
@@ -2512,51 +2561,59 @@ function StakeHolderEdit() {
                           />
                         </div>
                       </Form.Group> */}
-                              <Form.Group className="form-group mt-3">
-  <Form.Label htmlFor="photoPath">
-    Farmer Photo (PDF/jpg/png) (Max: 2mb)
-  </Form.Label>
-  <div className="form-control-wrap">
-    <Form.Control
-      type="file"
-      id="photoPath"
-      name="photoPath"
-      onChange={handleImageChange}
-    />
-  </div>
-</Form.Group>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="photoPath">
+                          Farmer Photo (PDF/jpg/png) (Max: 2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="photoPath"
+                            name="photoPath"
+                            onChange={handleImageChange}
+                          />
+                        </div>
+                      </Form.Group>
 
-<Form.Group className="form-group mt-3 d-flex justify-content-center">
-  {image ? (
-    <>
-      {image.type.startsWith('image/') || 
-        image.name.endsWith('.jpeg') || 
-        image.name.endsWith('.jpg') || 
-        image.name.endsWith('.png') ? (
-        <img
-          style={{ height: "300px", width: "auto", objectFit: "cover" }}
-          src={URL.createObjectURL(image)}
-          alt="Uploaded Image"
-        />
-      ) : image.type === 'application/pdf' ? (
-        <embed
-          src={URL.createObjectURL(image)}
-          type="application/pdf"
-          width="300px"
-          height="300px"
-        />
-      ) : image.name.endsWith('.docx') ? (
-        <p>Preview not available for .docx files. File name: {image.name}</p>
-      ) : (
-        <p>Preview not available for this file type: {image.name}</p>
-      )}
-    </>
-  ) : (
-    <p>No file selected or file was canceled.</p>
-  )}
-</Form.Group>
-
-
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {image ? (
+                          <>
+                            {image.type.startsWith("image/") ||
+                            image.name.endsWith(".jpeg") ||
+                            image.name.endsWith(".jpg") ||
+                            image.name.endsWith(".png") ? (
+                              <img
+                                style={{
+                                  height: "300px",
+                                  width: "auto",
+                                  objectFit: "cover",
+                                }}
+                                src={URL.createObjectURL(image)}
+                                alt="Uploaded Image"
+                              />
+                            ) : image.type === "application/pdf" ? (
+                              <embed
+                                src={URL.createObjectURL(image)}
+                                type="application/pdf"
+                                width="300px"
+                                height="300px"
+                              />
+                            ) : image.name.endsWith(".docx") ? (
+                              <p>
+                                Preview not available for .docx files. File
+                                name: {image.name}
+                              </p>
+                            ) : (
+                              <p>
+                                Preview not available for this file type:{" "}
+                                {image.name}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p>No file selected or file was canceled.</p>
+                        )}
+                      </Form.Group>
 
                       {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {image ? (
@@ -3016,6 +3073,28 @@ function StakeHolderEdit() {
                         </div>
                       </Form.Group>
 
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="reenterFarmerBankAccountNumber">
+                          {t("reenter_bank_account_number")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reenterFarmerBankAccountNumber"
+                            name="reenterFarmerBankAccountNumber"
+                            value={bank.reenterFarmerBankAccountNumber}
+                            onChange={handleBankInputs}
+                            type="text"
+                            placeholder={t("reenter_bank_account_number")}
+                            required
+                            disabled={bank.lock}
+                          />
+                          <Form.Control.Feedback id="reenter" type="invalid">
+                            {bankCheck}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
                           Upload Bank Passbok
@@ -3031,49 +3110,55 @@ function StakeHolderEdit() {
                         </div>
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
-  <Form.Label htmlFor="accountImagePath">
-    Upload Bank Passbook (PDF/jpg/png)
-  </Form.Label>
-  <div className="form-control-wrap">
-    <Form.Control
-      type="file"
-      id="accountImagePath"
-      name="accountImagePath"
-      onChange={handleDocumentChange}
-      disabled={bank.lock}
-    />
-  </div>
-</Form.Group>
+                        <Form.Label htmlFor="accountImagePath">
+                          Upload Bank Passbook (PDF/jpg/png)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="accountImagePath"
+                            name="accountImagePath"
+                            onChange={handleDocumentChange}
+                            disabled={bank.lock}
+                          />
+                        </div>
+                      </Form.Group>
 
-{/* Preview section for uploaded file */}
-<Form.Group className="form-group mt-3 d-flex justify-content-center">
-  {document ? (
-    <>
-      {document.type.startsWith('image/') || 
-        document.name.endsWith('.jpeg') || 
-        document.name.endsWith('.jpg') || 
-        document.name.endsWith('.png') ? (
-        <img
-          style={{ height: "300px", width: "auto", objectFit: "cover" }}
-          src={URL.createObjectURL(document)}
-          alt="Uploaded Image"
-        />
-      ) : document.type === 'application/pdf' ? (
-        <embed
-          src={URL.createObjectURL(document)}
-          type="application/pdf"
-          width="300px"
-          height="300px"
-        />
-      ) : (
-        <p>Preview not available for this file type: {document.name}</p>
-      )}
-    </>
-  ) : (
-    <p>No file selected or file was canceled.</p>
-  )}
-</Form.Group>
-
+                      {/* Preview section for uploaded file */}
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {documentDetails ? (
+                          <>
+                            {documentDetails.type.startsWith("image/") ||
+                            documentDetails.name.endsWith(".jpeg") ||
+                            documentDetails.name.endsWith(".jpg") ||
+                            documentDetails.name.endsWith(".png") ? (
+                              <img
+                                style={{
+                                  height: "300px",
+                                  width: "auto",
+                                  objectFit: "cover",
+                                }}
+                                src={URL.createObjectURL(documentDetails)}
+                                alt="Uploaded Image"
+                              />
+                            ) : documentDetails.type === "application/pdf" ? (
+                              <embed
+                                src={URL.createObjectURL(documentDetails)}
+                                type="application/pdf"
+                                width="300px"
+                                height="300px"
+                              />
+                            ) : (
+                              <p>
+                                Preview not available for this file type:{" "}
+                                {documentDetails.name}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p>No file selected or file was canceled.</p>
+                        )}
+                      </Form.Group>
 
                       {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {document ? (
@@ -3094,22 +3179,22 @@ function StakeHolderEdit() {
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group as={Row} className="form-group mt-4">
-                  <Col sm={1}>
-                    <Form.Check
-                      type="checkbox"
-                      id="lock"
-                      checked={bank.lock}
-                      onChange={handleBankCheckBox}
-                      disabled={lockBank}
-                      // defaultChecked
-                    />
-                  </Col>
-                  <Form.Label column sm={11} className="mt-n2">
-                   Lock Bank Details
-                  </Form.Label>
-                </Form.Group>
-              </Col>
+                      <Form.Group as={Row} className="form-group mt-4">
+                        <Col sm={1}>
+                          <Form.Check
+                            type="checkbox"
+                            id="lock"
+                            checked={bank.lock}
+                            onChange={handleBankCheckBox}
+                            disabled={lockBank}
+                            // defaultChecked
+                          />
+                        </Col>
+                        <Form.Label column sm={11} className="mt-n2">
+                          Lock Bank Details
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
