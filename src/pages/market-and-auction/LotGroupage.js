@@ -1304,10 +1304,10 @@ setAllottedLotId("");
                 </li>
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
+                  {/* <Button type="submit" variant="primary">
                     Store
                   </Button>
-                  
+                   */}
                 </li>
                 <li>
                   {/* <Link

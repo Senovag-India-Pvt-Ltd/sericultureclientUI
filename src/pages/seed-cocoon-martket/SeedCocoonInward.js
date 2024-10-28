@@ -1297,7 +1297,7 @@ const handleInputs = (e) => {
                     <td>{farmerDetails?.numbersOfDfls || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Lot No.:</td>
+                    <td style={styles.ctstyle}>Lot No:</td>
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
                   <tr>
