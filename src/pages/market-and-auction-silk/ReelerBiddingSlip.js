@@ -1095,7 +1095,7 @@ function ReelerBiddingSlip() {
                             id="dfl"
                           >
                             <Form.Label column sm={4}>
-                              Weight<span className="text-danger">*</span>
+                            Approximate weight of Silk yarn<span className="text-danger">*</span>
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control

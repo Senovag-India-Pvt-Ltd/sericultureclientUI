@@ -330,7 +330,7 @@ useEffect(() => {
                         name="mulberrySpacing"
                         value={data.mulberrySpacing}
                         onChange={handleInputs}
-                        maxLength="4"
+                        maxLength="5"
                         type="text"
                         placeholder="Enter Mulberry Spacing"
                       />
