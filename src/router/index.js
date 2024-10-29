@@ -913,6 +913,7 @@ import FarmerBankAccountReasonList from "../pages/masters/farmerBankAccountReaso
 import FarmerBankAccountReasonEdit from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonEdit";
 import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonView";
 import DistrictWiseMulberryPage from "../pages/target-settings/DistrictWiseMulberryPage";
+import TscMulberryTargets from "../pages/target-settings/TscMulberryTargets";
 // Admin and Reports
 
 function Router() {
@@ -1793,6 +1794,11 @@ function Router() {
             <Route
               path="district-wise-mulberry-target-setting-page"
               element={<DistrictWiseMulberryPage />}
+            />
+
+            <Route
+              path="tsc-mulberry-targets-page"
+              element={<TscMulberryTargets />}
             />
 
             <Route
