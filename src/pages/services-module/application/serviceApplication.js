@@ -1363,54 +1363,88 @@ function ServiceApplication() {
           fruitsId: data.fruitsId,
         })
         .then((response) => {
-          if (response.data.content.farmerResponse) {
-            setData((prev) => ({
-              ...prev,
-              farmerId: response.data.content.farmerResponse.farmerId,
-            }));
-            setFarmerDetails((prev) => ({
-              ...prev,
-              farmerName: response.data.content.farmerResponse.firstName,
-              // districtName:
-              //   response.data.content.farmerAddressDTOList &&
-              //   response.data.content.farmerAddressDTOList.length > 0
-              //     ? response.data.content.farmerAddressDTOList[0].districtName
-              //     : "",
-              // talukName:
-              //   response.data.content.farmerAddressDTOList &&
-              //   response.data.content.farmerAddressDTOList.length > 0
-              //     ? response.data.content.farmerAddressDTOList[0].talukName
-              //     : "",
-              // hobli:
-              //   response.data.content.farmerAddressDTOList &&
-              //   response.data.content.farmerAddressDTOList.length > 0
-              //     ? response.data.content.farmerAddressDTOList[0].hobliName
-              //     : "",
-              // village:
-              //   response.data.content.farmerAddressDTOList &&
-              //   response.data.content.farmerAddressDTOList.length > 0
-              //     ? response.data.content.farmerAddressDTOList[0].villageName
-              //     : "",
-            }));
-            if (response.data.content.farmerAddressDTOList.length > 0) {
-              setFarmerDetails((prev) => ({
-                ...prev,
-                address:
-                  response.data.content.farmerAddressDTOList[0].addressText,
-              }));
-            }
-            setShowFarmerDetails(true);
-          }
-          console.log("landdetails", response.data);
-          if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-            setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
-          }
-        })
-        .catch((err) => {
-          setLandDetailsList([]);
-        });
+  //         if (response.data.content.farmerResponse) {
+  //           setData((prev) => ({
+  //             ...prev,
+  //             farmerId: response.data.content.farmerResponse.farmerId,
+  //           }));
+  //           setFarmerDetails((prev) => ({
+  //             ...prev,
+  //             farmerName: response.data.content.farmerResponse.firstName,
+  //             // districtName:
+  //             //   response.data.content.farmerAddressDTOList &&
+  //             //   response.data.content.farmerAddressDTOList.length > 0
+  //             //     ? response.data.content.farmerAddressDTOList[0].districtName
+  //             //     : "",
+  //             // talukName:
+  //             //   response.data.content.farmerAddressDTOList &&
+  //             //   response.data.content.farmerAddressDTOList.length > 0
+  //             //     ? response.data.content.farmerAddressDTOList[0].talukName
+  //             //     : "",
+  //             // hobli:
+  //             //   response.data.content.farmerAddressDTOList &&
+  //             //   response.data.content.farmerAddressDTOList.length > 0
+  //             //     ? response.data.content.farmerAddressDTOList[0].hobliName
+  //             //     : "",
+  //             // village:
+  //             //   response.data.content.farmerAddressDTOList &&
+  //             //   response.data.content.farmerAddressDTOList.length > 0
+  //             //     ? response.data.content.farmerAddressDTOList[0].villageName
+  //             //     : "",
+  //           }));
+  //           if (response.data.content.farmerAddressDTOList.length > 0) {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               address:
+  //                 response.data.content.farmerAddressDTOList[0].addressText,
+  //             }));
+  //           }
+  //           setShowFarmerDetails(true);
+  //         }
+  //         console.log("landdetails", response.data);
+  //         if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+  //           setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         setLandDetailsList([]);
+  //       });
+  //   }
+  // };
+  if (response.data.errorCode === -1) {
+    saveError(response.data.errorMessages[0]);
+  } else if (response.data.content && response.data.content.error) {
+    saveError(response.data.content.error_description);
+  } else if (response.data.content.farmerResponse) {
+    setData((prev) => ({
+      ...prev,
+      farmerId: response.data.content.farmerResponse.farmerId,
+    }));
+    setFarmerDetails((prev) => ({
+      ...prev,
+      farmerName: response.data.content.farmerResponse.firstName,
+    }));
+    
+    if (response.data.content.farmerAddressDTOList.length > 0) {
+      setFarmerDetails((prev) => ({
+        ...prev,
+        address: response.data.content.farmerAddressDTOList[0].addressText,
+      }));
     }
-  };
+    setShowFarmerDetails(true);
+
+    if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+      setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+    }
+  }
+})
+.catch((err) => {
+  saveError("An error occurred while fetching farmer details.");
+  setLandDetailsList([]);
+});
+}
+};
+
 
   const LandDetailsColumns = [
     {

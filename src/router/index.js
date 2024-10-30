@@ -914,6 +914,7 @@ import FarmerBankAccountReasonEdit from "../pages/masters/farmerBankAccountReaso
 import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReason/FarmerBankAccountReasonView";
 import DistrictWiseMulberryPage from "../pages/target-settings/DistrictWiseMulberryPage";
 import TscMulberryTargets from "../pages/target-settings/TscMulberryTargets";
+import ServiceApplicationRejectionList from "../pages/direct-benefit-transfer/ServiceApplicationRejectionList";
 // Admin and Reports
 
 function Router() {
@@ -1223,6 +1224,11 @@ function Router() {
             <Route
               path="service-application"
               element={<ServiceApplication />}
+            />
+
+            <Route
+              path="service-application-rejected-list"
+              element={<ServiceApplicationRejectionList />}
             />
             <Route
               path="service-application-edit/:id"

@@ -301,12 +301,9 @@ function DashboardReportList() {
     },
   ];
 
-  // const [actionListData, setActionListData] = useState({
-  //   userMasterId: "",
-  //   stepId: "",
-  // });
 
-  // to get sc-sub-scheme-details by sc-scheme-details
+
+  // to get approvalStageAfterNextStep
   const [
     approvalStageAfterNextStepListData,
     setApprovalStageAfterNextStepListData,
@@ -327,6 +324,29 @@ function DashboardReportList() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
+
+   // to get approvalStageAfterNextStep
+   const [
+    approvalRejectStageBeforeStepListData,
+    setApprovalRejectStageBeforeStepListData,
+  ] = useState([]);
+  const getApprovalRejectStageBeforeStepListDataList = (subSchemeId, approvalStageId) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getRejectedBeforeStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalRejectStageBeforeStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalRejectStageBeforeStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
 
   // useEffect(() => {
   //   if (data.scSubSchemeDetailsId) {
@@ -550,6 +570,9 @@ function DashboardReportList() {
     //  getList();
   }, []);
 
+  const [subSchemeId, setSubSchemeId] = useState(null); // State to hold subSchemeId
+  const [approvalStageId, setApprovalStageId] = useState(null);
+
   const getActionFarmerList = (fid) => {
     setLoading(true);
     api
@@ -617,6 +640,7 @@ function DashboardReportList() {
             });
         }
 
+
         // Extract and set the applicationDocumentId
         const applicationDocumentId = recordData?.applicationDocumentId; // Use data variable here
         setApplicationFormId(applicationDocumentId); // Set applicationFormId here
@@ -634,10 +658,17 @@ function DashboardReportList() {
         const subSchemeId = recordData?.subSchemeId;
         const approvalStageId = recordData?.approvalStageId;
 
+        setSubSchemeId(subSchemeId); // Set subSchemeId from recordData
+          setApprovalStageId(approvalStageId);
+
         // Fetch DBT List using extracted subSchemeId and approvalStageId
         if (subSchemeId && approvalStageId) {
           getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
         }
+
+        // if (subSchemeId && approvalStageId) {
+        //   getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId);
+        // }
 
         // if (subSchemeId && approvalStageId) {
         //   getUserFromDistrictList(subSchemeId, approvalStageId);
@@ -859,9 +890,123 @@ function DashboardReportList() {
     getRejectReasonList();
   }, []);
 
-  const handleActionInputs = (e) => {
-    let { name, value } = e.target;
-    setActionData({ ...actionData, [name]: value });
+  // Add this at the beginning of your component to manage the disabled state
+const [fieldsDisabled, setFieldsDisabled] = useState(false);
+
+
+
+const handleActionInputs = (e) => {
+  let { name, value } = e.target;
+  setActionData((prevData) => ({
+    ...prevData,
+    [name]: value,
+  }));
+
+  // if (name === "rejectType" && value === "Permanent") {
+  //   setFieldsDisabled(true);
+  // } else if (name === "rejectType" && value !== "Permanent") {
+  //   setFieldsDisabled(false);
+  // }
+  if (name === "rejectType") {
+    if (value === "Permanent") {
+      setFieldsDisabled(true);
+      getApprovalAfterStageNextStepList(subSchemeId, approvalStageId); // Calls after-next-step function for "Permanent"
+    } else if (value === "Objection") {
+      setFieldsDisabled(false);
+      getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId); // Calls before-step function for "Objection"
+    } else {
+      setFieldsDisabled(false);
+    }
+  }
+
+
+    // Update approvalStageId based on the selected approval stage
+    if (name === "stepId") {
+      setApprovalStageId(value);
+     // If rejectType is "Objection", fetch users when the approval stage is selected
+     if (actionData.rejectType === "Objection") {
+      // const districtId = 16;
+      // const talukId = 105;
+      getUserFromDistrictList(subSchemeId, value, districtId, talukId); // Call to fetch users
+    }
+  }
+  
+  };
+
+  // const rejectServiceApplication = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+
+  //     // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
+
+  //     const sendPost = {
+  //       applicationFormId: applicationFormId,
+  //       rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+  //       description: actionData.comment,
+  //     };
+  //     api
+  //       .post(baseURLDBT + `service/rejectServiceApplication`, sendPost)
+  //       .then((response) => {
+  //         if (response.data.errorCode === -1) {
+  //           saveError(response.data.errorMessages[0]);
+  //         } else if (response.data && response.data.error) {
+  //           saveError(response.data.error_description);
+  //         } else {
+  //           saveAssignSuccess();
+  //           clear();
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (
+  //           err.response &&
+  //           err.response &&
+  //           err.response.data &&
+  //           err.response.data.validationErrors
+  //         ) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             saveError(err.response.data.validationErrors);
+  //           }
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
+  const rejectServiceApplication = () => {
+    const sendPost = {
+      applicationFormId:applicationFormId,
+      rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+      description: actionData.comment,
+    }; 
+  
+    api
+      .post(`${baseURLDBT}service/rejectServiceApplication`, sendPost)
+      .then((response) => {
+        if (response.data.errorCode === -1) {
+          saveError(response.data.errorMessages[0]);
+        } else if (response.data && response.data.error) {
+          saveError(response.data.error_description);
+        } else {
+          saveRejectSuccess();
+          clear();
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          saveError(err.response.data.validationErrors);
+        }
+      });
   };
 
   const handlePushToDbtInputs = (e) => {
@@ -926,6 +1071,8 @@ function DashboardReportList() {
     }
   };
 
+  
+
   const [actionData, setActionData] = useState({
     applicationFormId: "",
     workOrderNumber: "",
@@ -937,7 +1084,10 @@ function DashboardReportList() {
     rejectedReasonId: "",
     userId: "",
     stepId: "",
+    rejectType: "",
   });
+
+  // const { subSchemeId, approvalStageId } = actionData;
 
   const [pushToDbtData, setPushToDbtData] = useState({
     row: "",
@@ -1090,6 +1240,13 @@ function DashboardReportList() {
       setValidated(true);
     } else {
       event.preventDefault();
+
+      // Check if Reject Type is "Permanent", then call rejectServiceApplication
+    if (actionData.rejectType === "Permanent") {
+      rejectServiceApplication();
+      return; 
+    }
+
   
       const sendResponse = sendApplicationFormServiceData.map((item) => {
         return {
@@ -1187,7 +1344,13 @@ function DashboardReportList() {
     }
   };
   
-
+  const saveRejectSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Rejected successfully",
+      text: message,
+    });
+  };
   const saveAssignSuccess = (message) => {
     Swal.fire({
       icon: "success",
@@ -1226,6 +1389,9 @@ function DashboardReportList() {
       lon: "",
       description: "",
       rejectedReasonId: "",
+      rejectedReasonWorkFlowMasterId: "",
+      rejectType: "",
+      comment: "",
       userId: "",
       stepId: "",
       paymentTo: "",
@@ -1910,6 +2076,25 @@ function DashboardReportList() {
                         >
                           <Card.Body>
                             <Row>
+
+                            <Col lg="6">
+                              <Form.Group className="form-group">
+                                <Form.Label>
+                                  <strong>Reject Type</strong>
+                                </Form.Label>
+                                <Form.Select
+                                  name="rejectType"
+                                  value={actionData.rejectType}
+                                  onChange={handleActionInputs}
+                                >
+                                  <option value="">Select Reject Type</option>
+                                  <option value="Permanent">Permanent</option>
+                                  <option value="Objection">Objection</option>
+                                </Form.Select>
+                              </Form.Group>
+                            </Col>
+
+                              
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -1954,7 +2139,7 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              <Col lg="6">
+                              {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
@@ -1972,6 +2157,7 @@ function DashboardReportList() {
                                           actionData.stepId === undefined ||
                                           actionData.stepId === "0"
                                         }
+                                        disabled={fieldsDisabled}
                                         // isInvalid={
                                         //   actionData.approvalStageId === undefined ||
                                         //   actionData.approvalStageId === "0"
@@ -1997,6 +2183,30 @@ function DashboardReportList() {
                                     </div>
                                   </Col>
                                 </Form.Group>
+                              </Col> */}
+
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
+                                  <Form.Select
+                                    name="stepId"
+                                    value={actionData.stepId}
+                                    onChange={handleActionInputs}
+                                    required
+                                    // isInvalid={!actionData.stepId || actionData.stepId === "0"}
+                                    disabled={fieldsDisabled}
+                                  >
+                                    <option value="">Select Approval Stage</option>
+                                    {(actionData.rejectType === "Objection" ? approvalRejectStageBeforeStepListData : approvalStageAfterNextStepListData).map((list) => (
+                                      <option key={list.approvalStageId} value={list.approvalStageId}>
+                                        {list.approvalStageName}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    Approval Stage Name is required
+                                  </Form.Control.Feedback>
+                                </Form.Group>
                               </Col>
 
                               <Col lg="6">
@@ -2017,6 +2227,7 @@ function DashboardReportList() {
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
+                                        disabled={fieldsDisabled}
                                         // isInvalid={
                                         //   actionData.userId === undefined ||
                                         //   actionData.userId === "0"
