@@ -180,7 +180,7 @@ function SaleDisposalOfPiercedCocoonsList() {
       grow: 2,
     },
     {
-      name: "Lot Number",
+      name: "Total Lots",
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -215,7 +215,7 @@ function SaleDisposalOfPiercedCocoonsList() {
       hide: "md",
     },
     {
-      name: "Cocoons Quantity in kgs",
+      name: " Number Of Cocoons in Kgs",
       selector: (row) => row.quantityInKgs,
       cell: (row) => <span>{row.quantityInKgs}</span>,
       sortable: true,

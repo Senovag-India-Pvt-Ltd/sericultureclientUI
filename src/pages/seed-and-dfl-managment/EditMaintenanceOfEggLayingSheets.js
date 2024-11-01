@@ -33,6 +33,16 @@ function EditMaintenanceOfEggLayingSheets() {
     setData({ ...data, [type]: date });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
  
 
   const postData = (event) => {
@@ -44,8 +54,14 @@ function EditMaintenanceOfEggLayingSheets() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedDate = formatDate(data.date);
+
+    const payload = {
+      ...data,
+      date: formattedDate,
+    };
       api
-        .post(baseURLSeedDfl + `EggLayingSheet/update-info`, data)
+        .post(baseURLSeedDfl + `EggLayingSheet/update-info`, payload)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -298,7 +314,8 @@ function EditMaintenanceOfEggLayingSheets() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Balance Number Of Sheets <span className="text-danger">*</span>
+                    Balance Number Of Sheets 
+                    {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -308,11 +325,11 @@ function EditMaintenanceOfEggLayingSheets() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Balance Number Of Sheets"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Balance Number Of Sheets is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

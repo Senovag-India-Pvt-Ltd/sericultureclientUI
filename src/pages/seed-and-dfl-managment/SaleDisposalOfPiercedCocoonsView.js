@@ -104,7 +104,7 @@ function SaleDisposalOfPiercedCocoonsView() {
                         <td>{piercedCocoons.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>Total Lots:</td>
                         <td>{piercedCocoons.lotNumber}</td>
                       </tr>
                       <tr>
@@ -126,7 +126,7 @@ function SaleDisposalOfPiercedCocoonsView() {
                         <td>{piercedCocoons.numberOfCocoons}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Cocoons Quantity in kgs:</td>
+                        <td style={styles.ctstyle}> Number Of Cocoons in Kgs:</td>
                         <td>{piercedCocoons.quantityInKgs}</td>
                       </tr>
                       <tr>
