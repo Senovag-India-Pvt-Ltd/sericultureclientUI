@@ -356,7 +356,7 @@ function MaintenanceofMulberryfarmEdit() {
                           name="mulberrySpacing"
                           value={data.mulberrySpacing}
                           onChange={handleInputs}
-                          maxLength="5"
+                          maxLength="6"
                           type="text"
                           placeholder="Enter Mulberry Spacing"
                         />

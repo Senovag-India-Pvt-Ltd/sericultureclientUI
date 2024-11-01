@@ -2628,12 +2628,32 @@ function RearingofDFLsforthe8LinesList() {
                   <Row className="g-gs">
                     <Col lg="12">
                       <Block>
-                      {/* <Card>
-                      <Card.Header>
-                       Bed 1
-                      </Card.Header>
-                      <Card.Body> */}
                         <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Date
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={feedingTableDetails.hatchingDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "hatchingDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  // required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
@@ -2658,30 +2678,7 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="sordfl">
-                                Hatching Date
-                                {/* <span className="text-danger">*</span> */}
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={feedingTableDetails.hatchingDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "hatchingDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  // maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  // required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                        
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
@@ -2763,7 +2760,7 @@ function RearingofDFLsforthe8LinesList() {
                                   name="leafQuantity"
                                   value={feedingTableDetails.leafQuantity || ""}
                                   onChange={handleFeedingMoultInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Leaf Quantity in Gms/Kg"
                                   // required
                                 />

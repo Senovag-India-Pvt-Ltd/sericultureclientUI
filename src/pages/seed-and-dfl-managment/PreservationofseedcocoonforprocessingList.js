@@ -68,6 +68,8 @@ function PreservationofseedcocoonforprocessingList() {
   //     });
   // };
 
+  const [senderType, setSenderType] = useState(null);
+
   const getAlertList = () => {
     setLoading(true);
     api.get(baseURLSeedDfl + `PreservationOfSeed/get-alert-data`)
@@ -75,6 +77,7 @@ function PreservationofseedcocoonforprocessingList() {
         setListLogsData(response.data);
         setLoading(false);
         if (response.data.length > 0) {
+          setSenderType(response.data[0].senderType);
           setShowModal(true);
         } else {
           setShowModal(false);
@@ -127,7 +130,7 @@ function PreservationofseedcocoonforprocessingList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -248,7 +251,7 @@ function PreservationofseedcocoonforprocessingList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => acceptConfirm(row.id, 1)}
+            onClick={() => acceptConfirm(row.id, 1,senderType)}
           >
             Accept
           </Button>
@@ -256,7 +259,7 @@ function PreservationofseedcocoonforprocessingList() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, 2)}
+            onClick={() => deleteConfirm(row.id, 2,senderType)}
             className="ms-2"
           >
             Reject
@@ -275,13 +278,7 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Parent Lot Number",
-      selector: (row) => row.parentLotNumber,
-      cell: (row) => <span>{row.parentLotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Name Of Supplier",
       selector: (row) => row.nameOfSupplier,
@@ -399,6 +396,13 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
+      name: "Parent Lot Number",
+      selector: (row) => row.parentLotNumber,
+      cell: (row) => <span>{row.parentLotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Race ",
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
@@ -420,7 +424,7 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
-      name: " Name of the Government Seed Farm/Farmer",
+      name: " Name of the Farmer",
       selector: (row) => row.nameOfTheGovernmentSeedFarmOrFarmer,
       cell: (row) => <span>{row.nameOfTheGovernmentSeedFarmOrFarmer}</span>,
       sortable: true,

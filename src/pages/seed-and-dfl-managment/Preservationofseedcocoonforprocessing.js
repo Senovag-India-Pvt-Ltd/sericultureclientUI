@@ -393,7 +393,8 @@ useEffect(() => {
                 <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Farm<span className="text-danger">*</span>
+                            Farm
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -402,11 +403,11 @@ useEffect(() => {
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               // multiple
-                              required
-                              isInvalid={
-                                data.farmId === undefined ||
-                                data.farmId === "0"
-                              }
+                              // required
+                              // isInvalid={
+                              //   data.farmId === undefined ||
+                              //   data.farmId === "0"
+                              // }
                             >
                               <option value="">Select Farm</option>
                               {farmListData.map((list) => (
@@ -428,7 +429,8 @@ useEffect(() => {
                       <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Market<span className="text-danger">*</span>
+                        Market
+                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -437,11 +439,11 @@ useEffect(() => {
                             value={data.marketMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.marketMasterId === undefined ||
-                              data.marketMasterId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   data.marketMasterId === undefined ||
+                            //   data.marketMasterId === "0"
+                            // }
                           >
                             <option value="">Select Market</option>
                             {marketListData.map((list) => (
@@ -497,7 +499,8 @@ useEffect(() => {
                           <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Name of the Government Seed Farm/Farmer<span className="text-danger">*</span>
+                    Name of the Farmer
+                    {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -529,13 +532,13 @@ useEffect(() => {
                         value={data.cropNumber}
                         onChange={handleInputs}
                         // maxLength="4"
-                        type="number"
+                        type="text"
                         placeholder="Enter Crop Number"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Crop Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -575,7 +578,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Bed Number/Kgs of cocoons supplied<span className="text-danger">*</span>
+                    Cocoon Supplied in Kg<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -584,11 +587,11 @@ useEffect(() => {
                         value={data.bedNumberOrKgsOfCocoonsSupplied}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Bed Number/Kgs of cocoons supplied"
+                        placeholder="Enter Cocoon Supplied in Kg"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Bed Number/Kgs of cocoons supplied is required
+                      Cocoon Supplied in Kg is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -607,11 +610,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="number"
                         placeholder="Enter Number of pupa examined"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Number of pupa examined is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -629,11 +632,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="number"
                         placeholder="Enter Cocoon rejection details/ numbers"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Cocoon rejection details/ numbers is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

@@ -333,8 +333,8 @@ function PreparationofeggsDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
-      <Card>
+      <Block className="mt-n5">
+      {/* <Card>
           <Card.Body>
             <Row lg="12" className="g-gs">
               <Col lg="1">
@@ -373,7 +373,7 @@ function PreparationofeggsDFLs() {
               </Col>
             </Row>
           </Card.Body>
-        </Card>
+        </Card> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -575,7 +575,7 @@ function PreparationofeggsDFLs() {
                               value={data.lineNameId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Line Details</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
@@ -587,9 +587,9 @@ function PreparationofeggsDFLs() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Line Details is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -608,7 +608,7 @@ function PreparationofeggsDFLs() {
                               value={data.generationNumberId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Generation Number</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
@@ -620,9 +620,9 @@ function PreparationofeggsDFLs() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Generation Number is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -722,7 +722,7 @@ function PreparationofeggsDFLs() {
                                   name="eggSheetSerialNumber"
                                   value={data.eggSheetSerialNumber}
                                   onChange={handleInputs}
-                                  type="number"
+                                  type="text"
                                   placeholder="Egg sheet serial number"
                                   required
                                 />
@@ -950,11 +950,11 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Egg Recovery %"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Egg Recovery % is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -979,11 +979,10 @@ function PreparationofeggsDFLs() {
                             </Form.Group>-
                           </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
                                 Remaining DFLs 
-                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -993,14 +992,11 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Remaining DFLs"
-                                  // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                  Test results is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">

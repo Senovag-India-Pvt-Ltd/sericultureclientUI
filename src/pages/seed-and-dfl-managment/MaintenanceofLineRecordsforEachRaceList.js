@@ -201,8 +201,8 @@ function MaintenanceofLineRecordsforEachRaceList() {
     },
     {
       name: "Number Of DFLs",
-      selector: (row) => row.noOfDfls,
-      cell: (row) => <span>{row.noOfDfls}</span>,
+      selector: (row) => row.numberOfDfls,
+      cell: (row) => <span>{row.numberOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
@@ -294,12 +294,12 @@ function MaintenanceofLineRecordsforEachRaceList() {
   ];
 
   return (
-    <Layout title="Maintenance of Line records for each race List">
+    <Layout title="List Of Maintenance of Line records for each race">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of Line records for each race List
+            List Of Maintenance of Line records for each race
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>

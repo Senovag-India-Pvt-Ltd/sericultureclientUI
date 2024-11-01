@@ -1863,6 +1863,15 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
+                  {showMenu.SeedDFL_BSF_DFLs_for_the_8_lines ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Rearing of DFLs for the 8 Lines"
+                        to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+                      />
+                    </MenuItem>
+                  ) : null}
+
                   {showMenu.SeedDFL_BSF_Cocoons_to_P4_Grainage ? (
                     <MenuItem>
                       <MenuItemLink
@@ -1872,14 +1881,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.SeedDFL_BSF_DFLs_for_the_8_lines ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Rearing of DFLs for the 8 Lines"
-                        to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
-                      />
-                    </MenuItem>
-                  ) : null}
+                  
                 </MenuSub>
               </MenuItem>
             ) : null}
