@@ -523,13 +523,7 @@ const handleUpdateAllDates = (row) => {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Plantation Date",
       selector: (row) => row.plantationDate,
@@ -538,9 +532,9 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      name: "Pruning Date",
+      selector: (row) => row.pruningDate,
+      cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
@@ -551,6 +545,14 @@ const handleUpdateAllDates = (row) => {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Fertilizer Application Date",
+      selector: (row) => row.fertilizerApplicationDate,
+      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
     {
       name: "Irrigation Date",
       selector: (row) => row.irrigationDate,
@@ -628,21 +630,6 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Fertilizer Application Status",
-      selector: (row) => row.fertilizerApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fertilizerApplicationStatus === 0
-            ? "Pending"
-            : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "FYM Application Status",
       selector: (row) => row.fymApplicationStatus,
       cell: (row) => (
@@ -657,6 +644,22 @@ const handleUpdateAllDates = (row) => {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Fertilizer Application Status",
+      selector: (row) => row.fertilizerApplicationStatus,
+      cell: (row) => (
+        <span>
+          {row.fertilizerApplicationStatus === 0
+            ? "Pending"
+            : row.fertilizerApplicationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    
     {
       name: "Irrigation Status",
       selector: (row) => row.irrigationStatus,
@@ -749,19 +752,20 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "FYM Date",
       selector: (row) => row.fymApplicationDate,
       cell: (row) => <span>{row.fymApplicationDate}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Fertilizer Application Date",
+      selector: (row) => row.fertilizerApplicationDate,
+      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
     {
       name: "Irrigation Date",
       selector: (row) => row.irrigationDate,
@@ -984,7 +988,7 @@ const handleUpdateAllDates = (row) => {
                       name="fertilizerApplicationStatus"
                       value={pruningDate.fertilizerApplicationStatus}
                       onChange={handlePruningInputs}
-                      disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
+                      // disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
                     >
                       <option value="">
                         Select Fertilizer Application Status
@@ -1005,7 +1009,7 @@ const handleUpdateAllDates = (row) => {
                       name="fymApplicationStatus"
                       value={pruningDate.fymApplicationStatus}
                       onChange={handlePruningInputs}
-                      disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
+                      // disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
                     >
                       <option value="">Select FYM Status</option>
                       <option value="0">Pending</option>
@@ -1024,7 +1028,7 @@ const handleUpdateAllDates = (row) => {
                       name="irrigationStatus"
                       value={pruningDate.irrigationStatus}
                       onChange={handlePruningInputs}
-                      disabled={!isTodayOrFutureDate(dates.irrigationDate)}
+                      // disabled={!isTodayOrFutureDate(dates.irrigationDate)}
                       
                     >
                       <option value="">Select Irrigation Status</option>
@@ -1044,7 +1048,7 @@ const handleUpdateAllDates = (row) => {
                       name="brushingStatus"
                       value={pruningDate.brushingStatus}
                       onChange={handlePruningInputs}
-                      disabled={!isTodayOrFutureDate(dates.brushingDate)}
+                      // disabled={!isTodayOrFutureDate(dates.brushingDate)}
                     >
                       <option value="">Select Brushing Status</option>
                       <option value="0">Pending</option>
