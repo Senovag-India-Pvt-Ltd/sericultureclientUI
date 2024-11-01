@@ -56,6 +56,17 @@ function SupplyofCocoonstoGrainage() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -65,8 +76,19 @@ function SupplyofCocoonstoGrainage() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      // Format date fields
+    const formattedSpunDate = formatDate(data.spunOnDate);
+    const formattedDateOfSupply = formatDate(data.dateOfSupply);
+    const formattedDateOfDispatch = formatDate(data.dispatchDate);
+
+    const payload = {
+      ...data,
+      spunOnDate: formattedSpunDate,
+      dateOfSupply: formattedDateOfSupply,
+      dispatchDate: formattedDateOfDispatch,
+    };
       api
-        .post(baseURL + `supply-cocoons/add-info`, data)
+        .post(baseURL + `supply-cocoons/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -539,7 +561,7 @@ function SupplyofCocoonstoGrainage() {
                                 name="numberOfCocoonsDispatched"
                                 value={data.numberOfCocoonsDispatched}
                                 onChange={handleInputs}
-                                type="text"
+                                type="number"
                                 placeholder="Enter Number of Cocoons Dispatched"
                                 />
                               </div>
