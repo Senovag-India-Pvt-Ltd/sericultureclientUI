@@ -460,12 +460,19 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
-      name: "Bed Number/Kgs of cocoons supplied",
+      name: "Cocoon supplied in Kg",
       selector: (row) => row.bedNumberOrKgsOfCocoonsSupplied,
       cell: (row) => <span>{row.bedNumberOrKgsOfCocoonsSupplied}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Cocoon supplied in Nos",
+    //   selector: (row) => row.cocoonSuppliedInNos,
+    //   cell: (row) => <span>{row.cocoonSuppliedInNos}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Number of pupa examined",
       selector: (row) => row.numberOfPupaExamined,

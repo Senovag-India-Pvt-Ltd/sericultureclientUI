@@ -71,6 +71,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
                 farmId: "",
                 marketMasterId: "",
                 parentLotNumber: "",
+                cocoonSuppliedInNos: ""
             });
             setValidated(false);
           }
@@ -103,6 +104,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
         farmId: "",
         marketMasterId: "",
         parentLotNumber: "",
+        cocoonSuppliedInNos: ""
     });
   };
 
@@ -579,6 +581,29 @@ useEffect(() => {
                       <Form.Control.Feedback type="invalid">
                       Cocoon Supplied in Kg is required
                       </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Cocoon Supplied in No's
+                    {/* <span className="text-danger">*</span> */}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="cocoonSuppliedInNos"
+                        name="cocoonSuppliedInNos"
+                        value={data.cocoonSuppliedInNos}
+                        onChange={handleInputs}
+                        type="number"
+                        placeholder="Enter Cocoon Supplied in No's"
+                        // required
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                      Cocoon Supplied in Kg is required
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

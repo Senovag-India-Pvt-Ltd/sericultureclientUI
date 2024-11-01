@@ -33,6 +33,8 @@ function SaleDisposalofDFLseggs() {
     ratePer100DflsPrice: "",
     userType: "farm",
     userTypeId: "",
+    reason: "",
+    remainingDfls: "",
   });
 
   const styles = {
@@ -67,20 +69,133 @@ function SaleDisposalofDFLseggs() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
 
-      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-      //   return;
-      // }
+  //     // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //     //   return;
+  //     // }
+  //     api
+  //       .post(baseURLSeedDfl + `sale-disposal-of-egg/add-info`, data)
+  //       .then((response) => {
+  //         if (response.data.error) {
+  //           saveError(response.data.message);
+  //         } else {
+  //           saveSuccess(response.data.invoice_no);
+  //           setData({
+  //             lotNumber: "",
+  //             eggSheetNumbers: "",
+  //             raceId: "",
+  //             releaseDate: "",
+  //             dateOfDisposal: "",
+  //             expectedDateOfHatching: "",
+  //             numberOfDflsDisposed: "",
+  //             fruitsId: "",
+  //             nameAndAddressOfTheFarm: "",
+  //             ratePer100DflsPrice: "",
+  //             userType: "farm",
+  //             userTypeId: "",
+  //           });
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (
+  //           err.response &&
+  //           err.response.data &&
+  //           err.response.data.validationErrors
+  //         ) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             saveError(err.response.data.validationErrors);
+  //           }
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
+  const postData = (event) => {
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+  } else {
+    event.preventDefault();
+
+    // Format date fields
+    const formattedReleaseDate = formatDate(data.releaseDate);
+    const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
+    const formattedExpectedDateOfHatching = formatDate(data.expectedDateOfHatching);
+
+    const payload = {
+      ...data,
+      releaseDate: formattedReleaseDate,
+      dateOfDisposal: formattedDateOfDisposal,
+      expectedDateOfHatching: formattedExpectedDateOfHatching,
+    };
+
+    // Check if userType is 'discard'
+    if (data.userType === "discard") {
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg/add-info`, data)
+        .post(baseURLSeedDfl + `discard-dfls`, payload)
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.invoice_no);
+            // Reset form data if needed
+            setData({
+              lotNumber: "",
+              eggSheetNumbers: "",
+              raceId: "",
+              releaseDate: "",
+              dateOfDisposal: "",
+              expectedDateOfHatching: "",
+              numberOfDflsDisposed: "",
+              fruitsId: "",
+              nameAndAddressOfTheFarm: "",
+              ratePer100DflsPrice: "",
+              userType: "farm", // Reset back to default userType if needed
+              userTypeId: "",
+              reason: "",
+              remainingDfls: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    } else {
+      // Existing logic for adding info
+      api
+        .post(baseURLSeedDfl + `sale-disposal-of-egg/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -99,6 +214,8 @@ function SaleDisposalofDFLseggs() {
               ratePer100DflsPrice: "",
               userType: "farm",
               userTypeId: "",
+              reason: "",
+              remainingDfls: "",
             });
             setValidated(false);
           }
@@ -114,9 +231,10 @@ function SaleDisposalofDFLseggs() {
             }
           }
         });
-      setValidated(true);
     }
-  };
+    setValidated(true);
+  }
+};
 
   const clear = () => {
     setData({
@@ -132,6 +250,8 @@ function SaleDisposalofDFLseggs() {
       ratePer100DflsPrice: "",
       userType: "farm",
       userTypeId: "",
+      reason: "",
+      remainingDfls: "",
     });
     setValidated(false);
   };
@@ -383,6 +503,23 @@ function SaleDisposalofDFLseggs() {
                   </Form.Label>
                 </Form.Group>
               </Col>
+
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="discard">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="discard"
+                      checked={data.userType === "discard"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="discard">
+                    Discard
+                  </Form.Label>
+                </Form.Group>
+              </Col>
             </Row>
           </Card.Body>
         </Card>
@@ -444,6 +581,110 @@ function SaleDisposalofDFLseggs() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
+            {data.userType === "discard" ? (
+    <Card>
+      <Card.Header style={{ fontWeight: "bold" }}>Discard Details</Card.Header>
+      <Card.Body>
+        <Row className="g-gs">
+          <Col lg="4">
+            <Form.Group className="form-group mt-n3">
+              <Form.Label>Lot Number</Form.Label>
+              <Col>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="lotNumber"
+                    value={data.lotNumber}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    // required
+                  >
+                    <option value="">Select Lot Number</option>
+                    {lotListData && lotListData.length
+                      ? lotListData.map((list) => (
+                          <option key={list.id} value={list.lotNumber}>
+                            {list.lotNumber}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  {/* <Form.Control.Feedback type="invalid">
+                    Lot Number is required
+                  </Form.Control.Feedback> */}
+                </div>
+              </Col>
+            </Form.Group>
+          </Col>
+
+          <Col lg="4">
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>
+                Date of Disposal
+                {/* <span className="text-danger">*</span> */}
+              </Form.Label>
+              <div className="form-control-wrap">
+                <DatePicker
+                  selected={data.dateOfDisposal}
+                  onChange={(date) => handleDateChange(date, "dateOfDisposal")}
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormat="dd/MM/yyyy"
+                  className="form-control"
+                  // required
+                />
+              </div>
+            </Form.Group>
+          </Col>
+
+          <Col lg="4">
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>
+                Remarks<span className="text-danger">*</span>
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Control
+                  id="reason"
+                  name="reason"
+                  value={data.reason}
+                  onChange={handleInputs}
+                  type="text"
+                  placeholder="Enter Reason for Disposal"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Reason for disposal is required
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+
+          <Col lg="4">
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>
+                Remaining DFLs<span className="text-danger">*</span>
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Control
+                  id="remainingDfls"
+                  name="remainingDfls"
+                  value={data.remainingDfls}
+                  onChange={handleInputs}
+                  type="number"
+                  min="0"
+                  placeholder="Enter Remaining DFLs"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Remaining DFLs is required
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  ) : (
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
                   Sale / Disposal of DFLs 's (egg) s{" "}
@@ -791,6 +1032,7 @@ function SaleDisposalofDFLseggs() {
                   </Row>
                 </Card.Body>
               </Card>
+            )}
             </Block>
 
             <div className="gap-col">

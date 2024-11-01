@@ -152,9 +152,15 @@ function PreservationOfSeedCocoonForProcessingView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Bed Number/Kgs of cocoons supplied:
+                        Cocoons Supplied in Kg:
                         </td>
                         <td>{seedCocoon.bedNumberOrKgsOfCocoonsSupplied}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Cocoons Supplied in Nos:
+                        </td>
+                        <td>{seedCocoon.cocoonSuppliedInNos}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
