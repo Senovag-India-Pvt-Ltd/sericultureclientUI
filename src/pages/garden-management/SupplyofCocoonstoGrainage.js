@@ -368,7 +368,8 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year<span className="text-danger">*</span>
+                          Line Details/year
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -377,7 +378,7 @@ function SupplyofCocoonstoGrainage() {
                               value={data.lineYear}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Line Details</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
@@ -389,9 +390,9 @@ function SupplyofCocoonstoGrainage() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Line Details is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -454,7 +455,8 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number<span className="text-danger">*</span>
+                          Generation Number
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -463,7 +465,7 @@ function SupplyofCocoonstoGrainage() {
                               value={data.generationNumberId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Generation Number</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
@@ -475,9 +477,9 @@ function SupplyofCocoonstoGrainage() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Generation Number is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -529,7 +531,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number of Cocoons Dispatched
+                                Number of Cocoons Dispatched(kg/Nos)
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
