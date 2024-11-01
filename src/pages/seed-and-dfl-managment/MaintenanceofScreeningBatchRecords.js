@@ -444,7 +444,7 @@ function MaintenanceofScreeningBatchRecords() {
                               </div>
                             </Form.Group>
                           </Col>
-                          {/* <Col lg="4">
+                          <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedBedAsPerTheMeanPerformance">
                                 Selected Bed as per the Mean Performance
@@ -458,7 +458,7 @@ function MaintenanceofScreeningBatchRecords() {
                                     data.selectedBedAsPerTheMeanPerformance
                                   }
                                   onChange={handleInputs}
-                                  type="number"
+                                  type="text"
                                   placeholder="Enter Selected Bed as per the Mean Performance"
                                   required
                                 />
@@ -468,9 +468,9 @@ function MaintenanceofScreeningBatchRecords() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                               Selected Bed as per the Mean Performance
@@ -501,7 +501,7 @@ function MaintenanceofScreeningBatchRecords() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cropFailureDetails">

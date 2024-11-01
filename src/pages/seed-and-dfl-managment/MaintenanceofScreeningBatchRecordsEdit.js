@@ -481,7 +481,8 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                               </div>
                             </Form.Group>
                           </Col>
-                          {/* <Col lg="4">
+
+                          <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedBedAsPerTheMeanPerformance">
                                 Selected Bed as per the Mean Performance
@@ -495,7 +496,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     data.selectedBedAsPerTheMeanPerformance
                                   }
                                   onChange={handleInputs}
-                                  type="number"
+                                  type="text"
                                   placeholder="Enter Selected Bed as per the Mean Performance"
                                   required
                                 />
@@ -505,8 +506,9 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
-                          <Col lg="4">
+                          </Col>
+
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                               Selected Bed as per the Mean Performance
@@ -537,7 +539,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>  
+                          </Col>   */}
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cropFailureDetails">

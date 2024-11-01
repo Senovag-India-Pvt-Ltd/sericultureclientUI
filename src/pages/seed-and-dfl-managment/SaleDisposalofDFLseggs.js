@@ -35,6 +35,7 @@ function SaleDisposalofDFLseggs() {
     userTypeId: "",
     reason: "",
     remainingDfls: "",
+    dflsType: "",
   });
 
   const styles = {
@@ -155,7 +156,7 @@ function SaleDisposalofDFLseggs() {
     // Check if userType is 'discard'
     if (data.userType === "discard") {
       api
-        .post(baseURLSeedDfl + `discard-dfls`, payload)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg/discard-dfls`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -177,6 +178,7 @@ function SaleDisposalofDFLseggs() {
               userTypeId: "",
               reason: "",
               remainingDfls: "",
+              dflsType: "",
             });
             setValidated(false);
           }
@@ -216,6 +218,7 @@ function SaleDisposalofDFLseggs() {
               userTypeId: "",
               reason: "",
               remainingDfls: "",
+              dflsType: "",
             });
             setValidated(false);
           }
@@ -252,6 +255,7 @@ function SaleDisposalofDFLseggs() {
       userTypeId: "",
       reason: "",
       remainingDfls: "",
+      dflsType: "",
     });
     setValidated(false);
   };
@@ -587,7 +591,7 @@ function SaleDisposalofDFLseggs() {
       <Card.Body>
         <Row className="g-gs">
           <Col lg="4">
-            <Form.Group className="form-group mt-n3">
+            <Form.Group className="form-group mt-n4">
               <Form.Label>Lot Number</Form.Label>
               <Col>
                 <div className="form-control-wrap">
@@ -615,27 +619,6 @@ function SaleDisposalofDFLseggs() {
             </Form.Group>
           </Col>
 
-          <Col lg="4">
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>
-                Date of Disposal
-                {/* <span className="text-danger">*</span> */}
-              </Form.Label>
-              <div className="form-control-wrap">
-                <DatePicker
-                  selected={data.dateOfDisposal}
-                  onChange={(date) => handleDateChange(date, "dateOfDisposal")}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control"
-                  // required
-                />
-              </div>
-            </Form.Group>
-          </Col>
 
           <Col lg="4">
             <Form.Group className="form-group mt-n4">
@@ -678,6 +661,59 @@ function SaleDisposalofDFLseggs() {
                 <Form.Control.Feedback type="invalid">
                   Remaining DFLs is required
                 </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+
+          <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                  DFLs Type
+                    {/* <span className="text-danger">*</span> */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="dflType"
+                      value={data.dflType}
+                      onChange={handleInputs}
+                      // required
+                      // isInvalid={
+                      //   data.dflType === undefined ||
+                      //   data.dflType === "0"
+                      // }
+                    >
+                      <option value="">
+                        Select  DFLs Type
+                      </option>
+                      <option value="Acid Treated">Acid Treated</option>
+                      <option value="Hibernated">Hibernated</option>
+                    </Form.Select>
+                    {/* <Form.Control.Feedback type="invalid">
+                    Selected Bed as per the Mean Performance is required
+                    </Form.Control.Feedback> */}
+                  </div>
+                </Form.Group>
+              </Col>  
+
+          
+          <Col lg="4">
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>
+                Date of Disposal
+                {/* <span className="text-danger">*</span> */}
+              </Form.Label>
+              <div className="form-control-wrap">
+                <DatePicker
+                  selected={data.dateOfDisposal}
+                  onChange={(date) => handleDateChange(date, "dateOfDisposal")}
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormat="dd/MM/yyyy"
+                  className="form-control"
+                  // required
+                />
               </div>
             </Form.Group>
           </Col>
@@ -827,6 +863,36 @@ function SaleDisposalofDFLseggs() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              DFLs Type
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="dflType"
+                                  value={data.dflType}
+                                  onChange={handleInputs}
+                                  // required
+                                  // isInvalid={
+                                  //   data.dflType === undefined ||
+                                  //   data.dflType === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select  DFLs Type
+                                  </option>
+                                  <option value="Acid Treated">Acid Treated</option>
+                                  <option value="Hibernated">Hibernated</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Selected Bed as per the Mean Performance is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>  
+
                     {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
@@ -963,7 +1029,8 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Release Date<span className="text-danger">*</span>
+                          Release Date
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -977,7 +1044,7 @@ function SaleDisposalofDFLseggs() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                           />
                         </div>
                       </Form.Group>
