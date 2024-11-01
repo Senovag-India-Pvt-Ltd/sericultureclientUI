@@ -185,7 +185,14 @@ function RegisteredSeedProducerNssoGrainagesList() {
       hide: "md",
     },
     {
-      name: "Number of Cocoons (CB, Hybrid)",
+      name: "Cocoon Lot Number (MSC,Fc1,Fc2)",
+      selector: (row) => row.cocoonLotNumber,
+      cell: (row) => <span>{row.cocoonLotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Number of Cocoons (MSC,Fc1,Fc2)",
       selector: (row) => row.numberOfCocoonsCB,
       cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,

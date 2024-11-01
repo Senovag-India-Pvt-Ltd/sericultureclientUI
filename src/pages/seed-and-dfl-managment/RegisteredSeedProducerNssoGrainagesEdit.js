@@ -244,7 +244,29 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
               <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of Cocoons (CB, Hybrid)
+                          Cocoon Lot Number(MSC,Fc1,Fc2)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="cocoonLotNumber"
+                            name="cocoonLotNumber"
+                            type="number"
+                            value={data.cocoonLotNumber}
+                            onChange={handleInputs}
+                            placeholder="Enter Cocoon Lot Number(MSC,Fc1,Fc2)"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Cocoon Lot Number(MSC,Fc1,Fc2) is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+              <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                        Number of Cocoons (MSC,Fc1,Fc2)
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -254,11 +276,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.numberOfCocoonsCB}
                             onChange={handleInputs}
-                            placeholder="Enter Number of Cocoons CB"
+                            placeholder="Enter Number of Cocoons (MSC,Fc1,Fc2)"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of Cocoons CB is required
+                          Number of Cocoons (MSC,Fc1,Fc2) is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -301,7 +323,8 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                       Seed Cocoon Market<span className="text-danger">*</span>
+                       Seed Cocoon Market
+                       {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -310,11 +333,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             value={data.sourceMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.sourceMasterId === undefined ||
-                              data.sourceMasterId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   data.sourceMasterId === undefined ||
+                            //   data.sourceMasterId === "0"
+                            // }
                           >
                             <option value="">Select Market</option>
                             {marketListData.map((list) => (
@@ -326,9 +349,9 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Market is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Col>
                     </Form.Group>
@@ -396,7 +419,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Egg sheet serial number
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -407,9 +430,9 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Egg sheet serial number"                        required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Egg sheet serial number is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -511,7 +534,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Test results
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -521,11 +544,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             value={data.testResults}
                             onChange={handleInputs}
                             placeholder="Enter Test results"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Test results is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -534,7 +557,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Certification (Yes/No)
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -544,11 +567,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             value={data.certification}
                             onChange={handleInputs}
                             placeholder="Enter Certification (Yes/No)"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Certification (Yes/No) is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -557,7 +580,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Additional remarks
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -567,11 +590,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             value={data.additionalRemarks}
                             onChange={handleInputs}
                             placeholder="Enter Additional remarks"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Additional remarks is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>

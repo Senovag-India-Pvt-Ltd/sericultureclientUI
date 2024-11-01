@@ -37,6 +37,16 @@ function MaintenanceOfEggsAtColdStorageEdit() {
   const isDataColdSet = !!data.laidOnDate;
   const isDataLaidDate = !!data.storageDate;
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -47,8 +57,18 @@ function MaintenanceOfEggsAtColdStorageEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.dateOfRelease);
+    const formattedDateOfDisposal = formatDate(data.laidOnDate);
+    const formattedExpectedDateOfHatching = formatDate(data.dateOfColdStore);
+
+    const payload = {
+      ...data,
+      dateOfRelease: formattedReleaseDate,
+      laidOnDate: formattedDateOfDisposal,
+      dateOfColdStore: formattedExpectedDateOfHatching,
+    };
       api
-        .post(baseURLSeedDfl + `EggStorage/update-info`, data)
+        .post(baseURLSeedDfl + `EggStorage/update-info`, payload)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);

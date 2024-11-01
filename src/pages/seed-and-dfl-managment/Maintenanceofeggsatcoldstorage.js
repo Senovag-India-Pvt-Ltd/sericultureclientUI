@@ -39,6 +39,16 @@ function Maintenanceofeggsatcoldstorage() {
   // };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -49,8 +59,19 @@ function Maintenanceofeggsatcoldstorage() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      // Format date fields
+    const formattedReleaseDate = formatDate(data.dateOfRelease);
+    const formattedDateOfDisposal = formatDate(data.laidOnDate);
+    const formattedExpectedDateOfHatching = formatDate(data.dateOfColdStore);
+
+    const payload = {
+      ...data,
+      dateOfRelease: formattedReleaseDate,
+      laidOnDate: formattedDateOfDisposal,
+      dateOfColdStore: formattedExpectedDateOfHatching,
+    };
       api
-        .post(baseURLSeedDfl + `EggStorage/add-info`, data)
+        .post(baseURLSeedDfl + `EggStorage/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);

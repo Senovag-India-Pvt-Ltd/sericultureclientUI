@@ -81,6 +81,17 @@ function SaleAndDisposalOfEggsNSSOEdit() {
     setData({ ...data, [type]: date });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -90,8 +101,13 @@ function SaleAndDisposalOfEggsNSSOEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
+      const payload = {
+        ...data,
+        dateOfDisposal: formattedDateOfDisposal,
+      };
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/update-info`, data)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/update-info`, payload)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -431,7 +447,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
                           Egg Sheet Numbers
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -442,11 +458,11 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Egg Sheet Numbers is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -548,7 +564,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                          Name and address of the Farm
+                          Name and address of the Farmer
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">

@@ -62,6 +62,17 @@ function SaleAndDisposalOfEggsNSSO() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -74,8 +85,17 @@ function SaleAndDisposalOfEggsNSSO() {
       // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
       //   return;
       // }
+      // const formattedReleaseDate = formatDate(data.releaseDate);
+    const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
+    // const formattedExpectedDateOfHatching = formatDate(data.expectedDateOfHatching);
+    const payload = {
+      ...data,
+      // releaseDate: formattedReleaseDate,
+      dateOfDisposal: formattedDateOfDisposal,
+      // expectedDateOfHatching: formattedExpectedDateOfHatching,
+    };
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/add-info`, data)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -481,22 +501,22 @@ function SaleAndDisposalOfEggsNSSO() {
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
                           Egg Sheet Numbers
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="eggSheetNumbers"
                             name="eggSheetNumbers"
                             type="number"
-                            min="1"
+                            // min="1"
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Egg Sheet Numbers is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -646,7 +666,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address of the Farm
+                            Name and address of the Farmer
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
