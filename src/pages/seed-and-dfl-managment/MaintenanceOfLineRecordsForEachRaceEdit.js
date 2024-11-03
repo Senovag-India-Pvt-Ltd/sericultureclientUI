@@ -44,6 +44,17 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -56,8 +67,15 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
+      const formattedExpectedDateOfHatching = formatDate(data.dateOfSelectionCocoon);
+        const payload = {
+          ...data,
+          dateOfSelectionCocoon: formattedExpectedDateOfHatching,
+          // spunOnDate: formattedDateOfDisposal,
+          // invoiceDate: formattedExpectedDateOfHatching,
+        };
       api
-        .post(baseURLSeedDfl + `LineRecord/update-info`, data)
+        .post(baseURLSeedDfl + `LineRecord/update-info`, payload)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);

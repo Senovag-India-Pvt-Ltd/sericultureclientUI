@@ -62,6 +62,16 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
       accept: "*/*",
       Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
     };
+    const formatDate = (date) => {
+      if (!date) return ""; // Handle null or undefined dates
+      return (
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        date.getDate().toString().padStart(2, "0")
+      );
+    };
   
     const postData = (event) => {
       const form = event.currentTarget;
@@ -74,8 +84,17 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         //   return;
         // }
+        // const formattedReleaseDate = formatDate(data.dateOfSeedCocoonSupply);
+        // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+        const formattedExpectedDateOfHatching = formatDate(data.dateOfSelectionCocoon);
+        const payload = {
+          ...data,
+          dateOfSelectionCocoon: formattedExpectedDateOfHatching,
+          // spunOnDate: formattedDateOfDisposal,
+          // invoiceDate: formattedExpectedDateOfHatching,
+        };
         api
-          .post(baseURLSeedDfl + `LineRecord/add-info`, data)
+          .post(baseURLSeedDfl + `LineRecord/add-info`, payload)
           .then((response) => {
             // debugger;
             if (response.data.error) {

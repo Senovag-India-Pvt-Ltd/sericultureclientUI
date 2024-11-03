@@ -68,6 +68,17 @@ function MaintenanceofScreeningBatchRecords() {
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+  
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -81,8 +92,19 @@ function MaintenanceofScreeningBatchRecords() {
       // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
       //   return;
       // }
+      const formattedReleaseDate = formatDate(data.incubationDate);
+      const formattedBoxingDate = formatDate(data.blackBoxingDate);
+      const formattedDateOfDisposal = formatDate(data.brushedOnDate);
+      const formattedExpectedDateOfHatching = formatDate(data.spunOnDate);
+      const payload = {
+        ...data,
+        incubationDate: formattedReleaseDate,
+        blackBoxingDate: formattedBoxingDate,
+        brushedOnDate: formattedDateOfDisposal,
+        spunOnDate: formattedExpectedDateOfHatching,
+      };
       api
-        .post(baseURLSeedDfl + `MaintenanceOfScreen/add-info`, data)
+        .post(baseURLSeedDfl + `MaintenanceOfScreen/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);

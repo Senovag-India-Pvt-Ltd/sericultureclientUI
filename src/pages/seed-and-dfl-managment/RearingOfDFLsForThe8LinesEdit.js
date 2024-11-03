@@ -36,6 +36,17 @@ function RearingOfDFLsForThe8LinesEdit() {
     setData({ ...data, [type]: date });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -45,8 +56,20 @@ function RearingOfDFLsForThe8LinesEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.laidOnDate);
+      const formattedBoxingDate = formatDate(data.releasedOn);
+      const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      const payload = {
+        ...data,
+        laidOnDate: formattedReleaseDate,
+        releasedOn: formattedBoxingDate,
+        spunOnDate: formattedDateOfDisposal,
+        hatchingDate: formattedExpectedDateOfHatching,
+      };
+
       api
-        .post(baseURLSeedDfl + `8linesController/update-info`, data)
+        .post(baseURLSeedDfl + `8linesController/update-info`, payload)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
