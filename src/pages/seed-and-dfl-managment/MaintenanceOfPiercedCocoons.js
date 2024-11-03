@@ -36,6 +36,16 @@ function MaintenanceOfPiercedCocoons() {
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
   // };
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -48,8 +58,13 @@ function MaintenanceOfPiercedCocoons() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.storageDate);
+      const payload = {
+        ...data,
+        storageDate: formattedReleaseDate,
+      };
       api
-        .post(baseURLSeedDfl + `PiercedCocoons/add-info`, data)
+        .post(baseURLSeedDfl + `PiercedCocoons/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);

@@ -45,6 +45,17 @@ function DispatchofCocoonstoP4Grainage() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -54,8 +65,20 @@ function DispatchofCocoonstoP4Grainage() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.dateOfSupply);
+      const formattedBoxingDate = formatDate(data.dispatchDate);
+      const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      const payload = {
+        ...data,
+        dateOfSupply: formattedReleaseDate,
+        dispatchDate: formattedBoxingDate,
+        spunOnDate: formattedDateOfDisposal,
+        // hatchingDate: formattedExpectedDateOfHatching,
+      };
+
       api
-        .post(baseURLSeedDfl + `DispatchOfCocoons/add-info`, data)
+        .post(baseURLSeedDfl + `DispatchOfCocoons/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);

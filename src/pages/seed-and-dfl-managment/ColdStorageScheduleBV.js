@@ -41,6 +41,17 @@ function ColdStorageScheduleBV() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -50,8 +61,18 @@ function ColdStorageScheduleBV() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.dateOfRelease);
+      const formattedDateOfDisposal = formatDate(data.laidOnDate);
+      const formattedExpectedDateOfHatching = formatDate(data.dateOfDeposit);
+  
+      const payload = {
+        ...data,
+        dateOfRelease: formattedReleaseDate,
+        laidOnDate: formattedDateOfDisposal,
+        dateOfDeposit: formattedExpectedDateOfHatching,
+      };
       api
-        .post(baseURLSeedDfl + `Cold-Storage/add-info`, data)
+        .post(baseURLSeedDfl + `Cold-Storage/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
