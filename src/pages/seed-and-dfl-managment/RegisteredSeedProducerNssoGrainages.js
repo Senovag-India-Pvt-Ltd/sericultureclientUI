@@ -75,6 +75,17 @@ function RegisteredSeedProducerNssoGrainages() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -83,8 +94,21 @@ function RegisteredSeedProducerNssoGrainages() {
       setValidated(true);
     } else {
       event.preventDefault();
+
+      const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
+      const formattedBoxingDate = formatDate(data.laidOnDate);
+      // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      const payload = {
+        ...data,
+        dateOfMothEmergence: formattedReleaseDate,
+        laidOnDate: formattedBoxingDate,
+        // spunOnDate: formattedDateOfDisposal,
+        // hatchingDate: formattedExpectedDateOfHatching,
+      };
+
       api
-        .post(baseURLSeedDfl + `EggPreparationRsso/add-info`, data)
+        .post(baseURLSeedDfl + `EggPreparationRsso/add-info`, payload)
         .then((response) => {
           
           if (response.data.error) {

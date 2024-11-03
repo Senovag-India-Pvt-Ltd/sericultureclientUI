@@ -49,6 +49,17 @@ function SaleDisposalOfPiercedCocoons() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -58,8 +69,13 @@ function SaleDisposalOfPiercedCocoons() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.dateOfDisposal);
+      const payload = {
+        ...data,
+        dateOfDisposal: formattedReleaseDate,
+      };
       api
-        .post(baseURLSeedDfl + `Disposal-Pierced/add-info`, data)
+        .post(baseURLSeedDfl + `Disposal-Pierced/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
