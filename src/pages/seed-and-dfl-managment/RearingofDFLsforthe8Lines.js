@@ -303,7 +303,7 @@ function RearingofDFLsforthe8Lines() {
                                   name="cropNumber"
                                   value={data.cropNumber}
                                   onChange={handleInputs}
-                                  type="number"
+                                  type="text"
                                   placeholder="Enter Crop number"
                                   required
                                 />

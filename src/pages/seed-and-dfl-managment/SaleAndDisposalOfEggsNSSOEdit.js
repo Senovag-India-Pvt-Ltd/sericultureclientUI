@@ -453,8 +453,8 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           <Form.Control
                             id="eggSheetNumbers"
                             name="eggSheetNumbers"
-                            type="number"
-                            min="1"
+                            type="text"
+                            // min="1"
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"

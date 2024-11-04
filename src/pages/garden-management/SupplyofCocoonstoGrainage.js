@@ -507,7 +507,7 @@ function SupplyofCocoonstoGrainage() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Lot Number
@@ -520,35 +520,41 @@ function SupplyofCocoonstoGrainage() {
                             onChange={handleInputs}
                             type="text"
                             placeholder=" Enter Lot Number"
-                            // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          
                         </div>
                       </Form.Group>
+                    </Col> */}
+                
+                    <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumberId"
+                          value={data.lotNumberId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotNumberListData.map((list) => (
+                            <option key={list.id} value={list.id}>
+                              {list.lotNumber}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
                     </Col>
-                {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Lot Number<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  name="lotNumber"
-                                  value={data.lotNumber}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Lot Number"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                Lot Number is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col> */}
+                  </Form.Group>
+                </Col>
+
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">

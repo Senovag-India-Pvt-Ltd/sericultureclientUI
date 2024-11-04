@@ -569,16 +569,17 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Line Name<span className="text-danger">*</span>
+                      Line Name
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="lineNameId"
+                          name="lineNameId"  
                           value={data.lineNameId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
-                          required
+                          // required
                         >
                           <option value="">Select Line Name</option>
                           {lineNameListData.map((list) => (
@@ -590,9 +591,9 @@ useEffect(() => {
                             </option>
                           ))}
                         </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Line Name is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Col>
                   </Form.Group>
@@ -646,7 +647,8 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Number of pupa examined<span className="text-danger">*</span>
+                    Number of pupa examined
+                    {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control

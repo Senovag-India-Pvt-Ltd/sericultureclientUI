@@ -507,7 +507,7 @@ function SaleAndDisposalOfEggsNSSO() {
                           <Form.Control
                             id="eggSheetNumbers"
                             name="eggSheetNumbers"
-                            type="number"
+                            type="text"
                             // min="1"
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}

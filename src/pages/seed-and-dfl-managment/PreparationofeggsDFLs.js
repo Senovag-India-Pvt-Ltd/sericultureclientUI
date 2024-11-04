@@ -588,7 +588,8 @@ function PreparationofeggsDFLs() {
                       <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year<span className="text-danger">*</span>
+                          Line Details/year
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -621,7 +622,8 @@ function PreparationofeggsDFLs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number<span className="text-danger">*</span>
+                          Generation Number
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -962,7 +964,7 @@ function PreparationofeggsDFLs() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
                                 Egg Recovery %
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1084,7 +1086,7 @@ function PreparationofeggsDFLs() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="additionalRemarks">
                                 Additional remarks
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1094,11 +1096,11 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Additional remarks"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Additional remarks is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
