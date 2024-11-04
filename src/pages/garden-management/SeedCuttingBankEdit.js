@@ -41,6 +41,17 @@ function SeedCuttingBankEdit() {
 
   const isDataPruningSet = !!data.dateOfPruning;
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -53,8 +64,15 @@ function SeedCuttingBankEdit() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
+      // Format date fields
+      const formattedSpunDate = formatDate(data.dateOfPruning);
+
+      const payload = {
+        ...data,
+        dateOfPruning: formattedSpunDate,
+      };
       api
-        .post(baseURL2 + `seed-cutting/update-info`, data)
+        .post(baseURL2 + `seed-cutting/update-info`, payload)
         .then((response) => {
             const seedCuttingBankId = response.data.seedCuttingBankId;
             if (seedCuttingBankId) {
