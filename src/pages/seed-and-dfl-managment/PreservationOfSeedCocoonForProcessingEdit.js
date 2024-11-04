@@ -90,7 +90,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
                 farmId: "",
                 marketMasterId: "",
                 parentLotNumber: "",
-                cocoonSuppliedInNos: ""
+                cacoonSuppliedNumbers: ""
             });
             setValidated(false);
           }
@@ -123,7 +123,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
         farmId: "",
         marketMasterId: "",
         parentLotNumber: "",
-        cocoonSuppliedInNos: ""
+        cacoonSuppliedNumbers: ""
     });
   };
 
@@ -612,9 +612,9 @@ useEffect(() => {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="cocoonSuppliedInNos"
-                        name="cocoonSuppliedInNos"
-                        value={data.cocoonSuppliedInNos}
+                        id="cacoonSuppliedNumbers"
+                        name="cacoonSuppliedNumbers"
+                        value={data.cacoonSuppliedNumbers}
                         onChange={handleInputs}
                         type="number"
                         placeholder="Enter Cocoon Supplied in No's"

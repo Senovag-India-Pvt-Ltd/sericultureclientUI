@@ -160,7 +160,7 @@ function PreservationOfSeedCocoonForProcessingView() {
                         <td style={styles.ctstyle}>
                         Cocoons Supplied in Nos:
                         </td>
-                        <td>{seedCocoon.cocoonSuppliedInNos}</td>
+                        <td>{seedCocoon.cacoonSuppliedNumbers}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>

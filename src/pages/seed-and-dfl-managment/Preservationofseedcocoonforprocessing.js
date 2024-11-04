@@ -36,7 +36,7 @@ function Preservationofseedcocoonforprocessing() {
     farmId: "",
     marketMasterId: "",
     parentLotNumber: "",
-    cocoonSuppliedInNos: ""
+    cacoonSuppliedNumbers: ""
   });
 
   let name, value;
@@ -111,7 +111,7 @@ function Preservationofseedcocoonforprocessing() {
               farmId: "",
               marketMasterId: "", 
               parentLotNumber: "",
-              cocoonSuppliedInNos: ""         
+              cacoonSuppliedNumbers: ""         
             });
             // setReceiptUpload("")
             // document.getElementById("viewReceipt").value = "";
@@ -145,7 +145,7 @@ function Preservationofseedcocoonforprocessing() {
       farmId: "",
       marketMasterId: "",
       parentLotNumber: "",  
-      cocoonSuppliedInNos: ""
+      cacoonSuppliedNumbers: ""
     })
   }
 
@@ -628,9 +628,9 @@ useEffect(() => {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="cocoonSuppliedInNos"
-                        name="cocoonSuppliedInNos"
-                        value={data.cocoonSuppliedInNos}
+                        id="cacoonSuppliedNumbers"
+                        name="cacoonSuppliedNumbers"
+                        value={data.cacoonSuppliedNumbers}
                         onChange={handleInputs}
                         type="number"
                         placeholder="Enter Cocoon Supplied in No's"

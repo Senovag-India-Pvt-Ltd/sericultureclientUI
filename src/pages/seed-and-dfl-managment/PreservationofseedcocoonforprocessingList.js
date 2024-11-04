@@ -466,13 +466,13 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Cocoon supplied in Nos",
-    //   selector: (row) => row.cocoonSuppliedInNos,
-    //   cell: (row) => <span>{row.cocoonSuppliedInNos}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Cocoon supplied in Nos",
+      selector: (row) => row.cacoonSuppliedNumbers,
+      cell: (row) => <span>{row.cacoonSuppliedNumbers}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Number of pupa examined",
       selector: (row) => row.numberOfPupaExamined,
