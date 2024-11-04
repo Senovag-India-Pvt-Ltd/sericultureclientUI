@@ -81,6 +81,18 @@ function ChawkidistributiontoFarmers() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -93,8 +105,16 @@ function ChawkidistributiontoFarmers() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
+      const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
+      const formattedBoxingDate = formatDate(data.laidOnDate);
+      const payload = {
+        ...data,
+        dateOfMothEmergence: formattedReleaseDate,
+        laidOnDate: formattedBoxingDate,
+      };
+
       api
-        .post(baseURL + `Chawki-distribution/add-info`, data)
+        .post(baseURL + `Chawki-distribution/add-info`, payload)
         .then((response) => {
           // debugger;
           if (response.data.error) {
