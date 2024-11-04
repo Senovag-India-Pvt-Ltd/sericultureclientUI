@@ -327,7 +327,10 @@ function TraderActivate() {
 
   const getTraderList = (e) => {
     api
-      .post(baseURL1 + `userMaster/get-trader-users`, { userTypeId: e })
+      .post(baseURL1 + `userMaster/get-trader-users`, {
+        userTypeId: e,
+        marketMasterId: localStorage.getItem("marketId"),
+      })
       // marketId: localStorage.getItem("marketId"),
       .then((response) => {
         //console.log(response);
@@ -387,6 +390,7 @@ function TraderActivate() {
     api
       .post(baseURL1 + `userMaster/get-configure-user-details-for-trader`, {
         userTypeId: e,
+        marketMasterId: localStorage.getItem("marketId"),
       })
       // marketId: localStorage.getItem("marketId"),
       .then((response) => {
@@ -571,9 +575,7 @@ function TraderActivate() {
 
   const getList = (_id) => {
     const response = api
-      .get(
-        baseURL + `trader-license/get-traders-by-market-id/${_id}`
-      )
+      .get(baseURL + `trader-license/get-traders-by-market-id/${_id}`)
       .then((response) => {
         setTraderListData([]);
         console.log(response.data.content.traderLicense);

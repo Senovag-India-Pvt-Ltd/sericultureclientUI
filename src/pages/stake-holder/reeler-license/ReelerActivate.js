@@ -334,7 +334,7 @@ function ReelerActivate() {
 
   const getReelerList = (e) => {
     api
-      .post(baseURL1 + `userMaster/get-reeler-users`, { userTypeId: e })
+      .post(baseURL1 + `userMaster/get-reeler-users`, { userTypeId: e,marketMasterId: localStorage.getItem("marketId") })
       // marketId: localStorage.getItem("marketId"),
       .then((response) => {
         //console.log(response);
@@ -393,7 +393,7 @@ function ReelerActivate() {
   const getConfigureUser = (e) => {
     api
       .post(baseURL1 + `userMaster/get-configure-user-details-for-reeler`, {
-        userTypeId: e,
+        userTypeId: e, marketMasterId:localStorage.getItem("marketId")
       })
       // marketId: localStorage.getItem("marketId"),
       .then((response) => {
