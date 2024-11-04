@@ -46,6 +46,17 @@ function RearingofDFLs() {
   
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -55,8 +66,19 @@ function RearingofDFLs() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const formattedReleaseDate = formatDate(data.releasedOnDate);
+      const formattedBoxingDate = formatDate(data.brushingDate);
+      const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      const payload = {
+        ...data,
+        releasedOnDate: formattedReleaseDate,
+        brushingDate: formattedBoxingDate,
+        spunOnDate: formattedDateOfDisposal,
+        // hatchingDate: formattedExpectedDateOfHatching,
+      };
       api
-        .post(baseURL2 + `Rearing-of-dfls/add-info`, data)
+        .post(baseURL2 + `Rearing-of-dfls/add-info`, payload)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);

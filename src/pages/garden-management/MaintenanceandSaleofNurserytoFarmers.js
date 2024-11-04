@@ -65,6 +65,17 @@ function MaintenanceandSaleofNurserytoFarmers() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -77,8 +88,20 @@ function MaintenanceandSaleofNurserytoFarmers() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
+
+         // Format date fields
+    const formattedSpunDate = formatDate(data.date);
+    const formattedDateOfSupply = formatDate(data.dateOfPlanting);
+    // const formattedDateOfDispatch = formatDate(data.dispatchDate);
+
+    const payload = {
+      ...data,
+      date: formattedSpunDate,
+      dateOfPlanting: formattedDateOfSupply,
+      // dispatchDate: formattedDateOfDispatch,
+    };
       api
-        .post(baseURL + `Maintenance-sale/add-info`, data)
+        .post(baseURL + `Maintenance-sale/add-info`, payload)
         .then((response) => {
           if (response.data.mainAndSaleOfNurseryId) {
             const nurseryId = response.data.mainAndSaleOfNurseryId;
