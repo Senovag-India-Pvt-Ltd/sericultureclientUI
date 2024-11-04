@@ -473,13 +473,6 @@ function ColdStorageScheduleBVList() {
 
     const ColdStorageCalendarBVDataColumns = [
      
-      {
-        name: "Lot Number",
-        selector: (row) => row.lotNumber,
-        cell: (row) => <span>{row.lotNumber}</span>,
-        sortable: true,
-        hide: "md",
-      },
       // {
       //   name: "Lot Number",
       //   selector: (row) => row.lotNumber,
@@ -487,13 +480,20 @@ function ColdStorageScheduleBVList() {
       //   sortable: true,
       //   hide: "md",
       // },
-      {
-        name: "Laid On Date",
-        selector: (row) => row.laidOnDate,
-        cell: (row) => <span>{row.laidOnDate}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      // {
+      //   name: "Lot Number",
+      //   selector: (row) => row.lotNumber,
+      //   cell: (row) => <span>{row.lotNumber}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
+      // {
+      //   name: "Laid On Date",
+      //   selector: (row) => row.laidOnDate,
+      //   cell: (row) => <span>{row.laidOnDate}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
       {
         name: "Storage Temp ",
         selector: (row) => row.storageTemp,

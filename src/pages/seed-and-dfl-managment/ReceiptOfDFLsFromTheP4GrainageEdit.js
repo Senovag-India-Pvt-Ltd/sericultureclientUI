@@ -216,7 +216,8 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Name<span className="text-danger">*</span>
+                          Line Name
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -225,7 +226,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                               value={data.lineNameId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Line Details</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
@@ -237,9 +238,9 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Line Details is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -248,7 +249,8 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number<span className="text-danger">*</span>
+                          Generation Number
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -257,7 +259,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                               value={data.generationNumberId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">Select Generation Number</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
@@ -269,9 +271,9 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Generation Number is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
