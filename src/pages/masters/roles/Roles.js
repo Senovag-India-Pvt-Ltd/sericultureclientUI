@@ -9,10 +9,15 @@ import Swal from "sweetalert2";
 import React from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Roles() {
+
+   // Translation
+   const { t } = useTranslation();
+   
   const [data, setData] = useState({
     roleName: "",
   });
@@ -128,7 +133,7 @@ function Roles() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Roles Name<span className="text-danger">*</span>
+                        {t("role_name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -137,7 +142,7 @@ function Roles() {
                           type="text"
                           value={data.roleName}
                           onChange={handleInputs}
-                          placeholder="Enter Roles name"
+                          placeholder={t("enter_role_name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">

@@ -148,6 +148,8 @@
     "fathers_husbands_name_in_kannada": "Father's/Husband's Name in kannada",
     "enter_fathers_husbands_name_in_kannada": "Enter Father's/Husband's Name in kannada",
     "title_service_application": "Application for Subsidy / Incentives",
-    "reenter_bank_account_number": "Re-enter Bank Account Number"
+    "reenter_bank_account_number": "Re-enter Bank Account Number",
+    "role_name": "Role Name",
+    "enter_role_name": "Enter Role Name"
   }
 }

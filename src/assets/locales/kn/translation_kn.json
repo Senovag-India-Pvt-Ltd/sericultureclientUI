@@ -148,6 +148,8 @@
     "fathers_husbands_name_in_kannada": "ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರು",
     "enter_fathers_husbands_name_in_kannada": "ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
     "title_service_application": "ಸಬ್ಸಿಡಿ/ಪ್ರೋತ್ಸಾಹಕ್ಕಾಗಿ ಅರ್ಜಿ",
-    "reenter_bank_account_number": "ಬ್ಯಾಂಕ್ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಮರು-ನಮೂದಿಸಿ"
+    "reenter_bank_account_number": "ಬ್ಯಾಂಕ್ ಖಾತೆ ಸಂಖ್ಯೆಯನ್ನು ಮರು-ನಮೂದಿಸಿ",
+    "role_name": "ಪಾತ್ರ ಹೆಸರು",
+    "enter_role_name": "ಪಾತ್ರದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"
   }
 }
