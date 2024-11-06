@@ -71,13 +71,13 @@ function RearingofDFLsforthe8Lines() {
       // event.stopPropagation();
 
       const formattedReleaseDate = formatDate(data.laidOnDate);
-      const formattedBoxingDate = formatDate(data.releasedOn);
+      const formattedBoxingDate = formatDate(data.releasedOnDate);
       const formattedDateOfDisposal = formatDate(data.spunOnDate);
       const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
       const payload = {
         ...data,
         laidOnDate: formattedReleaseDate,
-        releasedOn: formattedBoxingDate,
+        releasedOnDate: formattedBoxingDate,
         spunOnDate: formattedDateOfDisposal,
         hatchingDate: formattedExpectedDateOfHatching,
       };

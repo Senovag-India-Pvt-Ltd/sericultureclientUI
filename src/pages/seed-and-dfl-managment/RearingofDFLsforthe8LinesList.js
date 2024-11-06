@@ -541,10 +541,11 @@ function RearingofDFLsforthe8LinesList() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const formattedReleaseDate = formattedDate(feedingTableDetails.hatchingDate);
       const sendPost = {
         rearingOfDFLsForThe8linesId: feedingTableDetails.rearingOfDFLsForThe8linesId,
         lotNumber: feedingTableDetails.lotNumber,
-        hatchingDate: feedingTableDetails.hatchingDate,
+        hatchingDate: formattedReleaseDate,
         firstFeeding: feedingTableDetails.firstFeeding,
         secondFeeding: feedingTableDetails.secondFeeding,
         thirdFeeding:feedingTableDetails.thirdFeeding,
@@ -826,6 +827,17 @@ function RearingofDFLsforthe8LinesList() {
     if (!dateString) return "";
     const date = new Date(dateString);
     return format(date, "dd/MM/yyyy");
+  };
+
+  const formattedDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
   };
 
   // const getCocoonList = (_id) => {
