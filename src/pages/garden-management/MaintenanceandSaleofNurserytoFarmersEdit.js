@@ -40,16 +40,16 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -64,18 +64,18 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
         return;
       }
     // Format date fields
-    const formattedSpunDate = formatDate(data.date);
-    const formattedDateOfSupply = formatDate(data.dateOfPlanting);
-    // const formattedDateOfDispatch = formatDate(data.dispatchDate);
+    // const formattedSpunDate = formatDate(data.date);
+    // const formattedDateOfSupply = formatDate(data.dateOfPlanting);
+    // // const formattedDateOfDispatch = formatDate(data.dispatchDate);
 
-    const payload = {
-      ...data,
-      date: formattedSpunDate,
-      dateOfPlanting: formattedDateOfSupply,
-      // dispatchDate: formattedDateOfDispatch,
-    };
+    // const payload = {
+    //   ...data,
+    //   date: formattedSpunDate,
+    //   dateOfPlanting: formattedDateOfSupply,
+    //   // dispatchDate: formattedDateOfDispatch,
+    // };
       api
-        .post(baseURL + `Maintenance-sale/update-info`, payload)
+        .post(baseURL + `Maintenance-sale/update-info`, data)
         .then((response) => {
           const mainAndSaleOfNurseryId = response.data.mainAndSaleOfNurseryId;
           if (mainAndSaleOfNurseryId) {

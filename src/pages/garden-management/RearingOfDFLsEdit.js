@@ -35,16 +35,16 @@ function RearingOfDFLsEdit() {
   const isDataReleasedSet = !!data.releasedOnDate;
   const isDataSpunSet = !!data.spunOnDate;
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -55,19 +55,19 @@ function RearingOfDFLsEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      const formattedReleaseDate = formatDate(data.releasedOnDate);
-      const formattedBoxingDate = formatDate(data.brushingDate);
-      const formattedDateOfDisposal = formatDate(data.spunOnDate);
-      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
-      const payload = {
-        ...data,
-        releasedOnDate: formattedReleaseDate,
-        brushingDate: formattedBoxingDate,
-        spunOnDate: formattedDateOfDisposal,
-        // hatchingDate: formattedExpectedDateOfHatching,
-      };
+      // const formattedReleaseDate = formatDate(data.releasedOnDate);
+      // const formattedBoxingDate = formatDate(data.brushingDate);
+      // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      // const payload = {
+      //   ...data,
+      //   releasedOnDate: formattedReleaseDate,
+      //   brushingDate: formattedBoxingDate,
+      //   spunOnDate: formattedDateOfDisposal,
+      //   // hatchingDate: formattedExpectedDateOfHatching,
+      // };
       api
-        .post(baseURL2 + `Rearing-of-dfls/update-info`, payload)
+        .post(baseURL2 + `Rearing-of-dfls/update-info`, data)
         .then((response) => {
           //   const trScheduleId = response.data.content.trScheduleId;
           //   if (trScheduleId) {
