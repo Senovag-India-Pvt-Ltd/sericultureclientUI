@@ -50,16 +50,16 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -71,20 +71,20 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
       event.preventDefault();
       // event.stopPropagation();
 
-      const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
-      const formattedBoxingDate = formatDate(data.laidOnDate);
-      // const formattedDateOfDisposal = formatDate(data.spunOnDate);
-      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
-      const payload = {
-        ...data,
-        dateOfMothEmergence: formattedReleaseDate,
-        laidOnDate: formattedBoxingDate,
-        // spunOnDate: formattedDateOfDisposal,
-        // hatchingDate: formattedExpectedDateOfHatching,
-      };
+      // const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
+      // const formattedBoxingDate = formatDate(data.laidOnDate);
+      // // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      // const payload = {
+      //   ...data,
+      //   dateOfMothEmergence: formattedReleaseDate,
+      //   laidOnDate: formattedBoxingDate,
+      //   // spunOnDate: formattedDateOfDisposal,
+      //   // hatchingDate: formattedExpectedDateOfHatching,
+      // };
 
       api
-        .post(baseURLSeedDfl + `EggPreparationRsso/update-info`, payload)
+        .post(baseURLSeedDfl + `EggPreparationRsso/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
