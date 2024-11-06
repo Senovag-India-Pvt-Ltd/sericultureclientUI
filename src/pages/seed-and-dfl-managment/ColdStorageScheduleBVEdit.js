@@ -35,16 +35,16 @@ function ColdStorageScheduleBVEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
  
 
   const postData = (event) => {
@@ -56,18 +56,18 @@ function ColdStorageScheduleBVEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      const formattedReleaseDate = formatDate(data.dateOfRelease);
-      const formattedDateOfDisposal = formatDate(data.laidOnDate);
-      const formattedExpectedDateOfHatching = formatDate(data.dateOfDeposit);
+      // const formattedReleaseDate = formatDate(data.dateOfRelease);
+      // const formattedDateOfDisposal = formatDate(data.laidOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.dateOfDeposit);
   
-      const payload = {
-        ...data,
-        dateOfRelease: formattedReleaseDate,
-        laidOnDate: formattedDateOfDisposal,
-        dateOfDeposit: formattedExpectedDateOfHatching,
-      };
+      // const payload = {
+      //   ...data,
+      //   dateOfRelease: formattedReleaseDate,
+      //   laidOnDate: formattedDateOfDisposal,
+      //   dateOfDeposit: formattedExpectedDateOfHatching,
+      // };
       api
-        .post(baseURLSeedDfl + `Cold-Storage/update-info`, payload)
+        .post(baseURLSeedDfl + `Cold-Storage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);

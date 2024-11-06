@@ -37,16 +37,16 @@ function PreservationOfSeedCocoonForProcessingEdit() {
   const isDataSpunSet = !!data.spunOnDate;
   const isDataInvoiceDate = !!data.invoiceDate;
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -57,17 +57,17 @@ function PreservationOfSeedCocoonForProcessingEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      const formattedReleaseDate = formatDate(data.dateOfSeedCocoonSupply);
-      const formattedDateOfDisposal = formatDate(data.spunOnDate);
-      const formattedExpectedDateOfHatching = formatDate(data.invoiceDate);
-      const payload = {
-        ...data,
-        dateOfSeedCocoonSupply: formattedReleaseDate,
-        spunOnDate: formattedDateOfDisposal,
-        invoiceDate: formattedExpectedDateOfHatching,
-      };
+      // const formattedReleaseDate = formatDate(data.dateOfSeedCocoonSupply);
+      // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.invoiceDate);
+      // const payload = {
+      //   ...data,
+      //   dateOfSeedCocoonSupply: formattedReleaseDate,
+      //   spunOnDate: formattedDateOfDisposal,
+      //   invoiceDate: formattedExpectedDateOfHatching,
+      // };
       api
-        .post(baseURLSeedDfl + `PreservationOfSeed/update-info`, payload)
+        .post(baseURLSeedDfl + `PreservationOfSeed/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);

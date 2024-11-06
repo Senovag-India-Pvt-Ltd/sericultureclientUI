@@ -81,16 +81,16 @@ function SaleDisposalofDFLseggsEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
 
   const postData = (event) => {
@@ -102,19 +102,19 @@ function SaleDisposalofDFLseggsEdit() {
     } else {
       event.preventDefault();
       // Format date fields
-    const formattedReleaseDate = formatDate(data.releaseDate);
-    const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
-    const formattedExpectedDateOfHatching = formatDate(data.expectedDateOfHatching);
+    // const formattedReleaseDate = formatDate(data.releaseDate);
+    // const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
+    // const formattedExpectedDateOfHatching = formatDate(data.expectedDateOfHatching);
 
-    const payload = {
-      ...data,
-      releaseDate: formattedReleaseDate,
-      dateOfDisposal: formattedDateOfDisposal,
-      expectedDateOfHatching: formattedExpectedDateOfHatching,
-    };
+    // const payload = {
+    //   ...data,
+    //   releaseDate: formattedReleaseDate,
+    //   dateOfDisposal: formattedDateOfDisposal,
+    //   expectedDateOfHatching: formattedExpectedDateOfHatching,
+    // };
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg/update-info`, payload)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);

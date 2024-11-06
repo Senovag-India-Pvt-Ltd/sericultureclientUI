@@ -115,16 +115,16 @@ function PreparationofeggsDFLsAdd() {
   // };
 
   // Post data including preparationOfEggsId
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
 const postData = (event) => {
   const form = event.currentTarget;
@@ -135,21 +135,21 @@ const postData = (event) => {
   } else {
     event.preventDefault();
 
-    const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
-    const formattedBoxingDate = formatDate(data.laidOnDate);
-    // const formattedDateOfDisposal = formatDate(data.spunOnDate);
-    // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
-    const payload = {
-      ...data,
-      dateOfMothEmergence: formattedReleaseDate,
-      laidOnDate: formattedBoxingDate,
-      // spunOnDate: formattedDateOfDisposal,
-      // hatchingDate: formattedExpectedDateOfHatching,
-    };
+    // const formattedReleaseDate = formatDate(data.dateOfMothEmergence);
+    // const formattedBoxingDate = formatDate(data.laidOnDate);
+    // // const formattedDateOfDisposal = formatDate(data.spunOnDate);
+    // // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+    // const payload = {
+    //   ...data,
+    //   dateOfMothEmergence: formattedReleaseDate,
+    //   laidOnDate: formattedBoxingDate,
+    //   // spunOnDate: formattedDateOfDisposal,
+    //   // hatchingDate: formattedExpectedDateOfHatching,
+    // };
 
 
     api
-      .post(baseURLSeedDfl + `EggPreparation/preparation-of-present-lotno-dfls`, payload)
+      .post(baseURLSeedDfl + `EggPreparation/preparation-of-present-lotno-dfls`, data)
       .then((response) => {
         if (response.data.error) {
           updateError(response.data.message);
@@ -504,7 +504,7 @@ useEffect(() => {
                 </Col> */}
 
                 {/* {selectedLotType === "presentLot" && ( */}
-            <Col lg="4">
+            {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                      Lot Number
@@ -531,7 +531,7 @@ useEffect(() => {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> 
+                </Col>  */}
                     {/* )} */}
 
                     {/* {selectedLotType === "newLot" && ( */}
@@ -564,7 +564,7 @@ useEffect(() => {
                   </Form.Group>
                 </Col>  */}
                     {/* )} */}
-                <Col lg="4">
+                {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Race<span className="text-danger">*</span>
@@ -594,9 +594,9 @@ useEffect(() => {
                           </div>
                         </Col>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
                     
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Line Details/year<span className="text-danger">*</span>
@@ -626,10 +626,10 @@ useEffect(() => {
                           </div>
                         </Col>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Generation Number<span className="text-danger">*</span>
@@ -681,7 +681,7 @@ useEffect(() => {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
@@ -690,10 +690,10 @@ useEffect(() => {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                {isDateOfMothEmergence && (
+                                {/* {isDateOfMothEmergence && ( */}
                                   <DatePicker
                                     selected={
-                                      new Date(data.dateOfMothEmergence) || null
+                                      data.dateOfMothEmergence ? new Date(data.dateOfMothEmergence) : null
                                     }
                                     onChange={(date) =>
                                       handleDateChange(
@@ -710,7 +710,7 @@ useEffect(() => {
                                     className="form-control"
                                     required
                                   />
-                                )}
+                                {/* )} */}
 
                                 <Form.Control.Feedback type="invalid">
                                   Date of moth emergence is required
@@ -726,9 +726,9 @@ useEffect(() => {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                {isLaidOnDate && (
+                                {/* {isLaidOnDate && ( */}
                                   <DatePicker
-                                    selected={new Date(data.laidOnDate) || null}
+                                    selected={data.laidOnDate ? new Date(data.laidOnDate) : null}
                                     onChange={(date) =>
                                       handleDateChange(date, "laidOnDate")
                                     }
@@ -741,7 +741,7 @@ useEffect(() => {
                                     className="form-control"
                                     required
                                   />
-                                )}
+                                {/* )} */}
 
                                 <Form.Control.Feedback type="invalid">
                                   Laid On Date is required
@@ -754,7 +754,6 @@ useEffect(() => {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggSheetSerialNumber">
                                 Egg sheet serial number
-                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -764,16 +763,13 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Egg sheet serial number"
-                                  required
                                 />
-                                <Form.Control.Feedback type="invalid">
-                                  Egg sheet serial number is required
-                                </Form.Control.Feedback>
+                              
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedCocoon">
                               Selected Cocoon's in Nos
@@ -788,14 +784,12 @@ useEffect(() => {
                                   placeholder="Selected Cocoon's in Nos"
                                   // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                Selected Cocoon's in Nos is required
-                                </Form.Control.Feedback> */}
+
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="rejectedCocoon">
                               Rejected Cocoon's in Nos
@@ -807,17 +801,13 @@ useEffect(() => {
                                   value={data.rejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Rejected Cocoon's in Nos"
-                                  // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                Rejected Cocoon's in Nos is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
                               No of Pairs (%) (Selected Cocoon's)
@@ -830,16 +820,14 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="No of Pairs (%) (Selected Cocoon's)"
-                                  // required
+                         
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                No of Pairs (%) (Selected Cocoon's) is required
-                                </Form.Control.Feedback> */}
+                             
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
                               No of Pairs (%) (Rejected Cocoon's)
@@ -852,14 +840,12 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="No of Pairs (%) (Rejected Cocoon's)"
-                                  // required
+                                  
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                No of Pairs (%) (Rejected Cocoon's) is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
@@ -931,7 +917,7 @@ useEffect(() => {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
                               Err %(Selected Cocoon's)
@@ -944,20 +930,17 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Err %(Selected Cocoon's)"
-                                  // required
+
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                Err %(Selected Cocoon's) is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
                               Err %(Rejected Cocoon's)
-                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -967,15 +950,12 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Err %(Rejected Cocoon's)"
-                                  // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                Err %(Rejected Cocoon's) is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
-
+                          </Col> */}
+{/* 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
@@ -997,13 +977,12 @@ useEffect(() => {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
                                 Remaining DFLs 
-                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1015,12 +994,10 @@ useEffect(() => {
                                   placeholder="Remaining DFLs"
                                   // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                  Test results is required
-                                </Form.Control.Feedback> */}
+                               
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
@@ -1082,7 +1059,7 @@ useEffect(() => {
                             </Form.Group>
                           </Col> */}
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="additionalRemarks">
                                 Additional remarks
@@ -1096,14 +1073,14 @@ useEffect(() => {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Additional remarks"
-                                  required
+                                  // required
                                 />
                                 <Form.Control.Feedback type="invalid">
                                   Additional remarks is required
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </Card.Body>
                     </Card>

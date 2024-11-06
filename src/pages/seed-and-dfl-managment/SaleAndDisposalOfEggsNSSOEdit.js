@@ -81,16 +81,16 @@ function SaleAndDisposalOfEggsNSSOEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -101,13 +101,13 @@ function SaleAndDisposalOfEggsNSSOEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
-      const payload = {
-        ...data,
-        dateOfDisposal: formattedDateOfDisposal,
-      };
+      // const formattedDateOfDisposal = formatDate(data.dateOfDisposal);
+      // const payload = {
+      //   ...data,
+      //   dateOfDisposal: formattedDateOfDisposal,
+      // };
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/update-info`, payload)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
