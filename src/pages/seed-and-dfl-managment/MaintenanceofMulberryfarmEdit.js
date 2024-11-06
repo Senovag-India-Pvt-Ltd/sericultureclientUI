@@ -52,27 +52,27 @@ function MaintenanceofMulberryfarmEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      const { pruningDate } = data;
-      const formattedDate =
-        pruningDate.getFullYear() +
-        "-" +
-        (pruningDate.getMonth() + 1).toString().padStart(2, "0") +
-        "-" +
-        pruningDate.getDate().toString().padStart(2, "0");
+      // // event.stopPropagation();
+      // const { pruningDate } = data;
+      // const formattedDate =
+      //   pruningDate.getFullYear() +
+      //   "-" +
+      //   (pruningDate.getMonth() + 1).toString().padStart(2, "0") +
+      //   "-" +
+      //   pruningDate.getDate().toString().padStart(2, "0");
 
-        const { plantationDate } = data;
-      const formattedPlantationDate =
-      plantationDate.getFullYear() +
-        "-" +
-        (plantationDate.getMonth() + 1).toString().padStart(2, "0") +
-        "-" +
-        plantationDate.getDate().toString().padStart(2, "0");
+      //   const { plantationDate } = data;
+      // const formattedPlantationDate =
+      // plantationDate.getFullYear() +
+      //   "-" +
+      //   (plantationDate.getMonth() + 1).toString().padStart(2, "0") +
+      //   "-" +
+      //   plantationDate.getDate().toString().padStart(2, "0");
       api
         .post(baseURLSeedDfl + `MulberryFarm/update-info`, {
           ...data,
-          pruningDate: formattedDate,
-          plantationDate: formattedPlantationDate,
+          // pruningDate: formattedDate,
+          // plantationDate: formattedPlantationDate,
         })
         .then((response) => {
           //   const trScheduleId = response.data.content.trScheduleId;

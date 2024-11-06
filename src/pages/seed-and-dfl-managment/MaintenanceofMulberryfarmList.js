@@ -99,13 +99,25 @@ function MaintenanceofMulberryfarmList() {
     foliarSpray2: ""
   });
 
-  const dateFormat = (newDate)=>{
-    return newDate.getFullYear() +
-    "-" +
-    (newDate.getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    newDate.getDate().toString().padStart(2, "0");
-  }
+  const dateFormat = (newDate) => {
+    // Convert to Date if it's not already a Date object
+    const date = new Date(newDate);
+    
+    // Check if conversion was successful (valid Date object)
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", newDate);
+      return ""; // Return an empty string or handle the error as needed
+    }
+  
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+  
       
 
   const [validatedPruningDateEdit, setValidatedPruningDateEdit] = useState(false);
