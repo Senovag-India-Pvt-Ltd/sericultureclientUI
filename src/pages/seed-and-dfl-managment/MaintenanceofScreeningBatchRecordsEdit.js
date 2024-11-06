@@ -51,16 +51,16 @@ function MaintenanceofScreeningBatchRecordsEdit() {
   const isSpunOnDate = !!data.spunOnDate;
   const isBrushedOnDate = !!data.brushedOnDate;
 
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return ""; // Handle null or undefined dates
+  //   return (
+  //     date.getFullYear() +
+  //     "-" +
+  //     (date.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     date.getDate().toString().padStart(2, "0")
+  //   );
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -71,19 +71,19 @@ function MaintenanceofScreeningBatchRecordsEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      const formattedReleaseDate = formatDate(data.incubationDate);
-      const formattedBoxingDate = formatDate(data.blackBoxingDate);
-      const formattedDateOfDisposal = formatDate(data.brushedOnDate);
-      const formattedExpectedDateOfHatching = formatDate(data.spunOnDate);
-      const payload = {
-        ...data,
-        incubationDate: formattedReleaseDate,
-        blackBoxingDate: formattedBoxingDate,
-        brushedOnDate: formattedDateOfDisposal,
-        spunOnDate: formattedExpectedDateOfHatching,
-      };
+      // const formattedReleaseDate = formatDate(data.incubationDate);
+      // const formattedBoxingDate = formatDate(data.blackBoxingDate);
+      // const formattedDateOfDisposal = formatDate(data.brushedOnDate);
+      // const formattedExpectedDateOfHatching = formatDate(data.spunOnDate);
+      // const payload = {
+      //   ...data,
+      //   incubationDate: formattedReleaseDate,
+      //   blackBoxingDate: formattedBoxingDate,
+      //   brushedOnDate: formattedDateOfDisposal,
+      //   spunOnDate: formattedExpectedDateOfHatching,
+      // };
       api
-        .post(baseURLSeedDfl + `MaintenanceOfScreen/update-info`, payload)
+        .post(baseURLSeedDfl + `MaintenanceOfScreen/update-info`, data)
         .then((response) => {
           //   const trScheduleId = response.data.content.trScheduleId;
           //   if (trScheduleId) {
