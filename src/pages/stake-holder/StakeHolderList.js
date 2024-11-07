@@ -11,11 +11,14 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function StakeHolderList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -203,7 +206,7 @@ function StakeHolderList() {
 
   const StakeHolderDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -216,7 +219,7 @@ function StakeHolderList() {
             size="sm"
             onClick={() => handleView(row.farmerId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -224,7 +227,7 @@ function StakeHolderList() {
             className="ms-2"
             onClick={() => handleEdit(row.farmerId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -241,35 +244,35 @@ function StakeHolderList() {
       grow: 2,
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fruits ID",
+      name: t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Number",
+      name: t("farmer_number"),
       selector: (row) => row.farmerNumber,
       cell: (row) => <span>{row.farmerNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Bank Account Number",
+      name: t("bank_account_number"),
       selector: (row) => row.farmerBankAccountNumber,
       cell: (row) => <span>{row.farmerBankAccountNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DOB",
+      name: t("farmer_dob"),
       selector: (row) => row.dob,
       cell: (row) => <span>{formatDate(row.dob)}</span>,
       sortable: true,
@@ -291,14 +294,14 @@ function StakeHolderList() {
     // },
 
     {
-      name: "Mobile Number",
+      name: t("mobile_number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Seri Passbook Number",
+      name: t("passbook_number"),
       selector: (row) => row.passbookNumber,
       cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,
@@ -322,7 +325,7 @@ function StakeHolderList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Registration List</Block.Title>
+            <Block.Title tag="h2">{t("farmer_registration_list")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -332,7 +335,7 @@ function StakeHolderList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -341,7 +344,7 @@ function StakeHolderList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -355,7 +358,7 @@ function StakeHolderList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -386,7 +389,7 @@ function StakeHolderList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

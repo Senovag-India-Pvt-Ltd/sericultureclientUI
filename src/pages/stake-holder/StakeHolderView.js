@@ -6,11 +6,15 @@ import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
 import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function StakeHolderViewPage() {
+   // Translation
+   const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -196,7 +200,7 @@ function StakeHolderViewPage() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer View</Block.Title>
+            <Block.Title tag="h2">{t("Farmer View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -206,7 +210,7 @@ function StakeHolderViewPage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -215,7 +219,7 @@ function StakeHolderViewPage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -225,26 +229,26 @@ function StakeHolderViewPage() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Farmer Personal Info</Card.Header>
+          <Card.Header>{t("Farmer Personal Info")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Fruits Id:</td>
+                      <td style={styles.ctstyle}>{t("FRUITS ID")}:</td>
                       <td>{StakeHolder.fruitsId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Id:</td>
+                      <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                       <td>{StakeHolder.farmerId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Name:</td>
+                      <td style={styles.ctstyle}>{t("farmer_name")}:</td>
                       <td>{StakeHolder.firstName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Name in Kannada:</td>
+                      <td style={styles.ctstyle}> {t("farmer_name_kannada")}:</td>
                       <td>{StakeHolder.nameKan}</td>
                     </tr>
                     <tr>
@@ -252,15 +256,15 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.tscName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Father's/Husband's Name:</td>
+                      <td style={styles.ctstyle}>  {t("fathers_husbands_name")}:</td>
                       <td>{StakeHolder.fatherName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Farmer DOB:</td>
+                      <td style={styles.ctstyle}>{t("farmer_dob")}:</td>
                       <td>{formatDate(StakeHolder.dob)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Gender:</td>
+                      <td style={styles.ctstyle}> {t("gender")}:</td>
                       <td>
                         {StakeHolder.genderId === 1
                           ? "Male"
@@ -272,11 +276,11 @@ function StakeHolderViewPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Caste:</td>
+                      <td style={styles.ctstyle}> {t("Caste")}:</td>
                       <td>{StakeHolder.title}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Differently Abled:</td>
+                      <td style={styles.ctstyle}> {t("differently_abled")}:</td>
                       <td>
                         {StakeHolder.differentlyAbled === true
                           ? "Yes"
@@ -286,7 +290,7 @@ function StakeHolderViewPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Seri Passbook Number:</td>
+                      <td style={styles.ctstyle}>{t("passbook_number")}:</td>
                       <td>{StakeHolder.passbookNumber}</td>
                     </tr>
                   </tbody>
@@ -296,11 +300,11 @@ function StakeHolderViewPage() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Email ID:</td>
+                      <td style={styles.ctstyle}> {t("email_id")}:</td>
                       <td>{StakeHolder.email}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Mobile Number:</td>
+                      <td style={styles.ctstyle}> {t("mobile_number")}:</td>
                       <td>{StakeHolder.mobileNumber}</td>
                     </tr>
                     {/* <tr>
@@ -308,17 +312,17 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.aadhaarNumber}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}> EPIC Number:</td>
+                      <td style={styles.ctstyle}>  {t("epic_number")}:</td>
                       <td>{StakeHolder.epicNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Ration Card:</td>
+                      <td style={styles.ctstyle}> {t("ration_number")}:</td>
                       <td>{StakeHolder.rationCardNumber}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>
                         {" "}
-                        Extent of Total Land Holding in Acres:
+                        {t("extent_of_total_land_holding_in_acres")}:
                       </td>
                       <td>{StakeHolder.totalLandHolding}</td>
                     </tr>
@@ -333,15 +337,15 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.landCategoryName}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Number:</td>
+                      <td style={styles.ctstyle}> {t("farmer_number")}:</td>
                       <td>{StakeHolder.farmerNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Type:</td>
+                      <td style={styles.ctstyle}> {t("farmer_type")}:</td>
                       <td>{StakeHolder.farmerTypeName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Education:</td>
+                      <td style={styles.ctstyle}> {t("education")}:</td>
                       <td>{StakeHolder.name}</td>
                     </tr>
                     {/* <tr>
@@ -349,11 +353,11 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.representativeId}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}> Recipient ID(Khazane II):</td>
+                      <td style={styles.ctstyle}>  {t("recipient_id")}:</td>
                       <td>{StakeHolder.khazaneRecipientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Photo:</td>
+                      <td style={styles.ctstyle}> {t("Farmer_Photo_(PDF/jpg/png)_(Max: 2mb)")}:</td>
                       {/* <td>{StakeHolder.taluk}</td> */}
                       <td>
                         {" "}
@@ -380,7 +384,7 @@ function StakeHolderViewPage() {
           </Card.Body>
         </Card>
         <Card className="mt-3">
-          <Card.Header>Family Members</Card.Header>
+          <Card.Header>{t("Family Members")}</Card.Header>
           <Card.Body>
             {/* <Row className="g-gs"> */}
             {familyMembersList && familyMembersList.length > 0
@@ -391,19 +395,19 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Farmer Family Id:</td>
+                            <td style={styles.ctstyle}> {t("Farmer Family Id")}</td>
                             <td>{familyMembers.farmerFamilyId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Farmer Id:</td>
+                            <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                             <td>{familyMembers.farmerId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Name:</td>
+                            <td style={styles.ctstyle}> {t("Name")}</td>
                             <td>{familyMembers.farmerFamilyName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Relationship:</td>
+                            <td style={styles.ctstyle}>  {t("relationship")}:</td>
                             <td>{familyMembers.relationshipName}</td>
                           </tr>
                         </tbody>
@@ -416,7 +420,7 @@ function StakeHolderViewPage() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Address</Card.Header>
+          <Card.Header>{t("address")}</Card.Header>
           <Card.Body>
             {farmerAddressDetailsList && farmerAddressDetailsList.length > 0
               ? farmerAddressDetailsList.map((farmerAddressDetails) => (
@@ -426,27 +430,27 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}>Farmer Address Id:</td>
+                            <td style={styles.ctstyle}>{t("Farmer Address Id")}</td>
                             <td>{farmerAddressDetails.farmerAddressId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Farmer Id:</td>
+                            <td style={styles.ctstyle}>{t("Farmer Id")}</td>
                             <td>{farmerAddressDetails.farmerId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Address:</td>
+                            <td style={styles.ctstyle}> {t("address")}</td>
                             <td>{farmerAddressDetails.addressText}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>District Name:</td>
+                            <td style={styles.ctstyle}>{t("district")}</td>
                             <td>{farmerAddressDetails.district}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Taluk Name:</td>
+                            <td style={styles.ctstyle}>{t("taluk")}</td>
                             <td>{farmerAddressDetails.taluk}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Village Name</td>
+                            <td style={styles.ctstyle}>{t("village")}</td>
                             <td>{farmerAddressDetails.village}</td>
                           </tr>
                           {/* <tr>
@@ -462,12 +466,12 @@ function StakeHolderViewPage() {
                             <td>{farmerAddressDetails.districtName}</td>
                           </tr> */}
                           <tr>
-                            <td style={styles.ctstyle}> State:</td>
+                            <td style={styles.ctstyle}>{t("state")}</td>
                             <td>{farmerAddressDetails.stateName}</td>
                           </tr>
                           {farmerAddressDetails.defaultAddress && (
                             <tr>
-                              <td style={styles.ctstyle}> Default Address:</td>
+                              <td style={styles.ctstyle}>{t("Default Address")} </td>
                               <td>
                                 {farmerAddressDetails.defaultAddress.toString()}
                               </td>
@@ -483,7 +487,7 @@ function StakeHolderViewPage() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Farmers Land Details</Card.Header>
+          <Card.Header>{t("Farmers Land Details")}</Card.Header>
           <Card.Body>
             {farmerLandList && farmerLandList.length > 0
               ? farmerLandList.map((farmerLand) => (
@@ -495,24 +499,24 @@ function StakeHolderViewPage() {
                           <tr>
                             <td style={styles.ctstyle}>
                               {" "}
-                              Farmer Land Details Id:
+                              {t("Farmer Land Details Id")}
                             </td>
                             <td>{farmerLand.farmerLandDetailsId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Farmer Id:</td>
+                            <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                             <td>{farmerLand.farmerId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Land Ownership:</td>
+                            <td style={styles.ctstyle}>  {t("land_ownership")}</td>
                             <td>{farmerLand.landOwnershipName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Survey Number:</td>
+                            <td style={styles.ctstyle}>{t("survey_number")}</td>
                             <td>{farmerLand.surveyNumber}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Pltatantation Type:</td>
+                            <td style={styles.ctstyle}>{t("plantation_type")}</td>
                             <td>{farmerLand.plantationTypeName}</td>
                           </tr>
                           {/* <tr>
@@ -527,23 +531,23 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> soil Type :</td>
+                            <td style={styles.ctstyle}> {t("soil_type")}</td>
                             <td>{farmerLand.soilTypeName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Hissa:</td>
+                            <td style={styles.ctstyle}>{t("hissa")}</td>
                             <td>{farmerLand.hissa}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Mulberry Source:</td>
+                            <td style={styles.ctstyle}>{t("source_of_Mulberry")}</td>
                             <td>{farmerLand.mulberrySourceName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Mulberry Area:</td>
+                            <td style={styles.ctstyle}>{t("Mulberry Area(in Acres)")}</td>
                             <td>{farmerLand.mulberryArea}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Mulberry Variety:</td>
+                            <td style={styles.ctstyle}> {t("Mulberry_Variety")}</td>
                             <td>{farmerLand.mulberryVarietyName}</td>
                           </tr>
                           {/* <tr>
@@ -551,7 +555,7 @@ function StakeHolderViewPage() {
                       <td>{farmerLand.plantationDate}</td>
                     </tr> */}
                           <tr>
-                            <td style={styles.ctstyle}> Spacing:</td>
+                            <td style={styles.ctstyle}> {t("Plantation Spacing")}</td>
                             <td>{farmerLand.spacing}</td>
                           </tr>
                         </tbody>
@@ -561,30 +565,30 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Irrigation Source:</td>
+                            <td style={styles.ctstyle}> {t("irrigation_source")}</td>
                             <td>{farmerLand.irrigationSourceName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Irrigation Type:</td>
+                            <td style={styles.ctstyle}> {t("irrigation_type")}</td>
                             <td>{farmerLand.irrigationTypeName}</td>
                           </tr>
                           <tr>
                             <td style={styles.ctstyle}>
-                              Rearing House Details:
+                            {t("Rearing House (In Sq ft)")}
                             </td>
                             <td>{farmerLand.rearingHouseDetails}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Roof Type:</td>
+                            <td style={styles.ctstyle}> {t("rearing_house_roof_type")}</td>
                             <td>{farmerLand.roofTypeName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> SilkWorm Variety:</td>
+                            <td style={styles.ctstyle}> {t("silk_worm")}</td>
                             <td>{farmerLand.silkWormVarietyName}</td>
                           </tr>
                           <tr>
                             <td style={styles.ctstyle}>
-                              Rearing Capacity Crops:
+                            {t("rearing_capacity_crops_per_Annum")}
                             </td>
                             <td>{farmerLand.rearingCapacityCrops}</td>
                           </tr>
@@ -597,7 +601,7 @@ function StakeHolderViewPage() {
                           <tr>
                             <td style={styles.ctstyle}>
                               {" "}
-                              Rearing Capacity Dlf:
+                              {t("rearing_capacity_dlf_per_crop")}
                             </td>
                             <td>{farmerLand.rearingCapacityDlf}</td>
                           </tr>
@@ -610,27 +614,27 @@ function StakeHolderViewPage() {
                       <td>{farmerLand.subsidyName}</td>
                     </tr> */}
                           <tr>
-                            <td style={styles.ctstyle}>Loan Details:</td>
+                            <td style={styles.ctstyle}>{t("loan_details")}</td>
                             <td>{farmerLand.loanDetails}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Equipment Details:</td>
+                            <td style={styles.ctstyle}> {t("equipment_details")}</td>
                             <td>{farmerLand.equipmentDetails}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Owner Name:</td>
+                            <td style={styles.ctstyle}> {t("owner_name")}</td>
                             <td>{farmerLand.ownerName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Owner Number:</td>
+                            <td style={styles.ctstyle}> {t("Owner Number")}</td>
                             <td>{farmerLand.ownerNo}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Main Owner No:</td>
+                            <td style={styles.ctstyle}> {t("Main Owner Number")}</td>
                             <td>{farmerLand.mainOwnerNo}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Survey NOc:</td>
+                            <td style={styles.ctstyle}> {t("survey_noc")}</td>
                             <td>{farmerLand.surNoc}</td>
                           </tr>
                         </tbody>
@@ -640,43 +644,43 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Acre:</td>
+                            <td style={styles.ctstyle}> {t("Acre")}</td>
                             <td>{farmerLand.acre}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Gunta:</td>
+                            <td style={styles.ctstyle}> {t("Gunta")}</td>
                             <td>{farmerLand.gunta}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> State:</td>
+                            <td style={styles.ctstyle}>{t("state")}</td>
                             <td>{farmerLand.stateName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Fgunta:</td>
+                            <td style={styles.ctstyle}>{t("FGunta")}</td>
                             <td>{farmerLand.fgunta}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> District:</td>
+                            <td style={styles.ctstyle}> {t("district")}</td>
                             <td>{farmerLand.districtName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Taluk:</td>
+                            <td style={styles.ctstyle}>{t("taluk")}</td>
                             <td>{farmerLand.talukName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Hobli:</td>
+                            <td style={styles.ctstyle}>{t("hobli")}</td>
                             <td>{farmerLand.hobliName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Village:</td>
+                            <td style={styles.ctstyle}> {t("village")}</td>
                             <td>{farmerLand.villageName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Address:</td>
+                            <td style={styles.ctstyle}>{t("address")}</td>
                             <td>{farmerLand.address}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Pincode:</td>
+                            <td style={styles.ctstyle}> {t("pin_code")}</td>
                             <td>{farmerLand.pincode}</td>
                           </tr>
                         </tbody>
@@ -689,40 +693,40 @@ function StakeHolderViewPage() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Bank Account Details</Card.Header>
+          <Card.Header>{t("Bank Account Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Bank Account Id:</td>
+                      <td style={styles.ctstyle}> {t("Farmer Bank Account Id")}</td>
                       <td>{bank.farmerBankAccountId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Id:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Id")}</td>
                       <td>{bank.farmerId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Bank Name:</td>
+                      <td style={styles.ctstyle}> {t("Bank Name")}</td>
                       <td>{bank.farmerBankName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Bank Account Number:</td>
+                      <td style={styles.ctstyle}> {t("Bank Account Number")}</td>
                       <td>{bank.farmerBankAccountNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Branch Name:</td>
+                      <td style={styles.ctstyle}> {t("Branch Name")}</td>
                       <td>{bank.farmerBankBranchName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> IFSC Code:</td>
+                      <td style={styles.ctstyle}> {t("IFSC Code")}</td>
                       <td>{bank.farmerBankIfscCode}</td>
                     </tr>
 
 
                     <tr>
-                      <td style={styles.ctstyle}> Bank Passbook:</td>
+                      <td style={styles.ctstyle}> {t("Bank Passbook")}</td>
                       {/* <td>{StakeHolder.taluk}</td> */}
                       <td>
                         {" "}
