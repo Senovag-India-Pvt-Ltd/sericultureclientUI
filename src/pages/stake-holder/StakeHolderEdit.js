@@ -1982,7 +1982,7 @@ function StakeHolderEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -1991,7 +1991,7 @@ function StakeHolderEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -2209,7 +2209,7 @@ function StakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          Caste<span className="text-danger">*</span>
+                        {t("Caste")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2218,7 +2218,7 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             disabled
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -2226,7 +2226,7 @@ function StakeHolderEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Caste is required.
+                            {t("caste_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

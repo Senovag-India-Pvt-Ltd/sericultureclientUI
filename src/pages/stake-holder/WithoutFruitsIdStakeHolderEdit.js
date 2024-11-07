@@ -2535,7 +2535,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          Caste<span className="text-danger">*</span>
+                        {t("Caste")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2544,7 +2544,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                             onChange={handleInputs}
                             disabled
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="0">{t("select_Caste")}</option>
                             {casteListData && casteListData.length 
                             ? casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
@@ -2553,7 +2553,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                             )): ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Caste is required.
+                          {t("caste_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2720,7 +2720,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          Farmer Type<span className="text-danger">*</span>
+                        {t("farmer_type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2735,7 +2735,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                               data.farmerTypeId === "0"
                             }
                           >
-                            <option value="">Select Farmer Type </option>
+                            <option value="">{t("select_farmer_type")} </option>
                             {farmerTypeListData && farmerTypeListData.length
                             ? farmerTypeListData.map((list) => (
                               <option
@@ -2748,7 +2748,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                             :""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Farmer Type is required
+                          {t("select_farmer_type_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2795,14 +2795,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Education</Form.Label>
+                        <Form.Label>{t("education")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="educationId"
                             value={data.educationId}
                             onChange={handleInputs}
                           >
-                            <option value="">Select Education </option>
+                            <option value="">{t("select_education")} </option>
                             {educationListData && educationListData
                             ? educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
@@ -2847,7 +2847,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                               data.tscMasterId === "0"
                             }
                           >
-                            <option value="">Select TSC</option>
+                            <option value="">{t("select_tsc")}</option>
                             {tscListData && tscListData.length
                             ? tscListData.map((list) => (
                               <option
@@ -2860,7 +2860,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                             : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            TSC is required
+                          {t("tsc_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2973,9 +2973,9 @@ function WithoutFruitsIdStakeHolderEdit() {
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Name</th>
-                                  <th>Relationship</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("Name")}</th>
+                                  <th>{t("relationship")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -3080,13 +3080,13 @@ function WithoutFruitsIdStakeHolderEdit() {
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Address</th>
-                                  <th>Village</th>
-                                  <th>Taluk</th>
-                                  <th>District</th>
-                                  <th>State</th>
-                                  <th>Default Address</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("address")}</th>
+                                  <th>{t("village")}</th>
+                                  <th>{t("taluk")}</th>
+                                  <th>{t("district")}</th>
+                                  <th>{t("state")}</th>
+                                  <th>{t("Default Address")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -3197,11 +3197,11 @@ function WithoutFruitsIdStakeHolderEdit() {
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Land Ownership</th>
-                                  <th>Survey Number</th>
-                                  <th>Plantation Type</th>
-                                  <th>State</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("land_ownership")}</th>
+                                  <th>{t("survey_number")}</th>
+                                  <th>{t("plantation_type")}</th>
+                                  <th>{t("state")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -3345,7 +3345,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbok
+                        {t("upload_bank")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -3440,7 +3440,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Relationship<span className="text-danger">*</span>
+                  {t("relationship")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3454,7 +3454,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         familyMembers.relationshipId === "0"
                       }
                     >
-                      <option value="">Select Relationship</option>
+                      <option value="">{t("select_relationship")}</option>
                       {relationshipListData && relationshipListData.length
                       ? relationshipListData.map((list) => (
                         <option
@@ -3467,7 +3467,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Relationship is required
+                    {t("relationship_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3549,7 +3549,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Relationship<span className="text-danger">*</span>
+                  {t("relationship")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3563,7 +3563,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         familyMembers.relationshipId === "0"
                       }
                     >
-                      <option value="">Select Relationship</option>
+                      <option value="">{t("select_relationship")}</option>
                       {relationshipListData && relationshipListData.length
                       ? relationshipListData.map((list) => (
                         <option
@@ -3575,7 +3575,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       )) :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Relationship is required
+                    {t("relationship_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3637,7 +3637,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Land Ownership<span className="text-danger">*</span>
+                  {t("land_ownership")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3651,7 +3651,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.landOwnershipId === "0"
                       }
                     >
-                      <option value="">Select Land Ownership</option>
+                      <option value="">{t("select_land_ownership")}</option>
                       {landOwnershipListData && landOwnershipListData.length
                       ? landOwnershipListData.map((list) => (
                         <option
@@ -3664,14 +3664,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Land Ownership is required
+                    {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Soil Type<span className="text-danger">*</span>
+                  {t("soil_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3685,7 +3685,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.soilTypeId === "0"
                       }
                     >
-                      <option value="">Select Soil Type</option>
+                      <option value="">{t("select_soil_type")}</option>
                       {soilTypeListData && soilTypeListData.length
                       ? soilTypeListData.map((list) => (
                         <option
@@ -3698,7 +3698,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Soil Type is required
+                    {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3720,7 +3720,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Source of Mulberry<span className="text-danger">*</span>
+                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3734,7 +3734,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.mulberrySourceId === "0"
                       }
                     >
-                      <option value="">Select Source of Mulberry</option>
+                      <option value="">{t("select_source_of_Mulberry")}</option>
                       {mulberrySourceListData && mulberrySourceListData.length
                       ? mulberrySourceListData.map((list) => (
                         <option
@@ -3747,7 +3747,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Source is required
+                    {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3768,14 +3768,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Area is required
+                    {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Mulberry Variety<span className="text-danger">*</span>
+                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3789,7 +3789,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.mulberryVarietyId === "0"
                       }
                     >
-                      <option value="">Select Mulberry Variety</option>
+                      <option value="">{t("select_Mulberry_Variety")}</option>
                       {mulberryVarietyListData && mulberryVarietyListData.length
                       ? mulberryVarietyListData.map((list) => (
                         <option
@@ -3802,7 +3802,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Variety is required
+                    {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3849,7 +3849,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Plantation Type<span className="text-danger">*</span>
+                  {t("plantation_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3863,7 +3863,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.plantationTypeId === "0"
                       }
                     >
-                      <option value="">Select Plantation Type</option>
+                      <option value="">{t("select_plantation_type")}</option>
                       {plantationTypeListData && plantationTypeListData.length
                       ? plantationTypeListData.map((list) => (
                         <option
@@ -3876,14 +3876,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Plantation Type is required
+                    {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Irrigation Source<span className="text-danger">*</span>
+                  {t("irrigation_source")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3897,7 +3897,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.irrigationSourceId === "0"
                       }
                     >
-                      <option value="">Select Irrigation Source</option>
+                      <option value="">{t("select_irrigation_source")}</option>
                       {irrigationSourceListData && irrigationSourceListData.length
                       ? irrigationSourceListData.map((list) => (
                         <option
@@ -3909,14 +3909,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       )) :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Irrigation Source is required
+                    {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Irrigation Type<span className="text-danger">*</span>
+                  {t("irrigation_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3930,7 +3930,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.irrigationTypeId === "0"
                       }
                     >
-                      <option value="">Select Irrigation Type</option>
+                      <option value="">{t("select_irrigation_type")}</option>
                       {irrigationTypeListData && irrigationTypeListData.length > 0
                       ? (irrigationTypeListData.map((list) => (
                         <option
@@ -3945,7 +3945,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Irrigation Type is required
+                    {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3973,7 +3973,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Rearing House Roof Type
+                  {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -3988,7 +3988,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       //   farmerLand.roofTypeId === "0"
                       // }
                     >
-                      <option value="">Select Rearing House Roof Type</option>
+                      <option value="">{t("select_rearing_house_roof_type")}</option>
                       {roofTypeListData && roofTypeListData.length > 0
                       ? (roofTypeListData.map((list) => (
                         <option
@@ -4003,14 +4003,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Roof Type is required
+                    {t("rearing_house_roof_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety
+                  {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4025,7 +4025,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       //   farmerLand.silkWormVarietyId === "0"
                       // }
                     >
-                      <option value="">Select Silk Worm Variety</option>
+                      <option value="">{t("select_silk_worm_variety")}</option>
                       {silkWormVarietyListData && silkWormVarietyListData.length > 0
                       ? (silkWormVarietyListData.map((list) => (
                         <option
@@ -4040,7 +4040,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Silk Worm Variety is required
+                    {t("silk_worm_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4109,7 +4109,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Rearing Capacity dlf per crop is required
+                    {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4316,7 +4316,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>State</Form.Label>
+                      <Form.Label> {t("state")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
@@ -4324,7 +4324,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                           value={farmerLand.stateId}
                           onChange={handleStateLandOption}
                         >
-                          <option value="0">Select State</option>
+                          <option value="0">{t("select_state")}</option>
                           {stateListData && stateListData.length > 0
                           ? (stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
@@ -4339,7 +4339,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>District</Form.Label>
+                      <Form.Label>{t("district")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="districtId"
@@ -4364,14 +4364,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>Taluk</Form.Label>
+                      <Form.Label>{t("taluk")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="talukId"
                           value={`${farmerLand.talukId}_${farmerLand.talukName}`}
                           onChange={handleTalukLandOption}
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("select_taluk")}</option>
                           {talukListData && talukListData.length > 0
                             ? (talukListData.map((list) => (
                                 <option
@@ -4389,14 +4389,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>Hobli</Form.Label>
+                      <Form.Label>{t("hobli")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="hobliId"
                           value={`${farmerLand.hobliId}_${farmerLand.hobliName}`}
                           onChange={handleHobliLandOption}
                         >
-                          <option value="">Select Hobli</option>
+                          <option value="">{t("select_hobli")}</option>
                           {hobliListData && hobliListData.length > 0
                             ? (hobliListData.map((list) => (
                                 <option
@@ -4414,14 +4414,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="Village">Village</Form.Label>
+                      <Form.Label htmlFor="Village">{t("village")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="villageId"
                           value={`${farmerLand.villageId}_${farmerLand.villageName}`}
                           onChange={handleVillageLandOption}
                         >
-                          <option value="">Select Village</option>
+                          <option value="">{t("select_village")}</option>
                           {villageListData && villageListData.length > 0
                             ? (villageListData.map((list) => (
                                 <option
@@ -4575,7 +4575,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Land Ownership<span className="text-danger">*</span>
+                  {t("land_ownership")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4589,7 +4589,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.landOwnershipId === "0"
                       }
                     >
-                      <option value="">Select Land Ownership</option>
+                      <option value="">{t("select_land_ownership")}</option>
                       {landOwnershipListData && landOwnershipListData.length > 0
                       ? (landOwnershipListData.map((list) => (
                         <option
@@ -4604,14 +4604,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Land Ownership is required
+                    {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Soil Type<span className="text-danger">*</span>
+                  {t("soil_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4625,7 +4625,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.soilTypeId === "0"
                       }
                     >
-                      <option value="">Select Soil Type</option>
+                      <option value="">{t("select_soil_type")}</option>
                       {soilTypeListData && soilTypeListData.length > 0
                       ? (soilTypeListData.map((list) => (
                         <option
@@ -4640,7 +4640,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Soil Type is required
+                    {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4662,7 +4662,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Source of Mulberry<span className="text-danger">*</span>
+                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4676,7 +4676,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.mulberrySourceId === "0"
                       }
                     >
-                      <option value="">Select Source of Mulberry</option>
+                      <option value="">{t("select_source_of_Mulberry")}</option>
                       {mulberrySourceListData && mulberrySourceListData.length > 0
                       ? (mulberrySourceListData.map((list) => (
                         <option
@@ -4691,7 +4691,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Source is required
+                    {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4712,14 +4712,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Area is required
+                    {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Mulberry Variety<span className="text-danger">*</span>
+                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4733,7 +4733,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.mulberryVarietyId === "0"
                       }
                     >
-                      <option value="">Select Mulberry Variety</option>
+                      <option value="">{t("select_Mulberry_Variety")}</option>
                       {mulberryVarietyListData && mulberryVarietyListData.length > 0
                       ? (mulberryVarietyListData.map((list) => (
                         <option
@@ -4748,7 +4748,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Mulberry Variety is required
+                    {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4802,7 +4802,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Plantation Type<span className="text-danger">*</span>
+                  {t("plantation_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4816,7 +4816,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.plantationTypeId === "0"
                       }
                     >
-                      <option value="">Select Plantation Type</option>
+                      <option value="">{t("select_plantation_type")}</option>
                       {plantationTypeListData && plantationTypeListData.length > 0
                       ? (plantationTypeListData.map((list) => (
                         <option
@@ -4831,14 +4831,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Plantation Type is required
+                    {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Irrigation Source<span className="text-danger">*</span>
+                  {t("irrigation_source")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4852,7 +4852,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.irrigationSourceId === "0"
                       }
                     >
-                      <option value="0">Select Irrigation Source</option>
+                      <option value="0">{t("select_irrigation_source")}</option>
                       {irrigationSourceListData && irrigationSourceListData.length > 0
                       ? (irrigationSourceListData.map((list) => (
                         <option
@@ -4867,14 +4867,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Irrigation Source is required
+                    {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Irrigation Type<span className="text-danger">*</span>
+                  {t("irrigation_type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4888,7 +4888,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerLand.irrigationTypeId === "0"
                       }
                     >
-                      <option value="">Select Irrigation Type</option>
+                      <option value="">{t("select_irrigation_type")}</option>
                       {irrigationTypeListData && irrigationTypeListData.length > 0
                       ? (irrigationTypeListData.map((list) => (
                         <option
@@ -4903,7 +4903,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Irrigation Type is required
+                    {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4931,7 +4931,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Rearing House Roof Type
+                  {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4946,7 +4946,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       //   farmerLand.roofTypeId === "0"
                       // }
                     >
-                      <option value="">Select Rearing House Roof Type</option>
+                      <option value="">{t("select_rearing_house_roof_type")}</option>
                       {roofTypeListData && roofTypeListData.length > 0
                       ? (roofTypeListData.map((list) => (
                         <option
@@ -4968,7 +4968,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety
+                  {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4983,7 +4983,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       //   farmerLand.silkWormVarietyId === "0"
                       // }
                     >
-                      <option value="">Select Silk Worm Variety</option>
+                      <option value="">{t("select_silk_worm_variety")}</option>
                       {silkWormVarietyListData && silkWormVarietyListData.length > 0
                       ? (silkWormVarietyListData.map((list) => (
                         <option
@@ -5068,7 +5068,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Rearing Capacity dlf per crop is required
+                    {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5307,14 +5307,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group> */}
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>State</Form.Label>
+                      <Form.Label>{t("state")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
                           value={farmerLand.stateId}
                           onChange={handleStateLandOption}
                         >
-                          <option value="0">Select State</option>
+                          <option value="0">{t("select_state")}</option>
                           {stateListData && stateListData.length > 0
                           ? (stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
@@ -5329,14 +5329,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>District</Form.Label>
+                      <Form.Label>{t("district")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="districtId"
                           value={`${farmerLand.districtId}_${farmerLand.districtName}`}
                           onChange={handleDistrictLandOption}
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("select_district")}</option>
                           {districtListData && districtListData.length > 0
                             ? (districtListData.map((list) => (
                                 <option
@@ -5354,14 +5354,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>Taluk</Form.Label>
+                      <Form.Label>{t("taluk")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="talukId"
                           value={`${farmerLand.talukId}_${farmerLand.talukName}`}
                           onChange={handleTalukLandOption}
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("select_taluk")}</option>
                           {talukListData && talukListData.length > 0
                             ? (talukListData.map((list) => (
                                 <option
@@ -5379,14 +5379,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>Hobli</Form.Label>
+                      <Form.Label>{t("hobli")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="hobliId"
                           value={`${farmerLand.hobliId}_${farmerLand.hobliName}`}
                           onChange={handleHobliLandOption}
                         >
-                          <option value="">Select Hobli</option>
+                          <option value="">{t("select_hobli")}</option>
                           {hobliListData && hobliListData.length > 0
                             ? (hobliListData.map((list) => (
                                 <option
@@ -5404,14 +5404,14 @@ function WithoutFruitsIdStakeHolderEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="Village">Village</Form.Label>
+                      <Form.Label htmlFor="Village">{t("village")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="villageId"
                           value={`${farmerLand.villageId}_${farmerLand.villageName}`}
                           onChange={handleVillageLandOption}
                         >
-                          <option value="">Select Village</option>
+                          <option value="">{t("select_village")}</option>
                           {villageListData && villageListData.length > 0
                             ? (villageListData.map((list) => (
                                 <option
@@ -5552,7 +5552,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    State<span className="text-danger">*</span>
+                  {t("state")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5566,7 +5566,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerAddress.stateId === "0"
                       }
                     >
-                      <option value="">Select State</option>
+                      <option value="">{t("select_state")}</option>
                       {addressStateListData && addressStateListData.length > 0
                       ? (addressStateListData.map((list) => (
                         <option key={list.stateId} value={list.stateId}>
@@ -5578,7 +5578,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      State Name is required
+                    {t("state_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5586,7 +5586,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    District<span className="text-danger">*</span>
+                  {t("district")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5600,7 +5600,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerAddress.districtId === "0"
                       }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("select_district")}</option>
                       {addressdistrictListData && addressdistrictListData.length > 0
                         ? (addressdistrictListData.map((list) => (
                             <option
@@ -5615,7 +5615,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      District Name is required
+                    {t("district_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5623,7 +5623,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Taluk<span className="text-danger">*</span>
+                  {t("taluk")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5637,7 +5637,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerAddress.talukId === "0"
                       }
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("select_taluk")}</option>
                       {addressTalukListData && addressTalukListData.length > 0
                         ? (addressTalukListData.map((list) => (
                             <option key={list.talukId} value={list.talukId}>
@@ -5649,7 +5649,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Taluk Name is required
+                    {t("taluk_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5657,7 +5657,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Hobli<span className="text-danger">*</span>
+                  {t("hobli")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5671,7 +5671,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerAddress.hobliId === "0"
                       }
                     >
-                      <option value="">Select Hobli</option>
+                      <option value="">{t("select_hobli")}</option>
                       {addressHobliListData && addressHobliListData.length > 0
                         ? (addressHobliListData.map((list) => (
                             <option key={list.hobliId} value={list.hobliId}>
@@ -5683,7 +5683,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Hobli Name is required
+                    {t("hobli_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5691,7 +5691,7 @@ function WithoutFruitsIdStakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="Village">
-                    Village<span className="text-danger">*</span>
+                  {t("village")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5705,7 +5705,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                         farmerAddress.villageId === "0"
                       }
                     >
-                      <option value="">Select Village</option>
+                      <option value="">{t("select_village")}</option>
                       {addressVillageListData && addressVillageListData.length > 0
                         ? (addressVillageListData.map((list) => (
                             <option key={list.villageId} value={list.villageId}>
@@ -5717,7 +5717,7 @@ function WithoutFruitsIdStakeHolderEdit() {
                     )}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Village Name is required
+                    {t("village_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

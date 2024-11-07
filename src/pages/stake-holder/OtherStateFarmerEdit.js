@@ -685,7 +685,7 @@ function OtherStateFarmerEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Other State Registration</Block.Title>
+            <Block.Title tag="h2">{t("Edit Other State Registration")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -811,14 +811,14 @@ function OtherStateFarmerEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>{t("Caste")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -954,7 +954,7 @@ function OtherStateFarmerEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          Farmer Type<span className="text-danger">*</span>
+                        {t("farmer_type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -968,7 +968,7 @@ function OtherStateFarmerEdit() {
                               data.farmerTypeId === "0"
                             }
                           >
-                            <option value="">Select Farmer Type </option>
+                            <option value="">{t("select_farmer_type")} </option>
                             {farmerTypeListData.map((list) => (
                               <option
                                 key={list.farmerTypeId}
@@ -979,7 +979,7 @@ function OtherStateFarmerEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Farmer Type is required
+                          {t("select_farmer_type_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1022,14 +1022,14 @@ function OtherStateFarmerEdit() {
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Address
+                {t("address")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-3">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State
+                        {t("state")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1409,7 +1409,7 @@ function OtherStateFarmerEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbok
+                        {t("upload_bank")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

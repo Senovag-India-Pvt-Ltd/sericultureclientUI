@@ -11,11 +11,15 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function FarmerWithoutFruitsList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -203,7 +207,7 @@ function FarmerWithoutFruitsList() {
 
   const StakeHolderDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -216,7 +220,7 @@ function FarmerWithoutFruitsList() {
             size="sm"
             onClick={() => handleView(row.farmerId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -224,7 +228,7 @@ function FarmerWithoutFruitsList() {
             className="ms-2"
             onClick={() => handleEdit(row.farmerId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="primary"
@@ -232,7 +236,7 @@ function FarmerWithoutFruitsList() {
             onClick={() => handleUpdate(row.farmerId)}
             className="ms-2"
           >
-            Update Fruits Id
+            {t("Update Fruits Id")}
           </Button>
         </div>
       ),
@@ -240,21 +244,21 @@ function FarmerWithoutFruitsList() {
       hide: "md",
     },
     {
-      name: "Name",
+      name:  t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fruits ID",
+      name: t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Number",
+      name: t("farmer_number"),
       selector: (row) => row.farmerNumber,
       cell: (row) => <span>{row.farmerNumber}</span>,
       sortable: true,
@@ -283,14 +287,14 @@ function FarmerWithoutFruitsList() {
     // },
 
     {
-      name: "Mobile Number",
+      name:t("mobile_number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Passbook Number",
+      name: t("passbook_number"),
       selector: (row) => row.passbookNumber,
       cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,
@@ -314,7 +318,7 @@ function FarmerWithoutFruitsList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer without Fruits Id List</Block.Title>
+            <Block.Title tag="h2">{t("Farmer without Fruits Id List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -324,7 +328,7 @@ function FarmerWithoutFruitsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -333,7 +337,7 @@ function FarmerWithoutFruitsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -376,7 +380,7 @@ function FarmerWithoutFruitsList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>
