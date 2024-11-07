@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button, Modal} from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal,Spinner} from "react-bootstrap";
 import React from 'react';
 import { Link, useParams} from "react-router-dom";
 import Layout from "../../layout/default";
@@ -350,13 +350,30 @@ function PreparationofeggsDFLsList() {
     },
   };
 
+  // const styles = {
+  //   ctstyle: {
+  //     backgroundColor: "rgb(248, 248, 249, 1)",
+  //     color: "rgb(0, 0, 0)",
+  //     width: "50%",
+  //   },
+  // };
+
   const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
+    labelStyle: {
+        fontWeight: 'bold',
+        paddingRight: '10px',
+        color: '#5a5a5a'
     },
-  };
+    valueStyle: {
+        color: '#333'
+    },
+    cardStyle: {
+        marginBottom: '20px',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0px 4px 12px rgba(0,0,0,0.1)'
+    }
+};
 
   const { preparationOfEggsId } = useParams();
 
@@ -1006,122 +1023,52 @@ function PreparationofeggsDFLsList() {
         {loading ? (
             <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>
         ) : (
-          <>
-            {/* <Card className="mt-3">
-                <Card.Header>View DFL Details</Card.Header>
-                <Card.Body> */}
-                    <Row className="g-gs">
-                        <Col lg="12">
-                            <table className="table small table-bordered">
-                                <tbody>
-                                    {prepareEggs.map((prepareEggs, index) => (
-                                        <React.Fragment key={index}>
-                                            <tr>
-                                                <td style={styles.ctstyle}>ID:</td>
-                                                <td>{prepareEggs.id}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Lot number:</td>
-                                                <td>{prepareEggs.lotNumber}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Number of Cocoons in Kg:</td>
-                                                <td>{prepareEggs.numberOfCocoonsCB}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Race:</td>
-                                                <td>{prepareEggs.raceName}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Generation Number:</td>
-                                                <td>{prepareEggs.generationNumber}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Line Name:</td>
-                                                <td>{prepareEggs.lineName}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Date of moth emergence:</td>
-                                                <td>{prepareEggs.dateOfMothEmergence}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Laid On Date:</td>
-                                                <td>{prepareEggs.laidOnDate}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Egg sheet serial number:</td>
-                                                <td>{prepareEggs.eggSheetSerialNumber}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Number of pairs:</td>
-                                                <td>{prepareEggs.numberOfPairs}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Number of Rejection:</td>
-                                                <td>{prepareEggs.numberOfRejection}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>DFLs obtained:</td>
-                                                <td>{prepareEggs.dflsObtained}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Egg Recovery %:</td>
-                                                <td>{prepareEggs.eggRecoveryPercentage}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Parent Lot Number:</td>
-                                                <td>{prepareEggs.parentLotNumber}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Selected Cocoon's in Nos:</td>
-                                                <td>{prepareEggs.selectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Rejected Cocoon's in Nos:</td>
-                                                <td>{prepareEggs.rejectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>No of Pairs (%) (Selected Cocoon's):</td>
-                                                <td>{prepareEggs.pairNoSelectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>No of Pairs (%) (Rejected Cocoon's):</td>
-                                                <td>{prepareEggs.pairNoRejectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Err %(Selected Cocoon's):</td>
-                                                <td>{prepareEggs.errPerSelectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Err %(Rejected Cocoon's):</td>
-                                                <td>{prepareEggs.errPerRejectedCocoonsNo}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Remaining DFLs:</td>
-                                                <td>{prepareEggs.remainingDfls}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Test results:</td>
-                                                <td>{prepareEggs.testResults}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={styles.ctstyle}>Additional remarks:</td>
-                                                <td>{prepareEggs.additionalRemarks}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="2" className="text-center">
-                                                    <strong>-------------------</strong>
-                                                </td>
-                                            </tr>
-                                        </React.Fragment>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </Col>
-                    </Row>
-                    {/* </Card.Body>
-                </Card> */}
-            </>
+            <div style={{ overflowX: "auto", width: "100%" }}>
+                <table 
+                    className="table table-bordered small text-center" 
+                    style={{ 
+                        tableLayout: "auto", 
+                        width: "100%", 
+                        border: "1px solid black", // Set black border color
+                        borderCollapse: "collapse" // Ensure borders collapse correctly
+                    }}
+                >
+                    <thead style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}>
+                        <tr>
+                            <th style={{ width: "8%", border: "1px solid black" }}>ID</th>
+                            <th style={{ width: "19%", border: "1px solid black" }}>Lot Number</th>
+                            <th style={{ width: "18%", border: "1px solid black" }}>Parent Lot Number</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>Date of Moth Emergence</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>Laid On Date</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>Egg Sheet Serial Number</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>Number of Pairs</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>Number of Rejection</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>DFLs Obtained</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>Remaining DFLs</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>Test Results</th>
+                            <th style={{ width: "18%", border: "1px solid black" }}>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {prepareEggs.map((egg, index) => (
+                            <tr key={index}>
+                                <td style={{ border: "1px solid black" }}>{egg.id}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.lotNumber}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.parentLotNumber}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.dateOfMothEmergence}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.laidOnDate}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.eggSheetSerialNumber}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.numberOfPairs}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.numberOfRejection}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.dflsObtained}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.remainingDfls}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.testResults}</td>
+                                <td style={{ border: "1px solid black" }}>{egg.additionalRemarks}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         )}
     </Modal.Body>
 </Modal>

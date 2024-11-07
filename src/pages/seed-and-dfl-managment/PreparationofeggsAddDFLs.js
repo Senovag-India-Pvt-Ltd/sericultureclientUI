@@ -1059,11 +1059,11 @@ useEffect(() => {
                             </Form.Group>
                           </Col> */}
 
-                          {/* <Col lg="4">
+                          <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="additionalRemarks">
                                 Additional remarks
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1075,12 +1075,12 @@ useEffect(() => {
                                   placeholder="Additional remarks"
                                   // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Additional remarks is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
