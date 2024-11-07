@@ -9,11 +9,15 @@ import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function RenewReelerLicense() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     reelerId: "",
     status: 0,
@@ -163,7 +167,7 @@ const clear = () => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Renew Reeler License</Block.Title>
+            <Block.Title tag="h2">{t("Renew Reeler License")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -178,7 +182,7 @@ const clear = () => {
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={4}>
-                        LICENSE NUMBER
+                      {t("Reeling License Number")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={6}>
@@ -188,11 +192,11 @@ const clear = () => {
                           value={fruitId.reelingLicenseNumber}
                           onChange={handleFruitIdInputs}
                           type="text"
-                          placeholder="Enter License Number"
+                          placeholder={t("Enter Reeling License Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          License Number is required
+                        {t("Reeling License Number is required")}
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -201,7 +205,7 @@ const clear = () => {
                           variant="primary"
                           onClick={display}
                         >
-                          Search
+                          {t("search")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -220,7 +224,7 @@ const clear = () => {
                         <Col lg="12">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="Fee">
-                              Fee Amount<span className="text-danger">*</span>
+                            {t("Fee Amount")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -229,7 +233,7 @@ const clear = () => {
                                 value={data.feeAmount}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter Fee Amount"
+                                placeholder={t("Enter Fee Amount")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -239,7 +243,7 @@ const clear = () => {
                           </Form.Group>
 
                           <Form.Group className="form-group">
-                            <Form.Label>Renewed Date</Form.Label>
+                            <Form.Label>{t("Renewed Date")}</Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
                                 selected={data.licenseRenewalDate}
@@ -255,7 +259,7 @@ const clear = () => {
                           </Form.Group>
 
                           <Form.Group className="form-group">
-                            <Form.Label>New License Expiration Date</Form.Label>
+                            <Form.Label>{t("New License Expiration Date")}</Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
                                 selected={data.licenseExpiryDate}
@@ -283,12 +287,12 @@ const clear = () => {
                           onClick={postData}
                         > */}
                         <Button type="submit" variant="primary">
-                          Save
+                        {t("save")}
                         </Button>
                       </li>
                       <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
+                      {t( "Clear")}
                   </Button>
                       </li>
                     </ul>
@@ -296,7 +300,7 @@ const clear = () => {
                 </Col>
                 <Col lg="6">
                   <Card>
-                    <Card.Header>Reeler License Details</Card.Header>
+                    <Card.Header>{t("Reeler License Details")}</Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
@@ -313,41 +317,41 @@ const clear = () => {
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Reeling License Number:
+                                  {t("Reeling License Number")}
                                 </td>
                                 <td>{reeler.reelingLicenseNumber}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> ReelerName:</td>
+                                <td style={styles.ctstyle}> {t("Reeler Name")}</td>
                                 <td>{reeler.reelerName}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Reeler Father Name:
+                                  {t("Father's/Husband's Name")}
                                 </td>
                                 <td>{reeler.fatherName}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Expiration Date:
+                                  {t("License Expiry Date")}
                                 </td>
                                 <td>{reeler.licenseExpiryDate}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Address:</td>
+                                <td style={styles.ctstyle}>{t("address")}</td>
                                 <td>{reeler.address}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Assign To Inspect:
+                                  {t("Assign To Inspect")}
                                 </td>
                                 <td>{reeler.assignToInspectId}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> GPS Details:</td>
+                                <td style={styles.ctstyle}> {t("GPS Coordinates of reeling unit")}</td>
                                 <td>
                                   Latitude:{reeler.chakbandiLat}, Longitude:
                                   {reeler.chakbandiLng}
@@ -363,59 +367,59 @@ const clear = () => {
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Representative/Agent name and Address:
+                                  {t("Representative/Agent name and Address")}
                                 </td>
                                 <td>{reeler.representativeNameAddress}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Machine Type:</td>
+                                <td style={styles.ctstyle}> {t("Machine Type is required")}</td>
                                 <td>{reeler.machineTypeName}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
-                                  Date Of Machine Installation:
+                                {t("Date of Machine Installation")}
                                 </td>
                                 <td>{reeler.dateOfMachineInstallation}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
-                                  Number Of Basins/Charaka:
+                                {t("Number of Basins/Charaka")}
                                 </td>
                                 <td>{reeler.numberOfBasins}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
-                                  Electricity RR Number:
+                                {t("Electricity RR Numbers")}
                                 </td>
                                 <td>{reeler.electricityRrNumber}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
-                                  Revenue Document:
+                                {t("Revenue Document (e-Khata / Reeling Unit)")}
                                 </td>
                                 <td>{reeler.revenueDocument}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>District:</td>
+                                <td style={styles.ctstyle}>{t("district")}</td>
                                 <td>{reeler.districtName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Taluk:</td>
+                                <td style={styles.ctstyle}>{t("taluk")}</td>
                                 <td>{reeler.talukName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Village:</td>
+                                <td style={styles.ctstyle}>{t("village")}</td>
                                 <td>{reeler.villageName}</td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
                                   {" "}
-                                  Inspection Date:
+                                  {t("Mahajar/Inspection Date")}
                                 </td>
                                 <td>{reeler.inspectionDate}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Receipt Date:</td>
+                                <td style={styles.ctstyle}>{t("Receipt Date")}</td>
                                 <td>{reeler.receiptDate}</td>
                               </tr>
                             </tbody>

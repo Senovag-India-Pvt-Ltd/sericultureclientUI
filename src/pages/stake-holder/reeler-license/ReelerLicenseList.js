@@ -12,6 +12,7 @@ import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData"
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -29,6 +30,8 @@ function ReelerLicenseList() {
     text: "",
     searchBy: "mobileNumber",
   });
+// Translation
+const { t } = useTranslation();
 
   const handleInputs = (e) => {
     // debugger;
@@ -211,7 +214,7 @@ function ReelerLicenseList() {
 
   const ReelerLicenseDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -224,7 +227,7 @@ function ReelerLicenseList() {
             size="sm"
             onClick={() => handleView(row.reelerId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -232,7 +235,7 @@ function ReelerLicenseList() {
             className="ms-2"
             onClick={() => handleEdit(row.reelerId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -248,42 +251,42 @@ function ReelerLicenseList() {
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.reelerName,
       cell: (row) => <span>{row.reelerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fruits Id",
+      name: t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Father's/Husband's Name",
+      name: t("fathers_husbands_name"),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "License Number",
+      name: t("Reeling License Number"),
       selector: (row) => row.reelingLicenseNumber,
       cell: (row) => <span>{row.reelingLicenseNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Number",
+      name: t("Reeler Number"),
       selector: (row) => row.reelerNumber,
       cell: (row) => <span>{row.reelerNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Gender",
+      name: t("gender"),
       selector: (row) => row.gender,
       cell: (row) => (
         <span>
@@ -294,14 +297,14 @@ function ReelerLicenseList() {
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("mobile_number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User Name",
+      name: t("User Name"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
@@ -314,7 +317,7 @@ function ReelerLicenseList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler License List</Block.Title>
+            <Block.Title tag="h2">{t("Reeler License List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -324,7 +327,7 @@ function ReelerLicenseList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -333,7 +336,7 @@ function ReelerLicenseList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -347,7 +350,7 @@ function ReelerLicenseList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -378,7 +381,7 @@ function ReelerLicenseList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>
