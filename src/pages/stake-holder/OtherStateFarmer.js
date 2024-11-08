@@ -992,7 +992,7 @@ function OtherStateFarmer() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Other State Registration</Block.Title>
+            <Block.Title tag="h2">{t("Other State Registration")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1002,7 +1002,7 @@ function OtherStateFarmer() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -1011,7 +1011,7 @@ function OtherStateFarmer() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -1142,14 +1142,14 @@ function OtherStateFarmer() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>{t("Caste")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -1404,7 +1404,7 @@ function OtherStateFarmer() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          Farmer Type<span className="text-danger">*</span>
+                        {t("farmer_type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1418,7 +1418,7 @@ function OtherStateFarmer() {
                               data.farmerTypeId === "0"
                             }
                           >
-                            <option value="">Select Farmer Type </option>
+                            <option value="">{t("select_farmer_type")} </option>
                             {farmerTypeListData.map((list) => (
                               <option
                                 key={list.farmerTypeId}
@@ -1429,7 +1429,7 @@ function OtherStateFarmer() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Farmer Type is required
+                          {t("select_farmer_type_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1779,14 +1779,14 @@ function OtherStateFarmer() {
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Address
+                {t("address")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-3">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State
+                        {t("state")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1801,7 +1801,7 @@ function OtherStateFarmer() {
                               farmerAddress.stateId === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("select_state")}</option>
                             {addressStateListData.map((list) => (
                               <option
                                 key={list.stateId}
@@ -1834,7 +1834,7 @@ function OtherStateFarmer() {
                             // required
                           />
                           <Form.Control.Feedback type="invalid">
-                            district Name is required
+                          {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1890,7 +1890,7 @@ function OtherStateFarmer() {
                             // required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
+                          {t("taluk_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1946,7 +1946,7 @@ function OtherStateFarmer() {
                             // required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Village Name is required
+                          {t("village_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2200,7 +2200,7 @@ function OtherStateFarmer() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbook(Max:2mb) (PDF/jpg/png)
+                        {t("upload_bank")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

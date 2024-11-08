@@ -7,11 +7,15 @@ import { Icon } from "../../../components";
 import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ReelerLicenseView() {
+   // Translation
+   const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -140,7 +144,7 @@ function ReelerLicenseView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler License View</Block.Title>
+            <Block.Title tag="h2">{t("Reeler License View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -150,7 +154,7 @@ function ReelerLicenseView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -159,7 +163,7 @@ function ReelerLicenseView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -169,34 +173,34 @@ function ReelerLicenseView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Reeler Personal Info</Card.Header>
+          <Card.Header>{t("Reeler Personal info")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Fruits ID:</td>
+                      <td style={styles.ctstyle}> {t("FRUITS ID")}</td>
                       <td>{Reeler.fruitsId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}>{t("Reeler Id")}</td>
                       <td>{Reeler.reelerId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Name:</td>
+                      <td style={styles.ctstyle}> {t("Reeler Name")}</td>
                       <td>{Reeler.reelerName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Father's/Husband's Name:</td>
+                      <td style={styles.ctstyle}> {t("Father's/Husband's Name")}</td>
                       <td>{Reeler.fatherName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Date of Birth:</td>
+                      <td style={styles.ctstyle}> {t("DOB")}</td>
                       <td>{dateFormatter(Reeler.dob)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Gender:</td>
+                      <td style={styles.ctstyle}> {t("gender")}</td>
                       <td>
                         {Reeler.gender === 1
                           ? "Male"
@@ -206,27 +210,27 @@ function ReelerLicenseView() {
                       </td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Caste:</td>
+                      <td style={styles.ctstyle}>{t("Caste")}</td>
                       <td>{Reeler.title}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Mobile Number:</td>
+                      <td style={styles.ctstyle}> {t("mobile_number")}</td>
                       <td>{Reeler.mobileNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Father's/Husband's Name:</td>
+                      <td style={styles.ctstyle}> {t("Father's/Husband's Name")}</td>
                       <td>{Reeler.fatherName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Email ID:</td>
+                      <td style={styles.ctstyle}> {t("email_id")}</td>
                       <td>{Reeler.emailId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Assign To Inspect:</td>
+                      <td style={styles.ctstyle}> {t("Assign To Inspect")}</td>
                       <td>{Reeler.assignToInspectId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> ARN Number:</td>
+                      <td style={styles.ctstyle}> {t("ARN Number")}</td>
                       <td>{Reeler.arnNumber}</td>
                     </tr>
                     <tr>
@@ -240,42 +244,42 @@ function ReelerLicenseView() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Ward Number:</td>
+                      <td style={styles.ctstyle}> {t("Ward Number")}</td>
                       <td>{Reeler.wardNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Education:</td>
+                      <td style={styles.ctstyle}>{t("education")}</td>
                       <td>{Reeler.name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Ration Card:</td>
+                      <td style={styles.ctstyle}>{t("ration_number")}</td>
                       <td>{Reeler.rationCard}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Electricity RR Numbers:</td>
+                      <td style={styles.ctstyle}> {t("Electricity RR Numbers")}</td>
                       <td>{Reeler.electricityRrNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Revenue Document:</td>
+                      <td style={styles.ctstyle}> {t("Revenue Document (e-Khata / Reeling Unit)")}</td>
                       <td>{Reeler.revenueDocument}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Recipient Id:</td>
+                      <td style={styles.ctstyle}> {t("Recipient ID(From Khazane)")}</td>
                       <td>{Reeler.recipientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Assign To Inspect:</td>
+                      <td style={styles.ctstyle}> {t("Assign To Inspect")}</td>
                       <td>{Reeler.username}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>
                         {" "}
-                        Representative Name and Address:
+                        {t("Representative/Agent name and Address")}
                       </td>
                       <td>{Reeler.representativeNameAddress}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Revenue Document:</td>
+                      <td style={styles.ctstyle}> {t("Revenue Document (e-Khata / Reeling Unit)")}</td>
                       <td>{Reeler.revenueDocument}</td>
                     </tr>
                     {/* <tr>
@@ -284,7 +288,7 @@ function ReelerLicenseView() {
                     </tr> */}
                     <tr>
                       <td style={styles.ctstyle}>
-                        GPS Coordinates of reeling unit:
+                      {t("GPS Coordinates of reeling unit")}
                       </td>
                       <td>
                         Latitude: {Reeler.chakbandiLat}, Longitude:{" "}
@@ -293,11 +297,11 @@ function ReelerLicenseView() {
                     </tr>
 
                     <tr>
-                      <td style={styles.ctstyle}> Reeler Number:</td>
+                      <td style={styles.ctstyle}>{t("Reeler Number")}</td>
                       <td>{Reeler.reelerNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Reeler Type:</td>
+                      <td style={styles.ctstyle}> {t("Select Reeler Type")}</td>
                       <td>{Reeler.reelerTypeMasterName}</td>
                     </tr>
                   </tbody>
@@ -308,38 +312,38 @@ function ReelerLicenseView() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Passbook Number:</td>
+                      <td style={styles.ctstyle}>{t("passbook_number")}</td>
                       <td>{Reeler.passbookNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Reeling Unit Boundary:</td>
+                      <td style={styles.ctstyle}> {t("Reeling Unit Boundary(In Sqft)")}</td>
                       <td>{Reeler.reelingUnitBoundary}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>
                         {" "}
-                        Date of Machine Installation:
+                        {t("Date of Machine Installation")}
                       </td>
                       <td>{dateFormatter(Reeler.dateOfMachineInstallation)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Machine Type:</td>
+                      <td style={styles.ctstyle}>{t("Select Machine Type")}</td>
                       <td>{Reeler.machineTypeName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Number of Basins/Charaka:</td>
+                      <td style={styles.ctstyle}> {t("Number of Basins/Charaka")}</td>
                       <td>{Reeler.numberOfBasins}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Loan Details:</td>
+                      <td style={styles.ctstyle}> {t("loan_details")}</td>
                       <td>{Reeler.loanDetails}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Inspection Date:</td>
+                      <td style={styles.ctstyle}>{t("Mahajar/Inspection Date")}</td>
                       <td>{dateFormatter(Reeler.inspectionDate)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Uploaded Mahajar Details:</td>
+                      <td style={styles.ctstyle}> {t("Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)")}</td>
                       <td>
                         {" "}
                         {selectedMahajarFile && (
@@ -374,38 +378,38 @@ function ReelerLicenseView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Address</Card.Header>
+          <Card.Header>{t("address")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="6">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> State:</td>
+                      <td style={styles.ctstyle}> {t("state")}</td>
                       <td>{Reeler.stateName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> District:</td>
+                      <td style={styles.ctstyle}> {t("district")}</td>
                       <td>{Reeler.districtName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Taluk:</td>
+                      <td style={styles.ctstyle}>{t("taluk")}</td>
                       <td>{Reeler.talukName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Hobli:</td>
+                      <td style={styles.ctstyle}> {t("hobli")}</td>
                       <td>{Reeler.hobliName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Village:</td>
+                      <td style={styles.ctstyle}> {t("village")}</td>
                       <td>{Reeler.villageName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Address:</td>
+                      <td style={styles.ctstyle}>  {t("address")}</td>
                       <td>{Reeler.address}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Pincode:</td>
+                      <td style={styles.ctstyle}> {t("pin_code")}</td>
                       <td>{Reeler.pincode}</td>
                     </tr>
                   </tbody>
@@ -416,38 +420,38 @@ function ReelerLicenseView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>License Details</Card.Header>
+          <Card.Header>{t("License Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="6">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Receipt Number:</td>
+                      <td style={styles.ctstyle}>{t("Receipt number")}</td>
                       <td>{Reeler.licenseReceiptNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Receipt Date:</td>
+                      <td style={styles.ctstyle}> {t("Receipt Date")}</td>
                       <td>{dateFormatter(Reeler.receiptDate)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Reeling License Number:</td>
+                      <td style={styles.ctstyle}> {t("Reeling License Number")}</td>
                       <td>{Reeler.reelingLicenseNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Member of RCS/FPO/Others:</td>
+                      <td style={styles.ctstyle}> {t("Member of RCS/FPO/Others")}</td>
                       <td>{Reeler.memberLoanDetails}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> License Expiry Date:</td>
+                      <td style={styles.ctstyle}>{t("License Expiry Date")}</td>
                       <td>{dateFormatter(Reeler.licenseExpiryDate)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Function of the Unit:</td>
+                      <td style={styles.ctstyle}> {t("Function of the Unit")}</td>
                       <td>{Reeler.functionOfUnit}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Fee Amount:</td>
+                      <td style={styles.ctstyle}>{t("Fee Amount")}</td>
                       <td>{Reeler.feeAmount}</td>
                     </tr>
                   </tbody>
@@ -458,26 +462,26 @@ function ReelerLicenseView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Chakbandi Details</Card.Header>
+          <Card.Header>{t("Chakbandi Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="6">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> East:</td>
+                      <td style={styles.ctstyle}> {t("East")}</td>
                       <td>{Reeler.mahajarEast}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> West:</td>
+                      <td style={styles.ctstyle}>  {t("West")}</td>
                       <td>{Reeler.mahajarWest}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>North:</td>
+                      <td style={styles.ctstyle}>{t("North")}</td>
                       <td>{Reeler.mahajarNorth}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> South:</td>
+                      <td style={styles.ctstyle}> {t("South")}</td>
                       <td>{Reeler.mahajarSouth}</td>
                     </tr>
                   </tbody>
@@ -488,26 +492,26 @@ function ReelerLicenseView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Bank Account Details</Card.Header>
+          <Card.Header>{t("bank_account_details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="6">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> BankName:</td>
+                      <td style={styles.ctstyle}> {t("bank_name")}</td>
                       <td>{Reeler.bankName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Bank Account Number:</td>
+                      <td style={styles.ctstyle}> {t("bank_account_number")}</td>
                       <td>{Reeler.bankAccountNumber}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>BranchName:</td>
+                      <td style={styles.ctstyle}>{t("branch_name")}</td>
                       <td>{Reeler.branchName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Ifsc Code:</td>
+                      <td style={styles.ctstyle}>  {t("ifsc_code")}</td>
                       <td>{Reeler.ifscCode}</td>
                     </tr>
                   </tbody>
@@ -517,7 +521,7 @@ function ReelerLicenseView() {
           </Card.Body>
         </Card>
         <Card className="mt-3">
-          <Card.Header>Virtual Bank Account</Card.Header>
+          <Card.Header>{t("Virtual Bank Account")}</Card.Header>
           <Card.Body>
             {/* {console.log('Virtual Bank Account List:', vbAccountList)}
           {vbAccountList && vbAccountList.length > 0 ? (
@@ -533,30 +537,30 @@ function ReelerLicenseView() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Virtual Bank ID:</td>
+                            <td style={styles.ctstyle}> {t("Virtual Bank ID")}</td>
                             <td>{vbAccount.reelerVirtualBankAccountId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Reeler Id:</td>
+                            <td style={styles.ctstyle}> {t("Reeler Id")}</td>
                             <td>{vbAccount.reelerId}</td>
                           </tr>
                           <tr>
                             <td style={styles.ctstyle}>
                               {" "}
-                              Virtual Account Number:
+                              {t("Virtual Account Number")}
                             </td>
                             <td>{vbAccount.virtualAccountNumber}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Branch Name:</td>
+                            <td style={styles.ctstyle}>{t("branch_name")}</td>
                             <td>{vbAccount.branchName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Ifsc Code:</td>
+                            <td style={styles.ctstyle}>{t("ifsc_code")}</td>
                             <td>{vbAccount.ifscCode}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Market:</td>
+                            <td style={styles.ctstyle}> {t("Market")}</td>
                             <td>{vbAccount.marketMasterName}</td>
                           </tr>
                         </tbody>
