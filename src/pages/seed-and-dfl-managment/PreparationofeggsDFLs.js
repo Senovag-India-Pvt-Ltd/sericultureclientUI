@@ -656,7 +656,7 @@ function PreparationofeggsDFLs() {
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="numberOfCocoonsCB">
                               Cocoon's Purchased (in Kg's / Nos)
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -666,11 +666,11 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Enter Cocoon's Purchased (in Kg's / Nos)"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                 Cocoon's Purchased (in Kg's / Nos) is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>

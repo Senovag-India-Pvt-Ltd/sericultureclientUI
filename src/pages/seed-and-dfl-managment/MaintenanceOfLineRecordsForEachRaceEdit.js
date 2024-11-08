@@ -64,16 +64,6 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
     } else {
       event.preventDefault();
       
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-      // const formattedExpectedDateOfHatching = formatDate(data.dateOfSelectionCocoon);
-      //   const payload = {
-      //     ...data,
-      //     dateOfSelectionCocoon: formattedExpectedDateOfHatching,
-      //     // spunOnDate: formattedDateOfDisposal,
-      //     // invoiceDate: formattedExpectedDateOfHatching,
-      //   };
       api
         .post(baseURLSeedDfl + `LineRecord/update-info`, data)
         .then((response) => {
@@ -310,11 +300,11 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
         <Row className="g-1 ">
-            <Block className="mt-3"></Block>
+            <Block className="mt-3">
               <Card>
                 <Card.Header>Maintenance of Line records for each race</Card.Header>
                   <Card.Body>
@@ -466,7 +456,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                   </Form.Group>
                 </Col> */}
 
-                <Col lg="4">
+                        <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -640,6 +630,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                     </Row>
                 </Card.Body>
               </Card>
+              </Block>
 
               <Block className="mt-3">
               <Card>
