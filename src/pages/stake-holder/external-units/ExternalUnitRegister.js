@@ -8,11 +8,14 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegister() {
+   // Translation
+   const { t } = useTranslation();
   const [data, setData] = useState({
     externalUnitTypeId: "",
     name: "",
@@ -150,7 +153,7 @@ function ExternalUnitRegister() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              External Units Registration(CRC,RSP,NSSO)
+              {t("External Units Registration(CRC,RSP,NSSO)")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -161,7 +164,7 @@ function ExternalUnitRegister() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -170,7 +173,7 @@ function ExternalUnitRegister() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -190,7 +193,7 @@ function ExternalUnitRegister() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Select External Unit
+                      {t("External Unit")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -205,7 +208,7 @@ function ExternalUnitRegister() {
                             data.externalUnitTypeId === "0"
                           }
                         >
-                          <option value="">Select External Unit</option>
+                          <option value="">{t("Select External Unit")}</option>
                           {externalUnitTypeListData.map((list) => (
                             <option
                               key={list.externalUnitTypeId}
@@ -216,13 +219,13 @@ function ExternalUnitRegister() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          External Unit Type is required
+                          {t("External Unit Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">Name of the Unit</Form.Label>
+                      <Form.Label htmlFor="name">{t("Name of the Unit")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="name"
@@ -230,14 +233,14 @@ function ExternalUnitRegister() {
                           value={data.name}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Name"
+                          placeholder={t("Name of the Unit")}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Name of the Owner/Organisation
+                        {t("Name of the Owner/Organisation")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -246,14 +249,14 @@ function ExternalUnitRegister() {
                           value={data.organisationName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Name of the Owner/Organisation"
+                          placeholder={t("Enter Name of the Owner/Organisation")}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="externalUnitNumber">
-                        External Units ID
+                        {t("External Units ID")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -262,7 +265,7 @@ function ExternalUnitRegister() {
                           value={data.externalUnitNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter External Units ID"
+                          placeholder={t("Enter External Units ID")}
                         />
                       </div>
                     </Form.Group>
@@ -270,14 +273,14 @@ function ExternalUnitRegister() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Select Race</Form.Label>
+                      <Form.Label>{t("Race")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="raceMasterId"
                           value={data.raceMasterId}
                           onChange={handleInputs}
                         >
-                          <option value="0">Select Race</option>
+                          <option value="0">{t("Select Race")}</option>
                           {raceListData.map((list) => (
                             <option
                               key={list.raceMasterId}
@@ -291,7 +294,7 @@ function ExternalUnitRegister() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="address">Address</Form.Label>
+                      <Form.Label htmlFor="address">{t("address")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="address"
@@ -299,14 +302,14 @@ function ExternalUnitRegister() {
                           value={data.address}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Address"
+                          placeholder={t("enter_address")}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="licenseNumber">
-                        License/Registration Number
+                        {t("License/Registration Number")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -315,14 +318,14 @@ function ExternalUnitRegister() {
                           value={data.licenseNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter License Number"
+                          placeholder={t("Enter License Number")}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="capacity">
-                       Capacity Of Production/Annum
+                       {t("Capacity Of Production/Annum")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -331,7 +334,7 @@ function ExternalUnitRegister() {
                           value={data.capacity}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Capacity"
+                          placeholder={t("Enter Capacity")}
                         />
                       </div>
                     </Form.Group>
@@ -346,12 +349,12 @@ function ExternalUnitRegister() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
+                    {t( "Clear")}
                   </Button>
                 </li>
               </ul>

@@ -5656,7 +5656,7 @@ function StakeHolderEdit() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleEditFA}> */}
                     <Button type="submit" variant="success">
-                      Update
+                    {t("update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -5666,7 +5666,7 @@ function StakeHolderEdit() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal5}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </div>
                 </div>

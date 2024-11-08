@@ -7,11 +7,14 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { Icon, Select } from "../../../components";
 import NewTraderLicense from "./NewTraderLicense";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function NewTraderLicenseView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -56,7 +59,7 @@ function NewTraderLicenseView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">New Trader License View</Block.Title>
+            <Block.Title tag="h2">{t("New Trader License View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -66,7 +69,7 @@ function NewTraderLicenseView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +78,7 @@ function NewTraderLicenseView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -85,7 +88,7 @@ function NewTraderLicenseView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>New Trader License Details</Card.Header>
+          <Card.Header>{t("New Trader License Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -97,83 +100,83 @@ function NewTraderLicenseView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{NewTraderLicense.traderLicenseId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Arn Number:</td>
+                        <td style={styles.ctstyle}>{t("ARN Number")}</td>
                         <td>{NewTraderLicense.arnNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Trader Type:</td>
+                        <td style={styles.ctstyle}>{t("Trader Type")}</td>
                         <td>{NewTraderLicense.traderTypeMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name of the Applicant:</td>
+                        <td style={styles.ctstyle}>{t("Name of the Applicant")}</td>
                         <td>{NewTraderLicense.firstName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Father Name:</td>
+                        <td style={styles.ctstyle}>{t("Father's Name")}</td>
                         <td>{NewTraderLicense.fatherName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>State:</td>
+                        <td style={styles.ctstyle}>{t("state")}</td>
                         <td>{NewTraderLicense.stateName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>District:</td>
+                        <td style={styles.ctstyle}>{t("district")}</td>
                         <td>{NewTraderLicense.districtName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Address:</td>
+                        <td style={styles.ctstyle}>{t("address")}</td>
                         <td>{NewTraderLicense.address}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Premises Description:</td>
+                        <td style={styles.ctstyle}>{t("Premises Description")}</td>
                         <td>{NewTraderLicense.premisesDescription}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Application Date:</td>
+                        <td style={styles.ctstyle}>{t("Application Date")}</td>
                         <td>{NewTraderLicense.applicationDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Application Number:</td>
+                        <td style={styles.ctstyle}>{t("Application Number")}</td>
                         <td>{NewTraderLicense.applicationNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Trader License Number:</td>
+                        <td style={styles.ctstyle}>{t("Trader License Number")}</td>
                         <td>{NewTraderLicense.traderLicenseNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Representative Details:</td>
+                        <td style={styles.ctstyle}>{t("Representative Details")}</td>
                         <td>{NewTraderLicense.representativeDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>License Fee:</td>
+                        <td style={styles.ctstyle}>{t("License Fee")}</td>
                         <td>{NewTraderLicense.licenseFee}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>License Challan Number:</td>
+                        <td style={styles.ctstyle}>{t("License Challan Number")}</td>
                         <td>{NewTraderLicense.licenseChallanNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Godown Details:</td>
+                        <td style={styles.ctstyle}>{t("Godown Details")}</td>
                         <td>{NewTraderLicense.godownDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Silk Exchange Mahajar:</td>
+                        <td style={styles.ctstyle}>{t("Corresponding Silk Exchange Mahajar")}</td>
                         <td>{NewTraderLicense.silkExchangeMahajar}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Silk Type:</td>
+                        <td style={styles.ctstyle}>{t("Silk Type")}</td>
                         <td>{NewTraderLicense.silkType}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Market:</td>
+                        <td style={styles.ctstyle}>{t("Market")}</td>
                         <td>{NewTraderLicense.marketMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mobile Number:</td>
+                        <td style={styles.ctstyle}>{t("mobile_number")}</td>
                         <td>{NewTraderLicense.mobileNumber}</td>
                       </tr>
                     </tbody>

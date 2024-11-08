@@ -6,11 +6,14 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegisterView() {
+   // Translation
+   const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -50,7 +53,7 @@ function ExternalUnitRegisterView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">External Unit Registration View</Block.Title>
+            <Block.Title tag="h2">{t("External Unit Registration View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -60,7 +63,7 @@ function ExternalUnitRegisterView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -69,7 +72,7 @@ function ExternalUnitRegisterView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -79,7 +82,7 @@ function ExternalUnitRegisterView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>External Unit Registration Details</Card.Header>
+          <Card.Header>{t("External Unit Registration Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -91,43 +94,43 @@ function ExternalUnitRegisterView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>
                           {ExternalUnitRegister.externalUnitRegistrationId}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>External Unit Type:</td>
+                        <td style={styles.ctstyle}>{t("External Unit")}</td>
                         <td>{ExternalUnitRegister.externalUnitTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Name:</td>
+                        <td style={styles.ctstyle}> {t("Name of the Unit")}</td>
                         <td>{ExternalUnitRegister.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Address:</td>
+                        <td style={styles.ctstyle}>{t("address")}</td>
                         <td>{ExternalUnitRegister.address}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>License Number:</td>
+                        <td style={styles.ctstyle}>{t("License/Registration Number")}</td>
                         <td>{ExternalUnitRegister.licenseNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>External Unit Number:</td>
+                        <td style={styles.ctstyle}>{t("External Units ID")}</td>
                         <td>{ExternalUnitRegister.externalUnitNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Name of the Organisation:
+                        {t("Name of the Owner/Organisation")}
                         </td>
                         <td>{ExternalUnitRegister.organisationName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race:</td>
+                        <td style={styles.ctstyle}>{t("Race")}</td>
                         <td>{ExternalUnitRegister.raceMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Capacity Of Production/Annum:</td>
+                        <td style={styles.ctstyle}>{t("Capacity Of Production/Annum")}</td>
                         <td>{ExternalUnitRegister.capacity}</td>
                       </tr>
                     </tbody>

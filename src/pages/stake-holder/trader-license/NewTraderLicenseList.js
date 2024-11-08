@@ -10,11 +10,15 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function NewTraderLicenseList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -183,7 +187,7 @@ function NewTraderLicenseList() {
 
   const NewTraderLicenseDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -193,7 +197,7 @@ function NewTraderLicenseList() {
             size="sm"
             onClick={() => handleView(row.traderLicenseId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -201,7 +205,7 @@ function NewTraderLicenseList() {
             className="ms-2"
             onClick={() => handleEdit(row.traderLicenseId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -217,70 +221,70 @@ function NewTraderLicenseList() {
       hide: "md",
     },
     {
-      name: "ARN Number",
+      name: t("ARN Number"),
       selector: (row) => row.arnNumber,
       cell: (row) => <span>{row.arnNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Trader Type",
+      name: t("Trader Type"),
       selector: (row) => row.traderTypeMasterName,
       cell: (row) => <span>{row.traderTypeMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Applicant Name",
+      name: t("Name of the Applicant"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Father Name",
+      name: t("Father's Name"),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("mobile_number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Address",
+      name: t("address"),
       selector: (row) => row.address,
       cell: (row) => <span>{row.address}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Trader License Number",
-      selector: (row) => row.silkType,
-      cell: (row) => <span>{row.silkType}</span>,
+      name: t("Trader License Number"),
+      selector: (row) => row.traderLicenseNumber,
+      cell: (row) => <span>{row.traderLicenseNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
-      cell: (row) => <span>{row.silkType}</span>,
+      cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Premises Description",
+      name: t("Premises Description"),
       selector: (row) => row.premisesDescription,
       cell: (row) => <span>{row.premisesDescription}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Silk Type",
+      name: t("Silk Type"),
       selector: (row) => row.silkType,
       cell: (row) => <span>{row.silkType}</span>,
       sortable: true,
@@ -293,7 +297,7 @@ function NewTraderLicenseList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">New Trader License List</Block.Title>
+            <Block.Title tag="h2">{t("New Trader License List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -303,7 +307,7 @@ function NewTraderLicenseList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -312,7 +316,7 @@ function NewTraderLicenseList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -355,7 +359,7 @@ function NewTraderLicenseList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>

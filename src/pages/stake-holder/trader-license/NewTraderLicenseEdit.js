@@ -9,11 +9,15 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function NewTraderLicenseEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -250,7 +254,7 @@ function NewTraderLicenseEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">New Trader License Edit</Block.Title>
+            <Block.Title tag="h2">{t("New Trader License Edit")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -260,7 +264,7 @@ function NewTraderLicenseEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -269,7 +273,7 @@ function NewTraderLicenseEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -293,7 +297,7 @@ function NewTraderLicenseEdit() {
                       
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Trader Type<span className="text-danger">*</span>
+                        {t("Trader Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -307,7 +311,7 @@ function NewTraderLicenseEdit() {
                               data.traderTypeMasterId === "0"
                             }
                           >
-                            <option value="">Select Trader Type</option>
+                            <option value="">{t("Select Trader Type")}</option>
                             {traderTypeListData.map((list) => (
                               <option
                                 key={list.traderTypeMasterId}
@@ -318,7 +322,7 @@ function NewTraderLicenseEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Trader Type is required
+                          {t("Trader Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -327,7 +331,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="firstName">
-                          Name of the Applicant
+                        {t("Name of the Applicant")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -337,7 +341,7 @@ function NewTraderLicenseEdit() {
                             value={data.firstName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Name of the Applicant"
+                            placeholder={t("Enter Name of the Applicant")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -350,7 +354,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="fatherName">
-                          Father's Name
+                        {t("Father's Name")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -359,7 +363,7 @@ function NewTraderLicenseEdit() {
                             value={data.fatherName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Father's Name"
+                            placeholder={t("Enter Father's Name")}
                           />
                         </div>
                       </Form.Group>
@@ -368,7 +372,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                       <Form.Label htmlFor="fatherName">
-                        Mobile Number
+                      {t("mobile_number")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -378,7 +382,7 @@ function NewTraderLicenseEdit() {
                           value={data.mobileNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Mobile Number"
+                          placeholder={t("enter_mobile_number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -391,14 +395,14 @@ function NewTraderLicenseEdit() {
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label>State</Form.Label>
+                        <Form.Label>{t("state")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="stateId"
                             value={data.stateId}
                             onChange={handleInputs}
                           >
-                            <option value="0">Select State</option>
+                            <option value="0">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -411,14 +415,14 @@ function NewTraderLicenseEdit() {
 
                       <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label>District</Form.Label>
+                        <Form.Label>{t("district")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="districtId"
                             value={data.districtId}
                             onChange={handleInputs}
                           >
-                            <option value="">Select District</option>
+                            <option value="">{t("select_district")}</option>
                             {districtListData.length
                               ? districtListData.map((list) => (
                                   <option
@@ -436,7 +440,7 @@ function NewTraderLicenseEdit() {
 
                       <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="address">Address</Form.Label>
+                        <Form.Label htmlFor="address">{t("address")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="address"
@@ -444,7 +448,7 @@ function NewTraderLicenseEdit() {
                             value={data.address}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Address"
+                            placeholder={t("enter_address")}
                           />
                         </div>
                       </Form.Group>
@@ -453,7 +457,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Market<span className="text-danger">*</span>
+                      {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -468,7 +472,7 @@ function NewTraderLicenseEdit() {
                               data.marketMasterId === "0"
                             }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -479,7 +483,7 @@ function NewTraderLicenseEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market is required
+                          {t("Market is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -489,7 +493,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="premisesDescription">
-                          Premises Description
+                        {t("Premises Description")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -498,7 +502,7 @@ function NewTraderLicenseEdit() {
                             value={data.premisesDescription}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Premises Description"
+                            placeholder={t("Enter Premises Description")}
                           />
                         </div>
                       </Form.Group>
@@ -506,14 +510,14 @@ function NewTraderLicenseEdit() {
 
                       <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label>Silk Type</Form.Label>
+                        <Form.Label>{t("Silk Type")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="silkType"
                             value={data.silkType}
                             onChange={handleInputs}
                           >
-                            <option value="">Select Silk Type</option>
+                            <option value="">{t("Select Silk Type")}</option>
                             <option value="Raw Silk">Raw Silk</option>
                             <option value="Twisted">Twisted</option>
                             <option value="Dupion">Dupion</option>
@@ -525,7 +529,7 @@ function NewTraderLicenseEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="applicationNumber">
-                          Application Number
+                        {t("Application Number")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -534,7 +538,7 @@ function NewTraderLicenseEdit() {
                             value={data.applicationNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Application Number"
+                            placeholder={t("Enter Application Number")}
                           />
                         </div>
                       </Form.Group>
@@ -543,7 +547,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="traderLicenseNumber">
-                          Trader License Number
+                        {t("Trader License Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -553,11 +557,11 @@ function NewTraderLicenseEdit() {
                             value={data.traderLicenseNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Trader License Number"
+                            placeholder={t("Enter Trader License Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Trader License Number is required
+                          {t("Trader License Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -566,7 +570,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="representativeDetails">
-                          Representative Details
+                        {t("Representative Details")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -575,7 +579,7 @@ function NewTraderLicenseEdit() {
                             value={data.representativeDetails}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Representative Details"
+                            placeholder={t("Enter Representative Details")}
                           />
                         </div>
                       </Form.Group>
@@ -584,7 +588,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="licenseFee">
-                          License Fee
+                        {t("License Fee")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -593,7 +597,7 @@ function NewTraderLicenseEdit() {
                             value={data.licenseFee}
                             onChange={handleInputs}
                             type="number"
-                            placeholder="Enter License Fee"
+                            placeholder={t("Enter License Fee")}
                           />
                         </div>
                       </Form.Group>
@@ -602,7 +606,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="licenseChallanNumber">
-                          License Challan Number
+                        {t("License Challan Number")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -611,7 +615,7 @@ function NewTraderLicenseEdit() {
                             value={data.licenseChallanNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Challan Number"
+                            placeholder={t("Enter Challan Number")}
                           />
                         </div>
                       </Form.Group>
@@ -620,7 +624,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="godownDetails">
-                          Godown Details
+                        {t("Godown Details")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -629,7 +633,7 @@ function NewTraderLicenseEdit() {
                             value={data.godownDetails}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Godown Details"
+                            placeholder={t("Enter Godown Details")}
                           />
                         </div>
                       </Form.Group>
@@ -638,7 +642,7 @@ function NewTraderLicenseEdit() {
                       <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="silkExchangeMahajar">
-                          Corresponding Silk Exchange Mahajar
+                        {t("Corresponding Silk Exchange Mahajar")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -647,7 +651,7 @@ function NewTraderLicenseEdit() {
                             value={data.silkExchangeMahajar}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Corresponding Silk Exchange Mahajar"
+                            placeholder={t("Enter Corresponding Silk Exchange Mahajar")}
                           />
                         </div>
                       </Form.Group>
@@ -662,12 +666,12 @@ function NewTraderLicenseEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
+                {t( "Clear")}
                   </Button>
                 </li>
               </ul>

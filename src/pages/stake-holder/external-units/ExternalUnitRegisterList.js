@@ -10,11 +10,14 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../../src/services/auth/api";
 import { createTheme } from "react-data-table-component";
 import { Icon, Select } from "../../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegisterList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -191,7 +194,7 @@ function ExternalUnitRegisterList() {
 
   const ExternalUnitRegisterDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -201,7 +204,7 @@ function ExternalUnitRegisterList() {
             size="sm"
             onClick={() => handleView(row.externalUnitRegistrationId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -209,7 +212,7 @@ function ExternalUnitRegisterList() {
             className="ms-2"
             onClick={() => handleEdit(row.externalUnitRegistrationId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -226,56 +229,56 @@ function ExternalUnitRegisterList() {
       grow: 2,
     },
     {
-      name: "External Unit Type",
+      name: t("External Unit"),
       selector: (row) => row.externalUnitTypeName,
       cell: (row) => <span>{row.externalUnitTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name of the Unit",
+      name: t("Name of the Unit"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Address",
+      name: t("address"),
       selector: (row) => row.address,
       cell: (row) => <span>{row.address}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name of the Owner/Organisation",
+      name: t("Name of the Owner/Organisation"),
       selector: (row) => row.organisationName,
       cell: (row) => <span>{row.organisationName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "License Number",
+      name: t("License/Registration Number"),
       selector: (row) => row.licenseNumber,
       cell: (row) => <span>{row.licenseNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "External Unit Number",
+      name: t("External Units ID"),
       selector: (row) => row.externalUnitNumber,
       cell: (row) => <span>{row.externalUnitNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Capacity Of Production/Annum",
+      name: t("Capacity Of Production/Annum"),
       selector: (row) => row.capacity,
       cell: (row) => <span>{row.capacity}</span>,
       sortable: true,
@@ -288,7 +291,7 @@ function ExternalUnitRegisterList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">External Unit List</Block.Title>
+            <Block.Title tag="h2">{t("External Unit List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -298,7 +301,7 @@ function ExternalUnitRegisterList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -307,7 +310,7 @@ function ExternalUnitRegisterList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -350,7 +353,7 @@ function ExternalUnitRegisterList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

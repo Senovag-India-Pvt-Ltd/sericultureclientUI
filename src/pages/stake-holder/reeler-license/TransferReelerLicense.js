@@ -9,11 +9,14 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TransferReelerLicense() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     reelerName: "",
     wardNumber: "",
@@ -517,7 +520,7 @@ useEffect(() => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Transfer of Reeler License</Block.Title>
+            <Block.Title tag="h2">{t("Transfer of Reeler License")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -551,7 +554,7 @@ useEffect(() => {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2}>
-                        License Transfer<span className="text-danger">*</span>
+                        {t("License Transfer")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -560,11 +563,11 @@ useEffect(() => {
                           value={licenseTransfer.reelingLicenseNumber}
                           onChange={handleLicenseTransferInputs}
                           type="text"
-                          placeholder="Enter Reeler License Number"
+                          placeholder={t("Enter Reeling License Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          License Transfer is required.
+                          {t("License Transfer is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -573,7 +576,7 @@ useEffect(() => {
                           variant="primary"
                           onClick={display}
                         >
-                          Search
+                          {t("search")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -584,13 +587,13 @@ useEffect(() => {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>Enter Reeler Details</Card.Header>
+                <Card.Header>{t("Enter Reeler Details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerName">
-                          Existing Reeler Name
+                          {t("Existing Reeler Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -599,12 +602,12 @@ useEffect(() => {
                             name="reelerName"
                             value={existingReelerName}
                             type="text"
-                            placeholder="Enter Reeler Name"
+                            placeholder={t("Enter Reeler Name")}
                             required
                             readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reeler Name is required.
+                          {t("Reeler Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -622,7 +625,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="fatherName">
-                          Father's/Husband's Name
+                        {t("Father's/Husband's Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -632,11 +635,11 @@ useEffect(() => {
                             value={data.fatherName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Father's/Husband's Name"
+                            placeholder={t("Enter Father's/Husband's Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Fathers/Husband Name is required.
+                          {t("Fathers/Husband Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -652,14 +655,14 @@ useEffect(() => {
                       </Form.Group> */}
 
                       <Form.Group className="form-group">
-                        <Form.Label>Gender</Form.Label>
+                        <Form.Label>{t("gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="gender"
                             value={data.gender}
                             onChange={handleInputs}
                           >
-                            <option value="">Select Gender</option>
+                            <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
                             <option value="3">Third Gender</option>
@@ -668,14 +671,14 @@ useEffect(() => {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>{t("Caste")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -687,7 +690,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="mobileNumber">
-                          Mobile Number<span className="text-danger">*</span>
+                        {t("mobile_number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -696,7 +699,7 @@ useEffect(() => {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Mobile Number"
+                            placeholder={t("enter_mobile_number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -706,7 +709,7 @@ useEffect(() => {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="emailId">Email ID</Form.Label>
+                        <Form.Label htmlFor="emailId">{t("email_id")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="emailId"
@@ -714,14 +717,14 @@ useEffect(() => {
                             value={data.emailId}
                             onChange={handleInputs}
                             type="email"
-                            placeholder="Enter Email"
+                            placeholder={t("enter_email_id")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          TSC<span className="text-danger">*</span>
+                        {t("tsc")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -734,7 +737,7 @@ useEffect(() => {
                               data.tscMasterId === undefined || data.tscMasterId === "0"
                             }
                           >
-                            <option value="">Select TSC</option>
+                            <option value="">{t("select_tsc")}</option>
                             {tscListData && tscListData.map((list) => (
                               <option
                                 key={list.tscMasterId}
@@ -745,7 +748,7 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            TSC is required
+                          {t("tsc_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -768,7 +771,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        Assign To Inspect<span className="text-danger">*</span>
+                        {t("Assign To Inspect")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -781,7 +784,7 @@ useEffect(() => {
                               data.assignToInspectId === undefined || data.assignToInspectId === "0"
                             }
                           >
-                            <option value="">Select Assign To Inspect</option>
+                            <option value="">{t("Select Assign To Inspect")}</option>
                             {userListData && userListData.map((list) => (
                               <option
                                 key={list.userMasterId}
@@ -792,7 +795,7 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Assign To Inspect is required
+                          {t("Assign To Inspect is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -817,7 +820,7 @@ useEffect(() => {
                       </Form.Group> */}
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="wnumber">Ward Number</Form.Label>
+                        <Form.Label htmlFor="wnumber">{t("Ward Number")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="wardNumber"
@@ -825,7 +828,7 @@ useEffect(() => {
                             value={data.wardNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Ward Number"
+                            placeholder={t("Enter Ward Number")}
                           />
                         </div>
                       </Form.Group>
@@ -834,7 +837,7 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerName">
-                          License Transferred Name
+                          {t("License Transferred Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -844,24 +847,24 @@ useEffect(() => {
                             // value={data.reelerName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeler Name"
+                            placeholder={t("Enter Reeler Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Transferred Reeler Name is required.
+                            {t("Transferred Reeler Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label>Education</Form.Label>
+                        <Form.Label>{t("education")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="educationId"
                             value={data.educationId}
                             onChange={handleInputs}
                           >
-                            <option value="0">Select Education</option>
+                            <option value="0">{t("select_education")}</option>
                             {educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.name}
@@ -873,7 +876,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rationCard">
-                          Ration Card
+                        {t("ration_number")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -882,14 +885,14 @@ useEffect(() => {
                             value={data.rationCard}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Ration Card Number"
+                            placeholder={t("enter_ration_number")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rrno">
-                          Electricity RR Numbers
+                        {t("Electricity RR Numbers")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -898,14 +901,14 @@ useEffect(() => {
                             value={data.electricityRrNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Electricity RR Numbers"
+                            placeholder={t("Enter Electricity RR Numbers")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="revenueDocument">
-                          Revenue Document (e-Khata / Reeling Unit)
+                        {t("Revenue Document (e-Khata / Reeling Unit)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -914,14 +917,14 @@ useEffect(() => {
                             value={data.revenueDocument}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Revenue Document"
+                            placeholder={t("Enter Revenue Document")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="recipientId">
-                          Recipient ID(From Khazane)
+                        {t("Recipient ID(From Khazane)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -930,14 +933,14 @@ useEffect(() => {
                             value={data.recipientId}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Recipient ID"
+                            placeholder={t("Enter Recipient ID")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="representativeNameAddress">
-                          Representative/Agent name and Address
+                        {t("Representative/Agent name and Address")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -946,7 +949,7 @@ useEffect(() => {
                             value={data.representativeNameAddress}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Representative/Agent name and Address"
+                            placeholder={t("Enter Representative/Agent name and Address")}
                           />
                         </div>
                       </Form.Group>
@@ -967,7 +970,7 @@ useEffect(() => {
                       </Form.Group> */}
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="chakbandi">
-                          Chakbandi Details(GPS Details)
+                          {t("Chakbandi Details(GPS Details)")}
                         </Form.Label>
                         <Row>
                           <Col lg="6">
@@ -976,7 +979,7 @@ useEffect(() => {
                               name="chakbandiLng"
                               value={data.chakbandiLng}
                               onChange={handleInputs}
-                              placeholder="Enter Longitude"
+                              placeholder={t("Enter Longitude")}
                             />
                           </Col>
 
@@ -987,7 +990,7 @@ useEffect(() => {
                               value={data.chakbandiLat}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter Latitude"
+                              placeholder={t("Enter Latitude")}
                             />
                           </Col>
                         </Row>
@@ -1004,7 +1007,7 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Relationship<span className="text-danger">*</span>
+                        {t("relationship")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1018,7 +1021,7 @@ useEffect(() => {
                               data.relationshipId === "0"
                             }
                           >
-                            <option value="">Select Relationship</option>
+                            <option value="">{t("select_relationship")}</option>
                             {relationshipListData.map((list) => (
                               <option
                                 key={list.relationshipId}
@@ -1029,14 +1032,14 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Relationship is required
+                          {t("relationship_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="passbook">
-                          Passbook Number<span className="text-danger">*</span>
+                        {t("passbook_number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1045,7 +1048,7 @@ useEffect(() => {
                             value={data.passbookNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Passbook Number"
+                            placeholder={t("enter_passbook_number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1055,7 +1058,7 @@ useEffect(() => {
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelunt">
-                          Reeling Unit Boundary
+                        {t("Reeling Unit Boundary(In Sqft)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1064,14 +1067,14 @@ useEffect(() => {
                             value={data.reelingUnitBoundary}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeling Unit Boundary"
+                            placeholder={t("Enter Reeling Unit Boundary")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Machine Type<span className="text-danger">*</span>
+                        {t("Machine Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1085,7 +1088,7 @@ useEffect(() => {
                               data.machineTypeId === "0"
                             }
                           >
-                            <option value="">Select Machine Type</option>
+                            <option value="">{t("Select Machine Type")}</option>
                             {machineTypeListData.map((list) => (
                               <option
                                 key={list.machineTypeId}
@@ -1096,7 +1099,7 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Machine Type is required
+                          {t("Machine Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1118,7 +1121,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="numberOfBasins">
-                          Number of Basins/Charaka
+                        {t("Number of Basins/Charaka")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1127,7 +1130,7 @@ useEffect(() => {
                             value={data.reelingUnitBoundary}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Number of Basins/Charaka"
+                            placeholder={t("Enter Number of Basins/Charaka")}
                           />
                         </div>
                       </Form.Group>
@@ -1150,7 +1153,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="loanDetails">
-                          Loan Details
+                        {t("loan_details")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1159,14 +1162,14 @@ useEffect(() => {
                             value={data.loanDetails}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Number of Loan Details"
+                            placeholder={t("enter_loan_details")}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerNumber">
-                          Reeler Number<span className="text-danger">*</span>
+                        {t("Reeler Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1175,7 +1178,7 @@ useEffect(() => {
                             value={data.reelerNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeler Number"
+                            placeholder={t("Enter Reeler Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1203,13 +1206,13 @@ useEffect(() => {
 
             <Block className="mt-4">
               <Card>
-                <Card.Header>Address</Card.Header>
+                <Card.Header>{t("address")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                        {t("state")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1222,7 +1225,7 @@ useEffect(() => {
                               data.stateId === undefined || data.stateId === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -1230,14 +1233,14 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            State Name is required
+                          {t("state_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                        {t("district")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1251,7 +1254,7 @@ useEffect(() => {
                               data.districtId === "0"
                             }
                           >
-                            <option value="">Select District</option>
+                            <option value="">{t("select_district")}</option>
                             {districtListData && districtListData.length
                               ? districtListData.map((list) => (
                                   <option
@@ -1264,13 +1267,13 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                          {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                        {t("taluk")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1283,7 +1286,7 @@ useEffect(() => {
                               data.talukId === undefined || data.talukId === "0"
                             }
                           >
-                            <option value="">Select Taluk</option>
+                            <option value="">{t("select_taluk")}</option>
                             {talukListData && talukListData.length
                               ? talukListData.map((list) => (
                                   <option
@@ -1296,7 +1299,7 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
+                          {t("taluk_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1304,7 +1307,7 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Hobli<span className="text-danger">*</span>
+                        {t("hobli")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1317,7 +1320,7 @@ useEffect(() => {
                               data.hobliId === undefined || data.hobliId === "0"
                             }
                           >
-                            <option value="">Select Hobli</option>
+                            <option value="">{t("select_hobli")}</option>
                             {hobliListData && hobliListData.length
                               ? hobliListData.map((list) => (
                                   <option
@@ -1330,13 +1333,13 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Hobli Name is required
+                          {t("hobli_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Village<span className="text-danger">*</span>
+                        {t("village")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1350,7 +1353,7 @@ useEffect(() => {
                               data.villageId === "0"
                             }
                           >
-                            <option value="">Select Village</option>
+                            <option value="">{t("select_village")}</option>
                             {villageListData && villageListData.length
                               ? villageListData.map((list) => (
                                   <option
@@ -1363,14 +1366,14 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Village Name is required
+                          {t("village_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="address">
-                          Address<span className="text-danger">*</span>
+                        {t("address")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1380,7 +1383,7 @@ useEffect(() => {
                             value={data.address}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Address"
+                            placeholder={t("enter_address")}
                             rows="2"
                             required
                           />
@@ -1394,7 +1397,7 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="pincode">
-                          Pin Code<span className="text-danger">*</span>
+                        {t("pin_code")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1403,7 +1406,7 @@ useEffect(() => {
                             value={data.pincode}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Pin Code"
+                            placeholder={t("enter_pin_code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1419,13 +1422,13 @@ useEffect(() => {
 
             <Block className="mt-4">
               <Card>
-                <Card.Header>License Details</Card.Header>
+                <Card.Header>{t("License Details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
-                          Receipt number<span className="text-danger">*</span>
+                        {t("Receipt number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1434,7 +1437,7 @@ useEffect(() => {
                             value={data.licenseReceiptNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Receipt number"
+                            placeholder={t("Enter Receipt number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1446,7 +1449,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
-                          Reeling License Number
+                        {t("Reeling License Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1456,11 +1459,11 @@ useEffect(() => {
                             value={data.reelingLicenseNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeling License Number"
+                            placeholder={t("Enter Reeling License Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reeling License Number is required
+                          {t("Reeling License Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1468,7 +1471,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
-                          Member of RCS/FPO/Others Loan Details
+                        {t("Member of RCS/FPO/Others")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1477,14 +1480,14 @@ useEffect(() => {
                             value={data.memberLoanDetails}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Member of RCS/FPO/Others Loan Details"
+                            placeholder={t("Enter Member of RCS/FPO/Others")}
                           />
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label>Function of the Unit</Form.Label>
+                        <Form.Label>{t("Function of the Unit")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="functionOfUnit"
@@ -1501,7 +1504,7 @@ useEffect(() => {
                     .
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
+                        <Form.Label htmlFor="feeAmount">{t("Fee Amount")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="feeAmount"
@@ -1509,14 +1512,14 @@ useEffect(() => {
                             value={data.feeAmount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Fee Amount"
+                            placeholder={t("Enter Fee Amount")}
                           />
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label>Receipt Date</Form.Label>
+                        <Form.Label>{t("Receipt Date")}</Form.Label>
                         <div className="form-control-wrap">
                           {isReceiptDate && (
                             <DatePicker
@@ -1537,7 +1540,7 @@ useEffect(() => {
                     </Col>
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label>License Expiry Date</Form.Label>
+                        <Form.Label>{t("License Expiry Date")}</Form.Label>
                         <div className="form-control-wrap">
                           {isExpiryDate && (
                             <DatePicker
@@ -1566,13 +1569,13 @@ useEffect(() => {
 
             <Block className="mt-4">
               <Card>
-                <Card.Header> Chakbandi Details</Card.Header>
+                <Card.Header> {t("Chakbandi Details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
-                          East<span className="text-danger">*</span>
+                        {t("East")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1581,7 +1584,7 @@ useEffect(() => {
                             value={data.mahajarEast}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="East"
+                            placeholder={t("Enter East")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1594,7 +1597,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
-                          West<span className="text-danger">*</span>
+                        {t("West")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1603,7 +1606,7 @@ useEffect(() => {
                             value={data.mahajarWest}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="West"
+                            placeholder={t("West")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1616,7 +1619,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
-                          North<span className="text-danger">*</span>
+                        {t("North")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1625,7 +1628,7 @@ useEffect(() => {
                             value={data.mahajarNorth}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="North"
+                            placeholder={t("North")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1638,7 +1641,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
-                          South<span className="text-danger">*</span>
+                        {t("South")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1647,7 +1650,7 @@ useEffect(() => {
                             value={data.mahajarSouth}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="South"
+                            placeholder={t("South")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1663,13 +1666,13 @@ useEffect(() => {
 
             <Block className="mt-4">
               <Card>
-                <Card.Header>Bank Account Details</Card.Header>
+                <Card.Header>{t("bank_account_details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="bankName">
-                          Bank Name<span className="text-danger">*</span>
+                        {t("bank_name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1678,7 +1681,7 @@ useEffect(() => {
                             value={data.bankName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Bank Name"
+                            placeholder={t("enter_bank_name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1689,7 +1692,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="branchName">
-                          Branch Name<span className="text-danger">*</span>
+                        {t("branch_name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1698,7 +1701,7 @@ useEffect(() => {
                             value={data.branchName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Branch Name"
+                            placeholder={t("enter_branch_name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1711,7 +1714,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="accno">
-                          Bank Account Number
+                        {t("bank_account_number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1721,7 +1724,7 @@ useEffect(() => {
                             value={data.bankAccountNumber}
                             onChange={handleInputs}
                             type="number"
-                            placeholder="Enter Bank Account Number"
+                            placeholder={t("enter_bank_account_number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1732,7 +1735,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="ifsc">
-                          IFSC Code<span className="text-danger">*</span>
+                        {t("ifsc_code")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1742,7 +1745,7 @@ useEffect(() => {
                             onChange={handleInputs}
                             maxLength="11"
                             type="text"
-                            placeholder="Enter IFSC Code"
+                            placeholder={t("enter_ifsc_code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1761,12 +1764,12 @@ useEffect(() => {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
+                {t( "Clear")}
                   </Button>
                 </li>
               </ul>
