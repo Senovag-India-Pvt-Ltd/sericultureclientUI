@@ -570,6 +570,27 @@ function Menu() {
         }
       });
     }
+    if (data.includes("SeedDFL_BSF")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_BSF_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("SeedDFL_Grainage")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_Grainage_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("SeedDFL_External")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_External_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
     if (data.includes("GardenManagement")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("GardenManagement_")) {
