@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button, Modal,Table } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -29,7 +29,6 @@ function SeedCocoonInward() {
     select: "mobileNumber",
   });
 
- 
   // Below for modal window for personal details
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
@@ -39,12 +38,15 @@ function SeedCocoonInward() {
   const [showModalFC, setShowModalFC] = useState(false);
   const handleShowModalFC = () => {
     // getDocumentFile()
-    pathList.forEach(path =>{
+    pathList.forEach((path) => {
       getDocumentFile(path);
-  })
+    });
     setShowModalFC(true);
-  }
-  const handleCloseModalFC = () => setShowModalFC(false);
+  };
+  const handleCloseModalFC = () => {
+    setSelectedDocumentFile([]);
+    setShowModalFC(false);
+  };
 
   // Below for modal window for Crop details
   const [showModalCrop, setShowModalCrop] = useState(false);
@@ -87,7 +89,7 @@ function SeedCocoonInward() {
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
   const [isActive, setIsActive] = useState(false);
- 
+
   // const display = (event) => {
   //   const form = event.currentTarget;
   //   if (form.checkValidity() === false) {
@@ -176,7 +178,7 @@ function SeedCocoonInward() {
       setValidatedDisplay(true);
     } else {
       event.preventDefault();
-  
+
       // Reset data state
       setData({
         farmerId: "",
@@ -187,29 +189,32 @@ function SeedCocoonInward() {
         numberOfLot: "",
         numberOfSmallBin: "",
         numberOfBigBin: "",
-        dflLotNumber: "",  // Initial values are empty
+        dflLotNumber: "", // Initial values are empty
         lotVariety: "",
         lotParentalLevel: "",
         marketId: localStorage.getItem("marketId"),
-        godownId: localStorage.getItem("godownId") ? localStorage.getItem("godownId") : 0,
+        godownId: localStorage.getItem("godownId")
+          ? localStorage.getItem("godownId")
+          : 0,
       });
-  
+
       setValidatedDisplay(false);
       setFarmerDetails({});
       setAllotedLotList([]);
       setBigBinList([]);
       setSmallBinList([]);
-  
+
       const { text, select } = farmer;
       let sendData = {
         text,
         type: select,
       };
-  
+
       setLoading(true);
       api
         .post(
-          baseURL2 + `farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`,
+          baseURL2 +
+            `farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`,
           sendData
         )
         .then((response) => {
@@ -221,11 +226,10 @@ function SeedCocoonInward() {
             setData((prev) => ({
               ...prev,
               farmerId: farmerResponse.farmerId,
-              dflLotNumber: farmerResponse.numbersOfDfls,  // Set dflLotNumber from response
-              lotVariety: farmerResponse.raceOfDfls,       // Set lotVariety from response
-              lotParentalLevel: farmerResponse.lotNumberRsp // Set lotParentLevel from response
+              dflLotNumber: farmerResponse.numbersOfDfls, // Set dflLotNumber from response
+              lotVariety: farmerResponse.raceOfDfls, // Set lotVariety from response
+              lotParentalLevel: farmerResponse.lotNumberRsp, // Set lotParentLevel from response
             }));
-
 
             // setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
 
@@ -263,21 +267,23 @@ function SeedCocoonInward() {
   };
 
   const [prepareEggs, setPrepareEggs] = useState([]);
-  const [pathList,setPathList] = useState([]);
+  const [pathList, setPathList] = useState([]);
 
   const getIdList = (farmerId) => {
     setLoading(true);
     api
-      .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
+      .get(
+        `${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`
+      )
       .then((response) => {
         if (response.data.length > 0) {
           const dataResponse = response.data;
           setPrepareEggs(response.data); // Set to the entire array
-          dataResponse.forEach((data)=>{
-            if(data.fitnessCertificatePath){
-              setPathList((prev)=>([...prev,data.fitnessCertificatePath]));
+          dataResponse.forEach((data) => {
+            if (data.fitnessCertificatePath) {
+              setPathList((prev) => [...prev, data.fitnessCertificatePath]);
             }
-        })
+          });
         } else {
           setPrepareEggs([]); // Handle empty response
         }
@@ -290,7 +296,6 @@ function SeedCocoonInward() {
         setLoading(false);
       });
   };
-
 
   const handleFarmerIdInputs = (e) => {
     // debugger;
@@ -356,37 +361,36 @@ function SeedCocoonInward() {
   // };
 
   let name, value;
-const handleInputs = (e) => {
-  name = e.target.name;
-  value = e.target.value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
 
-  setData((prevData) => {
-    let updatedData = { ...prevData, [name]: value };
+    setData((prevData) => {
+      let updatedData = { ...prevData, [name]: value };
 
-    if (name === "estimatedWeight") {
-      const weight = parseInt(value);
+      if (name === "estimatedWeight") {
+        const weight = parseInt(value);
 
-      if (isNaN(weight) || weight <= 0) {
-        updatedData = {
-          ...updatedData,
-          numberOfLot: 1,
-          numberOfBigBin: 1,
-          numberOfSmallBin: 1,
-        };
-      } else if (weight >= marketData.lotWeight) {
-        updatedData = {
-          ...updatedData,
-          numberOfLot: 1, // Keep it as 1 instead of calculating based on weight
-        };
-      } else if (weight < marketData.lotWeight) {
-        updatedData = { ...updatedData, numberOfLot: 1 };
+        if (isNaN(weight) || weight <= 0) {
+          updatedData = {
+            ...updatedData,
+            numberOfLot: 1,
+            numberOfBigBin: 1,
+            numberOfSmallBin: 1,
+          };
+        } else if (weight >= marketData.lotWeight) {
+          updatedData = {
+            ...updatedData,
+            numberOfLot: 1, // Keep it as 1 instead of calculating based on weight
+          };
+        } else if (weight < marketData.lotWeight) {
+          updatedData = { ...updatedData, numberOfLot: 1 };
+        }
       }
-    }
 
-    return updatedData;
-  });
-};
-
+      return updatedData;
+    });
+  };
 
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, marketAuctionDate: newDate });
@@ -399,7 +403,6 @@ const handleInputs = (e) => {
   const [bigBinList, setBigBinList] = useState([]);
   const [smallBinList, setSmallBinList] = useState([]);
 
-  
   // const postData = async (event) => {
   //   const form = event.currentTarget;
   //   if (form.checkValidity() === false) {
@@ -496,27 +499,28 @@ const handleInputs = (e) => {
           ...data,
           godownId: addGodown,
         });
-  
+
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
-  
+
           const allotedLotList = response.data.content.allotedLotList || [];
-          const allotedBigBinList = response.data.content.allotedBigBinList || [];
-          const allotedSmallBinList = response.data.content.allotedSmallBinList || [];
+          const allotedBigBinList =
+            response.data.content.allotedBigBinList || [];
+          const allotedSmallBinList =
+            response.data.content.allotedSmallBinList || [];
 
           // Call the generateBiddingSlip for each item in the allotedLotList
-        if (allotedLotList.length > 0) {
-          const openWindows = [];
-          for (const item of allotedLotList) {
-            const promise = generateBiddingSlip(item); // Assuming generateBiddingSlip takes an item as an argument
-            openWindows.push(promise);
+          if (allotedLotList.length > 0) {
+            const openWindows = [];
+            for (const item of allotedLotList) {
+              const promise = generateBiddingSlip(item); // Assuming generateBiddingSlip takes an item as an argument
+              openWindows.push(promise);
+            }
+            await Promise.all(openWindows); // Wait for all bidding slips to be generated
           }
-          await Promise.all(openWindows); // Wait for all bidding slips to be generated
-        }
-  
+
           // Pass the alloted lot list, big bin list, and small bin list to saveSuccess
           saveSuccess(allotedLotList, allotedBigBinList, allotedSmallBinList);
-          
         } else if (response.data.errorCode === -1) {
           saveError(response.data.errorMessages[0].message);
         }
@@ -526,8 +530,7 @@ const handleInputs = (e) => {
       setValidated(true);
     }
   };
-  
-  
+
   console.log(allotedLotList);
   // to get Source
   const [sourceListData, setSourceListData] = useState([]);
@@ -587,7 +590,6 @@ const handleInputs = (e) => {
     }
   }, [data.marketId]);
 
-  
   // const generateBiddingSlip = async (allotedLotId) => {
   //   const newDate = new Date();
   //   const formattedDate =
@@ -677,7 +679,6 @@ const handleInputs = (e) => {
     }
   };
 
-
   //  console.log(marketData);
   // console.log("farmerAddress", farmerAddress);
 
@@ -708,33 +709,33 @@ const handleInputs = (e) => {
 
   const styles = {
     ctstyle: {
-      fontWeight: 'bold',
-      color: '#2e314a',
-      backgroundColor: '#f8f9fa',
-      padding: '10px 15px', // Keep some padding for cells
-      fontSize: '1rem', // Font size for better readability
+      fontWeight: "bold",
+      color: "#2e314a",
+      backgroundColor: "#f8f9fa",
+      padding: "10px 15px", // Keep some padding for cells
+      fontSize: "1rem", // Font size for better readability
     },
     table: {
-      borderRadius: '5px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-      width: '100%', // Full width for the table
-      tableLayout: 'fixed', // Use fixed layout for better control over column widths
+      borderRadius: "5px",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      width: "100%", // Full width for the table
+      tableLayout: "fixed", // Use fixed layout for better control over column widths
     },
     modalHeader: {
-      backgroundColor: '#0f6cbe',
-      color: '#fff',
-      textAlign: 'center',
-      padding: '10px', // Reduced padding for a smaller header
-      fontSize: '1.2rem', // Reduced font size for the header
+      backgroundColor: "#0f6cbe",
+      color: "#fff",
+      textAlign: "center",
+      padding: "10px", // Reduced padding for a smaller header
+      fontSize: "1.2rem", // Reduced font size for the header
     },
     modalTitle: {
-      fontWeight: '600',
-      fontSize: '1.2rem', // Reduced title font size
+      fontWeight: "600",
+      fontSize: "1.2rem", // Reduced title font size
     },
     modalBody: {
-      padding: '20px', // Padding around the body
-      height: '100%', // Expand the body to full height
-      overflowY: 'auto', // Allow scrolling if content overflows
+      padding: "20px", // Padding around the body
+      height: "100%", // Expand the body to full height
+      overflowY: "auto", // Allow scrolling if content overflows
     },
   };
 
@@ -800,25 +801,25 @@ const handleInputs = (e) => {
     let small;
     let big;
     let lot;
-  
+
     if (bigList.length) {
       big = ` Big ${bigList.join(",")}`;
     } else {
       big = "";
     }
-  
+
     if (smallList.length) {
       small = ` Small ${smallList.join(",")}`;
     } else {
       small = "";
     }
-  
+
     if (lotList.length) {
       lot = ` Allotted Lot Number: ${lotList.join(",")}`;
     } else {
       lot = "";
     }
-  
+
     Swal.fire({
       icon: "success",
       title: "Bidding Slip has been generated",
@@ -826,7 +827,7 @@ const handleInputs = (e) => {
       width: 300,
     });
   };
-  
+
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
       icon: "error",
@@ -851,34 +852,32 @@ const handleInputs = (e) => {
 
   const [fitnessCertificate, setFitnessCertificate] = useState({});
 
-   // To get Photo
-   const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
+  // To get Photo
+  const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
 
-   const getDocumentFile = async (file) => {
-     const parameters = `fileName=${file}`;
-     try {
-       const response = await api.get(
-         baseURLChawki + `v1/api/s3/download?${parameters}`,
-         {
-           responseType: "arraybuffer",
-         }
-       );
-       const blob = new Blob([response.data]);
-       const url = URL.createObjectURL(blob);
-       setSelectedDocumentFile(prev=>([...prev,url]));
-     } catch (error) {
-       console.error("Error fetching file:", error);
-     }
-   };
-
-
-
-   const downloadFile = async (file) => {
-    console.log("file",file);
+  const getDocumentFile = async (file) => {
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
-        baseURLChawki + `api/s3/download?${parameters}`,
+        baseURLChawki + `v1/api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedDocumentFile((prev) => [...prev, url]);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
+  const downloadFile = async (file) => {
+    console.log("file", file);
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURLChawki + `v1/api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
         }
@@ -904,8 +903,7 @@ const handleInputs = (e) => {
     }
   };
 
-
-   // console.log(getIdList());
+  // console.log(getIdList());
 
   //  useEffect(() => {
 
@@ -1084,7 +1082,7 @@ const handleInputs = (e) => {
                   <div className="gap-col mt-1">
                     <ul className="d-flex align-items-center justify-content-center gap g-3">
                       <li>
-                        <Button type="submit" variant="primary" >
+                        <Button type="submit" variant="primary">
                           Submit
                         </Button>
                       </li>
@@ -1097,58 +1095,65 @@ const handleInputs = (e) => {
         </Form>
       </Block>
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
-      <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Personal Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={styles.modalBody}>
-        <div className="d-flex justify-content-center">
-          <Row className="g-5">
-            <Col lg="12">
-              <Table striped bordered hover responsive className="table-sm" style={styles.table}>
-                <tbody>
-                  <tr>
-                    <td style={styles.ctstyle}>Farmer Number:</td>
-                    <td>{farmerDetails?.farmerNumber || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Farmer Name:</td>
-                    <td>{farmerDetails?.firstName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Father's/Husband's Name:</td>
-                    <td>{farmerDetails?.fatherName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Phone Number:</td>
-                    <td>{farmerDetails?.mobileNumber || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>TSC:</td>
-                    <td>{farmerDetails?.tscName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>State:</td>
-                    <td>{farmerDetails?.stateName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>District:</td>
-                    <td>{farmerDetails?.districtName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Taluk:</td>
-                    <td>{farmerDetails?.talukName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Village:</td>
-                    <td>{farmerDetails?.villageName || 'N/A'}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
-        </div>
-      </Modal.Body>
-    </Modal>
+        <Modal.Header closeButton style={styles.modalHeader}>
+          <Modal.Title style={styles.modalTitle}>Personal Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={styles.modalBody}>
+          <div className="d-flex justify-content-center">
+            <Row className="g-5">
+              <Col lg="12">
+                <Table
+                  striped
+                  bordered
+                  hover
+                  responsive
+                  className="table-sm"
+                  style={styles.table}
+                >
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>Farmer Number:</td>
+                      <td>{farmerDetails?.farmerNumber || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Farmer Name:</td>
+                      <td>{farmerDetails?.firstName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Father's/Husband's Name:</td>
+                      <td>{farmerDetails?.fatherName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Phone Number:</td>
+                      <td>{farmerDetails?.mobileNumber || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>TSC:</td>
+                      <td>{farmerDetails?.tscName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>State:</td>
+                      <td>{farmerDetails?.stateName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>District:</td>
+                      <td>{farmerDetails?.districtName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Taluk:</td>
+                      <td>{farmerDetails?.talukName || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Village:</td>
+                      <td>{farmerDetails?.villageName || "N/A"}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          </div>
+        </Modal.Body>
+      </Modal>
 
       {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
@@ -1238,83 +1243,85 @@ const handleInputs = (e) => {
         </Modal.Body>
       </Modal> */}
       <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
-  <Modal.Header closeButton>
-    <Modal.Title>FC Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <div className="d-flex flex-column justify-content-center">
-      <tr>
-        <td style={styles.ctstyle}>Fitness Certificate:</td>
-        <td>
-        {
-          selectedDocumentFile?.length > 0 && (
-            
-              selectedDocumentFile.map(file =>(
-                <>
-                <img
-                style={{ height: "100px", width: "100px" }}
-                src={file}
-                alt="Selected File"
-              />
-              <Button
-                variant="primary"
-                size="sm"
-                className="ms-2"
-                onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
-              >
-                Download File
-              </Button>
-              </>
-          ))
-            
-          )
-        }
-          
-        </td>
-      </tr>
-    </div>
-  </Modal.Body>
-</Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>FC Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex flex-column justify-content-center">
+            <tr>
+              <td style={styles.ctstyle}>Fitness Certificate:</td>
+              <td>
+                {selectedDocumentFile?.length > 0 &&
+                  selectedDocumentFile.map((file) => (
+                    <>
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={file}
+                        alt="Selected File"
+                      />
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        className="ms-2"
+                        onClick={() => downloadFile(pathList[0])}
+                      >
+                        Download File
+                      </Button>
+                    </>
+                  ))}
+              </td>
+            </tr>
+          </div>
+        </Modal.Body>
+      </Modal>
 
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
-      <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Crop Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={styles.modalBody}>
-        <div className="d-flex justify-content-center">
-          <Row className="g-5 d-flex justify-content-center" style={{ width: "100%" }}>
-            <Col lg="12"> {/* Use full width for the table */}
-              <table className="table small table-bordered" style={styles.table}>
-                {/* <thead>
+        <Modal.Header closeButton style={styles.modalHeader}>
+          <Modal.Title style={styles.modalTitle}>Crop Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={styles.modalBody}>
+          <div className="d-flex justify-content-center">
+            <Row
+              className="g-5 d-flex justify-content-center"
+              style={{ width: "100%" }}
+            >
+              <Col lg="12">
+                {" "}
+                {/* Use full width for the table */}
+                <table
+                  className="table small table-bordered"
+                  style={styles.table}
+                >
+                  {/* <thead>
                   <tr>
                     <th style={{ width: '40%', textAlign: 'left' }}>Field</th>
                     <th style={{ width: '60%', textAlign: 'left' }}>Details</th>
                   </tr>
                 </thead> */}
-                <tbody>
-                  <tr>
-                    <td style={styles.ctstyle}>No of DFL's:</td>
-                    <td>{farmerDetails?.numbersOfDfls || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Lot No:</td>
-                    <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
-                    <td>{farmerDetails?.dflsSource || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>Variety:</td>
-                    <td>{farmerDetails?.raceName || 'N/A'}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </Col>
-          </Row>
-        </div>
-      </Modal.Body>
-    </Modal>
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>No of DFL's:</td>
+                      <td>{farmerDetails?.numbersOfDfls || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Lot No:</td>
+                      <td>{farmerDetails?.lotNumberRsp || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
+                      <td>{farmerDetails?.dflsSource || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Variety:</td>
+                      <td>{farmerDetails?.raceName || "N/A"}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+          </div>
+        </Modal.Body>
+      </Modal>
       <Modal
         show={showModalWeighment}
         onHide={handleCloseModalWeighment}
@@ -1370,7 +1377,7 @@ const handleInputs = (e) => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    No Of Lot is required
+                      No Of Lot is required
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
