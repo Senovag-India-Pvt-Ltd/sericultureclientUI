@@ -161,7 +161,12 @@ useEffect(() => {
    })
      setShowModalFC(true);
    }
-   const handleCloseModalFC = () => setShowModalFC(false);
+  //  const handleCloseModalFC = () => setShowModalFC(false);
+
+  const handleCloseModalFC = () => {
+    setSelectedDocumentFile([]);
+    setShowModalFC(false);
+  };
 
   // Below for modal window for Crop details
   const [showModalCrop, setShowModalCrop] = useState(false);
@@ -630,7 +635,8 @@ const saveError = (message = "Something went wrong!") => {
                 variant="primary"
                 size="sm"
                 className="ms-2"
-                onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+                // onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+                onClick={() => downloadFile(pathList[0])}
               >
                 Download File
               </Button>
