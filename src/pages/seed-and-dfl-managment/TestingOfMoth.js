@@ -283,7 +283,8 @@ function TestingOfMoth() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                      Source Details<span className="text-danger">*</span>
+                      Source Details
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -293,11 +294,11 @@ function TestingOfMoth() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Source Details"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Source Details is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

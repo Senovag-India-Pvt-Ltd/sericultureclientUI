@@ -283,7 +283,7 @@ return (
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                       Number Of DFLs 
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -291,14 +291,14 @@ return (
                         name="numberOfDFLs"
                         value={data.numberOfDFLs}
                         onChange={handleInputs}
-                        maxLength="4"
+                        maxLength="6"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                         Number Of DFLs is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

@@ -514,7 +514,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                             value={data.numberOfDflsDisposed}
                             onChange={handleInputs}
                             type="text"
-                            maxLength="4"
+                            maxLength="6"
                             placeholder="Enter Number of DFLs disposed"
                             required
                           />

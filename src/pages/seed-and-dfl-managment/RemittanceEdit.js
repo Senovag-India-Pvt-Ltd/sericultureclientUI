@@ -457,7 +457,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    RTC 25<span className="text-danger">*</span>
+                    KTC 25<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
