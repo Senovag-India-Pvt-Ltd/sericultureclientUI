@@ -964,7 +964,7 @@ const saveError = (message = "Something went wrong!") => {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
                     <Button type="submit" variant="primary">
-                      Proceed To Allotment
+                      Proceed To Weighment
                     </Button>
                   </div>
                   <div className="gap-col">
