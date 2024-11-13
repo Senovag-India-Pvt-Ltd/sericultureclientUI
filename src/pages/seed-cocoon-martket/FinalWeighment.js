@@ -414,7 +414,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
-        baseURLChawki + `api/s3/download?${parameters}`,
+        baseURLChawki + `v1/api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
         }
