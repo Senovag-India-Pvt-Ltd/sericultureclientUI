@@ -111,55 +111,7 @@ function PreservationofseedcocoonforprocessingList() {
 
 
 
-  const deleteError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: message,
-    });
-  };
-
-  const deleteConfirm = (_id,status,senderType) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will Reject permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Reject it!",
-    }).then((result) => {
-      if (result.value) {
-        console.log("hello");
-        const response = api
-          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
-          .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Rejected",
-              "You successfully rejected this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
-  const acceptError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Accept attempt was not successful",
-      text: message,
-    });
-  };
-
-  const acceptConfirm = (_id, status,senderType) => {
+  const acceptConfirm = (_id, status, senderType) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will Accept!",
@@ -169,27 +121,72 @@ function PreservationofseedcocoonforprocessingList() {
     }).then((result) => {
       if (result.value) {
         console.log("hello");
-        const response = api
+        api
           .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
           .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Accepted",
-              "You successfully Accepted this record",
-              "success"
-            );
+            if (response.data.error === 1) {
+              acceptError(response.data.message || "An error occurred while accepting the record.");
+            } else {
+              getList();
+              Swal.fire("Accepted", "You successfully Accepted this record", "success");
+            }
           })
           .catch((err) => {
-            acceptError();
+            acceptError("An error occurred while accepting the record.");
           });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
         Swal.fire("Cancelled", "Your record is not accepted", "info");
       }
     });
   };
+  
+  const deleteConfirm = (_id, status, senderType) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Reject permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Reject it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        api
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
+          .then((response) => {
+            if (response.data.error === 1) {
+              deleteError(response.data.message || "An error occurred while rejecting the record.");
+            } else {
+              getList();
+              Swal.fire("Rejected", "You successfully rejected this record", "success");
+            }
+          })
+          .catch((err) => {
+            deleteError("An error occurred while rejecting the record.");
+          });
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+  
+  const acceptError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Accept attempt was not successful",
+      text: message,
+    });
+  };
+  
+  const deleteError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Reject attempt was not successful",
+      text: message,
+    });
+  };
+  
 
 
   createTheme(
@@ -251,7 +248,7 @@ function PreservationofseedcocoonforprocessingList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => acceptConfirm(row.id, 1,senderType)}
+            onClick={() => acceptConfirm(row.id, 1,row.senderType)}
           >
             Accept
           </Button>
@@ -259,7 +256,7 @@ function PreservationofseedcocoonforprocessingList() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, 2,senderType)}
+            onClick={() => deleteConfirm(row.id, 2,row.senderType)}
             className="ms-2"
           >
             Reject
@@ -395,13 +392,13 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Parent Lot Number",
-      selector: (row) => row.parentLotNumber,
-      cell: (row) => <span>{row.parentLotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Parent Lot Number",
+    //   selector: (row) => row.parentLotNumber,
+    //   cell: (row) => <span>{row.parentLotNumber}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Race ",
       selector: (row) => row.raceName,
