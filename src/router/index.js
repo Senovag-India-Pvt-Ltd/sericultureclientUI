@@ -915,6 +915,13 @@ import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReaso
 import DistrictWiseMulberryPage from "../pages/target-settings/DistrictWiseMulberryPage";
 import TscMulberryTargets from "../pages/target-settings/TscMulberryTargets";
 import ServiceApplicationRejectionList from "../pages/direct-benefit-transfer/ServiceApplicationRejectionList";
+import DistrictWiseMontlyMulberry from "../pages/new-target-setting/DistrictWiseMontlyMulberry";
+import NewTscMulberryTarget from "../pages/new-target-setting/NewTscMulberryTarget";
+import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTargetType";
+import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
+import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
+import MulberryTargetTypeEdit from "../pages/masters/mulberry-target-type/MulberryTargetTypeEdit";
+
 // Admin and Reports
 
 function Router() {
@@ -3328,6 +3335,34 @@ function Router() {
               element={<MarketExceptionTime />}
             />
 
+            {/* New Target Setting */}
+            <Route
+              path="districtwise-montly-mulberry-new"
+              element={<DistrictWiseMontlyMulberry />}
+            />
+
+            <Route
+              path="tsc-mulberry-targets-new"
+              element={<NewTscMulberryTarget />}
+            />
+
+            {/* Master Data */}
+            <Route
+              path="mulberry-target-type"
+              element={<MulberryTargetType />}
+            />
+            <Route
+              path="mulberry-target-type-list"
+              element={<MulberryTargetTypeList />}
+            />
+             <Route
+              path="mulberry-target-type-view/:id"
+              element={<MulberryTargetTypeView />}
+            />
+            <Route
+              path="mulberry-target-type-edit/:id"
+              element={<MulberryTargetTypeEdit />}
+            />
             <Route path="test1" element={<Test1 />} />
           </Route>
         )}
