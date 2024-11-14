@@ -2,24 +2,26 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
-import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
-import { Icon } from "../../components";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
+import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 // import axios from "axios";
-import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function DistrictWiseMontlyMulberry() {
+function NewTscMulberryTarget() {
   const [data, setData] = useState({
+    mulberryTargetTypeId: "",
     financialYearMasterId: "",
-    date: "",
-    centralBudget: "",
-    stateBudget: "",
-    amount: "",
+    districtId: "",
+    tscMasterId: "",
+    month: "",
+    targetType: "",
+    value: "",
   });
 
   const [type, setType] = useState({
@@ -60,6 +62,42 @@ function DistrictWiseMontlyMulberry() {
 
   useEffect(() => {
     getDistrictList();
+  }, []);
+
+  // to get mulberry target type
+  const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
+
+  const getMulberryTargetTypeList = () => {
+    api
+      .get(baseURLMasterData + `mulberryTargetType/get-all`)
+      .then((response) => {
+        setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+      })
+      .catch((err) => {
+        setMulberryTargetTypeData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMulberryTargetTypeList();
+  }, []);
+
+  // to get User
+  const [chawkiListData, setChawkiListData] = useState([]);
+
+  const getChawkiList = () => {
+    api
+      .get(baseURLMasterData + `tscMaster/get-all`)
+      .then((response) => {
+        setChawkiListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setChawkiListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getChawkiList();
   }, []);
 
   const handleDateChange = (date, type) => {
@@ -121,56 +159,31 @@ function DistrictWiseMontlyMulberry() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      if (type.budgetType === "allocate") {
-        console.log("Entered Allocate");
-        api
-          .post(baseURLTargetSetting + `tsBudget/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              clear();
+      api
+        .post(
+          baseURLTargetSetting + `mulberryTargets/saveTscMulberryTargets`,
+          data
+        )
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
             }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
-      if (type.budgetType === "release") {
-        console.log("Entered Release");
-        api
-          .post(baseURLTargetSetting + `tsBudgetRelease/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              clear();
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
+          }
+        });
       setValidated(true);
     }
   };
@@ -225,15 +238,18 @@ function DistrictWiseMontlyMulberry() {
 
   const clear = () => {
     setData({
+      mulberryTargetTypeId: "",
       financialYearMasterId: "",
-      date: "",
-      centralBudget: "",
-      stateBudget: "",
-      amount: "",
+      districtId: "",
+      tscMasterId: "",
+      month: "",
+      targetType: "",
+      value: "",
     });
     setType({
       budgetType: "allocate",
     });
+    getFinancialDefaultDetails();
     setValidated(false);
   };
 
@@ -259,13 +275,11 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title="Districtwise Montly Mulberry Page">
+    <Layout title="TSC Mulberry Target">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Districtwise Montly Mulberry Page
-            </Block.Title>
+            <Block.Title tag="h2">TSC Mulberry Target</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -300,13 +314,11 @@ function DistrictWiseMontlyMulberry() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>
-                      Districtwise Montly Mulberry Page{" "}
-                    </Card.Header>
+                    <Card.Header>TSC Mulberry Target </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                      <Col lg="6">
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Financial Year
@@ -349,34 +361,32 @@ function DistrictWiseMontlyMulberry() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="financialYearMasterId"
-                                value={data.financialYearMasterId}
+                                name="mulberryTargetTypeId"
+                                value={data.mulberryTargetTypeId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
                                 isInvalid={
-                                  data.financialYearMasterId === undefined ||
-                                  data.financialYearMasterId === "0"
+                                  data.mulberryTargetTypeId === undefined ||
+                                  data.mulberryTargetTypeId === "0"
                                 }
                               >
                                 <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
+                                {mulberryTargetTypeData.map((list) => (
                                   <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
+                                    key={list.mulberryTargetTypeId}
+                                    value={list.mulberryTargetTypeId}
                                   >
-                                    {list.financialYear}
+                                    {list.mulberryTargetTypeName}
                                   </option>
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                Target is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
-
-                        
 
                         {/* <Col lg={6} className="mt-5">
                           <Row>
@@ -475,10 +485,10 @@ function DistrictWiseMontlyMulberry() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                // isInvalid={
-                                //   data.districtId === undefined ||
-                                //   data.districtId === "0"
-                                // }
+                                isInvalid={
+                                  data.districtId === undefined ||
+                                  data.districtId === "0"
+                                }
                               >
                                 <option value="">Select District</option>
                                 {districtListData.map((list) => (
@@ -500,18 +510,52 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
+                              TSC<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="tscMasterId"
+                                value={data.tscMasterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.tscMasterId === undefined ||
+                                  data.tscMasterId === "0"
+                                }
+                              >
+                                <option value="">Select TSC</option>
+                                {chawkiListData.map((list) => (
+                                  <option
+                                    key={list.tscMasterId}
+                                    value={list.tscMasterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                TSC is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
                               Target Type<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="districtId"
-                                value={data.districtId}
+                                name="targetType"
+                                value={data.targetType}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
                                 // isInvalid={
-                                //   data.districtId === undefined ||
-                                //   data.districtId === "0"
+                                //   data.targetType === undefined ||
+                                //   data.targetType === "0"
                                 // }
                               >
                                 <option value="">Select Target Type</option>
@@ -537,14 +581,14 @@ function DistrictWiseMontlyMulberry() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="districtId"
-                                value={data.districtId}
+                                name="month"
+                                value={data.month}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
                                 // isInvalid={
-                                //   data.districtId === undefined ||
-                                //   data.districtId === "0"
+                                //   data.month === undefined ||
+                                //   data.month === "0"
                                 // }
                               >
                                 <option value="">Select Month</option>
@@ -576,22 +620,22 @@ function DistrictWiseMontlyMulberry() {
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="stateBudget">
+                            <Form.Label htmlFor="value">
                               Target No.
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
-                                id="stateBudget"
-                                name="stateBudget"
-                                value={data.stateBudget}
+                                id="value"
+                                name="value"
+                                value={data.value}
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter Target No."
                                 // required
                               />
                               <Form.Control.Feedback type="invalid">
-                               Target No. is required.
+                                Target No. is required.
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -706,4 +750,4 @@ function DistrictWiseMontlyMulberry() {
   );
 }
 
-export default DistrictWiseMontlyMulberry;
+export default NewTscMulberryTarget;

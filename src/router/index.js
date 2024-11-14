@@ -899,7 +899,6 @@ import DistrictWiseMonthlyReportSilkType from "../pages/reports-admin/DistrictWi
 import DashboardReportSilkType from "../pages/reports-admin/market-auction/DashboardReportSilkType";
 import UnitCounterReportSilkType from "../pages/reports-admin/market-auction/UnitCounterReportSilkType";
 
-
 import SupplyOfDisinfectantsToFarmers from "../pages/chawki-management/SupplyOfDisinfectantsToFarmer";
 import SupplyOfDisinfectantsList from "../pages/chawki-management/SupplyOfDisinfectantsList";
 import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/SupplyOfDisinfectantsToFarmerEdit";
@@ -915,8 +914,8 @@ import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReaso
 import DistrictWiseMulberryPage from "../pages/target-settings/DistrictWiseMulberryPage";
 import TscMulberryTargets from "../pages/target-settings/TscMulberryTargets";
 import ServiceApplicationRejectionList from "../pages/direct-benefit-transfer/ServiceApplicationRejectionList";
-import DistrictWiseMontlyMulberry from "../pages/new-target-setting/DistrictWiseMontlyMulberry";
-import NewTscMulberryTarget from "../pages/new-target-setting/NewTscMulberryTarget";
+import DistrictWiseMontlyMulberry from "../pages/new-target-setting/districtwise-monthly-mulberry/DistrictWiseMontlyMulberry";
+import NewTscMulberryTarget from "../pages/new-target-setting/new-tsc-mulberry-target/NewTscMulberryTarget";
 import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTargetType";
 import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
 import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
@@ -1369,19 +1368,40 @@ function Router() {
               path="Maintenance-of-Line-Records-for-Each-Race"
               element={<MaintenanceofLineRecordsforEachRace />}
             />
-            <Route path="district-monthly-report-silk-type" element={<DistrictWiseMonthlyReportSilkType />}/>
+            <Route
+              path="district-monthly-report-silk-type"
+              element={<DistrictWiseMonthlyReportSilkType />}
+            />
 
-            <Route path="abstract-report-silk-type" element={<AbstractReportSilkType />} />
+            <Route
+              path="abstract-report-silk-type"
+              element={<AbstractReportSilkType />}
+            />
 
-            <Route path="unit-counter-report-silk-type" element={<UnitCounterReportSilkType />} />
+            <Route
+              path="unit-counter-report-silk-type"
+              element={<UnitCounterReportSilkType />}
+            />
 
-           <Route path="blank-dtr-online-silk-type" element={<BlankDtrReportSilkType />} />
+            <Route
+              path="blank-dtr-online-silk-type"
+              element={<BlankDtrReportSilkType />}
+            />
 
-            <Route path="dtr-online-silk-type" element={< DtrOnlineReportSilkType/>} />
+            <Route
+              path="dtr-online-silk-type"
+              element={<DtrOnlineReportSilkType />}
+            />
 
-            <Route path="form-13-report-by-dist-silk-type" element={<FormReportByDistSilkType />}/>
+            <Route
+              path="form-13-report-by-dist-silk-type"
+              element={<FormReportByDistSilkType />}
+            />
 
-            <Route path="dashboard-report-silk-type" element={<DashboardReportSilkType />} />
+            <Route
+              path="dashboard-report-silk-type"
+              element={<DashboardReportSilkType />}
+            />
 
             <Route
               path="Maintenance-of-Line-Records-for-Each-Race-List"
@@ -1489,7 +1509,7 @@ function Router() {
               element={<PreparationofeggsDFLsEdit />}
             />
 
-<Route
+            <Route
               path="Preparation-of-eggs-DFLs-add/:id"
               element={<PreparationofeggsDFLsAdd />}
             />
@@ -1752,7 +1772,10 @@ function Router() {
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
             />
-            <Route path="supply-of-disinfectants" element={<SupplyOfDisinfectantsToFarmers />} />
+            <Route
+              path="supply-of-disinfectants"
+              element={<SupplyOfDisinfectantsToFarmers />}
+            />
             <Route
               path="supply-of-disinfectants-list"
               element={<SupplyOfDisinfectantsList />}
@@ -1762,10 +1785,7 @@ function Router() {
               element={<MgnregaSchemeEdit />}
             />
             <Route path="mgnerga-scheme" element={<MgnregaScheme />} />
-            <Route
-              path="mgnrega-scheme-list"
-              element={<MgnregaSchemeList />}
-            />
+            <Route path="mgnrega-scheme-list" element={<MgnregaSchemeList />} />
             <Route
               path="supply-of-disinfectants-edit/:id"
               element={<SupplyOfDisinfectantsToFarmerEdit />}
@@ -2379,10 +2399,22 @@ function Router() {
             <Route path="reason-view/:id" element={<ReasonView />} />
             <Route path="reason-edit/:id" element={<ReasonEdit />} />
 
-            <Route path="farmerBankAccountReason" element={<FarmerBankAccountReason />} />
-            <Route path="farmerBankAccountReason-list" element={<FarmerBankAccountReasonList />} />
-            <Route path="farmerBankAccountReason-view/:id" element={<FarmerBankAccountReasonView />} />
-            <Route path="farmerBankAccountReason-edit/:id" element={<FarmerBankAccountReasonEdit />} />
+            <Route
+              path="farmerBankAccountReason"
+              element={<FarmerBankAccountReason />}
+            />
+            <Route
+              path="farmerBankAccountReason-list"
+              element={<FarmerBankAccountReasonList />}
+            />
+            <Route
+              path="farmerBankAccountReason-view/:id"
+              element={<FarmerBankAccountReasonView />}
+            />
+            <Route
+              path="farmerBankAccountReason-edit/:id"
+              element={<FarmerBankAccountReasonEdit />}
+            />
 
             <Route path="mount" element={<Mount />} />
             <Route path="mount-list" element={<MountList />} />
@@ -3296,7 +3328,10 @@ function Router() {
             <Route path="reeler-mf" element={<ReelerMfReport />} />
             <Route path="unit-mf" element={<UnitMf />} />
             <Route path="reeler-abstract" element={<ReelerAbstract />} />
-            <Route path="race-wise-abstract" element={<RaceWiseAbstractReport/>} />
+            <Route
+              path="race-wise-abstract"
+              element={<RaceWiseAbstractReport />}
+            />
 
             <Route path="reeler-purchase" element={<ReelerPurchase />} />
             {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
@@ -3355,7 +3390,7 @@ function Router() {
               path="mulberry-target-type-list"
               element={<MulberryTargetTypeList />}
             />
-             <Route
+            <Route
               path="mulberry-target-type-view/:id"
               element={<MulberryTargetTypeView />}
             />
