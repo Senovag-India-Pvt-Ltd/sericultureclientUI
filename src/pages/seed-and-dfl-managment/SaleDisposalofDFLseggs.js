@@ -785,7 +785,7 @@ function SaleDisposalofDFLseggs() {
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
                           Egg Sheet Numbers
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -796,11 +796,11 @@ function SaleDisposalofDFLseggs() {
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Egg Sheet Numbers is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -852,7 +852,7 @@ function SaleDisposalofDFLseggs() {
                             value={data.numberOfDflsDisposed}
                             onChange={handleInputs}
                             type="text"
-                            maxLength="4"
+                            maxLength="6"
                             placeholder="Enter Number of DFLs disposed"
                             required
                           />
@@ -897,7 +897,8 @@ function SaleDisposalofDFLseggs() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Farm<span className="text-danger">*</span>
+                            Farm
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -906,11 +907,11 @@ function SaleDisposalofDFLseggs() {
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               // multiple
-                              required
-                              isInvalid={
-                                data.userTypeId === undefined ||
-                                data.userTypeId === "0"
-                              }
+                              // required
+                              // isInvalid={
+                              //   data.userTypeId === undefined ||
+                              //   data.userTypeId === "0"
+                              // }
                             >
                               <option value="">Select Farm</option>
                               {farmListData.map((list) => (
@@ -922,9 +923,9 @@ function SaleDisposalofDFLseggs() {
                                 </option>
                               ))}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Farm is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>

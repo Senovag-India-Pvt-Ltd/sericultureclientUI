@@ -349,7 +349,8 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                   Lot Number<span className="text-danger">*</span>
+                   Lot Numbe
+                   {/* r<span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -359,11 +360,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Lot Number"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Lot Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -530,7 +531,7 @@ useEffect(() => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                     Crop Number
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -654,7 +655,8 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon rejection details/ numbers<span className="text-danger">*</span>
+                    Cocoon rejection details/ numbers
+                    {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -752,7 +754,7 @@ useEffect(() => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       Invoice Date
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                     {isDataInvoiceDate && (
@@ -767,7 +769,7 @@ useEffect(() => {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        required
+                        // required
                       />
                       )}
                     </div>

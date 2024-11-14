@@ -74,9 +74,21 @@ function PreparationofeggsDFLs() {
         const numberOfRejection = name === "numberOfRejection" ? parseInt(value) : parseInt(prevData.numberOfRejection);
         dflsObtained = numberOfPairs - numberOfRejection;
       }
-  
-      return { ...prevData, [name]: value, dflsObtained };
-    });
+
+   // Calculate Egg Recovery %
+   let eggRecoveryPercentage = prevData.eggRecoveryPercentage;
+   const pairNoSelectedCocoonsNo = name === "pairNoSelectedCocoonsNo" ? parseInt(value) : parseInt(prevData.pairNoSelectedCocoonsNo);
+   if (pairNoSelectedCocoonsNo && dflsObtained) {
+     eggRecoveryPercentage = (dflsObtained / pairNoSelectedCocoonsNo) * 100;
+   }
+
+   return {
+     ...prevData,
+     [name]: value,
+     dflsObtained,
+     eggRecoveryPercentage,
+   };
+ });
   };
 
   const handleDateChange = (date, type) => {
@@ -655,7 +667,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                              Cocoon's Purchased (in Kg's / Nos)
+                              Cocoon's Purchased in Kg's 
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -738,7 +750,7 @@ function PreparationofeggsDFLs() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggSheetSerialNumber">
                                 Egg sheet serial number
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -748,11 +760,11 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Egg sheet serial number"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Egg sheet serial number is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>

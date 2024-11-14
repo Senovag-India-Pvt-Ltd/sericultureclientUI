@@ -266,7 +266,7 @@ function Maintenanceofeggsatcoldstorage() {
                         name="numberOfDFLs"
                         value={data.numberOfDFLs}
                         onChange={handleInputs}
-                        maxLength="4"
+                        maxLength="6"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
                         required

@@ -66,8 +66,20 @@ function PreparationofeggsDFLsEdit() {
         dflsObtained = numberOfPairs - numberOfRejection;
       }
   
-      return { ...prevData, [name]: value, dflsObtained };
-    });
+      // Calculate Egg Recovery %
+   let eggRecoveryPercentage = prevData.eggRecoveryPercentage;
+   const pairNoSelectedCocoonsNo = name === "pairNoSelectedCocoonsNo" ? parseInt(value) : parseInt(prevData.pairNoSelectedCocoonsNo);
+   if (pairNoSelectedCocoonsNo && dflsObtained) {
+     eggRecoveryPercentage = (dflsObtained / pairNoSelectedCocoonsNo) * 100;
+   }
+
+   return {
+     ...prevData,
+     [name]: value,
+     dflsObtained,
+     eggRecoveryPercentage,
+   };
+ });
   };
 
   const handleDateChange = (date, type) => {
@@ -597,7 +609,7 @@ function PreparationofeggsDFLsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                              Cocoon's Purchased (in Kg's / Nos)
+                              Cocoon's Purchased in Kg's
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -688,7 +700,7 @@ function PreparationofeggsDFLsEdit() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggSheetSerialNumber">
                                 Egg sheet serial number
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -698,11 +710,11 @@ function PreparationofeggsDFLsEdit() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Egg sheet serial number"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Egg sheet serial number is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
