@@ -37,6 +37,31 @@ function PreservationofseedcocoonforprocessingList() {
   const handleShowModal1 = () => setShowModal1(true);
   const handleCloseModal1 = () => setShowModal1(false);
 
+  const [showModal4, setShowModal4] = useState(false);
+  const handleShowModal4 = () => setShowModal4(true); 
+  const handleCloseModal4 = () => setShowModal4(false);
+
+  const [listMoultData, setMoultListData] = useState({});
+
+  const getRejectedList = () => {
+    setLoading(true);
+  
+    api
+      .get(baseURLSeedDfl + `PreservationOfSeed/get-rejected-list-for-market`)
+      .then((response) => {
+        setMoultListData(response.data);
+        setLoading(false);
+        handleShowModal4(); // Open modal after data is fetched
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  // useEffect(() => {
+  //   getRejectedList();
+  // }, []);
+
   const getList = () => {
     setLoading(true);
 
@@ -547,6 +572,107 @@ function PreservationofseedcocoonforprocessingList() {
    
   ];
 
+  const PreservationOfRejectedSeedCocoonGardenDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
+          >
+            Accept
+          </Button>
+         
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
+            className="ms-2"
+          >
+            Reject
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      grow: 2,
+    },
+
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotParentLevel,
+      cell: (row) => <span>{row.lotParentLevel}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Buyer Type",
+      selector: (row) => row.buyerType,
+      cell: (row) => <span>{row.buyerType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Buyer",
+      selector: (row) => row.buyerName,
+      cell: (row) => <span>{row.buyerName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Quantity Of Cocoons in Kgs",
+      selector: (row) => row.lotWeight,
+      cell: (row) => <span>{row.lotWeight}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Price",
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sold Out Amount",
+      selector: (row) => row.soldAmount,
+      cell: (row) => <span>{row.soldAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice No",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Accepted or not",
+      selector: (row) => row.isAccepted,
+      cell: (row) => (
+        <span>
+          {row.isAccepted === 0
+            ? "Pending"
+            : row.isAccepted === 1
+            ? "Accepted"
+            : row.isAccepted === 2
+            ? "Rejected"
+            : "Unknown"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+   
+  ];
+
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
     {
@@ -723,6 +849,16 @@ function PreservationofseedcocoonforprocessingList() {
                 </Link>
               </li>
               <li>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => getRejectedList()}
+                className="ms-2"
+              >
+                Rejected List For Market
+              </Button>
+            </li>
+              <li>
                 <Link
                   to="/seriui/Preservation-of-seed-cocoon-for-processing"
                   className="btn btn-primary d-none d-md-inline-flex"
@@ -817,6 +953,40 @@ function PreservationofseedcocoonforprocessingList() {
           </Modal.Body>
         </Modal>
       )}
+
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>Rejected List For Market</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Block className="mt-3">
+      <Card>
+        <DataTable
+          tableClassName="data-table-head-light table-responsive"
+          columns={PreservationOfRejectedSeedCocoonGardenDataColumns}
+          data={listMoultData}
+          highlightOnHover
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          paginationPerPage={countPerPage}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
+          onChangePage={(page) => setPage(page - 1)}
+          progressPending={loading}
+          theme="solarized"
+          customStyles={customStyles}
+        />
+      </Card>
+    </Block>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseModal4}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
     </Layout>
   );
 }
