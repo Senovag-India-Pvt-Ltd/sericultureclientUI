@@ -105,12 +105,14 @@ function ReceiptofDFLsfromthegrainage() {
           .get(baseURL2 + `Receipt/accept-reject-dfls/${_sodId}/${status}`)
           .then((response) => {
             // deleteConfirm(_id);
-            getList();
+            // getList();
             Swal.fire(
               "Rejected",
               "You successfully rejected this record",
               "success"
             );
+            getList();
+            getReceiptList();
           })
           .catch((err) => {
             deleteError();
@@ -145,12 +147,14 @@ function ReceiptofDFLsfromthegrainage() {
           .get(baseURL2 + `Receipt/accept-reject-dfls/${_sodId}/${status}`)
           .then((response) => {
             // deleteConfirm(_id);
-            getList();
+            // getList();
             Swal.fire(
               "Accepted",
               "You successfully Accepted this record",
               "success"
             );
+            getList();
+            getReceiptList();
           })
           .catch((err) => {
             acceptError();
