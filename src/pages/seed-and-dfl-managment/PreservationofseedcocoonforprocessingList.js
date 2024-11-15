@@ -573,35 +573,33 @@ function PreservationofseedcocoonforprocessingList() {
   ];
 
   const PreservationOfRejectedSeedCocoonGardenDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
-          >
-            Accept
-          </Button>
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     //   Button style
+    //     <div className="text-start w-100">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
+    //       >
+    //         Accept
+    //       </Button>
          
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
-            className="ms-2"
-          >
-            Reject
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-      grow: 2,
-    },
-
+    //       <Button
+    //         variant="danger"
+    //         size="sm"
+    //         onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
+    //         className="ms-2"
+    //       >
+    //         Reject
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    //   grow: 2,
+    // },
     {
       name: "Lot Number",
       selector: (row) => row.lotParentLevel,
@@ -652,12 +650,11 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Accepted or not",
+      name: "Status",
       selector: (row) => row.isAccepted,
       cell: (row) => (
-        <span>
+        <span style={{ color: row.isAccepted === 2 ? 'red' : 'inherit', fontWeight: row.isAccepted === 2 ? 'bold' : 'normal' }}>
           {row.isAccepted === 0
             ? "Pending"
             : row.isAccepted === 1
@@ -669,7 +666,9 @@ function PreservationofseedcocoonforprocessingList() {
       ),
       sortable: true,
       hide: "md",
-    },
+    }
+    
+    
    
   ];
 
