@@ -278,13 +278,18 @@ const handleUpdateLotDetails = (e, i, changes) => {
 
   const handleInputs = (e) => {
     const { name, value } = e.target;
+
+    // Prevent calculating amount and soldAmount if buyerType is 'Reeling'
+  // if (data.buyerType === "Reeling") {
+  //   return; // Exit early to prevent further calculations
+  // }
   
     // Update state for lotWeight and amount
     setData((prevData) => {
       const newData = { ...prevData, [name]: value };
   
       // Calculate soldAmount if both lotWeight and amount are present
-      if (newData.lotWeight && newData.amount) {
+      if (newData.buyerType !== "Reeling" && newData.lotWeight && newData.amount) {
         // Calculate total and fix to 2 decimal points, then convert to an integer
         newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount));
       } else {
@@ -1682,6 +1687,7 @@ setAllottedLotId("");
                     type="number"
                     placeholder="Enter Price(In Rs.)"
                     required
+                    readOnly
                   />
                   <Form.Control.Feedback type="invalid">
                     Price(In Rs.) is required.
@@ -2052,6 +2058,7 @@ setAllottedLotId("");
                     type="number"
                     placeholder="Enter Price(In Rs.)"
                     required
+                    readOnly
                   />
                   <Form.Control.Feedback type="invalid">
                     Price(In Rs.) is required.
