@@ -50,13 +50,12 @@ function RegisteredSeedProducerNssoGrainagesView() {
   }, [id]);
 
   return (
-    <Layout title="Registered Seed Producer (RSP) NSSO Grainages View">
+    <Layout title="View Preparation Of Eggs (DFLs) RSP/NSSO Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {" "}
-              Registered Seed Producer (RSP) NSSO Grainages View{" "}
+            View Preparation Of Eggs (DFLs) RSP/NSSO Details
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -87,7 +86,7 @@ function RegisteredSeedProducerNssoGrainagesView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-            Registered Seed Producer (RSP) NSSO Grainages Details
+          View Preparation Of Eggs (DFLs) RSP/NSSO Details
           </Card.Header>
           <Card.Body>
             {loading ? (

@@ -279,12 +279,12 @@ function RegisteredSeedProducerNssoGrainagesList() {
   ];
 
   return (
-    <Layout title="Registered Seed Producer (RSP) NSSO Grainages List">
+    <Layout title="List Of Preparation Of Eggs (DFLs) RSP/NSSO">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Registered Seed Producer (RSP) NSSO Grainages List
+              List Of Preparation Of Eggs (DFLs) RSP/NSSO
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>

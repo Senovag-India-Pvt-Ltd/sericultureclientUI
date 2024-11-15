@@ -19,6 +19,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 function PreservationofseedcocoonforprocessingList() {
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
+  const [listLogsForMarketData, setListLogsForMarketData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -30,6 +31,11 @@ function PreservationofseedcocoonforprocessingList() {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const [showModal1, setShowModal1] = useState(true);
+
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal1 = () => setShowModal1(false);
 
   const getList = () => {
     setLoading(true);
@@ -70,6 +76,8 @@ function PreservationofseedcocoonforprocessingList() {
 
   const [senderType, setSenderType] = useState(null);
 
+  const [buyerType, setBuyerType] = useState(null);
+
   const getAlertList = () => {
     setLoading(true);
     api.get(baseURLSeedDfl + `PreservationOfSeed/get-alert-data`)
@@ -91,6 +99,29 @@ function PreservationofseedcocoonforprocessingList() {
 
   useEffect(() => {
     getAlertList();
+  }, []);
+
+  const getAlertListForMarket = () => {
+    setLoading(true);
+    api.get(baseURLSeedDfl + `PreservationOfSeed/get-alert-data-for-market`)
+      .then((response) => {
+        setListLogsForMarketData(response.data);
+        setLoading(false);
+        if (response.data.length > 0) {
+          // setBuyerType(response.data[0].buyerType);
+          setShowModal1(true);
+        } else {
+          setShowModal1(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+  
+
+  useEffect(() => {
+    getAlertListForMarket();
   }, []);
 
   const formatDate = (dateString) => {
@@ -127,8 +158,10 @@ function PreservationofseedcocoonforprocessingList() {
             if (response.data.error === 1) {
               acceptError(response.data.message || "An error occurred while accepting the record.");
             } else {
-              getList();
+              // getList();
               Swal.fire("Accepted", "You successfully Accepted this record", "success");
+              getAlertList();
+              getList();
             }
           })
           .catch((err) => {
@@ -157,8 +190,74 @@ function PreservationofseedcocoonforprocessingList() {
             if (response.data.error === 1) {
               deleteError(response.data.message || "An error occurred while rejecting the record.");
             } else {
-              getList();
+              // getList();
               Swal.fire("Rejected", "You successfully rejected this record", "success");
+              getAlertList();
+              getList();
+            }
+          })
+          .catch((err) => {
+            deleteError("An error occurred while rejecting the record.");
+          });
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const acceptConfirmForMarket = (_id, status) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Accept!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Accept it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        api
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
+          .then((response) => {
+            if (response.data.error === 1) {
+              acceptError(response.data.message || "An error occurred while accepting the record.");
+            } else {
+              // getList();
+              Swal.fire("Accepted", "You successfully Accepted this record", "success");
+              getAlertListForMarket();
+              getList();
+            }
+          })
+          .catch((err) => {
+            acceptError("An error occurred while accepting the record.");
+          });
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not accepted", "info");
+      }
+    });
+  };
+  
+  const deleteConfirmForMarket = (_id, status) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Reject permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Reject it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        api
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
+          .then((response) => {
+            if (response.data.error === 1) {
+              deleteError(response.data.message || "An error occurred while rejecting the record.");
+            } else {
+              // getList();
+              Swal.fire("Rejected", "You successfully rejected this record", "success");
+              getAlertListForMarket();
+              getList();
             }
           })
           .catch((err) => {
@@ -345,6 +444,107 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
+  ];
+
+  const PreservationOfSeedCocoonGardenDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
+          >
+            Accept
+          </Button>
+         
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
+            className="ms-2"
+          >
+            Reject
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      grow: 2,
+    },
+
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotParentLevel,
+      cell: (row) => <span>{row.lotParentLevel}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Buyer Type",
+      selector: (row) => row.buyerType,
+      cell: (row) => <span>{row.buyerType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Buyer",
+      selector: (row) => row.buyerName,
+      cell: (row) => <span>{row.buyerName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Quantity Of Cocoons in Kgs",
+      selector: (row) => row.lotWeight,
+      cell: (row) => <span>{row.lotWeight}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Price",
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sold Out Amount",
+      selector: (row) => row.soldAmount,
+      cell: (row) => <span>{row.soldAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice No",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Accepted or not",
+      selector: (row) => row.isAccepted,
+      cell: (row) => (
+        <span>
+          {row.isAccepted === 0
+            ? "Pending"
+            : row.isAccepted === 1
+            ? "Accepted"
+            : row.isAccepted === 2
+            ? "Rejected"
+            : "Unknown"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+   
   ];
 
 
@@ -559,35 +759,64 @@ function PreservationofseedcocoonforprocessingList() {
         </Card>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>Alerts Window</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Block className="mt-2">
-            <Card>
-              <DataTable
-                // title="New Trader License List"
-                tableClassName="data-table-head-light table-responsive"
-                columns={ReceiptofDFLsfromtheP4grainageGardenDataColumns}
-                data={listLogsData}
-                highlightOnHover
-                pagination
-                paginationServer
-                paginationTotalRows={totalRows}
-                paginationPerPage={countPerPage}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                onChangePage={(page) => setPage(page - 1)}
-                progressPending={loading}
-                theme="solarized"
-                customStyles={customStyles}
-              />
-            </Card>
-          </Block>
-        </Modal.Body>
-      </Modal>
+      {showModal && (
+        <Modal show={showModal} onHide={handleCloseModal} size="xl" className="modal-item">
+          <Modal.Header closeButton>
+            <Modal.Title>Alerts Window</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Block className="mt-2">
+              <Card>
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ReceiptofDFLsfromtheP4grainageGardenDataColumns}
+                  data={listLogsData}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{ noRowsPerPage: true }}
+                  onChangePage={(page) => setPage(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+              </Card>
+            </Block>
+          </Modal.Body>
+        </Modal>
+      )}
+
+      {/* Second Modal */}
+      {showModal1 && (
+        <Modal show={showModal1} onHide={handleCloseModal1} size="xl" className="modal-item">
+          <Modal.Header closeButton>
+            <Modal.Title>Alerts Window For Market</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Block className="mt-2">
+              <Card>
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={PreservationOfSeedCocoonGardenDataColumns}
+                  data={listLogsForMarketData}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{ noRowsPerPage: true }}
+                  onChangePage={(page) => setPage(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+              </Card>
+            </Block>
+          </Modal.Body>
+        </Modal>
+      )}
     </Layout>
   );
 }
