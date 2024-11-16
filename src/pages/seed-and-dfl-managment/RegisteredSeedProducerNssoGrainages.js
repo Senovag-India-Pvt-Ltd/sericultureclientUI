@@ -229,12 +229,12 @@ function RegisteredSeedProducerNssoGrainages() {
   };
 
   return (
-    <Layout title="Registered Seed Producer (RSP) NSSO Grainages">
+    <Layout title="Preparation Of Eggs (DFLs) RSP/NSSO">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Registered Seed Producer (RSP) NSSO Grainages
+            Preparation Of Eggs (DFLs) RSP/NSSO
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -266,7 +266,7 @@ function RegisteredSeedProducerNssoGrainages() {
         <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Registered Seed Producer (RSP) NSSO Grainages{" "}
+                Preparation Of Eggs (DFLs) RSP/NSSO
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">

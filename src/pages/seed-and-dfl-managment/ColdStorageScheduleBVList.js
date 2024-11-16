@@ -193,7 +193,7 @@ function ColdStorageScheduleBVList() {
               saveSuccess(response.data.message);
               // clear();
             }
-            getList();
+            // getList();
             // Swal.fire(
             //   "Accepted",
             //   "You successfully Accepted this record",
@@ -204,6 +204,8 @@ function ColdStorageScheduleBVList() {
               title: response.data.message,
               text: response.data.message,
             });
+            getAlertList();
+              getList();
           })
           .catch((err) => {
             acceptError();

@@ -222,12 +222,12 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Registered Seed Producer (RSP) NSSO Grainages">
+    <Layout title="Edit Preparation Of Eggs (DFLs) RSP/NSSO">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Registered Seed Producer (RSP) NSSO Grainages
+              Edit Preparation Of Eggs (DFLs) RSP/NSSO
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -261,7 +261,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Registered Seed Producer (RSP) NSSO Grainages{" "}
+            Preparation Of Eggs (DFLs) RSP/NSSO
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
