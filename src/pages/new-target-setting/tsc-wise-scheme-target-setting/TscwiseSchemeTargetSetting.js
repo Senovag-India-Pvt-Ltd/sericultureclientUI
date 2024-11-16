@@ -12,8 +12,9 @@ import api from "../../../services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-function DistrictWiseMontlyMulberry() {
+function TscwiseSchemeTargetSetting() {
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -21,6 +22,14 @@ function DistrictWiseMontlyMulberry() {
     month: "",
     targetType: "",
     value: "",
+    scHeadAccountId: "",
+    scComponentId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
+    stateShare: "",
+    centralShare: "",
+    tscMasterId: "",
   });
 
   const [type, setType] = useState({
@@ -80,6 +89,177 @@ function DistrictWiseMontlyMulberry() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+  // to get sc-scheme-details
+  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+  const getSchemeList = () => {
+    api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
+        setScSchemeDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeList();
+  }, []);
+
+  // to get sc-sub-scheme-details by sc-scheme-details
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+    []
+  );
+  const getSubSchemeList = (_id) => {
+    api
+      .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScSubSchemeDetailsListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSchemeDetailsId) {
+      getSubSchemeList(data.scSchemeDetailsId);
+    }
+  }, [data.scSchemeDetailsId]);
+
+  // to get component
+  const [scComponentListData, setScComponentListData] = useState([]);
+
+  const getComponentList = (schemeId, subSchemeId) => {
+    api
+      .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        setScComponentListData(response.data.content.unitCost);
+      })
+      .catch((err) => {
+        setScComponentListData([]);
+      });
+  };
+
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
+    api
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+
+  console.log(data);
+
+  // to get head of account by sc-scheme-details
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+  const getHeadAccountList = (schemeId, subSchemeId, scComponentId) => {
+    api
+      .post(
+        baseURLDBT +
+          `master/cost/get-by-schemeId-and-subSchemeId-and-scComponentId`,
+        {
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+          scComponentId: scComponentId,
+        }
+      )
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      data.scSchemeDetailsId &&
+      data.scSubSchemeDetailsId &&
+      data.scComponentId
+    ) {
+      getHeadAccountList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId,
+        data.scComponentId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, data.scComponentId]);
+
+  // get Category List
+  const [scCategoryListData, setScCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        if (response.data.content.scCategory) {
+          setScCategoryListData(response.data.content.scCategory);
+        }
+      })
+      .catch((err) => {
+        setScCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  //   To get TSC by District
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscListByDistrict = (distId) => {
+    api
+      .post(baseURLMasterData + `tscMaster/get-by-districtId`, {
+        districtId: distId,
+      })
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTscListByDistrict(data.districtId);
+    }
+  }, [data.districtId]);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -143,7 +323,7 @@ function DistrictWiseMontlyMulberry() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `mulberryTargets/saveDistrictMulberryTargets`,
+          baseURLTargetSetting + `schemeTargets/saveTscSchemeTargets`,
           data
         )
         .then((response) => {
@@ -226,6 +406,14 @@ function DistrictWiseMontlyMulberry() {
       month: "",
       targetType: "",
       value: "",
+      scHeadAccountId: "",
+      scComponentId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      stateShare: "",
+      centralShare: "",
+      tscMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -256,12 +444,12 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title="Districtwise Montly Mulberry Page">
+    <Layout title="TSC Wise Target Setting for Subsidies">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Districtwise Montly Mulberry Page
+              TSC Wise Target Setting for Subsidies
             </Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
@@ -298,7 +486,7 @@ function DistrictWiseMontlyMulberry() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      Districtwise Montly Mulberry Page{" "}
+                      TSC Wise Target Setting for Subsidies{" "}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -340,6 +528,234 @@ function DistrictWiseMontlyMulberry() {
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSchemeDetailsId"
+                                value={data.scSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSchemeDetailsId === undefined ||
+                                  data.scSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme Names</option>
+                                {scSchemeDetailsListData &&
+                                  scSchemeDetailsListData.map((list) => (
+                                    <option
+                                      key={list.scSchemeDetailsId}
+                                      value={list.scSchemeDetailsId}
+                                    >
+                                      {list.schemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Component Type
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSubSchemeDetailsId"
+                                value={data.scSubSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSubSchemeDetailsId === undefined ||
+                                  data.scSubSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Component Type</option>
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component Type is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scComponentId"
+                                value={data.scComponentId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scComponentId === undefined ||
+                                  data.scComponentId === "0"
+                                }
+                              >
+                                <option value="">Select Component</option>
+                                {scComponentListData &&
+                                  scComponentListData.map((list) => (
+                                    <option
+                                      key={list.scComponentId}
+                                      value={list.scComponentId}
+                                    >
+                                      {list.scComponentName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Sub Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scCategoryId"
+                                value={data.scCategoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scCategoryId === undefined ||
+                                  data.scCategoryId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Component</option>
+                                {scCategoryListData &&
+                                  scCategoryListData.map((list) => (
+                                    <option
+                                      key={list.scCategoryId}
+                                      value={list.scCategoryId}
+                                    >
+                                      {list.codeNumber}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Head of Account
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scHeadAccountId"
+                                value={data.scHeadAccountId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scHeadAccountId === undefined ||
+                                  data.scHeadAccountId === "0"
+                                }
+                              >
+                                <option value="">Select Head of Account</option>
+                                {scHeadAccountListData &&
+                                  scHeadAccountListData.map((list) => (
+                                    <option
+                                      key={list.headOfAccountId}
+                                      value={list.headOfAccountId}
+                                    >
+                                      {list.scHeadAccountName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Head of Account is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="centralShare">
+                              Central Budget Amount (in Lakhs)
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="centralShare"
+                                name="centralShare"
+                                value={data.centralShare}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder="Enter Central Budget Amount"
+                                // required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Central Budget Amount is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="stateShare">
+                              State Budget Amount (in Lakhs)
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="stateShare"
+                                name="stateShare"
+                                value={data.stateShare}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder="Enter State Budget Amount"
+                                // required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                State Budget Amount is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        {/* <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Target
                               <span className="text-danger">*</span>
@@ -373,7 +789,7 @@ function DistrictWiseMontlyMulberry() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         {/* <Col lg={6} className="mt-5">
                           <Row>
@@ -497,6 +913,40 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
+                              TSC<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="tscMasterId"
+                                value={data.tscMasterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.tscMasterId === undefined ||
+                                  data.tscMasterId === "0"
+                                }
+                              >
+                                <option value="">Select TSC</option>
+                                {tscListData.map((list) => (
+                                  <option
+                                    key={list.tscMasterId}
+                                    value={list.tscMasterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                TSC is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
                               Target Type<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -512,8 +962,12 @@ function DistrictWiseMontlyMulberry() {
                                 // }
                               >
                                 <option value="">Select Target Type</option>
-                                <option value="NAREGA">NAREGA</option>
-                                <option value="NON NERAGA">NON NERAGA</option>
+                                <option value="Physical Target">
+                                  Physical Target
+                                </option>
+                                <option value="Financial Target">
+                                  Financial Target
+                                </option>
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
@@ -703,4 +1157,4 @@ function DistrictWiseMontlyMulberry() {
   );
 }
 
-export default DistrictWiseMontlyMulberry;
+export default TscwiseSchemeTargetSetting;

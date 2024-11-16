@@ -920,6 +920,15 @@ import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTa
 import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
 import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
 import MulberryTargetTypeEdit from "../pages/masters/mulberry-target-type/MulberryTargetTypeEdit";
+import SiSdMulberryTarget from "../pages/new-target-setting/si-sd-mulberry-target/SiSdMulberryTarget";
+import DistrictwiseProductionPhysicalTargetSetting from "../pages/new-target-setting/district-wise-production-physical-target-setting/DistrictwiseProductionPhysicalTargetSetting";
+import TscwiseProdPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TscwiseProdPhysicalTargetSetting";
+import SiSdWiseProdPhyTargetSetting from "../pages/new-target-setting/si-di-production/SiSdWiseProdPhyTargetSetting";
+import FarmwiseTarget from "../pages/new-target-setting/farm-wise-target/FarmwiseTarget";
+import GrainagewiseTarget from "../pages/new-target-setting/grainage-wise-target/GrainagewiseTarget";
+import DistrictwiseSchemeTargetSetting from "../pages/new-target-setting/district-wise-scheme-target-setting/DistrictwiseSchemeTargetSetting";
+import TscwiseSchemeTargetSetting from "../pages/new-target-setting/tsc-wise-scheme-target-setting/TscwiseSchemeTargetSetting";
+import TrainingTarget from "../pages/new-target-setting/training-target/TrainingTarget";
 
 // Admin and Reports
 
@@ -3379,6 +3388,51 @@ function Router() {
             <Route
               path="tsc-mulberry-targets-new"
               element={<NewTscMulberryTarget />}
+            />
+
+            <Route
+              path="si-sd-mulberry-target-new"
+              element={<SiSdMulberryTarget />}
+            />
+
+            <Route
+              path="districtwise-product-physical-target-setting"
+              element={<DistrictwiseProductionPhysicalTargetSetting />}
+            />
+
+            <Route
+              path="tscwise-product-physical-target-setting"
+              element={<TscwiseProdPhysicalTargetSetting />}
+            />
+
+            <Route
+              path="si-sd-wise-product-physical-target-setting"
+              element={<SiSdWiseProdPhyTargetSetting />}
+            />
+
+            <Route
+              path="farm-wise-target-setting"
+              element={<FarmwiseTarget />}
+            />
+
+            <Route
+              path="grainage-wise-target-setting"
+              element={<GrainagewiseTarget />}
+            />
+
+            <Route
+              path="training-wise-target-setting"
+              element={<TrainingTarget />}
+            />
+
+            <Route
+              path="district-wise-scheme-target-setting"
+              element={<DistrictwiseSchemeTargetSetting />}
+            />
+
+            <Route
+              path="tsc-wise-scheme-target-setting"
+              element={<TscwiseSchemeTargetSetting />}
             />
 
             {/* Master Data */}

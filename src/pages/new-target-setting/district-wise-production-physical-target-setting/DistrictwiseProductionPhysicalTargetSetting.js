@@ -13,7 +13,7 @@ import api from "../../../services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function DistrictWiseMontlyMulberry() {
+function DistrictwiseProductionPhysicalTargetSetting() {
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -21,6 +21,7 @@ function DistrictWiseMontlyMulberry() {
     month: "",
     targetType: "",
     value: "",
+    raceMasterId: "",
   });
 
   const [type, setType] = useState({
@@ -79,6 +80,24 @@ function DistrictWiseMontlyMulberry() {
 
   useEffect(() => {
     getDistrictList();
+  }, []);
+
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+
+  const getRaceList = () => {
+    const response = api
+      .get(baseURLMasterData + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
   }, []);
 
   const handleDateChange = (date, type) => {
@@ -143,7 +162,7 @@ function DistrictWiseMontlyMulberry() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `mulberryTargets/saveDistrictMulberryTargets`,
+          baseURLTargetSetting + `productionTargets/saveDistrictProductionTargets`,
           data
         )
         .then((response) => {
@@ -220,12 +239,13 @@ function DistrictWiseMontlyMulberry() {
 
   const clear = () => {
     setData({
-      mulberryTargetTypeId: "",
-      financialYearMasterId: "",
-      districtId: "",
-      month: "",
-      targetType: "",
-      value: "",
+        mulberryTargetTypeId: "",
+        financialYearMasterId: "",
+        districtId: "",
+        month: "",
+        targetType: "",
+        value: "",
+        raceMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -256,12 +276,12 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title="Districtwise Montly Mulberry Page">
+    <Layout title="Districtwise Production Physical Target Setting">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Districtwise Montly Mulberry Page
+              Districtwise Production Physical Target Setting
             </Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
@@ -298,7 +318,7 @@ function DistrictWiseMontlyMulberry() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      Districtwise Montly Mulberry Page{" "}
+                      Districtwise Production Physical Target Setting{" "}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -497,6 +517,38 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
+                              Race<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="raceMasterId"
+                                  value={data.raceMasterId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                >
+                                  <option value="">Select Race</option>
+                                  {raceListData.map((list) => (
+                                    <option
+                                      key={list.raceMasterId}
+                                      value={list.raceMasterId}
+                                    >
+                                      {list.raceMasterName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Race is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
+                          </Form.Group>
+                        </Col>
+
+                        {/* <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
                               Target Type<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -506,26 +558,17 @@ function DistrictWiseMontlyMulberry() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                // isInvalid={
-                                //   data.targetType === undefined ||
-                                //   data.targetType === "0"
-                                // }
                               >
                                 <option value="">Select Target Type</option>
                                 <option value="NAREGA">NAREGA</option>
                                 <option value="NON NERAGA">NON NERAGA</option>
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Target Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -703,4 +746,4 @@ function DistrictWiseMontlyMulberry() {
   );
 }
 
-export default DistrictWiseMontlyMulberry;
+export default DistrictwiseProductionPhysicalTargetSetting;
