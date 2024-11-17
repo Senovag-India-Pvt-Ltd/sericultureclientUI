@@ -7,6 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import DataTable from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 
@@ -28,10 +29,59 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     budgetType: "allocate",
   });
 
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const getList = () => {
+    setLoading(true);
+     api
+      .get(baseURLTargetSetting + `productionTargets/list-production-join`, _params)
+      .then((response) => {
+        setListData(response.data.content.body.content.productionTarget);
+        setTotalRows(response.data.content.body.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, [page]);
+
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
-  const getList = () => {
+  const getFinancialYearList = () => {
     const response = api
       .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
@@ -43,7 +93,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
   };
 
   useEffect(() => {
-    getList();
+    getFinancialYearList();
   }, []);
 
   // to get mulberry target type
@@ -103,6 +153,136 @@ function DistrictwiseProductionPhysicalTargetSetting() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+  const navigate = useNavigate();
+
+  const handleView = (_id) => {
+    navigate(`/seriui/taluk-view/${_id}`);
+  };
+
+  const handleEdit = (_id) => {
+    navigate(`/seriui/taluk-edit/${_id}`);
+    // navigate("/seriui/taluk");
+  };
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        const response = api
+          .delete(baseURLMasterData + `taluk/delete/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const ProductionPhysicalDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.productionTargetsId)}
+          >
+            View
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.productionTargetsId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.productionTargetsId)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Mulberry Target Type",
+      selector: (row) => row.mulberryTargetTypeName,
+      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "TSC",
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Taluk Name in Kannada",
+      selector: (row) => row.talukNameInKannada,
+      cell: (row) => <span>{row.talukNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lg Taluk",
+      selector: (row) => row.lgTaluk,
+      cell: (row) => <span>{row.lgTaluk}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Taluk",
+      selector: (row) => row.talukCode,
+      cell: (row) => <span>{row.talukCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
 
   const [validated, setValidated] = useState(false);
 
@@ -254,7 +434,6 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     setValidated(false);
   };
 
-  const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -740,6 +919,26 @@ function DistrictwiseProductionPhysicalTargetSetting() {
           ) : (
             ""
           )}
+        </Row>
+
+        <Row className="mt-2">
+        <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ProductionPhysicalDataColumns}
+            data={listData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
         </Row>
       </Block>
     </Layout>
