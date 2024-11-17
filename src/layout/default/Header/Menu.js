@@ -270,6 +270,7 @@ function Menu() {
     SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets: false,
     SeedDFL_Grainage_Remittance: false,
     SeedDFL_External: false,
+    SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp: false,
     SeedDFL_External_Preparation_Egg_DFLs: false,
     SeedDFL_External_Sale_of_DFLs_Eggs: false,
     SeedDFL_External_Eggs_Cold_storage: false,
@@ -2051,6 +2052,15 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
+                {showMenu.SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preservation Of Seed Cocoon For RSP/NSSO"
+                        to="/seriui/Preservation-of-seed-cocoon-for-processing-for-nsso"
+                      />
+                    </MenuItem>
+                  ) : null}
+
                   {showMenu.SeedDFL_External_Preparation_Egg_DFLs ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2060,6 +2070,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
+                  
                   {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
                     <MenuItem>
                       <MenuItemLink
