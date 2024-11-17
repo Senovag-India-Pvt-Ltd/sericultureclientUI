@@ -13,14 +13,18 @@ import api from "../../../services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function DistrictWiseMontlyMulberry() {
+function TrainingTarget() {
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
     month: "",
-    targetType: "",
+    target: "",
     value: "",
+    raceMasterId: "",
+    grainageMasterId: "",
+    trainingInstitutionId: "",
+    courseName: "",
   });
 
   const [type, setType] = useState({
@@ -63,11 +67,29 @@ function DistrictWiseMontlyMulberry() {
     getMulberryTargetTypeList();
   }, []);
 
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+
+  const getRaceList = () => {
+    api
+      .get(baseURLMasterData + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
+  }, []);
+
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
   const getDistrictList = () => {
-    const response = api
+    api
       .get(baseURLMasterData + `district/get-all`)
       .then((response) => {
         setDistrictListData(response.data.content.district);
@@ -84,6 +106,60 @@ function DistrictWiseMontlyMulberry() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+  // to get Grainage
+  const [grainageListData, setGrainageListData] = useState([]);
+
+  const getGrainageList = () => {
+    api
+      .get(baseURLMasterData + `grainageMaster/get-all`)
+      .then((response) => {
+        setGrainageListData(response.data.content.grainageMaster);
+      })
+      .catch((err) => {
+        setGrainageListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGrainageList();
+  }, []);
+
+  // to get TrInstitutionMaster
+  const [trInstituteListData, setTrInstituteListData] = useState([]);
+
+  const getTrInstitutionMasterList = () => {
+    api
+      .get(baseURLMasterData + `trInstitutionMaster/get-all`)
+      .then((response) => {
+        setTrInstituteListData(response.data.content.trInstitutionMaster);
+      })
+      .catch((err) => {
+        setTrInstituteListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTrInstitutionMasterList();
+  }, []);
+
+  // to get Course
+  const [trCourseListData, setTrCourseListData] = useState([]);
+
+  const getTrCourseList = () => {
+    const response = api
+      .get(baseURLMasterData + `trCourseMaster/get-all`)
+      .then((response) => {
+        setTrCourseListData(response.data.content.trCourseMaster);
+      })
+      .catch((err) => {
+        setTrCourseListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTrCourseList();
+  }, []);
 
   const [validated, setValidated] = useState(false);
 
@@ -142,10 +218,7 @@ function DistrictWiseMontlyMulberry() {
       // event.stopPropagation();
       console.log("Entered Allocate");
       api
-        .post(
-          baseURLTargetSetting + `mulberryTargets/saveDistrictMulberryTargets`,
-          data
-        )
+        .post(baseURLTargetSetting + `targets/saveTrainingTargets`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -224,8 +297,12 @@ function DistrictWiseMontlyMulberry() {
       financialYearMasterId: "",
       districtId: "",
       month: "",
-      targetType: "",
+      target: "",
       value: "",
+      raceMasterId: "",
+      grainageMasterId: "",
+      trainingInstitutionId: "",
+      courseName: "",
     });
     setType({
       budgetType: "allocate",
@@ -256,12 +333,12 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title="Districtwise Montly Mulberry Page">
+    <Layout title="Target Wise Target Setting Page">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Districtwise Montly Mulberry Page
+              Target Wise Target Setting Page
             </Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
@@ -298,7 +375,7 @@ function DistrictWiseMontlyMulberry() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      Districtwise Montly Mulberry Page{" "}
+                      Target Wise Target Setting Page{" "}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -338,42 +415,37 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
+                              Race<span className="text-danger">*</span>
                             </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="mulberryTargetTypeId"
-                                value={data.mulberryTargetTypeId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
-                                }
-                              >
-                                <option value="">
-                                  Select Mulberry Target Type
-                                </option>
-                                {mulberryTargetTypeData.map((list) => (
-                                  <option
-                                    key={list.mulberryTargetTypeId}
-                                    value={list.mulberryTargetTypeId}
-                                  >
-                                    {list.mulberryTargetTypeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target is required
-                              </Form.Control.Feedback>
-                            </div>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="raceMasterId"
+                                  value={data.raceMasterId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                >
+                                  <option value="">Select Race</option>
+                                  {raceListData.map((list) => (
+                                    <option
+                                      key={list.raceMasterId}
+                                      value={list.raceMasterId}
+                                    >
+                                      {list.raceMasterName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Race is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         {/* <Col lg={6} className="mt-5">
                           <Row>
@@ -460,7 +532,7 @@ function DistrictWiseMontlyMulberry() {
                     </Form.Group>
                   </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               District<span className="text-danger">*</span>
@@ -492,40 +564,107 @@ function DistrictWiseMontlyMulberry() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
+                        </Col> */}
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Training Course
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="courseName"
+                                value={data.courseName}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.courseName === undefined ||
+                                  data.courseName === "0"
+                                }
+                              >
+                                <option value="">Select Course</option>
+                                {trCourseListData.map((list) => (
+                                  <option
+                                    key={list.trCourseMasterId}
+                                    value={list.trCourseMasterId}
+                                  >
+                                    {list.trCourseMasterName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Training Course is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
                         </Col>
 
                         <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Training Institution
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="trainingInstitutionId"
+                                value={data.trainingInstitutionId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.trainingInstitutionId === undefined ||
+                                  data.trainingInstitutionId === "0"
+                                }
+                              >
+                                <option value="">Select Institution</option>
+                                {trInstituteListData.map((list) => (
+                                  <option
+                                    key={list.trInstitutionMasterId}
+                                    value={list.trInstitutionMasterId}
+                                  >
+                                    {list.trInstitutionMasterName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Training Institution is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Target Type<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="targetType"
-                                value={data.targetType}
+                                name="target"
+                                value={data.target}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
                                 // isInvalid={
-                                //   data.targetType === undefined ||
-                                //   data.targetType === "0"
+                                //   data.target === undefined ||
+                                //   data.target === "0"
                                 // }
                               >
                                 <option value="">Select Target Type</option>
-                                <option value="NAREGA">NAREGA</option>
-                                <option value="NON NERAGA">NON NERAGA</option>
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
+                                <option value="Brushing">Brushing</option>
+                                <option value="Cocoon Production">
+                                  Cocoon Production
+                                </option>
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Target Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -571,11 +710,11 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               Target No.
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -585,14 +724,14 @@ function DistrictWiseMontlyMulberry() {
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter Target No."
-                                // required
+                                required
                               />
                               <Form.Control.Feedback type="invalid">
                                 Target No. is required.
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -703,4 +842,4 @@ function DistrictWiseMontlyMulberry() {
   );
 }
 
-export default DistrictWiseMontlyMulberry;
+export default TrainingTarget;
