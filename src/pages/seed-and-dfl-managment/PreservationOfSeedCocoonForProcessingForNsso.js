@@ -732,12 +732,12 @@ function PreservationofseedcocoonforprocessingListForNsso() {
   ];
 
   return (
-    <Layout title="Preservation of seed cocoon for processing List">
+    <Layout title="List Of Preservation of seed cocoon for processing">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Preservation of seed cocoon for processing List
+            List Of  Preservation of seed cocoon for processing
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -761,7 +761,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
                 Rejected List For Market
               </Button>
             </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/seriui/Preservation-of-seed-cocoon-for-processing"
                   className="btn btn-primary d-none d-md-inline-flex"
@@ -769,7 +769,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
