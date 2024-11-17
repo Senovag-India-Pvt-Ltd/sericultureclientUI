@@ -34,6 +34,22 @@ function ColdStorageScheduleBV() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "lotNumber") {
+      const selectedLot = lotListEggPreparationData.find((lot) => lot.lotNumber === value);
+      if (selectedLot) {
+        setData((prev) => ({
+          ...prev,
+          numberOfDflsDisposed: selectedLot.dflsObtained || "", // Use fallback if `dflsObtained` is null
+          laidOnDate: selectedLot.laidOnDate
+            ? new Date(selectedLot.laidOnDate) // Convert to Date object
+            : null,
+          dateOfRelease: selectedLot.dateOfRelease
+            ? new Date(selectedLot.dateOfRelease) // Convert to Date object if available
+            : null,
+        }));
+      }
+}
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
@@ -111,6 +127,26 @@ function ColdStorageScheduleBV() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+   // to get Lot
+   const [lotListEggPreparationData, setLotListEggPreparationData] = useState([]);
+
+   const getLotEggPreparationList = () => {
+     api
+       .post(baseURLSeedDfl + `sale-disposal-of-egg/get-all-lot-number-list`)
+       .then((response) => {
+         console.log("Lot List Data:", response.data); // Check the format of laidOnDate and dateOfRelease
+         setLotListEggPreparationData(response.data);
+       })
+       .catch((err) => {
+         console.error("Error fetching lot list:", err);
+         setLotListEggPreparationData([]);
+       });
+   };
+   
+   useEffect(() => {
+     getLotEggPreparationList();
+   }, []); 
 
   // to get Lot
   const [lotListData, setLotListData] = useState([]);
