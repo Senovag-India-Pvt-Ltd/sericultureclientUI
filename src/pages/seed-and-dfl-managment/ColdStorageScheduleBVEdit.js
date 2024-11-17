@@ -124,7 +124,7 @@ function ColdStorageScheduleBVEdit() {
 
   const getLotEggPreparationList = () => {
     api
-      .post(baseURLSeedDfl + `sale-disposal-of-egg/get-all-lot-number-list`)
+      .post(baseURLSeedDfl + `Cold-Storage/get-all-lot-number-list`)
       .then((response) => {
         console.log("Lot List Data:", response.data); // Check the format of laidOnDate and dateOfRelease
         setLotListEggPreparationData(response.data);

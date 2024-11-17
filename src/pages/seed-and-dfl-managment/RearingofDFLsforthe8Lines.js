@@ -42,6 +42,22 @@ function RearingofDFLsforthe8Lines() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "lotNumber") {
+      const selectedLot = lotListEggPreparationData.find((lot) => lot.lotNumber === value);
+      if (selectedLot) {
+        setData((prev) => ({
+          ...prev,
+          numberOfDFLs: selectedLot.numberOfDfls || "", // Use fallback if `dflsObtained` is null
+          laidOnDate: selectedLot.laidOnDate
+            ? new Date(selectedLot.laidOnDate) // Convert to Date object
+            : null,
+          hatchingDate: selectedLot.hatchingDate
+            ? new Date(selectedLot.hatchingDate) // Convert to Date object if available
+            : null,
+        }));
+      }
+}
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
@@ -158,6 +174,26 @@ function RearingofDFLsforthe8Lines() {
   useEffect(() => {
     getLotList();
   }, []);
+
+  // to get Lot
+  const [lotListEggPreparationData, setLotListEggPreparationData] = useState([]);
+
+  const getLotEggPreparationList = () => {
+    api
+      .post(baseURLSeedDfl + `8linesController/get-all-lot-number-list`)
+      .then((response) => {
+        console.log("Lot List Data:", response.data); // Check the format of laidOnDate and dateOfRelease
+        setLotListEggPreparationData(response.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching lot list:", err);
+        setLotListEggPreparationData([]);
+      });
+  };
+  
+  useEffect(() => {
+    getLotEggPreparationList();
+  }, []); 
 
    // to get Disinfectant
    const [disinfectantListData, setDisinfectantListData] = useState([]);

@@ -920,6 +920,7 @@ import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTa
 import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
 import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
 import MulberryTargetTypeEdit from "../pages/masters/mulberry-target-type/MulberryTargetTypeEdit";
+import UserAndManagerHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMapping";
 
 // Admin and Reports
 
@@ -2732,6 +2733,11 @@ function Router() {
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
+            />
+
+            <Route
+              path="user-and-manager-hierarchy-mapping"
+              element={<UserAndManagerHierarchyMapping />}
             />
             <Route
               path="sc-sub-scheme-details"
