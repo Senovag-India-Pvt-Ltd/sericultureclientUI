@@ -28,15 +28,34 @@ function Maintenanceofeggsatcoldstorage() {
 
   const [validated, setValidated] = useState(false);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
   // };
+  const handleInputs = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Automatically populate fields when the lot number changes
+    if (name === "lotNumber") {
+      const selectedLot = lotListData.find((lot) => lot.lotNumber === value);
+      if (selectedLot) {
+        setData((prev) => ({
+          ...prev,
+          numberOfDFLs: selectedLot.dflsObtained || "", // Use fallback if `dflsObtained` is null
+          laidOnDate: selectedLot.laidOnDate
+            ? new Date(selectedLot.laidOnDate) // Convert to Date object
+            : null,
+        }));
+      }
+    }
+  };
+
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
   const formatDate = (date) => {
@@ -117,7 +136,7 @@ function Maintenanceofeggsatcoldstorage() {
 
   const getLotList = () => {
     const response = api
-      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .post(baseURLSeedDfl + `EggStorage/get-all-lot-number-list`)
       .then((response) => {
         setLotListData(response.data);
       })
@@ -129,6 +148,24 @@ function Maintenanceofeggsatcoldstorage() {
   useEffect(() => {
     getLotList();
   }, []);
+
+   // to get Lot
+   const [lotListEggPreparationData, setLotListEggPreparationData] = useState([]);
+
+   const getLotEggPreparationList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+       .then((response) => {
+        setLotListEggPreparationData(response.data);
+       })
+       .catch((err) => {
+        setLotListEggPreparationData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotEggPreparationList();
+   }, []);
 
 
   
@@ -199,7 +236,7 @@ function Maintenanceofeggsatcoldstorage() {
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
-                          <Col lg="4">
+                          {/* <Col lg="4">
                           <Form.Group className="form-group mt-n4 ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -220,9 +257,9 @@ function Maintenanceofeggsatcoldstorage() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>           
-                </Col>
+                </Col> */}
 
-                {/* <Col lg="4">
+                <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -237,7 +274,7 @@ function Maintenanceofeggsatcoldstorage() {
                           required
                         >
                           <option value="">Select Lot Number</option>
-                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                          {lotListEggPreparationData && lotListEggPreparationData.length?(lotListEggPreparationData.map((list) => (
                             <option
                               key={list.id}
                               value={list.lotNumber}
@@ -252,7 +289,7 @@ function Maintenanceofeggsatcoldstorage() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -266,7 +303,7 @@ function Maintenanceofeggsatcoldstorage() {
                         name="numberOfDFLs"
                         value={data.numberOfDFLs}
                         onChange={handleInputs}
-                        maxLength="6"
+                        maxLength="8"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
                         required

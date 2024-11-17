@@ -920,6 +920,7 @@ import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTa
 import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
 import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
 import MulberryTargetTypeEdit from "../pages/masters/mulberry-target-type/MulberryTargetTypeEdit";
+import UserAndManagerHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMapping";
 import SiSdMulberryTarget from "../pages/new-target-setting/si-sd-mulberry-target/SiSdMulberryTarget";
 import DistrictwiseProductionPhysicalTargetSetting from "../pages/new-target-setting/district-wise-production-physical-target-setting/DistrictwiseProductionPhysicalTargetSetting";
 import TscwiseProdPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TscwiseProdPhysicalTargetSetting";
@@ -929,6 +930,7 @@ import GrainagewiseTarget from "../pages/new-target-setting/grainage-wise-target
 import DistrictwiseSchemeTargetSetting from "../pages/new-target-setting/district-wise-scheme-target-setting/DistrictwiseSchemeTargetSetting";
 import TscwiseSchemeTargetSetting from "../pages/new-target-setting/tsc-wise-scheme-target-setting/TscwiseSchemeTargetSetting";
 import TrainingTarget from "../pages/new-target-setting/training-target/TrainingTarget";
+import PreservationofseedcocoonforprocessingListForNsso from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingForNsso";
 
 // Admin and Reports
 
@@ -1487,6 +1489,11 @@ function Router() {
             <Route
               path="Preservation-of-seed-cocoon-for-processing"
               element={<Preservationofseedcocoonforprocessing />}
+            />
+
+          <Route
+              path="Preservation-of-seed-cocoon-for-processing-for-nsso"
+              element={<PreservationofseedcocoonforprocessingListForNsso />}
             />
 
             <Route
@@ -2741,6 +2748,11 @@ function Router() {
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
+            />
+
+            <Route
+              path="user-and-manager-hierarchy-mapping"
+              element={<UserAndManagerHierarchyMapping />}
             />
             <Route
               path="sc-sub-scheme-details"

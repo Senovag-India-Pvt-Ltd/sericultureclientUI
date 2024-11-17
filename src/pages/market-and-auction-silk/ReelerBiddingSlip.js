@@ -842,7 +842,7 @@ function ReelerBiddingSlip() {
                             </Col>
                           </Form.Group>
 
-                          <Form.Group
+                          {/* <Form.Group
                             as={Row}
                             className="form-group mt-1"
                             id="race"
@@ -880,7 +880,7 @@ function ReelerBiddingSlip() {
                                 </Form.Control.Feedback>
                               </div>
                             </Col>
-                          </Form.Group>
+                          </Form.Group> */}
 
                           {/* <Form.Group
                             as={Row}
@@ -956,7 +956,8 @@ function ReelerBiddingSlip() {
                           >
                             <Form.Label column sm={4}>
                             Quantity of Silk traded
-                            (kgs)<span className="text-danger">*</span>
+                            (kgs)
+                            {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control
@@ -966,12 +967,12 @@ function ReelerBiddingSlip() {
                                 value={data.dflCount}
                                 onChange={handleInputs}
                                 placeholder="Enter Quantity of Silk traded in (kgs)"
-                                required
+                                // required
                               />
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                               Quantity of Silk traded
                               (kgs) is required
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </Col>
                           </Form.Group>
 
