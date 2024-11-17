@@ -47,7 +47,7 @@ function UserAndManagerHierarchyMapping() {
     //     reportToUserMasterId: data.reportUserMasterId,
     // };
       api
-        .post(baseURL + `userMaster/add`, data)
+        .post(baseURL + `userMaster/updateManagerDetails`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -85,43 +85,43 @@ function UserAndManagerHierarchyMapping() {
 
 
   // to get district
-  const [districtListData, setDistrictListData] = useState([]);
+  const [managerListData, setManagerListData] = useState([]);
 
-  const getDistrictList = (_id) => {
+  const getManagerList = (_id) => {
     const response = api
-      .get(baseURL + `district/get-all`)
+      .get(baseURL + `userMaster/getUserManagerDetails`)
       .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
+        if (response.data) {
+          setManagerListData(response.data);
         }
       })
       .catch((err) => {
-        setDistrictListData([]);
+        setManagerListData([]);
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
   useEffect(() => {
-    getDistrictList();
+    getManagerList();
   }, []);
 
 
   // to get designation
-  const [designationListData, setDesignationListData] = useState([]);
+  const [userListData, setUserListData] = useState([]);
 
-  const getDesignationList = () => {
+  const getUserList = () => {
     const response = api
       .get(baseURL + `userMaster/get-all`)
       .then((response) => {
-        setDesignationListData(response.data.content.userMaster);
+        setUserListData(response.data.content.userMaster);
       })
       .catch((err) => {
-        setDesignationListData([]);
+        setUserListData([]);
       });
   };
 
   useEffect(() => {
-    getDesignationList();
+    getUserList();
   }, []);
 
     
@@ -187,7 +187,7 @@ function UserAndManagerHierarchyMapping() {
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
             <Card>
-            <Card.Header>Actual User</Card.Header>
+            <Card.Header>User Hierarchy Mapping</Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                 <Col lg="6">
@@ -208,8 +208,8 @@ function UserAndManagerHierarchyMapping() {
                           }
                         >
                           <option value="">Select User</option>
-                          {designationListData && designationListData.length
-                            ? designationListData.map((list) => (
+                          {managerListData && managerListData.length
+                            ? managerListData.map((list) => (
                                 <option
                                   key={list.userMasterId}
                                   value={list.userMasterId}
@@ -233,19 +233,19 @@ function UserAndManagerHierarchyMapping() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
+                          name="managerId"
+                          value={data.managerId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
+                            data.managerId === undefined ||
+                            data.managerId === "0"
                           }
                         >
                           <option value="">Select Reporting Officer</option>
-                          {designationListData && designationListData.length
-                            ? designationListData.map((list) => (
+                          {userListData && userListData.length
+                            ? userListData.map((list) => (
                                 <option
                                   key={list.userMasterId}
                                   value={list.userMasterId}
