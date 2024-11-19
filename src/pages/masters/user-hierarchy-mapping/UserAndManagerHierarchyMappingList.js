@@ -326,6 +326,30 @@ function UserAndManagerHierarchyMappingList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Phone Number",
+      selector: (row) => row.phoneNumber,
+      cell: (row) => <span>{row.phoneNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Designation",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
     
   ];
 
@@ -352,7 +376,29 @@ function UserAndManagerHierarchyMappingList() {
       sortable: true,
       hide: "md",
     },
-   
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Phone Number",
+      selector: (row) => row.phoneNumber,
+      cell: (row) => <span>{row.phoneNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Designation",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
     {
       name: "Level",
       selector: (row) => row.level,
