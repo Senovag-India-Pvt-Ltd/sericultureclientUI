@@ -1369,7 +1369,7 @@ function DbtApplication() {
 
   const LandDetailsForDevColumns = [
     {
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row, i) => (
         <input
@@ -1385,49 +1385,49 @@ function DbtApplication() {
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_noc"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1444,7 +1444,7 @@ function DbtApplication() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1462,7 +1462,7 @@ function DbtApplication() {
     },
 
     {
-      name: "FGunta",
+      name: t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1480,12 +1480,12 @@ function DbtApplication() {
     },
 
     {
-      name: "Developed Area (Acre/Gunta/FGunta)",
+      name: t("Developed Area (Acre/Gunta/FGunta)"),
       // selector: (row) => row.acre,
       cell: (row, i) => (
         <>
           <Form.Control
-            name="devAcre"
+            name={t("devAcre")}
             type="text"
             value={developedArea[i]?.devAcre || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
@@ -1493,7 +1493,7 @@ function DbtApplication() {
             className="m-1"
           />
           <Form.Control
-            name="devGunta"
+            name={t("devGunta")}
             type="text"
             value={developedArea[i]?.devGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
@@ -1501,7 +1501,7 @@ function DbtApplication() {
             className="m-1"
           />
           <Form.Control
-            name="devFGunta"
+            name={t("devFGunta")}
             type="text"
             value={developedArea[i]?.devFGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
@@ -1519,7 +1519,7 @@ function DbtApplication() {
 
   const LandDetailsColumns = [
     {
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row) => (
         <input
@@ -1535,49 +1535,49 @@ function DbtApplication() {
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1594,7 +1594,7 @@ function DbtApplication() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1612,7 +1612,7 @@ function DbtApplication() {
     },
 
     {
-      name: "FGunta",
+      name:t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1703,7 +1703,7 @@ function DbtApplication() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">DBT Application</Block.Title>
+            <Block.Title tag="h2">{t("DBT Application")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1713,7 +1713,7 @@ function DbtApplication() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>List Page</span>
+                  <span>{t("List Page")}</span>
                 </Link>
               </li>
               <li>
@@ -1722,7 +1722,7 @@ function DbtApplication() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>List Page</span>
+                  <span>{t("List Page")}</span>
                 </Link>
               </li>
             </ul>
@@ -1740,7 +1740,7 @@ function DbtApplication() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                    {t("FRUITS ID")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -1748,7 +1748,7 @@ function DbtApplication() {
                         name="fruitsId"
                         value={data.fruitsId}
                         onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t("Enter FRUITS ID")}
                         required
                         maxLength="16"
                         readOnly={disable}
@@ -1763,12 +1763,12 @@ function DbtApplication() {
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                      {t("search")}
                       </Button>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary" onClick={clear}>
-                        Clear
+                      {t( "Clear")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -1784,9 +1784,9 @@ function DbtApplication() {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td style={styles.ctstyle}> {t("farmer_name")}</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Addres:</td>
+                          <td style={styles.ctstyle}> {t("address")}</td>
                           <td>{farmerDetails.address}</td>
                           {/* <td style={styles.ctstyle}> District:</td>
                           <td>{farmerDetails.districtName}</td>
@@ -1908,14 +1908,14 @@ function DbtApplication() {
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Scheme Details
+                    {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                            {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1930,7 +1930,7 @@ function DbtApplication() {
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1941,7 +1941,7 @@ function DbtApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                              {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1950,7 +1950,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                            {t("Scheme")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1966,7 +1966,7 @@ function DbtApplication() {
                                   data.scSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
+                                <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData.map((list) => (
                                   <option
                                     key={list.scSchemeDetailsId}
@@ -1977,7 +1977,7 @@ function DbtApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                              {t("Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1986,7 +1986,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Scheme Type
+                              {t("Scheme Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2002,7 +2002,7 @@ function DbtApplication() {
                                   data.scSubSchemeType === "0"
                                 }
                               >
-                                <option value="">Select Sub Scheme</option>
+                                <option value="">{t("Select Sub Scheme")}</option>
                                 {schemeQuotaDetailsListData.map((list) => (
                                   <option
                                     key={list.schemeQuotaId}
@@ -2013,7 +2013,7 @@ function DbtApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Sub Scheme is required
+                                {t("Sub Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2022,7 +2022,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
+                            {t("Component Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2038,7 +2038,7 @@ function DbtApplication() {
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Component Type</option>
+                                <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData &&
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
@@ -2047,7 +2047,7 @@ function DbtApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                              {t("Component Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2056,7 +2056,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Component
+                            {t("Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2072,7 +2072,7 @@ function DbtApplication() {
                                   data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Component</option>
+                                <option value="">{t("Select Component")}</option>
                                 {scComponentListData.map((list) => (
                                   <option
                                     key={list.scComponentId}
@@ -2092,7 +2092,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                            {t("Sub Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2108,7 +2108,7 @@ function DbtApplication() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Category</option>
+                                <option value="">{t("Select Category")}</option>
                                 {scCategoryListData.map((list) => (
                                   <option
                                     key={list.scCategoryId}
@@ -2119,7 +2119,7 @@ function DbtApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Category is required
+                                {t("Category is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2128,7 +2128,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Head of Account
+                            {t("Head of Account")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2144,7 +2144,7 @@ function DbtApplication() {
                                   data.scHeadAccountId === "0"
                                 }
                               >
-                                <option value="">Select Head of Account</option>
+                                <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData.map((list) => (
                                   <option
                                     key={list.headOfAccountId}
@@ -2155,7 +2155,7 @@ function DbtApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Head of Account is required
+                              {t("Head of Account is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2187,7 +2187,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
-                              Scheme Amount
+                            {t("Scheme Amount")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2198,12 +2198,12 @@ function DbtApplication() {
                                 value={data.schemeAmount}
                                 // value={amountValue.unitPrice}
                                 onChange={handleInputs}
-                                placeholder="Enter Scheme Amount"
+                                placeholder={t("Enter Scheme Amount")}
                                 // readOnly
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Scheme Amount is required
+                              {t("Scheme Amount is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2212,7 +2212,7 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sanctionNumber">
-                              Sanction Number
+                              {t("Sanction Number")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2222,7 +2222,7 @@ function DbtApplication() {
                                 name="sanctionNumber"
                                 value={data.sanctionNumber}
                                 onChange={handleInputs}
-                                placeholder="Enter Sanction Number"
+                                placeholder={t("Enter Sanction Number")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2258,7 +2258,7 @@ function DbtApplication() {
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              From Date
+                            {t("From Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2284,7 +2284,7 @@ function DbtApplication() {
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              To Date
+                            {t("To Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2451,12 +2451,12 @@ function DbtApplication() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary" disabled={disabled}>
-                      Save
+                    {t("save")}
                     </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </li>
                 </ul>

@@ -1411,49 +1411,49 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1470,7 +1470,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1488,7 +1488,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "FGunta",
+      name: t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1598,49 +1598,49 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     //   button: true,
     // },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,  
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name:  t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name:  t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1657,7 +1657,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1675,7 +1675,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "FGunta",
+      name:t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1849,7 +1849,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
             size="sm"
             onClick={() => handleDocumentClick(row.documentPath)}
           >
-            View Document
+            {t("View Document")}
           </Button>
           {currentDocumentPath === row.documentPath && selectedDocumentFile && (
             <>
@@ -1875,7 +1875,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
         
     {
-      name: "Action",
+      name: t("Action"),
       // selector: (row) => row.documentPath,
       cell: (row) => (
         <div className="text-start w-100">
@@ -1886,7 +1886,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           onClick={() => deleteConfirm(row.id)}
           className="ms-2"
         >
-          Delete
+          {t("delete")}
         </Button>
       </div>
     ),
@@ -1951,7 +1951,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Edit Scheme Details Form</Block.Title>
+            <Block.Title tag="h2"> {t("Edit Scheme Details Form")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1961,7 +1961,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application Form List</span>
+                  <span>{t("Application Form List")}</span>
                 </Link>
               </li>
               <li>
@@ -1970,7 +1970,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Service Application List</span>
+                  <span>{t("Service Application List")}</span>
                 </Link>
               </li>
             </ul>
@@ -2010,13 +2010,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Farmer Name:</td>
+                            <td style={styles.ctstyle}>{t("farmer_name")}</td>
                             <td>{farmerDetails.farmerName}</td>
-                            <td style={styles.ctstyle}> FID:</td>
+                            <td style={styles.ctstyle}> {t("FRUITS ID")}</td>
                             <td>{farmerDetails.fid}</td>
-                            <td style={styles.ctstyle}> Taluk :</td>
+                            <td style={styles.ctstyle}>{t("taluk")}</td>
                             <td>{farmerDetails.talukName}</td>
-                            <td style={styles.ctstyle}> Village:</td>
+                            <td style={styles.ctstyle}>{t("village")}</td>
                             <td>{farmerDetails.village}</td>
                           </tr>
                         </tbody>
@@ -2128,14 +2128,14 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Scheme Details
+                      {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2151,7 +2151,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -2162,7 +2162,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2171,7 +2171,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                              {t("Scheme")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2187,7 +2187,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.scSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
+                                <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData && scSchemeDetailsListData.length > 0 ? (
                                   scSchemeDetailsListData.map((list) => (
                                   <option
@@ -2202,7 +2202,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                                {t("Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2213,7 +2213,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="spacing">
-                            Spacing <span className="text-danger">*</span>
+                            {t("Spacing")} <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -2225,7 +2225,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 data.spacingId === undefined || data.spacingId === "0"
                               }
                             >
-                              <option value="">Select Spacing</option>
+                              <option value="">{t("Select Spacing")}</option>
                               {spacingListData && spacingListData.length > 0
                                 ? spacingListData.map((list) => (
                                     <option key={list.spacingId} value={list.spacingId}>
@@ -2247,7 +2247,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="hectare">
-                            Hectare <span className="text-danger">*</span>
+                          {t("Hectare")} <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -2259,7 +2259,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 data.hectareId === undefined || data.hectareId === "0"
                               }
                             >
-                              <option value="">Select Hectare</option>
+                              <option value="">{t("Select Hectare")}</option>
                               {hectareListData && hectareListData.length > 0
                                 ? hectareListData.map((list) => (
                                     <option key={list.hectareId} value={list.hectareId}>
@@ -2280,7 +2280,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
+                            {t("Component Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2296,7 +2296,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Component Type</option>
+                                <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length > 0 ? (
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
@@ -2308,7 +2308,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                              {t("Component Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2352,7 +2352,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Component
+                            {t("Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2368,7 +2368,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Component</option>
+                                <option value="">{t("Select Component")}</option>
                                 {scComponentListData.map((list) => (
                                   <option
                                     key={list.scComponentId}
@@ -2379,7 +2379,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component is required
+                              {t("Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2388,7 +2388,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                            {t("Sub Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2404,7 +2404,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Category</option>
+                                <option value="">{t("Select Sub Component")}</option>
                                 {scCategoryListData.map((list) => (
                                   <option
                                     key={list.scCategoryId}
@@ -2415,7 +2415,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Category is required
+                              {t("Sub Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2424,7 +2424,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Head of Account
+                            {t("Head of Account")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2440,7 +2440,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                   data.scHeadAccountId === "0"
                                 }
                               >
-                                <option value="">Select Head of Account</option>
+                                <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData.map((list) => (
                                   <option
                                     key={list.headOfAccountId}
@@ -2451,7 +2451,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Head of Account is required
+                              {t("Head of Account is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2460,7 +2460,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sanctionAmount">
-                              Scheme Amount
+                              {t("Scheme Amount")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2470,11 +2470,11 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 name="schemeAmount"
                                 value={data.schemeAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Scheme Amount"
+                                placeholder={t("Enter Scheme Amount")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                              Scheme Amount is required
+                              {t("Scheme Amount is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2529,7 +2529,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              From Date
+                              {t("From Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2553,7 +2553,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              To Date
+                              {t("To Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2583,7 +2583,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
               <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
-                    Saved Land Details
+                    {t("Saved Land Details")}
                   </Card.Header>
                   <Card.Body>
                     <Row>
@@ -2686,7 +2686,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       </Card.Header> */}
                       <Card.Body>
                       <Card.Header style={{ fontWeight: "bold" }}>
-                        Edit Land Details
+                        {t("Edit Land Details")}
                       </Card.Header>
                         <Row>
                           <DataTable
@@ -2767,7 +2767,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
-                    Documents
+                    {t("Documents")}
                   </Card.Header>
                   <Card.Body>
                     <Row>
@@ -2802,7 +2802,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                     className="ms-2"
                     onClick={() => handleShowModal(applicationId)}
                   >
-                    Upload Documents
+                    {t("Upload Documents")}
                   </Button>
                   </li>
                   
@@ -2821,12 +2821,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                    {t("update")}
                     </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </li>
                 </ul>
@@ -2838,7 +2838,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Upload Documents</Modal.Title>
+          <Modal.Title>{t("Upload Documents")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* {docListData.map(({ documentMasterId, documentMasterName }) => (
@@ -2911,13 +2911,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
               <Row>
                 <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label><strong>Documents</strong></Form.Label>
+                        <Form.Label><strong>{t("Documents")}</strong></Form.Label>
                         <Form.Select
                           name="documentTypeId"
                           value={uploadDocuments.documentTypeId}
                           onChange={handleDocumentInputs}
                         >
-                          <option value="">Choose Document Type</option>
+                          <option value="">{t("Choose Document Type")}</option>
                           {docListData.map((list) => (
                             <option
                               key={list.documentMasterId}
@@ -2933,7 +2933,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 <Col lg="6">
                 <Form.Group className="form-group">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Documents(PDF/jpg/png)(Max:2mb)
+                        {t("Upload Documents(PDF/jpg/png)(Max:2mb)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2974,7 +2974,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
   {uploadedDocuments.length > 0 && (
   <div className="mt-3">
-    <h5>Uploaded Documents</h5>
+    <h5>{t("Uploaded Documents")}</h5>
     <ul>
       {uploadedDocuments.map((doc, index) => (
         <li key={index} className="d-flex align-items-center">

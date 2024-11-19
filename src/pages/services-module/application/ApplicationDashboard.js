@@ -20,6 +20,7 @@ import Layout from "../../../layout/default";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -42,7 +43,8 @@ function ApplicationDashboard() {
     borderRadius: "3%",
     cursor: "pointer",
   };
-
+// Translation
+const { t } = useTranslation();
   const rainbowColors = [
     "#b82424",
     "#ca8b17",
@@ -256,7 +258,7 @@ function ApplicationDashboard() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">User Dashboard</Block.Title>
+            <Block.Title tag="h2">{t("User Dashboard")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
