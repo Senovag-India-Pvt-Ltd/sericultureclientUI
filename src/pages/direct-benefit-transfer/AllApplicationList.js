@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 import ViewAllApplication from "../services-module/application-component/ViewAllApplication";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -19,6 +20,8 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function AllApplicationList() {
+   // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 30;
@@ -785,7 +788,7 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: "Fruits Id",
+      name: t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
@@ -799,14 +802,14 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: t("farmer_name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "ARN Number",
+      name: t("ARN Number"),
       selector: (row) => row.arn,
       cell: (row) => <span>{row.arn}</span>,
       sortable: true,
@@ -827,14 +830,14 @@ function AllApplicationList() {
     //   hide: "md",
     // },
     {
-      name: "Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component",
+      name: t("Component"),
       selector: (row) => row.componentName,
       cell: (row) => <span>{row.componentName}</span>,
       sortable: true,
@@ -856,14 +859,14 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: "Application Status",
+      name: t("Application Status"),
       selector: (row) => row.applicationStatus,
       cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Remarks",
+      name: t("Remarks"),
       selector: (row) => row.remarks,
       cell: (row) => <span>{row.remarks}</span>,
       sortable: true,
@@ -871,7 +874,7 @@ function AllApplicationList() {
     },
 
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -881,7 +884,7 @@ function AllApplicationList() {
             size="sm"
             onClick={() => handleView(row.scApplicationFormId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -889,7 +892,7 @@ function AllApplicationList() {
             className="ms-2"
             onClick={() => handleEdit(row.scApplicationFormId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -969,7 +972,7 @@ function AllApplicationList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Application List</Block.Title>
+            <Block.Title tag="h2">{t("Application List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -979,7 +982,7 @@ function AllApplicationList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>New Application</span>
+                  <span>{t("New Application")}</span>
                 </Link>
               </li>
               <li>
@@ -988,7 +991,7 @@ function AllApplicationList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>New Application</span>
+                  <span>{t("New Application")}</span>
                 </Link>
               </li>
             </ul>
@@ -1133,7 +1136,7 @@ function AllApplicationList() {
 
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
 
@@ -1208,11 +1211,11 @@ function AllApplicationList() {
             <table className="table small table-bordered">
               <tbody>
                 <tr>
-                  <td style={styles.ctstyle}>Fruits Id:</td>
+                  <td style={styles.ctstyle}>{t("FRUITS ID")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Farmer Name:</td>
+                  <td style={styles.ctstyle}>{t("farmer_name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>

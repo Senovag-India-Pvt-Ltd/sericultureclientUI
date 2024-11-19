@@ -1464,49 +1464,49 @@ function ServiceApplication() {
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("select_village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_noc"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1523,7 +1523,7 @@ function ServiceApplication() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1541,7 +1541,7 @@ function ServiceApplication() {
     },
 
     {
-      name: "FGunta",
+      name: t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1597,49 +1597,49 @@ function ServiceApplication() {
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1656,7 +1656,7 @@ function ServiceApplication() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1674,7 +1674,7 @@ function ServiceApplication() {
     },
 
     {
-      name: "FGunta",
+      name: t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1967,7 +1967,7 @@ function ServiceApplication() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Scheme Details Form</Block.Title>
+            <Block.Title tag="h2">{t("Scheme Details Form")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1977,7 +1977,7 @@ function ServiceApplication() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Applications List</span>
+                  <span>{t("Applications List")}</span>
                 </Link>
               </li>
               <li>
@@ -1986,7 +1986,7 @@ function ServiceApplication() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Applications List</span>
+                  <span>{t("Applications List")}</span>
                 </Link>
               </li>
             </ul>
@@ -2004,7 +2004,7 @@ function ServiceApplication() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                    {t("FRUITS ID")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -2012,7 +2012,7 @@ function ServiceApplication() {
                         name="fruitsId"
                         value={data.fruitsId}
                         onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t("Enter FRUITS ID")}
                         required
                         maxLength="16"
                       />
@@ -2022,7 +2022,7 @@ function ServiceApplication() {
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                      {t("search")}
                       </Button>
                     </Col>
                     {/* <Col sm={2}>
@@ -2043,9 +2043,9 @@ function ServiceApplication() {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td style={styles.ctstyle}> {t("farmer_name")}</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Address:</td>
+                          <td style={styles.ctstyle}> {t("address")}</td>
                           <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
@@ -2160,14 +2160,14 @@ function ServiceApplication() {
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Scheme Details
+                      {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                              {t("Scheme")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2183,7 +2183,7 @@ function ServiceApplication() {
                                   data.scSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
+                                <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData &&
                                   scSchemeDetailsListData.map((list) => (
                                     <option
@@ -2195,7 +2195,7 @@ function ServiceApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                                {t("Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2206,7 +2206,7 @@ function ServiceApplication() {
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="spacing">
-                                Spacing <span className="text-danger">*</span>
+                                {t("Spacing")} <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -2219,7 +2219,7 @@ function ServiceApplication() {
                                     data.spacingId === "0"
                                   }
                                 >
-                                  <option value="">Select Spacing</option>
+                                  <option value="">{t("Select Spacing")}</option>
                                   {spacingListData && spacingListData.length > 0
                                     ? spacingListData.map((list) => (
                                         <option
@@ -2244,7 +2244,7 @@ function ServiceApplication() {
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="hectare">
-                                Hectare <span className="text-danger">*</span>
+                                {t("Hectare")} <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -2257,7 +2257,7 @@ function ServiceApplication() {
                                     data.hectareId === "0"
                                   }
                                 >
-                                  <option value="">Select Hectare</option>
+                                  <option value="">{t("Select Hectare")}</option>
                                   {hectareListData && hectareListData.length > 0
                                     ? hectareListData.map((list) => (
                                         <option
@@ -2280,7 +2280,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
+                              {t("Component Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2296,7 +2296,7 @@ function ServiceApplication() {
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Component Type</option>
+                                <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData &&
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
@@ -2305,7 +2305,7 @@ function ServiceApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                                {t("Component Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2314,7 +2314,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Component
+                              {t("Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2330,7 +2330,7 @@ function ServiceApplication() {
                                   data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Component</option>
+                                <option value="">{t("Select Component")}</option>
                                 {scComponentListData &&
                                   scComponentListData.map((list) => (
                                     <option
@@ -2342,7 +2342,7 @@ function ServiceApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component is required
+                                {t("Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2422,7 +2422,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                              {t("Sub Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2438,7 +2438,7 @@ function ServiceApplication() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Sub Component</option>
+                                <option value="">{t("Select Sub Component")}</option>
                                 {scCategoryListData &&
                                   scCategoryListData.map((list) => (
                                     <option
@@ -2450,7 +2450,7 @@ function ServiceApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Sub Component is required
+                                {t("Sub Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2459,7 +2459,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Head of Account
+                              {t("Head of Account")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2475,7 +2475,7 @@ function ServiceApplication() {
                                   data.scHeadAccountId === "0"
                                 }
                               >
-                                <option value="">Select Head of Account</option>
+                                <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData &&
                                   scHeadAccountListData.map((list) => (
                                     <option
@@ -2487,7 +2487,7 @@ function ServiceApplication() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Head of Account is required
+                                {t("Head of Account is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2496,7 +2496,7 @@ function ServiceApplication() {
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              From Date
+                              {t("From Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2522,7 +2522,7 @@ function ServiceApplication() {
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              To Date
+                              {t("To Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2549,7 +2549,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Approval Stage
+                              {t("Approval Stage")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <Col>
@@ -2566,7 +2566,7 @@ function ServiceApplication() {
                                   }
                                 >
                                   <option value="">
-                                    Select Approval Stage
+                                    {t("Select Approval Stage")}
                                   </option>
                                   {approvalStageBeforeNextStepListData.map(
                                     (list) => (
@@ -2580,7 +2580,7 @@ function ServiceApplication() {
                                   )}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Approval Stage Name is required
+                                  {t("Approval Stage Name is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Col>
@@ -2590,7 +2590,7 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User Master
+                              {t("User Master")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <Col>
@@ -2606,7 +2606,7 @@ function ServiceApplication() {
                                     data.userId === "0"
                                   }
                                 >
-                                  <option value="">Select User</option>
+                                  <option value="">{t("Select User")}</option>
                                   {userFromDistrictData.map((list) => (
                                     <option
                                       key={list.userId}
@@ -3142,7 +3142,7 @@ function ServiceApplication() {
                         />
                       </Col>
                       <Form.Label column sm={9} className="mt-n2">
-                        Constructed Area
+                        {t("Constructed Area")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -3162,7 +3162,7 @@ function ServiceApplication() {
                         />
                       </Col>
                       <Form.Label column sm={9} className="mt-n2">
-                        Equipment Purchase
+                        {t("Equipment Purchase")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -3182,7 +3182,7 @@ function ServiceApplication() {
                         />
                       </Col>
                       <Form.Label column sm={9} className="mt-n2">
-                        Land Wise
+                      {t("Land Wise")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -3193,14 +3193,14 @@ function ServiceApplication() {
               <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
-                    Sanction Amount
+                    {t("Sanction Amount")}
                   </Card.Header>
                   <Card.Body>
                     <Row className="g-gs">
                       <Col lg="4">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="landDeveloped">
-                            Unit Price
+                            {t("Unit Price")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -3210,11 +3210,11 @@ function ServiceApplication() {
                               name="unitPrice"
                               value={amountValue.unitPrice}
                               onChange={handleDevelopedLandInputs}
-                              placeholder="Enter Unit Price"
+                              placeholder={t("Enter Unit Price")}
                               readOnly
                             />
                             <Form.Control.Feedback type="invalid">
-                              Unit Price is required
+                              {t("Unit Price is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -3222,7 +3222,7 @@ function ServiceApplication() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="expectedAmount">
-                            Subsidy Amount
+                            {t("Subsidy Amount")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -3232,11 +3232,11 @@ function ServiceApplication() {
                               name="expectedAmount"
                               value={data.expectedAmount}
                               onChange={handleInputs}
-                              placeholder="Enter Expected Amount"
+                              placeholder={t("Enter Expected Amount")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              Subsidy Amount is required
+                              {t("Subsidy Amount is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -3251,14 +3251,14 @@ function ServiceApplication() {
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Constructed Area
+                      {t("Constructed Area")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              Unit
+                              {t("Unit")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -3272,7 +3272,7 @@ function ServiceApplication() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Unit Quantity is required
+                                {t("Unit Quantity is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -3287,14 +3287,14 @@ function ServiceApplication() {
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Equipment Purchase
+                      {t("Equipment Purchase")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Vendor Name
+                              {t("Vendor Name")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -3308,7 +3308,7 @@ function ServiceApplication() {
                                   equipment.vendorId === "0"
                                 }
                               >
-                                <option value="">Select Vendor Name</option>
+                                <option value="">{t("Select Vendor Name")}</option>
                                 {scVendorListData.map((list) => (
                                   <option
                                     key={list.scVendorId}
@@ -3319,7 +3319,7 @@ function ServiceApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Vendor Name is required
+                                {t("Vendor Name is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -3327,7 +3327,7 @@ function ServiceApplication() {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="description">
-                              Description
+                              {t("Description")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -3341,7 +3341,7 @@ function ServiceApplication() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Description is required
+                                {t("Description is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -3358,7 +3358,7 @@ function ServiceApplication() {
                   <Block className="mt-3">
                     <Card>
                       <Card.Header style={{ fontWeight: "bold" }}>
-                        Land Wise
+                        {t("Land Wise")}
                       </Card.Header>
                       <Card.Body>
                         {/* Display land-related details like the DataTable here */}
@@ -3383,12 +3383,12 @@ function ServiceApplication() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Save
+                    {t("save")}
                     </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </li>
                 </ul>
@@ -3400,7 +3400,7 @@ function ServiceApplication() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>File Upload</Modal.Title>
+          <Modal.Title>{t("File Upload")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* {docListData.map(({ documentMasterId, documentMasterName }) => (
@@ -3491,14 +3491,14 @@ function ServiceApplication() {
               <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    <strong>Documents</strong>
+                    <strong>{t("Documents")}</strong>
                   </Form.Label>
                   <Form.Select
                     name="documentTypeId"
                     value={uploadDocuments.documentTypeId}
                     onChange={handleDocumentInputs}
                   >
-                    <option value="">Choose Document Type</option>
+                    <option value="">{t("Choose Document Type")}</option>
                     {docListData.map((list) => (
                       <option
                         key={list.documentMasterId}
@@ -3514,7 +3514,7 @@ function ServiceApplication() {
               <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="accountImagePath">
-                    Upload Documents(PDF/jpg/png)(Max:2mb)
+                    {t("Upload Documents(PDF/jpg/png)(Max:2mb)")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -3578,7 +3578,7 @@ function ServiceApplication() {
 
             {uploadedDocuments.length > 0 && (
               <div className="mt-3">
-                <h5>Uploaded Documents</h5>
+                <h5>{t("Uploaded Documents")}</h5>
                 <ul className="d-flex justify-content-start">
                   {uploadedDocuments.map((doc, index) => (
                     <li key={index} className="d-flex align-items-center">
@@ -3619,7 +3619,7 @@ function ServiceApplication() {
                     {/* {uploadStatus[uploadDocuments.documentTypeId]
                     ? "Uploaded"
                     : "Upload"} */}
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </li>
               </ul>
@@ -3630,7 +3630,7 @@ function ServiceApplication() {
 
       <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Break Up</Modal.Title>
+          <Modal.Title>{t("Break Up")}</Modal.Title>
         </Modal.Header>
         <Modal.Body></Modal.Body>
       </Modal>
