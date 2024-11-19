@@ -587,7 +587,8 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon Supplied in Kg<span className="text-danger">*</span>
+                    Cocoon Supplied in Kg
+                    {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -597,11 +598,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Cocoon Supplied in Kg"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Cocoon Supplied in Kg is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

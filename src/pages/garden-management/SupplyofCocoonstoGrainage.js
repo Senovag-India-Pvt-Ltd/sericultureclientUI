@@ -542,7 +542,7 @@ function SupplyofCocoonstoGrainage() {
                         >
                           <option value="">Select Lot Number</option>
                           {lotNumberListData.map((list) => (
-                            <option key={list.id} value={list.id}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))}
