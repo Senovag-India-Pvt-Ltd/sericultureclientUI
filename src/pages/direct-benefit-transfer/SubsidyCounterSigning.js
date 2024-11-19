@@ -4,6 +4,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
+import { useTranslation } from "react-i18next";
 import {
   Icon,
   CustomDropdownToggle,
@@ -11,6 +12,8 @@ import {
 } from "../../components";
 
 function SubsidyCounterSigning() {
+  // Translation
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -28,15 +31,15 @@ function SubsidyCounterSigning() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Subsidy Counter Signing List</Block.Title>
+            <Block.Title tag="h2">{t("Subsidy Counter Signing List")}</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
+                  <Link to="/seriui/">{t("Home")}</Link>
                 </li>
                 {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Subsidy Counter Signing List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                  List
+                {t("List")}
                 </li>
               </ol>
             </nav>
@@ -73,16 +76,16 @@ function SubsidyCounterSigning() {
               <thead>
                 <tr>
                   {/* <th></th> */}
-                  <th>Farmer Id</th>
-                  <th>Financial Year</th>
-                  <th>Farmer Name</th>
-                  <th>Mobile</th>
-                  <th>Category</th>
-                  <th>Head of Account</th>
-                  <th>Scheme</th>
-                  <th>Sub Scheme</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>{t("Farmer Id")}</th>
+                  <th>{t("Financial Year")}</th>
+                  <th>{t("farmer_name")}</th>
+                  <th>{t("mobile_number")}</th>
+                  <th>{t("Category")}</th>
+                  <th>{t("Head of Account")}</th>
+                  <th>{t("Scheme")}</th>
+                  <th>{t("Sub Scheme")}</th>
+                  <th>{t("Status")}</th>
+                  <th>{t("Action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +102,7 @@ function SubsidyCounterSigning() {
                   </td>
                   <td>Subsidy for Mulberry garden implements</td>
                   <td style={{ color: "Orange", fontWeight: "bold" }}>
-                    Pending
+                  {t("Pending")}
                   </td>
                   <td>
                     <div className="text-end w-100 d-flex justify-content-start">
@@ -122,21 +125,21 @@ function SubsidyCounterSigning() {
                               variant=""
                               onClick={handleShowModal1}
                             >
-                              View
+                              {t("View")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal2}
                             >
-                              Modify
+                              {t("Modify")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal}
                             >
-                              Approve/Reject
+                              {t("Approve/Reject")}
                             </Button>
                           </div>
                         </Dropdown.Menu>
@@ -157,7 +160,7 @@ function SubsidyCounterSigning() {
                   </td>
                   <td>Subsidy for Chawki garden maintenance</td>
                   <td style={{ color: "Green", fontWeight: "bold" }}>
-                    Approved
+                  {t("Approved")}
                   </td>
                   <td>
                     <div className="text-end w-100 d-flex justify-content-start">
@@ -180,21 +183,21 @@ function SubsidyCounterSigning() {
                               variant=""
                               onClick={handleShowModal1}
                             >
-                              View
+                              {t("View")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal2}
                             >
-                              Modify
+                              {t("Modify")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal}
                             >
-                              Approve/Reject
+                              {t("Approve/Reject")}
                             </Button>
                           </div>
                         </Dropdown.Menu>
@@ -214,7 +217,7 @@ function SubsidyCounterSigning() {
                     building/Chawki rearing equipments
                   </td>
                   <td>Chawki rearing building</td>
-                  <td style={{ color: "Red", fontWeight: "bold" }}>Rejected</td>
+                  <td style={{ color: "Red", fontWeight: "bold" }}>{t("Rejected")}</td>
                   <td>
                     <div className="text-end w-100 d-flex justify-content-start">
                       <Dropdown>
@@ -236,21 +239,21 @@ function SubsidyCounterSigning() {
                               variant=""
                               onClick={handleShowModal1}
                             >
-                              View
+                              {t("View")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal2}
                             >
-                              Modify
+                              {t("Modify")}
                             </Button>
                             <Button
                               style={{ width: "100%" }}
                               variant=""
                               onClick={handleShowModal}
                             >
-                              Approve/Reject
+                              {t("Approve/Reject")}
                             </Button>
                           </div>
                         </Dropdown.Menu>
@@ -266,7 +269,7 @@ function SubsidyCounterSigning() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Approve/Reject</Modal.Title>
+          <Modal.Title>{t("Approve/Reject")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -288,23 +291,23 @@ function SubsidyCounterSigning() {
                     </Form.Group> */}
 
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="fid">Farmer ID</Form.Label>
+                  <Form.Label htmlFor="fid">{t("Farmer Id")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fid"
                       type="text"
-                      placeholder="Farmer ID"
+                      placeholder={t("Farmer Id")}
                       value="fid1"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="fyear">Financial Year</Form.Label>
+                  <Form.Label htmlFor="fyear">{t("Financial Year")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fyear"
                       type="text"
-                      placeholder="Financial Year"
+                      placeholder={t("Financial Year")}
                       value="2023-2024"
                     />
                   </div>
@@ -312,23 +315,23 @@ function SubsidyCounterSigning() {
               </Col>
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="fname">Farmer Name</Form.Label>
+                  <Form.Label htmlFor="fname">{t("farmer_name")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fname"
                       type="text"
-                      placeholder="Farmer Name"
+                      placeholder={t("farmer_name")}
                       value="Basappa"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="mbl">Mobile</Form.Label>
+                  <Form.Label htmlFor="mbl">{t("mobile_number")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="mbl"
                       type="text"
-                      placeholder="Mobile"
+                      placeholder={t("mobile_number")}
                       value="8596742302"
                     />
                   </div>
@@ -337,11 +340,11 @@ function SubsidyCounterSigning() {
 
               <Col lg="12">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="cmt">Comment</Form.Label>
+                  <Form.Label htmlFor="cmt">{t("Comment")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       as="textarea"
-                      placeholder="Enter Comment"
+                      placeholder={t("Comment")}
                       id="cmt"
                       rows="3"
                     />
@@ -358,7 +361,7 @@ function SubsidyCounterSigning() {
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Pre Inspection"
+                          label={t("Pre Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -371,7 +374,7 @@ function SubsidyCounterSigning() {
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Post Inspection"
+                          label={t("Post Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -383,17 +386,17 @@ function SubsidyCounterSigning() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal}>
-                      Approve
+                    {t("Approve")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="danger" onClick={handleCloseModal}>
-                      Reject
+                    {t("Reject")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                    {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -405,7 +408,7 @@ function SubsidyCounterSigning() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>View Model</Modal.Title>
+          <Modal.Title>{t("View Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -532,7 +535,7 @@ function SubsidyCounterSigning() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal1}>
-                      Close
+                    {t("Close")}
                     </Button>
                   </div>
                 </div>
@@ -544,7 +547,7 @@ function SubsidyCounterSigning() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Modify Model</Modal.Title>
+          <Modal.Title>{t("Modify Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -661,7 +664,7 @@ function SubsidyCounterSigning() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal2}>
-                      Save
+                    {t("save")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -671,7 +674,7 @@ function SubsidyCounterSigning() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </div>
                 </div>
