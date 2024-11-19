@@ -2516,6 +2516,24 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
+
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="User Hierarchy Mapping"
+                        to="/seriui/user-and-manager-hierarchy-mapping"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Direct And All Reportee Details"
+                        to="/seriui/user-and-manager-hierarchy-mapping-list"
+                      />
+                    </MenuItem>
+                  ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}
