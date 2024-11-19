@@ -461,8 +461,8 @@ function SupplyofCocoonstoGrainage() {
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="lotNumberId"
-                          value={data.lotNumberId}
+                          name="lotNumber"
+                          value={data.lotNumber}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
