@@ -931,6 +931,7 @@ import DistrictwiseSchemeTargetSetting from "../pages/new-target-setting/distric
 import TscwiseSchemeTargetSetting from "../pages/new-target-setting/tsc-wise-scheme-target-setting/TscwiseSchemeTargetSetting";
 import TrainingTarget from "../pages/new-target-setting/training-target/TrainingTarget";
 import PreservationofseedcocoonforprocessingListForNsso from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingForNsso";
+import UserAndManagerHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMappingList";
 
 // Admin and Reports
 
@@ -2753,6 +2754,10 @@ function Router() {
             <Route
               path="user-and-manager-hierarchy-mapping"
               element={<UserAndManagerHierarchyMapping />}
+            /> 
+            <Route
+              path="user-and-manager-hierarchy-mapping-list"
+              element={<UserAndManagerHierarchyMappingList />}
             />
             <Route
               path="sc-sub-scheme-details"
