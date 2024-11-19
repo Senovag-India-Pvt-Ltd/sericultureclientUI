@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button ,Modal} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
@@ -44,6 +44,15 @@ function DistrictwiseSchemeTargetSetting() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  
+  const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
+
+  const [showModal3, setShowModal3] = useState(false);
+
+  const handleShowModal3 = () => setShowModal3(true);
+  const handleCloseModal3 = () => setShowModal3(false);
+
+
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -85,6 +94,42 @@ function DistrictwiseSchemeTargetSetting() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  const [editData, setEditData] = useState({
+    mulberryTargetTypeId: "",
+    financialYearMasterId: "",
+    districtId: "",
+    month: "",
+    targetType: "",
+    value: "",
+    scHeadAccountId:"",
+    scComponentId:"",
+    scSchemeDetailsId:"",
+    scSubSchemeDetailsId:"",
+    scCategoryId:"",
+    stateShare: "",
+    centralShare: "",
+    userMasterId:"",
+    });
+  
+  
+    const handleEdit = (schemeTargetsId) => {
+      setLoading(true);
+      const response = api
+        .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
+        .then((response) => {
+          setEditData(response.data.content);
+          setShowModal3(true);
+          setLoading(false);
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          setEditData({});
+          // editError(message);
+          setLoading(false);
+        });
+    };
+  
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -163,6 +208,12 @@ function DistrictwiseSchemeTargetSetting() {
     }
   }, [data.scSchemeDetailsId]);
 
+  useEffect(() => {
+    if (editData.scSchemeDetailsId) {
+      getSubSchemeList(editData.scSchemeDetailsId);
+    }
+  }, [editData.scSchemeDetailsId]);
+
    // to get component
    const [scComponentListData, setScComponentListData] = useState([]);
 
@@ -209,6 +260,17 @@ function DistrictwiseSchemeTargetSetting() {
        );
      }
    }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+
+
+   useEffect(() => {
+    if (editData.scSchemeDetailsId && editData.scSubSchemeDetailsId) {
+      getComponentList(editData.scSchemeDetailsId, editData.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        editData.scSchemeDetailsId,
+        editData.scSubSchemeDetailsId
+      );
+    }
+  }, [editData.scSchemeDetailsId, editData.scSubSchemeDetailsId]);
  
    console.log(data);
  
@@ -249,6 +311,21 @@ function DistrictwiseSchemeTargetSetting() {
        );
      }
    }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, data.scComponentId]);
+
+
+   useEffect(() => {
+    if (
+      editData.scSchemeDetailsId &&
+      editData.scSubSchemeDetailsId &&
+      editData.scComponentId
+    ) {
+      getHeadAccountList(
+        editData.scSchemeDetailsId,
+        editData.scSubSchemeDetailsId,
+        editData.scComponentId
+      );
+    }
+  }, [editData.scSchemeDetailsId, editData.scSubSchemeDetailsId, editData.scComponentId]);
 
 
 // get Category List
@@ -314,6 +391,23 @@ function DistrictwiseSchemeTargetSetting() {
     setData(updatedData);
   };
 
+  const handleEditInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    // setData({ ...data, [name]: value });
+    let updatedData = { ...editData, [name]: value };
+    if (name === "centralBudget" || name === "stateBudget") {
+      const centralBudget = parseFloat(updatedData.centralBudget);
+      const stateBudget = parseFloat(updatedData.stateBudget);
+      const totalAmount =
+        (isNaN(centralBudget) ? 0 : centralBudget) +
+        (isNaN(stateBudget) ? 0 : stateBudget);
+      updatedData = { ...updatedData, amount: totalAmount.toString() };
+    }
+    setEditData(updatedData);
+  };
+
+
   const handleTypeInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -325,6 +419,71 @@ function DistrictwiseSchemeTargetSetting() {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+  };
+
+  const postEditData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedAllDateEdit(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      console.log("Entered Allocate");
+      api
+        .post(
+          baseURLTargetSetting +
+            `schemeTargets/editDistrictSchemeTargets`,
+          editData  
+        )
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            getList();
+            editClear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+        setValidatedAllDateEdit(true);
+    }
+  };
+
+  const editClear = () => {
+    setEditData({
+      mulberryTargetTypeId: "",
+    financialYearMasterId: "",
+    districtId: "",
+    month: "",
+    targetType: "",
+    value: "",
+    scHeadAccountId:"",
+    scComponentId:"",
+    scSchemeDetailsId:"",
+    scSubSchemeDetailsId:"",
+    scCategoryId:"",
+    stateShare: "",
+    centralShare: "",
+    userMasterId:"",
+    });
+    setType({
+      budgetType: "allocate",
+    });
+    getFinancialDefaultDetails();
+    setValidatedAllDateEdit(false);
   };
 
   // const postData = (e) => {
@@ -347,10 +506,7 @@ function DistrictwiseSchemeTargetSetting() {
     navigate(`/seriui/taluk-view/${_id}`);
   };
 
-  const handleEdit = (_id) => {
-    navigate(`/seriui/taluk-edit/${_id}`);
-    // navigate("/seriui/taluk");
-  };
+  
 
   const customStyles = {
     rows: {
@@ -393,7 +549,7 @@ function DistrictwiseSchemeTargetSetting() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLMasterData + `taluk/delete/${_id}`)
+          .delete(baseURLTargetSetting + `schemeTargets/delete-scheme/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -421,25 +577,25 @@ function DistrictwiseSchemeTargetSetting() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.productionTargetsId)}
+            onClick={() => handleView(row.schemeTargetsId)}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.productionTargetsId)}
+            onClick={() => handleEdit(row.schemeTargetsId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.productionTargetsId)}
+            onClick={() => deleteConfirm(row.schemeTargetsId)}
             className="ms-2"
           >
             Delete
@@ -513,13 +669,7 @@ function DistrictwiseSchemeTargetSetting() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "TSC",
-      selector: (row) => row.tscMasterName,
-      cell: (row) => <span>{row.tscMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Target Type",
       selector: (row) => row.targetType,
@@ -1408,6 +1558,465 @@ function DistrictwiseSchemeTargetSetting() {
           />
         </Row>
       </Block>
+
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>District Wise Target Setting for Subsidies</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedAllDateEdit}
+            onSubmit={postEditData}
+          >
+            <Row className="g-5 px-5">
+            <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Financial Year
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="financialYearMasterId"
+                                value={editData.financialYearMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                isInvalid={
+                                  editData.financialYearMasterId === undefined ||
+                                  editData.financialYearMasterId === "0"
+                                }
+                              >
+                                <option value="">Select Year</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.financialYearMasterId}
+                                    value={list.financialYearMasterId}
+                                  >
+                                    {list.financialYear}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Financial Year is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSchemeDetailsId"
+                                value={editData.scSchemeDetailsId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  editData.scSchemeDetailsId === undefined ||
+                                  editData.scSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme Names</option>
+                                {scSchemeDetailsListData &&
+                                  scSchemeDetailsListData.map((list) => (
+                                    <option
+                                      key={list.scSchemeDetailsId}
+                                      value={list.scSchemeDetailsId}
+                                    >
+                                      {list.schemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Component Type
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSubSchemeDetailsId"
+                                value={editData.scSubSchemeDetailsId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  editData.scSubSchemeDetailsId === undefined ||
+                                  editData.scSubSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Component Type</option>
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component Type is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scComponentId"
+                                value={editData.scComponentId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  editData.scComponentId === undefined ||
+                                  editData.scComponentId === "0"
+                                }
+                              >
+                                <option value="">Select Component</option>
+                                {scComponentListData &&
+                                  scComponentListData.map((list) => (
+                                    <option
+                                      key={list.scComponentId}
+                                      value={list.scComponentId}
+                                    >
+                                      {list.scComponentName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Sub Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scCategoryId"
+                                value={editData.scCategoryId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  editData.scCategoryId === undefined ||
+                                  editData.scCategoryId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Component</option>
+                                {scCategoryListData &&
+                                  scCategoryListData.map((list) => (
+                                    <option
+                                      key={list.scCategoryId}
+                                      value={list.scCategoryId}
+                                    >
+                                      {list.codeNumber}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Head of Account
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scHeadAccountId"
+                                value={editData.scHeadAccountId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  editData.scHeadAccountId === undefined ||
+                                  editData.scHeadAccountId === "0"
+                                }
+                              >
+                                <option value="">Select Head of Account</option>
+                                {scHeadAccountListData &&
+                                  scHeadAccountListData.map((list) => (
+                                    <option
+                                      key={list.headOfAccountId}
+                                      value={list.headOfAccountId}
+                                    >
+                                      {list.scHeadAccountName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Head of Account is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="centralShare">
+                              Central Budget Amount (in Lakhs)
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="centralShare"
+                                name="centralShare"
+                                value={editData.centralShare}
+                                onChange={handleEditInputs}
+                                type="text"
+                                placeholder="Enter Central Budget Amount"
+                                // required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Central Budget Amount is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="stateShare">
+                              State Budget Amount (in Lakhs)
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="stateShare"
+                                name="stateShare"
+                                value={editData.stateShare}
+                                onChange={handleEditInputs}
+                                type="text"
+                                placeholder="Enter State Budget Amount"
+                                // required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                State Budget Amount is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              District<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="districtId"
+                                value={editData.districtId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                // isInvalid={
+                                //   editData.districtId === undefined ||
+                                //   editData.districtId === "0"
+                                // }
+                              >
+                                <option value="">Select District</option>
+                                {districtListData.map((list) => (
+                                  <option
+                                    key={list.districtId}
+                                    value={list.districtId}
+                                  >
+                                    {list.districtName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                District is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Target Type<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="targetType"
+                                value={editData.targetType}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                // isInvalid={
+                                //   editData.targetType === undefined ||
+                                //   editData.targetType === "0"
+                                // }
+                              >
+                                <option value="">Select Target Type</option>
+                                <option value="Physical Target">Physical Target</option>
+                                <option value="Financial Target">Financial Target</option>
+                                {/* {districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))} */}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Target Type is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Month<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="month"
+                                value={editData.month}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                // isInvalid={
+                                //   editData.month === undefined ||
+                                //   editData.month === "0"
+                                // }
+                              >
+                                <option value="">Select Month</option>
+                                <option value="JANUARY">January</option>
+                                <option value="FEBRUARY">February</option>
+                                <option value="MARCH">March</option>
+                                <option value="APRIL">April</option>
+                                <option value="MAY">May</option>
+                                <option value="JUNE">June</option>
+                                <option value="JULY">July</option>
+                                <option value="AUGUST">August</option>
+                                <option value="SEPTEMBER">September</option>
+                                <option value="OCTOBER">October</option>
+                                <option value="NOVEMBER">November</option>
+                                <option value="DECEMBER">December</option>
+
+                                {/* {districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))} */}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Month is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                         <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              User<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="userMasterId"
+                                value={editData.userMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                isInvalid={
+                                  editData.userMasterId === undefined ||
+                                  editData.userMasterId === "0"
+                                }
+                              >
+                                <option value="">Select User</option>
+                                {userListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              Target No.
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={editData.value}
+                                onChange={handleEditInputs}
+                                type="text"
+                                placeholder="Enter Target No."
+                                // required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Target No. is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="success">
+                      Update
+                    </Button>
+                  </div>
+                 
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
