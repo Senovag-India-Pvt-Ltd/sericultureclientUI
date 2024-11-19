@@ -1193,7 +1193,7 @@ function TscwiseProdPhysicalTargetSetting() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>District Wise Production Physical Target Setting{" "}</Modal.Title>
+          <Modal.Title>TSC Wise Production Physical Target Setting{" "}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
