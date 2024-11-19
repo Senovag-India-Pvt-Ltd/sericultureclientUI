@@ -100,9 +100,9 @@ function SiSdMulberryTarget() {
   const handleEdit = (mulberryTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `mulberryTargets/get-sisd/${mulberryTargetsId}`)
+      .get(baseURLTargetSetting + `mulberryTargets/get-by-id?id=${mulberryTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.mulberryTargets);
         setShowModal3(true);
         setLoading(false);
       })
@@ -115,19 +115,10 @@ function SiSdMulberryTarget() {
   };
 
   const handleEditInputs = (e) => {
+    // debugger;
     name = e.target.name;
     value = e.target.value;
-    // setData({ ...data, [name]: value });
-    let updatedData = { ...editData, [name]: value };
-    if (name === "centralBudget" || name === "stateBudget") {
-      const centralBudget = parseFloat(updatedData.centralBudget);
-      const stateBudget = parseFloat(updatedData.stateBudget);
-      const totalAmount =
-        (isNaN(centralBudget) ? 0 : centralBudget) +
-        (isNaN(stateBudget) ? 0 : stateBudget);
-      updatedData = { ...updatedData, amount: totalAmount.toString() };
-    }
-    setEditData(updatedData);
+    setEditData({ ...editData, [name]: value });
   };
 
   // to get District
@@ -324,7 +315,7 @@ function SiSdMulberryTarget() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLTargetSetting + `mulberryTargets/delete-sisd/${_id}`)
+          .delete(baseURLTargetSetting + `mulberryTargets/delete-mulberry-targets/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getFinancialList();
@@ -733,7 +724,7 @@ function SiSdMulberryTarget() {
                                   data.mulberryTargetTypeId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">Select Target</option>
                                 {mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
@@ -1164,7 +1155,7 @@ function SiSdMulberryTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>TSC Wise Monthly Mulberry</Modal.Title>
+          <Modal.Title>SI SD Wise Monthly Mulberry</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1183,13 +1174,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="financialYearMasterId"
-                                value={data.financialYearMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.financialYearMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
-                                  data.financialYearMasterId === undefined ||
-                                  data.financialYearMasterId === "0"
+                                  editData.financialYearMasterId === undefined ||
+                                  editData.financialYearMasterId === "0"
                                 }
                               >
                                 <option value="">Select Year</option>
@@ -1218,16 +1209,16 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="mulberryTargetTypeId"
-                                value={data.mulberryTargetTypeId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.mulberryTargetTypeId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
+                                  editData.mulberryTargetTypeId === undefined ||
+                                  editData.mulberryTargetTypeId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">Select Target</option>
                                 {mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
@@ -1253,13 +1244,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="districtId"
-                                value={data.districtId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.districtId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
-                                  data.districtId === undefined ||
-                                  data.districtId === "0"
+                                  editData.districtId === undefined ||
+                                  editData.districtId === "0"
                                 }
                               >
                                 <option value="">Select District</option>
@@ -1287,13 +1278,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="tscMasterId"
-                                value={data.tscMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.tscMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
-                                  data.tscMasterId === undefined ||
-                                  data.tscMasterId === "0"
+                                  editData.tscMasterId === undefined ||
+                                  editData.tscMasterId === "0"
                                 }
                               >
                                 <option value="">Select TSC</option>
@@ -1321,13 +1312,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="userMasterId"
-                                value={data.userMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.userMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
-                                  data.userMasterId === undefined ||
-                                  data.userMasterId === "0"
+                                  editData.userMasterId === undefined ||
+                                  editData.userMasterId === "0"
                                 }
                               >
                                 <option value="">Select TSC</option>
@@ -1355,13 +1346,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="targetType"
-                                value={data.targetType}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.targetType}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 // isInvalid={
-                                //   data.targetType === undefined ||
-                                //   data.targetType === "0"
+                                //   editData.targetType === undefined ||
+                                //   editData.targetType === "0"
                                 // }
                               >
                                 <option value="">Select Target Type</option>
@@ -1388,13 +1379,13 @@ function SiSdMulberryTarget() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="month"
-                                value={data.month}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.month}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
+                                //   editData.month === undefined ||
+                                //   editData.month === "0"
                                 // }
                               >
                                 <option value="">Select Month</option>
@@ -1434,8 +1425,8 @@ function SiSdMulberryTarget() {
                               <Form.Control
                                 id="value"
                                 name="value"
-                                value={data.value}
-                                onChange={handleInputs}
+                                value={editData.value}
+                                onChange={handleEditInputs}
                                 type="text"
                                 placeholder="Enter Target No."
                                 // required

@@ -98,9 +98,9 @@ function DistrictWiseMontlyMulberry() {
   const handleEdit = (mulberryTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `mulberryTargets/get-mulberry/${mulberryTargetsId}`)
+      .get(baseURLTargetSetting + `mulberryTargets/get-by-id?id=${mulberryTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.mulberryTargets);
         setShowModal3(true);
         setLoading(false);
       })
@@ -162,7 +162,7 @@ function DistrictWiseMontlyMulberry() {
         setUserListData([]);
       });
   };
-
+  
   useEffect(() => {
     getUserList();
   }, []);
@@ -214,22 +214,13 @@ function DistrictWiseMontlyMulberry() {
     setData(updatedData);
   };
 
+
   const handleEditInputs = (e) => {
+    // debugger;
     name = e.target.name;
     value = e.target.value;
-    // setData({ ...data, [name]: value });
-    let updatedData = { ...editData, [name]: value };
-    if (name === "centralBudget" || name === "stateBudget") {
-      const centralBudget = parseFloat(updatedData.centralBudget);
-      const stateBudget = parseFloat(updatedData.stateBudget);
-      const totalAmount =
-        (isNaN(centralBudget) ? 0 : centralBudget) +
-        (isNaN(stateBudget) ? 0 : stateBudget);
-      updatedData = { ...updatedData, amount: totalAmount.toString() };
-    }
-    setEditData(updatedData);
+    setEditData({ ...editData, [name]: value });
   };
-
   const handleTypeInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -1299,13 +1290,13 @@ function DistrictWiseMontlyMulberry() {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="userMasterId"
-                                value={data.userMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
+                                value={editData.userMasterId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
                                 required
                                 isInvalid={
                                   editData.userMasterId === undefined ||
-                                  data.userMasterId === "0"
+                                  editData.userMasterId === "0"
                                 }
                               >
                                 <option value="">Select User</option>
