@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button,Modal } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
@@ -14,13 +14,13 @@ import api from "../../../services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function SiSdMulberryTarget() {
+function SiSdMulberryDateTarget() {
   const [data, setData] = useState({
-   mulberryTargetTypeId: "",
+    mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
     tscMasterId: "",
-    month: "",
+    targetDate: "",
     targetType: "",
     value: "",
     userMasterId: "",
@@ -44,7 +44,6 @@ function SiSdMulberryTarget() {
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
 
-
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -67,10 +66,7 @@ function SiSdMulberryTarget() {
   const getList = () => {
     setLoading(true);
     api
-      .get(
-        baseURLTargetSetting + `mulberryTargets/list-sisd-join`,
-        _params
-      )
+      .get(baseURLTargetSetting + `mulberryTargets/list-sisd-day-join`, _params)
       .then((response) => {
         setListData(response.data.content.body.content.mulberryTargets);
         setTotalRows(response.data.content.body.content.totalItems);
@@ -91,7 +87,7 @@ function SiSdMulberryTarget() {
     financialYearMasterId: "",
     districtId: "",
     tscMasterId: "",
-    month: "",
+    date: "",
     targetType: "",
     value: "",
     userMasterId: "",
@@ -100,9 +96,11 @@ function SiSdMulberryTarget() {
   const handleEdit = (mulberryTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `mulberryTargets/get-by-id?id=${mulberryTargetsId}`)
+      .get(
+        baseURLTargetSetting + `mulberryTargets/get-sisd/${mulberryTargetsId}`
+      )
       .then((response) => {
-        setEditData(response.data.content.body.content.mulberryTargets);
+        setEditData(response.data.content);
         setShowModal3(true);
         setLoading(false);
       })
@@ -115,10 +113,19 @@ function SiSdMulberryTarget() {
   };
 
   const handleEditInputs = (e) => {
-    // debugger;
     name = e.target.name;
     value = e.target.value;
-    setEditData({ ...editData, [name]: value });
+    // setData({ ...data, [name]: value });
+    let updatedData = { ...editData, [name]: value };
+    if (name === "centralBudget" || name === "stateBudget") {
+      const centralBudget = parseFloat(updatedData.centralBudget);
+      const stateBudget = parseFloat(updatedData.stateBudget);
+      const totalAmount =
+        (isNaN(centralBudget) ? 0 : centralBudget) +
+        (isNaN(stateBudget) ? 0 : stateBudget);
+      updatedData = { ...updatedData, amount: totalAmount.toString() };
+    }
+    setEditData(updatedData);
   };
 
   // to get District
@@ -175,82 +182,84 @@ function SiSdMulberryTarget() {
     getChawkiList();
   }, []);
 
-//   To get TSC by District
-    const [tscListData, setTscListData] = useState([]);
+  //   To get TSC by District
+  const [tscListData, setTscListData] = useState([]);
 
-    const getTscListByDistrict = (distId) => {
-        api
-          .post(baseURLMasterData + `tscMaster/get-by-districtId`,{districtId:distId })
-          .then((response) => {
-            setTscListData(response.data.content.tscMaster);
-          })
-          .catch((err) => {
-            setTscListData([]);
-          });
-      };
-    
-      useEffect(() => {
-        if(data.districtId){
-        getTscListByDistrict(data.districtId);
-        }
-      }, [data.districtId]);
+  const getTscListByDistrict = (distId) => {
+    api
+      .post(baseURLMasterData + `tscMaster/get-by-districtId`, {
+        districtId: distId,
+      })
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
 
-      useEffect(() => {
-        if(editData.districtId){
-        getTscListByDistrict(editData.districtId);
-        }
-      }, [editData.districtId]);
+  useEffect(() => {
+    if (data.districtId) {
+      getTscListByDistrict(data.districtId);
+    }
+  }, [data.districtId]);
 
-//   To get user by TSC
-    const [userListData, setUserListData] = useState([]);
-    const getUserListByTsc = (tscId) => {
-        console.log("tsc",tscId);
-        api
-          .get(baseURLMasterData + `userMaster/get-by-tsc-master-id/${tscId}` )
-          .then((response) => {
-            setUserListData(response.data.content.userMaster);
-          })
-          .catch((err) => {
-            setUserListData([]);
-          });
-      };
-    
-      useEffect(() => {
-        if(data.tscMasterId){
-            getUserListByTsc(data.tscMasterId);
-        }
-      }, [data.tscMasterId]);
+  useEffect(() => {
+    if (editData.districtId) {
+      getTscListByDistrict(editData.districtId);
+    }
+  }, [editData.districtId]);
 
-      useEffect(() => {
-        if(editData.tscMasterId){
-            getUserListByTsc(editData.tscMasterId);
-        }
-      }, [editData.tscMasterId]);
+  //   To get user by TSC
+  const [userListData, setUserListData] = useState([]);
+  const getUserListByTsc = (tscId) => {
+    console.log("tsc", tscId);
+    api
+      .get(baseURLMasterData + `userMaster/get-by-tsc-master-id/${tscId}`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
 
-      const customStyles = {
-        rows: {
-          style: {
-            minHeight: "45px", // override the row height
-          },
-        },
-        headCells: {
-          style: {
-            backgroundColor: "#1e67a8",
-            color: "#fff",
-            fontSize: "14px",
-            paddingLeft: "8px", // override the cell padding for head cells
-            paddingRight: "8px",
-          },
-        },
-        cells: {
-          style: {
-            paddingLeft: "8px", // override the cell padding for data cells
-            paddingRight: "8px",
-          },
-        },
-      };
+  useEffect(() => {
+    if (data.tscMasterId) {
+      getUserListByTsc(data.tscMasterId);
+    }
+  }, [data.tscMasterId]);
 
-      const navigate = useNavigate();
+  useEffect(() => {
+    if (editData.tscMasterId) {
+      getUserListByTsc(editData.tscMasterId);
+    }
+  }, [editData.tscMasterId]);
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const navigate = useNavigate();
 
   const handleView = (_id) => {
     navigate(`/seriui/taluk-view/${_id}`);
@@ -267,9 +276,8 @@ function SiSdMulberryTarget() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting +
-            `mulberryTargets/editSiSdMulberryTargets`,
-          editData  
+          baseURLTargetSetting + `mulberryTargets/editSiSdMulberryTargets`,
+          editData
         )
         .then((response) => {
           if (response.data.content.error) {
@@ -292,10 +300,9 @@ function SiSdMulberryTarget() {
             }
           }
         });
-        setValidatedAllDateEdit(true);
+      setValidatedAllDateEdit(true);
     }
   };
-  
 
   const deleteError = () => {
     Swal.fire({
@@ -315,7 +322,7 @@ function SiSdMulberryTarget() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLTargetSetting + `mulberryTargets/delete-mulberry-targets/${_id}`)
+          .delete(baseURLTargetSetting + `mulberryTargets/delete-sisd/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getFinancialList();
@@ -338,14 +345,14 @@ function SiSdMulberryTarget() {
 
   const editClear = () => {
     setEditData({
-    mulberryTargetTypeId: "",
-    financialYearMasterId: "",
-    districtId: "",
-    tscMasterId: "",
-    month: "",
-    targetType: "",
-    value: "",
-    userMasterId: "",
+      mulberryTargetTypeId: "",
+      financialYearMasterId: "",
+      districtId: "",
+      tscMasterId: "",
+      date: "",
+      targetType: "",
+      value: "",
+      userMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -354,107 +361,109 @@ function SiSdMulberryTarget() {
     setValidatedAllDateEdit(false);
   };
 
-
-      const ProductionPhysicalDataColumns = [
-        {
-          name: "Action",
-          cell: (row) => (
-            //   Button style
-            <div className="text-start w-100">
-              {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-              {/* <Button
+  const ProductionPhysicalDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          {/* <Button
                 variant="primary"
                 size="sm"
                 onClick={() => handleView(row.productionTargetsId)}
               >
                 View
               </Button> */}
-              <Button
-                variant="primary"
-                size="sm"
-                className="ms-2"
-                onClick={() => handleEdit(row.mulberryTargetsId)}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => deleteConfirm(row.mulberryTargetsId)}
-                className="ms-2"
-              >
-                Delete
-              </Button>
-            </div>
-          ),
-          sortable: false,
-          hide: "md",
-        },
-        {
-          name: "Financial Year",
-          selector: (row) => row.financialYearMaster,
-          cell: (row) => <span>{row.financialYearMaster}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: "Mulberry Target Type",
-          selector: (row) => row.mulberryTargetTypeName,
-          cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: "District",
-          selector: (row) => row.districtName,
-          cell: (row) => <span>{row.districtName}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: "TSC",
-          selector: (row) => row.tscMasterName,
-          cell: (row) => <span>{row.tscMasterName}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: "Target Type",
-          selector: (row) => row.targetType,
-          cell: (row) => <span>{row.targetType}</span>,
-          sortable: true,
-          hide: "md",
-        },
-    
-        {
-          name: "Month",
-          selector: (row) => row.month,
-          cell: (row) => <span>{row.month}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: " User Name",
-          selector: (row) => row.userMasterName,
-          cell: (row) => <span>{row.userMasterName}</span>,
-          sortable: true,
-          hide: "md",
-        },
-        {
-          name: "Target No.",
-          selector: (row) => row.value,
-          cell: (row) => <span>{row.value}</span>,
-          sortable: true,
-          hide: "md",
-        },
-      ];
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.mulberryTargetsId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.mulberryTargetsId)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mulberry Target Type",
+      selector: (row) => row.mulberryTargetTypeName,
+      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "TSC",
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target Type",
+      selector: (row) => row.targetType,
+      cell: (row) => <span>{row.targetType}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
+    {
+      name: "date",
+      selector: (row) => row.date,
+      cell: (row) => <span>{row.date}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " User Name",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target No.",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
 
+const handleDateChange = (date, type) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setData({ ...data, [type]: formattedDate });
+};
 
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
+console.log("date",data.targetDate);
 
   const [validated, setValidated] = useState(false);
 
@@ -513,7 +522,7 @@ function SiSdMulberryTarget() {
       // event.stopPropagation();
       api
         .post(
-          baseURLTargetSetting + `mulberryTargets/saveSISDMulberryTargets`,
+          baseURLTargetSetting + `mulberryTargets/saveSISDDayMulberryTargets`,
           data
         )
         .then((response) => {
@@ -591,14 +600,14 @@ function SiSdMulberryTarget() {
 
   const clear = () => {
     setData({
-        mulberryTargetTypeId: "",
-        financialYearMasterId: "",
-        districtId: "",
-        tscMasterId: "",
-        month: "",
-        targetType: "",
-        value: "",
-        userMasterId: "",
+      mulberryTargetTypeId: "",
+      financialYearMasterId: "",
+      districtId: "",
+      tscMasterId: "",
+      date: "",
+      targetType: "",
+      value: "",
+      userMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -724,7 +733,7 @@ function SiSdMulberryTarget() {
                                   data.mulberryTargetTypeId === "0"
                                 }
                               >
-                                <option value="">Select Target</option>
+                                <option value="">Select Year</option>
                                 {mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
@@ -961,7 +970,7 @@ function SiSdMulberryTarget() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Month<span className="text-danger">*</span>
@@ -973,10 +982,6 @@ function SiSdMulberryTarget() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
-                                // }
                               >
                                 <option value="">Select Month</option>
                                 <option value="JANUARY">January</option>
@@ -991,20 +996,14 @@ function SiSdMulberryTarget() {
                                 <option value="OCTOBER">October</option>
                                 <option value="NOVEMBER">November</option>
                                 <option value="DECEMBER">December</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Month is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
-
+                        </Col> */}
+                        
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
@@ -1026,6 +1025,25 @@ function SiSdMulberryTarget() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                        <Form.Label>Target Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.targetDate ? new Date(data.targetDate) : null}
+                            onChange={(date) => handleDateChange(date, "targetDate")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            maxDate={new Date()}
+                          />
+                        </div>
+                      </Form.Group>
                         </Col>
 
                         {/* <Col lg="6">
@@ -1155,7 +1173,7 @@ function SiSdMulberryTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>SI SD Wise Monthly Mulberry</Modal.Title>
+          <Modal.Title>TSC Wise Monthly Mulberry</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1165,278 +1183,263 @@ function SiSdMulberryTarget() {
             onSubmit={postEditData}
           >
             <Row className="g-5 px-5">
-            <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Financial Year
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="financialYearMasterId"
-                                value={editData.financialYearMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.financialYearMasterId === undefined ||
-                                  editData.financialYearMasterId === "0"
-                                }
-                              >
-                                <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Financial Year is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label>
+                    Financial Year
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={data.financialYearMasterId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.financialYearMasterId === undefined ||
+                        data.financialYearMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Year</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Financial Year is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="mulberryTargetTypeId"
-                                value={editData.mulberryTargetTypeId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.mulberryTargetTypeId === undefined ||
-                                  editData.mulberryTargetTypeId === "0"
-                                }
-                              >
-                                <option value="">Select Target</option>
-                                {mulberryTargetTypeData.map((list) => (
-                                  <option
-                                    key={list.mulberryTargetTypeId}
-                                    value={list.mulberryTargetTypeId}
-                                  >
-                                    {list.mulberryTargetTypeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label>
+                    Target
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="mulberryTargetTypeId"
+                      value={data.mulberryTargetTypeId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.mulberryTargetTypeId === undefined ||
+                        data.mulberryTargetTypeId === "0"
+                      }
+                    >
+                      <option value="">Select Year</option>
+                      {mulberryTargetTypeData.map((list) => (
+                        <option
+                          key={list.mulberryTargetTypeId}
+                          value={list.mulberryTargetTypeId}
+                        >
+                          {list.mulberryTargetTypeName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Target is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    District<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="districtId"
+                      value={data.districtId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.districtId === undefined || data.districtId === "0"
+                      }
+                    >
+                      <option value="">Select District</option>
+                      {districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      District is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              District<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="districtId"
-                                value={editData.districtId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.districtId === undefined ||
-                                  editData.districtId === "0"
-                                }
-                              >
-                                <option value="">Select District</option>
-                                {districtListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={list.districtId}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                District is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    TSC<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="tscMasterId"
+                      value={data.tscMasterId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.tscMasterId === undefined ||
+                        data.tscMasterId === "0"
+                      }
+                    >
+                      <option value="">Select TSC</option>
+                      {tscListData.map((list) => (
+                        <option key={list.tscMasterId} value={list.tscMasterId}>
+                          {list.name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      TSC is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              TSC<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="tscMasterId"
-                                value={editData.tscMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.tscMasterId === undefined ||
-                                  editData.tscMasterId === "0"
-                                }
-                              >
-                                <option value="">Select TSC</option>
-                                {tscListData.map((list) => (
-                                  <option
-                                    key={list.tscMasterId}
-                                    value={list.tscMasterId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                TSC is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="userMasterId"
+                      value={data.userMasterId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.userMasterId === undefined ||
+                        data.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select TSC</option>
+                      {userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              User<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="userMasterId"
-                                value={editData.userMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.userMasterId === undefined ||
-                                  editData.userMasterId === "0"
-                                }
-                              >
-                                <option value="">Select TSC</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                User is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Target Type<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="targetType"
-                                value={editData.targetType}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                // isInvalid={
-                                //   editData.targetType === undefined ||
-                                //   editData.targetType === "0"
-                                // }
-                              >
-                                <option value="">Select Target Type</option>
-                                <option value="NAREGA">NAREGA</option>
-                                <option value="NON NERAGA">NON NERAGA</option>
-                                {/* {districtListData.map((list) => (
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    Target Type<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="targetType"
+                      value={data.targetType}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      // isInvalid={
+                      //   data.targetType === undefined ||
+                      //   data.targetType === "0"
+                      // }
+                    >
+                      <option value="">Select Target Type</option>
+                      <option value="NAREGA">NAREGA</option>
+                      <option value="NON NERAGA">NON NERAGA</option>
+                      {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
                           </option>
                         ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target Type is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Target Type is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Month<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="month"
-                                value={editData.month}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                // isInvalid={
-                                //   editData.month === undefined ||
-                                //   editData.month === "0"
-                                // }
-                              >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    Month<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="month"
+                      value={data.month}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                    >
+                      <option value="">Select Month</option>
+                      <option value="JANUARY">January</option>
+                      <option value="FEBRUARY">February</option>
+                      <option value="MARCH">March</option>
+                      <option value="APRIL">April</option>
+                      <option value="MAY">May</option>
+                      <option value="JUNE">June</option>
+                      <option value="JULY">July</option>
+                      <option value="AUGUST">August</option>
+                      <option value="SEPTEMBER">September</option>
+                      <option value="OCTOBER">October</option>
+                      <option value="NOVEMBER">November</option>
+                      <option value="DECEMBER">December</option>
 
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Month is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Month is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="value">
-                              Target No.
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="value"
-                                name="value"
-                                value={editData.value}
-                                onChange={handleEditInputs}
-                                type="text"
-                                placeholder="Enter Target No."
-                                // required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Target No. is required.
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="value">
+                    Target No.
+                    {/* <span className="text-danger">*</span> */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="value"
+                      name="value"
+                      value={data.value}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder="Enter Target No."
+                      // required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Target No. is required.
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
@@ -1446,7 +1449,6 @@ function SiSdMulberryTarget() {
                       Update
                     </Button>
                   </div>
-                 
                 </div>
               </Col>
             </Row>
@@ -1457,4 +1459,4 @@ function SiSdMulberryTarget() {
   );
 }
 
-export default SiSdMulberryTarget;
+export default SiSdMulberryDateTarget;

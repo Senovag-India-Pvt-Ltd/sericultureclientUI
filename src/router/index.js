@@ -932,6 +932,8 @@ import TscwiseSchemeTargetSetting from "../pages/new-target-setting/tsc-wise-sch
 import TrainingTarget from "../pages/new-target-setting/training-target/TrainingTarget";
 import PreservationofseedcocoonforprocessingListForNsso from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingForNsso";
 import UserAndManagerHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMappingList";
+import SiSdMulberryDateTarget from "../pages/new-target-setting/si-sd-mulberry-target/SiSdMulberryDateTarget";
+import SiSdWiseProdDayPhyTargetSetting from "../pages/new-target-setting/si-di-production/SiSdWiseProdDayPhyTargetSetting";
 
 // Admin and Reports
 
@@ -1492,7 +1494,7 @@ function Router() {
               element={<Preservationofseedcocoonforprocessing />}
             />
 
-          <Route
+            <Route
               path="Preservation-of-seed-cocoon-for-processing-for-nsso"
               element={<PreservationofseedcocoonforprocessingListForNsso />}
             />
@@ -2754,7 +2756,7 @@ function Router() {
             <Route
               path="user-and-manager-hierarchy-mapping"
               element={<UserAndManagerHierarchyMapping />}
-            /> 
+            />
             <Route
               path="user-and-manager-hierarchy-mapping-list"
               element={<UserAndManagerHierarchyMappingList />}
@@ -3413,6 +3415,11 @@ function Router() {
             />
 
             <Route
+              path="si-sd-mulberry-day-target-new"
+              element={<SiSdMulberryDateTarget />}
+            />
+
+            <Route
               path="districtwise-product-physical-target-setting"
               element={<DistrictwiseProductionPhysicalTargetSetting />}
             />
@@ -3425,6 +3432,11 @@ function Router() {
             <Route
               path="si-sd-wise-product-physical-target-setting"
               element={<SiSdWiseProdPhyTargetSetting />}
+            />
+
+            <Route
+              path="si-sd-wise-product-physical-day-target-setting"
+              element={<SiSdWiseProdDayPhyTargetSetting />}
             />
 
             <Route
