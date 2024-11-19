@@ -2402,6 +2402,123 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
+
+      {showMenu.TargetSetting_Allocate ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="New Target Setting"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.TargetSetting_Allocate_Budget ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Montly Mulberry Target"
+                        to="/seriui/districtwise-montly-mulberry-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to HOA"
+                        to="/seriui/budget-hoa"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to District"
+                        to="/seriui/budget-district"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Montly Mulberry Target"
+                        to="/seriui/tsc-mulberry-targets-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="SI SD Montly Mulberry Target"
+                        to="/seriui/si-sd-mulberry-target-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Product Physical Target Setting"
+                        to="/seriui/districtwise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Wise Product Physical Target Setting"
+                        to="/seriui/tscwise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="SI SD Wise Product Physical Target Setting"
+                        to="/seriui/si-sd-wise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Farm Wise Target Setting"
+                        to="/seriui/farm-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Grainage Wise Target Setting"
+                        to="/seriui/grainage-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Training Wise Target Setting"
+                        to="/seriui/training-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Scheme Target Setting"
+                        to="/seriui/district-wise-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Wise Scheme Target Setting"
+                        to="/seriui/tsc-wise-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}

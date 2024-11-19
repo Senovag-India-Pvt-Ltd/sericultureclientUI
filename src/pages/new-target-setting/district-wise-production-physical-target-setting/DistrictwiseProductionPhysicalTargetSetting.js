@@ -23,6 +23,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     targetType: "",
     value: "",
     raceMasterId: "",
+    userMasterId: "",
   });
 
   const [type, setType] = useState({
@@ -59,10 +60,15 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     },
   };
 
+  // get List
+
   const getList = () => {
     setLoading(true);
-     api
-      .get(baseURLTargetSetting + `productionTargets/list-production-join`, _params)
+    api
+      .get(
+        baseURLTargetSetting + `productionTargets/list-production-join`,
+        _params
+      )
       .then((response) => {
         setListData(response.data.content.body.content.productionTarget);
         setTotalRows(response.data.content.body.content.totalItems);
@@ -148,6 +154,24 @@ function DistrictwiseProductionPhysicalTargetSetting() {
 
   useEffect(() => {
     getRaceList();
+  }, []);
+
+  // to get User
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = () => {
+    api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getUserList();
   }, []);
 
   const handleDateChange = (date, type) => {
@@ -240,6 +264,13 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       hide: "md",
     },
     {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Mulberry Target Type",
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
@@ -247,38 +278,38 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       hide: "md",
     },
     {
-      name: "TSC",
-      selector: (row) => row.tscMasterName,
-      cell: (row) => <span>{row.tscMasterName}</span>,
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
+      name: "Race",
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "Taluk Name in Kannada",
-      selector: (row) => row.talukNameInKannada,
-      cell: (row) => <span>{row.talukNameInKannada}</span>,
+      name: "Month",
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lg Taluk",
-      selector: (row) => row.lgTaluk,
-      cell: (row) => <span>{row.lgTaluk}</span>,
+      name: " User Name",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Taluk",
-      selector: (row) => row.talukCode,
-      cell: (row) => <span>{row.talukCode}</span>,
+      name: "Target No.",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
     },
@@ -342,7 +373,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `productionTargets/saveDistrictProductionTargets`,
+          baseURLTargetSetting +
+            `productionTargets/saveDistrictProductionTargets`,
           data
         )
         .then((response) => {
@@ -350,6 +382,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
+            getList();
             clear();
           }
         })
@@ -419,13 +452,14 @@ function DistrictwiseProductionPhysicalTargetSetting() {
 
   const clear = () => {
     setData({
-        mulberryTargetTypeId: "",
-        financialYearMasterId: "",
-        districtId: "",
-        month: "",
-        targetType: "",
-        value: "",
-        raceMasterId: "",
+      mulberryTargetTypeId: "",
+      financialYearMasterId: "",
+      districtId: "",
+      month: "",
+      targetType: "",
+      value: "",
+      raceMasterId: "",
+      userMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -795,6 +829,40 @@ function DistrictwiseProductionPhysicalTargetSetting() {
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              User<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="userMasterId"
+                                value={data.userMasterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.userMasterId === undefined ||
+                                  data.userMasterId === "0"
+                                }
+                              >
+                                <option value="">Select User</option>
+                                {userListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               Target No.
                               {/* <span className="text-danger">*</span> */}
@@ -922,7 +990,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
         </Row>
 
         <Row className="mt-2">
-        <DataTable
+          <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
             data={listData}
