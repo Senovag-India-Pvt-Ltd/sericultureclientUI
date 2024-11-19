@@ -45,7 +45,7 @@ function SupplyofCocoonstoGrainage() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if(name=== "lotNumberId"){
+    if(name=== "lotNumber"){
       getRearingList(value);
     }
   };
@@ -534,15 +534,15 @@ function SupplyofCocoonstoGrainage() {
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="lotNumberId"
-                          value={data.lotNumberId}
+                          name="lotNumber"
+                          value={data.lotNumber}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                         >
                           <option value="">Select Lot Number</option>
                           {lotNumberListData.map((list) => (
-                            <option key={list.id} value={list.id}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))}

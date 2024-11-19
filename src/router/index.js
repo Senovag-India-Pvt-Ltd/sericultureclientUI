@@ -899,7 +899,6 @@ import DistrictWiseMonthlyReportSilkType from "../pages/reports-admin/DistrictWi
 import DashboardReportSilkType from "../pages/reports-admin/market-auction/DashboardReportSilkType";
 import UnitCounterReportSilkType from "../pages/reports-admin/market-auction/UnitCounterReportSilkType";
 
-
 import SupplyOfDisinfectantsToFarmers from "../pages/chawki-management/SupplyOfDisinfectantsToFarmer";
 import SupplyOfDisinfectantsList from "../pages/chawki-management/SupplyOfDisinfectantsList";
 import SupplyOfDisinfectantsToFarmerEdit from "../pages/chawki-management/SupplyOfDisinfectantsToFarmerEdit";
@@ -915,6 +914,25 @@ import FarmerBankAccountReasonView from "../pages/masters/farmerBankAccountReaso
 import DistrictWiseMulberryPage from "../pages/target-settings/DistrictWiseMulberryPage";
 import TscMulberryTargets from "../pages/target-settings/TscMulberryTargets";
 import ServiceApplicationRejectionList from "../pages/direct-benefit-transfer/ServiceApplicationRejectionList";
+import DistrictWiseMontlyMulberry from "../pages/new-target-setting/districtwise-monthly-mulberry/DistrictWiseMontlyMulberry";
+import NewTscMulberryTarget from "../pages/new-target-setting/new-tsc-mulberry-target/NewTscMulberryTarget";
+import MulberryTargetType from "../pages/masters/mulberry-target-type/MulberryTargetType";
+import MulberryTargetTypeList from "../pages/masters/mulberry-target-type/MulberryTargetTypeList";
+import MulberryTargetTypeView from "../pages/masters/mulberry-target-type/MulberryTargetTypeView";
+import MulberryTargetTypeEdit from "../pages/masters/mulberry-target-type/MulberryTargetTypeEdit";
+import UserAndManagerHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMapping";
+import SiSdMulberryTarget from "../pages/new-target-setting/si-sd-mulberry-target/SiSdMulberryTarget";
+import DistrictwiseProductionPhysicalTargetSetting from "../pages/new-target-setting/district-wise-production-physical-target-setting/DistrictwiseProductionPhysicalTargetSetting";
+import TscwiseProdPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TscwiseProdPhysicalTargetSetting";
+import SiSdWiseProdPhyTargetSetting from "../pages/new-target-setting/si-di-production/SiSdWiseProdPhyTargetSetting";
+import FarmwiseTarget from "../pages/new-target-setting/farm-wise-target/FarmwiseTarget";
+import GrainagewiseTarget from "../pages/new-target-setting/grainage-wise-target/GrainagewiseTarget";
+import DistrictwiseSchemeTargetSetting from "../pages/new-target-setting/district-wise-scheme-target-setting/DistrictwiseSchemeTargetSetting";
+import TscwiseSchemeTargetSetting from "../pages/new-target-setting/tsc-wise-scheme-target-setting/TscwiseSchemeTargetSetting";
+import TrainingTarget from "../pages/new-target-setting/training-target/TrainingTarget";
+import PreservationofseedcocoonforprocessingListForNsso from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingForNsso";
+import UserAndManagerHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMappingList";
+
 // Admin and Reports
 
 function Router() {
@@ -1362,19 +1380,40 @@ function Router() {
               path="Maintenance-of-Line-Records-for-Each-Race"
               element={<MaintenanceofLineRecordsforEachRace />}
             />
-            <Route path="district-monthly-report-silk-type" element={<DistrictWiseMonthlyReportSilkType />}/>
+            <Route
+              path="district-monthly-report-silk-type"
+              element={<DistrictWiseMonthlyReportSilkType />}
+            />
 
-            <Route path="abstract-report-silk-type" element={<AbstractReportSilkType />} />
+            <Route
+              path="abstract-report-silk-type"
+              element={<AbstractReportSilkType />}
+            />
 
-            <Route path="unit-counter-report-silk-type" element={<UnitCounterReportSilkType />} />
+            <Route
+              path="unit-counter-report-silk-type"
+              element={<UnitCounterReportSilkType />}
+            />
 
-           <Route path="blank-dtr-online-silk-type" element={<BlankDtrReportSilkType />} />
+            <Route
+              path="blank-dtr-online-silk-type"
+              element={<BlankDtrReportSilkType />}
+            />
 
-            <Route path="dtr-online-silk-type" element={< DtrOnlineReportSilkType/>} />
+            <Route
+              path="dtr-online-silk-type"
+              element={<DtrOnlineReportSilkType />}
+            />
 
-            <Route path="form-13-report-by-dist-silk-type" element={<FormReportByDistSilkType />}/>
+            <Route
+              path="form-13-report-by-dist-silk-type"
+              element={<FormReportByDistSilkType />}
+            />
 
-            <Route path="dashboard-report-silk-type" element={<DashboardReportSilkType />} />
+            <Route
+              path="dashboard-report-silk-type"
+              element={<DashboardReportSilkType />}
+            />
 
             <Route
               path="Maintenance-of-Line-Records-for-Each-Race-List"
@@ -1453,6 +1492,11 @@ function Router() {
               element={<Preservationofseedcocoonforprocessing />}
             />
 
+          <Route
+              path="Preservation-of-seed-cocoon-for-processing-for-nsso"
+              element={<PreservationofseedcocoonforprocessingListForNsso />}
+            />
+
             <Route
               path="preservation-of-seed-cocoon-list"
               element={<PreservationofseedcocoonforprocessingList />}
@@ -1482,7 +1526,7 @@ function Router() {
               element={<PreparationofeggsDFLsEdit />}
             />
 
-<Route
+            <Route
               path="Preparation-of-eggs-DFLs-add/:id"
               element={<PreparationofeggsDFLsAdd />}
             />
@@ -1745,7 +1789,10 @@ function Router() {
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
             />
-            <Route path="supply-of-disinfectants" element={<SupplyOfDisinfectantsToFarmers />} />
+            <Route
+              path="supply-of-disinfectants"
+              element={<SupplyOfDisinfectantsToFarmers />}
+            />
             <Route
               path="supply-of-disinfectants-list"
               element={<SupplyOfDisinfectantsList />}
@@ -1755,10 +1802,7 @@ function Router() {
               element={<MgnregaSchemeEdit />}
             />
             <Route path="mgnerga-scheme" element={<MgnregaScheme />} />
-            <Route
-              path="mgnrega-scheme-list"
-              element={<MgnregaSchemeList />}
-            />
+            <Route path="mgnrega-scheme-list" element={<MgnregaSchemeList />} />
             <Route
               path="supply-of-disinfectants-edit/:id"
               element={<SupplyOfDisinfectantsToFarmerEdit />}
@@ -2372,10 +2416,22 @@ function Router() {
             <Route path="reason-view/:id" element={<ReasonView />} />
             <Route path="reason-edit/:id" element={<ReasonEdit />} />
 
-            <Route path="farmerBankAccountReason" element={<FarmerBankAccountReason />} />
-            <Route path="farmerBankAccountReason-list" element={<FarmerBankAccountReasonList />} />
-            <Route path="farmerBankAccountReason-view/:id" element={<FarmerBankAccountReasonView />} />
-            <Route path="farmerBankAccountReason-edit/:id" element={<FarmerBankAccountReasonEdit />} />
+            <Route
+              path="farmerBankAccountReason"
+              element={<FarmerBankAccountReason />}
+            />
+            <Route
+              path="farmerBankAccountReason-list"
+              element={<FarmerBankAccountReasonList />}
+            />
+            <Route
+              path="farmerBankAccountReason-view/:id"
+              element={<FarmerBankAccountReasonView />}
+            />
+            <Route
+              path="farmerBankAccountReason-edit/:id"
+              element={<FarmerBankAccountReasonEdit />}
+            />
 
             <Route path="mount" element={<Mount />} />
             <Route path="mount-list" element={<MountList />} />
@@ -2693,6 +2749,15 @@ function Router() {
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
+            />
+
+            <Route
+              path="user-and-manager-hierarchy-mapping"
+              element={<UserAndManagerHierarchyMapping />}
+            /> 
+            <Route
+              path="user-and-manager-hierarchy-mapping-list"
+              element={<UserAndManagerHierarchyMappingList />}
             />
             <Route
               path="sc-sub-scheme-details"
@@ -3289,7 +3354,10 @@ function Router() {
             <Route path="reeler-mf" element={<ReelerMfReport />} />
             <Route path="unit-mf" element={<UnitMf />} />
             <Route path="reeler-abstract" element={<ReelerAbstract />} />
-            <Route path="race-wise-abstract" element={<RaceWiseAbstractReport/>} />
+            <Route
+              path="race-wise-abstract"
+              element={<RaceWiseAbstractReport />}
+            />
 
             <Route path="reeler-purchase" element={<ReelerPurchase />} />
             {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
@@ -3328,6 +3396,79 @@ function Router() {
               element={<MarketExceptionTime />}
             />
 
+            {/* New Target Setting */}
+            <Route
+              path="districtwise-montly-mulberry-new"
+              element={<DistrictWiseMontlyMulberry />}
+            />
+
+            <Route
+              path="tsc-mulberry-targets-new"
+              element={<NewTscMulberryTarget />}
+            />
+
+            <Route
+              path="si-sd-mulberry-target-new"
+              element={<SiSdMulberryTarget />}
+            />
+
+            <Route
+              path="districtwise-product-physical-target-setting"
+              element={<DistrictwiseProductionPhysicalTargetSetting />}
+            />
+
+            <Route
+              path="tscwise-product-physical-target-setting"
+              element={<TscwiseProdPhysicalTargetSetting />}
+            />
+
+            <Route
+              path="si-sd-wise-product-physical-target-setting"
+              element={<SiSdWiseProdPhyTargetSetting />}
+            />
+
+            <Route
+              path="farm-wise-target-setting"
+              element={<FarmwiseTarget />}
+            />
+
+            <Route
+              path="grainage-wise-target-setting"
+              element={<GrainagewiseTarget />}
+            />
+
+            <Route
+              path="training-wise-target-setting"
+              element={<TrainingTarget />}
+            />
+
+            <Route
+              path="district-wise-scheme-target-setting"
+              element={<DistrictwiseSchemeTargetSetting />}
+            />
+
+            <Route
+              path="tsc-wise-scheme-target-setting"
+              element={<TscwiseSchemeTargetSetting />}
+            />
+
+            {/* Master Data */}
+            <Route
+              path="mulberry-target-type"
+              element={<MulberryTargetType />}
+            />
+            <Route
+              path="mulberry-target-type-list"
+              element={<MulberryTargetTypeList />}
+            />
+            <Route
+              path="mulberry-target-type-view/:id"
+              element={<MulberryTargetTypeView />}
+            />
+            <Route
+              path="mulberry-target-type-edit/:id"
+              element={<MulberryTargetTypeEdit />}
+            />
             <Route path="test1" element={<Test1 />} />
           </Route>
         )}

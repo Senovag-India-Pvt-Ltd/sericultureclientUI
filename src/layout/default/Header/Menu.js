@@ -270,6 +270,7 @@ function Menu() {
     SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets: false,
     SeedDFL_Grainage_Remittance: false,
     SeedDFL_External: false,
+    SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp: false,
     SeedDFL_External_Preparation_Egg_DFLs: false,
     SeedDFL_External_Sale_of_DFLs_Eggs: false,
     SeedDFL_External_Eggs_Cold_storage: false,
@@ -476,7 +477,6 @@ function Menu() {
     Admin_Report_Commercial_Market_District_Report: false,
     Admin_Report_Commercial_Market_Average_Cocoon_Report: false,
 
-
     Admin_Report_Seed_Market: false,
 
     Admin_Report_Silk_Type_Market: false,
@@ -487,8 +487,6 @@ function Menu() {
     Admin_Report_Silk_Type_Market_Form_District_Abstract_Report: false,
     Admin_Report_Silk_Type_Market_District_Wise_Monthly: false,
     Admin_Report_Silk_Type_Market_Unit_Counter_Report: false,
-
-
 
     // Admin_Report_Admin: false,
     // Admin_Report_Transaction: false,
@@ -569,6 +567,27 @@ function Menu() {
     if (data.includes("SeedDFL")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("SeedDFL_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("SeedDFL_BSF")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_BSF_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("SeedDFL_Grainage")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_Grainage_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("SeedDFL_External")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("SeedDFL_External_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -778,6 +797,45 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Helpdesk: true,
+      }));
+    }
+
+    const hasSeed = data.some((item) => item.startsWith("SeedDFL_"));
+    if (hasSeed) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        SeedDFL: true,
+      }));
+    }
+
+    const hasSeedBsf = data.some((item) => item.startsWith("SeedDFL_BSF_"));
+    if (hasSeedBsf) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        SeedDFL: true,
+        SeedDFL_BSF: true,
+      }));
+    }
+
+    const hasSeedGrainage = data.some((item) =>
+      item.startsWith("SeedDFL_Grainage_")
+    );
+    if (hasSeedGrainage) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        SeedDFL: true,
+        SeedDFL_Grainage: true,
+      }));
+    }
+
+    const hasSeedExternal = data.some((item) =>
+      item.startsWith("SeedDFL_External_")
+    );
+    if (hasSeedExternal) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        SeedDFL: true,
+        SeedDFL_External: true,
       }));
     }
 
@@ -1880,8 +1938,6 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-
-                  
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -1996,6 +2052,15 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
+                {showMenu.SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preservation Of Seed Cocoon For RSP/NSSO"
+                        to="/seriui/Preservation-of-seed-cocoon-for-processing-for-nsso"
+                      />
+                    </MenuItem>
+                  ) : null}
+
                   {showMenu.SeedDFL_External_Preparation_Egg_DFLs ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2005,6 +2070,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
+                  
                   {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2336,6 +2402,123 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
+
+      {showMenu.TargetSetting_Allocate ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="New Target Setting"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.TargetSetting_Allocate_Budget ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Montly Mulberry Target"
+                        to="/seriui/districtwise-montly-mulberry-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to HOA"
+                        to="/seriui/budget-hoa"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to District"
+                        to="/seriui/budget-district"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Montly Mulberry Target"
+                        to="/seriui/tsc-mulberry-targets-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="SI SD Montly Mulberry Target"
+                        to="/seriui/si-sd-mulberry-target-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Product Physical Target Setting"
+                        to="/seriui/districtwise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Wise Product Physical Target Setting"
+                        to="/seriui/tscwise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="SI SD Wise Product Physical Target Setting"
+                        to="/seriui/si-sd-wise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Farm Wise Target Setting"
+                        to="/seriui/farm-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Grainage Wise Target Setting"
+                        to="/seriui/grainage-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Training Wise Target Setting"
+                        to="/seriui/training-wise-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Scheme Target Setting"
+                        to="/seriui/district-wise-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="TSC Wise Scheme Target Setting"
+                        to="/seriui/tsc-wise-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -2563,7 +2746,10 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Registration_Farmer_Bank_Reason ? (
                           <MenuItem>
-                            <MenuItemLink text="Farmer Bank Reason" to="/seriui/farmerBankAccountReason" />
+                            <MenuItemLink
+                              text="Farmer Bank Reason"
+                              to="/seriui/farmerBankAccountReason"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_District ? (
@@ -2605,7 +2791,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {showMenu.Admin_Master_Registration_Working_Institution ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3428,7 +3614,7 @@ function Menu() {
                   </MenuItem>
                 ) : null} */}
 
-                {showMenu.Admin_Report_Seed_Market? (
+                  {showMenu.Admin_Report_Seed_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text="Seed Market"
@@ -3445,12 +3631,11 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null} */}
-                        
                       </MenuSub>
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Admin_Report_Silk_Type_Market? (
+                  {showMenu.Admin_Report_Silk_Type_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text="Silk Exchange Market"
@@ -3459,7 +3644,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                      {showMenu.Admin_Report_Silk_Type_Market_Dashboard ? (
+                        {showMenu.Admin_Report_Silk_Type_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Dashboard Report"
@@ -3515,12 +3700,11 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                       
                       </MenuSub>
                     </MenuItem>
                   ) : null}
 
-                {showMenu.Admin_Report_Commercial_Market ? (
+                  {showMenu.Admin_Report_Commercial_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text="Commercial Market"
@@ -3529,223 +3713,226 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                      {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Dashboard"
-                        to="/seriui/dashboard-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Abstract ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Abstract Report"
-                        to="/seriui/abstract-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_District_Abstract ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="District Wise Abstract Report"
-                        to="/seriui/form-13-report-by-dist"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_DTR_Blank_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Real Time DTR Report"
-                        to="/seriui/blank-dtr-online"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_DTR ? (
-                    <MenuItem>
-                      <MenuItemLink text="DTR Online" to="/seriui/dtr-online" />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Unit ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Unit Counter Report"
-                        to="/seriui/unit-counter-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="District Wise Monthly Report"
-                        to="/seriui/district-monthly-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Pending ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Pending Report"
-                        to="/seriui/pending-reports"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Bidding_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Lot Wise Bidding Report"
-                        to="/seriui/bidding-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Bidding_Reeler_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeler Bidding Report"
-                        to="/seriui/bidding-report-reeler"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Farmer_Transaction_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Farmer Transaction Report"
-                        to="/seriui/farmer-transaction-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Farmer_Count ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="District Wise Farmer Count"
-                        to="/seriui/district-wise-farmer-count-list"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_District_Wise_Reeler_Count ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="District Wise Reeler Count"
-                        to="/seriui/district-wise-reeler-count-list"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Farmer Wise Report"
-                        to="/seriui/farmer-wise-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeler Wise Report"
-                        to="/seriui/reeler-wise-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Farmer Details Direct From Fruits"
-                        to="/seriui/direct-fruits-details"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Reeler_Transaction_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeler Transaction Report"
-                        to="/seriui/reeler-transaction-reports"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Generated Triplet"
-                        to="/seriui/print-bid-slip"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Generated Bidding Slip"
-                        to="/seriui/print-farmer-copy"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_ReelerPendingReport ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeler Pending Report"
-                        to="/seriui/reeler-pending-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Average_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Average Report"
-                        to="/seriui/average-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Audio_Visual_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Audio Visual Report"
-                        to="/seriui/audio-visual-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_B_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="27 B Report"
-                        to="/seriui/27-b-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Monthly_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Monthly Report"
-                        to="/seriui/monthly-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Market_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Market Report"
-                        to="/seriui/market-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_District_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="District Report"
-                        to="/seriui/district-report"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Admin_Report_Commercial_Market_Average_Cocoon_Report ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Average Cocoon Report"
-                        to="/seriui/average-cocoon-report"
-                      />
-                    </MenuItem>
-                  ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Dashboard"
+                              to="/seriui/dashboard-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Abstract ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Abstract Report"
+                              to="/seriui/abstract-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_District_Abstract ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Abstract Report"
+                              to="/seriui/form-13-report-by-dist"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_DTR_Blank_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Real Time DTR Report"
+                              to="/seriui/blank-dtr-online"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_DTR ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="DTR Online"
+                              to="/seriui/dtr-online"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Unit ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Unit Counter Report"
+                              to="/seriui/unit-counter-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Monthly Report"
+                              to="/seriui/district-monthly-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Pending ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Pending Report"
+                              to="/seriui/pending-reports"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Bidding_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Lot Wise Bidding Report"
+                              to="/seriui/bidding-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Bidding_Reeler_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Bidding Report"
+                              to="/seriui/bidding-report-reeler"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Farmer_Transaction_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Farmer Transaction Report"
+                              to="/seriui/farmer-transaction-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_District_Wise_Farmer_Count ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Farmer Count"
+                              to="/seriui/district-wise-farmer-count-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_District_Wise_Reeler_Count ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Wise Reeler Count"
+                              to="/seriui/district-wise-reeler-count-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Farmer Wise Report"
+                              to="/seriui/farmer-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Wise Report"
+                              to="/seriui/reeler-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Farmer Details Direct From Fruits"
+                              to="/seriui/direct-fruits-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Reeler_Transaction_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Transaction Report"
+                              to="/seriui/reeler-transaction-reports"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Triplet"
+                              to="/seriui/print-bid-slip"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Bidding Slip"
+                              to="/seriui/print-farmer-copy"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_ReelerPendingReport ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Pending Report"
+                              to="/seriui/reeler-pending-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Average_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Average Report"
+                              to="/seriui/average-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Audio_Visual_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Audio Visual Report"
+                              to="/seriui/audio-visual-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_B_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="27 B Report"
+                              to="/seriui/27-b-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Monthly_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Monthly Report"
+                              to="/seriui/monthly-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Market_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Market Report"
+                              to="/seriui/market-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_District_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District Report"
+                              to="/seriui/district-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Average_Cocoon_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Average Cocoon Report"
+                              to="/seriui/average-cocoon-report"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
-                   </MenuSub>
+                </MenuSub>
               </MenuItem>
             ) : null}
           </MenuSub>

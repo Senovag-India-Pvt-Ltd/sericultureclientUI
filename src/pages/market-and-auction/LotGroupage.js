@@ -28,6 +28,7 @@ const [dataLotList, setDataLotList] = useState([]);
     dflLotNumber: "",
     averageYield: "",
     lotParentLevel: "",
+    externalUnitId: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -46,6 +47,7 @@ const [dataLotList, setDataLotList] = useState([]);
     dflLotNumber: "",
     averageYield: "",
     lotParentLevel: "",
+    externalUnitId: "",
   })
  }
 
@@ -101,7 +103,10 @@ const handleDateChange = (date) => {
       setData(true);
     } else {
       e.preventDefault();
-      const buyerName = data.buyerType === "RSP" ? data.licenseNumber : data.address;
+      const buyerName = 
+      data.buyerType === "RSP" ? data.licenseNumber :
+      data.buyerType === "NSSO" ? data.address :
+      data.buyerType === "Govt Grainage" ? data.grainageMasterName : '';
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
 
@@ -117,6 +122,7 @@ const handleDateChange = (date) => {
       dflLotNumber: "",
       averageYield: "",
       lotParentLevel: "",
+      externalUnitId: "",
       // Keep the amount (price) if it's already set
       amount: prevData.amount,
     }));
@@ -227,6 +233,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
       allottedLotId: "",
       auctionDate: "",
       lotParentLevel: "",
+      externalUnitId: "",
     });
   }
 };
@@ -271,13 +278,18 @@ const handleUpdateLotDetails = (e, i, changes) => {
 
   const handleInputs = (e) => {
     const { name, value } = e.target;
+
+    // Prevent calculating amount and soldAmount if buyerType is 'Reeling'
+  // if (data.buyerType === "Reeling") {
+  //   return; // Exit early to prevent further calculations
+  // }
   
     // Update state for lotWeight and amount
     setData((prevData) => {
       const newData = { ...prevData, [name]: value };
   
       // Calculate soldAmount if both lotWeight and amount are present
-      if (newData.lotWeight && newData.amount) {
+      if (newData.buyerType !== "Reeling" && newData.lotWeight && newData.amount) {
         // Calculate total and fix to 2 decimal points, then convert to an integer
         newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount));
       } else {
@@ -647,6 +659,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
             lotWeight: item.lotWeight,
             amount: item.amount,
             soldAmount: item.soldAmount,
+            externalUnitId: item.externalUnitId,
             // dflLotNumber:item.dflLotNumber,
             invoiceNumber:item.invoiceNumber,
             //  averageYield: item.averageYield,
@@ -720,6 +733,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
                 auctionDate: "",
                 dflLotNumber: "",
                 averageYield: "",
+                externalUnitId: "",
               });
               clear();
               setValidated(false);
@@ -779,24 +793,38 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
 
   const handleReelerOption = (e) => {
     const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
+    const [chooseId, chooseName,chooseUnit] = value.split("_");
     setData({
       ...data,
       buyerId: chooseId,
       address: chooseName,
       buyerName: chooseName,
+      externalUnitId:chooseUnit
+    });
+  };
+
+  const handleGrainageOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName,chooseUnit] = value.split("_");
+    setData({
+      ...data,
+      buyerId: chooseId,
+      grainageMasterName: chooseName,
+      buyerName: chooseName,
+      externalUnitId:chooseUnit
     });
   };
 
   // District
   const handleExternalOption = (e) => {
     const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
+    const [chooseId, chooseName,chooseUnit] = value.split("_");
     setData({
       ...data,
       buyerId: chooseId,
       licenseNumber: chooseName,
       buyerName: chooseName,
+      externalUnitId:chooseUnit
     });
   };
 
@@ -813,6 +841,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
         auctionDate: "",
         dflLotNumber: "",
         averageYield: "",
+        externalUnitId: "",
     });
   setFarmerDetails({
     farmerFirstName:"",
@@ -865,6 +894,24 @@ setAllottedLotId("");
 
   useEffect(() => {
         getExternalList();
+  }, []);
+
+  // to get Grainage
+  const [grainageListData, setGrainageListData] = useState([]);
+
+  const getGrainageList = () => {
+    const response = api
+      .get(baseURL+ `grainageMaster/get-all`)
+      .then((response) => {
+        setGrainageListData(response.data.content.grainageMaster);
+      })
+      .catch((err) => {
+        setGrainageListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGrainageList();
   }, []);
 
   // const styles = {
@@ -1222,7 +1269,7 @@ setAllottedLotId("");
                                   {/* <th></th> */}
                                   <th>Action</th>
                                   <th>Buyer Type</th>
-                                  <th>License Number/Address</th>
+                                  <th>License Number/Address/Grainage</th>
                                   <th>Quantity of Cocoons(In Kgs)</th>
                                   {/* <th>No Of DFL</th>
                                   <th>Average Yield</th> */}
@@ -1443,47 +1490,78 @@ setAllottedLotId("");
                     ) : (
                       ""
                     )} */}
-                    <>
-                    {(data.buyerType === 'Govt Grainage' || data.buyerType === 'NSSO') && (
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Address<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="buyerId"
-                                  value={`${data.buyerId}_${data.address}`}
-                                  onChange={handleReelerOption}
-                                  onBlur={() => handleReelerOption} // Make sure this is correctly set
-                                  required
-                                  isInvalid={
-                                    data.buyerId === undefined ||
-                                    data.buyerId === "0"
-                                  }
+                    {data.buyerType === 'NSSO' && (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            Address<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="buyerId"
+                              value={`${data.buyerId}_${data.address}_${data.externalUnitId}`}
+                              onChange={handleReelerOption}
+                              onBlur={handleReelerOption} // Correctly set as function reference
+                              required
+                              isInvalid={
+                                data.buyerId === undefined ||
+                                data.buyerId === "0"
+                              }
+                            >
+                              <option value="">Select Address</option>
+                              {externalListData.map((list) => (
+                                <option
+                                  key={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
+                                  value={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
                                 >
-                                  <option value="">Select Address</option>
-                                  {externalListData.map((list) => (
-                                    <option
-                                      key={`${list.externalUnitRegistrationId}_${list.address}`}
-                                      value={`${list.externalUnitRegistrationId}_${list.address}`}
-                                    >
-                                      {list.address}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Address is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                        )}
-                        {/* Ensure that there's a closing tag for the parent component here if needed */}
-                      </>
-                    {/* ); */}
+                                  {list.address}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Address is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
 
-                  {data.buyerType === "RSP" ? (
+                  {data.buyerType === 'Govt Grainage' && (
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Grainage<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="buyerId"
+                            value={`${data.buyerId}_${data.grainageMasterName}_${data.externalUnitId}`}
+                            onChange={handleGrainageOption}
+                            onBlur={handleGrainageOption} // Correctly set as function reference
+                            required
+                          >
+                            <option value="">Select Grainage</option>
+                            {grainageListData && grainageListData.length ? (
+                              grainageListData.map((list) => (
+                                <option
+                                  key={`${list.userMasterId}_${list.grainageMasterName}_${list.grainageMasterId}`} // Updated key pattern
+                                  value={`${list.userMasterId}_${list.grainageMasterName}_${list.grainageMasterId}`}
+                                >
+                                  {list.grainageMasterName}
+                                </option>
+                              ))
+                            ) : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Grainage is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  )}
+
+
+                  {data.buyerType === "RSP" && (
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -1492,9 +1570,9 @@ setAllottedLotId("");
                         <div className="form-control-wrap">
                           <Form.Select
                             name="buyerId"
-                            value={`${data.buyerId}_${data.licenseNumber}`}
+                            value={`${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`}
                             onChange={handleExternalOption}
-                            onBlur={() => handleExternalOption}
+                            onBlur={handleExternalOption} // Correctly set as function reference
                             required
                             isInvalid={
                               data.buyerId === undefined ||
@@ -1504,8 +1582,8 @@ setAllottedLotId("");
                             <option value="">Select License Number</option>
                             {externalListData.map((list) => (
                               <option
-                                key={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
-                                value={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
+                                key={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
+                                value={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
                               >
                                 {list.licenseNumber}
                               </option>
@@ -1517,9 +1595,8 @@ setAllottedLotId("");
                         </div>
                       </Form.Group>
                     </Col>
-                  ) : (
-                    ""
                   )}
+
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
@@ -1610,6 +1687,7 @@ setAllottedLotId("");
                     type="number"
                     placeholder="Enter Price(In Rs.)"
                     required
+                    readOnly
                   />
                   <Form.Control.Feedback type="invalid">
                     Price(In Rs.) is required.
@@ -1782,47 +1860,78 @@ setAllottedLotId("");
                     ) : (
                       ""
                     )} */}
-                    <>
-                    {(data.buyerType === 'Govt Grainage' || data.buyerType === 'NSSO') && (
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Address<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="buyerId"
-                                  value={`${data.buyerId}_${data.address}`}
-                                  onChange={handleReelerOption}
-                                  onBlur={() => handleReelerOption} // Make sure this is correctly set
-                                  required
-                                  isInvalid={
-                                    data.buyerId === undefined ||
-                                    data.buyerId === "0"
-                                  }
+                    {data.buyerType === 'NSSO' && (
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            Address<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="buyerId"
+                              value={`${data.buyerId}_${data.address}_${data.externalUnitId}`}
+                              onChange={handleReelerOption}
+                              onBlur={handleReelerOption} // Correctly set as function reference
+                              required
+                              isInvalid={
+                                data.buyerId === undefined ||
+                                data.buyerId === "0"
+                              }
+                            >
+                              <option value="">Select Address</option>
+                              {externalListData.map((list) => (
+                                <option
+                                  key={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
+                                  value={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
                                 >
-                                  <option value="">Select Address</option>
-                                  {externalListData.map((list) => (
-                                    <option
-                                      key={`${list.externalUnitRegistrationId}_${list.address}`}
-                                      value={`${list.externalUnitRegistrationId}_${list.address}`}
-                                    >
-                                      {list.address}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Address is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                        )}
-                        {/* Ensure that there's a closing tag for the parent component here if needed */}
-                      </>
-                    {/* ); */}
+                                  {list.address}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Address is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
 
-                  {data.buyerType === "RSP" ? (
+                  {data.buyerType === 'Govt Grainage' && (
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Grainage<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="buyerId"
+                            value={`${data.buyerId}_${data.grainageMasterName}_${data.externalUnitId}`}
+                            onChange={handleGrainageOption}
+                            onBlur={handleGrainageOption} // Correctly set as function reference
+                            required
+                          >
+                            <option value="">Select Grainage</option>
+                            {grainageListData && grainageListData.length ? (
+                              grainageListData.map((list) => (
+                                <option
+                                  key={`${list.userMasterId}_${list.grainageMasterName}_${list.grainageMasterId}`} // Updated key pattern
+                                  value={`${list.userMasterId}_${list.grainageMasterName}_${list.grainageMasterId}`}
+                                >
+                                  {list.grainageMasterName}
+                                </option>
+                              ))
+                            ) : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Grainage is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  )}
+
+
+                  {data.buyerType === "RSP" && (
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -1831,9 +1940,9 @@ setAllottedLotId("");
                         <div className="form-control-wrap">
                           <Form.Select
                             name="buyerId"
-                            value={`${data.buyerId}_${data.licenseNumber}`}
+                            value={`${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`}
                             onChange={handleExternalOption}
-                            onBlur={() => handleExternalOption}
+                            onBlur={handleExternalOption} // Correctly set as function reference
                             required
                             isInvalid={
                               data.buyerId === undefined ||
@@ -1843,8 +1952,8 @@ setAllottedLotId("");
                             <option value="">Select License Number</option>
                             {externalListData.map((list) => (
                               <option
-                                key={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
-                                value={`${list.externalUnitRegistrationId}_${list.licenseNumber}`}
+                                key={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
+                                value={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
                               >
                                 {list.licenseNumber}
                               </option>
@@ -1856,9 +1965,8 @@ setAllottedLotId("");
                         </div>
                       </Form.Group>
                     </Col>
-                  ) : (
-                    ""
                   )}
+
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
@@ -1950,6 +2058,7 @@ setAllottedLotId("");
                     type="number"
                     placeholder="Enter Price(In Rs.)"
                     required
+                    readOnly
                   />
                   <Form.Control.Feedback type="invalid">
                     Price(In Rs.) is required.

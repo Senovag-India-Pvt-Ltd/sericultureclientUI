@@ -75,7 +75,46 @@ function SaleDisposalofDFLseggsEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    // Automatically populate fields when the lot number or releaseDate changes
+    // debugger
+    if (name === "lotNumber") {
+      const selectedLot = lotListEggPreparationData.find((lot) => lot.lotNumber === value);
+      if (selectedLot) {
+        setData((prev) => ({
+          ...prev,
+          numberOfDflsDisposed: selectedLot.dflsObtained || "", // Use fallback if `dflsObtained` is null
+          laidOnDate: selectedLot.laidOnDate
+            ? new Date(selectedLot.laidOnDate) // Convert to Date object
+            : null,
+          releaseDate: selectedLot.dateOfRelease
+            ? new Date(selectedLot.dateOfRelease) // Convert to Date object if available
+            : null,
+        }));
+      }
+}
+
   };
+
+  // to get Lot
+  const [lotListEggPreparationData, setLotListEggPreparationData] = useState([]);
+
+  const getLotEggPreparationList = () => {
+    api
+      .post(baseURLSeedDfl + `sale-disposal-of-egg/get-all-lot-number-list`)
+      .then((response) => {
+        console.log("Lot List Data:", response.data); // Check the format of laidOnDate and dateOfRelease
+        setLotListEggPreparationData(response.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching lot list:", err);
+        setLotListEggPreparationData([]);
+      });
+  };
+  
+  useEffect(() => {
+    getLotEggPreparationList();
+  }, []); 
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -619,7 +658,7 @@ function SaleDisposalofDFLseggsEdit() {
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
                           Egg Sheet Numbers
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -630,11 +669,11 @@ function SaleDisposalofDFLseggsEdit() {
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Egg Sheet Numbers is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -686,7 +725,7 @@ function SaleDisposalofDFLseggsEdit() {
                             value={data.numberOfDflsDisposed}
                             onChange={handleInputs}
                             type="text"
-                            maxLength="4"
+                            maxLength="6"
                             placeholder="Enter Number of DFLs disposed"
                             required
                           />
@@ -731,7 +770,8 @@ function SaleDisposalofDFLseggsEdit() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Farm<span className="text-danger">*</span>
+                            Farm
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -740,11 +780,11 @@ function SaleDisposalofDFLseggsEdit() {
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               // multiple
-                              required
-                              isInvalid={
-                                data.userTypeId === undefined ||
-                                data.userTypeId === "0"
-                              }
+                              // required
+                              // isInvalid={
+                              //   data.userTypeId === undefined ||
+                              //   data.userTypeId === "0"
+                              // }
                             >
                               <option value="">Select Farm</option>
                               {farmListData.map((list) => (
@@ -756,9 +796,9 @@ function SaleDisposalofDFLseggsEdit() {
                                 </option>
                               ))}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Farm is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>

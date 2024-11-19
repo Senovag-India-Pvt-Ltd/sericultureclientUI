@@ -161,7 +161,12 @@ useEffect(() => {
    })
      setShowModalFC(true);
    }
-   const handleCloseModalFC = () => setShowModalFC(false);
+  //  const handleCloseModalFC = () => setShowModalFC(false);
+
+  const handleCloseModalFC = () => {
+    setSelectedDocumentFile([]);
+    setShowModalFC(false);
+  };
 
   // Below for modal window for Crop details
   const [showModalCrop, setShowModalCrop] = useState(false);
@@ -358,7 +363,7 @@ if (form.checkValidity() === false) {
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
-        baseURLChawki + `api/s3/download?${parameters}`,
+        baseURLChawki + `v1/api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
         }
@@ -630,7 +635,8 @@ const saveError = (message = "Something went wrong!") => {
                 variant="primary"
                 size="sm"
                 className="ms-2"
-                onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+                // onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
+                onClick={() => downloadFile(pathList[0])}
               >
                 Download File
               </Button>
@@ -958,7 +964,7 @@ const saveError = (message = "Something went wrong!") => {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
                     <Button type="submit" variant="primary">
-                      Proceed To Allotment
+                      Proceed To Weighment
                     </Button>
                   </div>
                   <div className="gap-col">

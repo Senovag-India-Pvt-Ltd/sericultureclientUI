@@ -22,12 +22,35 @@ function MaintenanceOfEggsAtColdStorageEdit() {
 
   
 
-  let name, value;
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
+
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+    const { name, value } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Automatically populate fields when the lot number changes
+    if (name === "lotNumber") {
+      const selectedLot = lotListData.find((lot) => lot.lotNumber === value);
+      if (selectedLot) {
+        setData((prev) => ({
+          ...prev,
+          numberOfDFLs: selectedLot.dflsObtained || "", // Use fallback if `dflsObtained` is null
+          laidOnDate: selectedLot.laidOnDate
+            ? new Date(selectedLot.laidOnDate) // Convert to Date object
+            : null,
+        }));
+      }
+    }
   };
+
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -135,7 +158,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
 
   const getLotList = () => {
     const response = api
-      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .post(baseURLSeedDfl + `EggStorage/get-all-lot-number-list`)
       .then((response) => {
         setLotListData(response.data);
       })
@@ -147,6 +170,24 @@ function MaintenanceOfEggsAtColdStorageEdit() {
   useEffect(() => {
     getLotList();
   }, []);
+
+   // to get Lot
+   const [lotListEggPreparationData, setLotListEggPreparationData] = useState([]);
+
+   const getLotEggPreparationList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+       .then((response) => {
+        setLotListEggPreparationData(response.data);
+       })
+       .catch((err) => {
+        setLotListEggPreparationData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotEggPreparationList();
+   }, []);
 
    
   const navigate = useNavigate();
@@ -223,7 +264,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                {/* <Col lg="4">
+                <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -238,7 +279,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           required
                         >
                           <option value="">Select Lot Number</option>
-                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                          {lotListEggPreparationData && lotListEggPreparationData.length?(lotListEggPreparationData.map((list) => (
                             <option
                               key={list.id}
                               value={list.lotNumber}
@@ -253,8 +294,8 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
-                <Col lg="4">
+                </Col>
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -274,7 +315,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -288,7 +329,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                         name="numberOfDFLs"
                         value={data.numberOfDFLs}
                         onChange={handleInputs}
-                        maxLength="4"
+                        maxLength="8"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
                         required
