@@ -259,7 +259,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLMasterData + `taluk/delete/${_id}`)
+          .delete(baseURLTargetSetting + `productionTargets/delete-production/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -287,13 +287,13 @@ function DistrictwiseProductionPhysicalTargetSetting() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.productionTargetsId)}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"

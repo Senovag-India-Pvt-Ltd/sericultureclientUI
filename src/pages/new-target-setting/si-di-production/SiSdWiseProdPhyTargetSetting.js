@@ -489,10 +489,11 @@ function SiSdWiseProdPhyTargetSetting() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLMasterData + `taluk/delete/${_id}`)
+          .delete(baseURLTargetSetting + `productionTargets/delete-sisd/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
-            getFinancialYearList();
+            // getFinancialYearList();
+            getList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",

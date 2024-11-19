@@ -482,7 +482,7 @@ function TscwiseProdPhysicalTargetSetting() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLMasterData + `taluk/delete/${_id}`)
+          .delete(baseURLTargetSetting + `productionTargets/delete-tsc/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
