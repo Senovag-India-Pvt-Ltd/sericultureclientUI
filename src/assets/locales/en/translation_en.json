@@ -536,7 +536,13 @@
 "Cancel":"Cancel",
 "Modify Model":"Modify Model",
 "View Model":"View Model",
-"List":"List"
+"List":"List",
+"Subsidy Sanction List":"Subsidy Sanction List",
+"Rejected":"Rejected",
+"Pending":"Pending",
+"Subsidy Drawing List":"Subsidy Drawing List",
+"Subsidy Counter Signing List":"Subsidy Counter Signing List"
+
 
 
 

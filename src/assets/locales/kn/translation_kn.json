@@ -538,7 +538,12 @@
   "Cancel": "ರದ್ದುಮಾಡಿ",
   "Modify Model": "ಮಾದರಿಯನ್ನು ಬದಲಾಯಿಸಿ",
   "View Model": "ಮಾದರಿಯನ್ನು ವೀಕ್ಷಿಸಿ",
-  "List": "ಪಟ್ಟಿ"
+  "List": "ಪಟ್ಟಿ",
+  "Subsidy Sanction List": "ಸಬ್ಸಿಡಿ ಮಂಜೂರು ಪಟ್ಟಿ",
+  "Rejected": "ನಿರಾಕರಿಸಲಾಗಿದೆ",
+  "Pending": "ಬಾಕಿ ಇದೆ",
+  "Subsidy Drawing List": "ಸಬ್ಸಿಡಿ ರಚನಾ ಪಟ್ಟಿ",
+  "Subsidy Counter Signing List": "ಸಬ್ಸಿಡಿ ಕೌಂಟರ್ ಸಹಿ ಪಟ್ಟಿ"
 
       
       

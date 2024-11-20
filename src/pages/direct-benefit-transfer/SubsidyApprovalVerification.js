@@ -103,7 +103,7 @@ function SubsidyApprovalVerification() {
                   </td>
                   <td>Subsidy for Mulberry garden implements</td>
                   <td style={{ color: "Orange", fontWeight: "bold" }}>
-                    Pending
+                  {t("Pending")}
                   </td>
                   <td>
                     <div className="text-end w-100 d-flex justify-content-start">
@@ -218,7 +218,7 @@ function SubsidyApprovalVerification() {
                     building/Chawki rearing equipments
                   </td>
                   <td>Chawki rearing building</td>
-                  <td style={{ color: "Red", fontWeight: "bold" }}>Rejected</td>
+                  <td style={{ color: "Red", fontWeight: "bold" }}>{t("Rejected")}</td>
                   <td>
                     <div className="text-end w-100 d-flex justify-content-start">
                       <Dropdown>
