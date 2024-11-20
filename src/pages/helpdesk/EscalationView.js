@@ -11,6 +11,7 @@ import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
 import Swal from "sweetalert2";
 import HelpDeskFaq from "../masters/help-desk-faq/HelpDeskFaq";
 import HelpDeskFaqAnsComponent from "./HelpDeskFaqAnsComponent";
+import { useTranslation } from "react-i18next";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
@@ -23,6 +24,8 @@ function EscalationView() {
       width: "50%",
     },
   };
+// Translation
+const { t } = useTranslation();
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
@@ -203,7 +206,7 @@ function EscalationView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Escalated Ticket Details</Block.Title>
+            <Block.Title tag="h2">{t("View Escalated Ticket Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -213,7 +216,7 @@ function EscalationView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -222,7 +225,7 @@ function EscalationView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -232,7 +235,7 @@ function EscalationView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>View Escalated Ticket Details</Card.Header>
+          <Card.Header>{t("View Escalated Ticket Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -244,43 +247,43 @@ function EscalationView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{raiseTicket.hdTicketId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Module Name:</td>
+                        <td style={styles.ctstyle}>{t("Module Name")}</td>
                         <td>{raiseTicket.hdModuleName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Feature:</td>
+                        <td style={styles.ctstyle}>{t("Feature")}</td>
                         <td>{raiseTicket.hdFeatureName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Broad Category:</td>
+                        <td style={styles.ctstyle}>{t("Broad Category")}</td>
                         <td>{raiseTicket.hdBoardCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Category:</td>
+                        <td style={styles.ctstyle}>{t("Category")}</td>
                         <td>{raiseTicket.hdCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Category:</td>
+                        <td style={styles.ctstyle}>{t("Sub Category")}</td>
                         <td>{raiseTicket.hdSubCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Users Affected:</td>
+                        <td style={styles.ctstyle}>{t("Users Affected")}</td>
                         <td>{raiseTicket.hdUsersAffected}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query:</td>
+                        <td style={styles.ctstyle}>{t("Query")}</td>
                         <td>{raiseTicket.query}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query Details:</td>
+                        <td style={styles.ctstyle}>{t("Query Details")}</td>
                         <td>{raiseTicket.queryDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Ticket Number:</td>
+                        <td style={styles.ctstyle}>{t("Ticket Number")}</td>
                         <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       {/* <tr>

@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import api from "../../services/auth/api";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -28,6 +29,8 @@ const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 //   } from '../../components';
 
 function EscalationDashboard() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -279,63 +282,63 @@ function EscalationDashboard() {
 
   const HelpdeskDataColumns = [
     {
-      name: "Ticket No.",
+      name: t("Ticket No."),
       selector: (row) => row.ticketArn,
       cell: (row) => <span>{row.ticketArn}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User Profile",
+      name:t("User Profile"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Query",
+      name: t("Query"),
       selector: (row) => row.query,
       cell: (row) => <span>{row.query}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Status",
+      name: t("Status"),
       selector: (row) => row.hdStatusName,
       cell: (row) => <span>{row.hdStatusName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Query Details",
+      name: t("Query Details"),
       selector: (row) => row.queryDetails,
       cell: (row) => <span>{row.queryDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Category",
+      name: t("Category"),
       selector: (row) => row.hdCategoryName,
       cell: (row) => <span>{row.hdCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User Affected",
+      name: t("User Affected"),
       selector: (row) => row.hdUsersAffected,
       cell: (row) => <span>{row.hdUsersAffected}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Module",
+      name: t("Module"),
       selector: (row) => row.hdModuleName,
       cell: (row) => <span>{row.hdModuleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Feature",
+      name: t("Feature"),
       selector: (row) => row.hdFeatureName,
       cell: (row) => <span>{row.hdFeatureName}</span>,
       sortable: true,
@@ -416,7 +419,7 @@ function EscalationDashboard() {
     //   hide: "md",
     // },
     {
-      name: "Action",
+      name:t("Action"),
       cell: (row) => (
         <div text-start w-100>
           {/* <Button variant="primary" size="sm" onClick={() => edit(row)}>
@@ -427,7 +430,7 @@ function EscalationDashboard() {
             size="sm"
             onClick={() => handleView(row.hdTicketId)}
           >
-            View
+             {t("View")}
           </Button>
         </div>
       ),
@@ -459,7 +462,7 @@ function EscalationDashboard() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Escalate Dashboard</Block.Title>
+            <Block.Title tag="h2">{t("Escalate Dashboard")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -519,7 +522,7 @@ function EscalationDashboard() {
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
-                    <h4 className="title mb-1">Escalated Tickets</h4>
+                    <h4 className="title mb-1">{t("Escalated Tickets")}</h4>
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
@@ -534,7 +537,7 @@ function EscalationDashboard() {
                     variant="primary"
                     onClick={() => getOtherTicketDataList("Escalated Tickets")}
                   >
-                    View
+                    {t("View")}
                   </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
@@ -551,7 +554,7 @@ function EscalationDashboard() {
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
-                    <h4 className="title mb-1">Resolved Tickets</h4>
+                    <h4 className="title mb-1">{t("Resolved Tickets")}</h4>
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
@@ -566,7 +569,7 @@ function EscalationDashboard() {
                     variant="primary"
                     onClick={() => getOtherTicketDataList("Resolved Tickets")}
                   >
-                    View
+                    {t("View")}
                   </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
@@ -622,8 +625,8 @@ function EscalationDashboard() {
                           value={data.searchBy}
                           onChange={handleInputs}
                         >
-                          <option value="ticketArn">Ticket Number</option>
-                          <option value="hdSeverityName">Severity</option>
+                          <option value="ticketArn">{t("Ticket Number")}</option>
+                          <option value="hdSeverityName">{t("Severity")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -640,7 +643,7 @@ function EscalationDashboard() {
                     </Col>
                     <Col sm={3}>
                       <Button type="button" variant="primary" onClick={search}>
-                        Search
+                      {t("search")}
                       </Button>
                     </Col>
                     <Col sm={2}>

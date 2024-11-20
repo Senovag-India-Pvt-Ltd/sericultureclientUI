@@ -579,9 +579,27 @@
 "On Behalf Of":"On Behalf Of",
 "Select Feature":"Select Feature",
 "Attach Files":"Attach Files",
-"Download":"Download"
-
-
+"Download":"Download",
+"Enter your Query":"Enter your Query",
+"No file selected or file was canceled.":"No file selected or file was canceled.",
+"Helpdesk Dashboard":"Helpdesk Dashboard",
+"Pending Tickets":"Pending Tickets",
+"Escalated Tickets":"Escalated Tickets",
+"Resolved Tickets":"Resolved Tickets",
+"Severity":"Severity",
+"View User Ticket Details":"View User Ticket Details",
+"View Raised Ticket Details":"View Raised Ticket Details",
+"Module Name":"Module Name",
+"Solution":"Solution",
+"Escalation Required":"Escalation Required",
+"No":"No",
+"Yes":"Yes",
+"Select Severity":"Select Severity",
+"Escalated To":"Escalated To",
+"Select Escalate To":"Select Escalate To",
+"Enter Solutions":"Enter Solutions",
+"Escalate Dashboard":"Escalate Dashboard",
+"View Escalated Ticket Details":"View Escalated Ticket Details"
 
 
 
