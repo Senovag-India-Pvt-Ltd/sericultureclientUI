@@ -1092,12 +1092,12 @@ function RearingofDFLsforthe8LinesList() {
     },
   ];
   return (
-    <Layout title="Rearing of DFLs for the 8 lines List">
+    <Layout title="List Of Rearing of DFLs for the 8 lines">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Rearing of DFLs for the 8 lines List
+            List Of Rearing of DFLs for the 8 lines
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
