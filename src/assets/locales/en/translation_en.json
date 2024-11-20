@@ -541,7 +541,18 @@
 "Rejected":"Rejected",
 "Pending":"Pending",
 "Subsidy Drawing List":"Subsidy Drawing List",
-"Subsidy Counter Signing List":"Subsidy Counter Signing List"
+"Subsidy Counter Signing List":"Subsidy Counter Signing List",
+"Report Rejected List":"Report Rejected List",
+"Rejected Reason":"Rejected Reason",
+"Select Rejected Reason":"Select Rejected Reason",
+"Rejected List is required":"Rejected List is required",
+"Field Value is Required":"Field Value is Required",
+"Export":"Export",
+"No Transaction Details Available":"No Transaction Details Available",
+"No Land Details Available":"No Land Details Available",
+"Pull Back":"Pull Back",
+"Re-Push":"Re-Push"
+
 
 
 
