@@ -482,11 +482,11 @@ function RearingOfDFLsList() {
   ];
 
   return (
-    <Layout title="Rearing of DFLs List">
+    <Layout title="List Of Rearing of DFLs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Rearing of DFLs List</Block.Title>
+            <Block.Title tag="h2">List Of Rearing of DFLs</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
