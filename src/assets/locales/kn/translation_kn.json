@@ -553,7 +553,21 @@
     "No Transaction Details Available": "ವಹಿವಾಟು ವಿವರಗಳು ಲಭ್ಯವಿಲ್ಲ",
     "No Land Details Available": "ಜಮೀನು ವಿವರಗಳು ಲಭ್ಯವಿಲ್ಲ",
     "Pull Back": "ಹಿಂತೆಗೆದುಕೆ",
-    "Re-Push": "ಮತ್ತೆ ತಳ್ಳು"
+    "Re-Push": "ಮತ್ತೆ ತಳ್ಳು",
+    "Report Success List": "ವರದಿ ಯಶಸ್ವಿ ಪಟ್ಟಿ",
+    "DBT Pushed List": "ಡಿಬಿಟಿ ತಳ್ಳಲಾದ ಪಟ್ಟಿ",
+  "Select Financial Year": "ಹಣಕಿಯ ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Select Status": "ಸ್ಥಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "DBT PUSHED": "ಡಿಬಿಟಿ ತಳ್ಳಲಾಗಿದೆ",
+  "REJECTED BY ADS": "ADS ಮೂಲಕ ನಿರಾಕರಿಸಲಾಗಿದೆ",
+  "ACKNOWLEDGEMENT FAILED": "ತಿಳುವಳಿಕೆ ವಿಫಲವಾಗಿದೆ",
+  "ACKNOWLEDGEMENT SUCCESS": "ತಿಳುವಳಿಕೆ ಯಶಸ್ವಿಯಾಗಿದೆ",
+  "SUBSIDY SANCTIONED": "ಸಬ್ಸಿಡಿ ಮಂಜೂರಿಸಲಾಗಿದೆ",
+  "Drawing Officer List": "ಚಿತ್ರOfficer Officer Officer Officer ಪಟ್ಟಿ",
+  "Push": "ತಳ್ಳಿ",
+"TSC Officer List": "ಟಿಎಸ್ಸಿ ಅಧಿಕಾರಿ ಪಟ್ಟಿ"
+
+
   
   
 
