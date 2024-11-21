@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FarmerBankAccountReasonEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -126,7 +128,7 @@ function FarmerBankAccountReasonEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Farmer Bank Account Reason</Block.Title>
+            <Block.Title tag="h2">{t("Edit Farmer Bank Account Reason")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +138,7 @@ function FarmerBankAccountReasonEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +147,7 @@ function FarmerBankAccountReasonEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -168,7 +170,7 @@ function FarmerBankAccountReasonEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                         Farmer Bank Account Reason<span className="text-danger">*</span>
+                        {t("Farmer Bank Account Reason")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,11 +179,11 @@ function FarmerBankAccountReasonEdit() {
                             value={data.farmerBankAccountReason}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farmer Bank Account Reason"
+                            placeholder={t("Enter Farmer Bank Account Reason")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Bank Account Reason is required.
+                          {t("Farmer Bank Account Reason is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,12 +223,12 @@ function FarmerBankAccountReasonEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

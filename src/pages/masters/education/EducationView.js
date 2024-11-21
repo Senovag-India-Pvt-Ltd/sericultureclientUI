@@ -7,10 +7,13 @@ import { Icon } from "../../../components";
 import EducationDatas from "../../../store/masters/education/EducationData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function EducationView() {
+    // Translation
+    const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -54,7 +57,7 @@ function EducationView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Education View</Block.Title>
+            <Block.Title tag="h2">{t("Education View")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -77,7 +80,7 @@ function EducationView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -86,7 +89,7 @@ function EducationView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -96,7 +99,7 @@ function EducationView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Education Details</Card.Header>
+          <Card.Header>{t("Education Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -108,17 +111,17 @@ function EducationView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{Education.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Education:</td>
+                        <td style={styles.ctstyle}> {t("education")}</td>
                         <td>{Education.name}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Education Name in Kannada:
+                          {t("Education Name in Kannada")}
                         </td>
                         <td>{Education.educationNameInKannada}</td>
                       </tr>

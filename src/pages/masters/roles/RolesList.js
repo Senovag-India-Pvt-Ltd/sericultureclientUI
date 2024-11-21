@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -23,7 +24,8 @@ function RolesList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-
+// Translation
+const { t } = useTranslation();
   const getList = () => {
     setLoading(true);
     const response = api
@@ -143,7 +145,7 @@ function RolesList() {
 
   const RolesDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +155,7 @@ function RolesList() {
             size="sm"
             onClick={() => handleView(row.roleId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +163,7 @@ function RolesList() {
             className="ms-2"
             onClick={() => handleEdit(row.roleId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +171,7 @@ function RolesList() {
             onClick={() => deleteConfirm(row.roleId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +179,7 @@ function RolesList() {
       hide: "md",
     },
     {
-      name: "Roles",
+      name: t("Roles"),
       selector: (row) => row.roleName,
       cell: (row) => <span>{row.roleName}</span>,
       sortable: true,
@@ -190,7 +192,7 @@ function RolesList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Roles List</Block.Title>
+            <Block.Title tag="h2">{t("Roles List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -200,7 +202,7 @@ function RolesList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -209,7 +211,7 @@ function RolesList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

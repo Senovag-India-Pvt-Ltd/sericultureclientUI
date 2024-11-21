@@ -95,7 +95,7 @@ function Roles() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Roles</Block.Title>
+            <Block.Title tag="h2">{t("Roles")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -105,7 +105,7 @@ function Roles() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -114,7 +114,7 @@ function Roles() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -146,7 +146,7 @@ function Roles() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Roles Name is required.
+                          {t("Roles Name is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -175,12 +175,12 @@ function Roles() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

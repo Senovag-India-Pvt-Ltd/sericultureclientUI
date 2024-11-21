@@ -9,10 +9,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RelationshipEdit() {
+    // Translation
+    const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -136,7 +140,7 @@ function RelationshipEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Relationship</Block.Title>
+            <Block.Title tag="h2">{t("relationship")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -146,7 +150,7 @@ function RelationshipEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -155,7 +159,7 @@ function RelationshipEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -178,7 +182,7 @@ function RelationshipEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="relationship">
-                          Relationship<span className="text-danger">*</span>
+                        {t("relationship")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -187,11 +191,11 @@ function RelationshipEdit() {
                             type="text"
                             value={data.relationshipName}
                             onChange={handleInputs}
-                            placeholder="Enter Relationship"
+                            placeholder={t("Enter Relationship")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Relationship Name is required.
+                          {t("relationship_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -200,7 +204,7 @@ function RelationshipEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Relationship Name in Kannada
+                        {t("Relationship Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -210,11 +214,11 @@ function RelationshipEdit() {
                             value={data.relationshipNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Relationship Name in Kannada"
+                            placeholder={t("Enter Relationship Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Relationship Name in Kannada is required.
+                          {t("Relationship Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -231,7 +235,7 @@ function RelationshipEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
@@ -239,7 +243,7 @@ function RelationshipEdit() {
                     Cancel
                   </Link> */}
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

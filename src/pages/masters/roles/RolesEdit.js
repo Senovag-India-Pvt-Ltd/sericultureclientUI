@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -15,7 +16,8 @@ function RolesEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-
+  // Translation
+  const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -120,7 +122,7 @@ function RolesEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Roles</Block.Title>
+            <Block.Title tag="h2">{t("Edit Roles")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +132,7 @@ function RolesEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -139,7 +141,7 @@ function RolesEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -162,7 +164,7 @@ function RolesEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="role">
-                          Role<span className="text-danger">*</span>
+                        {t("Roles")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -171,11 +173,11 @@ function RolesEdit() {
                             value={data.roleName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Roles"
+                            placeholder={t("enter_role_name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Roles Name is required.
+                          {t("Roles Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -192,12 +194,12 @@ function RolesEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

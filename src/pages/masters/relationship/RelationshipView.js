@@ -7,10 +7,13 @@ import { Icon } from "../../../components";
 import RelationshipDatas from "../../../store/masters/relationship/RelationshipData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RelationshipView() {
+   // Translation
+   const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -55,7 +58,7 @@ function RelationshipView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Relationship View</Block.Title>
+            <Block.Title tag="h2">{t("Relationship View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +68,7 @@ function RelationshipView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +77,7 @@ function RelationshipView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,7 +87,7 @@ function RelationshipView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Relationship Details</Card.Header>
+          <Card.Header>{t("Relationship Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -96,17 +99,17 @@ function RelationshipView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{Relationship.relationshipId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Relationship:</td>
+                        <td style={styles.ctstyle}> {t("relationship")}</td>
                         <td>{Relationship.relationshipName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Relationship Name in Kannada:
+                          {t("Relationship Name in Kannada")}
                         </td>
                         <td>{Relationship.relationshipNameInKannada}</td>
                       </tr>
