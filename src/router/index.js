@@ -934,6 +934,8 @@ import PreservationofseedcocoonforprocessingListForNsso from "../pages/seed-and-
 import UserAndManagerHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserAndManagerHierarchyMappingList";
 import SiSdMulberryDateTarget from "../pages/new-target-setting/si-sd-mulberry-target/SiSdMulberryDateTarget";
 import SiSdWiseProdDayPhyTargetSetting from "../pages/new-target-setting/si-di-production/SiSdWiseProdDayPhyTargetSetting";
+import SiSdWiseSchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-scheme-target-setting/SiSdWiseSchemeTargetSetting";
+import SiSdWiseDaySchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-scheme-target-setting/SiSdWiseDaySchemeTargetSetting";
 
 // Admin and Reports
 
@@ -3437,6 +3439,16 @@ function Router() {
             <Route
               path="si-sd-wise-product-physical-day-target-setting"
               element={<SiSdWiseProdDayPhyTargetSetting />}
+            />
+            {/* Reeling TSC page name is SiSdWiseSchemeTargetSetting */}
+            <Route
+              path="reeling-tsc-wise-scheme-target-setting"
+              element={<SiSdWiseSchemeTargetSetting />}
+            />
+
+            <Route
+              path="si-sd-wise-day-scheme-target-setting"
+              element={<SiSdWiseDaySchemeTargetSetting />}
             />
 
             <Route
