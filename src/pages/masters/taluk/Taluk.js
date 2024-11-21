@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Taluk() {
+   // Translation
+   const { t } = useTranslation();
   const [data, setData] = useState({
     talukName: "",
     stateId: "",
@@ -155,7 +157,7 @@ function Taluk() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Taluk</Block.Title>
+            <Block.Title tag="h2">{t("taluk")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -165,7 +167,7 @@ function Taluk() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -174,7 +176,7 @@ function Taluk() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -193,7 +195,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group ">
                       <Form.Label>
-                        State<span className="text-danger">*</span>
+                      {t("state")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -206,7 +208,7 @@ function Taluk() {
                             data.stateId === undefined || data.stateId === "0"
                           }
                         >
-                          <option value="">Select State</option>
+                          <option value="">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
@@ -214,7 +216,7 @@ function Taluk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          State Name is required
+                        {t("state_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -222,7 +224,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group ">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                      {t("district")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -236,7 +238,7 @@ function Taluk() {
                             data.districtId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("select_district")}</option>
                           {districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -249,7 +251,7 @@ function Taluk() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                        {t("district_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -257,7 +259,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Taluk">
-                        Taluk<span className="text-danger">*</span>
+                      {t("taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -266,11 +268,11 @@ function Taluk() {
                           value={data.talukName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Taluk"
+                          placeholder={t("Enter Taluk")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
+                        {t("taluk_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -279,7 +281,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Taluk">
-                        Taluk Name in Kannada
+                        {t("Taluk Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -289,11 +291,11 @@ function Taluk() {
                           value={data.talukNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Taluk Name in Kannada "
+                          placeholder={t("Enter Taluk Name in Kannada ")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name in Kannada is required
+                          {t("Taluk Name in Kannada is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -302,7 +304,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Taluk">
-                        Lg Taluk<span className="text-danger">*</span>
+                        {t("Lg Taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -311,11 +313,11 @@ function Taluk() {
                           value={data.lgTaluk}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lg Taluk"
+                          placeholder={t("Enter Lg Taluk")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Lg Taluk is required
+                        {t("Lg Taluk is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -324,7 +326,7 @@ function Taluk() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="district">
-                      Taluk Code<span className="text-danger">*</span>
+                      {t("Taluk Code")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -333,11 +335,11 @@ function Taluk() {
                           name="talukCode"
                           value={data.talukCode}
                           onChange={handleInputs}
-                          placeholder="Enter Taluk Code"
+                          placeholder={t("Enter Taluk Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Taluk Code is required
+                        {t("Taluk Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -351,12 +353,12 @@ function Taluk() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

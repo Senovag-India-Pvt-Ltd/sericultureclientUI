@@ -6,10 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UsersView() {
+    // Translation
+    const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -47,7 +49,7 @@ function UsersView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">User View</Block.Title>
+            <Block.Title tag="h2">{t("User View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -57,7 +59,7 @@ function UsersView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -66,7 +68,7 @@ function UsersView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -76,7 +78,7 @@ function UsersView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>User Details</Card.Header>
+          <Card.Header>{t("User Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -88,23 +90,23 @@ function UsersView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{user.userMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> User Name:</td>
+                        <td style={styles.ctstyle}>{t("User Name")}</td>
                         <td>{user.username}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> First Name:</td>
+                        <td style={styles.ctstyle}> {t("First Name")}</td>
                         <td>{user.firstName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Middle Name:</td>
+                        <td style={styles.ctstyle}>{t("Middle Name")}</td>
                         <td>{user.middleName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Last Name:</td>
+                        <td style={styles.ctstyle}>{t("Last Name")}</td>
                         <td>{user.lastName}</td>
                       </tr>
                       {/* <tr>
@@ -112,47 +114,47 @@ function UsersView() {
                         <td>{user.password}</td>
                       </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>Email:</td>
+                        <td style={styles.ctstyle}> {t("Email")}</td>
                         <td>{user.emailID}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mobile Number:</td>
+                        <td style={styles.ctstyle}>{t("Mobile Number")}</td>
                         <td>{user.phoneNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Designation:</td>
+                        <td style={styles.ctstyle}>{t("Designation")}</td>
                         <td>{user.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>State:</td>
+                        <td style={styles.ctstyle}>{t("state")}</td>
                         <td>{user.stateName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>District:</td>
+                        <td style={styles.ctstyle}>{t("district")}</td>
                         <td>{user.districtName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Taluk:</td>
+                        <td style={styles.ctstyle}>{t("taluk")}</td>
                         <td>{user.talukName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Role:</td>
+                        <td style={styles.ctstyle}>{t("Role")}</td>
                         <td>{user.roleName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Market:</td>
+                        <td style={styles.ctstyle}>{t("Market")}</td>
                         <td>{user.marketMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Working Institution:</td>
+                        <td style={styles.ctstyle}>{t("Working Institution")}</td>
                         <td>{user.workingInstitutionName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Tsc Name :</td>
+                        <td style={styles.ctstyle}>{t("tsc")} </td>
                         <td>{user.tscName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DDO Code:</td>
+                        <td style={styles.ctstyle}>{t("DDO Code")}</td>
                         <td>{user.ddoCode}</td>
                       </tr>
                     </tbody>

@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DesignationEdit() {
+    // Translation
+    const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -129,7 +131,7 @@ function DesignationEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Designation</Block.Title>
+            <Block.Title tag="h2">{t("Edit Designation")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -139,7 +141,7 @@ function DesignationEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -148,7 +150,7 @@ function DesignationEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -171,7 +173,7 @@ function DesignationEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Designation<span className="text-danger">*</span>
+                        {t("Designation")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -180,11 +182,11 @@ function DesignationEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Designation"
+                            placeholder={t("Enter Designation")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Designation Name is required.
+                          {t("Designation Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -193,7 +195,7 @@ function DesignationEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Designation Name in Kannada
+                        {t("Designation Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -203,11 +205,11 @@ function DesignationEdit() {
                             value={data.designationNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Designation Name in Kannada"
+                            placeholder={t("Enter Designation Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Designation Name in Kannada is required.
+                          {t("Designation Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -218,7 +220,7 @@ function DesignationEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Level<span className="text-danger">*</span>
+                      {t("Level")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -231,15 +233,15 @@ function DesignationEdit() {
                             data.level === undefined || data.level === "0"
                           }
                         >
-                          <option value="">Select Level</option>
-                          <option value="State">State</option>
-                          <option value="Region">Region</option>
-                          <option value="District">District</option>
-                          <option value="Taluk">Taluk</option>
+                          <option value="">{t("Select Level")}</option>
+                          <option value="State">{t("state")}</option>
+                          <option value="Region">{t("Region")}</option>
+                          <option value="District">{t("district")}</option>
+                          <option value="Taluk">{t("taluk")}</option>
                           
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Level is required
+                        {t("Level is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -256,7 +258,7 @@ function DesignationEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
@@ -264,7 +266,7 @@ function DesignationEdit() {
                     Cancel
                   </Link> */}
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

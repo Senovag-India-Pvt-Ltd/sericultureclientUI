@@ -8,10 +8,12 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function User() {
+    // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     firstName: "",
     middleName: "",
@@ -309,7 +311,7 @@ function User() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">User</Block.Title>
+            <Block.Title tag="h2">{t("User")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -319,7 +321,7 @@ function User() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -328,7 +330,7 @@ function User() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -347,7 +349,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="username">
-                        User Name<span className="text-danger">*</span>
+                        {t("User Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -356,11 +358,11 @@ function User() {
                           value={data.username}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter User Name"
+                          placeholder={t("Enter User Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                          {t("User Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -369,7 +371,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="firstName">
-                        First Name<span className="text-danger">*</span>
+                        {t("First Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -378,11 +380,11 @@ function User() {
                           value={data.firstName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter First Name"
+                          placeholder={t("Enter First Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          First Name is required
+                          {t("First Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -391,7 +393,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="middleName">
-                        Middle Name<span className="text-danger">*</span>
+                        {t("Middle Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -400,11 +402,11 @@ function User() {
                           value={data.middleName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Middle Name"
+                          placeholder={t("Enter Middle Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Middle Name is required
+                          {t("Middle Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -413,7 +415,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="lastName">
-                        Last Name<span className="text-danger">*</span>
+                        {t("Last Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -422,11 +424,11 @@ function User() {
                           value={data.lastName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Last Name"
+                          placeholder={t("Enter Last Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Last Name is required
+                          {t("Last Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -435,7 +437,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="emailID">
-                        Email<span className="text-danger">*</span>
+                        {t("Email")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -444,11 +446,11 @@ function User() {
                           value={data.emailID}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Email"
+                          placeholder={t("Enter Email")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Email Name is required
+                          {t("Email Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -457,7 +459,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Designation<span className="text-danger">*</span>
+                        {t("Designation")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -471,7 +473,7 @@ function User() {
                             data.designationId === "0"
                           }
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">{t("Select Designation")}</option>
                           {designationListData && designationListData.length
                             ? designationListData.map((list) => (
                                 <option
@@ -484,7 +486,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Designation is required
+                          {t("Designation is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -493,7 +495,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="emailID">
-                        Mobile Number<span className="text-danger">*</span>
+                        {t("Mobile Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -502,11 +504,11 @@ function User() {
                           value={data.phoneNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Phone Number"
+                          placeholder={t("Enter Phone Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mobile Number is required
+                          {t("Mobile Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -515,7 +517,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="password">
-                        Password<span className="text-danger">*</span>
+                        {t("Password")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -528,7 +530,7 @@ function User() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Password Name is required
+                          {t("Password Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -537,7 +539,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Role<span className="text-danger">*</span>
+                        {t("Role")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -550,7 +552,7 @@ function User() {
                             data.roleId === undefined || data.roleId === "0"
                           }
                         >
-                          <option value="">Select Role</option>
+                          <option value="">{t("Select Role")}</option>
                           {roleListData && roleListData.length
                             ? roleListData.map((list) => (
                                 <option key={list.roleId} value={list.roleId}>
@@ -560,7 +562,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Role Name is required
+                          {t("Role Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -568,7 +570,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Market<span className="text-danger">*</span>
+                        {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -582,7 +584,7 @@ function User() {
                             data.marketMasterId === "0"
                           }
                         >
-                          <option value="">Select Market</option>
+                          <option value="">{t("Select Market")}</option>
                           {marketListData && marketListData.length
                             ? marketListData.map((list) => (
                                 <option
@@ -595,7 +597,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Market Name is required
+                        {t("Market is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -604,7 +606,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Working Institution
+                      {t("Working Institution")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -619,7 +621,7 @@ function User() {
                             data.workingInstitutionId === "0"
                           }
                         >
-                          <option value="">Select Working Institution</option>
+                          <option value="">{t("Select Working Institution")}</option>
                           {workingInstitutionListData &&
                           workingInstitutionListData.length
                             ? workingInstitutionListData.map((list) => (
@@ -633,7 +635,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Working Institution Name is required
+                          {t("Working Institution Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -643,7 +645,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Tsc  <span className="text-danger">*</span>
+                        {t("tsc")}  <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -656,7 +658,7 @@ function User() {
                             data.tscMasterId === undefined || data.tscMasterId === "0"
                           }
                         >
-                          <option value="">Select Tsc</option>
+                          <option value="">{t("select_tsc")}</option>
                           {tscListData.map((list) => (
                             <option key={list.tscMasterId} value={list.tscMasterId}>
                               {list.name}
@@ -664,7 +666,7 @@ function User() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Tsc Name is required
+                          {t("Tsc Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -673,7 +675,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        State<span className="text-danger">*</span>
+                      {t("state")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -686,7 +688,7 @@ function User() {
                             data.stateId === undefined || data.stateId === "0"
                           }
                         >
-                          <option value="">Select State</option>
+                          <option value="">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
@@ -694,7 +696,7 @@ function User() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          State Name is required
+                        {t("state_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -703,7 +705,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                      {t("district")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -717,7 +719,7 @@ function User() {
                             data.districtId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("select_district")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -730,7 +732,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                        {t("district_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -739,7 +741,7 @@ function User() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Taluk<span className="text-danger">*</span>
+                      {t("taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -752,7 +754,7 @@ function User() {
                             data.talukId === undefined || data.talukId === "0"
                           }
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("select_taluk")}</option>
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
@@ -762,7 +764,7 @@ function User() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
+                        {t("taluk_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -770,7 +772,7 @@ function User() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="password">DDO Code</Form.Label>
+                      <Form.Label htmlFor="password">{t("DDO Code")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="ddoCode"
@@ -778,7 +780,7 @@ function User() {
                           value={data.ddoCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter DDO Code"
+                          placeholder={t("Enter DDO Code")}
                           // required
                         />
                       </div>
@@ -793,12 +795,12 @@ function User() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

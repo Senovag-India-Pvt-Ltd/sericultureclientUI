@@ -9,10 +9,12 @@ import Swal from "sweetalert2";
 import React from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ConfigFarmerAllow() {
+    // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     allowedNoOfAttempts: "",
   });
@@ -113,7 +115,7 @@ function ConfigFarmerAllow() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Configure Farmer Bidding Allow Count
+              {t("Configure Farmer Bidding Allow Count")}
             </Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
@@ -152,7 +154,7 @@ function ConfigFarmerAllow() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="allowedNoOfAttempts">
-                        Count<span className="text-danger">*</span>
+                        {t("Count")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -162,11 +164,11 @@ function ConfigFarmerAllow() {
                           min={0}
                           value={data.allowedNoOfAttempts}
                           onChange={handleInputs}
-                          placeholder="Enter Count"
+                          placeholder={t("Enter Count")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Count is required.
+                          {t("Count is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -195,12 +197,12 @@ function ConfigFarmerAllow() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

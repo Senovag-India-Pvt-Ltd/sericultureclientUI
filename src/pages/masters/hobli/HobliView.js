@@ -6,12 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 import HobliDatas from "../../../store/masters/hobli/HobliData";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HobliView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -56,7 +58,7 @@ function HobliView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Hobli View</Block.Title>
+            <Block.Title tag="h2">{t("Hobli View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -66,7 +68,7 @@ function HobliView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +77,7 @@ function HobliView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -85,38 +87,38 @@ function HobliView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Hobli Details</Card.Header>
+          <Card.Header>{t("Hobli Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>ID:</td>
+                      <td style={styles.ctstyle}>{t("ID")}</td>
                       <td>{Hobli.hobliId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> State:</td>
+                      <td style={styles.ctstyle}> {t("state")}</td>
                       <td>{Hobli.stateName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> District:</td>
+                      <td style={styles.ctstyle}>  {t("district")}</td>
                       <td>{Hobli.districtName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Taluk:</td>
+                      <td style={styles.ctstyle}> {t("taluk")}</td>
                       <td>{Hobli.talukName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Hobli:</td>
+                      <td style={styles.ctstyle}> {t("hobli")}</td>
                       <td>{Hobli.hobliName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Hobli Name in Kannada:</td>
+                      <td style={styles.ctstyle}> {t("Hobli Name in Kannada")}</td>
                       <td>{Hobli.hobliNameInKannada}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Hobli Code:</td>
+                      <td style={styles.ctstyle}> {t("Hobli Code")}</td>
                       <td>{Hobli.hobliCode}</td>
                     </tr>
                   </tbody>
