@@ -10,12 +10,15 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CasteList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -169,7 +172,7 @@ function CasteList() {
 
   const CasteDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -179,7 +182,7 @@ function CasteList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -187,7 +190,7 @@ function CasteList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -195,7 +198,7 @@ function CasteList() {
             onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -203,7 +206,7 @@ function CasteList() {
       hide: "md",
     },
     {
-      name: "Title",
+      name:  t("Title"),
       selector: (row) => row.title,
       cell: (row) => <span>{row.title}</span>,
       sortable: true,
@@ -211,7 +214,7 @@ function CasteList() {
     },
 
     {
-      name: " Title Name in Kannda",
+      name: t("Title Name in Kannada"),
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
@@ -231,7 +234,7 @@ function CasteList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Caste List</Block.Title>
+            <Block.Title tag="h2">{t("Caste List")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -251,7 +254,7 @@ function CasteList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -260,7 +263,7 @@ function CasteList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

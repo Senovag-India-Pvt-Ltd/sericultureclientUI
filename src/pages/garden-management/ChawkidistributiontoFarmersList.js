@@ -10,6 +10,7 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 import { format } from 'date-fns';
 
 
@@ -17,7 +18,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ChawkidistributiontoFarmersList() {
 /* get table detais */
-
+// Translation
+const { t } = useTranslation();
 const [listData, setListData] = useState([]);
 const [page, setPage] = useState(0);
 const countPerPage = 5;
@@ -146,7 +148,7 @@ useEffect(() => {
 
   const ChawkiDataColumns = [
     {
-      name: "Action",
+      name:  t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -156,7 +158,7 @@ useEffect(() => {
             size="sm"
             onClick={() => handleView(row.chowkiId)}
           >
-            View
+             {t("View")}
           </Button>
           {/* <Button
             variant="primary"
@@ -181,91 +183,91 @@ useEffect(() => {
       grow: 2,
     },
     {
-      name: "Fruits ID",
+      name: t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer's Name",
+      name: t("farmer_name"),
       selector: (row) => row.farmerName,
       cell: (row) => <span>{row.farmerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Father Name",
+      name: t("Father’s Name"),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Source of DFLs",
+      name: t("Source of DFLs"),
       selector: (row) => row.dflsSource,
       cell: (row) => <span>{row.dflsSource}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc",
+      name:  t("tsc"),
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race of DFLs",
+      name:  t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Numbers Of DFLs",
+      name: t("Number of DFL’s"),
       selector: (row) => row.numbersOfDfls,
       cell: (row) => <span>{row.numbersOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number (of the RSP)"),
       selector: (row) => row.lotNumberRsp,
       cell: (row) => <span>{row.lotNumberRsp}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name:  t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "State",
+      name:  t("state"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold after 1st/2nd/3rd Moult",
+      name: t("Sold after 1st/2nd/3rd Moult"),
       selector: (row) => row.soldAfter1stOr2ndMould,
       cell: (row) => <span>{row.soldAfter1stOr2ndMould}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rate per 100 DFLs(optional)",
+      name: t("Rate per 100 DFLs"),
       selector: (row) => row.ratePer100Dfls,
       cell: (row) => <span>{row.ratePer100Dfls}</span>,
       sortable: true,
@@ -273,14 +275,14 @@ useEffect(() => {
     },
 
     {
-      name: "price",
+      name: t("Price (in Rupees)"),
       selector: (row) => row.price,
       cell: (row) => <span>{row.price}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hatching  date",
+      name:  t("Hatching Date"),
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
       sortable: true,
@@ -288,14 +290,14 @@ useEffect(() => {
     },
 
     {
-      name: "Dispatch date",
+      name: t("Dispatch Date"),
       selector: (row) => row.dispatchDate,
       cell: (row) => <span>{row.dispatchDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Receipt Number",
+      name: t("Receipt No"),
       selector: (row) => row.receiptNo,
       cell: (row) => <span>{row.receiptNo}</span>,
       sortable: true,
@@ -309,7 +311,7 @@ useEffect(() => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Chawki Management (Sale Of Chawki Worms)</Block.Title>
+            <Block.Title tag="h2">{t("Chawki Management (Sale Of Chawki Worms)")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -319,7 +321,7 @@ useEffect(() => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -328,7 +330,7 @@ useEffect(() => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
