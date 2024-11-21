@@ -12,11 +12,15 @@ import api from "../../../src/services/auth/api";
 // import Quill from "../../components/Form/editors/Quill";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function HelpDesk() {
+
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     hdModuleId: "",
     hdFeatureId: "",
@@ -33,7 +37,7 @@ function HelpDesk() {
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
-  const placeholder = "Enter your Query";
+  const placeholder = t("Enter your Query");
 
   const { quill, quillRef } = useQuill({ placeholder });
 
@@ -393,7 +397,7 @@ function HelpDesk() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Create Ticket</Block.Title>
+            <Block.Title tag="h2">{t("Create Ticket")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -410,7 +414,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
-                        Module<span className="text-danger">*</span>
+                      {t("Module")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -424,7 +428,7 @@ function HelpDesk() {
                             data.hdModuleId === "0"
                           }
                         >
-                          <option value="">Select Module</option>
+                          <option value="">{t("Select Module")}</option>
                           {hdModuleListData.map((list) => (
                             <option
                               key={list.hdModuleId}
@@ -435,7 +439,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Module Name is required
+                          {t("Module Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -444,7 +448,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
-                        Feature<span className="text-danger">*</span>
+                        {t("Feature")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -458,7 +462,7 @@ function HelpDesk() {
                             data.hdFeatureId === "0"
                           }
                         >
-                          <option value="">Select Feature</option>
+                          <option value="">{t("Select Feature")}</option>
                           {featureListData.map((list) => (
                             <option
                               key={list.hdFeatureId}
@@ -469,7 +473,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Feature Name is required
+                          {t("Feature Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -478,7 +482,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
-                        Broad Category<span className="text-danger">*</span>
+                        {t("Broad Category")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -492,7 +496,7 @@ function HelpDesk() {
                             data.hdBoardCategoryId === "0"
                           }
                         >
-                          <option value="">Select Broad Category</option>
+                          <option value="">{t("Select Broad Category")}</option>
                           {hdBoardCategoryListData.map((list) => (
                             <option
                               key={list.hdBoardCategoryId}
@@ -503,7 +507,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Broad Category Name is required
+                          {t("Broad Category Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -512,7 +516,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Category<span className="text-danger">*</span>
+                      {t("Category")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -526,7 +530,7 @@ function HelpDesk() {
                             data.hdCategoryId === "0"
                           }
                         >
-                          <option value="">Select Category</option>
+                          <option value="">{t("Select Category")}</option>
                           {hdCategoryListData.map((list) => (
                             <option
                               key={list.hdCategoryId}
@@ -537,7 +541,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Category Name is required
+                        {t("Category is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -546,7 +550,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Sub Category<span className="text-danger">*</span>
+                        {t("Sub Category")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -560,7 +564,7 @@ function HelpDesk() {
                             data.hdSubCategoryId === "0"
                           }
                         >
-                          <option value="">Select Sub Category</option>
+                          <option value="">{t("Select Sub Category")}</option>
                           {hdSubCategoryListData.map((list) => (
                             <option
                               key={list.hdSubCategoryId}
@@ -571,7 +575,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Sub Category Name is required
+                          {t("Sub Category Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -580,7 +584,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                        Users Affected
+                        {t("Users Affected")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -589,7 +593,7 @@ function HelpDesk() {
                           value={data.hdUsersAffected}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Users Affected"
+                          placeholder={t("Enter Users Affected")}
                         />
                       </div>
                     </Form.Group>
@@ -598,7 +602,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group as={Row} className="form-group mt-2">
                       <Form.Label column sm={3} className="mt-n2">
-                        On Behalf Of
+                        {t("On Behalf Of")}
                       </Form.Label>
                       <Col sm={1}>
                         <Form.Check
@@ -617,7 +621,7 @@ function HelpDesk() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label>
-                          User Name<span className="text-danger">*</span>
+                          {t("User Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -631,7 +635,7 @@ function HelpDesk() {
                             //   data.onBehalfOf === "0"
                             // }
                           >
-                            <option value="">Select Feature</option>
+                            <option value="">{t("Select Feature")}</option>
                             {userListData.map((list) => (
                               <option
                                 key={list.userMasterId}
@@ -653,7 +657,7 @@ function HelpDesk() {
                       {/* <Form.Label htmlFor="address">
                         Query<span className="text-danger">*</span>
                       </Form.Label> */}
-                      <Card.Header>Query</Card.Header>
+                      <Card.Header>{t("Query")}</Card.Header>
                       <div className="form-control-wrap">
                         <Form.Control
                           // as="textarea"
@@ -674,7 +678,7 @@ function HelpDesk() {
 
                   <Col lg="12">
                     <Form.Group className="form-group mt-n1">
-                      <Card.Header>Query Details </Card.Header>
+                      <Card.Header>{t("Query Details")} </Card.Header>
                       <div className="form-control-wrap">
                         <div ref={quillRef} />
                       </div>
@@ -746,7 +750,7 @@ function HelpDesk() {
 <Col lg="4">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="trUploadPath">
-      Attach Files
+      {t("Attach Files")}
     </Form.Label>
     <div className="form-control-wrap">
       <Form.Control
@@ -790,11 +794,11 @@ function HelpDesk() {
           download={attachFiles.name}
           className="btn btn-primary mt-3"
         >
-          Download {attachFiles.name}
+          {t("Download")} {attachFiles.name}
         </a>
       </>
     ) : (
-      <p>No file selected or file was canceled.</p>
+      <p>{t("No file selected or file was canceled.")}</p>
     )}
   </Form.Group>
 </Col>
@@ -809,7 +813,7 @@ function HelpDesk() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Save
+                        {t("save")}
                         </Button>
                       </li>
                       <li>
@@ -818,7 +822,7 @@ function HelpDesk() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Create New Ticket
+                          {t("Create New Ticket")}
                         </Button>
                       </li>
                     </ul>

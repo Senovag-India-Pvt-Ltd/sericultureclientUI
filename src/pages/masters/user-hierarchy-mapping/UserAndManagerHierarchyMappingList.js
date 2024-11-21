@@ -121,6 +121,99 @@ function UserAndManagerHierarchyMappingList() {
     }
   }, [activeReportee, page]);
 
+//   const exportCsv = (e) => {
+//     api
+//       .post(
+//         baseURL + `userMaster/export-user-report`,
+//         {},
+//         {
+//           params: {
+//           },
+//           responseType: 'blob',
+//           headers: {
+//             accept: "text/csv",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         const blob = new Blob([response.data], { type: "text/csv" });
+//         const link = document.createElement("a");
+//         link.href = window.URL.createObjectURL(blob);
+//         link.download = `user_report_.csv`;
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         window.URL.revokeObjectURL(link.href);
+//       })
+//       .catch((err) => {
+//         Swal.fire({
+//           icon: "warning",
+//           title: "No record found!!!",
+//         });
+//       });
+// };
+
+const exportCsv = (isHierarchy) => {
+  api
+    .post(
+      baseURL + `userMaster/export-user-report`,
+      {},
+      {
+        params: {
+          isHierarchy: isHierarchy,
+        },
+        responseType: 'blob',
+        headers: {
+          accept: "text/csv",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `user_report_.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "warning",
+        title: "No record found!!!",
+      });
+    });
+};
+
+
+const handleExportClick = () => {
+  Swal.fire({
+    title: "Select Report Type",
+    input: "radio",
+    inputOptions: {
+      false: "Direct Reportee",
+      true: "All Reportee",
+    },
+    inputValue: "false", // Default selection is "Direct Reportee" (false)
+    inputValidator: (value) => {
+      if (!value) {
+        return "You need to select a report type!";
+      }
+    },
+    showCancelButton: true,
+    confirmButtonText: "Export",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const isHierarchy = result.value === "true"; // Convert string to boolean
+      exportCsv(isHierarchy);
+    }
+  });
+};
+
+
   const navigate = useNavigate();
 //   const handleView = (_id) => {
 //     navigate(`/seriui/users-view/${_id}`);
@@ -436,115 +529,21 @@ function UserAndManagerHierarchyMappingList() {
         >
           All Reportee
         </button>
+        <Button type="button" variant="primary" onClick={handleExportClick}>
+           Export
+        </Button>
+        {/* <button onclick={() =>handleExportClick()}>Export</button> */}
       </div>
+      {/* <Col sm={1}> */}
+              
+            {/* </Col> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
-      {/* <Block className="mt-n4">
-        <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-            <Card.Header>User Hierarchy Mapping</Card.Header>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={userData.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            userData.userMasterId === undefined ||
-                            userData.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select Reporting Officer</option>
-                          {userListData && userListData.length
-                            ? userListData.map((list) => (
-                                <option
-                                  key={list.userMasterId}
-                                  value={list.userMasterId}
-                                >
-                                  {list.username}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>  
-                </Row>
-              </Card.Body>
-            </Card>
-
-       
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Direct Reportee
-                  </Button>
-                </li>
-
-                <li>
-                  <Button type="submit" variant="primary">
-                    All Reportee
-                  </Button>
-                </li>
-                
-              </ul>
-            </div>
-        </Form>
-      </Block> */}
-
       <Block className="mt-n4">
         <Card>
-          {/* <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      <option value="username">User Name</option>
-                      <option value="phoneNumber">Phone Number</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="userMasterId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row> */}
+          
         {activeReportee === "direct" ? (
         <DataTable
           tableClassName="data-table-head-light table-responsive"

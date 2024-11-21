@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -20,6 +21,8 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TscOfficerList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -974,7 +977,7 @@ const getFinancialDefaultDetails = () => {
       button: true,
     },
     {
-      name: "Sl.No.",
+      name: t("Sl.No"),
       selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
@@ -982,35 +985,35 @@ const getFinancialDefaultDetails = () => {
       hide: "md",
     },
     {
-      name: "Fruits Id",
+      name:  t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Beneficiary Id",
+      name: t("Beneficiary ID"),
       selector: (row) => row.beneficiaryId,
       cell: (row) => <span>{row.beneficiaryId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name:t("farmer_name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -1019,21 +1022,21 @@ const getFinancialDefaultDetails = () => {
     
 
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component",
+      name: t("Component"),
       selector: (row) => row.scComponentName,
       cell: (row) => <span>{row.scComponentName}</span>,
       sortable: true,
@@ -1041,21 +1044,21 @@ const getFinancialDefaultDetails = () => {
     },
   
     {
-      name: "Sanction No",
+      name: t("Sanction Number"),
       selector: (row) => row.sanctionNumber,
       cell: (row) => <span>{row.sanctionNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Subsidy Amount",
+      name: t("Subsidy Amount"),
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Application Status",
+      name: t("Application Status"),
       selector: (row) => row.applicationStatus,
       cell: (row) => (
         <span style={{ color: "green", fontWeight: "bold" }}>
@@ -1066,14 +1069,14 @@ const getFinancialDefaultDetails = () => {
       hide: "md",
     },
     {
-      name: "Remarks",
+      name: t("Remarks"),
       selector: (row) => row.remarks,
       cell: (row) => <span>{row.remarks}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <>
           <Button
@@ -1082,7 +1085,7 @@ const getFinancialDefaultDetails = () => {
             onClick={() => handleView(row.scApplicationFormId)}
             className="ms-1"
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="danger"
@@ -1090,7 +1093,7 @@ const getFinancialDefaultDetails = () => {
             onClick={() => rejectDetails(row.scApplicationFormId)}
             className="ms-1"
           >
-            Reject
+            {t("Reject")}
           </Button>
           <Button
             variant="primary"
@@ -1099,7 +1102,7 @@ const getFinancialDefaultDetails = () => {
             onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >
-            Push
+            {t("Push")}
           </Button>
         </>
       ),
@@ -1114,7 +1117,7 @@ const getFinancialDefaultDetails = () => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">TSC Officer List</Block.Title>
+            <Block.Title tag="h2">{t("TSC Officer List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1461,12 +1464,12 @@ const getFinancialDefaultDetails = () => {
                     >
                       {/* <option value="0">All</option> */}
                       {/* <option value="1">Sanction No.</option> */}
-                      <option value="2">FruitsId</option>
+                      <option value="2">{t("FRUITS ID")}</option>
                       {/* <option value="3">Rejected Reason</option> */}
-                      <option value="4">Beneficiary Id</option>
-                      <option value="5">Financial Year</option>
-                      <option value="6">Component</option>
-                      <option value="7">Component Type</option>
+                      <option value="4">{t("Beneficiary ID")}</option>
+                      <option value="5">{t("Financial Year")}</option>
+                      <option value="6">{t("Component")}</option>
+                      <option value="7">{t("Component Type")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -1488,7 +1491,7 @@ const getFinancialDefaultDetails = () => {
                                   searchData.text === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1519,7 +1522,7 @@ const getFinancialDefaultDetails = () => {
                               searchData.text === "0"
                             }
                           >
-                            <option value="">Select Component</option>
+                            <option value="">{t("Select Component")}</option>
                             {scComponentListData.map((list) => (
                               <option
                                 key={list.scComponentId}
@@ -1549,7 +1552,7 @@ const getFinancialDefaultDetails = () => {
                          searchData.text === "0"
                        }
                   >
-                    <option value="">Select Component Type</option>
+                    <option value="">{t("Select Component Type")}</option>
                     {scSubSchemeDetailsListData &&
                       scSubSchemeDetailsListData.map((list, i) => (
                         <option 
@@ -1578,7 +1581,7 @@ const getFinancialDefaultDetails = () => {
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    Field Value is Required
+                  {t("Field Value is Required")}
                   </Form.Control.Feedback>
                 </Col>
               )}
@@ -1605,7 +1608,7 @@ const getFinancialDefaultDetails = () => {
                 </Col> */}
 
                 <Form.Label column sm={1}>
-                  Taluk
+                {t("taluk")}
                 </Form.Label>
                 <Col sm={2}>
                   <div className="form-control-wrap">
@@ -1615,7 +1618,7 @@ const getFinancialDefaultDetails = () => {
                       onChange={handleInputsaddress}
                       style={{ marginLeft: "-14%" }}
                     >
-                      <option value="0">Select Taluk</option>
+                      <option value="0">{t("select_taluk")}</option>
                       {talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
@@ -1627,12 +1630,12 @@ const getFinancialDefaultDetails = () => {
 
                 <Col sm={2}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
                 <Col>
               <Button type="button" variant="primary" onClick={exportCsv}>
-                Export
+              {t("Export")}
               </Button>
            </Col>
               </Form.Group>
@@ -1673,7 +1676,7 @@ const getFinancialDefaultDetails = () => {
               </li> */}
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                {t("cancel")}
                 </Button>
               </li>
             </ul>
@@ -1914,7 +1917,7 @@ const getFinancialDefaultDetails = () => {
 
 <Modal show={showModal} onHide={handleCloseModal} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
+    <Modal.Title>{t("View Details")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     {loading ? (
@@ -1926,68 +1929,68 @@ const getFinancialDefaultDetails = () => {
         {/* Application Details Accordion */}
         <Accordion.Item eventKey="0">
           <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Application Details</Accordion.Header>
+                        className="mb-2">{t("Application Details")}</Accordion.Header>
           <Accordion.Body>
             <table className="table small table-bordered">
               <tbody>
                 <tr>
-                  <td style={styles.ctstyle}>Fruits Id:</td>
+                  <td style={styles.ctstyle}>{t("FRUITS ID")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Farmer Name:</td>
+                  <td style={styles.ctstyle}>{t("farmer_name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sanction No:</td>
+                  <td style={styles.ctstyle}>{t("Sanction No.")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.sanctionNo || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                  <td style={styles.ctstyle}>{t("Sub Scheme Name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.subSchemeName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Component:</td>
+                  <td style={styles.ctstyle}>{t("Component")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.scComponentName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Scheme Name:</td>
+                  <td style={styles.ctstyle}>{t("Scheme Name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sub Component:</td>
+                  <td style={styles.ctstyle}>{t("Sub Component")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.categoryName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Scheme Amount:</td>
+                  <td style={styles.ctstyle}>{t("Scheme Amount")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Period From:</td>
+                  <td style={styles.ctstyle}>{t("Period From")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.periodFrom || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Period To:</td>
+                  <td style={styles.ctstyle}>{t("Period To")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.periodTo || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>District Name:</td>
+                  <td style={styles.ctstyle}>{t("district")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.districtName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Taluk Name:</td>
+                  <td style={styles.ctstyle}>{t("taluk")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.talukName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Village Name:</td>
+                  <td style={styles.ctstyle}>{t("village")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.villageName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Application Status:</td>
+                  <td style={styles.ctstyle}>{t("Application Status")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Remarks:</td>
+                  <td style={styles.ctstyle}>{t("Remarks")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.remarks || 'N/A'}</td>
                 </tr>
               </tbody>
@@ -2000,64 +2003,64 @@ const getFinancialDefaultDetails = () => {
           viewDetailsData.landDetails.map((landDetail, index) => (
             <Accordion.Item eventKey={index + 1} key={index}>
               <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Land Details</Accordion.Header>
+                        className="mb-2">{t("Land Details")}</Accordion.Header>
               <Accordion.Body>
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>Survey Number:</td>
+                      <td style={styles.ctstyle}>{t("survey_number")}</td>
                       <td>{landDetail.surveyNumber || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>District Name:</td>
+                      <td style={styles.ctstyle}>{t("district")}</td>
                       <td>{landDetail.districtName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Taluk Name:</td>
+                      <td style={styles.ctstyle}>{t("taluk")}</td>
                       <td>{landDetail.talukName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Village Name:</td>
+                      <td style={styles.ctstyle}>{t("village")}</td>
                       <td>{landDetail.villageName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Acre:</td>
+                      <td style={styles.ctstyle}>{t("Acre")}</td>
                       <td>{landDetail.acre || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>F Gunta:</td>
+                      <td style={styles.ctstyle}>{t("FGunta")}</td>
                       <td>{landDetail.fGunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Gunta:</td>
+                      <td style={styles.ctstyle}>{t("Gunta")}</td>
                       <td>{landDetail.gunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area Acre:</td>
+                      <td style={styles.ctstyle}>{t("Developed Area Acre")}</td>
                       <td>{landDetail.devAcre || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                      <td style={styles.ctstyle}> {t("Developed Area F Gunta")}</td>
                       <td>{landDetail.devFGunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                      <td style={styles.ctstyle}>{t("Developed Area Gunta")}</td>
                       <td>{landDetail.devGunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Hissa:</td>
+                      <td style={styles.ctstyle}>{t("hissa")}</td>
                       <td>{landDetail.hissa || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Land Code:</td>
+                      <td style={styles.ctstyle}>{t("Land Code")}</td>
                       <td>{landDetail.landCode || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Main Owner No:</td>
+                      <td style={styles.ctstyle}>{t("Main Owner No")}</td>
                       <td>{landDetail.mainOwnerNo || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Owner Name:</td>
+                      <td style={styles.ctstyle}>{t("owner_name")}</td>
                       <td>{landDetail.ownerName || 'N/A'}</td>
                     </tr>
                   </tbody>
@@ -2068,29 +2071,29 @@ const getFinancialDefaultDetails = () => {
         ) : (
           <Accordion.Item eventKey="land">
             <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2" >Land Details</Accordion.Header>
-            <Accordion.Body>No Land Details Available</Accordion.Body>
+                        className="mb-2" >{t("Land Details")}</Accordion.Header>
+            <Accordion.Body>{t("No Land Details Available")}</Accordion.Body>
           </Accordion.Item>
         )}
 
         <Accordion.Item eventKey="transaction">
   <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Application Transaction Details</Accordion.Header>
+                        className="mb-2">{t("Application Transaction Details")}</Accordion.Header>
   <Accordion.Body>
     <div style={{ overflowX: 'auto' }}>
       <table className="table small table-bordered" style={{ maxWidth: '100%', tableLayout: 'fixed' }}>
         <thead style={styles.headerStyle}>
           <tr>
-            <th style={{ width: '10%' }}>Fruits Id</th>
-            <th style={{ width: '10%' }}>Beneficiary Id</th>
-            <th style={{ width: '10%' }}>Scheme Amount</th>
-            <th style={{ width: '10%' }}>Sanction No</th>
-            <th style={{ width: '10%' }}>Financial Year</th>
-            <th style={{ width: '10%' }}>Payment Mode</th>
-            <th style={{ width: '10%' }}>File Name</th>
-            <th style={{ width: '10%' }}>DBT Push Type</th>
-            <th style={{ width: '10%' }}>Status</th>
-            <th style={{ width: '10%' }}>Remarks</th>
+          <th style={{ width: "10%" }}>{t("FRUITS ID")}</th>
+                          <th style={{ width: "10%" }}>{t("Beneficiary ID")}</th>
+                          <th style={{ width: "10%" }}>{t("Scheme Amount")}</th>
+                          <th style={{ width: "10%" }}>{t("Sanction No.")}</th>
+                          <th style={{ width: "10%" }}>{t("Financial Year")}</th>
+                          <th style={{ width: "10%" }}>{t("Payment Mode")}</th>
+                          <th style={{ width: "10%" }}>{t("File Name")}</th>
+                          <th style={{ width: "10%" }}>{t("DBT Push Type")}</th>
+                          <th style={{ width: "10%" }}>{t("Status")}</th>
+                          <th style={{ width: "10%" }}>{t("Remarks")}</th>
           </tr>
         </thead>
         <tbody>
@@ -2111,7 +2114,7 @@ const getFinancialDefaultDetails = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="10" className="text-center">No Transaction Details Available</td>
+              <td colSpan="10" className="text-center">{t("No Transaction Details Available")}</td>
             </tr>
           )}
         </tbody>
@@ -2124,7 +2127,7 @@ const getFinancialDefaultDetails = () => {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal}>
-      Close
+    {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

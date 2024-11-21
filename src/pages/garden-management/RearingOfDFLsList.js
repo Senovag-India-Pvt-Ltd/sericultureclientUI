@@ -1,9 +1,10 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button,Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
 // import axios from "axios";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -11,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsList() {
@@ -53,6 +54,219 @@ function RearingOfDFLsList() {
     navigate(`/seriui/rearing-of-dfls-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
+
+  const formattedDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
+  const [validated, setValidated] = useState(false);
+
+  const [showModal3, setShowModal3] = useState(false);
+
+  // const handleShowModal3 = () => setShowModal3(true);
+  const handleShowModal3 = (row) => {
+    setFeedingMoultTable({ ...feedingTableDetails, rearingOfDFLsForThe8linesId: row.id });
+    setShowModal3(true); 
+  };
+
+  const handleCloseModal3 = () => setShowModal3(false);
+
+  const [feedingTableDetails, setFeedingMoultTable] = useState({
+    rearingOfDFLsForThe8linesId: "",
+    lotNumber: "",
+    hatchingDate: "",
+    firstFeeding: "",
+    secondFeeding: "",
+    thirdFeeding: "",
+    leafQuantity:"",
+    wormStage: "",
+    temperature: "",
+    humidity: "",
+  });
+
+  const handleDateChange = (date, type) => {
+    setFeedingMoultTable({ ...feedingTableDetails, [type]: date });
+  };
+
+  const handleFeedingMoultInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setFeedingMoultTable({ ...feedingTableDetails, [name]: value });
+  };
+
+  const postFeedingTableData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const formattedReleaseDate = formattedDate(feedingTableDetails.hatchingDate);
+      const sendPost = {
+        rearingOfDFLsForThe8linesId: feedingTableDetails.rearingOfDFLsForThe8linesId,
+        lotNumber: feedingTableDetails.lotNumber,
+        hatchingDate: formattedReleaseDate,
+        firstFeeding: feedingTableDetails.firstFeeding,
+        secondFeeding: feedingTableDetails.secondFeeding,
+        thirdFeeding:feedingTableDetails.thirdFeeding,
+        leafQuantity: feedingTableDetails.leafQuantity,
+        wormStage: feedingTableDetails.wormStage,
+        temperature: feedingTableDetails.temperature,
+        humidity: feedingTableDetails.humidity, 
+      };
+      api
+        .post(
+          baseURLSeedDfl + `FeedingAndMoultTest/add-info`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const [showModal4, setShowModal4] = useState(false);
+  const handleShowModal4 = () => setShowModal4(true); 
+  const handleCloseModal4 = () => setShowModal4(false);
+
+  const [listMoultData, setMoultListData] = useState({});
+
+  const getMoultList = () => {
+    setLoading(true);
+  
+    api
+      .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info`)
+      .then((response) => {
+        setMoultListData(response.data);
+        setLoading(false);
+        handleShowModal4(); // Open modal after data is fetched
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  const RearingOfDFLSMoultDataColumns = [
+    
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Hatching Date",
+      selector: (row) => row.hatchingDate,
+      cell: (row) => <span>{row.hatchingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "First Feeding",
+      selector: (row) => row.firstFeeding,
+      cell: (row) => <span>{row.firstFeeding}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Second Feeding",
+      selector: (row) => row.secondFeeding,
+      cell: (row) => <span>{row.secondFeeding}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Third Feeding",
+      selector: (row) => row.thirdFeeding,
+      cell: (row) => <span>{row.thirdFeeding}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Leaf Quantity",
+      selector: (row) => row.leafQuantity,
+      cell: (row) => <span>{row.leafQuantity}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Worm Stage",
+      selector: (row) => row.wormStage,
+      cell: (row) => <span>{row.wormStage}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Temperature",
+      selector: (row) => row.temperature,
+      cell: (row) => <span>{row.temperature}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Humidity",
+      selector: (row) => row.humidity,
+      cell: (row) => <span>{row.humidity}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+  ];
+
+  const saveSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      text: message,
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
+
 
   const deleteError = () => {
     Swal.fire({
@@ -165,14 +379,14 @@ function RearingOfDFLsList() {
           >
             Edit
           </Button>
-          {/* <Button
+          <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id)}
+            onClick={() => handleShowModal3(row)}
             className="ms-2"
           >
-            Delete
-          </Button> */}
+            Add Moult Table
+          </Button>
         </div>
       ),
       sortable: false,
@@ -268,11 +482,11 @@ function RearingOfDFLsList() {
   ];
 
   return (
-    <Layout title="Rearing of DFLs List">
+    <Layout title="List Of Rearing of DFLs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Rearing of DFLs List</Block.Title>
+            <Block.Title tag="h2">List Of Rearing of DFLs</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -294,6 +508,16 @@ function RearingOfDFLsList() {
                   <span>Create</span>
                 </Link>
               </li>
+              <li>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => getMoultList()}
+                className="ms-2"
+              >
+                Moult Table List
+              </Button>
+            </li>
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
@@ -321,6 +545,301 @@ function RearingOfDFLsList() {
           />
         </Card>
       </Block>
+
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Feeding and Moult Test</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postFeedingTableData}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Date
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={feedingTableDetails.hatchingDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "hatchingDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  // required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Lot Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="lotNumber"
+                                  name="lotNumber"
+                                  value={
+                                    feedingTableDetails.lotNumber || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="Lot Number"
+                                  // readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               1st Feeding
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="firstFeeding"
+                                  name="firstFeeding"
+                                  value={
+                                    feedingTableDetails.firstFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="1st Feeding"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               2nd Feeding
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="secondFeeding"
+                                  name="secondFeeding"
+                                  value={
+                                    feedingTableDetails.secondFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="2nd Feeding"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               3rd Feeding
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="thirdFeeding"
+                                  name="thirdFeeding"
+                                  value={
+                                    feedingTableDetails.thirdFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="3rd Feeding"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              Leaf Quantity in Gms/Kg
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="leafQuantity"
+                                  name="leafQuantity"
+                                  value={feedingTableDetails.leafQuantity || ""}
+                                  onChange={handleFeedingMoultInputs}
+                                  type="number"
+                                  placeholder="Leaf Quantity in Gms/Kg"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              Worm Stage
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="wormStage"
+                                  value={feedingTableDetails.wormStage}
+                                  onChange={handleFeedingMoultInputs}
+                                  // required
+                                  // isInvalid={
+                                  //   data.testResults === undefined ||
+                                  //   data.testResults === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select Worm Stage
+                                  </option>
+                                  <option value="Hatching">Hatching</option>
+                                  <option value="1st Moult">1st Moult</option>
+                                  <option value="2nd Moult">2nd Moult</option>
+                                  <option value="3rd Moult">3rd Moult</option>
+                                  <option value="4th Moult">4th Moult</option>
+                                  <option value="Spinning">Spinning</option>
+                                  <option value="Harvest">Harvest</option>
+                                  <option value="Supply/Market">Supply/Market</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                Temperature
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="temperature"
+                                  name="temperature"
+                                  value={
+                                    feedingTableDetails.temperature || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="Enter temperature"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                Humidity
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="humidity"
+                                  name="humidity"
+                                  value={
+                                    feedingTableDetails.humidity || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder="Enter Humidity"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Update
+                            </Button>
+                          </li>
+                          <li>
+                            
+                          </li>
+                        </ul>
+                      </div>
+                        {/* </Card.Body>
+                    </Card> */}
+                      </Block>
+                     
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+          </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>Feeding and Moult Test</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Block className="mt-3">
+      <Card>
+        <DataTable
+          tableClassName="data-table-head-light table-responsive"
+          columns={RearingOfDFLSMoultDataColumns}
+          data={listMoultData}
+          highlightOnHover
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          paginationPerPage={countPerPage}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
+          onChangePage={(page) => setPage(page - 1)}
+          progressPending={loading}
+          theme="solarized"
+          customStyles={customStyles}
+        />
+      </Card>
+    </Block>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseModal4}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
     </Layout>
   );
 }
