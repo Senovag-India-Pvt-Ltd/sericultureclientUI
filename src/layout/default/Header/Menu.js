@@ -2534,6 +2534,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Reeling TSC Wise Scheme Target Setting"
+                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}

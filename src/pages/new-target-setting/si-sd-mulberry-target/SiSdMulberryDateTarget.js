@@ -87,7 +87,7 @@ function SiSdMulberryDateTarget() {
     financialYearMasterId: "",
     districtId: "",
     tscMasterId: "",
-    date: "",
+    targetDate: "",
     targetType: "",
     value: "",
     userMasterId: "",
@@ -95,12 +95,13 @@ function SiSdMulberryDateTarget() {
 
   const handleEdit = (mulberryTargetsId) => {
     setLoading(true);
-    const response = api
+    api
       .get(
-        baseURLTargetSetting + `mulberryTargets/get-sisd/${mulberryTargetsId}`
+        baseURLTargetSetting +
+          `mulberryTargets/get-by-id?id=${mulberryTargetsId}`
       )
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.mulberryTargets);
         setShowModal3(true);
         setLoading(false);
       })
@@ -276,7 +277,7 @@ function SiSdMulberryDateTarget() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `mulberryTargets/editSiSdMulberryTargets`,
+          baseURLTargetSetting + `mulberryTargets/editSiSdDayMulberryTargets`,
           editData
         )
         .then((response) => {
@@ -322,10 +323,11 @@ function SiSdMulberryDateTarget() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLTargetSetting + `mulberryTargets/delete-sisd/${_id}`)
+          .delete(baseURLTargetSetting + `mulberryTargets/delete-mulberry-targets/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getFinancialList();
+            getList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -349,7 +351,7 @@ function SiSdMulberryDateTarget() {
       financialYearMasterId: "",
       districtId: "",
       tscMasterId: "",
-      date: "",
+      targetDate: "",
       targetType: "",
       value: "",
       userMasterId: "",
@@ -433,9 +435,9 @@ function SiSdMulberryDateTarget() {
     },
 
     {
-      name: "date",
-      selector: (row) => row.date,
-      cell: (row) => <span>{row.date}</span>,
+      name: "Target Date",
+      selector: (row) => row.targetDate,
+      cell: (row) => <span>{row.targetDate}</span>,
       sortable: true,
       hide: "md",
     },
@@ -455,15 +457,23 @@ function SiSdMulberryDateTarget() {
     },
   ];
 
-const handleDateChange = (date, type) => {
+  const handleDateChange = (date, type) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const formattedDate = `${year}-${month}-${day}`;
     setData({ ...data, [type]: formattedDate });
-};
+  };
 
-console.log("date",data.targetDate);
+  const handleEditDateChange = (date, type) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    setEditData({ ...editData, [type]: formattedDate });
+  };
+
+  console.log("date", data.targetDate);
 
   const [validated, setValidated] = useState(false);
 
@@ -604,7 +614,7 @@ console.log("date",data.targetDate);
       financialYearMasterId: "",
       districtId: "",
       tscMasterId: "",
-      date: "",
+      targetDate: "",
       targetType: "",
       value: "",
       userMasterId: "",
@@ -637,11 +647,11 @@ console.log("date",data.targetDate);
     });
   };
   return (
-    <Layout title="SI-SD Mulberry Target">
+    <Layout title="SI-SD Mulberry Daily Target">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">SI-SD Mulberry Target</Block.Title>
+            <Block.Title tag="h2">SI-SD Mulberry Daily Target</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -676,7 +686,7 @@ console.log("date",data.targetDate);
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>SI-SD Mulberry Target </Card.Header>
+                    <Card.Header>SI-SD Mulberry Daily Target </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1003,7 +1013,7 @@ console.log("date",data.targetDate);
                             </div>
                           </Form.Group>
                         </Col> */}
-                        
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
@@ -1028,22 +1038,28 @@ console.log("date",data.targetDate);
                         </Col>
 
                         <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                        <Form.Label>Target Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.targetDate ? new Date(data.targetDate) : null}
-                            onChange={(date) => handleDateChange(date, "targetDate")}
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            maxDate={new Date()}
-                          />
-                        </div>
-                      </Form.Group>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>Target Date</Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={
+                                  data.targetDate
+                                    ? new Date(data.targetDate)
+                                    : null
+                                }
+                                onChange={(date) =>
+                                  handleDateChange(date, "targetDate")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                // maxDate={new Date()}
+                              />
+                            </div>
+                          </Form.Group>
                         </Col>
 
                         {/* <Col lg="6">
@@ -1173,7 +1189,7 @@ console.log("date",data.targetDate);
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>TSC Wise Monthly Mulberry</Modal.Title>
+          <Modal.Title>SI-SD Mulberry Daily Target Edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1192,13 +1208,13 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="financialYearMasterId"
-                      value={data.financialYearMasterId}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.financialYearMasterId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       isInvalid={
-                        data.financialYearMasterId === undefined ||
-                        data.financialYearMasterId === "0"
+                        editData.financialYearMasterId === undefined ||
+                        editData.financialYearMasterId === "0"
                       }
                     >
                       <option value="">Select Year</option>
@@ -1227,13 +1243,13 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="mulberryTargetTypeId"
-                      value={data.mulberryTargetTypeId}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.mulberryTargetTypeId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       isInvalid={
-                        data.mulberryTargetTypeId === undefined ||
-                        data.mulberryTargetTypeId === "0"
+                        editData.mulberryTargetTypeId === undefined ||
+                        editData.mulberryTargetTypeId === "0"
                       }
                     >
                       <option value="">Select Year</option>
@@ -1261,12 +1277,13 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="districtId"
-                      value={data.districtId}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.districtId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       isInvalid={
-                        data.districtId === undefined || data.districtId === "0"
+                        editData.districtId === undefined ||
+                        editData.districtId === "0"
                       }
                     >
                       <option value="">Select District</option>
@@ -1291,13 +1308,13 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="tscMasterId"
-                      value={data.tscMasterId}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.tscMasterId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       isInvalid={
-                        data.tscMasterId === undefined ||
-                        data.tscMasterId === "0"
+                        editData.tscMasterId === undefined ||
+                        editData.tscMasterId === "0"
                       }
                     >
                       <option value="">Select TSC</option>
@@ -1322,13 +1339,13 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="userMasterId"
-                      value={data.userMasterId}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.userMasterId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       isInvalid={
-                        data.userMasterId === undefined ||
-                        data.userMasterId === "0"
+                        editData.userMasterId === undefined ||
+                        editData.userMasterId === "0"
                       }
                     >
                       <option value="">Select TSC</option>
@@ -1356,9 +1373,9 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="targetType"
-                      value={data.targetType}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
+                      value={editData.targetType}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
                       required
                       // isInvalid={
                       //   data.targetType === undefined ||
@@ -1381,7 +1398,7 @@ console.log("date",data.targetDate);
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              {/* <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     Month<span className="text-danger">*</span>
@@ -1389,7 +1406,7 @@ console.log("date",data.targetDate);
                   <div className="form-control-wrap">
                     <Form.Select
                       name="month"
-                      value={data.month}
+                      value={editData.month}
                       onChange={handleInputs}
                       onBlur={() => handleInputs}
                       required
@@ -1414,9 +1431,7 @@ console.log("date",data.targetDate);
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-              </Col>
-
-                
+              </Col> */}
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
@@ -1428,8 +1443,8 @@ console.log("date",data.targetDate);
                     <Form.Control
                       id="value"
                       name="value"
-                      value={data.value}
-                      onChange={handleInputs}
+                      value={editData.value}
+                      onChange={handleEditInputs}
                       type="text"
                       placeholder="Enter Target No."
                       // required
@@ -1437,6 +1452,31 @@ console.log("date",data.targetDate);
                     <Form.Control.Feedback type="invalid">
                       Target No. is required.
                     </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>Target Date</Form.Label>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={
+                        editData.targetDate
+                          ? new Date(editData.targetDate)
+                          : null
+                      }
+                      onChange={(date) =>
+                        handleEditDateChange(date, "targetDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      // maxDate={new Date()}
+                    />
                   </div>
                 </Form.Group>
               </Col>

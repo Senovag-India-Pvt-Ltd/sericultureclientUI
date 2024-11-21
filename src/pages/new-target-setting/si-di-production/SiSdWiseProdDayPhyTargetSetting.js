@@ -19,7 +19,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
-    month: "",
+    targetDate: "",
     targetType: "",
     value: "",
     raceMasterId: "",
@@ -68,7 +68,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURLTargetSetting + `productionTargets/list-sisd-join`, _params)
+      .get(baseURLTargetSetting + `productionTargets/list-sisd-day-join`, _params)
       .then((response) => {
         setListData(response.data.content.body.content.productionTarget);
         setTotalRows(response.data.content.body.content.totalItems);
@@ -88,7 +88,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
-    month: "",
+    targetDate: "",
     targetType: "",
     value: "",
     raceMasterId: "",
@@ -101,10 +101,10 @@ function SiSdWiseProdDayPhyTargetSetting() {
     const response = api
       .get(
         baseURLTargetSetting +
-          `productionTargets/get-sisd/${productionTargetsId}`
+          `productionTargets/get-by-id?id=${productionTargetsId}`
       )
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.productionTargets);
         setShowModal3(true);
         setLoading(false);
       })
@@ -199,7 +199,19 @@ function SiSdWiseProdDayPhyTargetSetting() {
   }, [editData.districtId]);
 
   const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    setData({ ...data, [type]: formattedDate });
+  };
+
+  const handleEditDateChange = (date, type) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    setEditData({ ...editData, [type]: formattedDate });
   };
 
   //   To get user by TSC
@@ -302,7 +314,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `productionTargets/saveSISDProductionTargets`,
+          baseURLTargetSetting + `productionTargets/saveSISDDayProductionTargets`,
           data
         )
         .then((response) => {
@@ -375,7 +387,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
-      month: "",
+      targetDate: "",
       targetType: "",
       value: "",
       raceMasterId: "",
@@ -483,7 +495,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        const response = api
+         api
           .delete(baseURLTargetSetting + `productionTargets/delete-sisd/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
@@ -578,9 +590,9 @@ function SiSdWiseProdDayPhyTargetSetting() {
     },
 
     {
-      name: "Month",
-      selector: (row) => row.month,
-      cell: (row) => <span>{row.month}</span>,
+      name: "Target Date",
+      selector: (row) => row.targetDate,
+      cell: (row) => <span>{row.targetDate}</span>,
       sortable: true,
       hide: "md",
     },
@@ -605,7 +617,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
-      month: "",
+      targetDate: "",
       targetType: "",
       value: "",
       raceMasterId: "",
@@ -1002,7 +1014,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
                           </Form.Group>
                         </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Month<span className="text-danger">*</span>
@@ -1014,10 +1026,10 @@ function SiSdWiseProdDayPhyTargetSetting() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
-                                // }
+                                isInvalid={
+                                  data.month === undefined ||
+                                  data.month === "0"
+                                }
                               >
                                 <option value="">Select Month</option>
                                 <option value="JANUARY">January</option>
@@ -1032,19 +1044,13 @@ function SiSdWiseProdDayPhyTargetSetting() {
                                 <option value="OCTOBER">October</option>
                                 <option value="NOVEMBER">November</option>
                                 <option value="DECEMBER">December</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Month is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1065,6 +1071,31 @@ function SiSdWiseProdDayPhyTargetSetting() {
                               <Form.Control.Feedback type="invalid">
                                 Target No. is required.
                               </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>Target Date</Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={
+                                  data.targetDate
+                                    ? new Date(data.targetDate)
+                                    : null
+                                }
+                                onChange={(date) =>
+                                  handleDateChange(date, "targetDate")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                // maxDate={new Date()}
+                              />
                             </div>
                           </Form.Group>
                         </Col>
@@ -1430,7 +1461,7 @@ function SiSdWiseProdDayPhyTargetSetting() {
                           </Form.Group>
                         </Col> */}
 
-              <Col lg="6">
+              {/* <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     Month<span className="text-danger">*</span>
@@ -1442,10 +1473,10 @@ function SiSdWiseProdDayPhyTargetSetting() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
-                      // isInvalid={
-                      //   data.month === undefined ||
-                      //   data.month === "0"
-                      // }
+                      isInvalid={
+                        data.month === undefined ||
+                        data.month === "0"
+                      }
                     >
                       <option value="">Select Month</option>
                       <option value="JANUARY">January</option>
@@ -1460,19 +1491,13 @@ function SiSdWiseProdDayPhyTargetSetting() {
                       <option value="OCTOBER">October</option>
                       <option value="NOVEMBER">November</option>
                       <option value="DECEMBER">December</option>
-
-                      {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       Month is required
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-              </Col>
+              </Col> */}
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
@@ -1493,6 +1518,27 @@ function SiSdWiseProdDayPhyTargetSetting() {
                     <Form.Control.Feedback type="invalid">
                       Target No. is required.
                     </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>Target Date</Form.Label>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={
+                        editData.targetDate ? new Date(editData.targetDate) : null
+                      }
+                      onChange={(date) => handleEditDateChange(date, "targetDate")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      // maxDate={new Date()}
+                    />
                   </div>
                 </Form.Group>
               </Col>
