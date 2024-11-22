@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandCategory() {
+    // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     landCategoryName: "",
     landCategoryNameInKannada: "",
@@ -96,7 +98,7 @@ function LandCategory() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Land Holding Category</Block.Title>
+            <Block.Title tag="h2">{t("Land Holding Category")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +108,7 @@ function LandCategory() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +117,7 @@ function LandCategory() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +136,7 @@ function LandCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="category">
-                        Land Holding Category
+                      {t("Land Holding Category")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -144,11 +146,11 @@ function LandCategory() {
                           type="text"
                           value={data.landCategoryName}
                           onChange={handleInputs}
-                          placeholder="Enter Land Holding Category"
+                          placeholder={t("Enter Land Holding Category")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Land Category is required.
+                          {t("Land Category is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -157,7 +159,7 @@ function LandCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Land Category Name in Kannada
+                        {t("Land Category Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -167,11 +169,11 @@ function LandCategory() {
                           value={data.landCategoryNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Land Category Name in Kannada"
+                          placeholder={t("Enter Land Category Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Land Category Name in Kannada is required.
+                          {t("Land Category Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -185,12 +187,12 @@ function LandCategory() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

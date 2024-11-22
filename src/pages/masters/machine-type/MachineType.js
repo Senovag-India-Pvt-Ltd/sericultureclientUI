@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MachineType() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const [data, setData] = useState({
     machineTypeName: "",
     machineTypeNameInKannada: "",
@@ -96,7 +100,7 @@ function MachineType() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Machine Type</Block.Title>
+            <Block.Title tag="h2">{t("Machine Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +110,7 @@ function MachineType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +119,7 @@ function MachineType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +138,7 @@ function MachineType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="machine">
-                        Machine Type<span className="text-danger">*</span>
+                      {t("Machine Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +147,11 @@ function MachineType() {
                           type="text"
                           value={data.machineTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Machine Type"
+                          placeholder={t("Enter Machine Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Machine Type is required.
+                          {t("Machine Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +160,7 @@ function MachineType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="machine">
-                        Machine Type Name in Kannada
+                        {t("Machine Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +170,11 @@ function MachineType() {
                           type="text"
                           value={data.machineTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Machine Type Name in Kannada"
+                          placeholder={t("Enter Machine Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Machine Type Name in Kannada is required.
+                          {t("Machine Type Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +188,12 @@ function MachineType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

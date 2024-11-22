@@ -11,10 +11,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandOwnershipList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -92,7 +96,7 @@ function LandOwnershipList() {
 
   const LandOwnershipDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -102,7 +106,7 @@ function LandOwnershipList() {
             size="sm"
             onClick={() => handleView(row.landOwnershipId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -110,7 +114,7 @@ function LandOwnershipList() {
             className="ms-2"
             onClick={() => handleEdit(row.landOwnershipId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -118,7 +122,7 @@ function LandOwnershipList() {
             onClick={() => deleteConfirm(row.landOwnershipId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -126,14 +130,14 @@ function LandOwnershipList() {
       hide: "md",
     },
     {
-      name: "Land Ownership",
+      name: t("Land Ownership"),
       selector: (row) => row.landOwnershipName,
       cell: (row) => <span>{row.landOwnershipName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Land Ownership Name in Kannada",
+      name: t("Land Ownership Name in Kannada"),
       selector: (row) => row.landOwnershipNameInKannada,
       cell: (row) => <span>{row.landOwnershipNameInKannada}</span>,
       sortable: true,
@@ -195,7 +199,7 @@ function LandOwnershipList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Land Ownership List</Block.Title>
+            <Block.Title tag="h2"> {t("Land Ownership List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +209,7 @@ function LandOwnershipList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +218,7 @@ function LandOwnershipList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

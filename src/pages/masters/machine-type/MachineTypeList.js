@@ -10,11 +10,15 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MachineTypeList() {
+     // Translation
+     const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -140,7 +144,7 @@ function MachineTypeList() {
 
   const MachineTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +154,7 @@ function MachineTypeList() {
             size="sm"
             onClick={() => handleView(row.machineTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +162,7 @@ function MachineTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.machineTypeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +170,7 @@ function MachineTypeList() {
             onClick={() => deleteConfirm(row.machineTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -174,14 +178,14 @@ function MachineTypeList() {
       hide: "md",
     },
     {
-      name: "Machine Type",
+      name:t("Machine Type"),
       selector: (row) => row.machineTypeName,
       cell: (row) => <span>{row.machineTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Machine Type Name in Kannada",
+      name: t("Machine Type Name in Kannada"),
       selector: (row) => row.machineTypeNameInKannada,
       cell: (row) => <span>{row.machineTypeNameInKannada}</span>,
       sortable: true,
@@ -194,7 +198,7 @@ function MachineTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Machine Type List</Block.Title>
+            <Block.Title tag="h2">{t("Machine Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -204,7 +208,7 @@ function MachineTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -213,7 +217,7 @@ function MachineTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

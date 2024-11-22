@@ -11,10 +11,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function IrrigationTypeList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -151,7 +155,7 @@ function IrrigationTypeList() {
             size="sm"
             onClick={() => handleView(row.irrigationTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +163,7 @@ function IrrigationTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.irrigationTypeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +171,7 @@ function IrrigationTypeList() {
             onClick={() => deleteConfirm(row.irrigationTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +179,14 @@ function IrrigationTypeList() {
       hide: "md",
     },
     {
-      name: "Irrigation Type",
+      name: t("Irrigation Type"),
       selector: (row) => row.irrigationTypeName,
       cell: (row) => <span>{row.irrigationTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Irrigation Type Name in Kannada",
+      name:t("Irrigation Type Name in Kannada"),
       selector: (row) => row.irrigationTypeNameInKannada,
       cell: (row) => <span>{row.irrigationTypeNameInKannada}</span>,
       sortable: true,
@@ -195,7 +199,7 @@ function IrrigationTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Irrigation Type List</Block.Title>
+            <Block.Title tag="h2"> {t("Irrigation Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +209,7 @@ function IrrigationTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +218,7 @@ function IrrigationTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

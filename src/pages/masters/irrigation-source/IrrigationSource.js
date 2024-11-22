@@ -8,10 +8,12 @@ import { Icon, Message } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function IrrigationSource() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     irrigationSourceName: "",
     irrigationSourceNameInKannada: "",
@@ -96,7 +98,7 @@ function IrrigationSource() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Irrigation Source</Block.Title>
+            <Block.Title tag="h2">{t("Irrigation Source")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +108,7 @@ function IrrigationSource() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +117,7 @@ function IrrigationSource() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +136,7 @@ function IrrigationSource() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="irrigation">
-                        Irrigation Source<span className="text-danger">*</span>
+                      {t("Irrigation Source")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +145,11 @@ function IrrigationSource() {
                           type="text"
                           value={data.irrigationSourceName}
                           onChange={handleInputs}
-                          placeholder="Enter irrigation Source"
+                          placeholder={t("Enter irrigation Source")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Irrigation Source is required.
+                          {t("Irrigation Source is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +158,7 @@ function IrrigationSource() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="land">
-                        Irrigation Source Name in Kannada
+                        {t("Irrigation Source Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +168,11 @@ function IrrigationSource() {
                           type="text"
                           value={data.irrigationSourceNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Irrigation Source Name in Kannada"
+                          placeholder={t("Enter Irrigation Source Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Irrigation Source Name in Kannada is required.
+                          {t("Irrigation Source Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,7 +186,7 @@ function IrrigationSource() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -192,7 +194,7 @@ function IrrigationSource() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

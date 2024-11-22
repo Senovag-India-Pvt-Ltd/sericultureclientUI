@@ -11,10 +11,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import { createTheme } from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PlantationTypeList() {
+     // Translation
+     const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +145,7 @@ function PlantationTypeList() {
 
   const PlantationTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +155,7 @@ function PlantationTypeList() {
             size="sm"
             onClick={() => handleView(row.plantationTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +163,7 @@ function PlantationTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.plantationTypeId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +171,7 @@ function PlantationTypeList() {
             onClick={() => deleteConfirm(row.plantationTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +179,14 @@ function PlantationTypeList() {
       hide: "md",
     },
     {
-      name: "Plantation Type",
+      name: t("Plantation Type"),
       selector: (row) => row.plantationTypeName,
       cell: (row) => <span>{row.plantationTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Plantation Type Name in Kannada",
+      name: t("Plantation Type Name in Kannada"),
       selector: (row) => row.plantationTypeNameInKannada,
       cell: (row) => <span>{row.plantationTypeNameInKannada}</span>,
       sortable: true,
@@ -195,7 +199,7 @@ function PlantationTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Plantation Type List</Block.Title>
+            <Block.Title tag="h2"> {t("Plantation Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +209,7 @@ function PlantationTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +218,7 @@ function PlantationTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

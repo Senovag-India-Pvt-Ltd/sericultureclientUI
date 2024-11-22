@@ -11,10 +11,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceOfMulberryList() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +146,7 @@ function SourceOfMulberryList() {
 
   const SourceOfMulberryDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +156,7 @@ function SourceOfMulberryList() {
             size="sm"
             onClick={() => handleView(row.mulberrySourceId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +164,7 @@ function SourceOfMulberryList() {
             className="ms-2"
             onClick={() => handleEdit(row.mulberrySourceId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +172,7 @@ function SourceOfMulberryList() {
             onClick={() => deleteConfirm(row.mulberrySourceId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +180,14 @@ function SourceOfMulberryList() {
       hide: "md",
     },
     {
-      name: "Source Of Mulberry",
+      name: t("Source of Mulberry"),
       selector: (row) => row.mulberrySourceName,
       cell: (row) => <span>{row.mulberrySourceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Source Of Mulberry in Kannada",
+      name:t("Source of Mulberry in Kannada"),
       selector: (row) => row.mulberrySourceNameInKannada,
       cell: (row) => <span>{row.mulberrySourceNameInKannada}</span>,
       sortable: true,
@@ -195,7 +200,7 @@ function SourceOfMulberryList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Source Of Mulberry List</Block.Title>
+            <Block.Title tag="h2"> {t("Source Of Mulberry List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +210,7 @@ function SourceOfMulberryList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +219,7 @@ function SourceOfMulberryList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

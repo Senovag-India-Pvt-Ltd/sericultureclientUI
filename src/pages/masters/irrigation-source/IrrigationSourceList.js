@@ -11,10 +11,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function IrrigationSourceList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +144,7 @@ function IrrigationSourceList() {
 
   const IrrigationSourceDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +154,7 @@ function IrrigationSourceList() {
             size="sm"
             onClick={() => handleView(row.irrigationSourceId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +162,7 @@ function IrrigationSourceList() {
             className="ms-2"
             onClick={() => handleEdit(row.irrigationSourceId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +170,7 @@ function IrrigationSourceList() {
             onClick={() => deleteConfirm(row.irrigationSourceId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +178,14 @@ function IrrigationSourceList() {
       hide: "md",
     },
     {
-      name: "Irrigation Source",
+      name: t("Irrigation Source"),
       selector: (row) => row.irrigationSourceName,
       cell: (row) => <span>{row.irrigationSourceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Irrigation Source Name in Kannada",
+      name: t("Irrigation Source Name in Kannada"),
       selector: (row) => row.irrigationSourceNameInKannada,
       cell: (row) => <span>{row.irrigationSourceNameInKannada}</span>,
       sortable: true,
@@ -195,7 +198,7 @@ function IrrigationSourceList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Irrigation Source List</Block.Title>
+            <Block.Title tag="h2"> {t("Irrigation Source List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +208,7 @@ function IrrigationSourceList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +217,7 @@ function IrrigationSourceList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

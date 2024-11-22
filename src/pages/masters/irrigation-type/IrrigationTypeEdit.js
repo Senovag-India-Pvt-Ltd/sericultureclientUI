@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function IrrigationTypeEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -131,7 +134,7 @@ function IrrigationTypeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Irrigation Type</Block.Title>
+            <Block.Title tag="h2">{t("Irrigation Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -141,7 +144,7 @@ function IrrigationTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -150,7 +153,7 @@ function IrrigationTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -173,7 +176,7 @@ function IrrigationTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="irrigation">
-                          Irrigation Type<span className="text-danger">*</span>
+                        {t("Irrigation Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -182,11 +185,11 @@ function IrrigationTypeEdit() {
                             type="text"
                             value={data.irrigationTypeName}
                             onChange={handleInputs}
-                            placeholder="Enter Irrigation Type"
+                            placeholder={t("Enter Irrigation Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Irrigation Type is required.
+                          {t("Irrigation Type is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -195,7 +198,7 @@ function IrrigationTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="irrigationTypeName">
-                          Irrigation Type Name in Kannada
+                        {t("Irrigation Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -205,11 +208,11 @@ function IrrigationTypeEdit() {
                             type="text"
                             value={data.irrigationTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Irrigation Type Name in Kannada"
+                            placeholder={t("Enter Irrigation Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Irrigation Type Name in Kannada is required.
+                          {t("Irrigation Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -224,12 +227,12 @@ function IrrigationTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

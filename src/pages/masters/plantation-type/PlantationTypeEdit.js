@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PlantationTypeEdit() {
+     // Translation
+     const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -120,7 +124,7 @@ function PlantationTypeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Plantation Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit Plantation Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +134,7 @@ function PlantationTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -139,7 +143,7 @@ function PlantationTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -162,7 +166,7 @@ function PlantationTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="plantationType">
-                          Plantation Type<span className="text-danger">*</span>
+                        {t("Plantation Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -171,11 +175,11 @@ function PlantationTypeEdit() {
                             value={data.plantationTypeName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Plantation Type"
+                            placeholder={t("Enter Plantation Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Plantation Type is required.
+                          {t("Plantation Type is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -184,7 +188,7 @@ function PlantationTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="plantation">
-                          Plantation Type Name in Kannada
+                        {t("Plantation Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -194,11 +198,11 @@ function PlantationTypeEdit() {
                             type="text"
                             value={data.plantationTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Plantation Type Name in Kannada"
+                            placeholder={t("Enter Plantation Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Plantation Type Name in Kannada is required.
+                          {t("Plantation Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -213,12 +217,12 @@ function PlantationTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -7,10 +7,14 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import SubsidyDetailsDatas from "../../../store/masters/subsidy-details/SubsidyDetailsData";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SubsidyDetailsView() {
+    // Translation
+    const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -54,7 +58,7 @@ function SubsidyDetailsView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Subsidy Details View</Block.Title>
+            <Block.Title tag="h2">{t("Subsidy Details View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +68,7 @@ function SubsidyDetailsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +77,7 @@ function SubsidyDetailsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,7 +87,7 @@ function SubsidyDetailsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Subsidy Details</Card.Header>
+          <Card.Header>{t("Subsidy Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,17 +99,17 @@ function SubsidyDetailsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{Subsidy.subsidyId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Subsidy Details:</td>
+                        <td style={styles.ctstyle}>{t("Subsidy Details")}</td>
                         <td>{Subsidy.subsidyName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Subsidy Details in Kannada:
+                          {t("Subsidy Details in Kannada")}
                         </td>
                         <td>{Subsidy.subsidyNameInKannada}</td>
                       </tr>

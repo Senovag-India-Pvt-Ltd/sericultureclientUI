@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SubsidyDetailsEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -127,7 +131,7 @@ function SubsidyDetailsEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Subsidy Details</Block.Title>
+            <Block.Title tag="h2">{t("Edit Subsidy Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -137,7 +141,7 @@ function SubsidyDetailsEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -146,7 +150,7 @@ function SubsidyDetailsEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -169,7 +173,7 @@ function SubsidyDetailsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="subsidy">
-                          Subsidy Details<span className="text-danger">*</span>
+                        {t("Subsidy Details")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -178,11 +182,11 @@ function SubsidyDetailsEdit() {
                             value={data.subsidyName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Subsidy Details"
+                            placeholder={t("Enter Subsidy Details")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Subsidy Details is required.
+                          {t("Subsidy Details is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -191,7 +195,7 @@ function SubsidyDetailsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="subsidy">
-                          Subsidy Details in Kannada
+                        {t("Subsidy Details in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -201,11 +205,11 @@ function SubsidyDetailsEdit() {
                             value={data.subsidyNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Subsidy Details in Kannada"
+                            placeholder={t("Enter Subsidy Details in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Subsidy Details in Kannada is required.
+                          {t("Subsidy Details in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -220,12 +224,12 @@ function SubsidyDetailsEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

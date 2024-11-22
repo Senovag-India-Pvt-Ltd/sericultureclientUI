@@ -6,10 +6,13 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MachineTypeView() {
+     // Translation
+     const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -45,7 +48,7 @@ function MachineTypeView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Machine Type View</Block.Title>
+            <Block.Title tag="h2">{t("Machine Type View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -55,7 +58,7 @@ function MachineTypeView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -64,7 +67,7 @@ function MachineTypeView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -74,7 +77,7 @@ function MachineTypeView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Machine Type Details</Card.Header>
+          <Card.Header>{t("Machine Type Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -86,17 +89,17 @@ function MachineTypeView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{MachineType.machineTypeId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Machine Type:</td>
+                        <td style={styles.ctstyle}>{t("Machine Type")}</td>
                         <td>{MachineType.machineTypeName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Machine Type Name in Kannada:
+                          {t("Mulberry Variety Name in Kannada")}
                         </td>
                         <td>{MachineType.machineTypeNameInKannada}</td>
                       </tr>

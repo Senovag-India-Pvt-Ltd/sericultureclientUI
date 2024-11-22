@@ -8,10 +8,16 @@ import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SoilType() {
+
+  
+   // Translation
+   const { t } = useTranslation();
+
   const [data, setData] = useState({
     soilTypeName: "",
     soilTypeNameInKannada: "",
@@ -96,7 +102,7 @@ function SoilType() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Soil Type</Block.Title>
+            <Block.Title tag="h2">{t("soil_type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +112,7 @@ function SoilType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +121,7 @@ function SoilType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +140,7 @@ function SoilType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="soil">
-                        Soil Type<span className="text-danger">*</span>
+                      {t("soil_type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +149,11 @@ function SoilType() {
                           type="text"
                           value={data.soilTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Soil Type"
+                          placeholder={t("Enter Soil Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Soil Type is required.
+                          {t("Soil Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +162,7 @@ function SoilType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="soil">
-                        Soil Type Name in Kannada
+                        {t("Soil Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +172,11 @@ function SoilType() {
                           type="text"
                           value={data.soilTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Soil Type Name in Kannada"
+                          placeholder={t("Enter Soil Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Soil Type Name in Kannada is required.
+                          {t("Soil Type Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +190,12 @@ function SoilType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

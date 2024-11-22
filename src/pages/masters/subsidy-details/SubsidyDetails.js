@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SubsidyDetails() {
+    // Translation
+    const { t } = useTranslation();
+
   const [data, setData] = useState({
     subsidyName: "",
     subsidyNameInKannada: "",
@@ -96,7 +99,7 @@ function SubsidyDetails() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Subsidy Details</Block.Title>
+            <Block.Title tag="h2">{t("Subsidy Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +109,7 @@ function SubsidyDetails() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +118,7 @@ function SubsidyDetails() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +137,7 @@ function SubsidyDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="subsidy">
-                        Subsidy Details<span className="text-danger">*</span>
+                      {t("Subsidy Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +146,11 @@ function SubsidyDetails() {
                           type="text"
                           value={data.subsidyName}
                           onChange={handleInputs}
-                          placeholder="Enter Subsidy Details"
+                          placeholder={t("Enter Subsidy Details")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Subsidy Details is required.
+                          {t("Subsidy Details is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +159,7 @@ function SubsidyDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="subsidy">
-                        Subsidy Details in Kannada
+                        {t("Subsidy Details in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +169,11 @@ function SubsidyDetails() {
                           type="text"
                           value={data.subsidyNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Subsidy Details in Kannada"
+                          placeholder={t("Enter Subsidy Details in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Subsidy Details in Kannada is required.
+                          {t("Subsidy Details in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +187,12 @@ function SubsidyDetails() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

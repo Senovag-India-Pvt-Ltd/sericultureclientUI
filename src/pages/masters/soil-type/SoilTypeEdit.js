@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SoilTypeEdit() {
+  
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -124,7 +129,7 @@ function SoilTypeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Soil Type</Block.Title>
+            <Block.Title tag="h2">{("Edit Soil Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -134,7 +139,7 @@ function SoilTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -143,7 +148,7 @@ function SoilTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -166,7 +171,7 @@ function SoilTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="soil">
-                          Soil Type<span className="text-danger">*</span>
+                        {t("soil_type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -175,11 +180,11 @@ function SoilTypeEdit() {
                             type="text"
                             value={data.soilTypeName}
                             onChange={handleInputs}
-                            placeholder="Enter Soil Type"
+                            placeholder={t("Enter Soil Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Soil Type is required.
+                          {t("Soil Type is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -188,7 +193,7 @@ function SoilTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="soil">
-                          Soil Type Name in Kannada
+                        {t("Soil Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -198,11 +203,11 @@ function SoilTypeEdit() {
                             type="text"
                             value={data.soilTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Soil Type Name in Kannada"
+                            placeholder={t("Enter Soil Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Soil Type Name in Kannada is required.
+                          {t("Soil Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -217,12 +222,12 @@ function SoilTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
