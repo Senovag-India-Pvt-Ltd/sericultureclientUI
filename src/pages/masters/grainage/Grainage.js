@@ -214,7 +214,7 @@ function Grainage() {
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
                         Grainage Type
-                        <span className="text-danger">*</span>
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -224,11 +224,11 @@ function Grainage() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Grainage Type"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                         Grainage Type in Kannada is required.
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
@@ -238,7 +238,7 @@ function Grainage() {
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
                         Grainage Name Representation
-                        <span className="text-danger">*</span>
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -248,11 +248,11 @@ function Grainage() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Grainage Name Representation"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                         Grainage Name Representation is required.
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
