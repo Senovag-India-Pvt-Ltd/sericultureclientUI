@@ -635,7 +635,7 @@ useEffect(() => {
                         name="cacoonSuppliedNumbers"
                         value={data.cacoonSuppliedNumbers}
                         onChange={handleInputs}
-                        type="number"
+                        type="text"
                         placeholder="Enter Cocoon Supplied in No's"
                         // required
                       />
