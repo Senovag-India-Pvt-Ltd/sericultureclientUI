@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function WorkingInstitutionList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +145,7 @@ function WorkingInstitutionList() {
 
   const WorkingInstitutionsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +155,7 @@ function WorkingInstitutionList() {
             size="sm"
             onClick={() => handleView(row.workingInstitutionId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +163,7 @@ function WorkingInstitutionList() {
             className="ms-2"
             onClick={() => handleEdit(row.workingInstitutionId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +171,7 @@ function WorkingInstitutionList() {
             onClick={() => deleteConfirm(row.workingInstitutionId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +179,14 @@ function WorkingInstitutionList() {
       hide: "md",
     },
     {
-      name: "Working Institutions",
+      name: t("Working Institution Name"),
       selector: (row) => row.workingInstitutionName,
       cell: (row) => <span>{row.workingInstitutionName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Working Institution Name in Kannada",
+      name: t("Working Institution Name in Kannada"),
       selector: (row) => row.workingInstitutionNameInKannada,
       cell: (row) => <span>{row.workingInstitutionNameInKannada}</span>,
       sortable: true,
@@ -197,7 +199,7 @@ function WorkingInstitutionList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">WorkingInstitution List</Block.Title>
+            <Block.Title tag="h2">{t("WorkingInstitution List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +209,7 @@ function WorkingInstitutionList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +218,7 @@ function WorkingInstitutionList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

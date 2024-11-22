@@ -37,7 +37,7 @@ function HelpDesk() {
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
-  const placeholder = "Enter your Query";
+  const placeholder = t("Enter your Query");
 
   const { quill, quillRef } = useQuill({ placeholder });
 
@@ -798,7 +798,7 @@ function HelpDesk() {
         </a>
       </>
     ) : (
-      <p>No file selected or file was canceled.</p>
+      <p>{t("No file selected or file was canceled.")}</p>
     )}
   </Form.Group>
 </Col>

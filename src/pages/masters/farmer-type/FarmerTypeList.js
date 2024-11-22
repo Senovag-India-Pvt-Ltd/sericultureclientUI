@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function FarmerTypeList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +145,7 @@ function FarmerTypeList() {
 
   const FarmerTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +155,7 @@ function FarmerTypeList() {
             size="sm"
             onClick={() => handleView(row.farmerTypeId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +163,7 @@ function FarmerTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.farmerTypeId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +171,7 @@ function FarmerTypeList() {
             onClick={() => deleteConfirm(row.farmerTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +179,14 @@ function FarmerTypeList() {
       hide: "md",
     },
     {
-      name: "Farmer Type",
+      name: t("Farmer Type"),
       selector: (row) => row.farmerTypeName,
       cell: (row) => <span>{row.farmerTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Type Name in Kannada",
+      name: t("Farmer Type Name in Kannada"),
       selector: (row) => row.farmerTypeNameInKannada,
       cell: (row) => <span>{row.farmerTypeNameInKannada}</span>,
       sortable: true,
@@ -197,7 +199,7 @@ function FarmerTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Type List</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +209,7 @@ function FarmerTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +218,7 @@ function FarmerTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

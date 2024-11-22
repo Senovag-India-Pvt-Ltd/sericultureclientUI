@@ -12,10 +12,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TraderTypeList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -142,7 +144,7 @@ function TraderTypeList() {
 
   const TraderTypeDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -152,7 +154,7 @@ function TraderTypeList() {
             size="sm"
             onClick={() => handleView(row.traderTypeMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -160,7 +162,7 @@ function TraderTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.traderTypeMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -168,7 +170,7 @@ function TraderTypeList() {
             onClick={() => deleteConfirm(row.traderTypeMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -176,21 +178,21 @@ function TraderTypeList() {
       hide: "md",
     },
     {
-      name: "Trader Type Master",
+      name:  t("Trader Type"),
       selector: (row) => row.traderTypeMasterName,
       cell: (row) => <span>{row.traderTypeMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Trader Type Name in Kannada",
+      name: t("Trader Type Name in Kannada"),
       selector: (row) => row.traderTypeNameInKannada,
       cell: (row) => <span>{row.traderTypeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of Device Allowed",
+      name: t("No Of Device Allowed"),
       selector: (row) => row.noOfDeviceAllowed,
       cell: (row) => <span>{row.noOfDeviceAllowed}</span>,
       sortable: true,
@@ -203,7 +205,7 @@ function TraderTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trader Type List</Block.Title>
+            <Block.Title tag="h2">{t("Trader Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -213,7 +215,7 @@ function TraderTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -222,7 +224,7 @@ function TraderTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

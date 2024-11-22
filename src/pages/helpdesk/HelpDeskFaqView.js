@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -18,6 +19,8 @@ function HelpDeskFaqView() {
     hdFaqUploadPath: "",
   });
 
+  // Translation
+const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -134,7 +137,7 @@ const search = (e) => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">KEDB</Block.Title>
+            <Block.Title tag="h2">{t("KEDB")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
           </Block.HeadContent>
@@ -156,7 +159,7 @@ const search = (e) => {
                       value={helpDeskFaq.searchBy}
                       onChange={handleHelpDeskFaqInputs}
                     >
-                      <option value="hdQuestionName">Question Or Answer</option>
+                      <option value="hdQuestionName">{t("Question Or Answer")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -173,7 +176,7 @@ const search = (e) => {
                     </Col>
                     <Col sm={3}>
                       <Button type="button" variant="primary" onClick={search}>
-                        Search
+                      {t("search")}
                       </Button>
                     </Col>
                   </Form.Group>

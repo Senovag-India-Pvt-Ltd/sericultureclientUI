@@ -12,10 +12,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RelationshipList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -142,7 +145,7 @@ function RelationshipList() {
 
   const RelationshipDataColumns = [
     {
-      name: "Action",
+      name:t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -152,7 +155,7 @@ function RelationshipList() {
             size="sm"
             onClick={() => handleView(row.relationshipId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -160,7 +163,7 @@ function RelationshipList() {
             className="ms-2"
             onClick={() => handleEdit(row.relationshipId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -168,7 +171,7 @@ function RelationshipList() {
             onClick={() => deleteConfirm(row.relationshipId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -176,7 +179,7 @@ function RelationshipList() {
       hide: "md",
     },
     {
-      name: "Relationship",
+      name: t("relationship"),
       selector: (row) => row.relationshipName,
       cell: (row) => <span>{row.relationshipName}</span>,
       sortable: true,
@@ -184,7 +187,7 @@ function RelationshipList() {
     },
 
     {
-      name: "Relationship Name in Kannada",
+      name:  t("Relationship Name in Kannada"),
       selector: (row) => row.relationshipNameInKannada,
       cell: (row) => <span>{row.relationshipNameInKannada}</span>,
       sortable: true,
@@ -197,7 +200,7 @@ function RelationshipList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Relationship List</Block.Title>
+            <Block.Title tag="h2">{t("Relationship List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +210,7 @@ function RelationshipList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +219,7 @@ function RelationshipList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

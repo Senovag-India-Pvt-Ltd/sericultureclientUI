@@ -9,10 +9,13 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Relationship() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     relationshipName: "",
     relationshipNameInKannada: "",
@@ -105,7 +108,7 @@ function Relationship() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Relationship</Block.Title>
+            <Block.Title tag="h2">{t("relationship")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -115,7 +118,7 @@ function Relationship() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -124,7 +127,7 @@ function Relationship() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -142,7 +145,7 @@ function Relationship() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="relationship">
-                        Relationship<span className="text-danger">*</span>
+                      {t("relationship")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -151,11 +154,11 @@ function Relationship() {
                           type="text"
                           value={data.relationshipName}
                           onChange={handleInputs}
-                          placeholder="Enter Relationship"
+                          placeholder={t("Enter Relationship")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Please provide a valid Relationship.
+                        {t("relationship_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -164,7 +167,7 @@ function Relationship() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Relationship Name in Kannada
+                        {t("Relationship Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -174,11 +177,11 @@ function Relationship() {
                           value={data.relationshipNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Relationship Name in Kannada"
+                          placeholder={t("Enter Relationship Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Relationship Name in Kannada is required.
+                          {t("Relationship Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -194,7 +197,7 @@ function Relationship() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
@@ -202,7 +205,7 @@ function Relationship() {
                     Cancel
                   </Link> */}
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

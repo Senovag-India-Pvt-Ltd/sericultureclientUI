@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function StateList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +146,7 @@ function StateList() {
 
   const StateDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +156,7 @@ function StateList() {
             size="sm"
             onClick={() => handleView(row.stateId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +164,7 @@ function StateList() {
             className="ms-2"
             onClick={() => handleEdit(row.stateId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +172,7 @@ function StateList() {
             onClick={() => deleteConfirm(row.stateId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +180,14 @@ function StateList() {
       hide: "md",
     },
     {
-      name: "State",
+      name: t("state"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "State Name in Kannada",
+      name: t("State Name in Kannada"),
       selector: (row) => row.stateNameInKannada,
       cell: (row) => <span>{row.stateNameInKannada}</span>,
       sortable: true,
@@ -197,7 +200,7 @@ function StateList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">State List</Block.Title>
+            <Block.Title tag="h2">{t("State List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +210,7 @@ function StateList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +219,7 @@ function StateList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

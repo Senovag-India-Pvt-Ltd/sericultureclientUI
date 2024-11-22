@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +188,7 @@ function DistrictList() {
 
   const DistrictDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +198,7 @@ function DistrictList() {
             size="sm"
             onClick={() => handleView(row.districtId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +206,7 @@ function DistrictList() {
             className="ms-2"
             onClick={() => handleEdit(row.districtId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +214,7 @@ function DistrictList() {
             onClick={() => deleteConfirm(row.districtId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -219,42 +222,42 @@ function DistrictList() {
       hide: "md",
     },
     {
-      name: "State",
+      name: t("state"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District Name in Kannada",
+      name: t("District name in Kannada"),
       selector: (row) => row.districtNameInKannada,
       cell: (row) => <span>{row.districtNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lg District",
+      name: t("Lg District"),
       selector: (row) => row.lgDistrict,
       cell: (row) => <span>{row.lgDistrict}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District Code",
+      name: t("District Code"),
       selector: (row) => row.districtCode,
       cell: (row) => <span>{row.districtCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Division",
+      name: t("Division"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
@@ -267,7 +270,7 @@ function DistrictList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District List</Block.Title>
+            <Block.Title tag="h2">{t("District List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -277,7 +280,7 @@ function DistrictList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -286,7 +289,7 @@ function DistrictList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -321,8 +324,8 @@ function DistrictList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="district">{t("district")}</option>
+                      <option value="state">{t("state")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -339,7 +342,7 @@ function DistrictList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>

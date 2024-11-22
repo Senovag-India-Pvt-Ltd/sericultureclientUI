@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FarmerBankAccountReasonList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +146,7 @@ function FarmerBankAccountReasonList() {
 
   const ReasonDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +156,7 @@ function FarmerBankAccountReasonList() {
             size="sm"
             onClick={() => handleView(row.farmerBankAccountReasonId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +164,7 @@ function FarmerBankAccountReasonList() {
             className="ms-2"
             onClick={() => handleEdit(row.farmerBankAccountReasonId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +172,7 @@ function FarmerBankAccountReasonList() {
             onClick={() => deleteConfirm(row.farmerBankAccountReasonId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +180,7 @@ function FarmerBankAccountReasonList() {
       hide: "md",
     },
     {
-      name: "Farmer Bank Account Reason",
+      name: t("Farmer Bank Account Reason"),
       selector: (row) => row.farmerBankAccountReason,
       cell: (row) => <span>{row.farmerBankAccountReason}</span>,
       sortable: true,
@@ -191,7 +194,7 @@ function FarmerBankAccountReasonList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Bank Reason List</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Bank Reason List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -201,7 +204,7 @@ function FarmerBankAccountReasonList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -210,7 +213,7 @@ function FarmerBankAccountReasonList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

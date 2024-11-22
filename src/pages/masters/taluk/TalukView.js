@@ -6,10 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TalukView() {
+   // Translation
+   const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,7 +50,7 @@ function TalukView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Taluk View</Block.Title>
+            <Block.Title tag="h2">{t("Taluk View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -58,7 +60,7 @@ function TalukView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -67,7 +69,7 @@ function TalukView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -77,7 +79,7 @@ function TalukView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Taluk Details</Card.Header>
+          <Card.Header>{t("Taluk Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -89,31 +91,31 @@ function TalukView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> ID:</td>
+                        <td style={styles.ctstyle}> {t("ID")}</td>
                         <td>{Taluk.talukId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> State:</td>
+                        <td style={styles.ctstyle}> {t("state")}</td>
                         <td>{Taluk.stateName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> District:</td>
+                        <td style={styles.ctstyle}> {t("district")}</td>
                         <td>{Taluk.districtName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Taluk:</td>
+                        <td style={styles.ctstyle}>  {t("taluk")}</td>
                         <td>{Taluk.talukName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Taluk Name in Kannada:</td>
+                        <td style={styles.ctstyle}>  {t("Taluk Name in Kannada")}</td>
                         <td>{Taluk.talukNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lg Taluk:</td>
+                        <td style={styles.ctstyle}>{t("Lg Taluk")}</td>
                         <td>{Taluk.lgTaluk}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Taluk Code:</td>
+                        <td style={styles.ctstyle}>{t("Taluk Code")}</td>
                         <td>{Taluk.talukCode}</td>
                       </tr>
                     </tbody>

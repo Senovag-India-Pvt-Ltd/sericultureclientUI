@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -172,7 +175,7 @@ function DistrictEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District</Block.Title>
+            <Block.Title tag="h2">{t("district")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -182,7 +185,7 @@ function DistrictEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -191,7 +194,7 @@ function DistrictEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -214,7 +217,7 @@ function DistrictEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                        {t("state")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -227,7 +230,7 @@ function DistrictEdit() {
                               data.stateId === undefined || data.stateId === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -235,7 +238,7 @@ function DistrictEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            State name is required
+                          {t("state_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -243,7 +246,7 @@ function DistrictEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="district">
-                          District<span className="text-danger">*</span>
+                        {t("district")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -252,11 +255,11 @@ function DistrictEdit() {
                             name="districtName"
                             value={data.districtName}
                             onChange={handleInputs}
-                            placeholder="Enter District"
+                            placeholder={t("Enter District")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                          {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -265,7 +268,7 @@ function DistrictEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="district">
-                          District name in Kannada
+                        {t("District name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -275,11 +278,11 @@ function DistrictEdit() {
                             name="districtNameInKannada"
                             value={data.districtNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter District name in Kannada"
+                            placeholder={t("Enter District name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            District name in Kannada is required
+                          {t("District name in Kannada is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -288,7 +291,7 @@ function DistrictEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="district">
-                       Lg District<span className="text-danger">*</span>
+                      {t("Lg District")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -297,11 +300,11 @@ function DistrictEdit() {
                           name="lgDistrict"
                           value={data.lgDistrict}
                           onChange={handleInputs}
-                          placeholder="Enter Lg District"
+                          placeholder={t("Enter Lg District")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Lg District is required
+                        {t("Lg District is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -310,7 +313,7 @@ function DistrictEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="district">
-                       District Code<span className="text-danger">*</span>
+                      {t("District Code")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -319,11 +322,11 @@ function DistrictEdit() {
                           name="districtCode"
                           value={data.districtCode}
                           onChange={handleInputs}
-                          placeholder="Enter District Code"
+                          placeholder={t("Enter District Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        District Code is required
+                        {t("District Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -332,7 +335,7 @@ function DistrictEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Division<span className="text-danger">*</span>
+                      {t("Division")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -345,7 +348,7 @@ function DistrictEdit() {
                             data.divisionMasterId === undefined || data.divisionMasterId === "0"
                           }
                         >
-                          <option value="">Select Division</option>
+                          <option value="">{t("Select Division")}</option>
                           {divisionListData && divisionListData.map((list) => (
                             <option key={list.divisionMasterId} value={list.divisionMasterId}>
                               {list.name}
@@ -353,7 +356,7 @@ function DistrictEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Division is required
+                        {t("Division is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -368,7 +371,7 @@ function DistrictEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
@@ -379,7 +382,7 @@ function DistrictEdit() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

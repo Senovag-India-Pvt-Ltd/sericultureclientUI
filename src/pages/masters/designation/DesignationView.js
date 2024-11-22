@@ -6,10 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DesignationView() {
+    // Translation
+    const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,7 +53,7 @@ function DesignationView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Designation View</Block.Title>
+            <Block.Title tag="h2">{t("Designation View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -61,7 +63,7 @@ function DesignationView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +72,7 @@ function DesignationView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -80,7 +82,7 @@ function DesignationView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Designation Details</Card.Header>
+          <Card.Header>{t("Designation Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -92,22 +94,22 @@ function DesignationView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{designation.designationId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Designation:</td>
+                        <td style={styles.ctstyle}> {t("Designation")}</td>
                         <td>{designation.name}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Designation Name in Kannada:
+                          {t("Designation Name in Kannada")}
                         </td>
                         <td>{designation.designationNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Level:</td>
+                        <td style={styles.ctstyle}> {t("Level")}</td>
                         <td>{designation.level}</td>
                       </tr>
                     </tbody>

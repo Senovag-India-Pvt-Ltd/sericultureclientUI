@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UsersList() {
+    // Translation
+    const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -182,7 +184,7 @@ function UsersList() {
 
   const UserDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -192,7 +194,7 @@ function UsersList() {
             size="sm"
             onClick={() => handleView(row.userMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -200,7 +202,7 @@ function UsersList() {
             className="ms-2"
             onClick={() => handleEdit(row.userMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -208,7 +210,7 @@ function UsersList() {
             onClick={() => deleteConfirm(row.userMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -217,56 +219,56 @@ function UsersList() {
       grow: 2
     },
     {
-      name: "User Name",
+      name: t("User Name"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "First Name",
+      name: t("First Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Last Name",
+      name: t("Last Name"),
       selector: (row) => row.lastName,
       cell: (row) => <span>{row.lastName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Email",
+      name: t("Email"),
       selector: (row) => row.emailID,
       cell: (row) => <span>{row.emailID}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc Name",
+      name: t("tsc"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DDO Code",
+      name: t("DDO Code"),
       selector: (row) => row.ddoCode,
       cell: (row) => <span>{row.ddoCode}</span>,
       sortable: true,
@@ -279,7 +281,7 @@ function UsersList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> User List</Block.Title>
+            <Block.Title tag="h2"> {t("User List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -289,7 +291,7 @@ function UsersList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -298,7 +300,7 @@ function UsersList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -322,8 +324,8 @@ function UsersList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="username">User Name</option>
-                      <option value="phoneNumber">Phone Number</option>
+                      <option value="username">{t("User Name")}</option>
+                      <option value="phoneNumber">{t("Mobile Number")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -340,7 +342,7 @@ function UsersList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DesignationList() {
+    // Translation
+    const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -154,7 +156,7 @@ function DesignationList() {
 
   const DesignationDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -164,7 +166,7 @@ function DesignationList() {
             size="sm"
             onClick={() => handleView(row.designationId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -172,7 +174,7 @@ function DesignationList() {
             className="ms-2"
             onClick={() => handleEdit(row.designationId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -180,7 +182,7 @@ function DesignationList() {
             onClick={() => deleteConfirm(row.designationId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -188,14 +190,14 @@ function DesignationList() {
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation Name in Kannada",
+      name: t("Designation Name in Kannada"),
       selector: (row) => row.designationNameInKannada,
       cell: (row) => <span>{row.designationNameInKannada}</span>,
       sortable: true,
@@ -203,7 +205,7 @@ function DesignationList() {
     },
   
     {
-      name: "Level",
+      name: t("Level"),
       selector: (row) => row.level,
       cell: (row) => <span>{row.level}</span>,
       sortable: true,
@@ -216,7 +218,7 @@ function DesignationList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Designation List</Block.Title>
+            <Block.Title tag="h2">{t("Designation List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -226,7 +228,7 @@ function DesignationList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -235,7 +237,7 @@ function DesignationList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

@@ -8,10 +8,13 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function State() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     stateName: "",
     stateNameInKannada: "",
@@ -94,7 +97,7 @@ function State() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">State</Block.Title>
+            <Block.Title tag="h2">{t("state")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -104,7 +107,7 @@ function State() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -113,7 +116,7 @@ function State() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -132,7 +135,7 @@ function State() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="state">
-                        State<span className="text-danger">*</span>
+                      {t("state")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -141,11 +144,11 @@ function State() {
                           value={data.stateName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter State"
+                          placeholder={t("Enter State")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          State Name is required
+                        {t("state_is_required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -154,7 +157,7 @@ function State() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        State Name in Kannada
+                        {t("State Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -164,11 +167,11 @@ function State() {
                           value={data.stateNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter State Name in Kannada"
+                          placeholder={t("Enter State Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          State Name in Kannada is required.
+                          {t("State Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +187,12 @@ function State() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

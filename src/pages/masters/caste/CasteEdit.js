@@ -8,6 +8,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -24,7 +25,8 @@ function CasteEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-
+  // Translation
+  const { t } = useTranslation();
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -135,7 +137,7 @@ function CasteEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Caste</Block.Title>
+            <Block.Title tag="h2">{t("Edit Caste")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -145,7 +147,7 @@ function CasteEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -154,7 +156,7 @@ function CasteEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -177,7 +179,7 @@ function CasteEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Title<span className="text-danger">*</span>
+                        {t("Title")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -186,11 +188,11 @@ function CasteEdit() {
                             value={data.title}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Title"
+                            placeholder={t("Enter Title")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Title Name is required.
+                          {t("Title Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -199,7 +201,7 @@ function CasteEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Title Name in Kannada
+                        {t("Title Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -209,11 +211,11 @@ function CasteEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Title Name in Kannda"
+                            placeholder={t("Enter Title Name in Kannda")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Title Name in Kannada is required.
+                          {t("Title Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -244,12 +246,12 @@ function CasteEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

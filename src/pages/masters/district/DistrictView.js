@@ -7,10 +7,12 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -55,7 +57,7 @@ function DistrictView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District View</Block.Title>
+            <Block.Title tag="h2">{t("District View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +67,7 @@ function DistrictView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +76,7 @@ function DistrictView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,7 +86,7 @@ function DistrictView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>District Details</Card.Header>
+          <Card.Header>{t("District Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -96,33 +98,33 @@ function DistrictView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{District.districtId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> State:</td>
+                        <td style={styles.ctstyle}> {t("state")}</td>
                         <td>{District.stateName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> District:</td>
+                        <td style={styles.ctstyle}> {t("district")}</td>
                         <td>{District.districtName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          District Name in Kannada:
+                        {t("District name in Kannada")}
                         </td>
                         <td>{District.districtNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lg District:</td>
+                        <td style={styles.ctstyle}>{t("Lg District")}</td>
                         <td>{District.lgDistrict}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>District Code:</td>
+                        <td style={styles.ctstyle}>{t("District Code")}</td>
                         <td>{District.districtCode}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Division:</td>
+                        <td style={styles.ctstyle}> {t("Division")}</td>
                         <td>{District.name}</td>
                       </tr>
                     </tbody>

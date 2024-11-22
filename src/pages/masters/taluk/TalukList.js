@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TalukList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +187,7 @@ function TalukList() {
 
   const TalukDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +197,7 @@ function TalukList() {
             size="sm"
             onClick={() => handleView(row.talukId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +205,7 @@ function TalukList() {
             className="ms-2"
             onClick={() => handleEdit(row.talukId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +213,7 @@ function TalukList() {
             onClick={() => deleteConfirm(row.talukId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -219,21 +221,21 @@ function TalukList() {
       hide: "md",
     },
     {
-      name: "State",
+      name: t("state"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name:t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name:t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -241,21 +243,21 @@ function TalukList() {
     },
 
     {
-      name: "Taluk Name in Kannada",
+      name: t("Taluk Name in Kannada"),
       selector: (row) => row.talukNameInKannada,
       cell: (row) => <span>{row.talukNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lg Taluk",
+      name: t("Lg Taluk"),
       selector: (row) => row.lgTaluk,
       cell: (row) => <span>{row.lgTaluk}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Taluk",
+      name: t("Taluk Code"),
       selector: (row) => row.talukCode,
       cell: (row) => <span>{row.talukCode}</span>,
       sortable: true,
@@ -268,7 +270,7 @@ function TalukList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Taluk List</Block.Title>
+            <Block.Title tag="h2">{t("Taluk List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -278,7 +280,7 @@ function TalukList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -287,7 +289,7 @@ function TalukList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -311,9 +313,9 @@ function TalukList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="taluk">{t("taluk")}</option>
+                      <option value="district"> {t("district")}</option>
+                      <option value="state">{t("state")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -330,7 +332,7 @@ function TalukList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

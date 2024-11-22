@@ -8,10 +8,12 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function FarmerType() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     farmerTypeName: "",
     farmerTypeNameInKannada: "",
@@ -92,7 +94,7 @@ function FarmerType() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Type</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -102,7 +104,7 @@ function FarmerType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -111,7 +113,7 @@ function FarmerType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -130,7 +132,7 @@ function FarmerType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="farmerTypeName">
-                        Farmer Type<span className="text-danger">*</span>
+                      {t("Farmer Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -139,11 +141,11 @@ function FarmerType() {
                           value={data.farmerTypeName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Farmer Type"
+                          placeholder={t("Enter Farmer Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Farmer Type is required.
+                          {t("Farmer Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -152,7 +154,7 @@ function FarmerType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="farmerTypeName">
-                        Farmer Type Name in Kannada
+                        {t("Farmer Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -162,11 +164,11 @@ function FarmerType() {
                           value={data.farmerTypeNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Farmer Type Name in Kannada"
+                          placeholder={t("Enter Farmer Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Farmer Type Name in Kannada is required.
+                          {t("Farmer Type Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -180,7 +182,7 @@ function FarmerType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -188,7 +190,7 @@ function FarmerType() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

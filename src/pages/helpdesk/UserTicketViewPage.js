@@ -8,11 +8,14 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
+import { useTranslation } from "react-i18next";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function UserTicketView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -75,7 +78,7 @@ function UserTicketView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View User Ticket Details</Block.Title>
+            <Block.Title tag="h2">{t("View User Ticket Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -85,7 +88,7 @@ function UserTicketView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -94,7 +97,7 @@ function UserTicketView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -104,7 +107,7 @@ function UserTicketView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>View Raised Ticket Details</Card.Header>
+          <Card.Header>{t("View Raised Ticket Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -116,48 +119,48 @@ function UserTicketView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{raiseTicket.hdTicketId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Module Name:</td>
+                        <td style={styles.ctstyle}>{t("Module Name")}</td>
                         <td>{raiseTicket.hdModuleName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Feature:</td>
+                        <td style={styles.ctstyle}>{t("Feature")}</td>
                         <td>{raiseTicket.hdFeatureName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Broad Category:</td>
+                        <td style={styles.ctstyle}>{t("Broad Category")}</td>
                         <td>{raiseTicket.hdBoardCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Category:</td>
+                        <td style={styles.ctstyle}>{t("Category")}</td>
                         <td>{raiseTicket.hdCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Category:</td>
+                        <td style={styles.ctstyle}>{t("Sub Category")}</td>
                         <td>{raiseTicket.hdSubCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Users Affected:</td>
+                        <td style={styles.ctstyle}>{t("Users Affected")}</td>
                         <td>{raiseTicket.hdUsersAffected}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query:</td>
+                        <td style={styles.ctstyle}>{t("Query")}</td>
                         <td>{raiseTicket.query}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query Details:</td>
+                        <td style={styles.ctstyle}>{t("Query Details")}</td>
                         <td>{raiseTicket.queryDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Ticket Number:</td>
+                        <td style={styles.ctstyle}>{t("Ticket Number")}</td>
                         <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       <tr>
                         <td style={{ ...styles.ctstyle, fontWeight: "bold" }}>
-                          Solution:
+                          {t("Solution")}
                         </td>
                         <td style={{ fontWeight: "bold", color: "green" }}>
                           {raiseTicket.solution}

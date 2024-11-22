@@ -8,10 +8,12 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HobliEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -199,7 +201,7 @@ function HobliEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Hobli</Block.Title>
+            <Block.Title tag="h2">{t("hobli")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -209,7 +211,7 @@ function HobliEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -218,7 +220,7 @@ function HobliEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -241,7 +243,7 @@ function HobliEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                        {t("state")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -254,7 +256,7 @@ function HobliEdit() {
                               data.stateId === undefined || data.stateId === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -262,7 +264,7 @@ function HobliEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            State Name is required
+                          {t("state_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -270,7 +272,7 @@ function HobliEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                        {t("district")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -284,7 +286,7 @@ function HobliEdit() {
                               data.districtId === "0"
                             }
                           >
-                            <option value="">Select District</option>
+                            <option value="">{t("select_district")}</option>
                             {districtListData && districtListData.length
                               ? districtListData.map((list) => (
                                   <option
@@ -297,7 +299,7 @@ function HobliEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                          {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -305,7 +307,7 @@ function HobliEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                        {t("taluk")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -318,7 +320,7 @@ function HobliEdit() {
                               data.talukId === undefined || data.talukId === "0"
                             }
                           >
-                            <option value="">Select Taluk</option>
+                            <option value="">{t("select_taluk")}</option>
                             {talukListData && talukListData.length
                               ? talukListData.map((list) => (
                                   <option
@@ -331,7 +333,7 @@ function HobliEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
+                          {t("taluk_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -339,7 +341,7 @@ function HobliEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="hobli">
-                          Hobli<span className="text-danger">*</span>
+                        {t("hobli")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -348,11 +350,11 @@ function HobliEdit() {
                             value={data.hobliName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Hobli"
+                            placeholder={t("Enter Hobli")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Hobli Name is required
+                          {t("hobli_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -361,7 +363,7 @@ function HobliEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="hobli">
-                          Hobli Name in Kannada
+                        {t("Hobli Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -371,11 +373,11 @@ function HobliEdit() {
                             value={data.hobliNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Hobli Name in Kannada"
+                            placeholder={t("Enter Hobli Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Hobli Name in Kannada is required
+                          {t("Hobli Name in Kannada is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -384,7 +386,7 @@ function HobliEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="hobli">
-                        Hobli Code
+                      {t("Hobli Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -394,11 +396,11 @@ function HobliEdit() {
                           value={data.hobliCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Hobli Code"
+                          placeholder={t("Enter Hobli Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Hobli Code is required
+                        {t("Hobli Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -413,12 +415,12 @@ function HobliEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

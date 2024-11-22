@@ -9,10 +9,13 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function WorkingInstitution() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     workingInstitutionName: "",
     workingInstitutionNameInKannada: "",
@@ -93,7 +96,7 @@ function WorkingInstitution() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Working Institution</Block.Title>
+            <Block.Title tag="h2">{t("Working Institution")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -103,7 +106,7 @@ function WorkingInstitution() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -112,7 +115,7 @@ function WorkingInstitution() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -158,7 +161,7 @@ function WorkingInstitution() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Working Institution Name
+                        {t("Working Institution Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -168,11 +171,11 @@ function WorkingInstitution() {
                           type="text"
                           value={data.workingInstitutionName}
                           onChange={handleInputs}
-                          placeholder="Enter WorkingInstitution name"
+                          placeholder={t("Enter WorkingInstitution name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          WorkInstitution Name is required
+                          {t("WorkInstitution Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -181,7 +184,7 @@ function WorkingInstitution() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Working Institution Name in Kannada
+                        {t("Working Institution Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -191,11 +194,11 @@ function WorkingInstitution() {
                           type="text"
                           value={data.workingInstitutionNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Working Institution Name in Kannada"
+                          placeholder={t("Enter Working Institution Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Work Institution Name Name in Kannada is required
+                          {t("Work Institution Name Name in Kannada is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -209,12 +212,12 @@ function WorkingInstitution() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -290,7 +290,7 @@ function UserDashboard() {
             size="sm"
             onClick={() => handleView(row.hdTicketId, row)}
           >
-            View
+              {t("View")}
           </Button>
         </div>
       ),

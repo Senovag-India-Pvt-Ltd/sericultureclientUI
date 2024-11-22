@@ -11,10 +11,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HobliList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -198,7 +200,7 @@ function HobliList() {
             size="sm"
             onClick={() => handleView(row.hobliId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -206,7 +208,7 @@ function HobliList() {
             className="ms-2"
             onClick={() => handleEdit(row.hobliId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -214,7 +216,7 @@ function HobliList() {
             onClick={() => deleteConfirm(row.hobliId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -222,42 +224,42 @@ function HobliList() {
       hide: "md",
     },
     {
-      name: "State",
+      name:t("state"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli Name In Kannada",
+      name: t("Hobli Name in Kannada"),
       selector: (row) => row.hobliNameInKannada,
       cell: (row) => <span>{row.hobliNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli Code",
+      name: t("Hobli Code"),
       selector: (row) => row.hobliCode,
       cell: (row) => <span>{row.hobliCode}</span>,
       sortable: true,
@@ -270,7 +272,7 @@ function HobliList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Hobli List</Block.Title>
+            <Block.Title tag="h2">{t("Hobli List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -280,7 +282,7 @@ function HobliList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -289,7 +291,7 @@ function HobliList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -313,10 +315,10 @@ function HobliList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="hobli">{t("hobli")}</option>
+                      <option value="taluk">{t("taluk")}</option>
+                      <option value="district">{t("district")}</option>
+                      <option value="state">{t("state")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -333,7 +335,7 @@ function HobliList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>

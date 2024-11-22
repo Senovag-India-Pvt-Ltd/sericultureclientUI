@@ -9,11 +9,13 @@ import { Icon, Select } from "../../components";
 import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
 import Swal from "sweetalert2";
-
+import { useTranslation } from "react-i18next";
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function RaiseTicketView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -210,7 +212,7 @@ function RaiseTicketView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Raised Ticket Details</Block.Title>
+            <Block.Title tag="h2">{t("View Raised Ticket Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -220,7 +222,7 @@ function RaiseTicketView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -229,7 +231,7 @@ function RaiseTicketView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -239,7 +241,7 @@ function RaiseTicketView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>View Raised Ticket Details</Card.Header>
+          <Card.Header>{t("View Raised Ticket Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -251,43 +253,43 @@ function RaiseTicketView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{raiseTicket.hdTicketId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Module Name:</td>
+                        <td style={styles.ctstyle}>{t("Module Name")}</td>
                         <td>{raiseTicket.hdModuleName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Feature:</td>
+                        <td style={styles.ctstyle}>{t("Feature")}</td>
                         <td>{raiseTicket.hdFeatureName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Broad Category:</td>
+                        <td style={styles.ctstyle}>{t("Broad Category")}</td>
                         <td>{raiseTicket.hdBoardCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Category:</td>
+                        <td style={styles.ctstyle}>{t("Category")}</td>
                         <td>{raiseTicket.hdCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Category:</td>
+                        <td style={styles.ctstyle}>{t("Sub Category")}</td>
                         <td>{raiseTicket.hdSubCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Users Affected:</td>
+                        <td style={styles.ctstyle}>{t("Users Affected")}</td>
                         <td>{raiseTicket.hdUsersAffected}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query:</td>
+                        <td style={styles.ctstyle}>{t("Query")}</td>
                         <td>{raiseTicket.query}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Query Details:</td>
+                        <td style={styles.ctstyle}>{t("Query Details")}</td>
                         <td>{raiseTicket.queryDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Ticket Number:</td>
+                        <td style={styles.ctstyle}>{t("Ticket Number")}</td>
                         <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       {/* <tr>
@@ -351,7 +353,7 @@ function RaiseTicketView() {
         <Card>
           <Card.Header>
             <div className="d-flex justify-content-between">
-              <div>solution</div>
+              <div>{t("Solution")}</div>
               <div style={{ cursor: "pointer" }} onClick={displaySeverity}>
                 <Icon name="view-row-wd"></Icon>
               </div>
@@ -361,7 +363,7 @@ function RaiseTicketView() {
             <Row className="g-gs">
               <Col lg="4">
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="status">Status</Form.Label>
+                  <Form.Label htmlFor="status">{t("Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="hdStatusId"
@@ -370,7 +372,7 @@ function RaiseTicketView() {
                       disabled
                       // onBlur={() => handleInputs}
                     >
-                      <option value="">Select Status</option>
+                      <option value="">{t("Select Status")}</option>
                       {hdStatusListData.map((list) => (
                         <option key={list.hdStatusId} value={list.hdStatusId}>
                           {list.hdStatusName}
@@ -384,7 +386,7 @@ function RaiseTicketView() {
               <Col lg="4">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="escalation">
-                    Escalation Required
+                    {t("Escalation Required")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -392,8 +394,8 @@ function RaiseTicketView() {
                       value={escalate}
                       onChange={handleEscalateInput}
                     >
-                      <option value="0">No</option>
-                      <option value="1">Yes</option>
+                      <option value="0">{t("No")}</option>
+                      <option value="1">{t("Yes")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -402,7 +404,7 @@ function RaiseTicketView() {
               {show ? (
                 <Col lg="4">
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="severity">Severity</Form.Label>
+                    <Form.Label htmlFor="severity">{t("Severity")}</Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
                         name="hdSeverityId"
@@ -410,7 +412,7 @@ function RaiseTicketView() {
                         onChange={() => handleInput}
                         // onBlur={() => handleInputs}
                       >
-                        <option value="">Select Severity</option>
+                        <option value="">{t("Select Severity")}</option>
                         {severityListData.map((list) => (
                           <option
                             key={list.hdSeverityId}
@@ -447,7 +449,7 @@ function RaiseTicketView() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Escalated To<span className="text-danger">*</span>
+                      {t("Escalated To")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -461,7 +463,7 @@ function RaiseTicketView() {
                         //   raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
                         // }
                       >
-                        <option value="">Select Escalate To</option>
+                        <option value="">{t("Select Escalate To")}</option>
                         {escalateListData.map((list) => (
                           <option
                             key={list.userMasterId}
@@ -479,7 +481,7 @@ function RaiseTicketView() {
               <Row className="mt-2">
                 <Col lg="6">
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="solution">Solution</Form.Label>
+                    <Form.Label htmlFor="solution">{t("Solution")}</Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
                         id="solution"
@@ -489,7 +491,7 @@ function RaiseTicketView() {
                         // type="text"
                         as="textarea"
                         rows={4}
-                        placeholder="Enter Solutions"
+                        placeholder={t("Enter Solutions")}
                       />
                     </div>
                   </Form.Group>
@@ -507,7 +509,7 @@ function RaiseTicketView() {
                       onClick={() => submit(escalate)}
                       disabled={hideByStatus}
                     >
-                      Submit
+                      {t("Submit")}
                     </Button>
                   </li>
                 </ul>

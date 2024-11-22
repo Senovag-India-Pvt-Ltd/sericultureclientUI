@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TraderTypeEdit() {
+   // Translation
+   const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,7 +125,7 @@ function TraderTypeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Trader Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit Trader Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -133,7 +135,7 @@ function TraderTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -142,7 +144,7 @@ function TraderTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -165,7 +167,7 @@ function TraderTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group ">
                         <Form.Label htmlFor="traderType">
-                          Trader Type<span className="text-danger">*</span>
+                        {t("Trader Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -174,11 +176,11 @@ function TraderTypeEdit() {
                             value={data.traderTypeMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Trader Type"
+                            placeholder={t("Enter Trader Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Trader Type is required.
+                          {t("Trader Type Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -187,7 +189,7 @@ function TraderTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="traderTypeMasterName">
-                          Trader Type Name in Kannada
+                        {t("Trader Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -197,11 +199,11 @@ function TraderTypeEdit() {
                             value={data.traderTypeNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Trader Type Name in Kannada"
+                            placeholder={t("Enter Trader Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Trader Type Name in Kannada is required.
+                          {t("Trader Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -210,7 +212,7 @@ function TraderTypeEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="traderTypeMasterName">
-                      No Of Device Allowed
+                      {t("No Of Device Allowed")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -220,11 +222,11 @@ function TraderTypeEdit() {
                           value={data.noOfDeviceAllowed}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter No Of Device Allowed"
+                          placeholder={t("Enter No Of Device Allowed")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        No Of Device Allowed is required.
+                        {t("No Of Device Allowed is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -240,12 +242,12 @@ function TraderTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

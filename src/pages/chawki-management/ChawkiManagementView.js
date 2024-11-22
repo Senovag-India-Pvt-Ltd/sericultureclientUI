@@ -8,11 +8,14 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import ChawkiManagement from "./ChawkiManagement";
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function ChawkiManagementView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -55,7 +58,7 @@ function ChawkiManagementView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Chawki Management (Sale Of Chawki Worms) View</Block.Title>
+            <Block.Title tag="h2">{t("Chawki Management (Sale Of Chawki Worms) View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +68,7 @@ function ChawkiManagementView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +77,7 @@ function ChawkiManagementView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,7 +87,7 @@ function ChawkiManagementView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Chawki Management (Sale Of Chawki Worms) Details</Card.Header>
+          <Card.Header>{t("Chawki Management (Sale Of Chawki Worms) Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,94 +98,84 @@ function ChawkiManagementView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                    <tr>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{chawkiManagement.chowkiId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td style={styles.ctstyle}>{t("FRUITS ID")}</td>
                         <td>{chawkiManagement.fruitsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farmer Name:</td>
+                        <td style={styles.ctstyle}>{t("farmer_name")}</td>
                         <td>{chawkiManagement.farmerName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Father Name:</td>
+                        <td style={styles.ctstyle}>{t("Father’s Name")}</td>
                         <td>{chawkiManagement.fatherName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DFLs Source:</td>
+                        <td style={styles.ctstyle}>{t("Source of DFLs")}</td>
                         <td>{chawkiManagement.dflsSource}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race of DFLs:</td>
-                        <td>{chawkiManagement.raceName}</td>
+                        <td style={styles.ctstyle}>{t("Race")}</td>
+                        <td>{chawkiManagement.raceOfDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Number of DFL’s")}</td>
                         <td>{chawkiManagement.numbersOfDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number (of the RSP):</td>
+                        <td style={styles.ctstyle}>{t("Lot Number (of the RSP)")}</td>
                         <td>{chawkiManagement.lotNumberRsp}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot No. (CRC):</td>
-                        <td>{chawkiManagement.lotNumberCrc}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Sold after 1st/2nd/3rd Moult :</td>
+                        <td style={styles.ctstyle}>{t("Sold after 1st/2nd/3rd Moult")}</td>
                         <td>{chawkiManagement.soldAfter1stOr2ndMould}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> State:</td>
-                        <td>{chawkiManagement.stateName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>District:</td>
-                        <td>{chawkiManagement.districtName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Taluk:</td>
-                        <td>{chawkiManagement.talukName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Hobli:</td>
-                        <td>{chawkiManagement.hobliName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Village:</td>
-                        <td>{chawkiManagement.villageName}</td>
-                      </tr>
-                      
-                    <tr>
-                    <td style={styles.ctstyle}>Hatching Date:</td>
-                    <td>{formatDate(chawkiManagement.hatchingDate)}</td> 
-                  </tr>
-                    <tr>
-                    <td style={styles.ctstyle}>Dispatch Date:</td>
-                    <td>{formatDate(chawkiManagement.dispatchDate)}</td> 
-                  </tr>
-                  
-                    <tr>
-                        <td style={styles.ctstyle}>Number of DFL’s:</td>
-                        <td>{chawkiManagement.numbersOfDfls}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Rate per 100 DFLs:</td>
-                        <td>{chawkiManagement.ratePer100Dfls}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Price (in Rupees):</td>
-                        <td>{chawkiManagement.price}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Tsc:</td>
+                        <td style={styles.ctstyle}>{t("tsc")}</td>
                         <td>{chawkiManagement.tscName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Receipt No:</td>
+                        <td style={styles.ctstyle}> {t("state")}</td>
+                        <td>{chawkiManagement.stateName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("district")}</td>
+                        <td>{chawkiManagement.districtName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("taluk")}</td>
+                        <td>{chawkiManagement.talukName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("hobli")}</td>
+                        <td>{chawkiManagement.hobliName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("village")}</td>
+                        <td>{chawkiManagement.villageName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Dispatch Date")}</td>
+                        <td>{chawkiManagement.dispatchDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Hatching Date")}</td>
+                        <td>{chawkiManagement.hatchingDate}</td>
+                    </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Rate per 100 DFLs")}</td>
+                        <td>{chawkiManagement.ratePer100Dfls}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Price (in Rupees)")}</td>
+                        <td>{chawkiManagement.price}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Receipt No")}</td>
                         <td>{chawkiManagement.receiptNo}</td>
                       </tr>
                     </tbody>
