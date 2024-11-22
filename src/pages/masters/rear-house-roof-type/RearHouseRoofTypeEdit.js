@@ -9,10 +9,15 @@ import { Icon } from "../../../components";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RearHouseRoofTypeEdit() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,7 +128,7 @@ function RearHouseRoofTypeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Rear House Roof Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit Rear House Roof Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -133,7 +138,7 @@ function RearHouseRoofTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -142,7 +147,7 @@ function RearHouseRoofTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -165,7 +170,7 @@ function RearHouseRoofTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rear">
-                          Rear House Roof Type
+                        {t("Rear House Roof Type")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -175,11 +180,11 @@ function RearHouseRoofTypeEdit() {
                             type="text"
                             value={data.roofTypeName}
                             onChange={handleInputs}
-                            placeholder="Enter Rear House Roof Type"
+                            placeholder={t("Enter Rear House Roof Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Roof Type is required.
+                          {t("Roof Type is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -188,7 +193,7 @@ function RearHouseRoofTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rear">
-                          Rear House Type Name in Kannada
+                        {t("Rear House Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -198,11 +203,11 @@ function RearHouseRoofTypeEdit() {
                             type="text"
                             value={data.roofTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Rear House Roof Type  Name in Kannada"
+                            placeholder={t("Enter Rear House Roof Type  Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Roof House Type Name in Kannada is required.
+                          {t("Roof House Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -217,12 +222,12 @@ function RearHouseRoofTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

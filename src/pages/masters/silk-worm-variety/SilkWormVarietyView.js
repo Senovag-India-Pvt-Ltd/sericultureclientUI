@@ -6,10 +6,15 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SilkWormVarietyView() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -46,7 +51,7 @@ function SilkWormVarietyView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Silk Worm Variety View</Block.Title>
+            <Block.Title tag="h2">{t("Silk Worm Variety View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -56,7 +61,7 @@ function SilkWormVarietyView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -65,7 +70,7 @@ function SilkWormVarietyView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -75,7 +80,7 @@ function SilkWormVarietyView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Silk Worm Variety Details</Card.Header>
+          <Card.Header>{t("Silk Worm Variety Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -87,17 +92,17 @@ function SilkWormVarietyView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{SilkWormVariety.silkWormVarietyId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Silk Worm Variety:</td>
+                        <td style={styles.ctstyle}> {t("Silk Worm Variety")}</td>
                         <td>{SilkWormVariety.silkWormVarietyName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Silk Worm Variety Name in Kannada:
+                          {t("Silk Worm Variety Name in Kannada")}
                         </td>
                         <td>{SilkWormVariety.silkWormVarietyNameInKannada}</td>
                       </tr>

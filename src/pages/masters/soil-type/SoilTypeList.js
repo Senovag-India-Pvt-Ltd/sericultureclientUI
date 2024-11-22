@@ -11,10 +11,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SoilTypeList() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +146,7 @@ function SoilTypeList() {
 
   const SoilTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +156,7 @@ function SoilTypeList() {
             size="sm"
             onClick={() => handleView(row.soilTypeId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +164,7 @@ function SoilTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.soilTypeId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +172,7 @@ function SoilTypeList() {
             onClick={() => deleteConfirm(row.soilTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +180,14 @@ function SoilTypeList() {
       hide: "md",
     },
     {
-      name: "Soil Type",
+      name: t("soil_type"),
       selector: (row) => row.soilTypeName,
       cell: (row) => <span>{row.soilTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Soil Type Name in Kannada",
+      name: t("Soil Type Name in Kannada"),
       selector: (row) => row.soilTypeNameInKannada,
       cell: (row) => <span>{row.soilTypeNameInKannada}</span>,
       sortable: true,
@@ -195,7 +200,7 @@ function SoilTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Soil Type List</Block.Title>
+            <Block.Title tag="h2"> {t("Soil Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +210,7 @@ function SoilTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +219,7 @@ function SoilTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

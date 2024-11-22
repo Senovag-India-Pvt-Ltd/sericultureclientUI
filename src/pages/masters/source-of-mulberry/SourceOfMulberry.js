@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceOfMulberry() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const [data, setData] = useState({
     mulberrySourceName: "",
     mulberrySourceNameInKannada: "",
@@ -96,7 +101,7 @@ function SourceOfMulberry() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Source of Mulberry</Block.Title>
+            <Block.Title tag="h2">{t("Source of Mulberry")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +111,7 @@ function SourceOfMulberry() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +120,7 @@ function SourceOfMulberry() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +139,7 @@ function SourceOfMulberry() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="source">
-                        Source of Mulberry<span className="text-danger">*</span>
+                      {t("Source of Mulberry")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +148,11 @@ function SourceOfMulberry() {
                           type="text"
                           value={data.mulberrySourceName}
                           onChange={handleInputs}
-                          placeholder="Enter Source of Mulberry"
+                          placeholder={t("Enter Source of Mulberry")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mulberry Source is required.
+                          {t("Mulberry Source is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +161,7 @@ function SourceOfMulberry() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="source">
-                        Source of Mulberry in Kannada
+                        {t("Source of Mulberry in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +171,11 @@ function SourceOfMulberry() {
                           type="text"
                           value={data.mulberrySourceNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Source of Mulberry  in Kannada"
+                          placeholder={t("Enter Source of Mulberry  in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mulberry Source in Kannada is required.
+                          {t("Mulberry Source in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +189,12 @@ function SourceOfMulberry() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

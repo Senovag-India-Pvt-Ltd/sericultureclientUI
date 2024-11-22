@@ -7,10 +7,13 @@ import { Icon } from "../../../components";
 import LandCategoryDatas from "../../../store/masters/land-category/LandCategoryData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandCategoryView() {
+    // Translation
+    const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -54,7 +57,7 @@ function LandCategoryView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Land Holding Category View</Block.Title>
+            <Block.Title tag="h2">{t("Land Holding Category View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +67,7 @@ function LandCategoryView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +76,7 @@ function LandCategoryView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,7 +86,7 @@ function LandCategoryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Land Holding Category Details</Card.Header>
+          <Card.Header>{t("Land Holding Category Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,17 +98,17 @@ function LandCategoryView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{LandCategory.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Land Holding Category:</td>
+                        <td style={styles.ctstyle}> {t("Land Holding Category")}</td>
                         <td>{LandCategory.landCategoryName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Land Holding Category Name in Kannada:
+                          {t("Land Category Name in Kannada")}
                         </td>
                         <td>{LandCategory.landCategoryNameInKannada}</td>
                       </tr>

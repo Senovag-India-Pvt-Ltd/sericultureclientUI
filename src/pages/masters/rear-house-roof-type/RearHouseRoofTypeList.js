@@ -11,10 +11,14 @@ import { createTheme } from "react-data-table-component";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RearHouseRoofTypeList() {
+   // Translation
+   const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -140,7 +144,7 @@ function RearHouseRoofTypeList() {
 
   const RearHouseRoofTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +154,7 @@ function RearHouseRoofTypeList() {
             size="sm"
             onClick={() => handleView(row.roofTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +162,7 @@ function RearHouseRoofTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.roofTypeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +170,7 @@ function RearHouseRoofTypeList() {
             onClick={() => deleteConfirm(row.roofTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -174,14 +178,14 @@ function RearHouseRoofTypeList() {
       hide: "md",
     },
     {
-      name: "Rear House Roof Type",
+      name: t("Rear House Roof Type"),
       selector: (row) => row.roofTypeName,
       cell: (row) => <span>{row.roofTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rear House Roof Type Name in Kannada",
+      name: t("Rear House Type Name in Kannada"),
       selector: (row) => row.roofTypeNameInKannada,
       cell: (row) => <span>{row.roofTypeNameInKannada}</span>,
       sortable: true,
@@ -194,7 +198,7 @@ function RearHouseRoofTypeList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Rear House Roof Type</Block.Title>
+            <Block.Title tag="h2">{t("Rear House Roof Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -204,7 +208,7 @@ function RearHouseRoofTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -213,7 +217,7 @@ function RearHouseRoofTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

@@ -7,12 +7,15 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 import { Icon } from "../../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PlantationType() {
+     // Translation
+     const { t } = useTranslation();
+
   const [data, setData] = useState({
     plantationTypeName: "",
     plantationTypeNameInKannada: "",
@@ -97,7 +100,7 @@ function PlantationType() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Plantation Type</Block.Title>
+            <Block.Title tag="h2">{t("Plantation Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -107,7 +110,7 @@ function PlantationType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -116,7 +119,7 @@ function PlantationType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -135,7 +138,7 @@ function PlantationType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="plantation">
-                        Plantation Type<span className="text-danger">*</span>
+                      {t("Plantation Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -144,11 +147,11 @@ function PlantationType() {
                           type="text"
                           value={data.plantationTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Plantation Type"
+                          placeholder={t("Enter Plantation Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Plantation Type is required.
+                          {t("Plantation Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -157,7 +160,7 @@ function PlantationType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="plantation">
-                        Plantation Type Name in Kannada
+                        {t("Plantation Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -167,11 +170,11 @@ function PlantationType() {
                           type="text"
                           value={data.plantationTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Plantation Type Name in Kannada"
+                          placeholder={t("Enter Plantation Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Plantation Type Name in Kannada is required.
+                          {t("Plantation Type Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -185,12 +188,12 @@ function PlantationType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

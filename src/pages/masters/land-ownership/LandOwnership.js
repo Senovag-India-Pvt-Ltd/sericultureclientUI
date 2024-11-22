@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandOwnership() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     landOwnershipName: "",
     landOwnershipNameInKannada: "",
@@ -96,7 +100,7 @@ function LandOwnership() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Land Ownership</Block.Title>
+            <Block.Title tag="h2">{t("Land Ownership")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +110,7 @@ function LandOwnership() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +119,7 @@ function LandOwnership() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +138,7 @@ function LandOwnership() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="land">
-                        Land Ownership<span className="text-danger">*</span>
+                      {t("Land Ownership")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +147,11 @@ function LandOwnership() {
                           type="text"
                           value={data.landOwnershipName}
                           onChange={handleInputs}
-                          placeholder="Enter Land Ownership"
+                          placeholder={t("Enter Land Ownership")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Land Ownership is required.
+                        {t("Land Ownership is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,7 +160,7 @@ function LandOwnership() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="land">
-                        Land Ownership Name in Kannada
+                      {t("Land Ownership Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -166,11 +170,11 @@ function LandOwnership() {
                           type="text"
                           value={data.landOwnershipNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Land Ownership Name in Kannada"
+                          placeholder={t("Enter Land Ownership Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Land Ownership Name in Kannada is required.
+                        {t("Land Ownership Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -184,12 +188,12 @@ function LandOwnership() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

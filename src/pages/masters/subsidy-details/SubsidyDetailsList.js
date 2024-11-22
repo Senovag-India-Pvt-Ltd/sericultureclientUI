@@ -12,11 +12,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 import SubsidyDetailsDatas from "../../../store/masters/subsidy-details/SubsidyDetailsData";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SubsidyDetailsList() {
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function SubsidyDetailsList() {
 
   const SubsidyDetailsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function SubsidyDetailsList() {
             size="sm"
             onClick={() => handleView(row.subsidyId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function SubsidyDetailsList() {
             className="ms-2"
             onClick={() => handleEdit(row.subsidyId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function SubsidyDetailsList() {
             onClick={() => deleteConfirm(row.subsidyId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +181,14 @@ function SubsidyDetailsList() {
       hide: "md",
     },
     {
-      name: "Subsidy Details",
+      name: t("Subsidy Details"),
       selector: (row) => row.subsidyName,
       cell: (row) => <span>{row.subsidyName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Subsidy Details in Kannada",
+      name: t("Subsidy Details in Kannada"),
       selector: (row) => row.subsidyNameInKannada,
       cell: (row) => <span>{row.subsidyNameInKannada}</span>,
       sortable: true,
@@ -197,7 +201,7 @@ function SubsidyDetailsList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Subsidy Details List</Block.Title>
+            <Block.Title tag="h2"> {t("Subsidy Details List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +211,7 @@ function SubsidyDetailsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +220,7 @@ function SubsidyDetailsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

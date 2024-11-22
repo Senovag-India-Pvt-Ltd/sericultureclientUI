@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SilkWormVarietyEdit() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -132,7 +137,7 @@ function SilkWormVarietyEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -141,7 +146,7 @@ function SilkWormVarietyEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -164,7 +169,7 @@ function SilkWormVarietyEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sworm">
-                          Silk Worm Variety
+                        {t("Silk Worm Variety")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -174,11 +179,11 @@ function SilkWormVarietyEdit() {
                             type="text"
                             value={data.silkWormVarietyName}
                             onChange={handleInputs}
-                            placeholder="Enter Silk Worm Variety"
+                            placeholder={t("Enter Silk Worm Variety")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Silk Worm Variety is required.
+                          {t("Silk Worm Variety is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -187,7 +192,7 @@ function SilkWormVarietyEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sworm">
-                          Silk Worm Variety Name in Kannada
+                        {t("Silk Worm Variety Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -197,11 +202,11 @@ function SilkWormVarietyEdit() {
                             type="text"
                             value={data.silkWormVarietyNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Silk Worm Variety Name in Kannada"
+                            placeholder={t("Enter Silk Worm Variety Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Silk Worm Variety Name in Kannada is required.
+                          {t("Silk Worm Variety Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -216,12 +221,12 @@ function SilkWormVarietyEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

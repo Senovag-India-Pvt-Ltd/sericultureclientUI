@@ -6,10 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandOwnershipView() {
+  // Translation
+  const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -46,7 +50,7 @@ function LandOwnershipView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Land Ownership View</Block.Title>
+            <Block.Title tag="h2">{t("Land Ownership View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -56,7 +60,7 @@ function LandOwnershipView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -65,7 +69,7 @@ function LandOwnershipView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -75,7 +79,7 @@ function LandOwnershipView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>Land Ownership Details</Card.Header>
+          <Card.Header>{t("Land Ownership Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -87,17 +91,17 @@ function LandOwnershipView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{LandOwnership.landOwnershipId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Land Ownership:</td>
+                        <td style={styles.ctstyle}>  {t("Land Ownership")}</td>
                         <td>{LandOwnership.landOwnershipName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Land Ownership In Kannada:
+                          {t("Land Ownership Name in Kannada")}
                         </td>
                         <td>{LandOwnership.landOwnershipNameInKannada}</td>
                       </tr>

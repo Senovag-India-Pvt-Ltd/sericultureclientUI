@@ -11,10 +11,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LandCategoryList() {
+    // Translation
+    const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +143,7 @@ function LandCategoryList() {
 
   const LandCategoryDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +153,7 @@ function LandCategoryList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +161,7 @@ function LandCategoryList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +169,7 @@ function LandCategoryList() {
             onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +177,14 @@ function LandCategoryList() {
       hide: "md",
     },
     {
-      name: "Land Holding Category",
+      name: t("Land Holding Category"),
       selector: (row) => row.landCategoryName,
       cell: (row) => <span>{row.landCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Land Holding Category Name In Kannada",
+      name: t("Land Category Name in Kannada"),
       selector: (row) => row.landCategoryNameInKannada,
       cell: (row) => <span>{row.landCategoryNameInKannada}</span>,
       sortable: true,
@@ -195,7 +197,7 @@ function LandCategoryList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Land Holding Category List</Block.Title>
+            <Block.Title tag="h2">{t("Land Holding Category List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +207,7 @@ function LandCategoryList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +216,7 @@ function LandCategoryList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

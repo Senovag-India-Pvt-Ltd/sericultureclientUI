@@ -11,10 +11,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { createTheme } from "react-data-table-component";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SilkWormVarietyList() {
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -141,7 +146,7 @@ function SilkWormVarietyList() {
 
   const SilkWormVarietyDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +156,7 @@ function SilkWormVarietyList() {
             size="sm"
             onClick={() => handleView(row.silkWormVarietyId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +164,7 @@ function SilkWormVarietyList() {
             className="ms-2"
             onClick={() => handleEdit(row.silkWormVarietyId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +172,7 @@ function SilkWormVarietyList() {
             onClick={() => deleteConfirm(row.silkWormVarietyId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +180,14 @@ function SilkWormVarietyList() {
       hide: "md",
     },
     {
-      name: "Silk Worm Variety",
+      name: t("Silk Worm Variety"),
       selector: (row) => row.silkWormVarietyName,
       cell: (row) => <span>{row.silkWormVarietyName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Silk Worm Variety Name in Kannada",
+      name: t("Silk Worm Variety Name in Kannada"),
       selector: (row) => row.silkWormVarietyNameInKannada,
       cell: (row) => <span>{row.silkWormVarietyNameInKannada}</span>,
       sortable: true,
@@ -195,7 +200,7 @@ function SilkWormVarietyList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Silk Worm Variety List</Block.Title>
+            <Block.Title tag="h2"> {t("Silk Worm Variety List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +210,7 @@ function SilkWormVarietyList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +219,7 @@ function SilkWormVarietyList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

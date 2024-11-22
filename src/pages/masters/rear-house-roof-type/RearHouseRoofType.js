@@ -9,10 +9,16 @@ import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RearHouseRoofType() {
+
+
+   // Translation
+   const { t } = useTranslation();
+
   const [data, setData] = useState({
     roofTypeName: "",
     roofTypeNameInKannada: "",
@@ -97,7 +103,7 @@ function RearHouseRoofType() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Rear House Roof Type</Block.Title>
+            <Block.Title tag="h2">{t("Rear House Roof Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -107,7 +113,7 @@ function RearHouseRoofType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -116,7 +122,7 @@ function RearHouseRoofType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -135,7 +141,7 @@ function RearHouseRoofType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="rear">
-                        Rear House Roof Type
+                      {t("Rear House Roof Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -145,11 +151,11 @@ function RearHouseRoofType() {
                           type="text"
                           value={data.roofTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Rear House Roof Type"
+                          placeholder={t("Enter Rear House Roof Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Roof Type is required.
+                          {t("Roof Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -158,7 +164,7 @@ function RearHouseRoofType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="rear">
-                        Rear House Type Name in Kannada
+                        {t("Rear House Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -168,11 +174,11 @@ function RearHouseRoofType() {
                           type="text"
                           value={data.roofTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Rear House Roof Type  Name in Kannada"
+                          placeholder={t("Enter Rear House Roof Type  Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Roof House Type Name in Kannada is required.
+                          {t("Roof House Type Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -186,12 +192,12 @@ function RearHouseRoofType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -6,10 +6,16 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceOfMulberryView() {
+
+  
+   // Translation
+   const { t } = useTranslation();
+   
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,7 +54,7 @@ function SourceOfMulberryView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Source Of Mulberry View</Block.Title>
+            <Block.Title tag="h2">{t("Source Of Mulberry View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -58,7 +64,7 @@ function SourceOfMulberryView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -67,7 +73,7 @@ function SourceOfMulberryView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -77,7 +83,7 @@ function SourceOfMulberryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Source Of Mulberry Details</Card.Header>
+          <Card.Header>{t("Source Of Mulberry Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -89,17 +95,17 @@ function SourceOfMulberryView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{SourceOfMulberry.mulberrySourceId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Source Of Mulberry:</td>
+                        <td style={styles.ctstyle}> {t("Source of Mulberry")}</td>
                         <td>{SourceOfMulberry.mulberrySourceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Source Of Mulberry in Kannada:
+                          {t("Source of Mulberry in Kannada")}
                         </td>
                         <td>{SourceOfMulberry.mulberrySourceNameInKannada}</td>
                       </tr>
