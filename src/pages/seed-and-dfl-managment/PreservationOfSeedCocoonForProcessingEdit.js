@@ -705,9 +705,9 @@ useEffect(() => {
                               Date of seed cocoon supply<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Seed Cocoon supply">
-                              {isDataOfSeedCocoonSet && (
+                              {/* {isDataOfSeedCocoonSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfSeedCocoonSupply)}
+                                  selected={data.dateOfSeedCocoonSupply ?new Date(data.dateOfSeedCocoonSupply) : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfSeedCocoonSupply")
                                   }
@@ -720,7 +720,7 @@ useEffect(() => {
                                   className="form-control"
                                   required
                                 />
-                            )}
+                            {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -732,9 +732,9 @@ useEffect(() => {
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                    {isDataSpunSet && (
+                    {/* {isDataSpunSet && ( */}
                       <DatePicker
-                        selected={new Date(data.spunOnDate)}
+                        selected={ data.spunOnDate ? new Date(data.spunOnDate) : null}
                         onChange={(date) =>
                           handleDateChange(date, "spunOnDate")
                         }
@@ -746,7 +746,7 @@ useEffect(() => {
                         className="form-control"
                         required
                       />
-                      )}
+                      {/* )} */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -758,9 +758,9 @@ useEffect(() => {
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
-                    {isDataInvoiceDate && (
+                    {/* {isDataInvoiceDate && ( */}
                       <DatePicker
-                        selected={new Date(data.invoiceDate)}
+                        selected={data.invoiceDate ? new Date(data.invoiceDate) : null}
                         onChange={(date) =>
                           handleDateChange(date, "invoiceDate")
                         }
@@ -772,7 +772,7 @@ useEffect(() => {
                         className="form-control"
                         // required
                       />
-                      )}
+                      {/* )} */}
                     </div>
                   </Form.Group>
                 </Col>
