@@ -566,7 +566,8 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Released on <span className="text-danger">*</span>
+                        Released on 
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         {/* {isDataReleasedDate && ( */}
@@ -582,7 +583,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                             //   maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                           />
                         {/* )} */}
                       </div>
@@ -592,7 +593,8 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Spun on Date<span className="text-danger">*</span>
+                        Spun on Date
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         {/* {isDataSpunDate && ( */}
@@ -608,7 +610,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                             //   maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                           />
                         {/* )} */}
                       </div>
@@ -618,7 +620,8 @@ function RearingOfDFLsForThe8LinesEdit() {
                       <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Hatching date<span className="text-danger">*</span>
+                                Date
+                                {/* <span className="text-danger">*</span> */}
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   {/* {isDataHatchingDate && ( */}
@@ -634,7 +637,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                                       //   maxDate={new Date()}
                                       dateFormat="dd/MM/yyyy"
                                       className="form-control"
-                                      required
+                                      // required
                                     />
                                   {/* )} */}
                                 </div>

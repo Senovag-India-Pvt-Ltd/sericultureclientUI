@@ -568,7 +568,9 @@ function RearingofDFLsforthe8Lines() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Released on <span className="text-danger">*</span></Form.Label>
+                              <Form.Label> Released on 
+                              {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.releasedOnDate}
@@ -582,7 +584,7 @@ function RearingofDFLsforthe8Lines() {
                                   // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  required
+                                  // required
                                 />
                               </div>
                             </Form.Group>
@@ -591,7 +593,8 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Spun on date<span className="text-danger">*</span>
+                                Spun on date
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -606,7 +609,7 @@ function RearingofDFLsforthe8Lines() {
                                   // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  required
+                                  // required
                                 />
                               </div>
                             </Form.Group>
@@ -615,7 +618,8 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Hatching date<span className="text-danger">*</span>
+                                Date
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -630,7 +634,7 @@ function RearingofDFLsforthe8Lines() {
                                   // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  required
+                                  // required
                                 />
                               </div>  
                             </Form.Group>

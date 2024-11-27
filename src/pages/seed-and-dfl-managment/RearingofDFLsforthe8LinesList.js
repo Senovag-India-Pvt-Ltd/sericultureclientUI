@@ -640,7 +640,7 @@ function RearingofDFLsforthe8LinesList() {
     //   hide: "md",
     // },
     {
-      name: "Hatching Date",
+      name: "Date",
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
       sortable: true,
@@ -1169,7 +1169,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>Feeding and Moult Test</Modal.Title>
+    <Modal.Title>Moult Table</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -2638,7 +2638,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Feeding and Moult Test</Modal.Title>
+          <Modal.Title>Moult Table</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
