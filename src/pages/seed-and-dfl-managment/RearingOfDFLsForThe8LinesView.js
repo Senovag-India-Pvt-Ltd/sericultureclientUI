@@ -182,6 +182,12 @@ function RearingOfDFLsForThe8LinesView() {
                         </td>
                         <td>{rearing8Lines.cropFailureDetails}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Cocoon Produced in NOs:
+                        </td>
+                        <td>{rearing8Lines.cocoonAssessmentDetails}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

@@ -350,7 +350,8 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Crop number<span className="text-danger">*</span>
+                        Crop Number
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -360,11 +361,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Crop number"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Crop number is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
@@ -424,7 +425,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
                         Cold Storage Details
-                        <span className="text-danger">*</span>
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -434,11 +435,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Cold Storage Details"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Cold Storage Details is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
@@ -492,7 +493,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
                         Worm Test results
-                        <span className="text-danger">*</span>
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -502,11 +503,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Worm Test results"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                         Worm Test results is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
@@ -516,8 +517,8 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Crop failure details
-                        <span className="text-danger">*</span>
+                        Crop Failure details
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -527,11 +528,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Crop failure details"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Crop failure details is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>

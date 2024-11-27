@@ -1060,6 +1060,14 @@ function RearingofDFLsforthe8LinesList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "Cocoon Produced in NOs",
+      selector: (row) => row.cocoonAssessmentDetails,
+      cell: (row) => <span>{row.cocoonAssessmentDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Cocoon Assesment Details",
       cell: (row) => (
