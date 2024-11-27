@@ -1748,7 +1748,7 @@ function Menu() {
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
-                    text="Silk Market"
+                    text="Silk Exchange"
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -1757,7 +1757,7 @@ function Menu() {
                     {showMenu.Market_Bidding ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Inward (Silk Market)"
+                          text="e-Inward (Silk Exchange)"
                           to="/seriui/silk-bidding-slip"
                         />
                       </MenuItem>
@@ -1765,7 +1765,7 @@ function Menu() {
                     {showMenu.Market_Weighment ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Weighment (Silk Market)"
+                          text="e-Weighment (Silk Exchange)"
                           to="/seriui/weighment-for-silk-market"
                         />
                       </MenuItem>
@@ -2237,7 +2237,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
-            {showMenu.TargetSetting_Dashboard ? (
+            {/* {showMenu.TargetSetting_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
                   text="Budget Dashboard"
@@ -2330,7 +2330,7 @@ function Menu() {
                         to="/seriui/physicaltargetsettingsdistrict"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                   {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2347,7 +2347,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Physical Target Setting Taluk"
@@ -2401,7 +2401,7 @@ function Menu() {
                   ) : null}
                 </MenuSub>
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
       {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
@@ -2455,6 +2455,14 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
+                        text="SI SD Daily Mulberry Target"
+                        to="/seriui/si-sd-mulberry-day-target-new"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
                         text="District Wise Product Physical Target Setting"
                         to="/seriui/districtwise-product-physical-target-setting"
                       />
@@ -2465,6 +2473,14 @@ function Menu() {
                       <MenuItemLink
                         text="TSC Wise Product Physical Target Setting"
                         to="/seriui/tscwise-product-physical-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Reeling TSC Wise Product Physical Target Setting"
+                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>
                   ) : null}
@@ -2516,6 +2532,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
+                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="SI SD Wise Daily Scheme Target Setting"
+                        to="/seriui/si-sd-wise-day-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
 
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
@@ -2534,14 +2558,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Reeling TSC Wise Scheme Target Setting"
                         to="/seriui/reeling-tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                 </MenuSub>
               </MenuItem>
             ) : null}
