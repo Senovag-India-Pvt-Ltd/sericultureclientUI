@@ -743,7 +743,7 @@ useEffect(() => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       Spun On Date
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -757,7 +757,7 @@ useEffect(() => {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
