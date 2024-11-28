@@ -9,10 +9,14 @@ import DatePicker from "react-datepicker";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSchemeDetailsEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -155,7 +159,7 @@ function ScSchemeDetailsEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Scheme Details</Block.Title>
+            <Block.Title tag="h2">{t("Edit Scheme Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -165,7 +169,7 @@ function ScSchemeDetailsEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -174,7 +178,7 @@ function ScSchemeDetailsEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -198,7 +202,7 @@ function ScSchemeDetailsEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Scheme Name
+                      {t("Scheme Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -208,11 +212,11 @@ function ScSchemeDetailsEdit() {
                           type="text"
                           value={data.schemeName}
                           onChange={handleInputs}
-                          placeholder="Enter Scheme name"
+                          placeholder={t("Enter Scheme name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Scheme Name is required
+                        {t("Scheme Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -221,7 +225,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Scheme Name in Kannada
+                      {t("Scheme Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -231,11 +235,11 @@ function ScSchemeDetailsEdit() {
                           value={data.schemeNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Scheme Name in Kannada"
+                          placeholder={t("Enter Scheme Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Scheme Name in Kannada is required.
+                        {t("Scheme Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -244,7 +248,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      DBT Code
+                      {t("Dbt Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -254,11 +258,11 @@ function ScSchemeDetailsEdit() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter DBT Code"
+                          placeholder={t("Enter Dbt Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        DBT Code is required
+                        {t("Dbt Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -267,7 +271,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                          Scheme Start Date<span className="text-danger">*</span>
+                          {t("Scheme Start Date")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                               {isDataFromSet && (
@@ -293,7 +297,7 @@ function ScSchemeDetailsEdit() {
                         <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Scheme End Date<span className="text-danger">*</span>
+                              {t("Scheme End Date")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataToSet && (
@@ -330,7 +334,7 @@ function ScSchemeDetailsEdit() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Hectare
+                      {t("Hectare")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -346,7 +350,7 @@ function ScSchemeDetailsEdit() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Spacing
+                      {t("spacing")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -364,12 +368,12 @@ function ScSchemeDetailsEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

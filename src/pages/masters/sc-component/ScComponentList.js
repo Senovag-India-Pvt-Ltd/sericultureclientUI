@@ -10,10 +10,14 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScComponentList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -140,7 +144,7 @@ function ScComponentList() {
 
   const ScComponentDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +154,7 @@ function ScComponentList() {
             size="sm"
             onClick={() => handleView(row.scComponentId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +162,7 @@ function ScComponentList() {
             className="ms-2"
             onClick={() => handleEdit(row.scComponentId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +170,7 @@ function ScComponentList() {
             onClick={() => deleteConfirm(row.scComponentId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -174,7 +178,7 @@ function ScComponentList() {
       hide: "md",
     },
     {
-      name: "Component",
+      name: t("Component"),
       selector: (row) => row.scComponentName,
       cell: (row) => <span>{row.scComponentName}</span>,
       sortable: true,
@@ -188,7 +192,7 @@ function ScComponentList() {
     //   hide: "md",
     // },
     {
-      name: "DBT Code",
+      name: t("Dbt Code"),
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
@@ -201,7 +205,7 @@ function ScComponentList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Component List</Block.Title>
+            <Block.Title tag="h2">{t("Component List")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -212,7 +216,7 @@ function ScComponentList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -221,7 +225,7 @@ function ScComponentList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

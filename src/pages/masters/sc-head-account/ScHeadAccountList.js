@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScHeadAccountList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +188,7 @@ function ScHeadAccountList() {
 
   const ScHeadAccountDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +198,7 @@ function ScHeadAccountList() {
             size="sm"
             onClick={() => handleView(row.scHeadAccountId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +206,7 @@ function ScHeadAccountList() {
             className="ms-2"
             onClick={() => handleEdit(row.scHeadAccountId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +214,7 @@ function ScHeadAccountList() {
             onClick={() => deleteConfirm(row.scHeadAccountId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -220,7 +223,7 @@ function ScHeadAccountList() {
      
     },
     {
-      name: "Head Account Name",
+      name: t("Head Account"),
       selector: (row) => row.scHeadAccountName,
       cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
@@ -228,21 +231,21 @@ function ScHeadAccountList() {
     },
     
     {
-      name: "Head Account in Kannada",
+      name: t("Head Of Account Name in Kannada"),
       selector: (row) => row.scHeadAccountNameInKannada,
       cell: (row) => <span>{row.scHeadAccountNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Details",
+      name: t("Scheme Details"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Dbt Code",
+      name: t("Dbt Code"),
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
@@ -255,7 +258,7 @@ function ScHeadAccountList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head Account List</Block.Title>
+            <Block.Title tag="h2">{t("Head Account List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -265,7 +268,7 @@ function ScHeadAccountList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -274,7 +277,7 @@ function ScHeadAccountList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -309,8 +312,8 @@ function ScHeadAccountList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="scHeadAccount">Head Account</option>
-                      <option value="scSchemeDetails">Scheme Name</option>
+                      <option value="scHeadAccount">{t("Head of Account")}</option>
+                      <option value="scSchemeDetails">{t("Scheme Details")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -327,7 +330,7 @@ function ScHeadAccountList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

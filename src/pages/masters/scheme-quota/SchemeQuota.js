@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeQuota() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     scSchemeDetailsId: "",
     schemeQuotaName: "",
@@ -139,7 +141,7 @@ function SchemeQuota() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Scheme Quota</Block.Title>
+            <Block.Title tag="h2">{t("Scheme Quota")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -149,7 +151,7 @@ function SchemeQuota() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -158,7 +160,7 @@ function SchemeQuota() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -177,7 +179,7 @@ function SchemeQuota() {
                 <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Scheme Details<span className="text-danger">*</span>
+                      {t("Scheme Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -190,7 +192,7 @@ function SchemeQuota() {
                             data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
                           }
                         >
-                          <option value="">Select Scheme Details</option>
+                          <option value="">{t("Select Scheme Details")}</option>
                           {scSchemeDetailsListData.map((list) => (
                             <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                               {list.schemeName}
@@ -198,7 +200,7 @@ function SchemeQuota() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Scheme name is required
+                        {t("Scheme name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -206,7 +208,7 @@ function SchemeQuota() {
                     <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                         Scheme Quota
+                      {t("Scheme Quota")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -216,11 +218,11 @@ function SchemeQuota() {
                           value={data.schemeQuotaName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Scheme Quota"
+                          placeholder={t("Enter Scheme Quota")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota is required.
+                        {t("Scheme Quota is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -229,7 +231,7 @@ function SchemeQuota() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Scheme Quota Type<span className="text-danger">*</span>
+                        {t("Scheme Quota Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -242,14 +244,14 @@ function SchemeQuota() {
                             data.schemeQuotaType === undefined || data.schemeQuotaType === "0"
                           }
                         >
-                          <option value="0">Select Scheme Quota Type</option>
+                          <option value="0">{t("Select Scheme Quota Type")}</option>
                           <option value="State">State</option>
                           <option value="Central">Central</option>
                           <option value="Central-State Mandatory">Central-State Mandatory</option>
                           <option value="State Top Up">State Top Up</option>      
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota Type is required
+                        {t("Scheme Quota Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -258,7 +260,7 @@ function SchemeQuota() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Scheme Quota Code
+                      {t("Scheme Quota Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -268,11 +270,11 @@ function SchemeQuota() {
                           value={data.schemeQuotaCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Scheme Quota Code"
+                          placeholder={t("Enter Scheme Quota Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota Code is required.
+                        {t("Scheme Quota Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -280,7 +282,7 @@ function SchemeQuota() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                         Scheme Quota Payment Type
+                         {t("Scheme Quota Payment Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -290,11 +292,11 @@ function SchemeQuota() {
                           value={data.schemeQuotaPaymentType}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Scheme Quota Payment Type"
+                          placeholder={t("Enter Scheme Quota Payment Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota Payment Type is required.
+                        {t("Scheme Quota Payment Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -303,7 +305,7 @@ function SchemeQuota() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      DBT Code
+                      {t("Dbt Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -313,11 +315,11 @@ function SchemeQuota() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter DBT Code"
+                          placeholder={t("Enter Dbt Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        DBT Code is required
+                        {t("Dbt Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -326,7 +328,7 @@ function SchemeQuota() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                       Ddo Code
+                       {t("Ddo Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -336,11 +338,11 @@ function SchemeQuota() {
                           value={data.ddoCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Ddo Code"
+                          placeholder={t("Enter Ddo Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Ddo Code is required.
+                         {t("Ddo Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -354,7 +356,7 @@ function SchemeQuota() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -362,7 +364,7 @@ function SchemeQuota() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -8,9 +8,12 @@ import axios from "axios";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSchemeDetailsView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -54,7 +57,7 @@ function ScSchemeDetailsView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Scheme Details View</Block.Title>
+            <Block.Title tag="h2">{t("Scheme Details View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +67,7 @@ function ScSchemeDetailsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +76,7 @@ function ScSchemeDetailsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,7 +86,7 @@ function ScSchemeDetailsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Scheme Details</Card.Header>
+          <Card.Header>{t("Scheme Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,30 +98,30 @@ function ScSchemeDetailsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScSchemeDetails.scSchemeDetailsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td style={styles.ctstyle}> {t("Scheme Name")}</td>
                         <td>{ScSchemeDetails.schemeName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Scheme Name In Kannada:
+                          {t("Scheme Name in Kannada")}
                         </td>
                         <td>{ScSchemeDetails.schemeNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Scheme Start Date:</td>
+                        <td style={styles.ctstyle}>{t("Scheme Start Date")}</td>
                         <td>{formatDate(ScSchemeDetails.schemeStartDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Scheme End Date:</td>
+                        <td style={styles.ctstyle}>{t("Scheme End Date")}</td>
                         <td>{formatDate(ScSchemeDetails.schemeEndDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td style={styles.ctstyle}> {t("Dbt Code")}</td>
                         <td>{ScSchemeDetails.dbtCode}</td>
                       </tr>
                     </tbody>

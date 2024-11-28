@@ -5,10 +5,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DocumentsView() {
+   // Translation
+   const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -52,7 +56,7 @@ function DocumentsView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Documents View</Block.Title>
+            <Block.Title tag="h2">{t("Documents View")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -63,7 +67,7 @@ function DocumentsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +76,7 @@ function DocumentsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -82,7 +86,7 @@ function DocumentsView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>Documents Details</Card.Header>
+          <Card.Header>{t("Documents Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,11 +98,11 @@ function DocumentsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{Documents.documentMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Documents:</td>
+                        <td style={styles.ctstyle}> {t("Documents")}</td>
                         <td>{Documents.documentMasterName}</td>
                       </tr>
                     </tbody>

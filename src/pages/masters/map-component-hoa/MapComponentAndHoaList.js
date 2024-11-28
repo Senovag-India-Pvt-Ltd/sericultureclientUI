@@ -13,11 +13,15 @@ import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
+import { useTranslation } from "react-i18next";
 import api from "../../../../src/services/auth/api";
 
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function MapComponentAndHoaList() {
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -178,98 +182,98 @@ function MapComponentAndHoaList() {
     //   hide: "md",
     // },
     {
-        name: "Head Of Account",
+        name: t("Head Of Account"),
         selector: (row) => row.scHeadAccountName,
         cell: (row) => <span>{row.scHeadAccountName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Unit Type",
+      name: t("Unit Type"),
       selector: (row) => row.unitType,
       cell: (row) => <span>{row.unitType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Measurement Unit",
+        name: t("Measurement Unit"),
         selector: (row) => row.measurementUnit,
         cell: (row) => <span>{row.measurementUnit}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Minimum Quantity",
+        name: t("Minimum Quantity"),
         selector: (row) => row.minQty,
         cell: (row) => <span>{row.minQty}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Maximum Quantity",
+        name: t("Maximum Quantity"),
         selector: (row) => row.maxQty,
         cell: (row) => <span>{row.maxQty}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Maximum Amount",
+        name: t("Maximum Amount"),
         selector: (row) => row.maxAmount,
         cell: (row) => <span>{row.maxAmount}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Minimum Amount",
+        name: t("Minimum Amount"),
         selector: (row) => row.minAmount,
         cell: (row) => <span>{row.minAmount}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Unit Cost In  Rupees",
+        name: t("Unit Cost In  Rupees"),
         selector: (row) => row.unitCostInRupees,
         cell: (row) => <span>{row.unitCostInRupees}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Share in %",
+        name: t("Share in %"),
         selector: (row) => row.shareInPercentage,
         cell: (row) => <span>{row.shareInPercentage}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Scheme Name",
+      name: t("Scheme Name"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Sub Scheme",
+        name: t("Sub Scheme"),
         selector: (row) => row.subSchemeName,
         cell: (row) => <span>{row.subSchemeName}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Category",
+        name: t("Category"),
         selector: (row) => row.codeNumber,
         cell: (row) => <span>{row.codeNumber}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Scheme Quota",
+        name: t("Scheme Quota"),
         selector: (row) => row.schemeQuotaName,
         cell: (row) => <span>{row.schemeQuotaName   }</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Component",
+        name: t("Component"),
         selector: (row) => row.scComponentName,
         cell: (row) => <span>{row.scComponentName   }</span>,
         sortable: true,
@@ -282,7 +286,7 @@ function MapComponentAndHoaList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Map Component and Hoa</Block.Title>
+            <Block.Title tag="h2">{t("List Of Map Component and Hoa")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -292,7 +296,7 @@ function MapComponentAndHoaList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -301,7 +305,7 @@ function MapComponentAndHoaList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

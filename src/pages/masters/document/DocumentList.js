@@ -12,10 +12,14 @@ import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DocumentList() {
+   // Translation
+   const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -93,7 +97,7 @@ function DocumentList() {
 
   const DocumentsDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -103,7 +107,7 @@ function DocumentList() {
             size="sm"
             onClick={() => handleView(row.documentMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -111,7 +115,7 @@ function DocumentList() {
             className="ms-2"
             onClick={() => handleEdit(row.documentMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -119,7 +123,7 @@ function DocumentList() {
             onClick={() => deleteConfirm(row.documentMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -127,7 +131,7 @@ function DocumentList() {
       hide: "md",
     },
     {
-      name: "Documents",
+      name: t("Documents"),
       selector: (row) => row.documentMasterName,
       cell: (row) => <span>{row.documentMasterName}</span>,
       sortable: true,
@@ -140,7 +144,7 @@ function DocumentList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Document List</Block.Title>
+            <Block.Title tag="h2">{t("Document List")}</Block.Title>
            
           </Block.HeadContent>
           <Block.HeadContent>
@@ -151,7 +155,7 @@ function DocumentList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -160,7 +164,7 @@ function DocumentList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

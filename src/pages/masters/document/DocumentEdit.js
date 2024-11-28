@@ -7,10 +7,13 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DocumentsEdit() {
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -92,7 +95,7 @@ function DocumentsEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Documents</Block.Title>
+            <Block.Title tag="h2">{t("Edit Documents")}</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -102,7 +105,7 @@ function DocumentsEdit() {
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                  Edit Documents
+                {t("Edit Documents")}
                 </li>
               </ol>
             </nav>
@@ -115,7 +118,7 @@ function DocumentsEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -124,7 +127,7 @@ function DocumentsEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -146,7 +149,7 @@ function DocumentsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="documentMaster">
-                          Document
+                        {t("Documents")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -155,7 +158,7 @@ function DocumentsEdit() {
                             value={data.documentMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Roles"
+                            placeholder={t("Enter Documents name")}
                           />
                         </div>
                       </Form.Group>
@@ -169,7 +172,7 @@ function DocumentsEdit() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="button" variant="primary" onClick={postData}>
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
@@ -177,7 +180,7 @@ function DocumentsEdit() {
                     to="/seriui/documents-list"
                     className="btn btn-secondary border-0"
                   >
-                    Cancel
+                    {t("cancel")}
                   </Link>
                 </li>
               </ul>

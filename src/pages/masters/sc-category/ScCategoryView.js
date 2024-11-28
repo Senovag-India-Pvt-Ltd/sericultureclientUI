@@ -6,9 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScCategoryView() {
+
+  // Translation
+  const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,7 +53,7 @@ function ScCategoryView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Sub Component Details</Block.Title>
+            <Block.Title tag="h2">{t("View Sub Component Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -58,7 +63,7 @@ function ScCategoryView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -67,7 +72,7 @@ function ScCategoryView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -77,7 +82,7 @@ function ScCategoryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Sub Component Details</Card.Header>
+          <Card.Header>{t("Sub Component Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -89,31 +94,31 @@ function ScCategoryView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScCategory.scCategoryId}</td>
                       </tr>
             
                       <tr>
-                        <td style={styles.ctstyle}>Sub Component:</td>
+                        <td style={styles.ctstyle}>{t("Sub Component")}</td>
                         <td>{ScCategory.categoryName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Sub Component Name In Kannada:
+                          {t("Sub Component in Kannada")}
                         </td>
                         <td>{ScCategory.categoryNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Code Number:</td>
+                        <td style={styles.ctstyle}>  {t("Code  Number")}</td>
                         <td>{ScCategory.codeNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Description:</td>
+                        <td style={styles.ctstyle}> {t("Description")}</td>
                         <td>{ScCategory.description}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td style={styles.ctstyle}> {t("Dbt Code")}</td>
                         <td>{ScCategory.dbtCode}</td>
                       </tr>
                     </tbody>

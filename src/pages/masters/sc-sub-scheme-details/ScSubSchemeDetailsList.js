@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { format } from 'date-fns';
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSubSchemeDetailsList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -192,7 +196,7 @@ function ScSubSchemeDetailsList() {
 
   const ScSubSchemeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -202,7 +206,7 @@ function ScSubSchemeDetailsList() {
             size="sm"
             onClick={() => handleView(row.scSubSchemeDetailsId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -210,7 +214,7 @@ function ScSubSchemeDetailsList() {
             className="ms-2"
             onClick={() => handleEdit(row.scSubSchemeDetailsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -218,7 +222,7 @@ function ScSubSchemeDetailsList() {
             onClick={() => deleteConfirm(row.scSubSchemeDetailsId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -227,21 +231,21 @@ function ScSubSchemeDetailsList() {
       grow: 2,
     },
     {
-      name: "Scheme Name",
+      name: t("Scheme Details"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Component Type In Kannada",
+      name: t("Component Type In Kannada"),
       selector: (row) => row.subSchemeNameInKannada,
       cell: (row) => <span>{row.subSchemeNameInKannada}</span>,
       sortable: true,
@@ -255,7 +259,7 @@ function ScSubSchemeDetailsList() {
     //     hide: "md",
     //   },
     {
-      name: "Scheme Type",
+      name: t("Scheme Type"),
       selector: (row) => row.subSchemeType,
       cell: (row) => (
         <td>
@@ -272,21 +276,21 @@ function ScSubSchemeDetailsList() {
       hide: "md",
     },
       {
-        name: "Component Type Start Date",
+        name:t("Component Type Start Date"),
         selector: (row) => row.subSchemeStartDate,
         cell: (row) => <span>{formatDate(row.subSchemeStartDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Component Type End Date",
+        name: t("Component Type End Date"),
         selector: (row) => row.subSchemeEndDate,
         cell: (row) => <span>{formatDate(row.subSchemeEndDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "DBT Code",
+        name: t("Dbt Code"),
         selector: (row) => row.dbtCode,
         cell: (row) => <span>{row.dbtCode}</span>,
         sortable: true,
@@ -300,7 +304,7 @@ function ScSubSchemeDetailsList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Component Type</Block.Title>
+            <Block.Title tag="h2">{t("List Of Component Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -310,7 +314,7 @@ function ScSubSchemeDetailsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -319,7 +323,7 @@ function ScSubSchemeDetailsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -354,8 +358,8 @@ function ScSubSchemeDetailsList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="scSubSchemeDetails">Component Type</option>
-                      <option value="scSchemeDetails">Scheme Name</option>
+                      <option value="scSubSchemeDetails">{t("Component Type")}</option>
+                      <option value="scSchemeDetails">{t("Scheme Name")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -372,7 +376,7 @@ function ScSubSchemeDetailsList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

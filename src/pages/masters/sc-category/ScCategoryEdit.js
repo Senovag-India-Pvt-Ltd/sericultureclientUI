@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScCategoryEdit() {
+
+     // Translation
+     const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -135,7 +139,7 @@ function ScCategoryEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Sub Component</Block.Title>
+            <Block.Title tag="h2">{t("Edit Sub Component")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -145,7 +149,7 @@ function ScCategoryEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -154,7 +158,7 @@ function ScCategoryEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -177,7 +181,7 @@ function ScCategoryEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Sub Component
+                      {t("Sub Component")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -187,11 +191,11 @@ function ScCategoryEdit() {
                           type="text"
                           value={data.categoryName}
                           onChange={handleInputs}
-                          placeholder="Enter  Sub Component"
+                          placeholder={t("Enter  Sub Component")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Component is required
+                        {t("Sub Component is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -200,7 +204,7 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Sub Component Name in Kannada
+                      {t("Sub Component in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -210,11 +214,11 @@ function ScCategoryEdit() {
                           value={data.categoryNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Sub Component Name in Kannada"
+                          placeholder={t("Enter Sub Component Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Component Name in Kannada is required.
+                        {t("Sub Component in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -223,7 +227,7 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Code  Number
+                      {t("Code  Number")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -233,11 +237,11 @@ function ScCategoryEdit() {
                           type="text"
                           value={data.codeNumber}
                           onChange={handleInputs}
-                          placeholder="Enter Code Number"
+                          placeholder={t("Enter Code Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Code Number is required
+                        {t("Code Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -246,7 +250,7 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Description
+                      {t("Description")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -256,11 +260,11 @@ function ScCategoryEdit() {
                           type="text"
                           value={data.description}
                           onChange={handleInputs}
-                          placeholder="Enter Description"
+                          placeholder={t("Enter Description")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Description is required
+                        {t("Description is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -269,7 +273,7 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      {t("Dbt Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -279,11 +283,11 @@ function ScCategoryEdit() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder={t("Enter Dbt Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        {t("Dbt Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -298,12 +302,12 @@ function ScCategoryEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

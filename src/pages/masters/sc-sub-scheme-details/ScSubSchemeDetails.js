@@ -9,6 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
 
 
@@ -16,6 +17,9 @@ import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSubSchemeDetails() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     scSchemeDetailsId: "",
     subSchemeName: "",
@@ -162,7 +166,7 @@ function ScSubSchemeDetails() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Component Type</Block.Title>
+            <Block.Title tag="h2">{t("Component Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -172,7 +176,7 @@ function ScSubSchemeDetails() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -181,7 +185,7 @@ function ScSubSchemeDetails() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -202,7 +206,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Scheme Details<span className="text-danger">*</span>
+                        {t("Scheme Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -215,7 +219,7 @@ function ScSubSchemeDetails() {
                             data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
                           }
                         >
-                          <option value="">Select Scheme Details</option>
+                          <option value="">{t("Select Scheme Details")}</option>
                           {scSchemeDetailsListData.map((list) => (
                             <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                               {list.schemeName}
@@ -223,7 +227,7 @@ function ScSubSchemeDetails() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Scheme name is required
+                          {t("Scheme name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -231,7 +235,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeName">
-                        Component Type<span className="text-danger">*</span>
+                      {t("Component Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -240,11 +244,11 @@ function ScSubSchemeDetails() {
                           name="subSchemeName"
                           value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder="Enter  Component Type"
+                          placeholder={t("Enter Component Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Component Type is required
+                        {t("Component Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -253,7 +257,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeNameInKannada">
-                      Component Type In Kannada<span className="text-danger">*</span>
+                      {t("Component Type In Kannada")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -262,11 +266,11 @@ function ScSubSchemeDetails() {
                           name="subSchemeNameInKannada"
                           value={data.subSchemeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Component Type"
+                          placeholder={t("Enter Component Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Component Type In Kannada is required
+                        {t("Component Type In Kannada is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -298,7 +302,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                      Scheme Type<span className="text-danger">*</span>
+                      {t("Scheme Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -311,7 +315,7 @@ function ScSubSchemeDetails() {
                             data.subSchemeType === undefined || data.subSchemeType === "0"
                           }
                         >
-                          <option value="0">Select Scheme Type</option>
+                          <option value="0">{t("Select Scheme Type")}</option>
                           <option value="1">Subsidy</option>
                           <option value="2">Incentives</option>
                           <option value="3">Bonus</option>
@@ -327,7 +331,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      DBT Code
+                      {t("Dbt Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -337,11 +341,11 @@ function ScSubSchemeDetails() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter DBT Code"
+                          placeholder={t("Enter Dbt Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        DBT Code is required
+                        {t("Dbt Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -350,7 +354,7 @@ function ScSubSchemeDetails() {
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="subSchemeStartDate">
-                          Sub Scheme Start Date<span className="text-danger">*</span>
+                          {t("Sub Scheme Start Date")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                         <DatePicker
@@ -370,7 +374,7 @@ function ScSubSchemeDetails() {
                             />
                           </div>
                           <Form.Control.Feedback type="invalid">
-                          Sub Scheme Start Date is Required
+                          {t("Sub Scheme Start Date is Required")}
                       </Form.Control.Feedback>
                           </Form.Group>
                           
@@ -379,7 +383,7 @@ function ScSubSchemeDetails() {
                         <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="subSchemeEndDate">
-                                Sub Scheme End Date<span className="text-danger">*</span>
+                                {t("Sub Scheme End Date")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                             <DatePicker
@@ -398,7 +402,7 @@ function ScSubSchemeDetails() {
                             />
                           </div>
                           <Form.Control.Feedback type="invalid">
-                          Sub Scheme End Date is Required
+                          {t("Sub Scheme End Date is Required")}
                         </Form.Control.Feedback>
                           </Form.Group>
                           
@@ -416,7 +420,7 @@ function ScSubSchemeDetails() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        With Land
+                        {t("With Land")}
                       </Form.Label>
                     </Form.Group>
                 </Row>
@@ -428,7 +432,7 @@ function ScSubSchemeDetails() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -436,7 +440,7 @@ function ScSubSchemeDetails() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
