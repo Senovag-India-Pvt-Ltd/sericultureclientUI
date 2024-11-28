@@ -232,6 +232,13 @@ function SupplyOfCocoonsToGrainageList(){
           hide: "md",
         },
         {
+          name: "Cocoon Supplied in Kg",
+          selector: (row) => row.cacoonsSuppliedInKg,
+          cell: (row) => <span>{row.cacoonsSuppliedInKg}</span>,
+          sortable: true,
+          hide: "md",
+        },
+        {
           name: "Number Of Cocoons Dispatched",
           selector: (row) => row.numberOfCocoonsDispatched,
           cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>,

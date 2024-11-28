@@ -548,7 +548,8 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Pupa Test Details<span className="text-danger">*</span>
+                                Pupa Test Details
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -558,11 +559,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Enter Pupa Test Details"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                 Pupa Test Details is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>

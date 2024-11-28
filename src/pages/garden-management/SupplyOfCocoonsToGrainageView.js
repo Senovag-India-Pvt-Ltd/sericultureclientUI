@@ -142,6 +142,12 @@ function SupplyOfCocoonsToGrainageView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
+                        Cocoon Supplied in Kg:
+                        </td>
+                        <td>{supplyOfCoocons.cacoonsSuppliedInKg}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
                         Number Of Cocoons Dispatched:
                         </td>
                         <td>{supplyOfCoocons.numberOfCocoonsDispatched}</td>

@@ -426,7 +426,7 @@ function MaintenanceofScreeningBatchRecords() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="screeningBatchResults">
                                 Screening Batch Results
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -436,11 +436,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Screening Batch Results"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Screening Batch Results is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -528,7 +528,7 @@ function MaintenanceofScreeningBatchRecords() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cropFailureDetails">
                                 Crop Failure Details
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -538,11 +538,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Enter Crop Failure Details"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Crop Failure Details is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>

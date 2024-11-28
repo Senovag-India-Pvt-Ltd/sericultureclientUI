@@ -718,14 +718,29 @@ function PreservationofseedcocoonforprocessingListForNsso() {
       hide: "md",
     },
    
-    
-    // {
-    //   name: " Name of the Farmer",
-    //   selector: (row) => row.nameOfTheGovernmentSeedFarmOrFarmer,
-    //   cell: (row) => <span>{row.nameOfTheGovernmentSeedFarmOrFarmer}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Date Of Seed Cocoon Supply",
+      selector: (row) => row.dateOfSeedCocoonSupply,
+      cell: (row) => <span>{row.dateOfSeedCocoonSupply}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Cocoon supplied in Kg",
+      selector: (row) => row.bedNumberOrKgsOfCocoonsSupplied,
+      cell: (row) => <span>{row.bedNumberOrKgsOfCocoonsSupplied}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Rate Per Kg",
+      selector: (row) => row.ratePerKg,
+      cell: (row) => <span>{row.ratePerKg}</span>,
+      sortable: true,
+      hide: "md",
+    },
    
   
   
