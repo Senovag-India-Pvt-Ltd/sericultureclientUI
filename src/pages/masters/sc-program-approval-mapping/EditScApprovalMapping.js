@@ -8,11 +8,14 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { act } from "react";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ScProgramApprovalMappingEdit() {
+  // Translation
+  const { t } = useTranslation();
+  
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -395,7 +398,7 @@ function ScProgramApprovalMappingEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Service Program Account Mapping
+              {t("Edit Service Program Account Mapping")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -406,7 +409,7 @@ function ScProgramApprovalMappingEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -415,7 +418,7 @@ function ScProgramApprovalMappingEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -434,7 +437,7 @@ function ScProgramApprovalMappingEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Component Type
+                        {t("Component Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -450,7 +453,7 @@ function ScProgramApprovalMappingEdit() {
                             data.subSchemeId === "0"
                           }
                         >
-                          <option value="">Select Component Type</option>
+                          <option value="">{t("Select Component Type")}</option>
                           {scSubSchemeDetailsListData &&
                             scSubSchemeDetailsListData.map((list) => (
                               <option
@@ -462,7 +465,7 @@ function ScProgramApprovalMappingEdit() {
                             ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Component Type is required
+                          {t("Component Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -471,7 +474,7 @@ function ScProgramApprovalMappingEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Approval Stage<span className="text-danger">*</span>
+                        {t("Approval Stage")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -486,7 +489,7 @@ function ScProgramApprovalMappingEdit() {
                               data.scApprovalStageId === "0"
                             }
                           >
-                            <option value="">Select Approval Stage</option>
+                            <option value="">{t("Select Approval Stage")}</option>
                             {approvalListData.map((list) => (
                               <option
                                 key={list.scApprovalStageId}
@@ -497,7 +500,7 @@ function ScProgramApprovalMappingEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
+                            {t("Approval Stage Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -542,7 +545,7 @@ function ScProgramApprovalMappingEdit() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">Orders</Form.Label>
+                      <Form.Label htmlFor="program">{t("Orders")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="stepId"
@@ -550,7 +553,7 @@ function ScProgramApprovalMappingEdit() {
                           type="number"
                           value={data.stepId}
                           onChange={handleInputs}
-                          placeholder="Enter Orders"
+                          placeholder={t("Enter Orders")}
                         />
                       </div>
                     </Form.Group>
@@ -558,7 +561,7 @@ function ScProgramApprovalMappingEdit() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">Version</Form.Label>
+                      <Form.Label htmlFor="program">{t("Version")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="version"
@@ -566,7 +569,7 @@ function ScProgramApprovalMappingEdit() {
                           type="number"
                           value={data.version}
                           onChange={handleInputs}
-                          placeholder="Enter Version"
+                          placeholder={t("Enter Version")}
                         />
                       </div>
                     </Form.Group>
@@ -574,7 +577,7 @@ function ScProgramApprovalMappingEdit() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">Action</Form.Label>
+                      <Form.Label htmlFor="program">{t("Action")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="action"
@@ -583,7 +586,7 @@ function ScProgramApprovalMappingEdit() {
                           rows={4}
                           value={data.action}
                           onChange={handleInputs}
-                          placeholder="Enter Action"
+                          placeholder={t("Enter Action")}
                         />
                       </div>
                     </Form.Group>
@@ -594,7 +597,7 @@ function ScProgramApprovalMappingEdit() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>Add Designation</Card.Header>
+                <Card.Header>{t("Add Designation")}</Card.Header>
                 <Card.Body>
                   {/* <h3>Virtual Bank account</h3> */}
                   <Row className="g-gs mb-1">
@@ -616,7 +619,7 @@ function ScProgramApprovalMappingEdit() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("add")}</span>
                               </Button>
                             </li>
                             <li>
@@ -626,7 +629,7 @@ function ScProgramApprovalMappingEdit() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("add")}</span>
                               </Button>
                             </li>
                           </ul>
@@ -646,9 +649,9 @@ function ScProgramApprovalMappingEdit() {
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Designation</th>
-                                  <th>Amount</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("Designation")}</th>
+                                  <th>{t("Amount")}</th>
                                   {/* <th>Share in %</th> */}
                                 </tr>
                               </thead>
@@ -662,7 +665,7 @@ function ScProgramApprovalMappingEdit() {
                                           size="sm"
                                           onClick={() => handleGet(i)}
                                         >
-                                          Edit
+                                           {t("Edit")}
                                         </Button>
                                         <Button
                                           variant="danger"
@@ -670,7 +673,7 @@ function ScProgramApprovalMappingEdit() {
                                           onClick={() => handleDelete(i)}
                                           className="ms-2"
                                         >
-                                          Delete
+                                          {t("delete")}
                                         </Button>
                                       </div>
                                     </td>
@@ -696,12 +699,12 @@ function ScProgramApprovalMappingEdit() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
@@ -712,7 +715,7 @@ function ScProgramApprovalMappingEdit() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Designation</Modal.Title>
+          <Modal.Title>{t("Add Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -724,7 +727,7 @@ function ScProgramApprovalMappingEdit() {
             <Row className="g-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">Designation</Form.Label>
+                  <Form.Label htmlFor="sordfl">{t("Designation")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="designationId"
@@ -737,7 +740,7 @@ function ScProgramApprovalMappingEdit() {
                         designationDetails.designationId === "0"
                       }
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData.map((list) => (
                         <option
                           key={list.designationId}
@@ -748,7 +751,7 @@ function ScProgramApprovalMappingEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Designation is required
+                      {t("Designation is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -756,7 +759,7 @@ function ScProgramApprovalMappingEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="program">Amount</Form.Label>
+                  <Form.Label htmlFor="program">{t("Amount")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="amount"
@@ -764,7 +767,7 @@ function ScProgramApprovalMappingEdit() {
                       type="number"
                       value={data.amount}
                       onChange={handleMapInputs}
-                      placeholder="Enter Amount"
+                      placeholder={t("Enter Amount")}
                     />
                   </div>
                 </Form.Group>
@@ -775,7 +778,7 @@ function ScProgramApprovalMappingEdit() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Add
+                      {t("add")}
                     </Button>
                   </div>
 
@@ -785,7 +788,7 @@ function ScProgramApprovalMappingEdit() {
                       variant="secondary"
                       onClick={designationClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>
@@ -797,7 +800,7 @@ function ScProgramApprovalMappingEdit() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Designation</Modal.Title>
+          <Modal.Title>{t("Edit Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -811,7 +814,7 @@ function ScProgramApprovalMappingEdit() {
             <Row className="g-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">Designation</Form.Label>
+                  <Form.Label htmlFor="sordfl">{t("Designation")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="designationId"
@@ -824,7 +827,7 @@ function ScProgramApprovalMappingEdit() {
                         designationDetails.designationId === "0"
                       }
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData.map((list) => (
                         <option
                           key={list.designationId}
@@ -835,7 +838,7 @@ function ScProgramApprovalMappingEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Designation is required
+                      {t("Designation is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -845,7 +848,7 @@ function ScProgramApprovalMappingEdit() {
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
                     <Button type="submit" variant="success">
-                      Update
+                    {t("update")}
                     </Button>
                   </div>
 
@@ -855,7 +858,7 @@ function ScProgramApprovalMappingEdit() {
                       variant="secondary"
                       onClick={designationClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>

@@ -7,10 +7,14 @@ import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ActivityEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -161,7 +165,7 @@ function ActivityEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Activity</Block.Title>
+            <Block.Title tag="h2">{t("Edit Activity")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -171,7 +175,7 @@ function ActivityEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -180,7 +184,7 @@ function ActivityEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -202,7 +206,7 @@ function ActivityEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Activity Name
+                          {t("Activity Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -212,11 +216,11 @@ function ActivityEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Activity Name"
+                            placeholder={t("Enter Activity Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Activity Name is required.
+                          {t("Activity Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -225,7 +229,7 @@ function ActivityEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Activity Name in Kannada
+                        {t("Activity Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -235,11 +239,11 @@ function ActivityEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Activity Name in Kannada"
+                            placeholder={t("Enter Activity Name in Kannda")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Activity name in Kannada is required.
+                          {t("Activity Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -248,7 +252,7 @@ function ActivityEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Code
+                          {t("Code")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -258,11 +262,11 @@ function ActivityEdit() {
                             value={data.code}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Code"
+                            placeholder={t("Enter Code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Code is required.
+                          {t("Code is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -276,12 +280,12 @@ function ActivityEdit() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

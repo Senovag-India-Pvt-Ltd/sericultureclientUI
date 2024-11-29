@@ -10,12 +10,16 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ActivityList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -140,7 +144,7 @@ function ActivityList() {
 
   const activityDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -149,7 +153,7 @@ function ActivityList() {
             size="sm"
             onClick={() => handleView(row.tsActivityMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -157,7 +161,7 @@ function ActivityList() {
             className="ms-2"
             onClick={() => handleEdit(row.tsActivityMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -165,7 +169,7 @@ function ActivityList() {
             onClick={() => deleteConfirm(row.tsActivityMasterId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -173,7 +177,7 @@ function ActivityList() {
       hide: "md",
     },
     {
-      name: "Activity Name",
+      name: t("Activity"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: false,
@@ -181,14 +185,14 @@ function ActivityList() {
     },
 
     {
-      name: "Name In Kannada",
+      name: t("Activity Name in Kannada"),
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Code",
+      name: t("Code"),
       selector: (row) => row.code,
       cell: (row) => <span>{row.code}</span>,
       sortable: false,
@@ -201,7 +205,7 @@ function ActivityList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activity List</Block.Title>
+            <Block.Title tag="h2">{t("Activity List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -211,7 +215,7 @@ function ActivityList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -220,7 +224,7 @@ function ActivityList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

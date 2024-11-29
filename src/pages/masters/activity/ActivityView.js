@@ -7,10 +7,14 @@ import { Icon } from "../../../components";
 import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ActivityView() {
+  // Translation
+  const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -55,7 +59,7 @@ function ActivityView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activity View</Block.Title>
+            <Block.Title tag="h2">{t("Activity View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +69,7 @@ function ActivityView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +78,7 @@ function ActivityView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,7 +88,7 @@ function ActivityView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Activity View Details</Card.Header>
+          <Card.Header>{t("Activity View Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -96,17 +100,17 @@ function ActivityView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Activity:</td>
+                        <td style={styles.ctstyle}> {t("Activity")}</td>
                         <td>{AcivityData.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name In Kannada:</td>
+                        <td style={styles.ctstyle}>{t("Activity Name in Kannada")}</td>
                         <td>
                           <span>{AcivityData.nameInKannada}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Code:</td>
+                        <td style={styles.ctstyle}>{t("Code")}</td>
                         <td>
                           <span>{AcivityData.code}</span>
                         </td>

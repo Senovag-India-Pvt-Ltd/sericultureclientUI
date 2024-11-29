@@ -6,9 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScVendorView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -52,7 +55,7 @@ function ScVendorView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Vendor View</Block.Title>
+            <Block.Title tag="h2"> {t("Vendor View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +65,7 @@ function ScVendorView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +74,7 @@ function ScVendorView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,7 +84,7 @@ function ScVendorView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header> Vendor Details</Card.Header>
+          <Card.Header> {t("Vendor Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -93,41 +96,41 @@ function ScVendorView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{scVendor.scVendorId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>  Vendor Name:</td>
+                        <td style={styles.ctstyle}>  {t("Vendor")}</td>
                         <td>{scVendor.name}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                           Vendor Name In Kannada:
+                        {t("Vendor Name in Kannada")}
                         </td>
                         <td>{scVendor.nameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Type:</td>
+                        <td style={styles.ctstyle}>  {t("Type")}</td>
                         <td>{scVendor.type}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Agency Code:</td>
+                        <td style={styles.ctstyle}> {t("Agency Code")}</td>
                         <td>{scVendor.agencyCode}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Agency Bank Acc No:</td>
+                        <td style={styles.ctstyle}> {t("Agency Bank Acc No")}</td>
                         <td>{scVendor.agencyBankAcNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Agency IFSC Code:</td>
+                        <td style={styles.ctstyle}>{t("Agency IFSC Code")}</td>
                         <td>{scVendor.agencyIfscCode}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Agency District Code:</td>
+                        <td style={styles.ctstyle}>{t("Agency District Code")}</td>
                         <td>{scVendor.agencyDistrictCode}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Agency Taluk Code:</td>
+                        <td style={styles.ctstyle}>{t("Agency Taluk Code")}</td>
                         <td>{scVendor.agencyTalukCode}</td>
                       </tr>
                     </tbody>

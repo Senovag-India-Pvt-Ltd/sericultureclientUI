@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HectareList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +146,7 @@ function HectareList() {
 
   const HectareDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -161,7 +164,7 @@ function HectareList() {
             className="ms-2"
             onClick={() => handleEdit(row.hectareId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +172,7 @@ function HectareList() {
             onClick={() => deleteConfirm(row.hectareId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +180,7 @@ function HectareList() {
       hide: "md",
     },
     {
-      name: "Hectare",
+      name: t("Hectare"),
       selector: (row) => row.hectareName,
       cell: (row) => <span>{row.hectareName}</span>,
       sortable: true,
@@ -190,7 +193,7 @@ function HectareList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Hectare</Block.Title>
+            <Block.Title tag="h2">{t("List Of Hectare")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -200,7 +203,7 @@ function HectareList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -209,7 +212,7 @@ function HectareList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

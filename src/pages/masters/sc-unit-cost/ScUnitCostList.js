@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScUnitCostList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +188,7 @@ function ScUnitCostList() {
 
   const ScUnitCostDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +198,7 @@ function ScUnitCostList() {
             size="sm"
             onClick={() => handleView(row.scUnitCostId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +206,7 @@ function ScUnitCostList() {
             className="ms-2"
             onClick={() => handleEdit(row.scUnitCostId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +214,7 @@ function ScUnitCostList() {
             onClick={() => deleteConfirm(row.scUnitCostId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -220,21 +223,21 @@ function ScUnitCostList() {
       grow:2,
     },
     {
-      name: "Head Account Name",
+      name: t("Head Account"),
       selector: (row) => row.scHeadAccountName,
       cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Category",
+      name: t("Category"),
       selector: (row) => row.categoryName,
       cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sub Scheme Details",
+      name: t("Sub Scheme Details"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
@@ -242,7 +245,7 @@ function ScUnitCostList() {
     },
 
     {
-      name: "Central Share",
+      name: t("Central Share"),
       selector: (row) => row.centralShare,
       cell: (row) => <span>{row.centralShare}</span>,
       sortable: true,
@@ -250,14 +253,14 @@ function ScUnitCostList() {
     },
 
     {
-      name: "State Share",
+      name: t("State Share"),
       selector: (row) => row.stateShare,
       cell: (row) => <span>{row.stateShare}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Benificiary Share",
+      name: t("Benificiary Share"),
       selector: (row) => row.benificiaryShare,
       cell: (row) => <span>{row.benificiaryShare}</span>,
       sortable: true,
@@ -277,7 +280,7 @@ function ScUnitCostList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Unit Cost List</Block.Title>
+            <Block.Title tag="h2">{t("Unit Cost List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -287,7 +290,7 @@ function ScUnitCostList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -296,7 +299,7 @@ function ScUnitCostList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -331,8 +334,8 @@ function ScUnitCostList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="scHeadAccountName">ScHeadAccount</option>
-                      <option value="categoryName">ScCategory</option>
+                      <option value="scHeadAccountName">{t("ScHeadAccount")}</option>
+                      <option value="categoryName">{t("ScCategory")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -349,7 +352,7 @@ function ScUnitCostList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>

@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScVendorList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -145,7 +147,7 @@ function ScVendorList() {
 
   const ScVendorDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -155,7 +157,7 @@ function ScVendorList() {
             size="sm"
             onClick={() => handleView(row.scVendorId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -163,7 +165,7 @@ function ScVendorList() {
             className="ms-2"
             onClick={() => handleEdit(row.scVendorId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -171,7 +173,7 @@ function ScVendorList() {
             onClick={() => deleteConfirm(row.scVendorId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -180,28 +182,28 @@ function ScVendorList() {
       grow: 2
     },
     {
-      name: "Sc Vendor",
+      name:  t("Vendor"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sc Vendor Name in Kannada",
+      name: t("Vendor Name in Kannada"),
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Type",
+      name: t("Type"),
       selector: (row) => row.type,
       cell: (row) => <span>{row.type}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Agency Code",
+      name: t("Agency Code"),
       selector: (row) => row.agencyCode,
       cell: (row) => <span>{row.agencyCode}</span>,
       sortable: true,
@@ -209,28 +211,28 @@ function ScVendorList() {
     },
 
     {
-      name: "Agency Bank Acc No",
+      name: t("Agency Bank Acc No"),
       selector: (row) => row.agencyBankAcNo,
       cell: (row) => <span>{row.agencyBankAcNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Agency IFSC Code",
+      name: t("Agency IFSC Code"),
       selector: (row) => row.agencyIfscCode,
       cell: (row) => <span>{row.agencyIfscCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Agency District Code",
+      name: t("Agency District Code"),
       selector: (row) => row.agencyDistrictCode,
       cell: (row) => <span>{row.agencyDistrictCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Agency Taluk Code",
+      name: t("Agency Taluk Code"),
       selector: (row) => row.agencyTalukCode,
       cell: (row) => <span>{row.agencyTalukCode}</span>,
       sortable: true,
@@ -245,7 +247,7 @@ function ScVendorList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sc Vendor List</Block.Title>
+            <Block.Title tag="h2">{t("Sc Vendor List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -255,7 +257,7 @@ function ScVendorList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -264,7 +266,7 @@ function ScVendorList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

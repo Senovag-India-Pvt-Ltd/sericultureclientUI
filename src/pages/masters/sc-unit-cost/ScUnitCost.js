@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScUnitCost() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     scHeadAccountId: "",
     scCategoryId: "",
@@ -185,7 +187,7 @@ function ScUnitCost() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Unit Cost</Block.Title>
+            <Block.Title tag="h2">{t("Unit Cost")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -195,7 +197,7 @@ function ScUnitCost() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -204,7 +206,7 @@ function ScUnitCost() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -223,7 +225,7 @@ function ScUnitCost() {
                 <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Head Account<span className="text-danger">*</span>
+                        {t("Head Account")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -236,7 +238,7 @@ function ScUnitCost() {
                               data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
                             }
                           >
-                            <option value="">Select Head Account</option>
+                            <option value="">{t("Select Head Account")}</option>
                             {scHeadAccountListData.map((list) => (
                               <option key={list.scHeadAccountId} value={list.scHeadAccountId}>
                                 {list.scHeadAccountName}
@@ -244,7 +246,7 @@ function ScUnitCost() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Head Account name is required
+                          {t("Head Account name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -253,7 +255,7 @@ function ScUnitCost() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Category<span className="text-danger">*</span>
+                        {t("Category")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -266,7 +268,7 @@ function ScUnitCost() {
                               data.scCategoryId === undefined || data.scCategoryId === "0"
                             }
                           >
-                            <option value="">Select Category</option>
+                            <option value="">{t("Select Category")}</option>
                             {scCategoryListData.map((list) => (
                               <option key={list.scCategoryId} value={list.scCategoryId}>
                                 {list.categoryName}
@@ -274,7 +276,7 @@ function ScUnitCost() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Category Name is required
+                          {t("Category Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -284,7 +286,7 @@ function ScUnitCost() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Sub Scheme Details<span className="text-danger">*</span>
+                        {t("Sub Scheme Details")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -297,7 +299,7 @@ function ScUnitCost() {
                               data.scSubSchemeDetailsId === undefined || data.scSubSchemeDetailsId === "0"
                             }
                           >
-                            <option value="">Select Sub Scheme Details</option>
+                            <option value="">{t("Select Sub Scheme Details")}</option>
                             {scSubSchemeDetailsListData.map((list) => (
                               <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>
                                 {list.subSchemeName}
@@ -305,7 +307,7 @@ function ScUnitCost() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Sub Scheme Details Name is required
+                          {t("Sub Scheme Details Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -313,7 +315,7 @@ function ScUnitCost() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                         Central Share
+                      {t("Central Share")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -323,11 +325,11 @@ function ScUnitCost() {
                           value={data.centralShare}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter  Central Share"
+                          placeholder={t("Enter  Central Share")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                           Central Share is required.
+                        {t("Central Share is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -336,7 +338,7 @@ function ScUnitCost() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        State Share
+                      {t("State Share")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -346,11 +348,11 @@ function ScUnitCost() {
                           value={data.stateShare}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter  State Share"
+                          placeholder={t("Enter  State Share")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        State Share is required.
+                        {t("State Share is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -359,7 +361,7 @@ function ScUnitCost() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                         Benificiary Share
+                      {t("Benificiary Share")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -369,11 +371,11 @@ function ScUnitCost() {
                           value={data.benificiaryShare}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter  Beneficiary Share"
+                          placeholder={t("Enter  Beneficiary Share")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Beneficiary Share is required.
+                        {t("Beneficiary Share is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -409,7 +411,7 @@ function ScUnitCost() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -417,7 +419,7 @@ function ScUnitCost() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
