@@ -509,7 +509,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.cocoonAssessmentDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Cocoon assessment details"
+                                  placeholder="Enter Cocoon Produced in NOs"
                                   // required
                                 />
                                  {/* <Form.Control.Feedback type="invalid">

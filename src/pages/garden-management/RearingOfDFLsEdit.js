@@ -397,7 +397,7 @@ function RearingOfDFLsEdit() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Cocoon Assessment(in Kgs/Grams)<span className="text-danger">*</span>
+                    Cocoon Produced in NOs<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -406,11 +406,11 @@ function RearingOfDFLsEdit() {
                         value={data.cocoonAssessmentDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Assessment(in Kgs/Grams)"
+                        placeholder="Enter Cocoon Produced in NOs"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Cocoon Assessment(in Kgs/Grams) is required
+                      Cocoon Produced in NOs is required
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
