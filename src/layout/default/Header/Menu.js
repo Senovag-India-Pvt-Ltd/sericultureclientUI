@@ -455,6 +455,7 @@ function Menu() {
     Admin_Report_Commercial_Market_DTR_Blank_Report: false,
     Admin_Report_Commercial_Market_DTR: false,
     Admin_Report_Commercial_Market_Unit: false,
+    Admin_Report_Commercial_Market_Reeler_MF: false,
     Admin_Report_Commercial_Market_District_Wise_Monthly_Report: false,
     Admin_Report_Commercial_Market_Pending: false,
     Admin_Report_Commercial_Market_Bidding_Report: false,
@@ -3811,6 +3812,15 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Reeler_MF ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler MF Report"
+                              to="/seriui/reeler-mf-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
                         {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink
