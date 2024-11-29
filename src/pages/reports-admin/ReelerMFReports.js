@@ -424,7 +424,7 @@ function ReelerMFReports() {
                             <td>
                               {parseFloat(
                                 (
-                                  list.farmerMarketFee + list.reelerMarketFee
+                                  list.reelerMarketFee
                                 ).toFixed(2)
                               )}
                             </td>

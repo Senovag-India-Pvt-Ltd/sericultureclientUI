@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScHeadAccountEdit() {
+    // Translation
+    const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -150,7 +152,7 @@ function ScHeadAccountEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head Account</Block.Title>
+            <Block.Title tag="h2">{t("Head Account")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -160,7 +162,7 @@ function ScHeadAccountEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -169,7 +171,7 @@ function ScHeadAccountEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -192,7 +194,7 @@ function ScHeadAccountEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Scheme Details<span className="text-danger">*</span>
+                      {t("Scheme Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -205,7 +207,7 @@ function ScHeadAccountEdit() {
                             data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
                           }
                         >
-                          <option value="">Select Scheme Details</option>
+                          <option value="">{t("Select Scheme Names")}</option>
                           {scSchemeDetailsListData.map((list) => (
                             <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                               {list.schemeName}
@@ -213,7 +215,7 @@ function ScHeadAccountEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Scheme  name is required
+                        {t("Scheme is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -221,7 +223,7 @@ function ScHeadAccountEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="headAccount">
-                        Head of Account<span className="text-danger">*</span>
+                      {t("Head of Account")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -230,11 +232,11 @@ function ScHeadAccountEdit() {
                           type="text"
                           value={data.scHeadAccountName}
                           onChange={handleInputs}
-                          placeholder="Enter Head Of Account"
+                          placeholder={t("Enter Head Of Account")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Head Of Account Name is required.
+                        {t("Head Of Account Name is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -243,7 +245,7 @@ function ScHeadAccountEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Head Of Account Name in Kannada
+                      {t("Head Of Account Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -253,11 +255,11 @@ function ScHeadAccountEdit() {
                           value={data.scHeadAccountNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          placeholder={t("Enter Head Of Account Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Head Of Account Name in Kannada is required.
+                        {t("Head Of Account Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -266,7 +268,7 @@ function ScHeadAccountEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      DBT Code
+                      {t("Dbt Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -276,11 +278,11 @@ function ScHeadAccountEdit() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder={t("Enter Dbt Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        DBT Code is required
+                        {t("Dbt Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -295,7 +297,7 @@ function ScHeadAccountEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
@@ -306,7 +308,7 @@ function ScHeadAccountEdit() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </li>
               </ul>

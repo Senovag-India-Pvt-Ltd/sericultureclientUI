@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeQuotaList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +187,7 @@ function SchemeQuotaList() {
 
   const ScUnitCostDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +197,7 @@ function SchemeQuotaList() {
             size="sm"
             onClick={() => handleView(row.schemeQuotaId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +205,7 @@ function SchemeQuotaList() {
             className="ms-2"
             onClick={() => handleEdit(row.schemeQuotaId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +213,7 @@ function SchemeQuotaList() {
             onClick={() => deleteConfirm(row.schemeQuotaId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -220,28 +222,28 @@ function SchemeQuotaList() {
       grow:2,
     },
     {
-        name: "Scheme Details",
+        name: t("Scheme Details"),
         selector: (row) => row.schemeName,
         cell: (row) => <span>{row.schemeName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Scheme Quota Name",
+      name:t("Scheme Quota"),
       selector: (row) => row.schemeQuotaName,
       cell: (row) => <span>{row.schemeQuotaName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Quota Type",
+      name: t("Scheme Quota Type"),
       selector: (row) => row.schemeQuotaType,
       cell: (row) =><span>{row.schemeQuotaType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Quota Code",
+      name: t("Scheme Quota Code"),
       selector: (row) => row.schemeQuotaCode,
       cell: (row) => <span>{row.schemeQuotaCode}</span>,
       sortable: true,
@@ -249,21 +251,21 @@ function SchemeQuotaList() {
     },
 
     {
-      name: "Scheme Quota Payment Type",
+      name: t("Scheme Quota Payment Type"),
       selector: (row) => row.schemeQuotaPaymentType,
       cell: (row) => <span>{row.schemeQuotaPaymentType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DBT Code",
+      name: t("Dbt Code"),
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DDO Code",
+      name: t("Ddo Code"),
       selector: (row) => row.ddoCode,
       cell: (row) => <span>{row.ddoCode}</span>,
       sortable: true,
@@ -276,7 +278,7 @@ function SchemeQuotaList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Scheme Quota</Block.Title>
+            <Block.Title tag="h2">{t("List Of Scheme Quota")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -286,7 +288,7 @@ function SchemeQuotaList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -295,7 +297,7 @@ function SchemeQuotaList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

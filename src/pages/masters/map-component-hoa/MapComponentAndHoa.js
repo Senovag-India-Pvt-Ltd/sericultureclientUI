@@ -8,11 +8,13 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MapComponent() {
+    // Translation
+    const { t } = useTranslation();
   const [mapList, setMapList] = useState([]);
   const [mapComponent, setMapComponent] = useState({
     categoryId: "",
@@ -393,7 +395,7 @@ function MapComponent() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Map Component And Head Of Account</Block.Title>
+            <Block.Title tag="h2">{t("Map Component And Head Of Account")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -416,7 +418,7 @@ function MapComponent() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -425,7 +427,7 @@ function MapComponent() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -444,7 +446,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Select Scheme
+                      {t("Select Scheme")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -459,7 +461,7 @@ function MapComponent() {
                           data.schemeId === "0"
                         }
                       >
-                        <option value="">Select Scheme</option>
+                        <option value="">{t("Select Scheme")}</option>
                         {schemeListData &&
                           schemeListData.map((list) => (
                             <option
@@ -471,7 +473,7 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Scheme is required
+                        {t("Scheme is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -480,7 +482,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Scheme Quota
+                      {t("Scheme Quota")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -495,7 +497,7 @@ function MapComponent() {
                           data.schemeQuotaId === "0"
                         }
                       >
-                        <option value="">Select Scheme Quota</option>
+                        <option value="">{t("Select Scheme Quota")}</option>
                         {schemeQuotaListData &&
                             schemeQuotaListData.map((list) => (
                             <option
@@ -507,7 +509,7 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Scheme Quota is required
+                        {t("Scheme Quota is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -516,7 +518,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Component Type
+                      {t("Component Type")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -531,7 +533,7 @@ function MapComponent() {
                           data.subSchemeId === "0"
                         }
                       >
-                        <option value="">Select Component Type</option>
+                        <option value="">{t("Select Component Type")}</option>
                         {subSchemeListData &&
                           subSchemeListData.map((list) => (
                             <option
@@ -543,7 +545,7 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      Component Type is required
+                      {t("Component Type is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -552,7 +554,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Component 
+                      {t("Component")} 
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -566,7 +568,7 @@ function MapComponent() {
                           data.scComponentId === "0"
                         }
                       >
-                        <option value="">Select Component </option>
+                        <option value="">{t("Select Component")} </option>
                         {scComponentListData &&
                           scComponentListData.map((list) => (
                             <option
@@ -578,7 +580,7 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      Component  is required
+                      {t("Component  is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -622,7 +624,7 @@ function MapComponent() {
                 <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidend">
-                            Unit Cost
+                            {t("Unit Cost")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -632,11 +634,11 @@ function MapComponent() {
                               value={data.unitCostInRupees}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter  Unit Cost"
+                              placeholder={t("Enter  Unit Cost")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Unit Cost is required
+                            {t("Unit Cost is required")}
                             </Form.Control.Feedback>
                             
                           </div>
@@ -648,7 +650,7 @@ function MapComponent() {
 
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Measurement Unit
+                      {t("Measurement Unit")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -663,12 +665,12 @@ function MapComponent() {
                           data.measurementUnit === "0"
                         }
                       >
-                        <option value="">Select Measurement Unit</option>
+                        <option value="">{t("Select Measurement Unit")}</option>
                         <option value="1">SQFT</option>
                         <option value="2">QTY</option>
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      Measurement Unit is required
+                      {t("Measurement Unit is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -679,7 +681,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidend">
-                            Min QTY
+                            {t("Min QTY")}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -688,11 +690,11 @@ function MapComponent() {
                               value={data.minQty}
                               onChange={handleInputs}
                               type="number"
-                              placeholder="Enter Min QTY"
+                              placeholder={t("Enter Min QTY")}
                               // required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Min QTY is required
+                            {t("Min QTY is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -701,7 +703,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
-                           Max QTY
+                           {t("Max QTY")}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -710,11 +712,11 @@ function MapComponent() {
                               value={data.maxQty}
                               onChange={handleInputs}
                               type="number"
-                              placeholder="Enter Max QTY"
+                              placeholder={t("Enter Max QTY")}
                               // required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Max QTY is required
+                           {t("Max QTY is required")}
                             </Form.Control.Feedback>
                             
                           </div>
@@ -724,7 +726,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
-                          Minimum Amount
+                          {t("Minimum Amount")}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -733,11 +735,11 @@ function MapComponent() {
                               value={data.minAmount}
                               onChange={handleInputs}
                               type="number"
-                              placeholder="Enter Minimum Amount"
+                              placeholder={t("Enter Minimum Amount")}
                               // required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Minimum Amount is required
+                            {t("Minimum Amount is required")}
                             </Form.Control.Feedback>
                             
                           </div>
@@ -747,7 +749,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
-                           Maximum Amount
+                           {t("Maximum Amount")}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -756,11 +758,11 @@ function MapComponent() {
                               value={data.maxAmount}
                               onChange={handleInputs}
                               type="number"
-                              placeholder="Enter Maximum Amount"
+                              placeholder={t("Enter Maximum Amount")}
                               // required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Maximum Amount is required
+                            {t("Maximum Amount is required")}
                             </Form.Control.Feedback>
                             
                           </div>
@@ -889,7 +891,7 @@ function MapComponent() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Select For Unit Cost Schemes
+                        {t("Select For Unit Cost Schemes")}
                       </Form.Label>
                     </Form.Group>
                       </Col>
@@ -899,7 +901,7 @@ function MapComponent() {
 
             <Block className="mt-3">
             <Card>
-              <Card.Header>Add Category Details</Card.Header>
+              <Card.Header>{t("Add Category Details")}</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -921,7 +923,7 @@ function MapComponent() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                           <li>
@@ -931,7 +933,7 @@ function MapComponent() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                         </ul>
@@ -951,10 +953,10 @@ function MapComponent() {
                             <thead>
                               <tr style={{ backgroundColor: "#f1f2f7" }}>
                                 {/* <th></th> */}
-                                <th>Action</th>
-                                <th>Category</th>
-                                <th>Head Of Account</th>
-                                <th>Share in %</th>
+                                <th>{t("Action")}</th>
+                                <th>{t("Category")}</th>
+                                <th>{t("Head Of Account")}</th>
+                                <th>{t("Share in %")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -967,7 +969,7 @@ function MapComponent() {
                                         size="sm"
                                         onClick={() => handleGet(i)}
                                       >
-                                        Edit
+                                         {t("Edit")}
                                       </Button>
                                       <Button
                                         variant="danger"
@@ -975,7 +977,7 @@ function MapComponent() {
                                         onClick={() => handleDelete(i)}
                                         className="ms-2"
                                       >
-                                        Delete
+                                        {t("delete")}
                                       </Button>
                                     </div>
                                   </td>
@@ -1002,12 +1004,12 @@ function MapComponent() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
@@ -1018,7 +1020,7 @@ function MapComponent() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Category Details</Modal.Title>
+          <Modal.Title>{t("Add Category Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1031,7 +1033,7 @@ function MapComponent() {
             <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Category
+                    {t("Category")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -1045,7 +1047,7 @@ function MapComponent() {
                           mapComponent.categoryId === "0"
                         }
                       >
-                        <option value="">Select Category</option>
+                        <option value="">{t("Select Category")}</option>
                         {scCategoryListData.map((list) => (
                           <option
                             key={list.scCategoryId}
@@ -1056,7 +1058,7 @@ function MapComponent() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Category is required
+                      {t("Category is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -1065,7 +1067,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Head Of Account
+                      {t("Head Of Account")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1081,7 +1083,7 @@ function MapComponent() {
                           mapComponent.headOfAccountId === "0"
                         }
                       >
-                        <option value="">Select Head Of Account</option>
+                        <option value="">{t("Select Head Of Account")}</option>
                         {scHeadAccountListData.map((list) => (
                           <option
                             key={list.scHeadAccountId}
@@ -1092,7 +1094,7 @@ function MapComponent() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      Head Of Account is required
+                      {t("Head Of Account is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -1102,7 +1104,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
-                            Share in %
+                          {t("Share in %")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -1112,11 +1114,11 @@ function MapComponent() {
                               value={mapComponent.shareInPercentage}
                               onChange={handleMapInputs}
                               type="number"
-                              placeholder="Enter Share in %"
+                              placeholder={t("Enter Share in %")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Share in % is required
+                            {t("Share in % is required")}
                             </Form.Control.Feedback>
                            
                           </div>
@@ -1128,7 +1130,7 @@ function MapComponent() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   
@@ -1139,7 +1141,7 @@ function MapComponent() {
                       variant="secondary"
                       onClick={mapComponentClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>
@@ -1151,7 +1153,7 @@ function MapComponent() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Category Details</Modal.Title>
+          <Modal.Title>{t("Edit Category Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1164,7 +1166,7 @@ function MapComponent() {
             <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Category
+                      {t("Category")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -1178,7 +1180,7 @@ function MapComponent() {
                           mapComponent.categoryId === "0"
                         }
                       >
-                        <option value="">Select Category</option>
+                        <option value="">{t("Select Category")}</option>
                         {scCategoryListData.map((list) => (
                           <option
                             key={list.scCategoryId}
@@ -1189,7 +1191,7 @@ function MapComponent() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Category is required
+                        {t("Category is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -1198,7 +1200,7 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Head Of Account
+                      {t("Head Of Account")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1214,7 +1216,7 @@ function MapComponent() {
                           mapComponent.headOfAccountId === "0"
                         }
                       >
-                        <option value="">Select Head Of Account</option>
+                        <option value="">{t("Select Head Of Account")}</option>
                         {scHeadAccountListData.map((list) => (
                           <option
                             key={list.scHeadAccountId}
@@ -1225,7 +1227,7 @@ function MapComponent() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      Head Of Account is required
+                      {t("Head Of Account is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -1236,7 +1238,7 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
-                            Share in %
+                            {t("Share in %")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -1250,7 +1252,7 @@ function MapComponent() {
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                            Share in % is required
+                            {t("Share in % is required")}
                             </Form.Control.Feedback>
                            
                           </div>
@@ -1262,7 +1264,7 @@ function MapComponent() {
                   <div className="gap-col">
                     
                     <Button type="submit" variant="success">
-                      Update
+                    {t("update")}
                     </Button>
                   </div>
                   
@@ -1272,7 +1274,7 @@ function MapComponent() {
                       variant="secondary"
                       onClick={mapComponentClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>

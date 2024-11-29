@@ -8,10 +8,14 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import React from "react";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Document() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const [data, setData] = useState({
     documentMasterName: "",
   });
@@ -59,7 +63,7 @@ function Document() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Documents</Block.Title>
+            <Block.Title tag="h2">{t("Documents")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -70,7 +74,7 @@ function Document() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -79,7 +83,7 @@ function Document() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -123,7 +127,7 @@ function Document() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="title">Documents Name</Form.Label>
+                      <Form.Label htmlFor="title">{("Documents Name")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
@@ -131,7 +135,7 @@ function Document() {
                           type="text"
                           value={data.documentMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Documents name"
+                          placeholder={t("Enter Documents name")}
                         />
                       </div>
                     </Form.Group>
@@ -180,7 +184,7 @@ function Document() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="button" variant="primary" onClick={postData}>
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -188,7 +192,7 @@ function Document() {
                     to="/seriui/documents-list"
                     className="btn btn-secondary border-0"
                   >
-                    Cancel
+                    {t("cancel")}
                   </Link>
                 </li>
               </ul>

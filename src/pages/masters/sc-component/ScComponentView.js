@@ -5,10 +5,12 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScComponentView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -45,7 +47,7 @@ function ScComponentView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Component View</Block.Title>
+            <Block.Title tag="h2">{t("Component View")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -56,7 +58,7 @@ function ScComponentView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -65,7 +67,7 @@ function ScComponentView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -75,7 +77,7 @@ function ScComponentView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Component Details</Card.Header>
+          <Card.Header>{t("Component Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -87,11 +89,11 @@ function ScComponentView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{scComponent.scComponentId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Component:</td>
+                        <td style={styles.ctstyle}> {t("Component")}</td>
                         <td>{scComponent.scComponentName}</td>
                       </tr>
                       {/* <tr>
@@ -99,7 +101,7 @@ function ScComponentView() {
                         <td>{scComponent.subSchemeName}</td>
                       </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td style={styles.ctstyle}>{t("Dbt Code")}</td>
                         <td>{scComponent.dbtCode}</td>
                       </tr>
                     </tbody>

@@ -7,10 +7,13 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScHeadAccountView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -55,7 +58,7 @@ function ScHeadAccountView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head Account View</Block.Title>
+            <Block.Title tag="h2">{t("Head Account View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +68,7 @@ function ScHeadAccountView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +77,7 @@ function ScHeadAccountView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,7 +87,7 @@ function ScHeadAccountView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Head Account Details</Card.Header>
+          <Card.Header>{t("Head Account Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -96,26 +99,26 @@ function ScHeadAccountView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScHeadAccount.scHeadAccountId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head Account Name:</td>
+                        <td style={styles.ctstyle}> {t("Head of Account")}</td>
                         <td>{ScHeadAccount.scHeadAccountName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Head Account Name in Kannada:
+                          {t("Head Of Account Name in Kannada")}
                         </td>
                         <td>{ScHeadAccount.scHeadAccountNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td style={styles.ctstyle}>{t("Scheme Details")}</td>
                         <td>{ScHeadAccount.schemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td style={styles.ctstyle}>{t("Dbt Code")}</td>
                         <td>{ScHeadAccount.dbtCode}</td>
                       </tr>
                     </tbody>

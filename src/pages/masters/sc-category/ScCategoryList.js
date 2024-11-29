@@ -12,11 +12,14 @@ import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
+import { useTranslation } from "react-i18next";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScCategoryList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +146,7 @@ function ScCategoryList() {
 
   const ScCategoryDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +156,7 @@ function ScCategoryList() {
             size="sm"
             onClick={() => handleView(row.scCategoryId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +164,7 @@ function ScCategoryList() {
             className="ms-2"
             onClick={() => handleEdit(row.scCategoryId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +172,7 @@ function ScCategoryList() {
             onClick={() => deleteConfirm(row.scCategoryId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -179,35 +182,35 @@ function ScCategoryList() {
 
 
     {
-        name: "Sub Component",
+        name: t("Sub Component"),
         selector: (row) => row.categoryName,
         cell: (row) => <span>{row.categoryName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: " Sub Component Name in Kannada",
+      name: t("Sub Component in Kannada"),
       selector: (row) => row.categoryNameInKannada,
       cell: (row) => <span>{row.categoryNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Code Number",
+      name: t("Code  Number"),
       selector: (row) => row.codeNumber,
       cell: (row) => <span>{row.codeNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Description",
+      name: t("Description"),
       selector: (row) => row.description,
       cell: (row) => <span>{row.description}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Dbt Code",
+      name: t("Dbt Code"),
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
@@ -220,7 +223,7 @@ function ScCategoryList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Sub Component</Block.Title>
+            <Block.Title tag="h2">{t("List Of Sub Component")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -230,7 +233,7 @@ function ScCategoryList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -239,7 +242,7 @@ function ScCategoryList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

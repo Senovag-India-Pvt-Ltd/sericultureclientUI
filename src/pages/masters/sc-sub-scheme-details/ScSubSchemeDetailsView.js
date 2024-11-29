@@ -6,10 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { format } from 'date-fns';
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSubSchemeDetailsView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -54,7 +56,7 @@ function ScSubSchemeDetailsView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Component Type Details </Block.Title>
+            <Block.Title tag="h2">{t("View Component Type Details")} </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +66,7 @@ function ScSubSchemeDetailsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +75,7 @@ function ScSubSchemeDetailsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,7 +85,7 @@ function ScSubSchemeDetailsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header> View Component Type Details</Card.Header>
+          <Card.Header> {t("View Component Type Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,30 +97,30 @@ function ScSubSchemeDetailsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScSubSchemeDetails.scSubSchemeDetailsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td style={styles.ctstyle}> {t("Scheme Name")}</td>
                         <td>{ScSubSchemeDetails.schemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Component Type:</td>
+                        <td style={styles.ctstyle}>{t("Component Type")}</td>
                         <td>{ScSubSchemeDetails.subSchemeName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Component Type in Kannada:
+                          {t("Component Type In Kannada")}
                         </td>
                         <td>{ScSubSchemeDetails.subSchemeNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td style={styles.ctstyle}>{t("Dbt Code")}</td>
                         <td>{ScSubSchemeDetails.dbtCode}</td>
                       </tr>
                       <tr>
-                            <td style={styles.ctstyle}> Scheme Type:</td>
+                            <td style={styles.ctstyle}>  {t("Scheme Type")}</td>
                             <td>
                               {ScSubSchemeDetails.subSchemeType === 1
                                 ? "Subsidy"
@@ -130,11 +132,11 @@ function ScSubSchemeDetailsView() {
                             </td>
                           </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Scheme Start Date:</td>
+                        <td style={styles.ctstyle}>{t("Sub Scheme Start Date")}</td>
                         <td>{formatDate(ScSubSchemeDetails.subSchemeStartDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Sub Scheme End Date:</td>
+                        <td style={styles.ctstyle}> {t("Sub Scheme End Date")}</td>
                         <td>{formatDate(ScSubSchemeDetails.subSchemeEndDate)}</td>
                       </tr>
                     </tbody>

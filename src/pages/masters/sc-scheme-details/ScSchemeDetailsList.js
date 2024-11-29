@@ -15,10 +15,13 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSchemeDetailsList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -151,7 +154,7 @@ function ScSchemeDetailsList() {
 
   const ScSchemeDetailsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -161,7 +164,7 @@ function ScSchemeDetailsList() {
             size="sm"
             onClick={() => handleView(row.scSchemeDetailsId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -169,7 +172,7 @@ function ScSchemeDetailsList() {
             className="ms-2"
             onClick={() => handleEdit(row.scSchemeDetailsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -177,7 +180,7 @@ function ScSchemeDetailsList() {
             onClick={() => deleteConfirm(row.scSchemeDetailsId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -185,35 +188,35 @@ function ScSchemeDetailsList() {
       hide: "md",
     },
     {
-      name: "Scheme Name",
+      name:t("Scheme Name"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Name in Kannada",
+      name: t("Scheme Name in Kannada"),
       selector: (row) => row.schemeNameInKannada,
       cell: (row) => <span>{row.schemeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Scheme Start Date",
+        name: t("Scheme Start Date"),
         selector: (row) => row.schemeStartDate,
         cell: (row) => <span>{formatDate(row.schemeStartDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Scheme End Date",
+        name: t("Scheme End Date"),
         selector: (row) => row.schemeEndDate,
         cell: (row) => <span>{formatDate(row.schemeEndDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "DBT Code",
+        name: t("Dbt Code"),
         selector: (row) => row.dbtCode,
         cell: (row) => <span>{row.dbtCode}</span>,
         sortable: true,
@@ -226,7 +229,7 @@ function ScSchemeDetailsList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Scheme Details List</Block.Title>
+            <Block.Title tag="h2">{t("Scheme Details List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -236,7 +239,7 @@ function ScSchemeDetailsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -245,7 +248,7 @@ function ScSchemeDetailsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
