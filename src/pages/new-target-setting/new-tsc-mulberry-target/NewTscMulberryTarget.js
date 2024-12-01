@@ -327,6 +327,7 @@ function NewTscMulberryTarget() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     tscMasterId: "",
     month: "",
     targetType: "",
@@ -563,6 +564,7 @@ function NewTscMulberryTarget() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       tscMasterId: "",
       month: "",
       targetType: "",
@@ -1179,7 +1181,7 @@ function NewTscMulberryTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                District is required
+                                Taluk is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
