@@ -9,10 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ScProgramApprovalMappingList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -196,7 +199,7 @@ function ScProgramApprovalMappingList() {
   };
   const ScProgramApprovalMappingDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -214,7 +217,7 @@ function ScProgramApprovalMappingList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+           {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -222,7 +225,7 @@ function ScProgramApprovalMappingList() {
             onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -231,28 +234,28 @@ function ScProgramApprovalMappingList() {
       // grow:2,
     },
     {
-      name: "Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Approval Stage",
+      name: t("Approval Stage"),
       selector: (row) => row.stepName,
       cell: (row) => <span>{row.stepName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Amount",
+      name: t("Amount"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
@@ -260,14 +263,14 @@ function ScProgramApprovalMappingList() {
     },
 
     {
-      name: "Orders",
+      name: t("Orders"),
       selector: (row) => row.stepId,
       cell: (row) => <span>{row.stepId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Version",
+      name: t("Version"),
       selector: (row) => row.version,
       cell: (row) => <span>{row.version}</span>,
       sortable: true,
@@ -281,7 +284,7 @@ function ScProgramApprovalMappingList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Program Approval Mapping</Block.Title>
+            <Block.Title tag="h2">{t("List Of Program Approval Mapping")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -291,7 +294,7 @@ function ScProgramApprovalMappingList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -300,7 +303,7 @@ function ScProgramApprovalMappingList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

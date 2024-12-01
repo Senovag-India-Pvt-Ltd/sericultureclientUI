@@ -8,10 +8,15 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Spacing() {
+
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     spacingName: "",
   });
@@ -89,7 +94,7 @@ function Spacing() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Spacing</Block.Title>
+            <Block.Title tag="h2">{t("spacing")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -99,7 +104,7 @@ function Spacing() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -108,7 +113,7 @@ function Spacing() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -127,7 +132,7 @@ function Spacing() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trModeMaster">
-                        Spacing<span className="text-danger">*</span>
+                        {t("spacing")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -136,11 +141,11 @@ function Spacing() {
                           value={data.spacingName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Spacing"
+                          placeholder={t("enter_spacing")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Spacing is required
+                        {t("Spacing is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,12 +161,12 @@ function Spacing() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

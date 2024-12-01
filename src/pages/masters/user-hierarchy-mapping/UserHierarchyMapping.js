@@ -8,10 +8,14 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserHierarchyMapping() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [data, setData] = useState({
     actualDesignationId: "",
     actualUserId: "",

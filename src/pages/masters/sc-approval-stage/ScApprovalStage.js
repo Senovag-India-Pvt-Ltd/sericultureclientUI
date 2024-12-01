@@ -9,10 +9,14 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScApprovalStage() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     stageName: "",
     stageNameInKannada: "",
@@ -133,7 +137,7 @@ function ScApprovalStage() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Approval Stage</Block.Title>
+            <Block.Title tag="h2">{t("Approval Stage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -143,7 +147,7 @@ function ScApprovalStage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -152,7 +156,7 @@ function ScApprovalStage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -171,7 +175,7 @@ function ScApprovalStage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Approval Stage
+                      {t("Approval Stage")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -181,11 +185,11 @@ function ScApprovalStage() {
                           type="text"
                           value={data.stageName}
                           onChange={handleInputs}
-                          placeholder="Enter Approval Stage"
+                          placeholder={t("Enter Approval Stage")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Approval Stage is required
+                        {t("Approval Stage is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -194,7 +198,7 @@ function ScApprovalStage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Approval Stage Name in Kannada
+                      {t("Approval Stage Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -204,11 +208,11 @@ function ScApprovalStage() {
                           type="text"
                           value={data.stageNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Approval Stage Name In Kannada"
+                          placeholder={t("Enter Approval Stage Name In Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Approval Stage Name In Kannada is required
+                        {t("Approval Stage Name In Kannada is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -216,7 +220,7 @@ function ScApprovalStage() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">Action</Form.Label>
+                      <Form.Label htmlFor="program">{t("Action")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="action"
@@ -225,7 +229,7 @@ function ScApprovalStage() {
                           rows={4}
                           value={data.action}
                           onChange={handleInputs}
-                          placeholder="Enter Action"
+                          placeholder={t("Enter Action")}
                         />
                       </div>
                     </Form.Group>
@@ -247,7 +251,7 @@ function ScApprovalStage() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Inspection
+                      {t("Inspection")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -266,7 +270,7 @@ function ScApprovalStage() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Work Order
+                      {t("Work Order")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -285,7 +289,7 @@ function ScApprovalStage() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Sanction Order
+                      {t("Sanction Order")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -304,7 +308,7 @@ function ScApprovalStage() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Push to DBT
+                      {t("Push to DBT")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -324,7 +328,7 @@ function ScApprovalStage() {
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
-                        Financial Delegation
+                      {t("Financial Delegation")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -337,12 +341,12 @@ function ScApprovalStage() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

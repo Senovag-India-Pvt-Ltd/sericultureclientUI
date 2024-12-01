@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RejectReasonWorkFlowList() {
+
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function RejectReasonWorkFlowList() {
 
   const RejectReasonWorkFlowDataColumns = [
     {
-      name: "Action",
+      name:  t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function RejectReasonWorkFlowList() {
             size="sm"
             onClick={() => handleView(row.rejectReasonWorkFlowMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function RejectReasonWorkFlowList() {
             className="ms-2"
             onClick={() => handleEdit(row.rejectReasonWorkFlowMasterId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function RejectReasonWorkFlowList() {
             onClick={() => deleteConfirm(row.rejectReasonWorkFlowMasterId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +182,7 @@ function RejectReasonWorkFlowList() {
       hide: "md",
     },
     {
-      name: "Reason",
+      name:  t("Reason"),
       selector: (row) => row.reason,
       cell: (row) => <span>{row.reason}</span>,
       sortable: true,
@@ -191,7 +196,7 @@ function RejectReasonWorkFlowList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List of Reject Reason Work Flow</Block.Title>
+            <Block.Title tag="h2">{t("List of Reject Reason Work Flow")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -201,7 +206,7 @@ function RejectReasonWorkFlowList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -210,7 +215,7 @@ function RejectReasonWorkFlowList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

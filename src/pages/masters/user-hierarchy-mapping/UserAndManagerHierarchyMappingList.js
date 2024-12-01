@@ -11,10 +11,14 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserAndManagerHierarchyMappingList() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
 
   const [listAllReporteeData, setListAllReporteeData] = useState({});

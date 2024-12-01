@@ -5,10 +5,13 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScUnitCostView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -53,7 +56,7 @@ function ScUnitCostView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Unit Cost View</Block.Title>
+            <Block.Title tag="h2">{t("Unit Cost View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -63,7 +66,7 @@ function ScUnitCostView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +75,7 @@ function ScUnitCostView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -82,7 +85,7 @@ function ScUnitCostView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Unit Cost Details</Card.Header>
+          <Card.Header>{t("Unit Cost Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,33 +97,33 @@ function ScUnitCostView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScUnitCost.scUnitCostId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head Account:</td>
+                        <td style={styles.ctstyle}> {t("Head Account")}</td>
                         <td>{ScUnitCost.scHeadAccountName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Category:</td>
+                        <td style={styles.ctstyle}> {t("Category")}</td>
                         <td>{ScUnitCost.categoryName}</td>
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}> Sub Scheme Details:</td>
+                        <td style={styles.ctstyle}> {t("Sub Scheme Details")}</td>
                         <td>{ScUnitCost.subSchemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Central Share:</td>
+                        <td style={styles.ctstyle}> {t("Central Share")}</td>
                         <td>{ScUnitCost.centralShare}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> State Share:</td>
+                        <td style={styles.ctstyle}> {t("State Share")}</td>
                         <td>{ScUnitCost.stateShare}</td>
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}> Benificiary Share:</td>
+                        <td style={styles.ctstyle}> {t("Benificiary Share")}</td>
                         <td>{ScUnitCost.benificiaryShare}</td>
                       </tr>
 

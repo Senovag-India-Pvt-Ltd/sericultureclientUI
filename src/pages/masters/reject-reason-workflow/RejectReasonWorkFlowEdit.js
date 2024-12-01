@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RejectReasonWorkFlowEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -126,7 +130,7 @@ function RejectReasonWorkFlowEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reject Reason Work Flow</Block.Title>
+            <Block.Title tag="h2">{t("Reject Reason Work Flow")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +140,7 @@ function RejectReasonWorkFlowEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +149,7 @@ function RejectReasonWorkFlowEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -163,7 +167,7 @@ function RejectReasonWorkFlowEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="relationship">
-                        Reason<span className="text-danger">*</span>
+                        {t("Reason")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -172,11 +176,11 @@ function RejectReasonWorkFlowEdit() {
                           type="text"
                           value={data.reason}
                           onChange={handleInputs}
-                          placeholder="Enter Reason"
+                          placeholder={t("Enter Reason")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reason is required
+                        {t("Reason is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -192,7 +196,7 @@ function RejectReasonWorkFlowEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
@@ -200,7 +204,7 @@ function RejectReasonWorkFlowEdit() {
                     Cancel
                   </Link> */}
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>
