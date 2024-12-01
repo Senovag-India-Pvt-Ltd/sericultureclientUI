@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScApprovingAuthority() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     minAmount: "",
     maxAmount: "",
@@ -132,7 +136,7 @@ function ScApprovingAuthority() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Approving Authority</Block.Title>
+            <Block.Title tag="h2"> {t("Approving Authority")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -142,7 +146,7 @@ function ScApprovingAuthority() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -151,7 +155,7 @@ function ScApprovingAuthority() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -204,7 +208,7 @@ function ScApprovingAuthority() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="minAmount">
-                        Min Amount<span className="text-danger">*</span>
+                      {t("Min Amount")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -213,11 +217,11 @@ function ScApprovingAuthority() {
                           value={data.minAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Min Amount"
+                          placeholder={t("Enter Min Amount")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Min Amount is required.
+                        {t("Min Amount is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -226,7 +230,7 @@ function ScApprovingAuthority() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="maxAmount">
-                        Max Amount
+                      {t("Max Amount")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -236,11 +240,11 @@ function ScApprovingAuthority() {
                           value={data.maxAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Max Amount"
+                          placeholder={t("Enter Max Amount")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Max Amount is required.
+                        {t("Max Amount is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -249,7 +253,7 @@ function ScApprovingAuthority() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="type">
-                        Type
+                      {t("Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -259,11 +263,11 @@ function ScApprovingAuthority() {
                           value={data.type}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Type"
+                          placeholder={t("Enter Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Type is required.
+                        {t("Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -272,7 +276,7 @@ function ScApprovingAuthority() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Role<span className="text-danger">*</span>
+                      {t("Role")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -285,7 +289,7 @@ function ScApprovingAuthority() {
                             data.roleId === undefined || data.roleId === "0"
                           }
                         >
-                          <option value="">Select Role</option>
+                          <option value="">{t("Select Role")}</option>
                           {roleListData.map((list) => (
                             <option key={list.roleId} value={list.roleId}>
                               {list.roleName}
@@ -293,7 +297,7 @@ function ScApprovingAuthority() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Role name is required
+                        {t("Role Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -307,12 +311,12 @@ function ScApprovingAuthority() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

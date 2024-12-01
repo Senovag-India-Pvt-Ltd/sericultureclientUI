@@ -936,6 +936,8 @@ import SiSdMulberryDateTarget from "../pages/new-target-setting/si-sd-mulberry-t
 import SiSdWiseProdDayPhyTargetSetting from "../pages/new-target-setting/si-di-production/SiSdWiseProdDayPhyTargetSetting";
 import SiSdWiseSchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-scheme-target-setting/SiSdWiseSchemeTargetSetting";
 import SiSdWiseDaySchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-scheme-target-setting/SiSdWiseDaySchemeTargetSetting";
+import ReelerCurrentBalance from "../pages/reports-admin/ReelerCurrentBalance";
+import ReelerDailyTransaction from "../pages/reports-admin/ReelerDailyTransaction";
 
 // Admin and Reports
 
@@ -3492,6 +3494,14 @@ function Router() {
             <Route
               path="mulberry-target-type-edit/:id"
               element={<MulberryTargetTypeEdit />}
+            />
+            <Route
+              path="reeler-current-balance"
+              element={<ReelerCurrentBalance />}
+            />
+             <Route
+              path="reeler-credit-transaction"
+              element={<ReelerDailyTransaction />}
             />
             <Route path="test1" element={<Test1 />} />
           </Route>

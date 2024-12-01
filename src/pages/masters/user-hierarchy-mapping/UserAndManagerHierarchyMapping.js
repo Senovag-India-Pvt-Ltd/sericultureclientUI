@@ -8,10 +8,14 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserAndManagerHierarchyMapping() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [data, setData] = useState({
     managerId: "",
     userMasterId: "",
@@ -155,7 +159,7 @@ function UserAndManagerHierarchyMapping() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">User Hierarchy Mapping</Block.Title>
+            <Block.Title tag="h2">{t("User Hierarchy Mapping")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -187,13 +191,13 @@ function UserAndManagerHierarchyMapping() {
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
             <Card>
-            <Card.Header>User Hierarchy Mapping</Card.Header>
+            <Card.Header>{t("User Hierarchy Mapping")}</Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                 <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                        {t("User")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -207,7 +211,7 @@ function UserAndManagerHierarchyMapping() {
                             data.userMasterId === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">{t("Select User")}</option>
                           {managerListData && managerListData.length
                             ? managerListData.map((list) => (
                                 <option
@@ -220,7 +224,7 @@ function UserAndManagerHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User is required
+                          {t("User is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -229,7 +233,7 @@ function UserAndManagerHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Reporting Officer<span className="text-danger">*</span>
+                        {t("Reporting Officer")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -243,7 +247,7 @@ function UserAndManagerHierarchyMapping() {
                             data.managerId === "0"
                           }
                         >
-                          <option value="">Select Reporting Officer</option>
+                          <option value="">{t("Select Reporting Officer")}</option>
                           {userListData && userListData.length
                             ? userListData.map((list) => (
                                 <option
@@ -256,7 +260,7 @@ function UserAndManagerHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User is required
+                          {t("User is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -272,13 +276,13 @@ function UserAndManagerHierarchyMapping() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                  
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -9,10 +9,12 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScVendor() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     name: "",
     nameInKannada: "",
@@ -113,7 +115,7 @@ function ScVendor() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Vendor</Block.Title>
+            <Block.Title tag="h2"> {t("Vendor")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -123,7 +125,7 @@ function ScVendor() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -132,7 +134,7 @@ function ScVendor() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -151,7 +153,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                         Vendor Name
+                      {t("Vendor")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -161,11 +163,11 @@ function ScVendor() {
                           type="text"
                           value={data.name}
                           onChange={handleInputs}
-                          placeholder="Enter Sc Vendor name"
+                          placeholder={t("Enter Vendor Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                           Vendor Name is required
+                        {t("Vendor Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -174,7 +176,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                         Vendor Name in Kannada
+                      {t("Vendor Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -184,11 +186,11 @@ function ScVendor() {
                           value={data.nameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter  Vendor Name in Kannada"
+                          placeholder={t("Enter  Vendor Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                           Vendor Name in Kannada is required.
+                        {t("Vendor Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -197,7 +199,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Type
+                      {t("Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -207,11 +209,11 @@ function ScVendor() {
                           value={data.type}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Type"
+                          placeholder={t("Enter Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Type is required.
+                        {t("Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -220,7 +222,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Code
+                      {t("Agency Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -230,11 +232,11 @@ function ScVendor() {
                           value={data.agencyCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Code"
+                          placeholder={t("Enter Agency Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Code is required.
+                        {t("Agency Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -243,7 +245,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Bank Acc No
+                      {t("Agency Bank Acc No")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -253,11 +255,11 @@ function ScVendor() {
                           value={data.agencyBankAcNo}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Bank Acc No"
+                          placeholder={t("Enter Agency Bank Acc No")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Bank Acc No is required.
+                        {t("Agency Bank Acc No is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -266,7 +268,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency IFSC Code
+                      {t("Agency IFSC Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -276,11 +278,11 @@ function ScVendor() {
                           value={data.agencyIfscCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency IFSC Code"
+                          placeholder={t("Enter Agency IFSC Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency IFSC Code is required.
+                        {t("Agency IFSC Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -289,7 +291,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency District Code
+                      {t("Agency District Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -299,11 +301,11 @@ function ScVendor() {
                           value={data.agencyDistrictCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency District Code"
+                          placeholder={t("Enter Agency District Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency District Codeis required.
+                        {t("Agency District Codeis required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -313,7 +315,7 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Taluk Code
+                      {t("Agency Taluk Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -323,11 +325,11 @@ function ScVendor() {
                           value={data.agencyTalukCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Taluk Code"
+                          placeholder={t("Enter Agency Taluk Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Taluk Code is required.
+                        {t("Agency Taluk Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -341,12 +343,12 @@ function ScVendor() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

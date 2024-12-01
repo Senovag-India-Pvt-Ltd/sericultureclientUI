@@ -8,10 +8,13 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Hectares() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     hectareName: "",
   });
@@ -89,7 +92,7 @@ function Hectares() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Hectare</Block.Title>
+            <Block.Title tag="h2">{t("Hectare")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -99,7 +102,7 @@ function Hectares() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -108,7 +111,7 @@ function Hectares() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -127,7 +130,7 @@ function Hectares() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trModeMaster">
-                        Hectare<span className="text-danger">*</span>
+                      {t("Hectare")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -136,11 +139,11 @@ function Hectares() {
                           value={data.hectareName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Hectare"
+                          placeholder={t("Enter Hectare")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Hectare is required
+                        {t("Hectare is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -156,12 +159,12 @@ function Hectares() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

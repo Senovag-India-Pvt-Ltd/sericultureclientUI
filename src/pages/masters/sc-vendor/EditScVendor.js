@@ -8,10 +8,12 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
-
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScVendorEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -134,7 +136,7 @@ function ScVendorEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Vendor</Block.Title>
+            <Block.Title tag="h2">{t("Edit Vendor")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -144,7 +146,7 @@ function ScVendorEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -153,7 +155,7 @@ function ScVendorEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -176,7 +178,7 @@ function ScVendorEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Sc Vendor">
-                         Vendor<span className="text-danger">*</span>
+                         {t("Vendor")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -185,11 +187,11 @@ function ScVendorEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Vendor Name"
+                            placeholder={t("Enter Vendor Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                             Vendor Name is required
+                             {t("Vendor Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -198,7 +200,7 @@ function ScVendorEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                           Vendor Name in Kannada
+                           {t("Vendor Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -208,11 +210,11 @@ function ScVendorEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter  Vendor Name in Kannada"
+                            placeholder={t("Enter  Vendor Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                             Vendor Name in Kannada is required.
+                             {t("Vendor Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,7 +223,7 @@ function ScVendorEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Type
+                        {t("Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -231,11 +233,11 @@ function ScVendorEdit() {
                           value={data.type}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Type"
+                          placeholder={t("Enter Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Type is required.
+                          {t("Type is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -246,7 +248,7 @@ function ScVendorEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Code
+                        {t("Agency Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -256,11 +258,11 @@ function ScVendorEdit() {
                           value={data.agencyCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Code"
+                          placeholder={t("Enter Agency Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Code is required.
+                        {t("Agency Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -269,7 +271,7 @@ function ScVendorEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Bank Acc No
+                        {t("Agency Bank Acc No")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -279,11 +281,11 @@ function ScVendorEdit() {
                           value={data.agencyBankAcNo}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Bank Acc No"
+                          placeholder={t("Enter Agency Bank Acc No")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Bank Acc No is required.
+                        {t("Agency Bank Acc No is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -292,7 +294,7 @@ function ScVendorEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency IFSC Code
+                        {t("Agency IFSC Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -302,11 +304,11 @@ function ScVendorEdit() {
                           value={data.agencyIfscCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency IFSC Code"
+                          placeholder={t("Enter Agency IFSC Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency IFSC Code is required.
+                        {t("Agency IFSC Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -315,7 +317,7 @@ function ScVendorEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency District Code
+                        {t("Agency District Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -325,11 +327,11 @@ function ScVendorEdit() {
                           value={data.agencyDistrictCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency District Code"
+                          placeholder={t("Enter Agency District Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency District Codeis required.
+                        {t("Agency District Codeis required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -340,7 +342,7 @@ function ScVendorEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Agency Taluk Code
+                        {t("Agency Taluk Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -350,11 +352,11 @@ function ScVendorEdit() {
                           value={data.agencyTalukCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Agency Taluk Code"
+                          placeholder={t("Enter Agency Taluk Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Agency Taluk Code is required.
+                        {t("Agency Taluk Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -369,12 +371,12 @@ function ScVendorEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -12,10 +12,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScApprovingAuthorityList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -181,7 +185,7 @@ function ScApprovingAuthorityList() {
 
   const ScApprovingAuthorityDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -191,7 +195,7 @@ function ScApprovingAuthorityList() {
             size="sm"
             onClick={() => handleView(row.scApprovingAuthorityId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -199,7 +203,7 @@ function ScApprovingAuthorityList() {
             className="ms-2"
             onClick={() => handleEdit(row.scApprovingAuthorityId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -207,7 +211,7 @@ function ScApprovingAuthorityList() {
             onClick={() => deleteConfirm(row.scApprovingAuthorityId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -222,28 +226,28 @@ function ScApprovingAuthorityList() {
     //   hide: "md",
     // },
     {
-      name: "Min Amount",
+      name: t("Min Amount"),
       selector: (row) => row.minAmount,
       cell: (row) => <span>{row.minAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Max Amount",
+      name: t("Max Amount"),
       selector: (row) => row.maxAmount,
       cell: (row) => <span>{row.maxAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Type",
+      name: t("Type"),
       selector: (row) => row.type,
       cell: (row) => <span>{row.type}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Role",
+      name: t("Role"),
       selector: (row) => row.roleName,
       cell: (row) => <span>{row.roleName}</span>,
       sortable: true,
@@ -258,7 +262,7 @@ function ScApprovingAuthorityList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Approval Authority</Block.Title>
+            <Block.Title tag="h2"> {t("Approval Authority")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -268,7 +272,7 @@ function ScApprovingAuthorityList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -277,7 +281,7 @@ function ScApprovingAuthorityList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -301,7 +305,7 @@ function ScApprovingAuthorityList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="role">Role</option>
+                      <option value="role">{t("Role")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -319,7 +323,7 @@ function ScApprovingAuthorityList() {
 
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>

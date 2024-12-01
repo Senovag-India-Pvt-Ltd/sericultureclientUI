@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SpacingEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -119,7 +123,7 @@ function SpacingEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Spacing</Block.Title>
+            <Block.Title tag="h2">{t("Edit Spacing")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -129,7 +133,7 @@ function SpacingEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -138,7 +142,7 @@ function SpacingEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -161,7 +165,7 @@ function SpacingEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trModeMaster">
-                          Spacing<span className="text-danger">*</span>
+                        {t("spacing")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -170,11 +174,11 @@ function SpacingEdit() {
                             value={data.spacingName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Spacing"
+                            placeholder={t("enter_spacing")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Spacing Name is required.
+                          {t("Spacing is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -191,12 +195,12 @@ function SpacingEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

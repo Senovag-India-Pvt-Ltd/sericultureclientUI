@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScApprovalStageList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function ScApprovalStageList() {
 
   const ScApprovalStageDataColumns = [
     {
-      name: "Action",
+      name:  t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function ScApprovalStageList() {
             size="sm"
             onClick={() => handleView(row.scApprovalStageId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function ScApprovalStageList() {
             className="ms-2"
             onClick={() => handleEdit(row.scApprovalStageId)}
           >
-            Edit
+              {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function ScApprovalStageList() {
             onClick={() => deleteConfirm(row.scApprovalStageId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,21 +181,21 @@ function ScApprovalStageList() {
       hide: "md",
     },
     {
-      name: "Approval Stage",
+      name: t("Approval Stage"),
       selector: (row) => row.stageName,
       cell: (row) => <span>{row.stageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Approval Stage Name in Kannada",
+      name: t("Approval Stage Name in Kannada"),
       selector: (row) => row.stageNameInKannada,
       cell: (row) => <span>{row.stageNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       selector: (row) => row.action,
       cell: (row) => <span>{row.action}</span>,
       sortable: true,
@@ -204,7 +208,7 @@ function ScApprovalStageList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Approval Stages</Block.Title>
+            <Block.Title tag="h2">{t("List Of Approval Stages")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -214,7 +218,7 @@ function ScApprovalStageList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -223,7 +227,7 @@ function ScApprovalStageList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

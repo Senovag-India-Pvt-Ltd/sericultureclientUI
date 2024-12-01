@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SpacingList() {
+  // Translation
+  const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function SpacingList() {
 
   const SpacingDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -161,7 +165,7 @@ function SpacingList() {
             className="ms-2"
             onClick={() => handleEdit(row.spacingId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function SpacingList() {
             onClick={() => deleteConfirm(row.spacingId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +181,7 @@ function SpacingList() {
       hide: "md",
     },
     {
-      name: "Spacing",
+      name: t("spacing"),
       selector: (row) => row.spacingName,
       cell: (row) => <span>{row.spacingName}</span>,
       sortable: true,
@@ -190,7 +194,7 @@ function SpacingList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Spacing</Block.Title>
+            <Block.Title tag="h2">{t("List Of Spacing")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -200,7 +204,7 @@ function SpacingList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -209,7 +213,7 @@ function SpacingList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
