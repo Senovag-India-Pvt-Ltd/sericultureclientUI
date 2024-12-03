@@ -9,10 +9,15 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingCourse() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [data, setData] = useState({
     trCourseMasterName: "",
     trCourseNameInKannada: "",
@@ -94,7 +99,7 @@ function TrainingCourse() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Course</Block.Title>
+            <Block.Title tag="h2">{t("Training Course")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -104,7 +109,7 @@ function TrainingCourse() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -113,7 +118,7 @@ function TrainingCourse() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -132,7 +137,7 @@ function TrainingCourse() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Training Course Name
+                        {t("Training Course Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -142,11 +147,11 @@ function TrainingCourse() {
                           type="text"
                           value={data.trCourseMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Training Course Name"
+                          placeholder={t("Enter Training Course Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Training Course Name is required
+                          {t("Training Course Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -155,7 +160,7 @@ function TrainingCourse() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Training Course Name in Kannada
+                        {t("Training Course Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -165,11 +170,11 @@ function TrainingCourse() {
                           value={data.trCourseNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Training Course Name in Kannada"
+                          placeholder={t("Enter Training Course Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Training Course Name in Kannada is required.
+                          {t("Training Course Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -183,12 +188,12 @@ function TrainingCourse() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

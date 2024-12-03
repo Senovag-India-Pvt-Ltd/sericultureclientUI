@@ -6,10 +6,15 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingDeputedInstituteView() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,7 +56,7 @@ function TrainingDeputedInstituteView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Deputed Institute View</Block.Title>
+            <Block.Title tag="h2">{t("Deputed Institute View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -61,7 +66,7 @@ function TrainingDeputedInstituteView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +75,7 @@ function TrainingDeputedInstituteView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -80,7 +85,7 @@ function TrainingDeputedInstituteView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Deputed Institute Details</Card.Header>
+          <Card.Header>{t("Deputed Institute Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -92,11 +97,11 @@ function TrainingDeputedInstituteView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{DeputedInstituteMaster.deputedInstituteId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Deputed Institute:</td>
+                        <td style={styles.ctstyle}> {t("Deputed Institute")}</td>
                         <td>{DeputedInstituteMaster.deputedInstituteName}</td>
                       </tr>
                     </tbody>

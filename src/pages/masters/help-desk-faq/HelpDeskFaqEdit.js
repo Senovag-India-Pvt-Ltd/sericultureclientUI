@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskFaqEdit() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,7 +128,7 @@ function HelpDeskFaqEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit FAQ</Block.Title>
+            <Block.Title tag="h2">{t("Edit FAQ")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -133,7 +138,7 @@ function HelpDeskFaqEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -142,7 +147,7 @@ function HelpDeskFaqEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -165,7 +170,7 @@ function HelpDeskFaqEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Hd Question">
-                          Questions<span className="text-danger">*</span>
+                        {t("Questions")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -174,13 +179,13 @@ function HelpDeskFaqEdit() {
                             value={data.hdQuestionName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Questions"
+                            placeholder={t("Enter Questions")}
                             as="textarea"
                             rows={4}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Questions is required
+                          {t("Questions is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -189,7 +194,7 @@ function HelpDeskFaqEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Question&Answer">
-                          Answers <span className="text-danger">*</span>
+                        {t("Answers")} <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -200,11 +205,11 @@ function HelpDeskFaqEdit() {
                             // type="text"
                             as="textarea"
                             rows={4}
-                            placeholder="Enter Answers"
+                            placeholder={t("Enter Answers")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Answers is Required.
+                          {t("Answers is Required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -213,7 +218,7 @@ function HelpDeskFaqEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="FAQ Upload Path">
-                          FAQ Upload Path <span className="text-danger">*</span>
+                        {t("FAQ Upload Path")} <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -222,11 +227,11 @@ function HelpDeskFaqEdit() {
                             value={data.hdFaqUploadPath}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter FAQ Upload Path"
+                            placeholder={t("Enter FAQ Upload Path")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            FAQ Upload Path is Required.
+                            {t("FAQ Upload Path is Required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -243,12 +248,12 @@ function HelpDeskFaqEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

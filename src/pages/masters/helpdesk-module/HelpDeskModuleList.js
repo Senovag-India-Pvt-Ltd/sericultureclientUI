@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskModuleList() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function HelpDeskModuleList() {
 
   const HdModuleDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function HelpDeskModuleList() {
             size="sm"
             onClick={() => handleView(row.hdModuleId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function HelpDeskModuleList() {
             className="ms-2"
             onClick={() => handleEdit(row.hdModuleId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function HelpDeskModuleList() {
             onClick={() => deleteConfirm(row.hdModuleId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +182,7 @@ function HelpDeskModuleList() {
       hide: "md",
     },
     {
-      name: "Hd Module",
+      name: t("Modules"),
       selector: (row) => row.hdModuleName,
       cell: (row) => <span>{row.hdModuleName}</span>,
       sortable: true,
@@ -190,7 +195,7 @@ function HelpDeskModuleList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Modules</Block.Title>
+            <Block.Title tag="h2">{t("Modules")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -200,7 +205,7 @@ function HelpDeskModuleList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -209,7 +214,7 @@ function HelpDeskModuleList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

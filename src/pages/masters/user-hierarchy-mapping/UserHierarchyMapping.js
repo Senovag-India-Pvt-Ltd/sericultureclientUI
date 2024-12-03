@@ -270,7 +270,7 @@ function UserHierarchyMapping() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">User Hierarchy Mapping</Block.Title>
+            <Block.Title tag="h2">{t("User Hierarchy Mapping")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -302,13 +302,13 @@ function UserHierarchyMapping() {
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
             <Card>
-            <Card.Header>Actual User</Card.Header>
+            <Card.Header>{t("Actual User")}</Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                 <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Designation<span className="text-danger">*</span>
+                        {t("Designation")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -322,7 +322,7 @@ function UserHierarchyMapping() {
                             data.actualDesignationId === "0"
                           }
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">{t("Select Designation")}</option>
                           {designationListData && designationListData.length
                             ? designationListData.map((list) => (
                                 <option
@@ -335,7 +335,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Designation is required
+                          {t("Designation is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -344,7 +344,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                      {t("district")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -358,7 +358,7 @@ function UserHierarchyMapping() {
                             data.actualDistrictId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("select_district")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -371,7 +371,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                          {t("District Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -380,7 +380,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                      {t("User")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -393,7 +393,7 @@ function UserHierarchyMapping() {
                             data.actualUserId === undefined || data.actualUserId === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">{t("Select User")}</option>
                           {userListData && userListData.length
                             ? userListData.map((list) => (
                                 <option key={list.userMasterId} value={list.userMasterId}>
@@ -403,7 +403,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                        {t("User is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -412,7 +412,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="emailID">
-                         First Name<span className="text-danger">*</span>
+                         {t("First Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -421,11 +421,11 @@ function UserHierarchyMapping() {
                           value={data.actualFirstName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter First Name"
+                          placeholder={t("Enter First Name")}
                           readOnly
                         />
                         <Form.Control.Feedback type="invalid">
-                        First Name is required
+                        {("First Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -437,13 +437,13 @@ function UserHierarchyMapping() {
 
         {/* <Block> */}
             <Card >
-            <Card.Header>Reported User</Card.Header>
+            <Card.Header>{t("Reported User")}</Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                 <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Designation<span className="text-danger">*</span>
+                      {t("Designation")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -457,7 +457,7 @@ function UserHierarchyMapping() {
                             data.reportDesignationId === "0"
                           }
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">{t("Select Designation")}</option>
                           {designationListData && designationListData.length
                             ? designationListData.map((list) => (
                                 <option
@@ -470,7 +470,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Designation is required
+                        {t("Designation is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -479,7 +479,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                      {t("district")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -493,7 +493,7 @@ function UserHierarchyMapping() {
                             data.reportDistrictId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("select_district")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -506,7 +506,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                        {t("District Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -515,7 +515,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                      {t("User")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -528,7 +528,7 @@ function UserHierarchyMapping() {
                             data.reportUserMasterId === undefined || data.reportUserMasterId === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">{t("Select User")}</option>
                           {userMasterListData && userMasterListData.length
                             ? userMasterListData.map((list) => (
                                 <option key={list.userMasterId} value={list.userMasterId}>
@@ -538,7 +538,7 @@ function UserHierarchyMapping() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                        {t("User is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -547,7 +547,7 @@ function UserHierarchyMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="emailID">
-                         First Name<span className="text-danger">*</span>
+                      {t("First Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -556,11 +556,11 @@ function UserHierarchyMapping() {
                           value={data.reportFirstName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter First Name"
+                          placeholder={t("Enter First Name")}
                           readOnly
                         />
                         <Form.Control.Feedback type="invalid">
-                        First Name is required
+                        {("First Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -574,7 +574,7 @@ function UserHierarchyMapping() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -585,7 +585,7 @@ function UserHierarchyMapping() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

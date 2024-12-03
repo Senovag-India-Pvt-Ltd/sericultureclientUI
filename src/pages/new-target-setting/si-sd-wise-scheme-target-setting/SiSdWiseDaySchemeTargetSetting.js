@@ -1107,6 +1107,7 @@ function SiSdWiseDaySchemeTargetSetting() {
       username: "",
       userMasterId: "",
     });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

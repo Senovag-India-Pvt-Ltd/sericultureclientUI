@@ -1110,6 +1110,7 @@ function DistrictwiseSchemeTargetSetting() {
       username: "",
       userMasterId: "",
     });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

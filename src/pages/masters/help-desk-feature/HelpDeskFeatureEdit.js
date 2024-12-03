@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskFeatureEdit() {
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -139,7 +143,7 @@ function HelpDeskFeatureEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Features</Block.Title>
+            <Block.Title tag="h2">{t("Edit Features")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -149,7 +153,7 @@ function HelpDeskFeatureEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -158,7 +162,7 @@ function HelpDeskFeatureEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -181,7 +185,7 @@ function HelpDeskFeatureEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Modules<span className="text-danger">*</span>
+                          {t("Modules")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -195,7 +199,7 @@ function HelpDeskFeatureEdit() {
                               data.hdModuleId === "0"
                             }
                           >
-                            <option value="">Select Module</option>
+                            <option value="">{t("Select Module")}</option>
                             {hdModuleListData.map((list) => (
                               <option
                                 key={list.hdModuleId}
@@ -206,7 +210,7 @@ function HelpDeskFeatureEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Module name is required
+                          {t("Module name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -215,7 +219,7 @@ function HelpDeskFeatureEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="hdFeature">
-                          Features<span className="text-danger">*</span>
+                        {t("Feature")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -224,11 +228,11 @@ function HelpDeskFeatureEdit() {
                             value={data.hdFeatureName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Features"
+                            placeholder={t("Enter Hd Feature")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Feature Name is required.
+                          {t("Feature Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -245,12 +249,12 @@ function HelpDeskFeatureEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

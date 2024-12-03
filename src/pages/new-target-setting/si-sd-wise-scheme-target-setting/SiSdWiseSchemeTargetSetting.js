@@ -1125,6 +1125,7 @@ function SiSdWiseSchemeTargetSetting() {
       username: "",
       userMasterId: "",
     });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

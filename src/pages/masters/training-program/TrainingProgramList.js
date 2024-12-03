@@ -13,10 +13,16 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingProgramList() {
+
+  
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +149,7 @@ function TrainingProgramList() {
 
   const TrainingProgramsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +159,7 @@ function TrainingProgramList() {
             size="sm"
             onClick={() => handleView(row.trProgramMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +167,7 @@ function TrainingProgramList() {
             className="ms-2"
             onClick={() => handleEdit(row.trProgramMasterId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +175,7 @@ function TrainingProgramList() {
             onClick={() => deleteConfirm(row.trProgramMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +183,14 @@ function TrainingProgramList() {
       hide: "md",
     },
     {
-      name: "Training Programs",
+      name: t("Training Program Name"),
       selector: (row) => row.trProgramMasterName,
       cell: (row) => <span>{row.trProgramMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program Name in Kannada",
+      name:t("Training Program Name in Kannada"),
       selector: (row) => row.trProgramNameInKannada,
       cell: (row) => <span>{row.trProgramNameInKannada}</span>,
       sortable: true,
@@ -197,7 +203,7 @@ function TrainingProgramList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Program List</Block.Title>
+            <Block.Title tag="h2">{t("Training Program List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +213,7 @@ function TrainingProgramList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +222,7 @@ function TrainingProgramList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

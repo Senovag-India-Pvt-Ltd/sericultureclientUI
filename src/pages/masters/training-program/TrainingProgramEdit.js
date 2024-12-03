@@ -8,10 +8,16 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingProgramEdit() {
+
+  
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -126,7 +132,7 @@ function TrainingProgramEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Training Program</Block.Title>
+            <Block.Title tag="h2">{t("Edit Training Program")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +142,7 @@ function TrainingProgramEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +151,7 @@ function TrainingProgramEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -168,7 +174,7 @@ function TrainingProgramEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trainingProgram">
-                          Training Program<span className="text-danger">*</span>
+                        {t("Training Program")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,11 +183,11 @@ function TrainingProgramEdit() {
                             value={data.trProgramMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Programs"
+                            placeholder={t("Enter Training Program name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Program Name is required
+                          {t("Training Program Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -190,7 +196,7 @@ function TrainingProgramEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Training Program Name in Kannada
+                        {t("Training Program Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -200,11 +206,11 @@ function TrainingProgramEdit() {
                             value={data.trProgramNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Program Mode Name in Kannada"
+                            placeholder={t("Enter Program Mode Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Program Name in Kannada is required.
+                          {t("Training Program Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -219,12 +225,12 @@ function TrainingProgramEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

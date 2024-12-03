@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskSubCategoryList() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function HelpDeskSubCategoryList() {
 
   const HdSubCategoryDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function HelpDeskSubCategoryList() {
             size="sm"
             onClick={() => handleView(row.hdSubCategoryId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function HelpDeskSubCategoryList() {
             className="ms-2"
             onClick={() => handleEdit(row.hdSubCategoryId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function HelpDeskSubCategoryList() {
             onClick={() => deleteConfirm(row.hdSubCategoryId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,21 +182,21 @@ function HelpDeskSubCategoryList() {
       hide: "md",
     },
     {
-      name: " Broad Category",
+      name: t("Broad Category"),
       selector: (row) => row.hdBoardCategoryName,
       cell: (row) => <span>{row.hdBoardCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Category",
+      name: t("Category"),
       selector: (row) => row.hdCategoryName,
       cell: (row) => <span>{row.hdCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Sub Category",
+      name: t("Sub Category"),
       selector: (row) => row.hdSubCategoryName,
       cell: (row) => <span>{row.hdSubCategoryName}</span>,
       sortable: true,
@@ -204,7 +209,7 @@ function HelpDeskSubCategoryList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sub Category List</Block.Title>
+            <Block.Title tag="h2">{t("Sub Category List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -214,7 +219,7 @@ function HelpDeskSubCategoryList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -223,7 +228,7 @@ function HelpDeskSubCategoryList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

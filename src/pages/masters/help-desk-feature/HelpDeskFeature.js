@@ -9,10 +9,14 @@ import axios from "axios";
 import { Icon } from "../../../components";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskFeature() {
+    // Translation
+    const { t } = useTranslation();
+    
   const [data, setData] = useState({
     hdModuleId: "",
     hdFeatureName: "",
@@ -111,7 +115,7 @@ function HelpDeskFeature() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Feature</Block.Title>
+            <Block.Title tag="h2">{t("Feature")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -121,7 +125,7 @@ function HelpDeskFeature() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -130,7 +134,7 @@ function HelpDeskFeature() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -149,7 +153,7 @@ function HelpDeskFeature() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Modules<span className="text-danger">*</span>
+                        {t("Modules")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -163,7 +167,7 @@ function HelpDeskFeature() {
                             data.hdModuleId === "0"
                           }
                         >
-                          <option value="">Select Module</option>
+                          <option value="">{t("Select Module")}</option>
                           {hdModuleListData.map((list) => (
                             <option
                               key={list.hdModuleId}
@@ -174,7 +178,7 @@ function HelpDeskFeature() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Module name is required
+                          {t("Module name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -183,7 +187,7 @@ function HelpDeskFeature() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Hd Feature">
-                        Features<span className="text-danger">*</span>
+                        {t("Feature")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -192,11 +196,11 @@ function HelpDeskFeature() {
                           value={data.hdFeatureName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Hd Feature"
+                          placeholder={t("Enter Hd Feature")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Feature Name is required
+                          {t("Feature Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -212,12 +216,12 @@ function HelpDeskFeature() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

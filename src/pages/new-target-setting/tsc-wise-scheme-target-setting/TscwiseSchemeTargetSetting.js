@@ -1134,6 +1134,7 @@ function TscwiseSchemeTargetSetting() {
       username: "",
       userMasterId: "",
     });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LineNameList() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function LineNameList() {
 
   const LineNameDataColumns = [
     {
-      name: "Action",
+      name: ("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function LineNameList() {
             size="sm"
             onClick={() => handleView(row.lineNameId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function LineNameList() {
             className="ms-2"
             onClick={() => handleEdit(row.lineNameId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function LineNameList() {
             onClick={() => deleteConfirm(row.lineNameId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -177,28 +182,28 @@ function LineNameList() {
       hide: "md",
     },
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
       cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Code",
+      name: t("Line Code"),
       selector: (row) => row.lineCode,
       cell: (row) => <span>{row.lineCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name in Kannada",
+      name: t("Line Name in Kannada"),
       selector: (row) => row.lineNameInKannada,
       cell: (row) => <span>{row.lineNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name Representation",
+      name: t("Line Name Representation"),
       selector: (row) => row.lineNameRepresentation,
       cell: (row) => <span>{row.lineNameRepresentation}</span>,
       sortable: true,
@@ -211,7 +216,7 @@ function LineNameList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Line Name List</Block.Title>
+            <Block.Title tag="h2">{t("Line Name List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -221,7 +226,7 @@ function LineNameList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -230,7 +235,7 @@ function LineNameList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

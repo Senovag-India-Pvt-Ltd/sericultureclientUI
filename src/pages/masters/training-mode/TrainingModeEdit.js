@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingModeEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -119,7 +124,7 @@ function TrainingModeEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Training Mode</Block.Title>
+            <Block.Title tag="h2">{t("Edit Training Mode")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -129,7 +134,7 @@ function TrainingModeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -138,7 +143,7 @@ function TrainingModeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -161,7 +166,7 @@ function TrainingModeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trModeMaster">
-                          Training Mode<span className="text-danger">*</span>
+                          {t("Training Mode")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -170,11 +175,11 @@ function TrainingModeEdit() {
                             value={data.trModeMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Mode"
+                            placeholder={t("Enter Training Mode")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Mode Name is required.
+                          {t("Training Mode is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -191,12 +196,12 @@ function TrainingModeEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

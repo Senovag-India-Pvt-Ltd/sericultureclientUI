@@ -168,6 +168,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     getMulberryTargetTypeList();
   }, []);
 
+ 
+
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
@@ -570,6 +572,15 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       raceMasterId: "",
       userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
@@ -890,6 +901,30 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     username: "",
     userMasterId: ""  
   });
+
+   //   to get data from api
+   const [userName,setUserName] = useState("");
+   const getIdList = (id) => {
+     setLoading(true);
+      api
+       .get(baseURLMasterData + `userMaster/get/${id}`)
+       .then((response) => {
+         console.log("heheheeh",response.data.content.username)
+         setUserName(response.data.content.username);
+         setLoading(false);
+       })
+       .catch((err) => {
+         const message = err.response.data.errorMessages[0].message[0].message;
+         setUserName("");
+         setLoading(false);
+       });
+   };
+ 
+   useEffect(() => {
+     if(searchData.userMasterId){
+       getIdList(searchData.userMasterId);
+     }
+   }, [searchData.userMasterId]);
 
   const handleSearchInputs = (e) => {
     // debugger;
@@ -1322,7 +1357,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               User<span className="text-danger">*</span>
@@ -1342,6 +1377,22 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 User is required
                               </Form.Control.Feedback>
                             </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col sm={3}>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>User Name</Form.Label>
+                            <Form.Control
+                              id="username"
+                              name="username"
+                              value={userName}
+                              // onChange={handleSearchInputs}
+                              type="text"
+                              placeholder="Enter User Name"
+                              className="form-control"
+                              readOnly
+                            />
                           </Form.Group>
                         </Col>
                       </Row>
@@ -1874,6 +1925,13 @@ function DistrictwiseProductionPhysicalTargetSetting() {
             </Form.Select>
           </Col>
         </Row>
+        <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal5()}>
+                    Submit
+                  </Button>
+                </div>
+              </Row>
       </Card>
     </Block>
   </Modal.Body>

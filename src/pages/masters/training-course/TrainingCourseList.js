@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingCourseList() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function TrainingCourseList() {
 
   const TrainingCoursesDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function TrainingCourseList() {
             size="sm"
             onClick={() => handleView(row.trCourseMasterId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function TrainingCourseList() {
             className="ms-2"
             onClick={() => handleEdit(row.trCourseMasterId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function TrainingCourseList() {
             onClick={() => deleteConfirm(row.trCourseMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +182,7 @@ function TrainingCourseList() {
       hide: "md",
     },
     {
-      name: "Training Courses",
+      name: t("Training Course Name"),
       selector: (row) => row.trCourseMasterName,
       cell: (row) => <span>{row.trCourseMasterName}</span>,
       sortable: true,
@@ -185,7 +190,7 @@ function TrainingCourseList() {
     },
 
     {
-      name: "Training Course Name in Kannada",
+      name: t("Training Course Name in Kannada"),
       selector: (row) => row.trCourseNameInKannada,
       cell: (row) => <span>{row.trCourseNameInKannada}</span>,
       sortable: true,
@@ -198,7 +203,7 @@ function TrainingCourseList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Courses List</Block.Title>
+            <Block.Title tag="h2">{t("Training Courses List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -208,7 +213,7 @@ function TrainingCourseList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -217,7 +222,7 @@ function TrainingCourseList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
