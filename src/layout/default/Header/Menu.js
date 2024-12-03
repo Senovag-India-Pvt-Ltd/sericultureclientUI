@@ -2480,7 +2480,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Reeling TSC Wise Product Physical Target Setting"
+                        text="Reeling TSC Wise Scheme Target Setting"
                         to="/seriui/reeling-tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>

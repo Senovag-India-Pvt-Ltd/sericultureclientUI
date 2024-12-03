@@ -521,6 +521,15 @@ function DistrictWiseMontlyMulberry() {
       value: "",
       userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
@@ -544,6 +553,455 @@ function DistrictWiseMontlyMulberry() {
     getFinancialDefaultDetails();
     setValidatedAllDateEdit(false);
   };
+
+ 
+  const [showModal6, setShowModal6] = useState(false);
+
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+
+
+  const [listViewReporteesTargetData, setViewReporteesTargetListData] = useState({});
+
+  const searchReportee = (event) => {
+    const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
+  
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Financial Year is required.",
+      });
+      return;
+    }
+  
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Target is required.",
+      });
+      return;
+    }
+  
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Target Type is required.",
+      });
+      return;
+    }
+  
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            mulberryTargetTypeId,
+            targetType,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewReporteesTargetListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
+        setShowModal6(true);
+      })
+      .catch((err) => {
+        setViewReporteesTargetListData([]);
+      });
+  };
+
+  const ViewTargetReporteeDataColumns = [
+   
+    {
+      name: "Serial Number",
+      selector: (row) => row.serialNumber,
+      cell: (row) => <span>{row.serialNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target",
+      selector: (row) => row.mulberryTargetTypeName,
+      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target Type",
+      selector: (row) => row.targetType,
+      cell: (row) => <span>{row.targetType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Month",
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target No",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "User",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    
+  ];
+  
+
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
+
+
+  const [listViewTargetData, setViewTargetListData] = useState({});
+
+  
+  const search = (event) => {
+    const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
+  
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Financial Year is required.",
+      });
+      return;
+    }
+  
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Target is required.",
+      });
+      return;
+    }
+  
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Target Type is required.",
+      });
+      return;
+    }
+  
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            mulberryTargetTypeId,
+            targetType,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewTargetListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
+        setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewTargetListData([]);
+      });
+  };
+  
+
+  const ViewTargetDataColumns = [
+    {
+      name: "Sl.no",
+      selector: (row) => row.serialNumber,
+      cell: (row) => <span>{row.serialNumber}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "50px", textAlign: "center" },
+    },
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+      style: { minWidth: "150px", textAlign: "left" },
+    },
+    {
+      name: "Target",
+      selector: (row) => row.mulberryTargetTypeName,
+      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target Type",
+      selector: (row) => row.targetType,
+      cell: (row) => <span>{row.targetType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Month",
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target No",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "User",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="text-start w-100">
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => searchReportee(row.financialYearMasterId,row.mulberryTargetTypeId,row.targetType)}
+            className="ms-2"
+          >
+            View Reportee Details
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      grow:2
+    },
+    
+  ];
+
+  const [searchData, setSearchData] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: ""  
+  });
+
+  
+   //   to get data from api
+   const [userName,setUserName] = useState("");
+   const getIdList = (id) => {
+     setLoading(true);
+      api
+       .get(baseURLMasterData + `userMaster/get/${id}`)
+       .then((response) => {
+         console.log("heheheeh",response.data.content.username)
+         setUserName(response.data.content.username);
+         setLoading(false);
+       })
+       .catch((err) => {
+         const message = err.response.data.errorMessages[0].message[0].message;
+         setUserName("");
+         setLoading(false);
+       });
+   };
+ 
+   useEffect(() => {
+     if(searchData.userMasterId){
+       getIdList(searchData.userMasterId);
+     }
+   }, [searchData.userMasterId]);
+
+
+  const handleSearchInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+
+  const [showModal5, setShowModal5] = useState(false);
+
+  const handleShowModal5 = () => setShowModal5(true);
+  const handleCloseModal5 = () => setShowModal5(false);
+
+  // const handleUserSelect = (userId) => {
+  //   setSearchData({ ...searchData, userMasterId: userId }); // Update data with selected user ID
+  //   setShowModal5(false); // Close modal
+  // };
+  // const handleUserSelect = (userId) => {
+  //   // Update the `userMasterId` in your `data` state
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     userMasterId: userId,
+  //   }));
+  // };
+  const handleUserSelect = (userId) => {
+    // Update both `userMasterId` in `data` and `searchData` states
+    setData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+    
+    setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+  
+  
+  // const searchUser = (e) => {
+  //   api
+  //     .post(
+  //       baseURLMasterData + `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+  //       {},
+  //       {
+  //         params: {
+  //           districtId: searchData.districtId,
+  //           talukId: searchData.talukId,
+  //           designationId: searchData.designationId,
+  //           mobileNumber: searchData.mobileNumber,
+  //           username: searchData.username,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       if (response.data && response.data.content && response.data.content.userMaster) {
+  //         setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+  //       } else {
+  //         setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]); // Ensure userListData is reset on error
+  //     });
+  // };
+  const searchUser = (e) => {
+    // Build the params object dynamically
+    const params = {};
+  
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchData.districtId) params.districtId = searchData.districtId;
+    if (searchData.talukId) params.talukId = searchData.talukId;
+    if (searchData.designationId) params.designationId = searchData.designationId;
+    if (searchData.phoneNumber) params.phoneNumber = searchData.phoneNumber;
+    if (searchData.username) params.username = searchData.username;
+  
+    api
+      .post(
+        baseURLMasterData + `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (response.data && response.data.content && response.data.content.userMaster) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
+  
+  
+
+  // to get Designation
+  const [designationListData, setDesignationListData] = useState([]);
+
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURLMasterData + `designation/get-all`)
+      .then((response) => {
+        if (response.data.content.designation) {
+          setDesignationListData(response.data.content.designation);
+        }
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDesignationList();
+  }, []);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (searchData.districtId) {
+      getTalukList(searchData.districtId);
+    }
+  }, [searchData.districtId]);
 
 
   const saveSuccess = () => {
@@ -575,28 +1033,9 @@ function DistrictWiseMontlyMulberry() {
               Districtwise Montly Mulberry Page
             </Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
+          <Button variant="primary" onClick={search}>
+            View Target
+          </Button>
         </Block.HeadBetween>
       </Block.Head>
 
@@ -686,90 +1125,6 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                            <Col
-                              lg="3"
-                              className={
-                                type.budgetType === "release"
-                                  ? "ms-n3"
-                                  : "ms-n5"
-                              }
-                            >
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -905,7 +1260,7 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               User<span className="text-danger">*</span>
@@ -937,67 +1292,46 @@ function DistrictWiseMontlyMulberry() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
-
-                        {/* <Col lg="6">
+                        </Col> */}
+                        <Col lg="1">
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="amount">
-                              Budget Amount (in Lakhs)
-                              <span className="text-danger">*</span>
+                            <Form.Label>
+                              User<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
+                              <Button variant="primary" onClick={() => setShowModal5(true)}>
+                                Select User
+                              </Button>
                               <Form.Control
-                                id="amount"
-                                name="amount"
-                                value={data.amount}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="Enter Amount"
+                                type="hidden"
+                                name="userMasterId"
+                                value={data.userMasterId}
+                                // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Amount is required.
+                                User is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
 
-                        <Col lg="2">
+                        
+                        <Col sm={3}>
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="sordfl"> Date</Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.date}
-                                onChange={(date) =>
-                                  handleDateChange(date, "date")
-                                }
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                maxDate={new Date()}
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                required
-                              />
-                            </div>
+                            <Form.Label>User Name</Form.Label>
+                            <Form.Control
+                              id="username"
+                              name="username"
+                              value={userName}
+                              // onChange={handleSearchInputs}
+                              type="text"
+                              placeholder="Enter User Name"
+                              className="form-control"
+                              readOnly
+                            />
                           </Form.Group>
-                        </Col> */}
-                        {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                        </Col>
                       </Row>
                     </Card.Body>
                   </Card>
@@ -1331,6 +1665,211 @@ function DistrictWiseMontlyMulberry() {
           </Form>
         </Modal.Body>
       </Modal>
+
+      <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>All Reportee Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+      <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ViewTargetReporteeDataColumns}
+            data={listViewReporteesTargetData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+          </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>View Target Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+      <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ViewTargetDataColumns}
+            data={listViewTargetData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+          </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal5} onHide={handleCloseModal5} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>Select User</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Block className="mt-n4">
+      <Card className="mt-3 p-4 shadow-lg rounded">
+        <Row className="g-4">
+          {/* District Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>District</Form.Label>
+              <Form.Select
+                name="districtId"
+                value={searchData.districtId}
+                onChange={handleSearchInputs}
+                className="form-control"
+              >
+                <option value="">Select District</option>
+                {districtListData &&
+                  districtListData.length &&
+                  districtListData.map((list) => (
+                    <option key={list.districtId} value={list.districtId}>
+                      {list.districtName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          {/* Taluk Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>Taluk</Form.Label>
+              <Form.Select
+                name="talukId"
+                value={searchData.talukId}
+                onChange={handleSearchInputs}
+                className="form-control"
+              >
+                <option value="">Select Taluk</option>
+                {talukListData &&
+                  talukListData.length &&
+                  talukListData.map((list) => (
+                    <option key={list.talukId} value={list.talukId}>
+                      {list.talukName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          {/* Designation Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>Designation</Form.Label>
+              <Form.Select
+                name="designationId"
+                value={searchData.designationId}
+                onChange={handleSearchInputs}
+                className="form-control"
+              >
+                <option value="">Select Designation</option>
+                {designationListData &&
+                  designationListData.length &&
+                  designationListData.map((list) => (
+                    <option key={list.designationId} value={list.designationId}>
+                      {list.name}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          {/* Mobile Number Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>Mobile Number</Form.Label>
+              <Form.Control
+                id="phoneNumber"
+                name="phoneNumber"
+                value={searchData.phoneNumber}
+                onChange={handleSearchInputs}
+                type="text"
+                placeholder="Enter Mobile Number"
+                className="form-control"
+              />
+            </Form.Group>
+          </Col>
+
+          {/* Username Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>User Name</Form.Label>
+              <Form.Control
+                id="username"
+                name="username"
+                value={searchData.username}
+                onChange={handleSearchInputs}
+                type="text"
+                placeholder="Enter User Name"
+                className="form-control"
+              />
+            </Form.Group>
+          </Col>
+
+          {/* Search Button */}
+          <Col sm={4} className="d-flex align-items-end">
+            <Button
+              type="button"
+              variant="primary"
+              onClick={searchUser}
+              className="w-100"
+            >
+              Search
+            </Button>
+          </Col>
+        </Row>
+
+        {/* User Selection */}
+        <Row className="m-4">
+          <Col sm={12}>
+            <Form.Label>User</Form.Label>
+            <Form.Select
+              name="userMasterId"
+              value={searchData.userMasterId}
+              onChange={(e) => handleUserSelect(e.target.value)}
+              className="form-control"
+            >
+              <option value="">Select User</option>
+              {userListData && userListData.length > 0 ? (
+                userListData.map((list) => (
+                  <option key={list.userMasterId} value={list.userMasterId}>
+                    {list.username}
+                  </option>
+                ))
+              ) : (
+                <option value="">No Users Found</option> // Show a message if no users are found
+              )}
+            </Form.Select>
+          </Col>
+        </Row>
+        <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal5()}>
+                    Submit
+                  </Button>
+                </div>
+              </Row>
+      </Card>
+    </Block>
+  </Modal.Body>
+</Modal>
+
     </Layout>
   );
 }

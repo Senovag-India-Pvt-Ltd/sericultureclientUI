@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button ,Modal} from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +23,24 @@ function SiSdWiseDaySchemeTargetSetting() {
     month: "",
     targetType: "",
     value: "",
-    scHeadAccountId:"",
-    scComponentId:"",
-    scSchemeDetailsId:"",
-    scSubSchemeDetailsId:"",
-    scCategoryId:"",
+    scHeadAccountId: "",
+    scComponentId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
     stateShare: "",
     centralShare: "",
-    userMasterId:"",
+    userMasterId: "",
+  });
+
+  const [searchData, setSearchData] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
   });
 
   const [type, setType] = useState({
@@ -44,14 +54,94 @@ function SiSdWiseDaySchemeTargetSetting() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
 
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+  const [toggleButton, setToggleButton] = useState(false);
+
+  const toggle = () => {
+    setToggleButton(!toggleButton);
+  };
+
+  const [displayList, setDisplayList] = useState([]);
+  const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  const [totalRowsView, setTotalRowsView] = useState(0);
+  const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+
+  const handleSearchInputs = (e) => {
+    let { name, value } = e.target;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+  const handleUserSelect = (userId) => {
+    // Update both `userMasterId` in `data` and `searchData` states
+    setData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+
+    setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+
+  const handleShowModal = () => {
+    if (data.financialYearMasterId && data.scSchemeDetailsId) {
+      let parameters = {
+        params: {
+          financialYearId: data.financialYearMasterId,
+          schemeId: data.scSchemeDetailsId,
+          hoaId: data.scHeadAccountId,
+          componentTypeId: data.scSubSchemeDetailsId,
+          componentId: data.scComponentId,
+          targetType: data.targetType,
+          pageNumber: page,
+          size: countPerPage,
+        },
+      };
+      api
+        .get(
+          baseURLTargetSetting + `schemeTargets/get-by-scheme-target-details`,
+          parameters
+        )
+        .then((response) => {
+          setShowModal(true);
+          setDisplayList(response.data.content.schemeTargets);
+          setTotalRowsView(response.data.content.totalItems);
+        })
+        .catch((err) => {
+          setDisplayList([]);
+        });
+
+      api
+        .get(
+          baseURLTargetSetting +
+            `schemeTargets/get-by-scheme-target-details-hierarchy`,
+          parameters
+        )
+        .then((response) => {
+          // setShowModal(true);
+          setDisplayListHierarchy(response.data.content.schemeTargets);
+          setTotalRowsViewHierarchy(response.data.content.totalItems);
+        })
+        .catch((err) => {
+          setDisplayListHierarchy([]);
+        });
+    } else {
+      warning();
+    }
+  };
+  const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -76,10 +166,7 @@ function SiSdWiseDaySchemeTargetSetting() {
   const getList = () => {
     setLoading(true);
     api
-      .get(
-        baseURLTargetSetting + `schemeTargets/list-scheme-join`,
-        _params
-      )
+      .get(baseURLTargetSetting + `schemeTargets/list-scheme-join`, _params)
       .then((response) => {
         setListData(response.data.content.body.content.schemeTarget);
         setTotalRows(response.data.content.body.content.totalItems);
@@ -102,34 +189,75 @@ function SiSdWiseDaySchemeTargetSetting() {
     month: "",
     targetType: "",
     value: "",
-    scHeadAccountId:"",
-    scComponentId:"",
-    scSchemeDetailsId:"",
-    scSubSchemeDetailsId:"",
-    scCategoryId:"",
+    scHeadAccountId: "",
+    scComponentId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
     stateShare: "",
     centralShare: "",
-    userMasterId:"",
-    });
-  
-  
-    const handleEdit = (schemeTargetsId) => {
-      setLoading(true);
-      const response = api
-        .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
-        .then((response) => {
-          setEditData(response.data.content);
-          setShowModal3(true);
-          setLoading(false);
-        })
-        .catch((err) => {
-          // const message = err.response.data.errorMessages[0].message[0].message;
-          setEditData({});
-          // editError(message);
-          setLoading(false);
-        });
-    };
-  
+    userMasterId: "",
+  });
+
+  // to get Designation
+  const [designationListData, setDesignationListData] = useState([]);
+
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURLMasterData + `designation/get-all`)
+      .then((response) => {
+        if (response.data.content.designation) {
+          setDesignationListData(response.data.content.designation);
+        }
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDesignationList();
+  }, []);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (searchData.districtId) {
+      getTalukList(searchData.districtId);
+    }
+  }, [searchData.districtId]);
+
+  const handleEdit = (schemeTargetsId) => {
+    setLoading(true);
+    const response = api
+      .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
+      .then((response) => {
+        setEditData(response.data.content);
+        setShowModal3(true);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setEditData({});
+        // editError(message);
+        setLoading(false);
+      });
+  };
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -166,6 +294,44 @@ function SiSdWiseDaySchemeTargetSetting() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+  // Search User
+  const searchUser = (e) => {
+    // Build the params object dynamically
+    const params = {};
+
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchData.districtId) params.districtId = searchData.districtId;
+    if (searchData.talukId) params.talukId = searchData.talukId;
+    if (searchData.designationId)
+      params.designationId = searchData.designationId;
+    if (searchData.phoneNumber) params.phoneNumber = searchData.phoneNumber;
+    if (searchData.username) params.username = searchData.username;
+
+    api
+      .post(
+        baseURLMasterData +
+          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (
+          response.data &&
+          response.data.content &&
+          response.data.content.userMaster
+        ) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -214,106 +380,107 @@ function SiSdWiseDaySchemeTargetSetting() {
     }
   }, [editData.scSchemeDetailsId]);
 
-   // to get component
-   const [scComponentListData, setScComponentListData] = useState([]);
+  // to get component
+  const [scComponentListData, setScComponentListData] = useState([]);
 
-   const getComponentList = (schemeId, subSchemeId) => {
-     api
-       .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
-         schemeId: schemeId,
-         subSchemeId: subSchemeId,
-       })
-       .then((response) => {
-         setScComponentListData(response.data.content.unitCost);
-       })
-       .catch((err) => {
-         setScComponentListData([]);
-       });
-   };
- 
-   const getHeadAccountbyschemeIdAndSubSchemeIdList = (
-     schemeId,
-     subSchemeId
-   ) => {
-     api
-       .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
-         schemeId: schemeId,
-         subSchemeId: subSchemeId,
-       })
-       .then((response) => {
-         if (response.data.content.unitCost) {
-           setScHeadAccountListData(response.data.content.unitCost);
-         }
-       })
-       .catch((err) => {
-         setScHeadAccountListData([]);
-         // alert(err.response.data.errorMessages[0].message[0].message);
-       });
-   };
- 
-   useEffect(() => {
-     if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
-       getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
-       getHeadAccountbyschemeIdAndSubSchemeIdList(
-         data.scSchemeDetailsId,
-         data.scSubSchemeDetailsId
-       );
-     }
-   }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+  const getComponentList = (schemeId, subSchemeId) => {
+    api
+      .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        setScComponentListData(response.data.content.unitCost);
+      })
+      .catch((err) => {
+        setScComponentListData([]);
+      });
+  };
 
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
+    api
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
 
-   useEffect(() => {
+  useEffect(() => {
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+
+  useEffect(() => {
     if (editData.scSchemeDetailsId && editData.scSubSchemeDetailsId) {
-      getComponentList(editData.scSchemeDetailsId, editData.scSubSchemeDetailsId);
+      getComponentList(
+        editData.scSchemeDetailsId,
+        editData.scSubSchemeDetailsId
+      );
       getHeadAccountbyschemeIdAndSubSchemeIdList(
         editData.scSchemeDetailsId,
         editData.scSubSchemeDetailsId
       );
     }
   }, [editData.scSchemeDetailsId, editData.scSubSchemeDetailsId]);
- 
-   console.log(data);
- 
-   // to get head of account by sc-scheme-details
-   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
-   const getHeadAccountList = (schemeId, subSchemeId, scComponentId) => {
-     api
-       .post(
-         baseURLDBT +
-           `master/cost/get-by-schemeId-and-subSchemeId-and-scComponentId`,
-         {
-           schemeId: schemeId,
-           subSchemeId: subSchemeId,
-           scComponentId: scComponentId,
-         }
-       )
-       .then((response) => {
-         if (response.data.content.unitCost) {
-           setScHeadAccountListData(response.data.content.unitCost);
-         }
-       })
-       .catch((err) => {
-         setScHeadAccountListData([]);
-         // alert(err.response.data.errorMessages[0].message[0].message);
-       });
-   };
- 
-   useEffect(() => {
-     if (
-       data.scSchemeDetailsId &&
-       data.scSubSchemeDetailsId &&
-       data.scComponentId
-     ) {
-       getHeadAccountList(
-         data.scSchemeDetailsId,
-         data.scSubSchemeDetailsId,
-         data.scComponentId
-       );
-     }
-   }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, data.scComponentId]);
 
+  console.log(data);
 
-   useEffect(() => {
+  // to get head of account by sc-scheme-details
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+  const getHeadAccountList = (schemeId, subSchemeId, scComponentId) => {
+    api
+      .post(
+        baseURLDBT +
+          `master/cost/get-by-schemeId-and-subSchemeId-and-scComponentId`,
+        {
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+          scComponentId: scComponentId,
+        }
+      )
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      data.scSchemeDetailsId &&
+      data.scSubSchemeDetailsId &&
+      data.scComponentId
+    ) {
+      getHeadAccountList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId,
+        data.scComponentId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, data.scComponentId]);
+
+  useEffect(() => {
     if (
       editData.scSchemeDetailsId &&
       editData.scSubSchemeDetailsId &&
@@ -325,13 +492,16 @@ function SiSdWiseDaySchemeTargetSetting() {
         editData.scComponentId
       );
     }
-  }, [editData.scSchemeDetailsId, editData.scSubSchemeDetailsId, editData.scComponentId]);
+  }, [
+    editData.scSchemeDetailsId,
+    editData.scSubSchemeDetailsId,
+    editData.scComponentId,
+  ]);
 
+  // get Category List
+  const [scCategoryListData, setScCategoryListData] = useState([]);
 
-// get Category List
-   const [scCategoryListData, setScCategoryListData] = useState([]);
-
-   const getCategoryList = () => {
+  const getCategoryList = () => {
     api
       .get(baseURLMasterData + `scCategory/get-all`)
       .then((response) => {
@@ -349,24 +519,47 @@ function SiSdWiseDaySchemeTargetSetting() {
     getCategoryList();
   }, []);
 
-   // to get User
-   const [userListData, setUserListData] = useState([]);
+  // to get User
+  const [userListData, setUserListData] = useState([]);
 
-   const getUserList = () => {
-     api
-       .get(baseURLMasterData + `userMaster/get-all`)
-       .then((response) => {
-         setUserListData(response.data.content.userMaster);
-       })
-       .catch((err) => {
-         setUserListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getUserList();
-   }, []);
+  const getUserList = () => {
+    api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  //   to get data from api
+  const [userName, setUserName] = useState("");
+  const getIdList = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserName(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserName("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchData.userMasterId) {
+      getIdList(searchData.userMasterId);
+    }
+  }, [searchData.userMasterId]);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -407,7 +600,6 @@ function SiSdWiseDaySchemeTargetSetting() {
     setEditData(updatedData);
   };
 
-
   const handleTypeInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -433,9 +625,8 @@ function SiSdWiseDaySchemeTargetSetting() {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting +
-            `schemeTargets/editDistrictSchemeTargets`,
-          editData  
+          baseURLTargetSetting + `schemeTargets/editDistrictSchemeTargets`,
+          editData
         )
         .then((response) => {
           if (response.data.content.error) {
@@ -458,26 +649,26 @@ function SiSdWiseDaySchemeTargetSetting() {
             }
           }
         });
-        setValidatedAllDateEdit(true);
+      setValidatedAllDateEdit(true);
     }
   };
 
   const editClear = () => {
     setEditData({
       mulberryTargetTypeId: "",
-    financialYearMasterId: "",
-    districtId: "",
-    month: "",
-    targetType: "",
-    value: "",
-    scHeadAccountId:"",
-    scComponentId:"",
-    scSchemeDetailsId:"",
-    scSubSchemeDetailsId:"",
-    scCategoryId:"",
-    stateShare: "",
-    centralShare: "",
-    userMasterId:"",
+      financialYearMasterId: "",
+      districtId: "",
+      month: "",
+      targetType: "",
+      value: "",
+      scHeadAccountId: "",
+      scComponentId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      stateShare: "",
+      centralShare: "",
+      userMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -505,8 +696,6 @@ function SiSdWiseDaySchemeTargetSetting() {
   const handleView = (_id) => {
     navigate(`/seriui/taluk-view/${_id}`);
   };
-
-  
 
   const customStyles = {
     rows: {
@@ -567,6 +756,14 @@ function SiSdWiseDaySchemeTargetSetting() {
         console.log(result.value);
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
+    });
+  };
+
+  const warning = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Please select financial year and scheme",
+      text: "Please try again!",
     });
   };
 
@@ -669,7 +866,103 @@ function SiSdWiseDaySchemeTargetSetting() {
       sortable: true,
       hide: "md",
     },
-    
+
+    {
+      name: "Target Type",
+      selector: (row) => row.targetType,
+      cell: (row) => <span>{row.targetType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Month",
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " User Name",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target No.",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+  const ProductionPhysicalDataColumnsView = [
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sub Component",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Head of Account",
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Central Budget (In Lakhs)",
+      selector: (row) => row.centralShare,
+      cell: (row) => <span>{row.centralShare}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "State Budget (In Lakhs)",
+      selector: (row) => row.stateShare,
+      cell: (row) => <span>{row.stateShare}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
     {
       name: "Target Type",
       selector: (row) => row.targetType,
@@ -791,21 +1084,30 @@ function SiSdWiseDaySchemeTargetSetting() {
 
   const clear = () => {
     setData({
-        mulberryTargetTypeId: "",
-        financialYearMasterId: "",
-        districtId: "",
-        month: "",
-        targetType: "",
-        value: "",
-        scHeadAccountId:"",
-        scComponentId:"",
-        scSchemeDetailsId:"",
-        scSubSchemeDetailsId:"",
-        scCategoryId:"",
-        stateShare: "",
-        centralShare: "",
-        userMasterId:"",
+      mulberryTargetTypeId: "",
+      financialYearMasterId: "",
+      districtId: "",
+      month: "",
+      targetType: "",
+      value: "",
+      scHeadAccountId: "",
+      scComponentId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      stateShare: "",
+      centralShare: "",
+      userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
@@ -842,9 +1144,9 @@ function SiSdWiseDaySchemeTargetSetting() {
               District Wise Target Setting for Subsidies
             </Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
+          <Block.HeadContent>
             <ul className="d-flex">
-              <li>
+              {/* <li>
                 <Link
                   to="/seriui/Budget-list"
                   className="btn btn-primary btn-md d-md-none"
@@ -852,18 +1154,25 @@ function SiSdWiseDaySchemeTargetSetting() {
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
-                <Link
+                {/* <Link
                   to="/seriui/Budget-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
-                </Link>
+                </Link> */}
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleShowModal}
+                >
+                  View
+                </Button>
               </li>
             </ul>
-          </Block.HeadContent> */}
+          </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
@@ -1318,8 +1627,12 @@ function SiSdWiseDaySchemeTargetSetting() {
                                 // }
                               >
                                 <option value="">Select Target Type</option>
-                                <option value="Physical Target">Physical Target</option>
-                                <option value="Financial Target">Financial Target</option>
+                                <option value="Physical Target">
+                                  Physical Target
+                                </option>
+                                <option value="Financial Target">
+                                  Financial Target
+                                </option>
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
@@ -1377,7 +1690,7 @@ function SiSdWiseDaySchemeTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                         <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               User<span className="text-danger">*</span>
@@ -1409,7 +1722,7 @@ function SiSdWiseDaySchemeTargetSetting() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1431,6 +1744,48 @@ function SiSdWiseDaySchemeTargetSetting() {
                                 Target No. is required.
                               </Form.Control.Feedback>
                             </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="1">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              User<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Button
+                                variant="primary"
+                                onClick={() => setShowModal2(true)}
+                              >
+                                Select User
+                              </Button>
+                              <Form.Control
+                                type="hidden"
+                                name="userMasterId"
+                                value={data.userMasterId}
+                                // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col sm={3}>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>User Name</Form.Label>
+                            <Form.Control
+                              id="username"
+                              name="username"
+                              value={userName}
+                              // onChange={handleSearchInputs}
+                              type="text"
+                              placeholder="Enter User Name"
+                              className="form-control"
+                              readOnly
+                            />
                           </Form.Group>
                         </Col>
 
@@ -1571,436 +1926,433 @@ function SiSdWiseDaySchemeTargetSetting() {
             onSubmit={postEditData}
           >
             <Row className="g-5 px-5">
-            <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Financial Year
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="financialYearMasterId"
-                                value={editData.financialYearMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.financialYearMasterId === undefined ||
-                                  editData.financialYearMasterId === "0"
-                                }
-                              >
-                                <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Financial Year is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label>
+                    Financial Year
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={editData.financialYearMasterId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      required
+                      isInvalid={
+                        editData.financialYearMasterId === undefined ||
+                        editData.financialYearMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Year</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Financial Year is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Scheme
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSchemeDetailsId"
-                                value={editData.scSchemeDetailsId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  editData.scSchemeDetailsId === undefined ||
-                                  editData.scSchemeDetailsId === "0"
-                                }
-                              >
-                                <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData &&
-                                  scSchemeDetailsListData.map((list) => (
-                                    <option
-                                      key={list.scSchemeDetailsId}
-                                      value={list.scSchemeDetailsId}
-                                    >
-                                      {list.schemeName}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Scheme is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="sordfl">
+                    Scheme
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scSchemeDetailsId"
+                      value={editData.scSchemeDetailsId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      // multiple
+                      required
+                      isInvalid={
+                        editData.scSchemeDetailsId === undefined ||
+                        editData.scSchemeDetailsId === "0"
+                      }
+                    >
+                      <option value="">Select Scheme Names</option>
+                      {scSchemeDetailsListData &&
+                        scSchemeDetailsListData.map((list) => (
+                          <option
+                            key={list.scSchemeDetailsId}
+                            value={list.scSchemeDetailsId}
+                          >
+                            {list.schemeName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Scheme is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Component Type
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSubSchemeDetailsId"
-                                value={editData.scSubSchemeDetailsId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  editData.scSubSchemeDetailsId === undefined ||
-                                  editData.scSubSchemeDetailsId === "0"
-                                }
-                              >
-                                <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData &&
-                                  scSubSchemeDetailsListData.map((list, i) => (
-                                    <option key={i} value={list.subSchemeId}>
-                                      {list.subSchemeName}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Component Type is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label>
+                    Component Type
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scSubSchemeDetailsId"
+                      value={editData.scSubSchemeDetailsId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      // multiple
+                      required
+                      isInvalid={
+                        editData.scSubSchemeDetailsId === undefined ||
+                        editData.scSubSchemeDetailsId === "0"
+                      }
+                    >
+                      <option value="">Select Component Type</option>
+                      {scSubSchemeDetailsListData &&
+                        scSubSchemeDetailsListData.map((list, i) => (
+                          <option key={i} value={list.subSchemeId}>
+                            {list.subSchemeName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Component Type is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Component
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scComponentId"
-                                value={editData.scComponentId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                // multiple
-                                // required
-                                isInvalid={
-                                  editData.scComponentId === undefined ||
-                                  editData.scComponentId === "0"
-                                }
-                              >
-                                <option value="">Select Component</option>
-                                {scComponentListData &&
-                                  scComponentListData.map((list) => (
-                                    <option
-                                      key={list.scComponentId}
-                                      value={list.scComponentId}
-                                    >
-                                      {list.scComponentName}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Component is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="sordfl">
+                    Component
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scComponentId"
+                      value={editData.scComponentId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      // multiple
+                      // required
+                      isInvalid={
+                        editData.scComponentId === undefined ||
+                        editData.scComponentId === "0"
+                      }
+                    >
+                      <option value="">Select Component</option>
+                      {scComponentListData &&
+                        scComponentListData.map((list) => (
+                          <option
+                            key={list.scComponentId}
+                            value={list.scComponentId}
+                          >
+                            {list.scComponentName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Component is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Sub Component
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scCategoryId"
-                                value={editData.scCategoryId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                // multiple
-                                // required
-                                isInvalid={
-                                  editData.scCategoryId === undefined ||
-                                  editData.scCategoryId === "0"
-                                }
-                              >
-                                <option value="">Select Sub Component</option>
-                                {scCategoryListData &&
-                                  scCategoryListData.map((list) => (
-                                    <option
-                                      key={list.scCategoryId}
-                                      value={list.scCategoryId}
-                                    >
-                                      {list.codeNumber}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Sub Component is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="sordfl">
+                    Sub Component
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scCategoryId"
+                      value={editData.scCategoryId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      // multiple
+                      // required
+                      isInvalid={
+                        editData.scCategoryId === undefined ||
+                        editData.scCategoryId === "0"
+                      }
+                    >
+                      <option value="">Select Sub Component</option>
+                      {scCategoryListData &&
+                        scCategoryListData.map((list) => (
+                          <option
+                            key={list.scCategoryId}
+                            value={list.scCategoryId}
+                          >
+                            {list.codeNumber}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Sub Component is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Head of Account
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scHeadAccountId"
-                                value={editData.scHeadAccountId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  editData.scHeadAccountId === undefined ||
-                                  editData.scHeadAccountId === "0"
-                                }
-                              >
-                                <option value="">Select Head of Account</option>
-                                {scHeadAccountListData &&
-                                  scHeadAccountListData.map((list) => (
-                                    <option
-                                      key={list.headOfAccountId}
-                                      value={list.headOfAccountId}
-                                    >
-                                      {list.scHeadAccountName}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Head of Account is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="sordfl">
+                    Head of Account
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scHeadAccountId"
+                      value={editData.scHeadAccountId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      // multiple
+                      required
+                      isInvalid={
+                        editData.scHeadAccountId === undefined ||
+                        editData.scHeadAccountId === "0"
+                      }
+                    >
+                      <option value="">Select Head of Account</option>
+                      {scHeadAccountListData &&
+                        scHeadAccountListData.map((list) => (
+                          <option
+                            key={list.headOfAccountId}
+                            value={list.headOfAccountId}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Head of Account is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="centralShare">
-                              Central Budget Amount (in Lakhs)
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="centralShare"
-                                name="centralShare"
-                                value={editData.centralShare}
-                                onChange={handleEditInputs}
-                                type="text"
-                                placeholder="Enter Central Budget Amount"
-                                // required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Central Budget Amount is required.
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="centralShare">
+                    Central Budget Amount (in Lakhs)
+                    {/* <span className="text-danger">*</span> */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="centralShare"
+                      name="centralShare"
+                      value={editData.centralShare}
+                      onChange={handleEditInputs}
+                      type="text"
+                      placeholder="Enter Central Budget Amount"
+                      // required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Central Budget Amount is required.
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="stateShare">
-                              State Budget Amount (in Lakhs)
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="stateShare"
-                                name="stateShare"
-                                value={editData.stateShare}
-                                onChange={handleEditInputs}
-                                type="text"
-                                placeholder="Enter State Budget Amount"
-                                // required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                State Budget Amount is required.
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="stateShare">
+                    State Budget Amount (in Lakhs)
+                    {/* <span className="text-danger">*</span> */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="stateShare"
+                      name="stateShare"
+                      value={editData.stateShare}
+                      onChange={handleEditInputs}
+                      type="text"
+                      placeholder="Enter State Budget Amount"
+                      // required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      State Budget Amount is required.
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              District<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="districtId"
-                                value={editData.districtId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                // isInvalid={
-                                //   editData.districtId === undefined ||
-                                //   editData.districtId === "0"
-                                // }
-                              >
-                                <option value="">Select District</option>
-                                {districtListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={list.districtId}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                District is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    District<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="districtId"
+                      value={editData.districtId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      required
+                      // isInvalid={
+                      //   editData.districtId === undefined ||
+                      //   editData.districtId === "0"
+                      // }
+                    >
+                      <option value="">Select District</option>
+                      {districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      District is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Target Type<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="targetType"
-                                value={editData.targetType}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                // isInvalid={
-                                //   editData.targetType === undefined ||
-                                //   editData.targetType === "0"
-                                // }
-                              >
-                                <option value="">Select Target Type</option>
-                                <option value="Physical Target">Physical Target</option>
-                                <option value="Financial Target">Financial Target</option>
-                                {/* {districtListData.map((list) => (
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    Target Type<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="targetType"
+                      value={editData.targetType}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      required
+                      // isInvalid={
+                      //   editData.targetType === undefined ||
+                      //   editData.targetType === "0"
+                      // }
+                    >
+                      <option value="">Select Target Type</option>
+                      <option value="Physical Target">Physical Target</option>
+                      <option value="Financial Target">Financial Target</option>
+                      {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
                           </option>
                         ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target Type is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Target Type is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Month<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="month"
-                                value={editData.month}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                // isInvalid={
-                                //   editData.month === undefined ||
-                                //   editData.month === "0"
-                                // }
-                              >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    Month<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="month"
+                      value={editData.month}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      required
+                      // isInvalid={
+                      //   editData.month === undefined ||
+                      //   editData.month === "0"
+                      // }
+                    >
+                      <option value="">Select Month</option>
+                      <option value="JANUARY">January</option>
+                      <option value="FEBRUARY">February</option>
+                      <option value="MARCH">March</option>
+                      <option value="APRIL">April</option>
+                      <option value="MAY">May</option>
+                      <option value="JUNE">June</option>
+                      <option value="JULY">July</option>
+                      <option value="AUGUST">August</option>
+                      <option value="SEPTEMBER">September</option>
+                      <option value="OCTOBER">October</option>
+                      <option value="NOVEMBER">November</option>
+                      <option value="DECEMBER">December</option>
 
-                                {/* {districtListData.map((list) => (
+                      {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
                           </option>
                         ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Month is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Month is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                         <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              User<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="userMasterId"
-                                value={editData.userMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                isInvalid={
-                                  editData.userMasterId === undefined ||
-                                  editData.userMasterId === "0"
-                                }
-                              >
-                                <option value="">Select User</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                User is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="userMasterId"
+                      value={editData.userMasterId}
+                      onChange={handleEditInputs}
+                      onBlur={() => handleEditInputs}
+                      required
+                      isInvalid={
+                        editData.userMasterId === undefined ||
+                        editData.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select User</option>
+                      {userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="value">
-                              Target No.
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="value"
-                                name="value"
-                                value={editData.value}
-                                onChange={handleEditInputs}
-                                type="text"
-                                placeholder="Enter Target No."
-                                // required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Target No. is required.
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="value">
+                    Target No.
+                    {/* <span className="text-danger">*</span> */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="value"
+                      name="value"
+                      value={editData.value}
+                      onChange={handleEditInputs}
+                      type="text"
+                      placeholder="Enter Target No."
+                      // required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Target No. is required.
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
@@ -2010,11 +2362,248 @@ function SiSdWiseDaySchemeTargetSetting() {
                       Update
                     </Button>
                   </div>
-                 
                 </div>
               </Col>
             </Row>
           </Form>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Alloted Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Row className="mt-2 d-flex justify-content-center">
+            <Col lg="12">
+              <div
+                style={{ fontWeight: "bold", color: "brown", fontSize: "1vw" }}
+                className="d-flex justify-content-center"
+              >
+                Target Allotted by Head Office
+              </div>
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={ProductionPhysicalDataColumnsView}
+                data={displayList}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsView}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Col>
+            {displayList && displayList.length > 0 && (
+              <Col lg="12" className="d-flex justify-content-center">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => toggle()}
+                >
+                  {!toggleButton ? "Show" : "Hide"} Hierarchical Assigned
+                  Targets
+                </Button>
+              </Col>
+            )}
+            {toggleButton && (
+              <Col lg="12" className="mt-2">
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "brown",
+                    fontSize: "1vw",
+                  }}
+                  className="d-flex justify-content-center"
+                >
+                  Target Allotted by You
+                </div>
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ProductionPhysicalDataColumnsView}
+                  data={displayListHierarchy}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRowsViewHierarchy}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+              </Col>
+            )}
+          </Row>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Select User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-n4">
+            <Card className="mt-3 p-4 shadow-lg rounded">
+              <Row className="g-4">
+                {/* District Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>District</Form.Label>
+                    <Form.Select
+                      name="districtId"
+                      value={searchData.districtId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select District</option>
+                      {districtListData &&
+                        districtListData.length &&
+                        districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Taluk Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Taluk</Form.Label>
+                    <Form.Select
+                      name="talukId"
+                      value={searchData.talukId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select Taluk</option>
+                      {talukListData &&
+                        talukListData.length &&
+                        talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Designation Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Designation</Form.Label>
+                    <Form.Select
+                      name="designationId"
+                      value={searchData.designationId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select Designation</option>
+                      {designationListData &&
+                        designationListData.length &&
+                        designationListData.map((list) => (
+                          <option
+                            key={list.designationId}
+                            value={list.designationId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Mobile Number Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Control
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      value={searchData.phoneNumber}
+                      onChange={handleSearchInputs}
+                      type="text"
+                      placeholder="Enter Mobile Number"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Username Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>User Name</Form.Label>
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      value={searchData.username}
+                      onChange={handleSearchInputs}
+                      type="text"
+                      placeholder="Enter User Name"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Search Button */}
+                <Col sm={4} className="d-flex align-items-end">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={searchUser}
+                    className="w-100"
+                  >
+                    Search
+                  </Button>
+                </Col>
+              </Row>
+
+              {/* User Selection */}
+              <Row className="m-4">
+                <Col sm={12}>
+                  <Form.Label>User</Form.Label>
+                  <Form.Select
+                    name="userMasterId"
+                    value={searchData.userMasterId}
+                    onChange={(e) => handleUserSelect(e.target.value)}
+                    className="form-control"
+                  >
+                    <option value="">Select User</option>
+                    {userListData && userListData.length > 0 ? (
+                      userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No Users Found</option> // Show a message if no users are found
+                    )}
+                  </Form.Select>
+                </Col>
+              </Row>
+              <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal2()}>
+                    Submit
+                  </Button>
+                </div>
+              </Row>
+            </Card>
+          </Block>
         </Modal.Body>
       </Modal>
     </Layout>
