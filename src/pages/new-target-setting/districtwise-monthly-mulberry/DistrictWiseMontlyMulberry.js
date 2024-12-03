@@ -521,6 +521,15 @@ function DistrictWiseMontlyMulberry() {
       value: "",
       userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

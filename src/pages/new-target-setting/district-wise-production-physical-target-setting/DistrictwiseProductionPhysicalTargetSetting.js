@@ -572,6 +572,15 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       raceMasterId: "",
       userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });

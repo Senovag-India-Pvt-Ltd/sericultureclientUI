@@ -622,6 +622,15 @@ function SiSdWiseProdPhyTargetSetting() {
         tscMasterId:"",
         userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
