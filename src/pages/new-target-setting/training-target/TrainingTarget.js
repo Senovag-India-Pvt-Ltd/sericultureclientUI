@@ -29,6 +29,18 @@ function TrainingTarget() {
     userMasterId: "",
   });
 
+  
+  const [searchData, setSearchData] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
+
+
   const [type, setType] = useState({
     budgetType: "allocate",
   });
@@ -42,10 +54,91 @@ function TrainingTarget() {
 
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const [showModal3, setShowModal3] = useState(false);
 
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
+
+  
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+  const [toggleButton, setToggleButton] = useState(false);
+
+  const toggle = () => {
+    setToggleButton(!toggleButton);
+  };
+
+  const [displayList, setDisplayList] = useState([]);
+  const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  const [totalRowsView, setTotalRowsView] = useState(0);
+  const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+
+  const handleSearchInputs = (e) => {
+    let { name, value } = e.target;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+  const handleUserSelect = (userId) => {
+    // Update both `userMasterId` in `data` and `searchData` states
+    setData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+
+    setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+
+  const handleShowModal = () => {
+    if (data.financialYearMasterId && data.farmId) {
+      let parameters = {
+        params: {
+          financialYearId: data.financialYearMasterId,
+          raceId: data.scSchemeDetailsId,
+          targetType: data.scHeadAccountId,
+          farmId: data.scSubSchemeDetailsId,
+          grainageId: data.scComponentId,
+          courseId: data.targetType,
+          institutionId: data.targetType,
+          pageNumber: page,
+          size: countPerPage,
+        },
+      };
+      api
+        .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
+        .then((response) => {
+          setShowModal(true);
+          setDisplayList(response.data.content.schemeTargets);
+          setTotalRowsView(response.data.content.totalItems);
+        })
+        .catch((err) => {
+          setDisplayList([]);
+        });
+
+      api
+        .get(
+          baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
+          parameters
+        )
+        .then((response) => {
+          // setShowModal(true);
+          setDisplayListHierarchy(response.data.content.schemeTargets);
+          setTotalRowsViewHierarchy(response.data.content.totalItems);
+        })
+        .catch((err) => {
+          setDisplayListHierarchy([]);
+        });
+    } else {
+      warning();
+    }
+  };
+  const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -118,6 +211,49 @@ function TrainingTarget() {
         setLoading(false);
       });
   };
+
+   // to get Designation
+   const [designationListData, setDesignationListData] = useState([]);
+
+   const getDesignationList = () => {
+     const response = api
+       .get(baseURLMasterData + `designation/get-all`)
+       .then((response) => {
+         if (response.data.content.designation) {
+           setDesignationListData(response.data.content.designation);
+         }
+       })
+       .catch((err) => {
+         setDesignationListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getDesignationList();
+   }, []);
+ 
+   // to get taluk
+   const [talukListData, setTalukListData] = useState([]);
+ 
+   const getTalukList = (_id) => {
+     const response = api
+       .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+       .then((response) => {
+         if (response.data.content.taluk) {
+           setTalukListData(response.data.content.taluk);
+         }
+       })
+       .catch((err) => {
+         setTalukListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+     if (searchData.districtId) {
+       getTalukList(searchData.districtId);
+     }
+   }, [searchData.districtId]);
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -194,6 +330,45 @@ function TrainingTarget() {
   useEffect(() => {
     getGrainageList();
   }, []);
+
+  
+  // Search User
+  const searchUser = (e) => {
+    // Build the params object dynamically
+    const params = {};
+
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchData.districtId) params.districtId = searchData.districtId;
+    if (searchData.talukId) params.talukId = searchData.talukId;
+    if (searchData.designationId)
+      params.designationId = searchData.designationId;
+    if (searchData.phoneNumber) params.phoneNumber = searchData.phoneNumber;
+    if (searchData.username) params.username = searchData.username;
+
+    api
+      .post(
+        baseURLMasterData +
+          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (
+          response.data &&
+          response.data.content &&
+          response.data.content.userMaster
+        ) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
 
   // to get TrInstitutionMaster
   const [trInstituteListData, setTrInstituteListData] = useState([]);
@@ -404,6 +579,31 @@ function TrainingTarget() {
     getFinancialDefaultDetails();
   }, []);
 
+  
+  //   to get data from api
+  const [userName, setUserName] = useState("");
+  const getIdList = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserName(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserName("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchData.userMasterId) {
+      getIdList(searchData.userMasterId);
+    }
+  }, [searchData.userMasterId]);
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -475,6 +675,13 @@ function TrainingTarget() {
     });
     getFinancialDefaultDetails();
     setValidatedAllDateEdit(false);
+  };
+  const warning = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Please select financial year and farm",
+      text: "Please try again!",
+    });
   };
 
 
@@ -605,6 +812,51 @@ function TrainingTarget() {
     // },
   ];
 
+  const ProductionPhysicalDataColumnsView = [
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farn",
+      selector: (row) => row.farmName,
+      cell: (row) => <span>{row.farmName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Race",
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Month",
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " User Name",
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Target No.",
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
   const clear = () => {
     setData({
       mulberryTargetTypeId: "",
@@ -619,6 +871,15 @@ function TrainingTarget() {
       courseName: "",
       userMasterId: "",
     });
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
@@ -655,28 +916,18 @@ function TrainingTarget() {
               Training Wise Target Setting Page
             </Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
+          <ul className="d-flex">
               <li>
-                <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary btn-md d-md-none"
+                
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleShowModal}
                 >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
+                  View
+                </Button>
               </li>
             </ul>
-          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
@@ -847,7 +1098,7 @@ function TrainingTarget() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               User<span className="text-danger">*</span>
@@ -878,6 +1129,47 @@ function TrainingTarget() {
                                 User is required
                               </Form.Control.Feedback>
                             </div>
+                          </Form.Group>
+                        </Col> */}
+                        <Col lg="1">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              User<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Button
+                                variant="primary"
+                                onClick={() => setShowModal2(true)}
+                              >
+                                Select User
+                              </Button>
+                              <Form.Control
+                                type="hidden"
+                                name="userMasterId"
+                                value={data.userMasterId}
+                                // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col sm={3}>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>User Name</Form.Label>
+                            <Form.Control
+                              id="username"
+                              name="username"
+                              value={userName}
+                              // onChange={handleSearchInputs}
+                              type="text"
+                              placeholder="Enter User Name"
+                              className="form-control"
+                              readOnly
+                            />
                           </Form.Group>
                         </Col>
 
@@ -1156,6 +1448,244 @@ function TrainingTarget() {
               </Col>
             </Row>
           </Form>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Alloted Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Row className="mt-2 d-flex justify-content-center">
+            <Col lg="12">
+              <div
+                style={{ fontWeight: "bold", color: "brown", fontSize: "1vw" }}
+                className="d-flex justify-content-center"
+              >
+                Target Allotted by Head Office
+              </div>
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={ProductionPhysicalDataColumnsView}
+                data={displayList}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsView}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Col>
+            {displayList && displayList.length > 0 && (
+              <Col lg="12" className="d-flex justify-content-center">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => toggle()}
+                >
+                  {!toggleButton ? "Show" : "Hide"} Hierarchical Assigned
+                  Targets
+                </Button>
+              </Col>
+            )}
+            {toggleButton && (
+              <Col lg="12" className="mt-2">
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "brown",
+                    fontSize: "1vw",
+                  }}
+                  className="d-flex justify-content-center"
+                >
+                  Target Allotted by You
+                </div>
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ProductionPhysicalDataColumnsView}
+                  data={displayListHierarchy}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRowsViewHierarchy}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+              </Col>
+            )}
+          </Row>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Select User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-n4">
+            <Card className="mt-3 p-4 shadow-lg rounded">
+              <Row className="g-4">
+                {/* District Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>District</Form.Label>
+                    <Form.Select
+                      name="districtId"
+                      value={searchData.districtId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select District</option>
+                      {districtListData &&
+                        districtListData.length &&
+                        districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Taluk Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Taluk</Form.Label>
+                    <Form.Select
+                      name="talukId"
+                      value={searchData.talukId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select Taluk</option>
+                      {talukListData &&
+                        talukListData.length &&
+                        talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Designation Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Designation</Form.Label>
+                    <Form.Select
+                      name="designationId"
+                      value={searchData.designationId}
+                      onChange={handleSearchInputs}
+                      className="form-control"
+                    >
+                      <option value="">Select Designation</option>
+                      {designationListData &&
+                        designationListData.length &&
+                        designationListData.map((list) => (
+                          <option
+                            key={list.designationId}
+                            value={list.designationId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Mobile Number Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Control
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      value={searchData.phoneNumber}
+                      onChange={handleSearchInputs}
+                      type="text"
+                      placeholder="Enter Mobile Number"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Username Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>User Name</Form.Label>
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      value={searchData.username}
+                      onChange={handleSearchInputs}
+                      type="text"
+                      placeholder="Enter User Name"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Search Button */}
+                <Col sm={4} className="d-flex align-items-end">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={searchUser}
+                    className="w-100"
+                  >
+                    Search
+                  </Button>
+                </Col>
+              </Row>
+
+              {/* User Selection */}
+              <Row className="m-4">
+                <Col sm={12}>
+                  <Form.Label>User</Form.Label>
+                  <Form.Select
+                    name="userMasterId"
+                    value={searchData.userMasterId}
+                    onChange={(e) => handleUserSelect(e.target.value)}
+                    className="form-control"
+                  >
+                    <option value="">Select User</option>
+                    {userListData && userListData.length > 0 ? (
+                      userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No Users Found</option> // Show a message if no users are found
+                    )}
+                  </Form.Select>
+                </Col>
+              </Row>
+              <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal2()}>
+                    Submit
+                  </Button>
+                </div>
+              </Row>
+            </Card>
+          </Block>
         </Modal.Body>
       </Modal>
     </Layout>

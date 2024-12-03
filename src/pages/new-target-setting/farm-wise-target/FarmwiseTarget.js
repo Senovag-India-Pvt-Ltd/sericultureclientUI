@@ -828,6 +828,7 @@ function FarmwiseTarget() {
       username: "",
       userMasterId: "",
     });
+    setUserName("");
     setType({
       budgetType: "allocate",
     });
