@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskFaqList() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function HelpDeskFaqList() {
 
   const HdQuestionDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -161,7 +166,7 @@ function HelpDeskFaqList() {
             className="ms-2"
             onClick={() => handleEdit(row.hdQuestionId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function HelpDeskFaqList() {
             onClick={() => deleteConfirm(row.hdQuestionId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +182,14 @@ function HelpDeskFaqList() {
       hide: "md",
     },
     {
-      name: "Hd Question",
+      name: t("Questions"),
       selector: (row) => row.hdQuestionName,
       cell: (row) => <span>{row.hdQuestionName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hd  Answer",
+      name: t("Answers"),
       selector: (row) => row.hdQuestionAnswerName,
       cell: (row) => <span>{row.hdQuestionAnswerName}</span>,
       sortable: true,
@@ -197,7 +202,7 @@ function HelpDeskFaqList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Help Desk Question List</Block.Title>
+            <Block.Title tag="h2">{t("Help Desk Question List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +212,7 @@ function HelpDeskFaqList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +221,7 @@ function HelpDeskFaqList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskFeatureList() {
+    // Translation
+    const { t } = useTranslation();
+    
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function HelpDeskFeatureList() {
 
   const HdFeatureDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function HelpDeskFeatureList() {
             size="sm"
             onClick={() => handleView(row.hdFeatureId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function HelpDeskFeatureList() {
             className="ms-2"
             onClick={() => handleEdit(row.hdFeatureId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function HelpDeskFeatureList() {
             onClick={() => deleteConfirm(row.hdFeatureId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +181,14 @@ function HelpDeskFeatureList() {
       hide: "md",
     },
     {
-      name: "Feature",
+      name: t("Feature"),
       selector: (row) => row.hdFeatureName,
       cell: (row) => <span>{row.hdFeatureName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Module Name",
+      name: t("Modules"),
       selector: (row) => row.hdModuleName,
       cell: (row) => <span>{row.hdModuleName}</span>,
       sortable: true,
@@ -197,7 +201,7 @@ function HelpDeskFeatureList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Feature List</Block.Title>
+            <Block.Title tag="h2">{t("Feature List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +211,7 @@ function HelpDeskFeatureList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +220,7 @@ function HelpDeskFeatureList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

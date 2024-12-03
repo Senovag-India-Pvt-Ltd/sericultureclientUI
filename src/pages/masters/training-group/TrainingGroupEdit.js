@@ -7,10 +7,15 @@ import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingGroupEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -120,7 +125,7 @@ function TrainingGroupEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Training Group</Block.Title>
+            <Block.Title tag="h2">{t("Edit Training Group")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +135,7 @@ function TrainingGroupEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -139,7 +144,7 @@ function TrainingGroupEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -162,7 +167,7 @@ function TrainingGroupEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trGroupMaster">
-                          Training Group<span className="text-danger">*</span>
+                        {t("Training Group")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -171,11 +176,11 @@ function TrainingGroupEdit() {
                             value={data.trGroupMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Group"
+                            placeholder={t("Enter Training Group")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Group Name is required.
+                          {t("Training Group Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -184,7 +189,7 @@ function TrainingGroupEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Training Group Name in Kannada
+                        {t("Training Group Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -194,11 +199,11 @@ function TrainingGroupEdit() {
                             value={data.trGroupNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Group Name in Kannada"
+                            placeholder={t("Enter Training Group Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Group Name in Kannada is required.
+                          {t("Training Group Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -215,12 +220,12 @@ function TrainingGroupEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

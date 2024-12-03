@@ -6,9 +6,16 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingProgramView() {
+
+  
+    // Translation
+    const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -52,7 +59,7 @@ function TrainingProgramView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Program View</Block.Title>
+            <Block.Title tag="h2">{t("Training Program View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +69,7 @@ function TrainingProgramView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +78,7 @@ function TrainingProgramView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,7 +88,7 @@ function TrainingProgramView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Program Details</Card.Header>
+          <Card.Header>{t("Training Program Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -93,17 +100,17 @@ function TrainingProgramView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{TrainingPrograms.trProgramMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Program:</td>
+                        <td style={styles.ctstyle}> {t("Training Program Name")}</td>
                         <td>{TrainingPrograms.trProgramMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Training Program Name In Kannada:
+                          {t("Training Program Name in Kannada")}
                         </td>
                         <td>{TrainingPrograms.trProgramNameInKannada}</td>
                       </tr>

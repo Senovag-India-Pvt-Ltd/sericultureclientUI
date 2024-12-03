@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskSeverityEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -129,7 +134,7 @@ function HelpDeskSeverityEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -138,7 +143,7 @@ function HelpDeskSeverityEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>

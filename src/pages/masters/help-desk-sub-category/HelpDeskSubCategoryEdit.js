@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskSubCategoryEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -169,7 +174,7 @@ function HelpDeskSubCategoryEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Sub category</Block.Title>
+            <Block.Title tag="h2">{t("Edit Sub category")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -179,7 +184,7 @@ function HelpDeskSubCategoryEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -188,7 +193,7 @@ function HelpDeskSubCategoryEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -211,7 +216,7 @@ function HelpDeskSubCategoryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Broad Category<span className="text-danger">*</span>
+                        {t("Broad Category")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -225,7 +230,7 @@ function HelpDeskSubCategoryEdit() {
                               data.hdBoardCategoryId === "0"
                             }
                           >
-                            <option value="">Select Broad Category</option>
+                            <option value="">{t("Select Broad Category")}</option>
                             {hdBoardCategoryListData.map((list) => (
                               <option
                                 key={list.hdBoardCategoryId}
@@ -236,7 +241,7 @@ function HelpDeskSubCategoryEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Broad Category name is required
+                          {t("Broad Category Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -245,7 +250,7 @@ function HelpDeskSubCategoryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Category<span className="text-danger">*</span>
+                        {t("Category")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -259,7 +264,7 @@ function HelpDeskSubCategoryEdit() {
                               data.hdCategoryId === "0"
                             }
                           >
-                            <option value="">Select Category</option>
+                            <option value="">{t("Select Category")}</option>
                             {hdCategoryListData.map((list) => (
                               <option
                                 key={list.hdCategoryId}
@@ -270,7 +275,7 @@ function HelpDeskSubCategoryEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Category name is required
+                          {t("Category Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -279,7 +284,7 @@ function HelpDeskSubCategoryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Hd Sub Category">
-                          Sub Category<span className="text-danger">*</span>
+                        {t("Sub Category")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -288,11 +293,11 @@ function HelpDeskSubCategoryEdit() {
                             value={data.hdSubCategoryName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Sub Category"
+                            placeholder={t("Enter Sub Category")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Sub Category Name is required
+                          {t("Sub Category Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -309,12 +314,12 @@ function HelpDeskSubCategoryEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

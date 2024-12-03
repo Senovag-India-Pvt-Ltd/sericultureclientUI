@@ -9,10 +9,15 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LineName() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [data, setData] = useState({
     lineName: "",
     lineNameInKannada: "",
@@ -98,7 +103,7 @@ function LineName() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Line Name</Block.Title>
+            <Block.Title tag="h2">{t("Line Name")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -108,7 +113,7 @@ function LineName() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -117,7 +122,7 @@ function LineName() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -136,7 +141,7 @@ function LineName() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Line Name
+                      {t("Line Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -146,11 +151,11 @@ function LineName() {
                           type="text"
                           value={data.lineName}
                           onChange={handleInputs}
-                          placeholder="Enter Line name"
+                          placeholder={t("Enter Line name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Line Name is required
+                          {t("Line Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -159,7 +164,7 @@ function LineName() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Line Code
+                        {t("Line Code")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -168,10 +173,10 @@ function LineName() {
                           value={data.lineCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Line Code"
+                          placeholder={t("Enter Line Code")}
                         />
                         <Form.Control.Feedback type="invalid">
-                          Line Code is required.
+                          {t("Line Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -180,7 +185,7 @@ function LineName() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Line Name in Kannada
+                        {t("Line Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -190,11 +195,11 @@ function LineName() {
                           value={data.lineNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Line Name in Kannada"
+                          placeholder={t("Enter Line Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Line Name in Kannada is required.
+                          {t("Line Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -203,7 +208,7 @@ function LineName() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Line Name Representation
+                        {t("Line Name Representation")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -213,11 +218,11 @@ function LineName() {
                           value={data.lineNameRepresentation}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Line Name Representation"
+                          placeholder={t("Enter Line Name Representation")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Line Name Representation is required.
+                        {t("Line Name Representation is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -233,12 +238,12 @@ function LineName() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </li>
               </ul>

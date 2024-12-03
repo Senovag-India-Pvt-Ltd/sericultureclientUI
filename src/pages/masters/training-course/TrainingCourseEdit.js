@@ -8,10 +8,15 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingCourseEdit() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,7 +128,7 @@ function TrainingCourseEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Training Course</Block.Title>
+            <Block.Title tag="h2">{t("Edit Training Course")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -133,7 +138,7 @@ function TrainingCourseEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -142,7 +147,7 @@ function TrainingCourseEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -165,7 +170,7 @@ function TrainingCourseEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trainingCourse">
-                          Training Course Name
+                        {t("Training Course Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -175,11 +180,11 @@ function TrainingCourseEdit() {
                             value={data.trCourseMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Course Name"
+                            placeholder={t("Enter Training Course Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Course Name is required
+                          {t("Training Course Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -188,7 +193,7 @@ function TrainingCourseEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Training Course Name in Kannada
+                        {t("Training Course Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -198,11 +203,11 @@ function TrainingCourseEdit() {
                             value={data.trCourseNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Training Course Name in Kannada"
+                            placeholder={t("Enter Training Course Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Training Course Name in Kannada is required.
+                          {t("Training Course Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -217,12 +222,12 @@ function TrainingCourseEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

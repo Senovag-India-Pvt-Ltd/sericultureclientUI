@@ -6,10 +6,15 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingGroupView() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,7 +56,7 @@ function TrainingGroupView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Group View</Block.Title>
+            <Block.Title tag="h2">{t("Training Group View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -61,7 +66,7 @@ function TrainingGroupView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +75,7 @@ function TrainingGroupView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -80,7 +85,7 @@ function TrainingGroupView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Group Details</Card.Header>
+          <Card.Header>{t("Training Group Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -92,17 +97,17 @@ function TrainingGroupView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{trGroup.trGroupMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Group Name:</td>
+                        <td style={styles.ctstyle}>  {t("Training Group")}</td>
                         <td>{trGroup.trGroupMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Training Group Name In Kannada:
+                          {t("Training Group Name in Kannada")}
                         </td>
                         <td>{trGroup.trGroupNameInKannada}</td>
                       </tr>

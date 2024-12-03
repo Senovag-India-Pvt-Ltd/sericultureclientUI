@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingGroupList() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +148,7 @@ function TrainingGroupList() {
 
   const TrGroupMasterDataColumns = [
     {
-      name: "Action",
+      name:t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +158,7 @@ function TrainingGroupList() {
             size="sm"
             onClick={() => handleView(row.trGroupMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function TrainingGroupList() {
             className="ms-2"
             onClick={() => handleEdit(row.trGroupMasterId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function TrainingGroupList() {
             onClick={() => deleteConfirm(row.trGroupMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +182,14 @@ function TrainingGroupList() {
       hide: "md",
     },
     {
-      name: "Training Group",
+      name: t("Training Group"),
       selector: (row) => row.trGroupMasterName,
       cell: (row) => <span>{row.trGroupMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Group Name in Kannada",
+      name: t("Training Group Name in Kannada"),
       selector: (row) => row.trGroupNameInKannada,
       cell: (row) => <span>{row.trGroupNameInKannada}</span>,
       sortable: true,
@@ -197,7 +202,7 @@ function TrainingGroupList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Group List</Block.Title>
+            <Block.Title tag="h2">{t("Training Group List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +212,7 @@ function TrainingGroupList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +221,7 @@ function TrainingGroupList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("create")}</span>
                 </Link>
               </li>
             </ul>

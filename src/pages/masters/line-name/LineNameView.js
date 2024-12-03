@@ -6,9 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function LineNameView() {
+
+    // Translation
+    const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -52,7 +57,7 @@ function LineNameView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Line Name</Block.Title>
+            <Block.Title tag="h2">{t("View Line Name")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +67,7 @@ function LineNameView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +76,7 @@ function LineNameView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,7 +86,7 @@ function LineNameView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Line Name Details</Card.Header>
+          <Card.Header>{t("Line Name Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -93,26 +98,26 @@ function LineNameView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{LineName.lineNameId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Line Name:</td>
+                        <td style={styles.ctstyle}> {t("Line Name")}</td>
                         <td>{LineName.lineName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Line Code:</td>
+                        <td style={styles.ctstyle}> {t("Line Code")}</td>
                         <td>{LineName.lineCode}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Line Name In Kannada:
+                        {t("Line Name in Kannada")}
                         </td>
                         <td>{LineName.lineNameInKannada}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Line Name Representation:
+                        {t("Line Name Representation")}
                         </td>
                         <td>{LineName.lineNameRepresentation}</td>
                       </tr>

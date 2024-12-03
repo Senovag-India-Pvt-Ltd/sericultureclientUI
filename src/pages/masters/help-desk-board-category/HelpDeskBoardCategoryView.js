@@ -6,10 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskBoardCategoryView() {
+   // Translation
+   const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,7 +55,7 @@ function HelpDeskBoardCategoryView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Broad Category View</Block.Title>
+            <Block.Title tag="h2">{t("Broad Category View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -61,7 +65,7 @@ function HelpDeskBoardCategoryView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +74,7 @@ function HelpDeskBoardCategoryView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -80,7 +84,7 @@ function HelpDeskBoardCategoryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Broad Category Details</Card.Header>
+          <Card.Header>{t("Broad Category Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -92,11 +96,11 @@ function HelpDeskBoardCategoryView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>Broad Category ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{HdBoardCategory.hdBoardCategoryId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Broad Category:</td>
+                        <td style={styles.ctstyle}> {t("Broad Category")}</td>
                         <td>{HdBoardCategory.hdBoardCategoryName}</td>
                       </tr>
                     </tbody>
