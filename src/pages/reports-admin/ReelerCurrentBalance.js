@@ -226,7 +226,7 @@ function ReelerCurrentBalance() {
         };
       } else if (select === "reelingLicenseNumber") {
         sendData = {
-          reelingLicenseNumber: text,
+          reelerLicenceNumber: text,
           marketId: localStorage.getItem("marketId"),
         };
       } else {
