@@ -954,14 +954,14 @@ const handleShowModalAssesment = () => {
                                 >
                                   Generate
                                 </Button>
-                                <Button
+                                {/* <Button
                                   type="button"
                                   variant="primary"
                                   onClick={onSubmitting}
                                   className="ms-1"
                                 >
                                   Submit
-                                </Button>
+                                </Button> */}
                                 <Button 
                                   variant="primary" 
                                   // style={{ backgroundColor: 'white', color: 'red', fontWeight: 'bold', borderColor: 'red' }} 

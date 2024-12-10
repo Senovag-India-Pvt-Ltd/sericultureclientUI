@@ -3804,6 +3804,22 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Current Balance Report"
+                              to="/seriui/reeler-current-balance"
+                            />
+                          </MenuItem>
+                        ) : null}
+                         {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Credit Report"
+                              to="/seriui/reeler-credit-transaction"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Report_Commercial_Market_Unit ? (
                           <MenuItem>
                             <MenuItemLink
