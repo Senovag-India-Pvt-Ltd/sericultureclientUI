@@ -76,17 +76,17 @@ function PreparationofeggsDFLs() {
       }
 
    // Calculate Egg Recovery %
-   let eggRecoveryPercentage = prevData.eggRecoveryPercentage;
-   const pairNoSelectedCocoonsNo = name === "pairNoSelectedCocoonsNo" ? parseInt(value) : parseInt(prevData.pairNoSelectedCocoonsNo);
-   if (pairNoSelectedCocoonsNo && dflsObtained) {
-     eggRecoveryPercentage = (dflsObtained / pairNoSelectedCocoonsNo) * 100;
-   }
+  //  let eggRecoveryPercentage = prevData.eggRecoveryPercentage;
+  //  const pairNoSelectedCocoonsNo = name === "pairNoSelectedCocoonsNo" ? parseInt(value) : parseInt(prevData.pairNoSelectedCocoonsNo);
+  //  if (pairNoSelectedCocoonsNo && dflsObtained) {
+  //    eggRecoveryPercentage = (dflsObtained / pairNoSelectedCocoonsNo) * 100;
+  //  }
 
    return {
      ...prevData,
      [name]: value,
      dflsObtained,
-     eggRecoveryPercentage,
+    //  eggRecoveryPercentage,
    };
  });
   };
