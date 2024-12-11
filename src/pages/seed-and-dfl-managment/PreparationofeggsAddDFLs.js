@@ -761,7 +761,7 @@ useEffect(() => {
                                   name="eggSheetSerialNumber"
                                   value={data.eggSheetSerialNumber}
                                   onChange={handleInputs}
-                                  type="number"
+                                  type="text"
                                   placeholder="Egg sheet serial number"
                                 />
                               
