@@ -23,6 +23,7 @@ import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
 
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 // import {
@@ -65,6 +66,33 @@ const { t } = useTranslation();
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+
+  // const handleSearchInputs = (e) => {
+  //   // debugger;
+  //   let { name, value } = e.target;
+  //   setSchemeId({ ...schemeId, [name]: value });
+  // };
+  const handleSearchInputs = (e) => {
+    const { value } = e.target; // Destructure the selected value
+    setSchemeId(value); // Update schemeId with the selected value
+  };
+
+  // to get sc-scheme-details
+  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+  const getList = () => {
+    api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
+        setScSchemeDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const [hdUserData, setHdUserData] = useState({
     userMasterId: localStorage.getItem("userMasterId"),
@@ -112,6 +140,28 @@ const { t } = useTranslation();
   useEffect(() => {
     getDashboard();
   }, []);
+
+  const [schemeId, setSchemeId] = useState("");
+
+  const getUserDashboardCountBySchemeId = () => {
+    api
+      .post(
+        `${baseURLDBT}service/getUserDashboardCountBySchemeId`,
+        {},
+        { params: { schemeId } } // Pass schemeId as a query parameter
+      )
+      .then((response) => {
+        setDashboardList(response.data.content);
+      })
+      .catch((err) => {
+        console.error("Error fetching dashboard by schemeId", err);
+      });
+  };
+
+  // useEffect(() => {
+  //   getDashboard();
+  // }, []);
+
 
   const customStyles = {
     rows: {
@@ -260,39 +310,63 @@ const { t } = useTranslation();
           <Block.HeadContent>
             <Block.Title tag="h2">{t("User Dashboard")}</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/help-desk"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create New Ticket</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/help-desk"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create New Ticket</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
+          
         </Block.HeadBetween>
       </Block.Head>
+
+      <Block className="mt-n4">
+      
+  <Card className="shadow-sm" style={{ maxWidth: "800px", margin: "auto" }}>
+  <Card.Body className="p-3">
+    <div className="mx-auto" style={{ maxWidth: "700px" }}>
+      <Row className="g-3 align-items-end">
+        {/* Scheme Selection */}
+        <Col lg="8" md="7" sm="12">
+          <Form.Group className="form-group">
+            <Form.Label htmlFor="scheme" className="fw-bold">
+              {t("Scheme")}
+            </Form.Label>
+            <div className="form-control-wrap">
+              <Form.Select
+                name="schemeId"
+                value={schemeId}
+                onChange={(e) => setSchemeId(e.target.value)}
+                className="form-control shadow-sm"
+              >
+                <option value="">{t("Select Scheme Names")}</option>
+                {scSchemeDetailsListData &&
+                  scSchemeDetailsListData.map((list) => (
+                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                      {list.schemeName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </div>
+          </Form.Group>
+        </Col>
+
+        {/* Search Button */}
+        <Col lg="4" md="5" sm="12">
+          <Button
+            type="button"
+            variant="primary"
+            onClick={getUserDashboardCountBySchemeId}
+            className="w-100 shadow-sm"
+          >
+            {t("Search")}
+          </Button>
+        </Col>
+      </Row>
+    </div>
+  </Card.Body>
+</Card>
+
+
 
       <Row className="g-gs d-flex justify-content-center">
         {dashboardList.map((dashboard, i) => (
           <Col xxl="3" key={i}>
-            {/* <Card
-              className="h-100"
-              style={{ ...styles, backgroundColor: rainbowColors[i] }}
-              onClick={() => goto(dashboard.stepName)}
-            > */}
+           
             <Card
               className="h-100"
               style={{
@@ -330,125 +404,8 @@ const { t } = useTranslation();
             </Card>
           </Col>
         ))}
-
-        {/* {dashboardList.map((dashboard, index) => (
-          <Col key={index} xxl="3">
-            <Card className="h-100 dashboard-card">
-              <Card.Body>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <div className="card-title">
-                      <h4 className="title mb-1">{dashboard.stepName}</h4>
-                    </div>
-                    <div className="my-3">
-                      <div className="amount h2 fw-bold text-primary">
-                        {dashboard.count}
-                      </div>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="primary"
-                      onClick={() => goto(dashboard.stepName)}
-                    >
-                      View
-                    </Button>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))} */}
-
-        {/* <Col xxl="3">
-            <Card className="h-100">
-              <Card.Body>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <div className="card-title">
-                      <h4 className="title mb-1">Unsigned Tickets</h4>
-                    </div>
-                    <div className="my-3">
-                      <div className="amount h2 fw-bold text-primary ">111</div>
-                    </div>
-                    <Button href="#" size="sm" variant="primary">
-                      View
-                    </Button>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col> */}
       </Row>
-      {/* <Row className="g-gs mt-2">
-        <Col xxl="12">
-          <Block className="mt-n3">
-            <Card>
-              <Row className="m-2">
-                <Col>
-                  <Form.Group as={Row} className="form-group" id="hdTicketId">
-                    <Form.Label column sm={1}>
-                      Search By
-                    </Form.Label>
-                    <Col sm={3}>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="searchBy"
-                          value={data.searchBy}
-                          onChange={handleInputs}
-                        >
-                          <option value="ticketArn">Ticket Number</option>
-                        </Form.Select>
-                      </div>
-                    </Col>
-
-                    <Col sm={3}>
-                      <Form.Control
-                        id="hdTicketId"
-                        name="text"
-                        value={data.text}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Search"
-                      />
-                    </Col>
-                    <Col sm={3}>
-                      <Button type="button" variant="primary" onClick={search}>
-                        Search
-                      </Button>
-                    </Col>
-                    <Col sm={2}>
-                      <Button
-                        type="button"
-                        variant="primary"
-                        onClick={getTicketDataList}
-                      >
-                        <Icon name="reload-alt"></Icon>
-                      </Button>
-                    </Col>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <DataTable
-                tableClassName="data-table-head-light table-responsive"
-                columns={HelpdeskDataColumns}
-                data={hdTicketDataList}
-                highlightOnHover
-                pagination
-                paginationServer
-                paginationTotalRows={totalRows}
-                paginationPerPage={countPerPage}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                onChangePage={(page) => setPage(page - 1)}
-                progressPending={loading}
-                theme="solarized"
-                customStyles={customStyles}
-              />
-            </Card>
-          </Block>
-        </Col>
-      </Row> */}
+      </Block>
     </Layout>
   );
 }

@@ -1926,7 +1926,7 @@ const handleActionInputs = (e) => {
                                   }}
                                 >
                                   {(actionFarmerData.length > 0 &&
-                                    actionFarmerData[0].action) ||
+                                    actionFarmerData[0].schemeWiseAction) ||
                                     "N/A"}
                                 </td>
                               </tr>
