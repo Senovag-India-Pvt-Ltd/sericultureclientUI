@@ -870,6 +870,42 @@ function DashboardReportList() {
     }
   };
 
+  const handleGenerateSanctionOrder = (applicationFormId) => {
+    Swal.fire({
+      title: "Generate Sanction Order",
+      text: "Select the recipient:",
+      showCancelButton: true,
+      confirmButtonText: "Farmer",
+      cancelButtonText: "Company",
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
+        generateSanctionOrderAcknowledgment(applicationFormId);
+      }
+    });
+  };
+  
+
+  const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        {
+          applicationFormId: applicationFormId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
 
@@ -2551,16 +2587,14 @@ const handleActionInputs = (e) => {
                             )}
                           </Block>
 
-                          {/* <Col lg="12"> */}
+
                           <div className="gap-col mt-1">
                             <ul className="d-flex align-items-center justify-content-center gap g-3">
                               <li>
-                                {/* <Button type="submit" variant="success">
-                  Upload Documents
-                </Button> */}
                                 <Button
                                   type="button"
                                   variant="primary"
+                                  className="me-2" 
                                   onClick={() =>
                                     handleSanctionOrderUpload(
                                       sanctionOrderData.documentTypeId
@@ -2578,10 +2612,30 @@ const handleActionInputs = (e) => {
                                     ? "Uploaded"
                                     : "Upload"}
                                 </Button>
+                                <Button
+                                type="button"
+                                  variant="primary"
+                                  onClick={() => handleGenerateSanctionOrder(applicationFormId)}
+                                >
+                                  Generate Sanction Order
+                                </Button>
                               </li>
                             </ul>
                           </div>
-                          {/* </Col> */}
+
+                           {/* Generate Sanction Order Button */}
+                        {/* <div className="d-flex justify-content-center mt-3">
+                          <Button variant="primary" onClick={handleGenerateSanctionOrder}>
+                            Generate Sanction Order
+                          </Button>
+                        </div>
+                        <Button
+                        variant="success"
+                        onClick={() => handleGenerateSanctionOrder(applicationFormId)}
+                      >
+                        Generate Sanction Order
+                      </Button> */}
+
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -2701,144 +2755,7 @@ const handleActionInputs = (e) => {
                                 </Row>
                               </Card.Body>
                             </Card>
-                            {/* <Row>
-                      <Col lg="6">
-                            <Form.Group className="form-group mt-4">
-                              <Form.Label>
-                              Payment To
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="paymentTo"
-                                  value={pushToDBTData.paymentTo}
-                                  onChange={handlePushToDBTInputs}
-                                  // required
-                                  // isInvalid={
-                                  //   data.testResults === undefined ||
-                                  //   data.testResults === "0"
-                                  // }
-                                >
-                                  <option value="">
-                                    Select Payment To
-                                  </option>
-                                  <option value="Farmer">Farmer</option>
-                                  <option value="Vendor">Vendor</option>
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                Test Results is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-4">
-                              <Form.Label>
-                              Payment Method
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="paymentMethod"
-                                  value={pushToDBTData.paymentMethod}
-                                  onChange={handlePushToDBTInputs}
-                                  // required
-                                  // isInvalid={
-                                  //   data.testResults === undefined ||
-                                  //   data.testResults === "0"
-                                  // }
-                                >
-                                  <option value="">
-                                    Select Payment Method
-                                  </option>
-                                  <option value="CASH">CASH</option>
-                                  <option value="DBT">DBT</option>
-                                  <option value="CASH">CASH</option>
-                                  <option value="CHEQUE">CHEQUE</option>
-                                  <option value="ONLINE">ONLINE</option>
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                Test Results is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                         
-
-                          {["CASH", "CHEQUE", "ONLINE"].includes(pushToDBTData.paymentMethod) && (
-                            <>
-                          <Col lg="6">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="numberOfCocoonsCB">
-                              Reference No
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="referenceNo"
-                                  name="referenceNo"
-                                  value={pushToDBTData.referenceNo}
-                                  onChange={handlePushToDBTInputs}
-                                  type="text"
-                                  placeholder="Enter Reference No "
-                                  // required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                Cocoon's Purchased (in Kg's / Nos) is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="6">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="dateOfMothEmergence">
-                                Date Of Payment
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={pushToDBTData.dateOfPayment}
-                                  onChange={(date) =>
-                                    handleDateChange(
-                                      date,
-                                      "dateOfMothEmergence"
-                                    )
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  // minDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  // required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Date of moth emergence is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          </>
-                          )}
-                      </Row> */}
                           </Block>
-
-                          {/* <Col lg="12"> */}
-                          {/* <div className="gap-col mt-1">
-                      <ul className="d-flex align-items-center justify-content-center gap g-3">
-                        <li>
-                        <div className="d-flex justify-content-center gap-2">
-                          <Button type="submit" variant="success">
-                            Submit
-                          </Button>
-                        </div>
-                        </li>
-                      </ul>
-                    </div> */}
-                          {/* </Col> */}
                         </Accordion.Body>
                       </Accordion.Item>
                     )}

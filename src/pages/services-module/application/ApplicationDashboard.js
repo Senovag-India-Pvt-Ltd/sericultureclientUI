@@ -316,9 +316,9 @@ const { t } = useTranslation();
 
       <Block className="mt-n4">
       
-  <Card className="shadow-sm" style={{ maxWidth: "800px", margin: "auto" }}>
+  <Card className="shadow-sm" style={{ maxWidth: "1800px", margin: "auto" }}>
   <Card.Body className="p-3">
-    <div className="mx-auto" style={{ maxWidth: "700px" }}>
+    <div className="mx-auto" style={{ maxWidth: "1500px" }}>
       <Row className="g-3 align-items-end">
         {/* Scheme Selection */}
         <Col lg="8" md="7" sm="12">
