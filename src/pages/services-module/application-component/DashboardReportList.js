@@ -2612,13 +2612,7 @@ const handleActionInputs = (e) => {
                                     ? "Uploaded"
                                     : "Upload"}
                                 </Button>
-                                <Button
-                                type="button"
-                                  variant="primary"
-                                  onClick={() => handleGenerateSanctionOrder(applicationFormId)}
-                                >
-                                  Generate Sanction Order
-                                </Button>
+                                
                               </li>
                             </ul>
                           </div>
@@ -2766,6 +2760,22 @@ const handleActionInputs = (e) => {
                     <Button type="submit" variant="success">
                       Submit
                     </Button>
+                    {/* <Button
+                      type="button"
+                        variant="primary"
+                        onClick={() => handleGenerateSanctionOrder(applicationFormId)}
+                      >
+                        Generate Sanction Order
+                      </Button> */}
+                      {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
+                        <Button
+                          type="button"
+                          variant="primary"
+                          onClick={() => handleGenerateSanctionOrder(applicationFormId)}
+                        >
+                          Generate Sanction Order
+                        </Button>
+                      )}
                   </div>
                 </Col>
               </Form>
