@@ -27,7 +27,7 @@ function ServiceApplication() {
   const [data, setData] = useState({
     with: "withLand",
     subinc: "subsidy",
-    equordev: ["land"],
+    equordev: ["land","equipment"],
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
@@ -1101,7 +1101,7 @@ function ServiceApplication() {
     setData({
       with: "withLand",
       subinc: "subsidy",
-      equordev: "land",
+      equordev: "land,equipment",
       scSchemeDetailsId: "",
       fruitsId: "",
       scSubSchemeDetailsId: "",
@@ -2550,7 +2550,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Approval Stage")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                               <div className="form-control-wrap">
@@ -2559,7 +2559,7 @@ function ServiceApplication() {
                                   value={data.approvalStageId}
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs}
-                                  // required
+                                  required  
                                   isInvalid={
                                     data.approvalStageId === undefined ||
                                     data.approvalStageId === "0"
@@ -2591,7 +2591,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("User Master")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                               <div className="form-control-wrap">
@@ -2600,7 +2600,7 @@ function ServiceApplication() {
                                   value={data.userId}
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs}
-                                  // required
+                                  required
                                   isInvalid={
                                     data.userId === undefined ||
                                     data.userId === "0"
@@ -2616,9 +2616,9 @@ function ServiceApplication() {
                                     </option>
                                   ))}
                                 </Form.Select>
-                                {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
                               </div>
                             </Col>
                           </Form.Group>
@@ -3223,7 +3223,7 @@ function ServiceApplication() {
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="expectedAmount">
                             {t("Subsidy Amount")}
-                            <span className="text-danger">*</span>
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -3233,11 +3233,11 @@ function ServiceApplication() {
                               value={data.expectedAmount}
                               onChange={handleInputs}
                               placeholder={t("Enter Expected Amount")}
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               {t("Subsidy Amount is required")}
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
