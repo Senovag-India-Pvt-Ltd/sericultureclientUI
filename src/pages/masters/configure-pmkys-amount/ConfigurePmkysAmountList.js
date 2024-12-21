@@ -1,40 +1,33 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import StateDatas from "../../../store/masters/state/StateData";
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function SpacingList() {
-  // Translation
-  const { t } = useTranslation();
-
+function ConfigurePmkysAmountList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, pageSize: countPerPage } };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `spacingMaster/list`, _params)
+      .get(baseURL + `configurePmkysAmount/getListOfConfigurePmkysAmountDetails`, _params)
       .then((response) => {
-        setListData(response.data.content.spacingMaster);
-        setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content);
+        setTotalRows(response.data.content.totalRecords);
         setLoading(false);
       })
       .catch((err) => {
@@ -48,13 +41,13 @@ function SpacingList() {
   }, [page]);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/spacing-view/${_id}`);
-  };
+//   const handleView = (_id) => {
+//     navigate(`/seriui/race-mapping-view/${_id}`);
+//   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/spacing-edit/${_id}`);
-    // navigate("/seriui/trModeMaster");
+    navigate(`/seriui/configure-pmkys-amount-edit/${_id}`);
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -75,7 +68,7 @@ function SpacingList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `spacingMaster/delete/${_id}`)
+          .delete(baseURL + `configurePmkysAmount/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -145,9 +138,9 @@ function SpacingList() {
     },
   };
 
-  const SpacingDataColumns = [
+  const RaceMappingDataColumns = [
     {
-      name: t("Action"),
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -155,7 +148,7 @@ function SpacingList() {
           {/* <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.spacingId)}
+            onClick={() => handleView(row.raceMarketMasterId)}
           >
             View
           </Button> */}
@@ -163,80 +156,72 @@ function SpacingList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.spacingId)}
+            onClick={() => handleEdit(row.configurePmkysAmountId)}
           >
-             {t("Edit")}
+            Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.spacingId)}
+            onClick={() => deleteConfirm(row.configurePmkysAmountId)}
             className="ms-2"
           >
-            {t("delete")}
+            Delete
           </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
     },
+
     {
-      name: t("spacing"),
+      name: "Spacing",
       selector: (row) => row.spacingName,
       cell: (row) => <span>{row.spacingName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Metre",
-      selector: (row) => row.metre,
-      cell: (row) => <span>{row.metre}</span>,
+      name: "Hectare",
+      selector: (row) => row.hectareName,
+      cell: (row) => <span>{row.hectareName}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Length",
-      selector: (row) => row.length,
-      cell: (row) => <span>{row.length}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Breadth",
-      selector: (row) => row.breadth,
-      cell: (row) => <span>{row.breadth}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Amount",
+        selector: (row) => row.amount,
+        cell: (row) => <span>{row.amount}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
-    <Layout title="List Of Spacing">
+    <Layout title="List of Configure Pmkys Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("List Of Spacing")}</Block.Title>
+            <Block.Title tag="h2">List of Configure Pmkys Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/spacing"
+                  to="/seriui/configure-pmkys-amountt"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/spacing"
+                  to="/seriui/configure-pmkys-amount"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
             </ul>
@@ -247,8 +232,9 @@ function SpacingList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
+            // title="Crate List"
             tableClassName="data-table-head-light table-responsive"
-            columns={SpacingDataColumns}
+            columns={RaceMappingDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -269,4 +255,4 @@ function SpacingList() {
   );
 }
 
-export default SpacingList;
+export default ConfigurePmkysAmountList;

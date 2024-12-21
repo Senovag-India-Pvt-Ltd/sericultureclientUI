@@ -938,6 +938,9 @@ import SiSdWiseSchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-
 import SiSdWiseDaySchemeTargetSetting from "../pages/new-target-setting/si-sd-wise-scheme-target-setting/SiSdWiseDaySchemeTargetSetting";
 import ReelerCurrentBalance from "../pages/reports-admin/ReelerCurrentBalance";
 import ReelerDailyTransaction from "../pages/reports-admin/ReelerDailyTransaction";
+import ConfigurePmkysAmount from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmount";
+import ConfigurePmkysAmountEdit from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmountEdit";
+import ConfigurePmkysAmountList from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmountList";
 
 // Admin and Reports
 
@@ -2017,6 +2020,12 @@ function Router() {
 
             {/* Master */}
             <Route path="financial-year" element={<FinancialYear />} />
+            <Route path="configure-pmkys-amount" element={<ConfigurePmkysAmount />} />
+            <Route
+              path="configure-pmkys-amount-edit/:id"
+              element={<ConfigurePmkysAmountEdit />}
+            />
+            <Route path="configure-pmkys-list" element={<ConfigurePmkysAmountList />} />
             <Route
               path="financial-year-edit/:id"
               element={<FinancialYearEdit />}

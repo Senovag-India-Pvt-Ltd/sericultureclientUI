@@ -276,6 +276,13 @@ function ScProgramApprovalMappingList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Action"),
+      selector: (row) => row.action,
+      cell: (row) => <span>{row.action}</span>,
+      sortable: true,
+      hide: "md",
+    },
    
   ];
 
