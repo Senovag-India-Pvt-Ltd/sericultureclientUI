@@ -821,7 +821,7 @@ function TrainingTarget() {
       hide: "md",
     },
     {
-      name: "Farn",
+      name: "Farm",
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
@@ -908,12 +908,12 @@ function TrainingTarget() {
     });
   };
   return (
-    <Layout title="Training Wise Target Setting Page">
+    <Layout title="Training Wise Target Setting">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Training Wise Target Setting Page
+              Training Wise Target Setting
             </Block.Title>
           </Block.HeadContent>
           <ul className="d-flex">
@@ -940,7 +940,7 @@ function TrainingTarget() {
                 <Block>
                   <Card>
                     <Card.Header>
-                    Training Wise Target Setting Page{" "}
+                    Training Wise Target Setting{" "}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}

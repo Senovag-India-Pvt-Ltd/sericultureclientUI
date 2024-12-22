@@ -417,7 +417,7 @@ function Header({ show, ...props }) {
           </div>
         </div>
         <div
-          className="d-flex"
+          className="d-flex justify-content-between"
           style={{
             backgroundColor: "#0f6cbe",
             color: "#fff",
@@ -444,6 +444,7 @@ function Header({ show, ...props }) {
             <TimeTicker />
             {/* <p className="clock">{date.getDate()}</p> */}
           </div>
+          <div className="bold">Welcome : <span style={{color:"#00ffff"}}>{localStorage.getItem("username")}</span></div>
 
           {/* <div style={{ marginLeft: auto }}>
             Helpdesk<em className="icon ni ni-caret-right-fill"></em>{" "}
