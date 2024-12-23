@@ -27,7 +27,7 @@ function ServiceApplication() {
   const [data, setData] = useState({
     with: "withLand",
     subinc: "subsidy",
-    equordev: ["land"],
+    equordev: ["land","equipment"],
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
@@ -821,6 +821,66 @@ function ServiceApplication() {
     setDevelopedLand({ ...developedLand, [name]: value });
   };
 
+  const [listData, setListData] = useState({});
+
+  // const getAmountList = () => {
+  //   setLoading(true);
+  //   const { spacingId, hectareId } = data;
+
+  //   // Make API call with spacingId and hectareId as parameters
+  //   api
+  //     .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
+  //     .then((response) => {
+  //       // Update UI with the fetched unit price
+  //       const amountDetails = response.data[0]; // Assuming first object contains the amount data
+  //       setData({
+  //         ...data,
+  //         unitPrice: amountDetails.amount,
+  //         expectedAmount: amountDetails.amount, // Subsidy amount can be set similarly
+  //       });
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching amount data:", err);
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getAmountList = () => {
+    setLoading(true);
+    const spacingId = data.spacingId;
+    const hectareId = data.hectareId;
+    
+    const response = api
+      .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
+      .then((response) => {
+        const result = response.data[0]; // Assuming the first element contains the relevant data
+        setAmountValue({
+          ...amountValue,
+          unitPrice: result.amount, // Set the Unit Price
+        });
+        setData({
+          ...data,
+          expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setAmountValue({
+          ...amountValue,
+          unitPrice: "", // Clear Unit Price if API call fails
+        });
+        setData({
+          ...data,
+          expectedAmount: "", // Clear expectedAmount if API call fails
+        });
+        setLoading(false);
+      });
+  };
+  
+
+
+
   const handleEquipmentInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -1101,7 +1161,7 @@ function ServiceApplication() {
     setData({
       with: "withLand",
       subinc: "subsidy",
-      equordev: "land",
+      equordev: "land,equipment",
       scSchemeDetailsId: "",
       fruitsId: "",
       scSubSchemeDetailsId: "",
@@ -2550,7 +2610,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Approval Stage")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                               <div className="form-control-wrap">
@@ -2559,7 +2619,7 @@ function ServiceApplication() {
                                   value={data.approvalStageId}
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs}
-                                  // required
+                                  required  
                                   isInvalid={
                                     data.approvalStageId === undefined ||
                                     data.approvalStageId === "0"
@@ -2591,7 +2651,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("User Master")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                               <div className="form-control-wrap">
@@ -2600,7 +2660,7 @@ function ServiceApplication() {
                                   value={data.userId}
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs}
-                                  // required
+                                  required
                                   isInvalid={
                                     data.userId === undefined ||
                                     data.userId === "0"
@@ -2616,9 +2676,9 @@ function ServiceApplication() {
                                     </option>
                                   ))}
                                 </Form.Select>
-                                {/* <Form.Control.Feedback type="invalid">
-                            Approval Stage Name is required
-                          </Form.Control.Feedback> */}
+                                <Form.Control.Feedback type="invalid">
+                                User is required
+                              </Form.Control.Feedback>
                               </div>
                             </Col>
                           </Form.Group>
@@ -3197,6 +3257,16 @@ function ServiceApplication() {
                   </Card.Header>
                   <Card.Body>
                     <Row className="g-gs">
+                    <div className="gap-col">
+                      <ul className="d-flex align-items-left justify-content-left gap g-3">
+                      
+                        <li>
+                          <Button type="button" variant="secondary" onClick={getAmountList}>
+                            Calculate Unit Price
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
                       <Col lg="4">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="landDeveloped">
@@ -3223,7 +3293,7 @@ function ServiceApplication() {
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="expectedAmount">
                             {t("Subsidy Amount")}
-                            <span className="text-danger">*</span>
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -3233,11 +3303,11 @@ function ServiceApplication() {
                               value={data.expectedAmount}
                               onChange={handleInputs}
                               placeholder={t("Enter Expected Amount")}
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               {t("Subsidy Amount is required")}
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>

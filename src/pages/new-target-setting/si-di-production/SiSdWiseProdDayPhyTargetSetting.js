@@ -1469,7 +1469,8 @@ function SiSdWiseProdDayPhyTargetSetting() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              // readOnly
+                              required
                             />
                           </Form.Group>
                         </Col>

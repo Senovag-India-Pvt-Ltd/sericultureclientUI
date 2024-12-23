@@ -1250,14 +1250,14 @@ function WeighmentForSilkMarket() {
                                 >
                                   Generate
                                 </Button>
-                                <Button
+                                {/* <Button
                                   type="button"
                                   variant="primary"
                                   onClick={onSubmitting}
                                   className="ms-1"
                                 >
                                   Submit
-                                </Button>
+                                </Button> */}
                               </td>
                             </tr>
                             <tr>

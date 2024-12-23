@@ -2053,7 +2053,7 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
-                {showMenu.SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp ? (
+                  {showMenu.SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Preservation Of Seed Cocoon For RSP/NSSO"
@@ -2071,7 +2071,6 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  
                   {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2332,7 +2331,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+            {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Budget to HOA"
@@ -2340,7 +2339,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
+            {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Budget to District"
@@ -2348,7 +2347,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {/* {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+            {/* {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Physical Target Setting Taluk"
@@ -2404,7 +2403,7 @@ function Menu() {
               </MenuItem>
             ) : null} */}
 
-      {showMenu.TargetSetting_Allocate ? (
+            {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
                   text="New Target Setting"
@@ -2416,7 +2415,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="District Montly Mulberry Target"
+                        text="District Monthly Mulberry Target"
                         to="/seriui/districtwise-montly-mulberry-new"
                       />
                     </MenuItem>
@@ -2440,7 +2439,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="TSC Montly Mulberry Target"
+                        text="TSC Monthly Mulberry Target"
                         to="/seriui/tsc-mulberry-targets-new"
                       />
                     </MenuItem>
@@ -2448,7 +2447,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="SI SD Montly Mulberry Target"
+                        text="SI SD Monthly Mulberry Target"
                         to="/seriui/si-sd-mulberry-target-new"
                       />
                     </MenuItem>
@@ -2533,7 +2532,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
                         text="SI SD Wise Daily Scheme Target Setting"
@@ -3126,6 +3125,14 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
                             <MenuItemLink text="Spacing" to="/seriui/spacing" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Spacing ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Target"
+                              to="/seriui/mulberry-target-type"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Hectare ? (
@@ -3804,6 +3811,22 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Current Balance Report"
+                              to="/seriui/reeler-current-balance"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Credit Report"
+                              to="/seriui/reeler-credit-transaction"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Report_Commercial_Market_Unit ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3820,7 +3843,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink

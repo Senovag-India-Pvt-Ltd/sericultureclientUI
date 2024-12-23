@@ -48,6 +48,9 @@ function SpacingEdit() {
             updateSuccess();
             setData({
               spacingName: "",
+              metre: "",
+              length: "",
+              breadth: "",
             });
             setValidated(false);
           }
@@ -64,6 +67,9 @@ function SpacingEdit() {
   const clear = () => {
     setData({
       spacingName: "",
+      metre: "",
+      length: "",
+      breadth: "",
     });
   };
 
@@ -183,6 +189,75 @@ function SpacingEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Metre
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="metre"
+                          name="metre"
+                          type="text"
+                          value={data.metre}
+                          onChange={handleInputs}
+                          placeholder="Enter Metre"
+                          // required
+                        />
+                        {/* <Form.Control.Feedback type="invalid">
+                        Metre is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Length
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="length"
+                          name="length"
+                          type="text"
+                          value={data.length}
+                          onChange={handleInputs}
+                          placeholder="Enter Length"
+                          // required
+                        />
+                        {/* <Form.Control.Feedback type="invalid">
+                        Length is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Breadth
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="breadth"
+                          name="breadth"
+                          type="text"
+                          value={data.breadth}
+                          onChange={handleInputs}
+                          placeholder="Enter Breadth"
+                          // required
+                        />
+                        {/* <Form.Control.Feedback type="invalid">
+                        Breadth is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

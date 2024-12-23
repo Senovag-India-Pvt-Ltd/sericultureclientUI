@@ -1764,7 +1764,7 @@ function DistrictwiseSchemeTargetSetting() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              required
                             />
                           </Form.Group>
                         </Col>
