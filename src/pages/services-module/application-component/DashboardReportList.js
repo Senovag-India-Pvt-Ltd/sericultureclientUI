@@ -356,6 +356,8 @@ function DashboardReportList() {
 
   const [applicationFormId, setApplicationFormId] = useState(null);
 
+  const [schemeId, setSchemeId] = useState(null);
+
   const [actionFarmerData, setActionFarmerData] = useState({});
 
   console.log("actionFarmerData", actionFarmerData);
@@ -540,9 +542,13 @@ function DashboardReportList() {
         const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
         setApplicationFormId(applicationDocumentId);
 
+        const schemeId = data[0]?.schemeId; // Use data variable here
+        setSchemeId(schemeId);
+
         // Extract subSchemeId and approvalStageId
         const subSchemeId = data[0]?.subSchemeId;
         const approvalStageId = data[0]?.approvalStageId;
+        // const schemeId = data[0]?.schemeId;
 
         if (subSchemeId && approvalStageId && district && taluk) {
             await getUserFromDistrictList(
@@ -870,7 +876,21 @@ function DashboardReportList() {
     }
   };
 
-  const handleGenerateSanctionOrder = (applicationFormId) => {
+  // const handleGenerateSanctionOrder = (applicationFormId) => {
+  //   Swal.fire({
+  //     title: "Generate Sanction Order",
+  //     text: "Select the recipient:",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Farmer",
+  //     cancelButtonText: "Company",
+  //     showCloseButton: true,
+  //   }).then((result) => {
+  //     if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
+  //       generateSanctionOrderAcknowledgment(applicationFormId);
+  //     }
+  //   });
+  // };
+  const handleGenerateSanctionOrder = (applicationFormId,schemeId) => {
     Swal.fire({
       title: "Generate Sanction Order",
       text: "Select the recipient:",
@@ -879,32 +899,63 @@ function DashboardReportList() {
       cancelButtonText: "Company",
       showCloseButton: true,
     }).then((result) => {
-      if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
-        generateSanctionOrderAcknowledgment(applicationFormId);
+      if (result.isConfirmed) {
+        // Call the Farmer endpoint
+        generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer");
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Call the Company endpoint
+        generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company");
       }
     });
   };
   
 
-  const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
+  // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
+  //   try {
+  //     const response = await api.post(
+  //       baseURLReport + `getSanctionOrderPmksy`,
+  //       {
+  //         applicationFormId: applicationFormId,
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+  const generateSanctionOrderAcknowledgment = async (applicationId,schemeId,recipientType) => {
     try {
+      // Determine the appropriate endpoint based on the recipient type
+      const endpoint =
+        recipientType === "farmer"
+          ? baseURLReport + `getSanctionOrderPDMC`
+          : baseURLReport + `getSanctionOrderPDMCCompany`;
+  
       const response = await api.post(
-        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        endpoint,
         {
-          applicationFormId: applicationFormId,
+          applicationFormId: applicationId,
+          schemeId: schemeId,
         },
         {
-          responseType: "blob", //Force to receive data in a Blob Format
+          responseType: "blob", // Force to receive data in a Blob Format
         }
       );
-
+  
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
     } catch (error) {
-      // console.log("error", error);
+      console.error("Error generating sanction order:", error);
     }
   };
+  
 
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
@@ -1267,7 +1318,7 @@ const handleActionInputs = (e) => {
   //     setValidated(true);
   //   }
   // };
-
+  const [applicationId, setApplicationId] = useState(null);
   const postActionData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -1334,11 +1385,27 @@ const handleActionInputs = (e) => {
         if (actionFarmerData[0].workOrder) {
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
         }
+        // if (actionFarmerData[0].sanctionOrder) {
+        //   apiCall = api.post(
+        //     baseURLDBT + `service/sanctionOrderUpdate`,
+        //     sendPost
+        //   );
+        // }
         if (actionFarmerData[0].sanctionOrder) {
-          apiCall = api.post(
-            baseURLDBT + `service/sanctionOrderUpdate`,
-            sendPost
-          );
+          apiCall = api.post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
+            .then((response) => {
+              if (response.data.applicationFormId) {
+                // Update state with the generated applicationId
+                setApplicationId(response.data.applicationFormId);
+                // Pass the applicationId to handleGenerateSanctionOrder
+                handleGenerateSanctionOrder(response.data.applicationFormId, schemeId);
+              } else {
+                saveError("Failed to generate application ID for sanction order.");
+              }
+            })
+            .catch((err) => {
+              saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
+            });
         }
         if (actionFarmerData[0].pushToDbt) {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
@@ -2767,11 +2834,20 @@ const handleActionInputs = (e) => {
                       >
                         Generate Sanction Order
                       </Button> */}
-                      {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
+                      {/* {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
                         <Button
                           type="button"
                           variant="primary"
-                          onClick={() => handleGenerateSanctionOrder(applicationFormId)}
+                          onClick={() => handleGenerateSanctionOrder(applicationId,schemeId)}
+                        >
+                          Generate Sanction Order
+                        </Button>
+                      )} */}
+                      {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && applicationId && (
+                        <Button
+                          type="button"
+                          variant="primary"
+                          onClick={() => handleGenerateSanctionOrder(applicationId, schemeId)}
                         >
                           Generate Sanction Order
                         </Button>
