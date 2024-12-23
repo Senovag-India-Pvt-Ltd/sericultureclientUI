@@ -99,11 +99,11 @@ function MulberryTargetType() {
   };
 
   return (
-    <Layout title="Mulberry Target Type">
+    <Layout title="Target">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Mulberry Target Type</Block.Title>
+            <Block.Title tag="h2">Target</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -141,7 +141,7 @@ function MulberryTargetType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="variety">
-                        Mulberry Target Type<span className="text-danger">*</span>
+                        Target<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -150,11 +150,11 @@ function MulberryTargetType() {
                           type="text"
                           value={data.mulberryTargetTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Mulberry Target Type"
+                          placeholder="Enter Target"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mulberry Target Type is required.
+                          Target is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -163,7 +163,7 @@ function MulberryTargetType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="variety">
-                        Mulberry Target Type Name in Kannada
+                        Target Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -173,11 +173,11 @@ function MulberryTargetType() {
                           type="text"
                           value={data.mulberryTargetTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Mulberry Target Type Name in Kannada"
+                          placeholder="Enter Target Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mulberry Target Type Name in Kannada is required.
+                          Target Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

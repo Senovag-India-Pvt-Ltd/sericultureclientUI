@@ -572,11 +572,11 @@ const [farmerdetails,setFarmerDetails] = useState({
 
   
   return (
-    <Layout title="District Wise Mulberry Page">
+    <Layout title="District Wise Mulberry">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Mulberry Page</Block.Title>
+            <Block.Title tag="h2">District Wise Mulberry</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
