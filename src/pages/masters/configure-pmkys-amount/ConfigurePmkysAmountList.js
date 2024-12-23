@@ -198,11 +198,11 @@ function ConfigurePmkysAmountList() {
   ];
 
   return (
-    <Layout title="List of Configure Pmkys Amount">
+    <Layout title="List of Configured Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List of Configure Pmkys Amount</Block.Title>
+            <Block.Title tag="h2">List of Configured Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

@@ -147,11 +147,11 @@ function ConfigurePmkysAmountEdit() {
   };
 
   return (
-    <Layout title="Edit Configure PMKYS AMount">
+    <Layout title="Edit Configure Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Configure PMKYS AMount</Block.Title>
+            <Block.Title tag="h2">Edit Configure Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
