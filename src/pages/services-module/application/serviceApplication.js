@@ -821,6 +821,66 @@ function ServiceApplication() {
     setDevelopedLand({ ...developedLand, [name]: value });
   };
 
+  const [listData, setListData] = useState({});
+
+  // const getAmountList = () => {
+  //   setLoading(true);
+  //   const { spacingId, hectareId } = data;
+
+  //   // Make API call with spacingId and hectareId as parameters
+  //   api
+  //     .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
+  //     .then((response) => {
+  //       // Update UI with the fetched unit price
+  //       const amountDetails = response.data[0]; // Assuming first object contains the amount data
+  //       setData({
+  //         ...data,
+  //         unitPrice: amountDetails.amount,
+  //         expectedAmount: amountDetails.amount, // Subsidy amount can be set similarly
+  //       });
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching amount data:", err);
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getAmountList = () => {
+    setLoading(true);
+    const spacingId = data.spacingId;
+    const hectareId = data.hectareId;
+    
+    const response = api
+      .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
+      .then((response) => {
+        const result = response.data[0]; // Assuming the first element contains the relevant data
+        setAmountValue({
+          ...amountValue,
+          unitPrice: result.amount, // Set the Unit Price
+        });
+        setData({
+          ...data,
+          expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setAmountValue({
+          ...amountValue,
+          unitPrice: "", // Clear Unit Price if API call fails
+        });
+        setData({
+          ...data,
+          expectedAmount: "", // Clear expectedAmount if API call fails
+        });
+        setLoading(false);
+      });
+  };
+  
+
+
+
   const handleEquipmentInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -3197,6 +3257,16 @@ function ServiceApplication() {
                   </Card.Header>
                   <Card.Body>
                     <Row className="g-gs">
+                    <div className="gap-col">
+                      <ul className="d-flex align-items-left justify-content-left gap g-3">
+                      
+                        <li>
+                          <Button type="button" variant="secondary" onClick={getAmountList}>
+                            Calculate Unit Price
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
                       <Col lg="4">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="landDeveloped">
