@@ -377,6 +377,7 @@ function Menu() {
     Admin_Master_Service_Approval_Stage: false,
     Admin_Master_Service_Spacing: false,
     Admin_Master_Service_Hectare: false,
+    Admin_Master_Service_Configure_Pmkys_Amount: false,
     Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
@@ -384,6 +385,7 @@ function Menu() {
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
     Admin_Master_Service_Financial_Year: false,
     Admin_Master_Service_Activity: false,
+    
 
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
@@ -3127,17 +3129,23 @@ function Menu() {
                             <MenuItemLink text="Spacing" to="/seriui/spacing" />
                           </MenuItem>
                         ) : null}
+                       
+                        {showMenu.Admin_Master_Service_Hectare ? (
+                          <MenuItem>
+                            <MenuItemLink text="Hectare" to="/seriui/hectare" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Configure_Pmkys_Amount ? (
+                          <MenuItem>
+                            <MenuItemLink text="Configure Amount" to="/seriui/configure-pmkys-amount" />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Target"
                               to="/seriui/mulberry-target-type"
                             />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Hectare ? (
-                          <MenuItem>
-                            <MenuItemLink text="Hectare" to="/seriui/hectare" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_User_Hierarchy_Mapping ? (
