@@ -1283,7 +1283,31 @@
   "Edit Training Program": "ಪ್ರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮ ತಿದ್ದು",
   "Training Program List": "ಪ್ರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮ ಪಟ್ಟಿ",
   "Training Program View": "ಪ್ರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮ ವೀಕ್ಷಣೆ",
-  "Training Program Details": "ಪ್ರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮದ ವಿವರಗಳು"
+  "Training Program Details": "ಪ್ರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮದ ವಿವರಗಳು",
+  "Enter Crop Status Name": "ಬೆಳೆ ಸ್ಥಿತಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Crop Status is required": "ಬೆಳೆ ಸ್ಥಿತಿಯ ಅಗತ್ಯವಿದೆ",
+  "Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿ",
+  "Edit Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿಯನ್ನು ಸಂಪಾದಿಸಿ",
+  "Enter Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿಯನ್ನು ನಮೂದಿಸಿ",
+  "Update": "ಅವರಣ ಮಾಡಿ",
+  "Loading...": "ಸಾಧನೆಯಾಗಿದೆ...",
+  "Crop Status List": "ಬೆಳೆ ಸ್ಥಿತಿ ಪಟ್ಟಿಗಳು",
+  "Create": "ನಮ್ಮಡೆ",
+  "Crop Status View": "ಬೆಳೆ ಸ್ಥಿತಿ ವೀಕ್ಷಣೆ",
+  "Crop Status Details": "ಬೆಳೆ ಸ್ಥಿತಿ ವಿವರಗಳು",
+  "Crop Inspection Type": "ಬೆಳೆ ಇನ್‌ಸ್ಪೆಕ್ಷನ್ ಟೈಪ್",
+  "Enter Crop Inspection Type": "ಬೆಳೆ ಇನ್‌ಸ್ಪೆಕ್ಷನ್ ಟೈಪ್ ನಮೂದಿಸಿ",
+  "Crop Inspection Type is required": "ಬೆಳೆ ಇನ್‌ಸ್ಪೆಕ್ಷನ್ ಟೈಪ್ ಅಗತ್ಯವಿದೆ",
+  "Edit Crop Inspection Type": "ಬೆಳೆ ತಪಾಸಣೆ ಪ್ರಕಾರವನ್ನು ಸಂಪಾದಿಸಿ",
+  "Crop Inspection Type List": "ಬೆಳೆ ತಪಾಸಣೆ ಪ್ರಕಾರಗಳ ಪಟ್ಟಿ",
+  "Crop Inspection Type View": "ಬೆಳೆ ತಪಾಸಣೆ ಪ್ರಕಾರ ವೀಕ್ಷಣೆ",
+  "Go to List": "ಪಟ್ಟಿಗೆ ಹೋಗಿ",
+  "Crop Inspection Type Details": "ಬೆಳೆ ತಪಾಸಣೆ ಪ್ರಕಾರದ ವಿವರಗಳು",
+  "Loading": "ಲೋಡಿಂಗ್",
+  "Crop Inspection Type Name": "ಬೆಳೆ ತಪಾಸಣೆ ಪ್ರಕಾರದ ಹೆಸರು"
+  
+  
+
   
 
   

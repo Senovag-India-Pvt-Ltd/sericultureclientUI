@@ -1278,7 +1278,35 @@
 "Edit Training Program":"Edit Training Program",
 "Training Program List":"Training Program List",
 "Training Program View":"Training Program View",
-"Training Program Details":"Training Program Details"
+"Training Program Details":"Training Program Details",
+"Enter Crop Status Name": "Enter Crop Status Name",
+"Crop Status is required": "Crop Status is required",
+"Crop Status": "Crop Status",
+"Edit Crop Status": "Edit Crop Status",
+"Enter Crop Status": "Enter Crop Status",
+"Crop Status is required.": "Crop Status is required.",
+"Update": "Update",
+"Loading...": "Loading...",
+"Crop Status List": "Crop Status List",
+"Create": "Create",
+"Crop Status View": "Crop Status View",
+"Crop Status Details": "Crop Status Details",
+"Crop Inspection Type": "Crop Inspection Type",
+"Enter Crop Inspection Type": "Enter Crop Inspection Type",
+"Crop Inspection Type is required": "Crop Inspection Type is required",
+"Edit Crop Inspection Type": "Edit Crop Inspection Type",
+"Crop Inspection Type List": "Crop Inspection Type List",
+"Crop Inspection Type View": "Crop Inspection Type View",
+"Go to List": "Go to List",
+"Crop Inspection Type Details": "Crop Inspection Type Details",
+"Loading": "Loading",
+"Crop Inspection Type Name": "Crop Inspection Type Name"
+
+
+  
+
+
+
 
 
 
