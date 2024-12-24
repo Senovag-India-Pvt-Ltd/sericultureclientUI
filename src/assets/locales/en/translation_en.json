@@ -228,7 +228,7 @@
 "Go To List":"Go to List",
 "farmer_registration_list": "Farmer Registration List",
 "create":"Create",
-"Search By": "Search By",
+"Search By":"Search By",
 "Search":"Search",
 "View":"View",
 "Edit":"Edit",
@@ -1300,7 +1300,78 @@
 "Go to List": "Go to List",
 "Crop Inspection Type Details": "Crop Inspection Type Details",
 "Loading": "Loading",
-"Crop Inspection Type Name": "Crop Inspection Type Name"
+"Crop Inspection Type Name": "Crop Inspection Type Name",
+"Edit Reason": "Edit Reason",
+"Reason List": "Reason List",
+"Reason:": "Reason:",
+"Reason View": "Reason View",
+"Mount": "Mount",
+"Enter Mount Name": "Enter Mount Name",
+"Mount is required": "Mount is required",
+"Edit Mount": "Edit Mount",
+"Enter Mount": "Enter Mount",
+"Mount List": "Mount List",
+"Mount View": "Mount View",
+"Mount Details": "Mount Details",
+"Disease Status": "Disease Status",
+"Enter Disease Status": "Enter Disease Status",
+"Disease Status is required": "Disease Status is required",
+"Edit Disease Status": "Edit Disease Status",
+"Enter Disease Status Name": "Enter Disease Status Name",
+"Disease Status Name is required": "Disease Status Name is required",
+"Description Is Required": "Description Is Required",
+"Disease Status Name": "Disease Status Name",
+"Disease Status List": "Disease Status List",
+"Disease Status View": "Disease Status View",
+"Disease Status Details": "Disease Status Details",
+"Grainage": "Grainage",
+"Grainage Name": "Grainage Name",
+"Enter Grainage name": "Enter Grainage name",
+"Grainage Name is required": "Grainage Name is required",
+"Grainage Name in Kannada": "Grainage Name in Kannada",
+"Enter Grainage Name in Kannada": "Enter Grainage Name in Kannada",
+"Grainage Name in Kannada is required": "Grainage Name in Kannada is required",
+"Grainage Type": "Grainage Type",
+"Enter Grainage Type": "Enter Grainage Type",
+"Grainage Name Representation": "Grainage Name Representation",
+"Enter Grainage Name Representation": "Enter Grainage Name Representation",
+"User name is required": "User name is required",
+"Edit Grainage": "Edit Grainage",
+"Grainage List": "Grainage List",
+"Grainage View": "Grainage View",
+"Grainage Details": "Grainage Details",
+"Grainage Name In Kannada": "Grainage Name In Kannada",
+"Disinfectant": "Disinfectant",
+"Disinfectant Name": "Disinfectant Name",
+"Enter Disinfectant name": "Enter Disinfectant name",
+"Disinfectant Name is required": "Disinfectant Name is required",
+"Disinfectant Name in Kannada": "Disinfectant Name in Kannada",
+"Enter Disinfectant Name in Kannada": "Enter Disinfectant Name in Kannada",
+"Disinfectant Name in Kannada is required": "Disinfectant Name in Kannada is required",
+"Edit Disinfectant": "Edit Disinfectant",
+"Enter Disinfectant Name": "Enter Disinfectant Name",
+"Disinfectant List": "Disinfectant List",
+"Disinfectant View": "Disinfectant View",
+"Disinfectant Name In Kannada": "Disinfectant Name In Kannada",
+"Disinfectant Details": "Disinfectant Details",
+"Generation Number":"Generation Number",
+"Enter Generation Number":"Enter Generation Number",
+"Generation Number is required":"Generation Number is required",
+"Edit Generation Number": "Edit Generation Number",
+"Generation Number List": "Generation Number List",
+"Generation Number View": "Generation Number View",
+"Generation Number Details": "Generation Number Details"
+
+
+
+
+ 
+
+
+
+
+
+
 
 
   

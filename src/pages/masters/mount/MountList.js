@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MountList() {
+       // Translation
+       const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function MountList() {
 
   const MountDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function MountList() {
             size="sm"
             onClick={() => handleView(row.mountId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function MountList() {
             className="ms-2"
             onClick={() => handleEdit(row.mountId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function MountList() {
             onClick={() => deleteConfirm(row.mountId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +181,7 @@ function MountList() {
       hide: "md",
     },
     {
-      name: "Mount",
+      name: t("Mount"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
@@ -187,11 +191,11 @@ function MountList() {
   ];
 
   return (
-    <Layout title="Mount List">
+    <Layout title={t("Mount List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Mount List</Block.Title>
+            <Block.Title tag="h2">{t("Mount List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -201,7 +205,7 @@ function MountList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -210,7 +214,7 @@ function MountList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

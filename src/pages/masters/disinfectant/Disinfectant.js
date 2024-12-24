@@ -9,10 +9,14 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Disinfectant() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     disinfectantMasterName: "",
     disinfectantMasterNameInKannada: "",
@@ -97,11 +101,11 @@ function Disinfectant() {
   };
 
   return (
-    <Layout title="Disinfectant">
+    <Layout title={t("Disinfectant")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Disinfectant </Block.Title>
+            <Block.Title tag="h2">{t("Disinfectant")} </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -111,7 +115,7 @@ function Disinfectant() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -120,7 +124,7 @@ function Disinfectant() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -139,7 +143,7 @@ function Disinfectant() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Disinfectant Name
+                        {t("Disinfectant Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -149,11 +153,11 @@ function Disinfectant() {
                           type="text"
                           value={data.disinfectantMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Disinfectant name"
+                          placeholder={t("Enter Disinfectant name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Disinfectant Name is required
+                         {t("Disinfectant Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -162,7 +166,7 @@ function Disinfectant() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Disinfectant Name in Kannada
+                      {t("Disinfectant Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -172,11 +176,11 @@ function Disinfectant() {
                           value={data.disinfectantMasterNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Disinfectant Name in Kannada"
+                          placeholder={t("Enter Disinfectant Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Disinfectant Name in Kannada is required.
+                          {t("Disinfectant Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -190,12 +194,12 @@ function Disinfectant() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

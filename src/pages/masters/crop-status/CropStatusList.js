@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CropStatusList() {
+     // Translation
+     const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function CropStatusList() {
 
   const CropStatusDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,8 @@ function CropStatusList() {
             size="sm"
             onClick={() => handleView(row.cropStatusId)}
           >
-            View
+          {t("View")}
+
           </Button>
           <Button
             variant="primary"
@@ -161,7 +166,7 @@ function CropStatusList() {
             className="ms-2"
             onClick={() => handleEdit(row.cropStatusId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +174,7 @@ function CropStatusList() {
             onClick={() => deleteConfirm(row.cropStatusId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +182,7 @@ function CropStatusList() {
       hide: "md",
     },
     {
-      name: "Crop Status",
+      name: t("Crop Status"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
@@ -187,59 +192,60 @@ function CropStatusList() {
   ];
 
   return (
-    <Layout title="Crop Status List">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Crop Status List</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/cropStatus"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/cropStatus"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+<Layout title={t("Crop Status List")}>
+  <Block.Head>
+    <Block.HeadBetween>
+      <Block.HeadContent>
+        <Block.Title tag="h2">{t("Crop Status List")}</Block.Title>
+      </Block.HeadContent>
+      <Block.HeadContent>
+        <ul className="d-flex">
+          <li>
+            <Link
+              to="/seriui/cropStatus"
+              className="btn btn-primary btn-md d-md-none"
+            >
+              <Icon name="plus" />
+              <span>{t("Create")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/seriui/cropStatus"
+              className="btn btn-primary d-none d-md-inline-flex"
+            >
+              <Icon name="plus" />
+              <span>{t("Create")}</span>
+            </Link>
+          </li>
+        </ul>
+      </Block.HeadContent>
+    </Block.HeadBetween>
+  </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={CropStatusDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
-      </Block>
-    </Layout>
+  <Block className="mt-n4">
+    <Card>
+      <DataTable
+        tableClassName="data-table-head-light table-responsive"
+        columns={CropStatusDataColumns}
+        data={listData}
+        highlightOnHover
+        pagination
+        paginationServer
+        paginationTotalRows={totalRows}
+        paginationPerPage={countPerPage}
+        paginationComponentOptions={{
+          noRowsPerPage: true,
+        }}
+        onChangePage={(page) => setPage(page - 1)}
+        progressPending={loading}
+        theme="solarized"
+        customStyles={customStyles}
+      />
+    </Card>
+  </Block>
+</Layout>
+
   );
 }
 

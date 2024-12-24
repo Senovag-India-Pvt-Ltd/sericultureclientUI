@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DiseaseStatusEdit() {
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -124,11 +128,11 @@ function DiseaseStatusEdit() {
   };
 
   return (
-    <Layout title="Edit Disease Status">
+    <Layout title={t("Edit Disease Status")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Disease Status</Block.Title>
+            <Block.Title tag="h2">{t("Edit Disease Status")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -138,7 +142,7 @@ function DiseaseStatusEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -147,7 +151,7 @@ function DiseaseStatusEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -163,14 +167,14 @@ function DiseaseStatusEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Disease Status Name<span className="text-danger">*</span>
+                          {t("Disease Status Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -179,11 +183,11 @@ function DiseaseStatusEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Disease Status Name"
+                            placeholder={t("Enter Disease Status Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Disease Status Name is required.
+                            {t("Disease Status Name is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -192,7 +196,7 @@ function DiseaseStatusEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="description">
-                          Description Is Required
+                          {t("Description Is Required")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -202,11 +206,11 @@ function DiseaseStatusEdit() {
                             value={data.description}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Description"
+                            placeholder={t("Enter Description")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                           Description is required.
+                          {t("Description Is Required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -223,12 +227,12 @@ function DiseaseStatusEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("Update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

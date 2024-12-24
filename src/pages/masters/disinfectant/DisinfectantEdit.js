@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DisinfectantEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -129,11 +133,11 @@ function DisinfectantEdit() {
   };
 
   return (
-    <Layout title="Edit Disinfectant">
+    <Layout title={t("Edit Disinfectant")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Disinfectant</Block.Title>
+            <Block.Title tag="h2">{t("Edit Disinfectant")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -143,7 +147,7 @@ function DisinfectantEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -152,7 +156,7 @@ function DisinfectantEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -168,14 +172,14 @@ function DisinfectantEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="disinfectant">
-                          Disinfectant<span className="text-danger">*</span>
+                          {t("Disinfectant")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -184,11 +188,11 @@ function DisinfectantEdit() {
                             value={data.disinfectantMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Disinfectant Name"
+                            placeholder={t("Enter Disinfectant Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Disinfectant Name is required
+                            {t("Disinfectant Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -197,7 +201,7 @@ function DisinfectantEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Disinfectant Name in Kannada
+                          {t("Disinfectant Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -207,11 +211,11 @@ function DisinfectantEdit() {
                             value={data.disinfectantMasterNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Disinfectant Name in Kannada"
+                            placeholder={t("Enter Disinfectant Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Disinfectant Name in Kannada is required.
+                            {t("Disinfectant Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -226,12 +230,12 @@ function DisinfectantEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

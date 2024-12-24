@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonEdit() {
+   // Translation
+   const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -122,11 +125,11 @@ function ReasonEdit() {
   };
 
   return (
-    <Layout title="Edit Reason">
+    <Layout title={t("Edit Reason")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Reason</Block.Title>
+            <Block.Title tag="h2">{t("Edit Reason")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +139,7 @@ function ReasonEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +148,7 @@ function ReasonEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -161,14 +164,14 @@ function ReasonEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Reason<span className="text-danger">*</span>
+                          {t("Reason")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,11 +180,11 @@ function ReasonEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reason"
+                            placeholder={t('Enter Reason')}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reason is required.
+                            {t("Reason is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,12 +224,12 @@ function ReasonEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("Update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

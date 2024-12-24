@@ -6,10 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CropInspectionTypeView() {
+  // Translation
+      const { t } = useTranslation();
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -47,68 +51,72 @@ function CropInspectionTypeView() {
   }, [id]);
 
   return (
-    <Layout title="Crop Inspection Type View" content="container">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Crop Inspection Type View</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/crop-inspection-type-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/crop-inspection-type-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+  
 
-      <Block className="mt-4">
-        <Card>
-          <Card.Header>Crop  Inspection  Type Details</Card.Header>
-          <Card.Body>
-            {loading ? (
-              <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
-              </h1>
-            ) : (
-              <Row className="g-gs">
-                <Col lg="12">
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>ID:</td>
-                        <td>{CropInspectionType.cropInspectionTypeId}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Crop Inspection Type Name:</td>
-                        <td>{CropInspectionType.name}</td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
-                </Col>
-              </Row>
-            )}
-          </Card.Body>
-        </Card>
-      </Block>
-    </Layout>
+    <Layout title={t("Crop Inspection Type View")} content="container">
+  <Block.Head>
+    <Block.HeadBetween>
+      <Block.HeadContent>
+        <Block.Title tag="h2">{t("Crop Inspection Type View")}</Block.Title>
+      </Block.HeadContent>
+      <Block.HeadContent>
+        <ul className="d-flex">
+          <li>
+            <Link
+              to="/seriui/crop-inspection-type-list"
+              className="btn btn-primary btn-md d-md-none"
+            >
+              <Icon name="arrow-long-left" />
+              <span>{t("Go to List")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/seriui/crop-inspection-type-list"
+              className="btn btn-primary d-none d-md-inline-flex"
+            >
+              <Icon name="arrow-long-left" />
+              <span>{t("Go to List")}</span>
+            </Link>
+          </li>
+        </ul>
+      </Block.HeadContent>
+    </Block.HeadBetween>
+  </Block.Head>
+
+  <Block className="mt-4">
+    <Card>
+      <Card.Header>{t("Crop Inspection Type Details")}</Card.Header>
+      <Card.Body>
+        {loading ? (
+          <h1 className="d-flex justify-content-center align-items-center">
+            {t("Loading")}...
+          </h1>
+        ) : (
+          <Row className="g-gs">
+            <Col lg="12">
+              <table className="table small table-bordered">
+                <tbody>
+                  <tr>
+                    <td style={styles.ctstyle}>{t("ID")}:</td>
+                    <td>{CropInspectionType.cropInspectionTypeId}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.ctstyle}>
+                      {t("Crop Inspection Type Name")}:
+                    </td>
+                    <td>{CropInspectionType.name}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Col>
+          </Row>
+        )}
+      </Card.Body>
+    </Card>
+  </Block>
+</Layout>
+
   );
 }
 
