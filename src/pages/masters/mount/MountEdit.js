@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MountEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -122,11 +126,11 @@ function MountEdit() {
   };
 
   return (
-    <Layout title="Edit Mount">
+    <Layout title={t("Edit Mount")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Mount</Block.Title>
+            <Block.Title tag="h2">{t("Edit Mount")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +140,7 @@ function MountEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +149,7 @@ function MountEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -161,14 +165,14 @@ function MountEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="name">
-                          Mount<span className="text-danger">*</span>
+                          {t("Mount")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,11 +181,11 @@ function MountEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Mount"
+                            placeholder={t("Enter Mount")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mount is required.
+                            {t("Mount is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,12 +225,12 @@ function MountEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("Update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

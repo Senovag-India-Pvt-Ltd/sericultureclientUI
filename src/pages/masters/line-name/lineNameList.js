@@ -148,7 +148,7 @@ function LineNameList() {
 
   const LineNameDataColumns = [
     {
-      name: ("Action"),
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">

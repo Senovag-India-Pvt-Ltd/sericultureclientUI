@@ -8,10 +8,15 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GenerationNumber() {
+   // Translation
+   const { t } = useTranslation();
+   
   const [data, setData] = useState({
     generationNumber: "",
   });
@@ -92,11 +97,11 @@ function GenerationNumber() {
     });
   };
   return (
-    <Layout title="Generation Number">
+    <Layout title={t("Generation Number")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Generation Number</Block.Title>
+            <Block.Title tag="h2">{t("Generation Number")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -106,7 +111,7 @@ function GenerationNumber() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -115,7 +120,7 @@ function GenerationNumber() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,7 +139,7 @@ function GenerationNumber() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Generation Number">
-                        Generation Number<span className="text-danger">*</span>
+                        {t("Generation Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -143,11 +148,11 @@ function GenerationNumber() {
                           value={data.generationNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Generation Number"
+                          placeholder={t("Enter Generation Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Generation Number is required
+                        {t("Generation Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -163,12 +168,12 @@ function GenerationNumber() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

@@ -8,10 +8,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Reason() {
+  // Translation
+      const { t } = useTranslation();
+  
   const [data, setData] = useState({
     name: "",
   });
@@ -88,11 +92,11 @@ function Reason() {
   };
 
   return (
-    <Layout title="Reason">
+    <Layout title={t("Reason")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reason</Block.Title>
+            <Block.Title tag="h2">{t("Reason")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -102,7 +106,7 @@ function Reason() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -111,7 +115,7 @@ function Reason() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -130,7 +134,7 @@ function Reason() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Reason <span className="text-danger">*</span>
+                        {t("Reason")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -139,11 +143,11 @@ function Reason() {
                           value={data.name}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reason"
+                          placeholder={t("Enter Reason")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reason is required
+                          {t("Reason is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -182,12 +186,12 @@ function Reason() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("cancel")}
                       </Button>
                     </li>
                   </ul>

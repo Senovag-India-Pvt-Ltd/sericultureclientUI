@@ -13,10 +13,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GrainageList() {
+  // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -185,7 +190,7 @@ function GrainageList() {
 
   const GrainageDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +200,7 @@ function GrainageList() {
             size="sm"
             onClick={() => handleView(row.grainageMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -203,7 +208,7 @@ function GrainageList() {
             className="ms-2"
             onClick={() => handleEdit(row.grainageMasterId)}
           >
-            Edit
+             {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -211,7 +216,7 @@ function GrainageList() {
             onClick={() => deleteConfirm(row.grainageMasterId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -219,14 +224,14 @@ function GrainageList() {
       hide: "md",
     },
     {
-      name: "Grainage",
+      name: t("Grainage"),
       selector: (row) => row.grainageMasterName,
       cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Grainage Name in Kannada",
+      name: t("Grainage Name in Kannada"),
       selector: (row) => row.grainageMasterNameInKannada,
       cell: (row) => <span>{row.grainageMasterNameInKannada}</span>,
       sortable: true,
@@ -234,7 +239,7 @@ function GrainageList() {
     },
 
     {
-      name: "Grainage Name Representation",
+      name: t("Grainage Name Representation"),
       selector: (row) => row.grainageNameRepresentation,
       cell: (row) => <span>{row.grainageNameRepresentation}</span>,
       sortable: true,
@@ -242,7 +247,7 @@ function GrainageList() {
     },
 
     {
-      name: "Grainage Type",
+      name: t("Grainage Type"),
       selector: (row) => row.grainageType,
       cell: (row) => <span>{row.grainageType}</span>,
       sortable: true,
@@ -250,7 +255,7 @@ function GrainageList() {
     },
 
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
@@ -259,11 +264,11 @@ function GrainageList() {
   ];
 
   return (
-    <Layout title="Grainage List">
+    <Layout title={t("Grainage List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage List</Block.Title>
+            <Block.Title tag="h2">{t("Grainage List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -273,7 +278,7 @@ function GrainageList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -282,7 +287,7 @@ function GrainageList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -296,7 +301,7 @@ function GrainageList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -306,8 +311,8 @@ function GrainageList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="grainageMaster">Grainage</option>
-                      <option value="userMaster">UserMaster</option>
+                      <option value="grainageMaster">{t("Grainage")}</option>
+                      <option value="userMaster">{t("UserMaster")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -319,12 +324,12 @@ function GrainageList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

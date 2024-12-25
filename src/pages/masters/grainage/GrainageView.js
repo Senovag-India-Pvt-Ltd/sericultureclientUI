@@ -6,9 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GrainageView() {
+  // Translation
+         const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,11 +51,11 @@ function GrainageView() {
   }, [id]);
 
   return (
-    <Layout title="Grainage View">
+    <Layout title={t("Grainage View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage View</Block.Title>
+            <Block.Title tag="h2">{t("Grainage View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +65,7 @@ function GrainageView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +74,7 @@ function GrainageView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,11 +84,11 @@ function GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Grainage Details</Card.Header>
+          <Card.Header>{t("Grainage Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,26 +96,26 @@ function GrainageView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{Grainage.grainageMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Grainage:</td>
+                        <td style={styles.ctstyle}>{t("Grainage")}:</td>
                         <td>{Grainage.grainageMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Grainage Name In Kannada:
+                          {t("Grainage Name In Kannada")}:
                         </td>
                         <td>{Grainage.grainageMasterNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Grainage Name Representation:</td>
+                        <td style={styles.ctstyle}>{t("Grainage Name Representation")}:</td>
                         <td>{Grainage.grainageNameRepresentation}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Grainage Type:</td>
+                        <td style={styles.ctstyle}>{t("Grainage Type")}:</td>
                         <td>{Grainage.grainageType}</td>
                       </tr>
                     </tbody>

@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GenerationNumberEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -122,11 +127,11 @@ function GenerationNumberEdit() {
   // };
 
   return (
-    <Layout title="Edit Generation Number">
+    <Layout title={t("Edit Generation Number")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Generation Number</Block.Title>
+            <Block.Title tag="h2">{t("Edit Generation Number")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +141,7 @@ function GenerationNumberEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +150,7 @@ function GenerationNumberEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -161,14 +166,14 @@ function GenerationNumberEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="generationNumber">
-                          Generation Number<span className="text-danger">*</span>
+                          {t("Generation Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,11 +182,11 @@ function GenerationNumberEdit() {
                             value={data.generationNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Generation Number"
+                            placeholder={t("Enter Generation Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Generation Number  is required.
+                          {t("Generation Number  is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -198,12 +203,12 @@ function GenerationNumberEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("Update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

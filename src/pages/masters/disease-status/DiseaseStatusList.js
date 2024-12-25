@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DiseaseStatusList() {
+  // Translation
+    const { t } = useTranslation();
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function DiseaseStatusList() {
 
   const DiseaseStatusDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function DiseaseStatusList() {
             size="sm"
             onClick={() => handleView(row.diseaseStatusId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function DiseaseStatusList() {
             className="ms-2"
             onClick={() => handleEdit(row.diseaseStatusId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function DiseaseStatusList() {
             onClick={() => deleteConfirm(row.diseaseStatusId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +181,14 @@ function DiseaseStatusList() {
       hide: "md",
     },
     {
-      name: "Disease Status Name",
+      name: t("Disease Status Name"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Description",
+      name: t("Description"),
       selector: (row) => row.description,
       cell: (row) => <span>{row.description}</span>,
       sortable: true,
@@ -193,11 +197,11 @@ function DiseaseStatusList() {
   ];
 
   return (
-    <Layout title="Disease Status List">
+    <Layout title={t("Disease Status List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Disease Status List</Block.Title>
+            <Block.Title tag="h2">{t("Disease Status List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +211,7 @@ function DiseaseStatusList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +220,7 @@ function DiseaseStatusList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
