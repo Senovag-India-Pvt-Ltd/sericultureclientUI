@@ -406,6 +406,7 @@ function DistrictWiseMontlyMulberry() {
           .then((response) => {
             // deleteConfirm(_id);
             getFinancialList();
+            getList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",

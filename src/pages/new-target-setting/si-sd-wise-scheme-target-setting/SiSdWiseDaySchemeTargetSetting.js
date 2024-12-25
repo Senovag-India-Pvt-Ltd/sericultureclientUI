@@ -1784,7 +1784,8 @@ function SiSdWiseDaySchemeTargetSetting() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              required
+                              // readOnly
                             />
                           </Form.Group>
                         </Col>
