@@ -3819,6 +3819,22 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Triplet"
+                              to="/seriui/print-bid-slip"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Bidding Slip"
+                              to="/seriui/print-farmer-copy"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3937,22 +3953,6 @@ function Menu() {
                             <MenuItemLink
                               text="Reeler Transaction Report"
                               to="/seriui/reeler-transaction-reports"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Generated Triplet"
-                              to="/seriui/print-bid-slip"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Generated Bidding Slip"
-                              to="/seriui/print-farmer-copy"
                             />
                           </MenuItem>
                         ) : null}
