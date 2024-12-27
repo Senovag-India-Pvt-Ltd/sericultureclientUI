@@ -9,10 +9,14 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Tsc() {
+  // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     name: "",
     nameInKannada: "",
@@ -142,11 +146,11 @@ function Tsc() {
   };
 
   return (
-    <Layout title="Tsc">
+    <Layout title={t("Tsc")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Tsc</Block.Title>
+            <Block.Title tag="h2">{t("Tsc")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -156,7 +160,7 @@ function Tsc() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -165,7 +169,7 @@ function Tsc() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -184,7 +188,7 @@ function Tsc() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Tsc Name
+                        {t("Tsc Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -194,11 +198,11 @@ function Tsc() {
                           type="text"
                           value={data.name}
                           onChange={handleInputs}
-                          placeholder="Enter Tsc name"
+                          placeholder={t("Enter Tsc name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Tsc Name is required
+                          {t("Tsc Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -207,7 +211,7 @@ function Tsc() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Tsc Name in Kannada
+                        {t("Tsc Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -217,11 +221,11 @@ function Tsc() {
                           value={data.nameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Tsc Name in Kannada"
+                          placeholder={t("Enter Tsc Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Tsc Name in Kannada is required.
+                          {t("Tsc Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -230,7 +234,7 @@ function Tsc() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                        {t("District")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -244,7 +248,7 @@ function Tsc() {
                             data.districtId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -257,7 +261,7 @@ function Tsc() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                          {t("District Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -265,7 +269,7 @@ function Tsc() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Taluk<span className="text-danger">*</span>
+                        {t("Taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -278,7 +282,7 @@ function Tsc() {
                             data.talukId === undefined || data.talukId === "0"
                           }
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("Select Taluk")}</option>
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
@@ -288,7 +292,7 @@ function Tsc() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
+                          {t("Taluk Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -297,7 +301,7 @@ function Tsc() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Address
+                        {t("Address")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -307,11 +311,11 @@ function Tsc() {
                           value={data.address}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Address"
+                          placeholder={t("Enter Address")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Address is required.
+                          {t("Address is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -325,12 +329,12 @@ function Tsc() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

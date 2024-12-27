@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FarmEdit() {
+   // Translation
+   const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -153,11 +157,11 @@ function FarmEdit() {
   };
 
   return (
-    <Layout title="Edit Farm">
+    <Layout title={t("Edit Farm")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Farm</Block.Title>
+            <Block.Title tag="h2">{t("Edit Farm")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -167,7 +171,7 @@ function FarmEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -176,7 +180,7 @@ function FarmEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -192,14 +196,14 @@ function FarmEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                   {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Farm">
-                          Farm Name<span className="text-danger">*</span>
+                          {t("Farm Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -208,11 +212,11 @@ function FarmEdit() {
                             value={data.farmName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farm"
+                            placeholder={t("Enter Farm")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farm Name is required
+                            {t("Farm Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,7 +225,7 @@ function FarmEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Farm Name in Kannada
+                          {t("Farm Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -231,11 +235,11 @@ function FarmEdit() {
                             value={data.farmNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter farm Name in Kannada"
+                            placeholder={t("Enter farm Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                           Farm Name in Kannada is required.
+                           {t("Farm Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -244,7 +248,7 @@ function FarmEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          User<span className="text-danger">*</span>
+                          {t("User")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -257,7 +261,7 @@ function FarmEdit() {
                               data.userMasterId === undefined || data.userMasterId === "0"
                             }
                           >
-                            <option value="">Select User</option>
+                            <option value="">{t("Select User")}</option>
                             {userListData.map((list) => (
                               <option key={list.userMasterId} value={list.userMasterId}>
                                 {list.username}
@@ -265,7 +269,7 @@ function FarmEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            {t("User Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -274,7 +278,7 @@ function FarmEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                      Is BSF<span className="text-danger">*</span>
+                      {t("Is BSF")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -287,12 +291,12 @@ function FarmEdit() {
                             data.isBsf === undefined || data.isBsf === "0"
                           }
                         >
-                          <option value="">Select </option> 
+                          <option value="">{t("Select")}</option> 
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          This Field required
+                          {t("This Field required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -307,12 +311,12 @@ function FarmEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

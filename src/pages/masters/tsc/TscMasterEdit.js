@@ -8,10 +8,15 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TscEdit() {
+  // Translation
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -174,11 +179,11 @@ function TscEdit() {
   };
 
   return (
-    <Layout title="Edit Tsc">
+    <Layout title={t("Edit Tsc")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Tsc</Block.Title>
+            <Block.Title tag="h2">{t("Edit Tsc")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -188,7 +193,7 @@ function TscEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -197,7 +202,7 @@ function TscEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -213,14 +218,14 @@ function TscEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="tsc">
-                          Tsc Name<span className="text-danger">*</span>
+                          {t("Tsc Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -229,11 +234,11 @@ function TscEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Tsc"
+                            placeholder={t("Enter Tsc")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Tsc Name is required
+                            {t("Tsc Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -242,7 +247,7 @@ function TscEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Tsc Name in Kannada
+                          {t("Tsc Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -252,11 +257,11 @@ function TscEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Tsc Name in Kannada"
+                            placeholder={t("Enter Tsc Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Tsc Name in Kannada is required.
+                            {t("Tsc Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -265,7 +270,7 @@ function TscEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                        {t("District")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -279,7 +284,7 @@ function TscEdit() {
                             data.districtId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -292,7 +297,7 @@ function TscEdit() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                          {t("District Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -300,7 +305,7 @@ function TscEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Taluk<span className="text-danger">*</span>
+                        {t("Taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -313,7 +318,7 @@ function TscEdit() {
                             data.talukId === undefined || data.talukId === "0"
                           }
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("Select Taluk")}</option>
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
@@ -323,7 +328,7 @@ function TscEdit() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
+                          {t("Taluk Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -332,7 +337,7 @@ function TscEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Address
+                        {t("Address")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -342,11 +347,11 @@ function TscEdit() {
                           value={data.address}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Address"
+                          placeholder={t("Enter Address")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Address is required.
+                          {t("Address is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -361,12 +366,12 @@ function TscEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

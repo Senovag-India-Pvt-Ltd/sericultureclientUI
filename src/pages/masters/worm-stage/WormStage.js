@@ -7,10 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "../../../components";
 import { useState } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function WormStage() {
+  // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     wormStageMasterName: "",
     wormStageMasterNameInKannada: "",
@@ -91,11 +95,11 @@ function WormStage() {
   };
 
   return (
-    <Layout title="Worm Stage">
+    <Layout title={t("Worm Stage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Worm Stage</Block.Title>
+            <Block.Title tag="h2">{t("Worm Stage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -105,7 +109,7 @@ function WormStage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -114,7 +118,7 @@ function WormStage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -133,7 +137,7 @@ function WormStage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="land">
-                        Worm Stage<span className="text-danger">*</span>
+                        {t("Worm Stage")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -142,11 +146,11 @@ function WormStage() {
                           type="text"
                           value={data.wormStageMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Worm Stage"
+                          placeholder={t("Enter Worm Stage")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Worm Stage is required.
+                        {t("Worm Stage is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -155,7 +159,7 @@ function WormStage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="land">
-                      Worm Stage Name in Kannada
+                      {t("Worm Stage Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -165,11 +169,11 @@ function WormStage() {
                           type="text"
                           value={data.wormStageMasterNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Worm Stage Name in Kannada"
+                          placeholder={t("Enter Worm Stage Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Worm Stage Name in Kannada is required.
+                        {t("Worm Stage Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -183,12 +187,12 @@ function WormStage() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

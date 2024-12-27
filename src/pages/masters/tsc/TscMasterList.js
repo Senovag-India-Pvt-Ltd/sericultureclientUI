@@ -13,10 +13,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TscList() {
+  // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +146,7 @@ function TscList() {
 
   const TscDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +156,7 @@ function TscList() {
             size="sm"
             onClick={() => handleView(row.tscMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +164,7 @@ function TscList() {
             className="ms-2"
             onClick={() => handleEdit(row.tscMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +172,7 @@ function TscList() {
             onClick={() => deleteConfirm(row.tscMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -178,35 +181,35 @@ function TscList() {
       grow: 2
     },
     {
-      name: "Tsc",
+      name: t("Tsc"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc Name in Kannada",
+      name: t("TSC Name in Kannada"),
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Address",
+      name: t("Address"),
       selector: (row) => row.address,
       cell: (row) => <span>{row.address}</span>,
       sortable: true,
@@ -215,11 +218,11 @@ function TscList() {
   ];
 
   return (
-    <Layout title="Tsc List">
+    <Layout title={t("Tsc List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Tsc List</Block.Title>
+            <Block.Title tag="h2">{t("Tsc List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -229,7 +232,7 @@ function TscList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -238,7 +241,7 @@ function TscList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
