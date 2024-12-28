@@ -12,10 +12,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MarketList() {
+   // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -183,7 +186,7 @@ function MarketList() {
 
   const MarketDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -193,7 +196,7 @@ function MarketList() {
             size="sm"
             onClick={() => handleView(row.marketMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -201,7 +204,7 @@ function MarketList() {
             className="ms-2"
             onClick={() => handleEdit(row.marketMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -209,7 +212,7 @@ function MarketList() {
             onClick={() => deleteConfirm(row.marketMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -218,7 +221,7 @@ function MarketList() {
       grow: 2,
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
@@ -239,14 +242,14 @@ function MarketList() {
     //   hide: "md",
     // },
     {
-      name: "Tare Weight",
+      name: t("Tare Weight"),
       selector: (row) => row.boxWeight,
       cell: (row) => <span>{row.boxWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Weight",
+      name: t("Lot Weight"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
@@ -260,14 +263,14 @@ function MarketList() {
     //   hide: "md",
     // },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -275,21 +278,21 @@ function MarketList() {
     },
 
     {
-      name: "Division",
+      name: t("Division"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon Age",
+      name: t("Cocoon Age"),
       selector: (row) => row.cocoonAge,
       cell: (row) => <span>{row.cocoonAge}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market Type",
+      name: t("Market Type"),
       selector: (row) => row.marketTypeMasterName,
       cell: (row) => <span>{row.marketTypeMasterName}</span>,
       sortable: true,
@@ -298,11 +301,11 @@ function MarketList() {
   ];
 
   return (
-    <Layout title="Market List">
+    <Layout title={t("Market List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market List</Block.Title>
+            <Block.Title tag="h2">{t("Market List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -312,7 +315,7 @@ function MarketList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -321,7 +324,7 @@ function MarketList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -335,7 +338,7 @@ function MarketList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -345,8 +348,8 @@ function MarketList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
+                      <option value="marketMasterName">{t("Market")}</option>
+                      <option value="marketTypeMasterName">{t("Market Type")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -358,12 +361,12 @@ function MarketList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

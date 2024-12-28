@@ -9,11 +9,15 @@ import { Icon } from "../../../components";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function Bin() {
+  // Translation
+    const { t } = useTranslation();
   const [small, setSmall] = useState([]);
   const smallBin = [
     {
@@ -326,11 +330,11 @@ function Bin() {
   }, [data.marketId]);
 
   return (
-    <Layout title="Bin">
+    <Layout title={t("Bin")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bin</Block.Title>
+            <Block.Title tag="h2">{t("Bin")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -376,14 +380,14 @@ function Bin() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Market</Form.Label>
+                      <Form.Label>{t("Market")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="marketId"
                           value={data.marketId}
                           onChange={change}
                         >
-                          <option value="0">Select Market</option>
+                          <option value="0">{t("Select Market")}</option>
                           {marketListData.map((list) => (
                             <option
                               key={list.marketMasterId}
@@ -398,14 +402,14 @@ function Bin() {
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Godown</Form.Label>
+                      <Form.Label>{t("Godown")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="godownId"
                           value={data.godownId}
                           onChange={change}
                         >
-                          <option value="0">Select Godown</option>
+                          <option value="0">{t("Select Godown")}</option>
                           {godownListData.map((list) => (
                             <option key={list.godownId} value={list.godownId}>
                               {list.godownName}
@@ -444,7 +448,7 @@ function Bin() {
                   <Col lg="3">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="smallBinStart">
-                        Small Bin Start Number
+                        {t("Small Bin Start Number")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -453,7 +457,7 @@ function Bin() {
                           name="smallBinStart"
                           value={data.smallBinStart}
                           onChange={change}
-                          placeholder="Enter Small Bin Start Number"
+                          placeholder={t("Enter Small Bin Start Number")}
                         />
                       </div>
                     </Form.Group>
@@ -461,7 +465,7 @@ function Bin() {
                   <Col lg="3">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="smallBinEnd">
-                        Small Bin End Number
+                        {t("Small Bin End Number")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -470,7 +474,7 @@ function Bin() {
                           name="smallBinEnd"
                           value={data.smallBinEnd}
                           onChange={change}
-                          placeholder="Enter Small Bin End Number"
+                          placeholder={t("Enter Small Bin End Number")}
                         />
                       </div>
                     </Form.Group>
@@ -478,7 +482,7 @@ function Bin() {
                   <Col lg="3">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="binbigstart">
-                        Big Bin Start Number
+                        {t("Big Bin Start Number")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -487,7 +491,7 @@ function Bin() {
                           name="bigBinstart"
                           value={data.bigBinstart}
                           onChange={change}
-                          placeholder="Enter Big Bin Start Number"
+                          placeholder={t("Enter Big Bin Start Number")}
                         />
                       </div>
                     </Form.Group>
@@ -495,7 +499,7 @@ function Bin() {
                   <Col lg="3">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="binbigend">
-                        Big Bin End Number
+                        {t("Big Bin End Number")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -504,7 +508,7 @@ function Bin() {
                           name="bigBinEnd"
                           value={data.bigBinEnd}
                           onChange={change}
-                          placeholder="Enter Big Bin End Number"
+                          placeholder={t("Enter Big Bin End Number")}
                         />
                       </div>
                     </Form.Group>
@@ -518,7 +522,7 @@ function Bin() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={display}> */}
                   <Button type="button" variant="primary" onClick={postData}>
-                    Generate Bin Status
+                    {t("Generate Bin Status")}
                   </Button>
                 </li>
               </ul>
@@ -526,7 +530,7 @@ function Bin() {
 
             <div className={isActive ? "mt-3" : "d-none"}>
               <Card>
-                <Card.Header>Small Bins</Card.Header>
+                <Card.Header>{t("Small Bins")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="12">
@@ -598,7 +602,7 @@ function Bin() {
                 </Card.Body>
               </Card>
               <Card className="mt-3">
-                <Card.Header>Big Bins</Card.Header>
+                <Card.Header>{t("Big Bins")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="12">
@@ -674,12 +678,12 @@ function Bin() {
                       variant="primary"
                       onClick={() => saveSuccess()}
                     >
-                      Save
+                      {t("save")}
                     </Button>
                   </li>
                   <li>
                     <Link to="#" className="btn btn-secondary border-0">
-                      Cancel
+                    {t("cancel")}
                     </Link>
                   </li>
                 </ul>
