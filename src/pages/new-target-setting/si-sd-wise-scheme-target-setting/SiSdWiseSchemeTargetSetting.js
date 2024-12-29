@@ -637,6 +637,7 @@ function SiSdWiseSchemeTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {

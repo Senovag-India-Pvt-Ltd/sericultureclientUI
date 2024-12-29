@@ -1239,7 +1239,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Districtwise Production Physical Target Setting
+            District wise Production Physical Target Setting
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>

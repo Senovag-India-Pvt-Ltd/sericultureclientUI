@@ -1276,7 +1276,7 @@ function TscwiseProdPhysicalTargetSetting() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              TSC wise Production Physical Target Setting
+            TSC wise Product Physical Target Setting
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
