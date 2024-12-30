@@ -7,10 +7,15 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import GodawnDatas from "../../../store/masters/godawn/GodawnData";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GodawnView() {
+
+  // Translation
+           const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,11 +56,11 @@ function GodawnView() {
   }, [id]);
 
   return (
-    <Layout title="Godown View">
+    <Layout title={t("Godown View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Godown View</Block.Title>
+            <Block.Title tag="h2">{t("Godown View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +70,7 @@ function GodawnView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +79,7 @@ function GodawnView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,26 +89,26 @@ function GodawnView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Godown Details</Card.Header>
+          <Card.Header>{t("Godown Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}> {t("ID")}:</td>
                       <td>{Godawn.godownId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Market:</td>
+                      <td style={styles.ctstyle}> {t("Market")}:</td>
                       <td>{Godawn.marketMasterName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Godown name:</td>
+                      <td style={styles.ctstyle}> {t("Godown name")}:</td>
                       <td>{Godawn.godownName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Godown name In Kannada:</td>
+                      <td style={styles.ctstyle}> {t("Godown name In Kannada")}:</td>
                       <td>{Godawn.godownNameInKannada}</td>
                     </tr>
                   </tbody>

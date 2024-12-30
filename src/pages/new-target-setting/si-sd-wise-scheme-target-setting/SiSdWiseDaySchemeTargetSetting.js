@@ -635,6 +635,7 @@ function SiSdWiseDaySchemeTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {

@@ -6,9 +6,15 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
+
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TscView() {
+  // Translation
+           const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,11 +54,11 @@ function TscView() {
   }, [id]);
 
   return (
-    <Layout title="Tsc View">
+    <Layout title={t("Tsc View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Tsc View</Block.Title>
+            <Block.Title tag="h2">{t("Tsc View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +68,7 @@ function TscView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +77,7 @@ function TscView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,11 +87,11 @@ function TscView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Tsc Details</Card.Header>
+          <Card.Header>{t("Tsc Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,35 +99,35 @@ function TscView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{Tsc.tscMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Tsc:</td>
+                        <td style={styles.ctstyle}>{t("Tsc")}:</td>
                         <td>{Tsc.name}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Tsc Name In Kannada:
+                          {t("Tsc Name In Kannada")}:
                         </td>
                         <td>{Tsc.nameInKannada}</td>
                       </tr>
 
                       <tr>
                         <td style={styles.ctstyle}>
-                          District:
+                          {t("District")}:
                         </td>
                         <td>{Tsc.districtName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Taluk:
+                          {t("Taluk")}:
                         </td>
                         <td>{Tsc.talukName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Address:
+                          {t("Address")}:
                         </td>
                         <td>{Tsc.address}</td>
                       </tr>
