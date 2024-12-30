@@ -6,9 +6,15 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
+
+
 function FarmView() {
+  // Translation
+           const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,11 +54,11 @@ function FarmView() {
   }, [id]);
 
   return (
-    <Layout title="Farm View">
+    <Layout title={t("Farm View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farm View</Block.Title>
+            <Block.Title tag="h2">{t("Farm View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +68,7 @@ function FarmView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +77,7 @@ function FarmView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,11 +87,11 @@ function FarmView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Farm Details</Card.Header>
+          <Card.Header>{t("Farm Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,26 +99,26 @@ function FarmView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{Farm.farmId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Farm Name:</td>
+                        <td style={styles.ctstyle}>{t("Farm Name")}:</td>
                         <td>{Farm.farmName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Farm Name In Kannada:
+                          {t("Farm Name In Kannada")}:
                         </td>
                         <td>{Farm.farmNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
+                        <td style={styles.ctstyle}>{t("User Name")}:</td>
                         <td>{Farm.username}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Is BSF:</td>
+                        <td style={styles.ctstyle}>{t("Is BSF")}:</td>
                         <td>{Farm.isBsf}</td>
                       </tr>
                     </tbody>

@@ -8,10 +8,14 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GodawnEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -137,11 +141,11 @@ function GodawnEdit() {
   };
 
   return (
-    <Layout title="Edit Godown">
+    <Layout title={t("Edit Godown")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Godown</Block.Title>
+            <Block.Title tag="h2">{t("Edit Godown")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -151,7 +155,7 @@ function GodawnEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -160,7 +164,7 @@ function GodawnEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -176,14 +180,14 @@ function GodawnEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                   {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Market<span className="text-danger">*</span>
+                          {t("Market")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -197,7 +201,7 @@ function GodawnEdit() {
                               data.marketMasterId === "0"
                             }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -208,7 +212,7 @@ function GodawnEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market Name is required
+                            {t("Market Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -216,7 +220,7 @@ function GodawnEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Godown Name">
-                          Godown Name<span className="text-danger">*</span>
+                          {t("Godown Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -225,11 +229,11 @@ function GodawnEdit() {
                             value={data.godownName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Godown Name"
+                            placeholder={t("Enter Godown Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Godown Name is required
+                            {t("Godown Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -238,7 +242,7 @@ function GodawnEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Godown Name">
-                          Godown Name in Kannada
+                          {t("Godown Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -248,11 +252,11 @@ function GodawnEdit() {
                             value={data.godownNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Godown Name in Kannada"
+                            placeholder={t("Enter Godown Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Godown Name in Kannada is required
+                            {t("Godown Name in Kannada is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -267,12 +271,12 @@ function GodawnEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>
