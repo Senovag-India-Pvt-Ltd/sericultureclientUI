@@ -57,6 +57,7 @@ function Market() {
     divisionMasterId:"",
     paymentMode: "",
     cocoonAge: "",
+    isTest: false,
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -81,6 +82,14 @@ function Market() {
     setData((prev) => ({
       ...prev,
       bidAmountFlag: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxIsTest = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      isTest: e.target.checked,
     }));
   };
 
@@ -1275,6 +1284,22 @@ function Market() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         {t("Bid Amount Flag")}
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="isTest"
+                          checked={data.isTest}
+                          onChange={handleCheckBoxIsTest}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Is Test
                       </Form.Label>
                     </Form.Group>
                   </Col>
