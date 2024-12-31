@@ -7,10 +7,14 @@ import Swal from "sweetalert2";
 import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Crate() {
+  // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     raceMasterId: "",
     marketId: "",
@@ -178,11 +182,11 @@ function Crate() {
     });
   };
   return (
-    <Layout title="Crate">
+    <Layout title={t("Crate")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Crate</Block.Title>
+            <Block.Title tag="h2">{t("Crate")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -192,7 +196,7 @@ function Crate() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -201,7 +205,7 @@ function Crate() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -220,7 +224,7 @@ function Crate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Market<span className="text-danger">*</span>
+                        {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -235,7 +239,7 @@ function Crate() {
                               data.marketId === "0"
                             }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -246,7 +250,7 @@ function Crate() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market is required
+                            {t("Market is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -256,7 +260,7 @@ function Crate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Race<span className="text-danger">*</span>
+                        {t("Race")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -271,7 +275,7 @@ function Crate() {
                               data.raceMasterId === "0"
                             }
                           >
-                            <option value="">Select Race</option>
+                            <option value="">{t("Select Race")}</option>
                             {raceListData.map((list) => (
                               <option
                                 key={list.raceMasterId}
@@ -282,7 +286,7 @@ function Crate() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Race is required
+                            {t("Race is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -327,7 +331,7 @@ function Crate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Approx Weight Per Crate
+                        {t("Approx Weight Per Crate")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -337,11 +341,11 @@ function Crate() {
                           value={data.approxWeightPerCrate}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Approx Weight Per Crate"
+                          placeholder={t("Enter Approx Weight Per Crate")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Approx Weight Per Crate is required.
+                          {t("Approx Weight Per Crate is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -355,7 +359,7 @@ function Crate() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -366,7 +370,7 @@ function Crate() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -1553,7 +1553,25 @@
   "Enter Race": "Enter Race",
   "Race Name In Kannada": "Race Name In Kannada",
   "Enter Race Name in Kannada": "Enter Race Name in Kannada",
-  "Race Name In Kannada is required": "Race Name In Kannada is required"
+  "Race Name In Kannada is required": "Race Name In Kannada is required",
+  "Edit Race": "Edit Race",
+   "Race List": "Race List",
+   "Race View": "Race View",
+  "Race Details": "Race Details",
+  "Source": "Source",
+  "Source Name In Kannada": "Source Name In Kannada",
+  "Enter Source Name In Kannada": "Enter Source Name In Kannada",
+  "Source Name In Kannada is required": "Source Name In Kannada is required",
+  "Edit Source": "Edit Source",
+  "Source List": "Source List",
+   "Source Details": "Source Details",
+  "Source View": "Source View",
+  "Approx Weight Per Crate is required": "Approx Weight Per Crate is required",
+  "Enter Approx Weight Per Crate": "Enter Approx Weight Per Crate",
+  "Approx Weight Per Crate": "Approx Weight Per Crate",
+  "Crate": "Crate"
+   
+  
   
 
 

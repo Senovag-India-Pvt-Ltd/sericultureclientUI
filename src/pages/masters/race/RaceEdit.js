@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RaceEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -137,11 +141,11 @@ function RaceEdit() {
   };
 
   return (
-    <Layout title="Edit Race">
+    <Layout title={t("Edit Race")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Race</Block.Title>
+            <Block.Title tag="h2">{t("Edit Race")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -151,7 +155,7 @@ function RaceEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -160,7 +164,7 @@ function RaceEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -176,14 +180,14 @@ function RaceEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Market<span className="text-danger">*</span>
+                          {t("Market")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -197,7 +201,7 @@ function RaceEdit() {
                               data.marketMasterId === "0"
                             }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -208,7 +212,7 @@ function RaceEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market Name is required
+                           {t("Market Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -217,7 +221,7 @@ function RaceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="raceMaster">
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -226,11 +230,11 @@ function RaceEdit() {
                             value={data.raceMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Race"
+                            placeholder={t("Enter Race")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Race is required.
+                            {t("Race is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -239,7 +243,7 @@ function RaceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="raceMaster">
-                          Race Name In Kannada
+                          {t("Race Name In Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -249,11 +253,11 @@ function RaceEdit() {
                             value={data.raceNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Race Name in Kannada"
+                            placeholder={t("Enter Race Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Race Name In Kannada is required.
+                            {t("Race Name In Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -268,12 +272,12 @@ function RaceEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>
