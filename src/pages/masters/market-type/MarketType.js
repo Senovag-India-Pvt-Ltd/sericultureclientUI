@@ -7,12 +7,16 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 import { Icon } from "../../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MarketType() {
+  // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     marketTypeMasterName: "",
     reelerFee: "",
@@ -102,11 +106,11 @@ function MarketType() {
   };
 
   return (
-    <Layout title="Market Type">
+    <Layout title={t("Market Type")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market Type</Block.Title>
+            <Block.Title tag="h2">{t("Market Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -116,7 +120,7 @@ function MarketType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -125,7 +129,7 @@ function MarketType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -144,7 +148,7 @@ function MarketType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="marketTypeMasterName">
-                        Market Type<span className="text-danger">*</span>
+                        {t("Market Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -153,18 +157,18 @@ function MarketType() {
                           type="text"
                           value={data.marketTypeMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Market Type"
+                          placeholder={t("Enter Market Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Type is required.
+                          {t("Market Type is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="marketTypeMasterName">
-                        Market Type Name In Kannada
+                        {t("Market Type Name In Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -174,17 +178,17 @@ function MarketType() {
                           type="text"
                           value={data.marketTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Market Type Name in Kannada"
+                          placeholder={t("Enter Market Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Type Name in Kannada is required.
+                          {t("Market Type Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="reeler">
-                        Reeler Fee (in %)<span className="text-danger">*</span>
+                        {t("Reeler Fee (in %)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -193,11 +197,11 @@ function MarketType() {
                           type="text"
                           value={data.reelerFee}
                           onChange={handleInputs}
-                          placeholder="Enter Reeler Fee"
+                          placeholder={t("Enter Reeler Fee")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reeler Fee is required.
+                          {t("Reeler Fee is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -206,7 +210,7 @@ function MarketType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="farmerFee">
-                        Farmer Fee (in %)<span className="text-danger">*</span>
+                        {t("Farmer Fee (in %)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -215,17 +219,17 @@ function MarketType() {
                           type="text"
                           value={data.farmerFee}
                           onChange={handleInputs}
-                          placeholder="Enter Farmer Fee"
+                          placeholder={t("Enter Farmer Fee")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Farmer Fee is required.
+                          {t("Farmer Fee is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trader">
-                        Trader Fee (in %)<span className="text-danger">*</span>
+                        {t("Trader Fee (in %)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -234,11 +238,11 @@ function MarketType() {
                           type="text"
                           value={data.traderFee}
                           onChange={handleInputs}
-                          placeholder="Enter Trader Fee"
+                          placeholder={t("Enter Trader Fee")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Trader Fee is required.
+                          {t("Trader Fee is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -252,12 +256,12 @@ function MarketType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

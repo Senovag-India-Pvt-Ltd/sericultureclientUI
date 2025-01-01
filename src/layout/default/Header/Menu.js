@@ -1137,7 +1137,7 @@ function Menu() {
         <MenuItem sub>
           {showMenu.Registration ? (
             <MenuItemLink
-              text="Registration"
+              text={t("Registration")}
               onClick={menuToggle}
               onMouseEnter={menuHover}
               sub

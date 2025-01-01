@@ -7,10 +7,14 @@ import Swal from "sweetalert2";
 import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CrateEdit() {
+    // Translation
+    const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -170,11 +174,11 @@ function CrateEdit() {
   // };
 
   return (
-    <Layout title="Edit Crate">
+    <Layout title={t("Edit Crate")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Crate</Block.Title>
+            <Block.Title tag="h2">{t("Edit Crate")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -184,7 +188,7 @@ function CrateEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -193,7 +197,7 @@ function CrateEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -212,7 +216,7 @@ function CrateEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Market<span className="text-danger">*</span>
+                        {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -227,7 +231,7 @@ function CrateEdit() {
                               data.marketId === "0"
                             }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -238,7 +242,7 @@ function CrateEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market is required
+                            {t("Market is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -248,7 +252,7 @@ function CrateEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Race<span className="text-danger">*</span>
+                        {t("Race")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -263,7 +267,7 @@ function CrateEdit() {
                               data.raceMasterId === "0"
                             }
                           >
-                            <option value="">Select Race</option>
+                            <option value="">{t("Select Race")}</option>
                             {raceListData.map((list) => (
                               <option
                                 key={list.raceMasterId}
@@ -274,7 +278,7 @@ function CrateEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Race is required
+                            {t("Race is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -284,7 +288,7 @@ function CrateEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Approx Weight Per Crate
+                        {t("Approx Weight Per Crate")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -294,11 +298,11 @@ function CrateEdit() {
                           value={data.approxWeightPerCrate}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Approx Weight Per Crate"
+                          placeholder={t("Enter Approx Weight Per Crate")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Approx Weight Per Crate is required.
+                          {t("Approx Weight Per Crate is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -312,7 +316,7 @@ function CrateEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
@@ -323,7 +327,7 @@ function CrateEdit() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

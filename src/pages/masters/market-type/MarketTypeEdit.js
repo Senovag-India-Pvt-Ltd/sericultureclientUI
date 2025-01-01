@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MarketTypeEdit() {
+   // Translation
+   const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -122,11 +126,11 @@ function MarketTypeEdit() {
   };
 
   return (
-    <Layout title="Edit Market Type">
+    <Layout title={t("Edit Market Type")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Market Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit Market Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,7 +140,7 @@ function MarketTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -145,7 +149,7 @@ function MarketTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -161,14 +165,14 @@ function MarketTypeEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="marketTypeMasterName">
-                          Market Type<span className="text-danger">*</span>
+                          {t("Market Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -177,18 +181,18 @@ function MarketTypeEdit() {
                             type="text"
                             value={data.marketTypeMasterName}
                             onChange={handleInputs}
-                            placeholder="Enter Market Type"
+                            placeholder={t("Enter Market Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Market Type is required.
+                            {t("Market Type is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="marketTypeMasterName">
-                          Market Type Name In Kannada
+                          {t("Market Type Name In Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -198,18 +202,18 @@ function MarketTypeEdit() {
                             type="text"
                             value={data.marketTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Market Type Name in Kannada"
+                            placeholder={t("Enter Market Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Market Type Name in Kannada is required.
+                            {t("Market Type Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reeler">
-                          Reeler Fee (in %)
+                          {t("Reeler Fee (in %)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -219,11 +223,11 @@ function MarketTypeEdit() {
                             type="text"
                             value={data.reelerFee}
                             onChange={handleInputs}
-                            placeholder="Enter Reeler Fee"
+                            placeholder={t("Enter Reeler Fee")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reeler Fee is required.
+                           {t("Reeler Fee is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -232,7 +236,7 @@ function MarketTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="farmerFee">
-                          Farmer Fee (in %)
+                          {t("Farmer Fee (in %)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -242,17 +246,17 @@ function MarketTypeEdit() {
                             type="text"
                             value={data.farmerFee}
                             onChange={handleInputs}
-                            placeholder="Enter Farmer Fee"
+                            placeholder={t("Enter Farmer Fee")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Fee is required.
+                            {t("Farmer Fee is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="trader">
-                          Trader Fee (in %)
+                          {t("Trader Fee (in %)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -262,11 +266,12 @@ function MarketTypeEdit() {
                             type="text"
                             value={data.traderFee}
                             onChange={handleInputs}
-                            placeholder="Enter Trader Fee"
+                            placeholder={t
+                              ("Enter Trader Fee")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Trader Fee is required.
+                            {t("Trader Fee is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -281,12 +286,12 @@ function MarketTypeEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>
