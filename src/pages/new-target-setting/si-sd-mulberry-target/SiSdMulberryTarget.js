@@ -233,6 +233,12 @@ function SiSdMulberryTarget() {
     }
   }, [editData.tscMasterId]);
 
+  // useEffect(() => {
+  //   if (editData.tscMasterId) {
+  //     getUserListByTsc(editData.tscMasterId);
+  //   }
+  // }, [editData.tscMasterId]);
+
   const customStyles = {
     rows: {
       style: {
@@ -283,6 +289,7 @@ function SiSdMulberryTarget() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {
@@ -416,6 +423,13 @@ function SiSdMulberryTarget() {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -724,8 +738,8 @@ function SiSdMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -862,8 +876,8 @@ function SiSdMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1845,7 +1859,7 @@ function SiSdMulberryTarget() {
                 </Form.Group>
               </Col>
 
-              {/* <Col lg="6">
+              <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     User<span className="text-danger">*</span>
@@ -1877,7 +1891,7 @@ function SiSdMulberryTarget() {
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-              </Col> */}
+              </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">

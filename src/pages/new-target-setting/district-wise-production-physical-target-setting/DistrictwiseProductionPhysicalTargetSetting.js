@@ -19,6 +19,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -102,6 +103,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -345,6 +347,13 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       hide: "md",
     },
     {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Race",
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
@@ -501,6 +510,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {
@@ -572,6 +582,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -599,6 +610,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -682,6 +694,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "50px", textAlign: "center" },
+
     },
     {
       name: "Financial Year",
@@ -689,6 +703,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target",
@@ -696,6 +712,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "District",
@@ -703,6 +721,17 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
   
     {
@@ -711,6 +740,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     // {
     //   name: "Target Type",
@@ -725,6 +756,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target No",
@@ -732,6 +765,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "User",
@@ -739,6 +774,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     
     
@@ -825,7 +862,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
-      style: { minWidth: "150px", textAlign: "left" },
+      style: { minWidth: "100px", textAlign: "center" },
     },
     {
       name: "Target",
@@ -833,6 +870,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
   
     {
@@ -841,6 +880,17 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     // {
     //   name: "Target Type",
@@ -855,6 +905,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "150px", textAlign: "center" },
     },
     {
       name: "Month",
@@ -862,6 +913,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Target No",
@@ -869,6 +921,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "User",
@@ -876,6 +929,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Action",
@@ -1371,6 +1425,41 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                         </Col>
 
                         <Col lg="6">
+                                                  <Form.Group className="form-group mt-n4">
+                                                    <Form.Label>
+                                                      Taluk<span className="text-danger">*</span>
+                                                    </Form.Label>
+                                                    <div className="form-control-wrap">
+                                                      <Form.Select
+                                                        name="talukId"
+                                                        value={data.talukId}
+                                                        onChange={handleInputs}
+                                                        onBlur={() => handleInputs}
+                                                        required
+                                                        isInvalid={
+                                                          data.talukId === undefined ||
+                                                          data.talukId === "0"
+                                                        }
+                                                      >
+                                                        <option value="">Select Taluk</option>
+                                                        {talukListData.map((list) => (
+                                                          <option
+                                                            key={list.talukId}
+                                                            value={list.talukId}
+                                                          >
+                                                            {list.talukName}
+                                                          </option>
+                                                        ))}
+                                                      </Form.Select>
+                                                      <Form.Control.Feedback type="invalid">
+                                                        Taluk is required
+                                                      </Form.Control.Feedback>
+                                                    </div>
+                                                  </Form.Group>
+                                                </Col>
+                        
+
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Race<span className="text-danger">*</span>
@@ -1734,6 +1823,37 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                         </Col>
 
                         <Col lg="6">
+                                        <Form.Group className="form-group mt-n4">
+                                          <Form.Label>
+                                            Taluk<span className="text-danger">*</span>
+                                          </Form.Label>
+                                          <div className="form-control-wrap">
+                                            <Form.Select
+                                              name="talukId"
+                                              value={editData.talukId}
+                                              onChange={handleEditInputs}
+                                              onBlur={() => handleEditInputs}
+                                              required
+                                              isInvalid={
+                                                editData.talukId === undefined ||
+                                                editData.talukId === "0"
+                                              }
+                                            >
+                                              <option value="">Select Taluk</option>
+                                              {talukListData.map((list) => (
+                                                <option key={list.talukId} value={list.talukId}>
+                                                  {list.talukName}
+                                                </option>
+                                              ))}
+                                            </Form.Select>
+                                            <Form.Control.Feedback type="invalid">
+                                              Taluk is required
+                                            </Form.Control.Feedback>
+                                          </div>
+                                        </Form.Group>
+                                      </Col>
+
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Race<span className="text-danger">*</span>
@@ -1764,7 +1884,6 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                             </Col>
                           </Form.Group>
                         </Col>
-
                        
 
                         <Col lg="6">
@@ -1925,7 +2044,8 @@ function DistrictwiseProductionPhysicalTargetSetting() {
           </Modal.Body>
       </Modal>
 
-      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl" style={{ maxWidth: '100%', margin: '0 auto' }}>
+      {/* <Modal show={showModal4} onHide={handleCloseModal4} size="xl"> */}
         <Modal.Header closeButton>
           <Modal.Title>View Target Details</Modal.Title>
         </Modal.Header>

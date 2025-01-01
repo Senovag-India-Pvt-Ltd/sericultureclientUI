@@ -19,6 +19,7 @@ function DistrictWiseMontlyMulberry() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -85,6 +86,7 @@ function DistrictWiseMontlyMulberry() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -132,6 +134,30 @@ function DistrictWiseMontlyMulberry() {
     getMulberryTargetTypeList();
   }, []);
 
+
+   // to get taluk
+   const [talukListDatas, setTalukListDatas] = useState([]);
+   const getTalukListData = (_id) => {
+     const response = api
+       .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+       .then((response) => {
+         if (response.data.content.taluk) {
+           setTalukListData(response.data.content.taluk);
+         }
+       })
+       .catch((err) => {
+         setTalukListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+     if (data.districtId) {
+       getTalukList(data.districtId);
+     }
+   }, [data.districtId]);
+
+   
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
@@ -481,6 +507,14 @@ function DistrictWiseMontlyMulberry() {
       hide: "md",
     },
     {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+
+    },
+    {
       name: "Target Type",
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
@@ -516,6 +550,7 @@ function DistrictWiseMontlyMulberry() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -542,6 +577,7 @@ function DistrictWiseMontlyMulberry() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -624,6 +660,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "50px", textAlign: "center" },
+
     },
     {
       name: "Financial Year",
@@ -631,6 +669,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target",
@@ -638,6 +678,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
 
     {
@@ -646,6 +688,17 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target Type",
@@ -653,6 +706,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Month",
@@ -660,6 +715,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target No",
@@ -667,6 +724,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "User",
@@ -674,6 +733,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
   ];
 
@@ -755,6 +816,8 @@ function DistrictWiseMontlyMulberry() {
       sortable: true,
       hide: "md",
       style: { minWidth: "150px", textAlign: "left" },
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target",
@@ -762,6 +825,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
 
     {
@@ -770,6 +835,17 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target Type",
@@ -777,6 +853,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Month",
@@ -784,6 +862,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     {
       name: "Target No",
@@ -791,6 +871,8 @@ function DistrictWiseMontlyMulberry() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+
     },
     // {
     //   name: "User",
@@ -1099,7 +1181,7 @@ function DistrictWiseMontlyMulberry() {
     getDesignationList();
   }, []);
 
-  // to get taluk
+   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
 
   const getTalukList = (_id) => {
@@ -1291,6 +1373,40 @@ function DistrictWiseMontlyMulberry() {
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 District is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Taluk<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukId"
+                                value={data.talukId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                // isInvalid={
+                                //   data.districtId === undefined ||
+                                //   data.districtId === "0"
+                                // }
+                              >
+                                <option value="">Select Taluk</option>
+                                {talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Taluk is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1928,27 +2044,27 @@ function DistrictWiseMontlyMulberry() {
                   </Form.Group>
                 </Col>
 
-                {/* Taluk Input */}
-                <Col sm={4}>
-                  <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
-                    <Form.Select
-                      name="talukId"
-                      value={searchData.talukId}
-                      onChange={handleSearchInputs}
-                      className="form-control"
-                    >
-                      <option value="">Select Taluk</option>
-                      {talukListData &&
-                        talukListData.length &&
-                        talukListData.map((list) => (
-                          <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
-                          </option>
-                        ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
+               {/* Taluk Input */}
+          <Col sm={4}>
+            <Form.Group className="form-group">
+              <Form.Label>Taluk</Form.Label>
+              <Form.Select
+                name="talukId"
+                value={searchData.talukId}
+                onChange={handleSearchInputs}
+                className="form-control"
+              >
+                <option value="">Select Taluk</option>
+                {talukListData &&
+                  talukListData.length &&
+                  talukListData.map((list) => (
+                    <option key={list.talukId} value={list.talukId}>
+                      {list.talukName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
                 {/* Designation Input */}
                 <Col sm={4}>

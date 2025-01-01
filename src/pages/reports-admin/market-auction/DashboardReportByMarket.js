@@ -181,108 +181,120 @@ function DashboardReportByMarket() {
     marketName: "",
   });
 
-  const generateDashboardReport = async () => {
-    const { reportFromDate } = data;
-    const formattedPendingDate =
-      reportFromDate.getFullYear() +
-      "-" +
-      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      reportFromDate.getDate().toString().padStart(2, "0");
+  //   const generateDashboardReport = async () => {
+  //     const { reportFromDate } = data;
+  //     const formattedPendingDate =
+  //       reportFromDate.getFullYear() +
+  //       "-" +
+  //       (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
+  //       "-" +
+  //       reportFromDate.getDate().toString().padStart(2, "0");
 
+  //     api
+  //       .post(baseURLMarket + `auction/report/getDashboardReport`, {
+  //         marketId: data.marketId,
+  //         dashboardReportDate: formattedPendingDate,
+  //       })
+  //       .then((response) => {
+  //         if (response.data.content && response.data.errorCode === 0) {
+  //           // debugger
+  //           setDashboardList(response.data.content.dashboardReportInfoList);
+  //           setStatus({
+  //             auctionStarted: response.data.content.auctionStarted,
+  //             acceptanceStarted: response.data.content.acceptanceStarted,
+  //             marketName: response.data.content.marketName,
+  //           });
+  //         } else {
+  //           // saveSuccess(arnNumber);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         // setVbAccount({});
+  //         if (err.response.data) {
+  //           console.log(err.response.data);
+  //           saveError(err.response.data.errorMessages[0].message[0].message);
+  //           setDashboardList([]);
+  //         }
+  //         // if (
+  //         //   Object.keys(err.response.data.validationErrors).length > 0
+  //         // ) {
+  //         //   saveError(err.response.data.validationErrors);
+  //         // }
+  //       });
+  //   };
+
+  //   useEffect(() => {
+  //     generateDashboardReport(new Date());
+  //   }, []);
+
+  const [pendingData, setPendingData] = useState([]);
+
+  const [listData, setListData] = useState([]);
+  const getData = (e) => {
     api
-      .post(baseURLMarket + `auction/report/getDashboardReport`, {
-        marketId: data.marketId,
-        dashboardReportDate: formattedPendingDate,
+      .post(baseURLMarket + `auction/report/getDashboardReportAllMarket`, {})
+      .then((response) => {
+        setListData(response.data?.content);
+      })
+      .catch((error) => {
+        if (error.response.data && !error.response.data.content) {
+          Swal.fire({
+            icon: "error",
+            // title: "Not Found",
+            text: error.response.data.errorMessages[0].message[0].message,
+          });
+          setPendingData([]);
+        }
+        // console.log("error", error);
+      });
+  };
+
+  const [reelerDetails, setReelerDetails] = useState([]);
+  const [totalAmountOfAllMarket, setTotalAmountOfAllMarket] = useState(0);
+  console.log('hellototao',totalAmountOfAllMarket);
+  const getReelerDepositDetails = (e) => {
+    const today =
+      new Date().getFullYear() +
+      "-" +
+      (new Date().getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      new Date().getDate().toString().padStart(2, "0");
+    api
+      .post(baseURLMarket + `auction/reeler/getReelerCreditDetailsAllMarket`, {
+        transactionDate: today,
+        // transactionDate: "2024-08-21",
       })
       .then((response) => {
-        if (response.data.content && response.data.errorCode === 0) {
-          // debugger
-          setDashboardList(response.data.content.dashboardReportInfoList);
-          setStatus({
-            auctionStarted: response.data.content.auctionStarted,
-            acceptanceStarted: response.data.content.acceptanceStarted,
-            marketName: response.data.content.marketName,
-          });
-        } else {
-          // saveSuccess(arnNumber);
-        }
+        setReelerDetails(response.data.content);
+        setTotalAmountOfAllMarket(
+          response.data.content[0]?.totalOfAllMarketDepositedAmount
+        );
       })
-      .catch((err) => {
-        // setVbAccount({});
-        if (err.response.data) {
-          console.log(err.response.data);
-          saveError(err.response.data.errorMessages[0].message[0].message);
-          setDashboardList([]);
+      .catch((error) => {
+        if (error.response.data && !error.response.data.content) {
+          Swal.fire({
+            icon: "error",
+            // title: "Not Found",
+            text: error.response.data.errorMessages[0].message[0].message,
+          });
+          setPendingData([]);
         }
-        // if (
-        //   Object.keys(err.response.data.validationErrors).length > 0
-        // ) {
-        //   saveError(err.response.data.validationErrors);
-        // }
+        // console.log("error", error);
       });
   };
 
   useEffect(() => {
-    generateDashboardReport(new Date());
+    const recall = () => {
+      getData();
+      getReelerDepositDetails();
+    };
+    const timeInterval = setInterval(recall, 30000);
+    recall();
+
+    return () => {
+      clearInterval(timeInterval);
+    };
   }, []);
-
-  const [pendingData, setPendingData] = useState([]);
-
-  const postData = (event) => {
-    const { marketId, godownId, reportFromDate } = data;
-    const newDate = reportFromDate;
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
-
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      generateDashboardReport();
-      // event.stopPropagation();
-      //   api
-      //     .post(baseURLMarket + `auction/report/getPendingLotReport`, {
-      //       marketId: marketId,
-      //       godownId: godownId,
-      //       reportFromDate: formattedDate,
-      //     })
-      //     .then((response) => {
-      //       if (response.data.errorCode === 0) {
-      //         if (response.data.content && response.data.content.length > 0) {
-      //           setPendingData(response.data.content);
-      //         } else {
-      //           setPendingData([]);
-      //           Swal.fire({
-      //             icon: "warning",
-      //             // title: "Not Found",
-      //             text: "No Record Found",
-      //           });
-      //         }
-      //       } else if (response.data.errorCode === -1) {
-      //         saveError(response.data.errorMessages[0].message[0].message);
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       if (error.response.data && !error.response.data.content) {
-      //         Swal.fire({
-      //           icon: "error",
-      //           // title: "Not Found",
-      //           text: error.response.data.errorMessages[0].message[0].message,
-      //         });
-      //         setPendingData([]);
-      //       }
-      //       // console.log("error", error);
-      //     });
-    }
-  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -300,11 +312,11 @@ function DashboardReportByMarket() {
     });
   };
   return (
-    <Layout title="Dashboard Report">
+    <Layout title="All Market Dashboard">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Dashboard Report</Block.Title>
+            <Block.Title tag="h2">All Market Dashboard</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -331,298 +343,507 @@ function DashboardReportByMarket() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Card>
+      <Block className="mt-n2">
+        <Row className="d-flex justify-content-center">
+          <Col sm={12} lg={8} style={styles.lh}>
+            <Card className="mt-5">
+              <Card.Header
+                style={{ fontSize: "1.3rem", fontWeight: "bold" }}
+                className="d-flex justify-content-center"
+              >
+                Govt of Karnataka, Department of Sericulture LIVE Market
+                Transaction for {new Date().toLocaleDateString("en-GB")}
+              </Card.Header>
               <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="">
-                    <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={1}>
-                        Date
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={2}>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            dateFormat="dd/MM/yyyy"
-                            selected={data.reportFromDate}
-                            onChange={handleDateChange}
-                            className="form-control"
-                            maxDate={new Date()}
-                          />
-                        </div>
-                      </Col>
-                      <Col sm={2}>
-                        <Button type="submit" variant="primary">
-                          Generate Report
-                        </Button>
-                      </Col>
-                    </Form.Group>
+                <Row className="g-gs pt-2">
+                  <Col lg="12">
+                    <table
+                      className="table table-striped table-bordered"
+                      style={{ backgroundColor: "white" }}
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Sl No
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Date
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Market
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            No of Lots
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Accepted Lots
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Weighed Lots
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Total Weight
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Total Value
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Max Bid
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Min Bid
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Avg Bid
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {listData.map((list, i) => {
+                          const dashboardList =
+                            list.content.dashboardReportInfoList;
+                          return (
+                            <tr key={i}>
+                              <td>{i + 1}</td>
+                              <td>{new Date().toLocaleDateString("en-GB")}</td>
+                              <td>{list.content.marketName}</td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].totalLots}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].accecptedLots}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].weighedLots}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].totalWeight}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].totalSoldOutAmount}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].accecptedLotsMaxBid}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].accectedLotsMinBid}
+                              </td>
+                              <td>
+                                {dashboardList.length > 0 &&
+                                  dashboardList[0].averagRate}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                        {/* <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>ತೂಕ: {listDetails.totalWeight}</td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    ಮೊತ್ತ: {Math.round(listDetails.totallotSoldOutAmount)}
+                  </td>
+                  <td>
+                    {" "}
+                    ರೈತರ ಮೊತ್ತ: {Math.round(listDetails.totalFarmerAmount)}
+                  </td>
+                  <td>
+                    ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                    {Math.round(
+                      listDetails.totalFarmerMarketFee +
+                        listDetails.totalReelerMarketFee
+                    )}
+                  </td>
+                  <td>
+                    ಖರೀದಿದಾರರ ಮೊತ್ತ: {Math.round(listDetails.totalReelerAmount)}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr> */}
+                        {/* {
+                  <tr>
+                    <td
+                      style={{
+                        fontWeight: "bold",
+                        background: "rgb(251 255 248)",
+                      }}
+                      colSpan="18"
+                    >
+                      <div>
+                        ಒಟ್ಟು ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.totalLots}
+                        </span>
+                      </div>
+                      <div>
+                        ಒಟ್ಟು ವಹಿವಾಟಾಗಿರುವ ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.paymentSuccessLots}
+                        </span>
+                      </div>
+                      <div>
+                        ವಹಿವಾಟಾಗದ ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.notTransactedLots}
+                        </span>
+                      </div>
+                      <div>
+                        ಒಟ್ಟು ತೂಕ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.totalWeight}
+                        </span>
+                      </div>
+                      
+                      <div>
+                        ಒಟ್ಟು ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totallotSoldOutAmount)}
+                        </span>
+                      </div>
+                      <div>
+                        ರೈತರ ಚೆಕ್ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totalFarmerAmount)}
+                        </span>
+                      </div>
+                      <div>
+                        ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(
+                            listDetails.totalReelerMarketFee +
+                              listDetails.totalFarmerMarketFee
+                          )}
+                        </span>
+                      </div>
+                      <div>
+                        ರೀಲರ್ ವ್ಯವಹಾರ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totalReelerAmount)}
+                        </span>
+                      </div>
+
+                      <div>
+                        ಗರಿಷ್ಠ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.maxAmount}
+                        </span>
+                      </div>
+                      <div>
+                        ಕನಿಷ್ಠ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.minAmount}
+                        </span>
+                      </div>
+                      <div>
+                        ಸರಾಸರಿ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.avgAmount}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                } */}
+                      </tbody>
+                    </table>
                   </Col>
                 </Row>
               </Card.Body>
             </Card>
-          </Row>
-        </Form> */}
-        <Row className="d-flex justify-content-center">
-          <Col sm={12} lg={6} style={styles.lh}>
-            {dashboardList && dashboardList.length ? (
-              <Card className="mt-2">
-                <Card.Header style={{ fontSize: "1.3rem" }}>
-                  Dashboard - {status.marketName} : {formattedDateTime}
-                </Card.Header>
-                <Card.Body
-                  style={styles.color}
-                  // style={{
-                  //           background:
-                  //             "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
-                  //             // "linear-gradient(to bottom, #edf601,#ff3c3c)",
-                  //         }}
-                >
-                  <Row className="g-gs d-flex justify-content-center">
-                    <Col lg="12">
-                      <div className="d-flex mt-n2">
-                        <h4
-                          className="text-centre"
-                          style={{ fontSize: "1.3rem", color: "black" }}
-                        >
-                          Bidding Status:{" "}
-                        </h4>
-                        <h4
-                          // style={{ fontWeight: "bold" }}
-                          style={{ fontSize: "1.3rem" }}
-                        >
-                          {" "}
-                          {status.auctionStarted ? (
-                            <span style={styles.green}> Start </span>
-                          ) : (
-                            <span style={styles.red}> Stop </span>
-                          )}
-                        </h4>
-                      </div>
-                      <div className="d-flex">
-                        <h4
-                          className="text-centre"
-                          style={{ fontSize: "1.3rem", color: "black" }}
-                        >
-                          Acceptance Status:
-                        </h4>
-                        <h4
-                          // style={styles.boldFont}
-                          style={{ fontSize: "1.3rem" }}
-                        >
-                          {" "}
-                          {status.acceptanceStarted ? (
-                            <span style={styles.green}> Start </span>
-                          ) : (
-                            <span style={styles.red}> Stop </span>
-                          )}
-                        </h4>
-                      </div>
-                      <table
-                        className="table small table-bordered border border-dark"
-                        style={{
-                          background:
-                            "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
-                        }}
-                      >
+            <Card className="mt-5">
+              <Card.Header
+                style={{ fontSize: "1.3rem", fontWeight: "bold" }}
+                className="d-flex justify-content-center"
+              >
+                Reeler Deposit for {new Date().toLocaleDateString("en-GB")}
+              </Card.Header>
+              <Card.Body>
+                <Row className="g-gs pt-2">
+                  <Col lg="12">
+                    <table
+                      className="table table-striped table-bordered"
+                      style={{ backgroundColor: "white" }}
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Sl No
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Market
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Posting Date
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Deposit Count
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Deposited Amount
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Reelers Count
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {reelerDetails.map((list, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{i + 1}</td>
+                              <td>{list.marketName}</td>
+                              <td>
+                                {new Date(list.postDate).toLocaleDateString(
+                                  "en-GB"
+                                )}
+                              </td>
+                              <td>{list.depositCount}</td>
+                              <td>{list.totalDepositedAmount}</td>
+                              <td>{list.totalReelersCount}</td>
+                            </tr>
+                          );
+                        })}
                         {/* <tr>
-                        <th>Heading 1</th>
-                      </tr>
-                      <tr>
-                        <th>Heading 1</th>
-                      </tr>
-                      <tr>
-                        <th>Heading 1</th>
-                      </tr> */}
-                        <tbody>
-                          {/* <td style={styles.ctstyle}> Bidding Status:</td> */}
-                          {/* <h2 className="text-centre">
-                          Bidding Status:
-                          {status.auctionStarted ? "Start" : "Stop"}
-                        </h2>
-                        <h2 className="text-centre">
-                          Acceptance Status:
-                          {status.acceptanceStarted ? "Start" : "Stop"}
-                        </h2> */}
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>ತೂಕ: {listDetails.totalWeight}</td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    ಮೊತ್ತ: {Math.round(listDetails.totallotSoldOutAmount)}
+                  </td>
+                  <td>
+                    {" "}
+                    ರೈತರ ಮೊತ್ತ: {Math.round(listDetails.totalFarmerAmount)}
+                  </td>
+                  <td>
+                    ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                    {Math.round(
+                      listDetails.totalFarmerMarketFee +
+                        listDetails.totalReelerMarketFee
+                    )}
+                  </td>
+                  <td>
+                    ಖರೀದಿದಾರರ ಮೊತ್ತ: {Math.round(listDetails.totalReelerAmount)}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr> */}
+                        {/* {
+                  <tr>
+                    <td
+                      style={{
+                        fontWeight: "bold",
+                        background: "rgb(251 255 248)",
+                      }}
+                      colSpan="18"
+                    >
+                      <div>
+                        ಒಟ್ಟು ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.totalLots}
+                        </span>
+                      </div>
+                      <div>
+                        ಒಟ್ಟು ವಹಿವಾಟಾಗಿರುವ ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.paymentSuccessLots}
+                        </span>
+                      </div>
+                      <div>
+                        ವಹಿವಾಟಾಗದ ಲಾಟ್‌ಗಳು:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.notTransactedLots}
+                        </span>
+                      </div>
+                      <div>
+                        ಒಟ್ಟು ತೂಕ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.totalWeight}
+                        </span>
+                      </div>
+                      
+                      <div>
+                        ಒಟ್ಟು ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totallotSoldOutAmount)}
+                        </span>
+                      </div>
+                      <div>
+                        ರೈತರ ಚೆಕ್ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totalFarmerAmount)}
+                        </span>
+                      </div>
+                      <div>
+                        ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(
+                            listDetails.totalReelerMarketFee +
+                              listDetails.totalFarmerMarketFee
+                          )}
+                        </span>
+                      </div>
+                      <div>
+                        ರೀಲರ್ ವ್ಯವಹಾರ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {Math.round(listDetails.totalReelerAmount)}
+                        </span>
+                      </div>
 
-                          <tr>
-                            <td style={styles.ctstyle}> Total Lots:</td>
-                            {/* <td>CSR-70</td>
-                          <td>CB-48</td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.raceName}-{dashboard.totalLots}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Total Lots Bid:</td>
-                            {/* <td>118</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.totalLotsBid}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Total Lots Not Bid:</td>
-                            {/* <td>0</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.totalLotsNotBid}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Total Bids:</td>
-                            {/* <td>1897</td>
-                          <td>36</td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                {/* <td style={styles.ctstyle}>{dashboard.totalBids}</td> */}
-                                <td style={styles.ctstyle}>
-                                  {dashboard.totalBids}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>Total Reelers:</td>
-                            {/* <td>107(Active)</td>
-                          <td>253(Paid)</td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.totalReelers}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Current Auction-Max Bid:
-                            </td>
-                            {/* <td>540</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.currentAuctionMaxAmount}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Accepted Lots:</td>
-                            {/* <td>105</td>
-                          <td>12:32:47</td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.accecptedLots}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          {/* <tr>
-                          <td style={styles.ctstyle}> Online Lots:</td>
-                         
-                          {dashboardList.map((dashboard) => (
-                            <>
-                              <td>{dashboard.accecptedLotsMaxBid}</td>
-                            </>
-                          ))}
-                        </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Accepted Lots-Max Bid:
-                            </td>
-                            {/* <td>557.000</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.accecptedLotsMaxBid}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Accepted Lots-Min Bid:
-                            </td>
-                            {/* <td>290.000</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.accectedLotsMinBid}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Average Rate:</td>
-                            {/* <td>0</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.averagRate}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Weighed Lots:</td>
-                            {/* <td>0</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.weighedLots}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Total Soldout Amount:
-                            </td>
-                            {/* <td>0</td>
-                          <td></td> */}
-                            {dashboardList.map((dashboard) => (
-                              <>
-                                <td style={styles.ctstyle}>
-                                  {dashboard.totalSoldOutAmount}
-                                </td>
-                              </>
-                            ))}
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            ) : (
-              ""
-            )}
+                      <div>
+                        ಗರಿಷ್ಠ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.maxAmount}
+                        </span>
+                      </div>
+                      <div>
+                        ಕನಿಷ್ಠ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.minAmount}
+                        </span>
+                      </div>
+                      <div>
+                        ಸರಾಸರಿ ಮೊತ್ತ:{" "}
+                        <span style={{ color: "green" }}>
+                          {listDetails.avgAmount}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                } */}
+                      </tbody>
+                    </table>
+                  </Col>
+                  <Col lg="12" className="d-flex justify-content-center">
+                    <div style={{ fontWeight: "bold",fontSize:"1.1rem" }}>
+                      Total deposit by reelers at{" "}
+                      {new Date().toLocaleDateString("en-GB")} is{" "}
+                      <span style={{color:"green"}}>{totalAmountOfAllMarket?totalAmountOfAllMarket:0}</span>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Block>
