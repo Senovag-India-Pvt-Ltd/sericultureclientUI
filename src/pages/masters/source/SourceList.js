@@ -12,10 +12,15 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceList() {
+// Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -142,7 +147,7 @@ function SourceList() {
 
   const SourceDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -152,7 +157,7 @@ function SourceList() {
             size="sm"
             onClick={() => handleView(row.sourceMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -160,7 +165,7 @@ function SourceList() {
             className="ms-2"
             onClick={() => handleEdit(row.sourceMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -168,7 +173,7 @@ function SourceList() {
             onClick={() => deleteConfirm(row.sourceMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -176,14 +181,14 @@ function SourceList() {
       hide: "md",
     },
     {
-      name: "Source",
+      name: t("Source"),
       selector: (row) => row.sourceMasterName,
       cell: (row) => <span>{row.sourceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Source Name in Kannada",
+      name: t("Source Name In Kannada"),
       selector: (row) => row.sourceNameInKannada,
       cell: (row) => <span>{row.sourceNameInKannada}</span>,
       sortable: true,
@@ -192,11 +197,11 @@ function SourceList() {
   ];
 
   return (
-    <Layout title="Source List">
+    <Layout title={t("Source List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Source List</Block.Title>
+            <Block.Title tag="h2">{t("Source List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -206,7 +211,7 @@ function SourceList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -215,7 +220,7 @@ function SourceList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

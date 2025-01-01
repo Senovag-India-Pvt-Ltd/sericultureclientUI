@@ -12,10 +12,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RaceList() {
+   // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -175,7 +179,7 @@ function RaceList() {
 
   const RaceDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -185,7 +189,7 @@ function RaceList() {
             size="sm"
             onClick={() => handleView(row.raceMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -193,7 +197,7 @@ function RaceList() {
             className="ms-2"
             onClick={() => handleEdit(row.raceMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -201,7 +205,7 @@ function RaceList() {
             onClick={() => deleteConfirm(row.raceMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -216,14 +220,14 @@ function RaceList() {
     //   hide: "md",
     // },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race Name in Kannada",
+      name: t("Race Name In Kannada"),
       selector: (row) => row.raceNameInKannada,
       cell: (row) => <span>{row.raceNameInKannada}</span>,
       sortable: true,
@@ -250,11 +254,11 @@ function RaceList() {
   }, []);
 
   return (
-    <Layout title="Race List">
+    <Layout title={t("Race List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Race List</Block.Title>
+            <Block.Title tag="h2">{t("Race List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -264,7 +268,7 @@ function RaceList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -273,7 +277,7 @@ function RaceList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -287,7 +291,7 @@ function RaceList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Market
+                  {t("Market")}
                 </Form.Label>
                 <Col sm={3}>
                   {/* <Form.Label>Market</Form.Label> */}
@@ -303,7 +307,7 @@ function RaceList() {
                         data.marketMasterId === "0"
                       }
                     >
-                      <option value="">Select Market</option>
+                      <option value="">{t("Select Market")}</option>
                       {marketListData.map((list) => (
                         <option
                           key={list.marketMasterId}
@@ -318,7 +322,7 @@ function RaceList() {
 
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={display}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

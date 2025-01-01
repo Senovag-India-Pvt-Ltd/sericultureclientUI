@@ -14,7 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function DashboardReport() {
+function DashboardReportByMarket() {
   const styles = {
     ctstyle: {
       fontWeight: "bold",
@@ -630,4 +630,4 @@ function DashboardReport() {
   );
 }
 
-export default DashboardReport;
+export default DashboardReportByMarket;

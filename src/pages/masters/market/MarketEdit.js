@@ -43,6 +43,14 @@ function MarketEdit() {
     }));
   };
 
+  const handleCheckBoxIsTest = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      isTest: e.target.checked,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -99,6 +107,7 @@ function MarketEdit() {
               divisionMasterId:"",
               paymentMode: "",
               cocoonAge: "",
+              isTest: "",
             });
             setValidated(false);
           }
@@ -158,6 +167,7 @@ function MarketEdit() {
       divisionMasterId:"",
       paymentMode: "",
       cocoonAge: "",
+      isTest:"",
     });
   };
 
@@ -1289,6 +1299,22 @@ function MarketEdit() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         {t("Bid Amount Flag")}
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="isTest"
+                          checked={data.isTest}
+                          onChange={handleCheckBoxIsTest}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Is Test
                       </Form.Label>
                     </Form.Group>
                   </Col>

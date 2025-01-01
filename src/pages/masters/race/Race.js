@@ -8,10 +8,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Race() {
+  // Translation
+  const { t } = useTranslation();
   const [data, setData] = useState({
     raceMasterName: "",
     marketMasterId: -1,
@@ -125,11 +129,11 @@ function Race() {
   };
 
   return (
-    <Layout title="Race">
+    <Layout title={t("Race")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Race</Block.Title>
+            <Block.Title tag="h2">{t("Race")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -139,7 +143,7 @@ function Race() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -148,7 +152,7 @@ function Race() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -201,7 +205,7 @@ function Race() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="raceMaster">
-                        Race<span className="text-danger">*</span>
+                        {t("Race")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -210,11 +214,11 @@ function Race() {
                           value={data.raceMasterName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Race"
+                          placeholder={t("Enter Race")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Race is required.
+                          {t("Race is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -223,7 +227,7 @@ function Race() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="raceMaster">
-                        Race Name In Kannada
+                        {t("Race Name In Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -233,11 +237,11 @@ function Race() {
                           value={data.raceNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Race Name in Kannada"
+                          placeholder={t("Enter Race Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Race Name In Kannada is required.
+                          {t("Race Name In Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -251,12 +255,12 @@ function Race() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>
