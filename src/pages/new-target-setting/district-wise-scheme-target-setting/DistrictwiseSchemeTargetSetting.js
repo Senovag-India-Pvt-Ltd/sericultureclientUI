@@ -11,6 +11,8 @@ import DataTable from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 
+
+
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -56,15 +58,26 @@ function DistrictwiseSchemeTargetSetting() {
 
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
-  const [showModal3, setShowModal3] = useState(false);
+
   const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal3 = () => setShowModal3(true);
-  const handleCloseModal3 = () => setShowModal3(false);
 
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+
+  const handleCloseModal3 = () => { 
+    setShowModal3(false);
+  userSearchEditClear();
+};
+
+const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    userSearchClear();
+  };
+
+   
 
   const [toggleButton, setToggleButton] = useState(false);
 
@@ -519,8 +532,42 @@ function DistrictwiseSchemeTargetSetting() {
     getCategoryList();
   }, []);
 
+  const userSearchEditClear = () => {
+    setSearchDataEdit({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
+  const userSearchClear = () => {
+    setSearchData({
+      districtId: "",
+  talukId: "",
+  designationId: "",
+  // villageId: "",
+  phoneNumber: "",
+  username: "",
+  userMasterId: "",
+    });
+  };
+
+  const [searchDataEdit, setSearchDataEdit] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
   //   to get data from api
   const [userName,setUserName] = useState("");
+  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
      api
@@ -543,6 +590,27 @@ function DistrictwiseSchemeTargetSetting() {
     }
   }, [searchData.userMasterId]);
 
+  const getIdListEdit = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserNameEdit(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserNameEdit("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.userMasterId) {
+      getIdListEdit(searchDataEdit.userMasterId);
+    }
+  }, [searchDataEdit.userMasterId]);
 
   console.log(userName);
 
@@ -638,6 +706,7 @@ function DistrictwiseSchemeTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {
@@ -2357,6 +2426,53 @@ function DistrictwiseSchemeTargetSetting() {
                 </Form.Group>
               </Col>
 
+
+              <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowModal3(true)}
+                    >
+                      Select User
+                    </Button>
+                    <Form.Control
+                      type="hidden"
+                      name="userMasterId"
+                      value={editData.userMasterId}
+                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col sm={3}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>User Name</Form.Label>
+                  <Form.Control
+                    id="username"
+                    name="username"
+                    value={userNameEdit}
+                    // onChange={handleSearchInputs}
+                    type="text"
+                    placeholder="Enter User Name"
+                    className="form-control"
+                    // readOnly
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    User is required
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+              
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">

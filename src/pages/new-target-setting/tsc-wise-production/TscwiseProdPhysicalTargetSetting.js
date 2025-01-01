@@ -331,6 +331,7 @@ function TscwiseProdPhysicalTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {
@@ -702,6 +703,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "50px", textAlign: "center" },
     },
     {
       name: "Financial Year",
@@ -709,6 +711,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Target",
@@ -716,6 +719,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "District",
@@ -723,6 +727,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
 
     {
@@ -731,14 +736,23 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
-
+    {
+      name: "Tsc",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
+    },
     {
       name: "Race",
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     // {
     //   name: "Target Type",
@@ -753,6 +767,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Target No",
@@ -760,6 +775,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "User",
@@ -767,6 +783,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
   ];
 
@@ -847,7 +864,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
-      style: { minWidth: "150px", textAlign: "left" },
+      style: { minWidth: "100px", textAlign: "left" },
     },
     {
       name: "Target",
@@ -855,6 +872,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
 
     {
@@ -863,6 +881,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Taluk",
@@ -870,6 +889,15 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
+    },
+    {
+      name: "Tsc",
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Race",
@@ -877,6 +905,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Month",
@@ -884,6 +913,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Target No",
@@ -891,6 +921,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "User",
@@ -898,6 +929,7 @@ function TscwiseProdPhysicalTargetSetting() {
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
+      style: { width: "100px", textAlign: "center" },
     },
     {
       name: "Action",

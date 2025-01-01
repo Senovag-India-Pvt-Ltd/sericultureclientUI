@@ -7,10 +7,14 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Source() {
+   // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     sourceMasterName: "",
     sourceNameInKannada: "",
@@ -85,11 +89,11 @@ function Source() {
     });
   };
   return (
-    <Layout title="Source">
+    <Layout title={t("Source")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Source</Block.Title>
+            <Block.Title tag="h2">{t("Source")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -99,7 +103,7 @@ function Source() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -108,7 +112,7 @@ function Source() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -127,7 +131,7 @@ function Source() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="source">
-                        Source<span className="text-danger">*</span>
+                        {t("Source")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -136,11 +140,11 @@ function Source() {
                           value={data.sourceMasterName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Source"
+                          placeholder={t("Enter Source")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Source is required.
+                          {t("Source is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -149,7 +153,7 @@ function Source() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="source">
-                        Source Name In Kannada
+                        {t("Source Name In Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -159,11 +163,11 @@ function Source() {
                           value={data.sourceNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Source Name In Kannada"
+                          placeholder={t("Enter Source Name In Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Source Name In Kannada is required.
+                          {t("Source Name In Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -177,12 +181,12 @@ function Source() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

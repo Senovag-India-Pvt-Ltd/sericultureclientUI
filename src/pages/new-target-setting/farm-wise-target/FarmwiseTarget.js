@@ -158,7 +158,7 @@ function FarmwiseTarget() {
     api
       .get(baseURLTargetSetting + `targets/list-farm-join`, _params)
       .then((response) => {
-        setListData(response.data.content.body.content.target);
+        setListData(response.data.content.body.content.targets);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })
@@ -236,7 +236,7 @@ function FarmwiseTarget() {
         setLoading(false);
       })
       .catch((err) => {
-        // const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].me-ssage[0].message;
         setEditData({});
         // editError(message);
         setLoading(false);
@@ -726,7 +726,7 @@ function FarmwiseTarget() {
     //   hide: "md",
     // },
     {
-      name: "Farn",
+      name: "Farm",
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
