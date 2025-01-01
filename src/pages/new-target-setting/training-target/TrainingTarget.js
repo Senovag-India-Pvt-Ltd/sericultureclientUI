@@ -167,7 +167,7 @@ function TrainingTarget() {
         _params
       )
       .then((response) => {
-        setListData(response.data.content.body.content.target);
+        setListData(response.data.content.body.content.targets);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })

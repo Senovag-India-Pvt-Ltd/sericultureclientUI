@@ -410,6 +410,13 @@ function NewTscMulberryTarget() {
       hide: "md",
     },
     {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "TSC",
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
@@ -701,8 +708,8 @@ function NewTscMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -839,8 +846,8 @@ function NewTscMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
