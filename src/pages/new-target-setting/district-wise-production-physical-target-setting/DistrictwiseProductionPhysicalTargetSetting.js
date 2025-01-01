@@ -1220,6 +1220,29 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     getDesignationList();
   }, []);
 
+  // // to get taluk
+  // const [talukListData, setTalukListData] = useState([]);
+
+  // const getTalukList = (_id) => {
+  //   const response = api
+  //     .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+  //     .then((response) => {
+  //       if (response.data.content.taluk) {
+  //         setTalukListData(response.data.content.taluk);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setTalukListData([]);
+  //       // alert(err.response.data.errorMessages[0].message[0].message);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (searchData.districtId) {
+  //     getTalukList(searchData.districtId);
+  //   }
+  // }, [searchData.districtId]);
+
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
 
@@ -1237,11 +1260,19 @@ function DistrictwiseProductionPhysicalTargetSetting() {
       });
   };
 
+  // useEffect(() => {
+  //   if (searchData.districtId) {
+  //     getTalukList(searchData.districtId);
+  //   }
+  // }, [searchData.districtId]);
   useEffect(() => {
-    if (searchData.districtId) {
-      getTalukList(searchData.districtId);
+    const districtId =
+      searchData.districtId || data.districtId || editData.districtId;
+    if (districtId) {
+      getTalukList(districtId);
     }
-  }, [searchData.districtId]);
+  }, [searchData.districtId, data.districtId, editData.districtId]);
+
 
 
   // to get taluk edit user

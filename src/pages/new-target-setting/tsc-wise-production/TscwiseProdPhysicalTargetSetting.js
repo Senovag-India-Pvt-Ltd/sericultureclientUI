@@ -97,13 +97,13 @@ function TscwiseProdPhysicalTargetSetting() {
     userMasterId: "",
   });
 
-  const handleEdit = (productionTargetsId) => {
+  const handleEdit = (tscMasterId) => {
     console.log("Helloeoeoebgxgvdsgvh");
     setLoading(true);
     const response = api
       .get(
         baseURLTargetSetting +
-          `productionTargets/get-tsc/${productionTargetsId}`
+          `productionTargets/get-tsc/${tscMasterId}`
       )
       .then((response) => {
         setEditData(response.data.content);
@@ -563,6 +563,13 @@ function TscwiseProdPhysicalTargetSetting() {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
