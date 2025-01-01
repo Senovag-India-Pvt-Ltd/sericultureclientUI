@@ -554,6 +554,7 @@ import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
 import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
 import ScCategoryEdit from "../pages/masters/sc-category/ScCategoryEdit";
 import DashboardReport from "../pages/reports-admin/market-auction/DashboardReport";
+import DashboardReportByMarket from "../pages/reports-admin/market-auction/DashboardReportByMarket";
 import ScProgramAccountMapping from "../pages/masters/sc-program-account-mapping/ScProgramAccountMapping";
 import ScProgramAccountMappingList from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingList";
 import ScProgramAccountMappingEdit from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingEdit";
@@ -3381,6 +3382,8 @@ function Router() {
               element={<DistrictWiseAbstractReport />}
             />
             <Route path="dashboard-report" element={<DashboardReport />} />
+
+            <Route path="dashboard-report-all-market" element={<DashboardReportByMarket />} />
 
             {/* Display All Lot */}
             {/* <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} /> */}

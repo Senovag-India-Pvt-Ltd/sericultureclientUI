@@ -1137,7 +1137,7 @@ function Menu() {
         <MenuItem sub>
           {showMenu.Registration ? (
             <MenuItemLink
-              text="Registration"
+              text={t("Registration")}
               onClick={menuToggle}
               onMouseEnter={menuHover}
               sub
@@ -3784,6 +3784,14 @@ function Menu() {
                             <MenuItemLink
                               text="Dashboard"
                               to="/seriui/dashboard-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="All Market Dashboard"
+                              to="/seriui/dashboard-report-all-market"
                             />
                           </MenuItem>
                         ) : null}
