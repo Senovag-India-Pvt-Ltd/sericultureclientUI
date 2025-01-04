@@ -8,10 +8,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Mount() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     name: "",
   });
@@ -88,11 +92,11 @@ function Mount() {
   };
 
   return (
-    <Layout title="Mount">
+    <Layout title={t("Mount")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Mount</Block.Title>
+            <Block.Title tag="h2">{t("Mount")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -102,7 +106,7 @@ function Mount() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -111,7 +115,7 @@ function Mount() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -130,7 +134,7 @@ function Mount() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Mount <span className="text-danger">*</span>
+                      {t("Mount")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -139,11 +143,11 @@ function Mount() {
                           value={data.name}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Mount Name"
+                          placeholder={t("Enter Mount Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mount is required
+                          {t("Mount is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -182,12 +186,12 @@ function Mount() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                      {t("save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

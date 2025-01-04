@@ -1137,7 +1137,7 @@ function Menu() {
         <MenuItem sub>
           {showMenu.Registration ? (
             <MenuItemLink
-              text="Registration"
+              text={t("Registration")}
               onClick={menuToggle}
               onMouseEnter={menuHover}
               sub
@@ -3787,6 +3787,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="All Market Dashboard"
+                              to="/seriui/dashboard-report-all-market"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Report_Commercial_Market_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3816,6 +3824,22 @@ function Menu() {
                             <MenuItemLink
                               text="DTR Online"
                               to="/seriui/dtr-online"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Triplet"
+                              to="/seriui/print-bid-slip"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generated Bidding Slip"
+                              to="/seriui/print-farmer-copy"
                             />
                           </MenuItem>
                         ) : null}
@@ -3937,22 +3961,6 @@ function Menu() {
                             <MenuItemLink
                               text="Reeler Transaction Report"
                               to="/seriui/reeler-transaction-reports"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Generated Triplet"
-                              to="/seriui/print-bid-slip"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Generated Bidding Slip"
-                              to="/seriui/print-farmer-copy"
                             />
                           </MenuItem>
                         ) : null}

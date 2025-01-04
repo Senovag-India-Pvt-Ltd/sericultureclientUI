@@ -13,10 +13,14 @@ import { useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import GodawnDatas from "../../../store/masters/godawn/GodawnData";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GodawnList() {
+  // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -183,7 +187,7 @@ function GodawnList() {
 
   const GodawnDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -193,7 +197,7 @@ function GodawnList() {
             size="sm"
             onClick={() => handleView(row.godownId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -201,7 +205,7 @@ function GodawnList() {
             className="ms-2"
             onClick={() => handleEdit(row.godownId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -209,7 +213,7 @@ function GodawnList() {
             onClick={() => deleteConfirm(row.godownId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -217,21 +221,21 @@ function GodawnList() {
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Godown Name",
+      name: t("Godown Name"),
       selector: (row) => row.godownName,
       cell: (row) => <span>{row.godownName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Godown Name In Kannada",
+      name: t("Godown Name In Kannada"),
       selector: (row) => row.godownNameInKannada,
       cell: (row) => <span>{row.godownNameInKannada}</span>,
       sortable: true,
@@ -240,11 +244,11 @@ function GodawnList() {
   ];
 
   return (
-    <Layout title="Godown List">
+    <Layout title={t("Godown List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Godown List</Block.Title>
+            <Block.Title tag="h2">{t("Godown List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -254,7 +258,7 @@ function GodawnList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -263,7 +267,7 @@ function GodawnList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -277,7 +281,7 @@ function GodawnList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -287,8 +291,8 @@ function GodawnList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="godown">Godown</option>
-                      <option value="marketMaster">Market</option>
+                      <option value="godown">{t("Godown")}</option>
+                      <option value="marketMaster">{t("Market")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -300,12 +304,12 @@ function GodawnList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

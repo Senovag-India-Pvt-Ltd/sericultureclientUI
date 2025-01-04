@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import {useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FarmList() {
+  // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -187,7 +191,7 @@ function FarmList() {
 
   const FarmDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -197,7 +201,7 @@ function FarmList() {
             size="sm"
             onClick={() => handleView(row.farmId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -205,7 +209,7 @@ function FarmList() {
             className="ms-2"
             onClick={() => handleEdit(row.farmId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -213,7 +217,7 @@ function FarmList() {
             onClick={() => deleteConfirm(row.farmId)}
             className="ms-2"
           >
-            Delete
+             {t("delete")}
           </Button>
         </div>
       ),
@@ -221,14 +225,14 @@ function FarmList() {
       hide: "md",
     },
     {
-      name: "Farm",
+      name: t("Farm"),
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm Name in Kannada",
+      name: t("Farm Name in Kannada"),
       selector: (row) => row.farmNameInKannada,
       cell: (row) => <span>{row.farmNameInKannada}</span>,
       sortable: true,
@@ -236,14 +240,14 @@ function FarmList() {
     },
 
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Is BSF",
+      name: t("Is BSF"),
       selector: (row) => row.isBsf,
       cell: (row) => <span>{row.isBsf}</span>,
       sortable: true,
@@ -252,11 +256,11 @@ function FarmList() {
   ];
 
   return (
-    <Layout title="Farm List">
+    <Layout title={t("Farm List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farm List</Block.Title>
+            <Block.Title tag="h2">{t("Farm List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -266,7 +270,7 @@ function FarmList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -275,7 +279,7 @@ function FarmList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -289,7 +293,7 @@ function FarmList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -299,8 +303,8 @@ function FarmList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="farmMaster">Farm</option>
-                      <option value="userMaster">User</option>
+                      <option value="farmMaster">{t("Farm")}</option>
+                      <option value="userMaster">{t("User")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -312,12 +316,12 @@ function FarmList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

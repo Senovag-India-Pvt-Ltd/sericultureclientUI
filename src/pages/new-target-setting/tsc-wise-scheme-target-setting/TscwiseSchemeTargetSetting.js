@@ -983,6 +983,20 @@ function TscwiseSchemeTargetSetting() {
       hide: "md",
     },
     {
+      name: "Taluk ",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "TSC",
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Target Type",
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
@@ -1074,6 +1088,20 @@ function TscwiseSchemeTargetSetting() {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk ",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "TSC",
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1636,6 +1664,40 @@ function TscwiseSchemeTargetSetting() {
                           </Form.Group>
                         </Col>
 
+<Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Taluk<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukId"
+                                value={data.talukId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.talukId === undefined ||
+                                  data.talukId === "0"
+                                }
+                              >
+                                <option value="">Select Taluk</option>
+                                {talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Taluk is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -1845,7 +1907,8 @@ function TscwiseSchemeTargetSetting() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              required
+                              // readOnly
                             />
                           </Form.Group>
                         </Col>

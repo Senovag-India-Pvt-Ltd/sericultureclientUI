@@ -5,10 +5,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CrateView() {
+   // Translation
+           const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -49,11 +53,11 @@ function CrateView() {
   }, [id]);
 
   return (
-    <Layout title="Crate View">
+    <Layout title={t("Crate View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Crate View</Block.Title>
+            <Block.Title tag="h2">{t("Crate View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -63,7 +67,7 @@ function CrateView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +76,7 @@ function CrateView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -82,22 +86,22 @@ function CrateView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Crate Details</Card.Header>
+          <Card.Header>{t("Crate Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}> {t("ID")}:</td>
                       <td>{crate.crateMasterId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Market:</td>
+                      <td style={styles.ctstyle}> {t("Market")}:</td>
                       <td>{crate.marketMasterName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Race:</td>
+                      <td style={styles.ctstyle}> {t("Race")}:</td>
                       <td>{crate.raceMasterName}</td>
                     </tr>
                     {/* <tr>
@@ -105,7 +109,7 @@ function CrateView() {
                       <td>{crate.godownName}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}> Approx Weight Per Crate:</td>
+                      <td style={styles.ctstyle}> {t("Approx Weight Per Crate")}:</td>
                       <td>{crate.approxWeightPerCrate}</td>
                     </tr>
                   </tbody>

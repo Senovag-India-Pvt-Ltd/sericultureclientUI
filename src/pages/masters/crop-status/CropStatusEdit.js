@@ -8,10 +8,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CropStatusEdit() {
+
+   // Translation
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -122,121 +127,124 @@ function CropStatusEdit() {
   };
 
   return (
-    <Layout title="Edit Crop  Status">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Edit Crop Status</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/crop-status-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/crop-status-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+ <Layout title={t("Edit Crop Status")}>
+  <Block.Head>
+    <Block.HeadBetween>
+      <Block.HeadContent>
+        <Block.Title tag="h2">{t("Edit Crop Status")}</Block.Title>
+      </Block.HeadContent>
+      <Block.HeadContent>
+        <ul className="d-flex">
+          <li>
+            <Link
+              to="/seriui/crop-status-list"
+              className="btn btn-primary btn-md d-md-none"
+            >
+              <Icon name="arrow-long-left" />
+              <span>{t("Go to List")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/seriui/crop-status-list"
+              className="btn btn-primary d-none d-md-inline-flex"
+            >
+              <Icon name="arrow-long-left" />
+              <span>{t("Go to List")}</span>
+            </Link>
+          </li>
+        </ul>
+      </Block.HeadContent>
+    </Block.HeadBetween>
+  </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
-                  </h1>
-                ) : (
-                  <Row className="g-gs">
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="name">
-                          Crop Status<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="name"
-                            name="name"
-                            value={data.name}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Crop Status"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Crop Status is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+  <Block className="mt-n5">
+    <Form noValidate validated={validated} onSubmit={postData}>
+      <Row className="g-3 ">
+        <Card>
+          <Card.Body>
+            {loading ? (
+              <h1 className="d-flex justify-content-center align-items-center">
+                {t("Loading...")}
+              </h1>
+            ) : (
+              <Row className="g-gs">
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="name">
+                      {t("Crop Status")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="name"
+                        name="name"
+                        value={data.name}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder={t("Enter Crop Status")}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {t("Crop Status is required.")}.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                   {/* <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          State Name in Kannada
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="title"
-                            name="nameInKannada"
-                            value={data.nameInKannada}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter State Name in Kannada"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            State Name in Kannada is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group> 
-                    </Col> */}
-                  </Row>
-                )}
-              </Card.Body>
-            </Card>
+                {/* 
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="title">
+                      {t("State Name in Kannada")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="title"
+                        name="nameInKannada"
+                        value={data.nameInKannada}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder={t("Enter State Name in Kannada")}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {t("State Name in Kannada is required.")}.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col> 
+                */}
+              </Row>
+            )}
+          </Card.Body>
+        </Card>
 
-            <Card>
-              <Card.Body>
-                <div className="gap-col">
-                  <ul className="d-flex align-items-center justify-content-center gap g-3">
-                    <li>
-                      {/* <Button type="button" variant="primary" onClick={postData}> */}
-                      <Button type="submit" variant="primary">
-                        Update
-                      </Button>
-                    </li>
-                    <li>
-                      <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
-                      </Button>
-                    </li>
-                  </ul>
-                </div>
-              </Card.Body>
-            </Card>
-          </Row>
-        </Form>
-      </Block>
-    </Layout>
+        <Card>
+          <Card.Body>
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    {t("Update")}
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    {t("Cancel")}
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          </Card.Body>
+        </Card>
+      </Row>
+    </Form>
+  </Block>
+</Layout>
+
   );
 }
 

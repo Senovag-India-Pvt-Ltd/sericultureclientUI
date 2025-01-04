@@ -9,10 +9,15 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Grainage() {
+  // Translation
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     grainageMasterName: "",
     grainageMasterNameInKannada: "",
@@ -125,11 +130,11 @@ function Grainage() {
   };
 
   return (
-    <Layout title="Grainage">
+    <Layout title={t("Grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage</Block.Title>
+            <Block.Title tag="h2">{t("Grainage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -139,7 +144,7 @@ function Grainage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -148,7 +153,7 @@ function Grainage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -167,7 +172,7 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Name
+                        {t("Grainage Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -177,11 +182,11 @@ function Grainage() {
                           type="text"
                           value={data.grainageMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Grainage name"
+                          placeholder={t("Enter Grainage name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name is required
+                          {t("Grainage Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -190,7 +195,7 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Name in Kannada
+                        {t("Grainage Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -200,11 +205,11 @@ function Grainage() {
                           value={data.grainageMasterNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Grainage Name in Kannada"
+                          placeholder={t("Enter Grainage Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name in Kannada is required.
+                          {t("Grainage Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -213,7 +218,7 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Type
+                        {t("Grainage Type")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -223,7 +228,7 @@ function Grainage() {
                           value={data.grainageType}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Grainage Type"
+                          placeholder={t("Enter Grainage Type")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -237,7 +242,7 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Name Representation
+                        {t("Grainage Name Representation")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -247,7 +252,7 @@ function Grainage() {
                           value={data.grainageNameRepresentation}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Grainage Name Representation"
+                          placeholder={t("Enter Grainage Name Representation")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -261,7 +266,7 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                        {t("User")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -274,7 +279,7 @@ function Grainage() {
                             data.userMasterId === undefined || data.userMasterId === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">{t("Select User")}</option>
                           {userListData.map((list) => (
                             <option key={list.userMasterId} value={list.userMasterId}>
                               {list.username}
@@ -282,7 +287,7 @@ function Grainage() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User name is required
+                         {t("User name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -296,12 +301,12 @@ function Grainage() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -6,10 +6,14 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MarketTypeView() {
+    // Translation
+      const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -41,11 +45,11 @@ function MarketTypeView() {
     getIdList();
   }, [id]);
   return (
-    <Layout title="Market Type View">
+    <Layout title={t("Market Type View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market Type View</Block.Title>
+            <Block.Title tag="h2">{t("Market Type View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -55,7 +59,7 @@ function MarketTypeView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -64,7 +68,7 @@ function MarketTypeView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -74,11 +78,11 @@ function MarketTypeView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Market Type Details</Card.Header>
+          <Card.Header>{t("Market Type Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -86,29 +90,29 @@ function MarketTypeView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{marketType.marketTypeMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Market Type:</td>
+                        <td style={styles.ctstyle}>{t("Market Type")}:</td>
                         <td>{marketType.marketTypeMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Market Type Name in Kannada:
+                          {t("Market Type Name In Kannada")}:
                         </td>
                         <td>{marketType.marketTypeNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Reeler Fee:</td>
+                        <td style={styles.ctstyle}> {t("Reeler Fee")}:</td>
                         <td>{marketType.reelerFee}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farmer Fee:</td>
+                        <td style={styles.ctstyle}>{t("Farmer Fee")}:</td>
                         <td>{marketType.farmerFee}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Trader Fee:</td>
+                        <td style={styles.ctstyle}> {t("Trader Fee")}:</td>
                         <td>{marketType.traderFee}</td>
                       </tr>
                     </tbody>

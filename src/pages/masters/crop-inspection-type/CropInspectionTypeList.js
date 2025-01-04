@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CropInspectionTypeList() {
+    // Translation
+    const { t } = useTranslation();
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function CropInspectionTypeList() {
 
   const CropInspectionTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function CropInspectionTypeList() {
             size="sm"
             onClick={() => handleView(row.cropInspectionTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function CropInspectionTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.cropInspectionTypeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function CropInspectionTypeList() {
             onClick={() => deleteConfirm(row.cropInspectionTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,7 +181,7 @@ function CropInspectionTypeList() {
       hide: "md",
     },
     {
-      name: "Crop Inspection Type",
+      name: t("Crop Inspection Type"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
@@ -187,59 +191,60 @@ function CropInspectionTypeList() {
   ];
 
   return (
-    <Layout title="Crop Inspection Type List">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Crop Inspection Type List</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/cropInspectionType"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/cropInspectionType"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+  <Layout title={t('Crop Inspection Type List')}>
+  <Block.Head>
+    <Block.HeadBetween>
+      <Block.HeadContent>
+        <Block.Title tag="h2">{t('Crop Inspection Type List')}</Block.Title>
+      </Block.HeadContent>
+      <Block.HeadContent>
+        <ul className="d-flex">
+          <li>
+            <Link
+              to="/seriui/cropInspectionType"
+              className="btn btn-primary btn-md d-md-none"
+            >
+              <Icon name="plus" />
+              <span>{t('Create')}</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/seriui/cropInspectionType"
+              className="btn btn-primary d-none d-md-inline-flex"
+            >
+              <Icon name="plus" />
+              <span>{t('Create')}</span>
+            </Link>
+          </li>
+        </ul>
+      </Block.HeadContent>
+    </Block.HeadBetween>
+  </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={CropInspectionTypeDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
-      </Block>
-    </Layout>
+  <Block className="mt-n4">
+    <Card>
+      <DataTable
+        tableClassName="data-table-head-light table-responsive"
+        columns={CropInspectionTypeDataColumns}
+        data={listData}
+        highlightOnHover
+        pagination
+        paginationServer
+        paginationTotalRows={totalRows}
+        paginationPerPage={countPerPage}
+        paginationComponentOptions={{
+          noRowsPerPage: true,
+        }}
+        onChangePage={(page) => setPage(page - 1)}
+        progressPending={loading}
+        theme="solarized"
+        customStyles={customStyles}
+      />
+    </Card>
+  </Block>
+</Layout>
+
   );
 }
 

@@ -8,10 +8,14 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MarketEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -36,6 +40,14 @@ function MarketEdit() {
     setData((prev) => ({
       ...prev,
       bidAmountFlag: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxIsTest = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      isTest: e.target.checked,
     }));
   };
 
@@ -95,6 +107,7 @@ function MarketEdit() {
               divisionMasterId:"",
               paymentMode: "",
               cocoonAge: "",
+              isTest: "",
             });
             setValidated(false);
           }
@@ -154,6 +167,7 @@ function MarketEdit() {
       divisionMasterId:"",
       paymentMode: "",
       cocoonAge: "",
+      isTest:"",
     });
   };
 
@@ -310,11 +324,11 @@ function MarketEdit() {
   };
 
   return (
-    <Layout title="Edit Market Details">
+    <Layout title={t("Edit Market Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Market Details</Block.Title>
+            <Block.Title tag="h2">{t("Edit Market Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -324,7 +338,7 @@ function MarketEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -333,7 +347,7 @@ function MarketEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -352,7 +366,7 @@ function MarketEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Market<span className="text-danger">*</span>
+                        {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -361,18 +375,18 @@ function MarketEdit() {
                           value={data.marketMasterName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market"
+                          placeholder={t("Enter Market")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Name is required
+                          {t("Market Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Market Name in Kannada
+                        {t("Market Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -382,18 +396,18 @@ function MarketEdit() {
                           value={data.marketNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market Name in Kannada "
+                          placeholder={t("Enter Market Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Name in Kannada is required
+                          {t("Market Name in Kannada is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Serial Number Prefix
+                        {t("Serial Number Prefix")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -403,18 +417,18 @@ function MarketEdit() {
                           value={data.serialNumberPrefix}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Serial Number Prefix"
+                          placeholder={t("Enter Serial Number Prefix")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Serial Number Prefix is required
+                          {t("Serial Number Prefix is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Tare Weight(In Kg)
+                        {t("Tare Weight(In Kg)")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -424,17 +438,17 @@ function MarketEdit() {
                           value={data.boxWeight}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Tare Weight"
+                          placeholder={t("Enter Tare Weight")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Tare Weight(In Kg) is required
+                          {t("Tare Weight(In Kg) is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Lot Weight(In Kg)<span className="text-danger">*</span>
+                        {t("Lot Weight(In Kg)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -443,11 +457,11 @@ function MarketEdit() {
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot Weight"
+                          placeholder={t("Enter Lot Weight")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot Weight(In Kg) is required
+                          {t("Lot Weight(In Kg) is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -485,7 +499,7 @@ function MarketEdit() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Reeler Minimum Balance
+                        {t("Reeler Minimum Balance")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -495,11 +509,11 @@ function MarketEdit() {
                           value={data.reelerMinimumBalance}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reeler Minimum Balance"
+                          placeholder={t("Enter Reeler Minimum Balance")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reeler Minimum Balance is required
+                          {t("Reeler Minimum Balance is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -507,7 +521,7 @@ function MarketEdit() {
                      {/* <Col lg="6"> */}
                      <Form.Group className="form-group">
                       <Form.Label>
-                        Payment Mode
+                        {t("Payment Mode")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -520,7 +534,7 @@ function MarketEdit() {
                             data.paymentMode === undefined || data.paymentMode === "0"
                           }
                         >
-                          <option value="0">Select Payment Mode</option>
+                          <option value="0">{t("Select Payment Mode")}</option>
                           <option value="cash">cash</option>
                           <option value="online">online</option>
                           
@@ -566,7 +580,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
-                            Issue Bidding Slip Start Time
+                            {t("Issue Bidding Slip Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -582,11 +596,11 @@ function MarketEdit() {
                               value={data.issueBidSlipStartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter Issue Bidding Slip Start Time"
+                              placeholder={t("Enter Issue Bidding Slip Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              Issue Bidding Slip Start Time is required
+                              {t("Issue Bidding Slip Start Time is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -595,7 +609,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
-                            Issue Bidding Slip End Time
+                            {t("Issue Bidding Slip End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -605,11 +619,11 @@ function MarketEdit() {
                               value={data.issueBidSlipEndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid End Time"
+                              placeholder={t("Enter 1st Round Bid End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              Issue Bidding Slip End Time is required
+                              {t("Issue Bidding Slip End Time is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -618,7 +632,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
-                            1st Round Bid Start Time
+                            {t("1st Round Bid Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -628,11 +642,11 @@ function MarketEdit() {
                               value={data.auction1StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid Start Time"
+                              placeholder={t("Enter 1st Round Bid Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              1st Round Bid Start Time is required
+                              {t("1st Round Bid Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction1StartTime"
@@ -645,7 +659,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
-                            1st Round Bid End Time
+                            {t("1st Round Bid End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -655,11 +669,11 @@ function MarketEdit() {
                               value={data.auction1EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid End Time"
+                              placeholder={t("Enter 1st Round Bid End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              1st Round Bid End Time is required
+                              {t("1st Round Bid End Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction1EndTime"
@@ -673,7 +687,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
-                            1st Round Bid Acceptance Start Time
+                            {t("1st Round Bid Acceptance Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -683,11 +697,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance1StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid Start Time"
+                              placeholder={t("Enter 1st Round Bid Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              1st Round Bid Acceptance Start Time is required
+                              {t("1st Round Bid Acceptance Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction1StartTime"
@@ -700,7 +714,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
-                            1st Round Bid Acceptance End Time
+                            {t("1st Round Bid Acceptance End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -710,11 +724,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance1EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid End Time"
+                              placeholder={t("Enter 1st Round Bid End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              1st Round Bid Acceptance End Time is required
+                              {t("1st Round Bid Acceptance End Time is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -723,7 +737,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidstart">
-                            2nd Round Bid Start Time
+                            {t("2nd Round Bid Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -733,11 +747,11 @@ function MarketEdit() {
                               value={data.auction2StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 2st Round Bid Start Time"
+                              placeholder={t("Enter 2st Round Bid Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              2nd Round Bid Start Time is required
+                              {t("2nd Round Bid Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction2StartTime"
@@ -750,7 +764,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidend">
-                            2nd Round Bid End Time
+                            {t("2nd Round Bid End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -760,11 +774,11 @@ function MarketEdit() {
                               value={data.auction2EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 2st Round Bid End Time"
+                              placeholder={t("Enter 2st Round Bid End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              2nd Round Bid End Time is required
+                              {t("2nd Round Bid End Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction2EndTime"
@@ -778,7 +792,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
-                            2nd Round Bid Acceptance Start Time
+                            {t("2nd Round Bid Acceptance Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -788,11 +802,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance2StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid Start Time"
+                              placeholder={t("Enter 2nd Round Acceptance Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              2nd Round Bid Acceptance Start Time is required
+                              {t("2nd Round Bid Acceptance Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction1StartTime"
@@ -805,7 +819,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
-                            2nd Round Bid Acceptance End Time
+                            {t("2nd Round Bid Acceptance End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -815,11 +829,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance2EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid End Time"
+                              placeholder={t("Enter 2nd Round Acceptance End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              2nd Round Bid Acceptance End Time is required
+                              {t("2nd Round Bid Acceptance End Time is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -828,7 +842,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidstart">
-                            3rd Round Bid Start Time
+                            {t("3rd Round Bid Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -838,11 +852,11 @@ function MarketEdit() {
                               value={data.auction3StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 3rd Round Bid Start Time"
+                              placeholder={t("Enter 3rd Round Bid Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              3rd Round Bid Start Time is required
+                              {t("3rd Round Bid Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction3StartTime"
@@ -855,7 +869,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidend">
-                            3rd Round Bid End Time
+                            {t("3rd Round Bid End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -865,11 +879,11 @@ function MarketEdit() {
                               value={data.auction3EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 3rd Round Bid End Time"
+                              placeholder={t("Enter 3rd Round Bid End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              3rd Round Bid End Time is required
+                              {t("3rd Round Bid End Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction3EndTime"
@@ -883,7 +897,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
-                            3rd Round Bid Acceptance Start Time
+                            {t("3rd Round Bid Acceptance Start Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -893,11 +907,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance3StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid Start Time"
+                              placeholder={t("Enter 3rd Round Acceptance Start Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              3rd Round Bid Acceptance Start Time is required
+                              {t("3rd Round Bid Acceptance Start Time is required")}
                             </Form.Control.Feedback>
                             {/* <TimePicker
                               name="auction1StartTime"
@@ -910,7 +924,7 @@ function MarketEdit() {
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
-                            3rd Round Bid Acceptance End Time
+                            {t("3rd Round Bid Acceptance End Time")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -920,11 +934,11 @@ function MarketEdit() {
                               value={data.auctionAcceptance3EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter 1st Round Bid End Time"
+                              placeholder={t("Enter 3rd Round Acceptance End Time")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              3rd Round Bid Acceptance End Time is required
+                              {t("3rd Round Bid Acceptance End Time is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -935,7 +949,7 @@ function MarketEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Snorkel Request Path
+                        {t("Snorkel Request Path")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -945,17 +959,17 @@ function MarketEdit() {
                           value={data.snorkelRequestPath}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market"
+                          placeholder={t("Enter Market")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Snorkel Request Path is required
+                          {t("Snorkel Request Path is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Snorkel Response Path
+                        {t("Snorkel Response Path")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -965,17 +979,17 @@ function MarketEdit() {
                           value={data.snorkelResponsePath}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market"
+                          placeholder={t("Enter Market")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Snorkel Response Path is required
+                          {t("Snorkel Response Path is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Client Code<span className="text-danger">*</span>
+                        {t("Client Code")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -984,17 +998,17 @@ function MarketEdit() {
                           value={data.clientCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market"
+                          placeholder={t("Enter Market")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Name is required
+                          {t("Market Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Client ID<span className="text-danger">*</span>
+                        {t("Client ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1003,18 +1017,18 @@ function MarketEdit() {
                           value={data.clientId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Client Id"
+                          placeholder={t("Enter Client Id")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Client Id is required
+                          {t("Client Id is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Market Type<span className="text-danger">*</span>
+                        {t("Market Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1028,7 +1042,7 @@ function MarketEdit() {
                             data.marketTypeMasterId === "0"
                           }
                         >
-                          <option value="">Select Market Type</option>
+                          <option value="">{t("Select Market Type")}</option>
                           {marketTypeListData.map((list) => (
                             <option
                               key={list.marketTypeMasterId}
@@ -1039,14 +1053,14 @@ function MarketEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Market Type Name is required
+                          {t("Market Type Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label>
-                        State<span className="text-danger">*</span>
+                        {t("State")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1059,7 +1073,7 @@ function MarketEdit() {
                             data.stateId === undefined || data.stateId === "0"
                           }
                         >
-                          <option value="">Select State</option>
+                          <option value="">{t("Select State")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
@@ -1067,14 +1081,14 @@ function MarketEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          State Name is required
+                          {t("State Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label>
-                        District<span className="text-danger">*</span>
+                        {t("District")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1088,7 +1102,7 @@ function MarketEdit() {
                             data.districtId === "0"
                           }
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -1101,14 +1115,14 @@ function MarketEdit() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          District Name is required
+                          {t("District Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Taluk<span className="text-danger">*</span>
+                        {t("Taluk")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1121,7 +1135,7 @@ function MarketEdit() {
                             data.talukId === undefined || data.talukId === "0"
                           }
                         >
-                          <option value="">Select Taluk</option>
+                          <option value="">{t("Select Taluk")}</option>
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
@@ -1131,14 +1145,14 @@ function MarketEdit() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
+                          {t("Taluk Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Division<span className="text-danger">*</span>
+                        {t("Division")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1151,7 +1165,7 @@ function MarketEdit() {
                             data.divisionMasterId === undefined || data.divisionMasterId === "0"
                           }
                         >
-                          <option value="">Select Division</option>
+                          <option value="">{t("Select Division")}</option>
                           {divisionListData && divisionListData.length
                             ? divisionListData.map((list) => (
                                 <option key={list.divisionMasterId} value={list.divisionMasterId}>
@@ -1161,14 +1175,14 @@ function MarketEdit() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Division Name is required
+                          {t("Division Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="chakbandi">
-                        Market Coordinates
+                        {t("Market Coordinates")}
                       </Form.Label>
                       <Row>
                         <Col lg="6">
@@ -1177,7 +1191,7 @@ function MarketEdit() {
                             name="marketLongitude"
                             value={data.marketLongitude}
                             onChange={handleInputs}
-                            placeholder="Enter Longitude"
+                            placeholder={t("Enter Longitude")}
                           />
                         </Col>
 
@@ -1188,7 +1202,7 @@ function MarketEdit() {
                             value={data.marketLatitude}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Latitude"
+                            placeholder={t("Enter Latitude")}
                           />
                         </Col>
                       </Row>
@@ -1196,7 +1210,7 @@ function MarketEdit() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="address">
-                        Radius<span className="text-danger">*</span>
+                        {t("Radius")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1205,18 +1219,18 @@ function MarketEdit() {
                           value={data.radius}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Radius"
+                          placeholder={t("Enter Radius")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Radius is required
+                          {t("Radius is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="cocoonAge">
-                        Cocoon Age<span className="text-danger">*</span>
+                        {t("Cocoon Age")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1225,18 +1239,18 @@ function MarketEdit() {
                           value={data.cocoonAge}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Cocoon Age"
+                          placeholder={t("Enter Cocoon Age")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Cocoon Age is required
+                        {t("Cocoon Age is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="address">
-                        Market Address<span className="text-danger">*</span>
+                        {t("Market Address")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1246,12 +1260,12 @@ function MarketEdit() {
                           value={data.marketMasterAddress}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Market Address"
+                          placeholder={t("Enter Market Address")}
                           rows="6"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Market Address is required
+                          {t("Market Address is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1268,7 +1282,7 @@ function MarketEdit() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Triplet Generation After Weighment
+                        {t("Triplet Generation After Weighment")}
                       </Form.Label>
                     </Form.Group>
 
@@ -1284,7 +1298,23 @@ function MarketEdit() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Bid Amount Flag
+                        {t("Bid Amount Flag")}
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="isTest"
+                          checked={data.isTest}
+                          onChange={handleCheckBoxIsTest}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Is Test
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -1297,12 +1327,12 @@ function MarketEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

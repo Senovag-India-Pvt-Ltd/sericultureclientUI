@@ -5,10 +5,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceView() {
+  // Translation
+           const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -46,11 +50,11 @@ function SourceView() {
   }, [id]);
 
   return (
-    <Layout title="Source View">
+    <Layout title={t("Source View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Source View</Block.Title>
+            <Block.Title tag="h2">{t("Source View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -60,7 +64,7 @@ function SourceView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -69,7 +73,7 @@ function SourceView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -79,11 +83,11 @@ function SourceView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Source Details</Card.Header>
+          <Card.Header>{t("Source Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -91,15 +95,15 @@ function SourceView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{SourceMaster.sourceMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Source:</td>
+                        <td style={styles.ctstyle}> {t("Source")}:</td>
                         <td>{SourceMaster.sourceMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Source Name in Kannada:</td>
+                        <td style={styles.ctstyle}> {t("Source Name In Kannada")}:</td>
                         <td>{SourceMaster.sourceNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SourceEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -117,11 +121,11 @@ function SourceEdit() {
   };
 
   return (
-    <Layout title="Edit Source">
+    <Layout title={t("Edit Source")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Source</Block.Title>
+            <Block.Title tag="h2">{t("Edit Source")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -131,7 +135,7 @@ function SourceEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -140,7 +144,7 @@ function SourceEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -156,14 +160,14 @@ function SourceEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="source">
-                          Source<span className="text-danger">*</span>
+                          {t("Source")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -172,11 +176,11 @@ function SourceEdit() {
                             value={data.sourceMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Source"
+                            placeholder={t("Enter Source")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Source is required.
+                            {t("Source is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -185,7 +189,7 @@ function SourceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="source">
-                          Source Name In Kannada
+                          {t("Source Name In Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -195,11 +199,11 @@ function SourceEdit() {
                             value={data.sourceNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Source Name In Kannada"
+                            placeholder={t("Enter Source Name In Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Source Name In Kannada is required.
+                            {t("Source Name In Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -214,12 +218,12 @@ function SourceEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                  {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

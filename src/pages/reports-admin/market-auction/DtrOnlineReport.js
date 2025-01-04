@@ -59,7 +59,7 @@ function DtrOnlineReport() {
   };
 
   const exportCsv = (e) => {
-    const { marketId, godownId,reelerId,fromDate,toDate } = data;
+    const { marketId, godownId, reelerId, fromDate, toDate } = data;
     const formattedFromDate =
       fromDate.getFullYear() +
       "-" +
@@ -76,17 +76,17 @@ function DtrOnlineReport() {
       .post(
         baseURLReport + `excel-report/dtr-report`,
         {
-            // marketId: data.marketId,
-            // startYear: data.startYear,
-            // endYear: data.endYear,
-            marketId: marketId,
-            godownId: godownId,
-            reelerId: reelerId,
-            fromDate: formattedFromDate,
-            toDate: formattedToDate,
-          },
-          {
-          responseType: 'blob',
+          // marketId: data.marketId,
+          // startYear: data.startYear,
+          // endYear: data.endYear,
+          marketId: marketId,
+          godownId: godownId,
+          reelerId: reelerId,
+          fromDate: formattedFromDate,
+          toDate: formattedToDate,
+        },
+        {
+          responseType: "blob",
           headers: {
             accept: "application/csv",
             "Content-Type": "application/json",
@@ -109,8 +109,8 @@ function DtrOnlineReport() {
           title: "No record found!!!",
         });
       });
-};
- 
+  };
+
   const [listData, setListData] = useState([]);
   const [listDetails, setListDetails] = useState([]);
 
@@ -393,11 +393,11 @@ function DtrOnlineReport() {
                   Generate Report
                 </Button>
               </Col>
-              <Col sm={2}>   
-                        <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export Excel
-                    </Button>
-                    </Col>
+              <Col sm={2}>
+                <Button type="button" variant="primary" onClick={exportCsv}>
+                  Export Excel
+                </Button>
+              </Col>
             </Row>
 
             {/* <div className="gap-col">
@@ -444,7 +444,7 @@ function DtrOnlineReport() {
                     >
                       <thead>
                         <tr>
-                        <th
+                          <th
                             style={{
                               backgroundColor: "#0f6cbe",
                               color: "#fff",
@@ -487,7 +487,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            ಗೂಡಿನ  ವಯಸ್ಸು 
+                            ಗೂಡಿನ ವಯಸ್ಸು
                           </th>
                           <th
                             style={{
@@ -523,7 +523,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                          ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ
+                            ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ
                           </th>
                           <th
                             style={{
@@ -532,7 +532,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            ಖರೀದಿದಾರರ ಮೊತ್ತ 
+                            ಖರೀದಿದಾರರ ಮೊತ್ತ
                           </th>
                           <th
                             style={{
@@ -550,7 +550,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                           ಬ್ಯಾಂಕ್ ವಿವರಗಳು
+                            ಬ್ಯಾಂಕ್ ವಿವರಗಳು
                           </th>
                           <th
                             style={{
@@ -626,12 +626,19 @@ function DtrOnlineReport() {
                           <td></td>
                           <td></td>
                           {/* <td>Amt: {listDetails.totallotSoldOutAmount}</td> */}
-                          <td>ಮೊತ್ತ: {Math.round(listDetails.totallotSoldOutAmount)}</td>
+                          <td>
+                            ಮೊತ್ತ:{" "}
+                            {Math.round(listDetails.totallotSoldOutAmount)}
+                          </td>
                           {/* <td></td> */}
                           {/* <td>
                             F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
                           </td> */}
-                          <td> ರೈತರ ಮೊತ್ತ: {Math.round(listDetails.totalFarmerAmount)}</td>
+                          <td>
+                            {" "}
+                            ರೈತರ ಮೊತ್ತ:{" "}
+                            {Math.round(listDetails.totalFarmerAmount)}
+                          </td>
 
                           {/* <td>
                             MF:{" "}
@@ -643,10 +650,18 @@ function DtrOnlineReport() {
                           <td>
                             R Amt: {listDetails.totalReelerAmount.toFixed(2)} 
                           </td>*/}
-                          <td>ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ: {Math.round(listDetails.totalFarmerMarketFee + listDetails.totalReelerMarketFee)}</td>
-<td>
-  {/* R Amt: {listDetails.totalReelerAmount.toFixed(2)} */}
-  ಖರೀದಿದಾರರ ಮೊತ್ತ: {Math.round(listDetails.totalReelerAmount)}</td>
+                          <td>
+                            ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                            {Math.round(
+                              listDetails.totalFarmerMarketFee +
+                                listDetails.totalReelerMarketFee
+                            )}
+                          </td>
+                          <td>
+                            {/* R Amt: {listDetails.totalReelerAmount.toFixed(2)} */}
+                            ಖರೀದಿದಾರರ ಮೊತ್ತ:{" "}
+                            {Math.round(listDetails.totalReelerAmount)}
+                          </td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -664,25 +679,25 @@ function DtrOnlineReport() {
                               colSpan="18"
                             >
                               <div>
-                              ಒಟ್ಟು ಲಾಟ್‌ಗಳು:{" "}
+                                ಒಟ್ಟು ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.totalLots}
                                 </span>
                               </div>
                               <div>
-                              ಒಟ್ಟು ವಹಿವಾಟಾಗಿರುವ  ಲಾಟ್‌ಗಳು:{" "}
+                                ಒಟ್ಟು ವಹಿವಾಟಾಗಿರುವ ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.paymentSuccessLots}
                                 </span>
                               </div>
                               <div>
-                              ವಹಿವಾಟಾಗದ ಲಾಟ್‌ಗಳು:{" "}
+                                ವಹಿವಾಟಾಗದ ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.notTransactedLots}
                                 </span>
                               </div>
                               <div>
-                              ಒಟ್ಟು ತೂಕ:{" "}
+                                ಒಟ್ಟು ತೂಕ:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.totalWeight}
                                 </span>
@@ -721,44 +736,49 @@ function DtrOnlineReport() {
                                 </span>
                               </div> */}
                               <div>
-                              ಒಟ್ಟು ಮೊತ್ತ:{" "}
-  <span style={{ color: "green" }}>
-    {Math.round(listDetails.totallotSoldOutAmount)}
-  </span>
-</div>
-<div>
-ರೈತರ ಚೆಕ್ ಮೊತ್ತ:{" "}
-  <span style={{ color: "green" }}>
-    {Math.round(listDetails.totalFarmerAmount)}
-  </span>
-</div>
-<div>
-ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
-  <span style={{ color: "green" }}>
-    {Math.round(listDetails.totalReelerMarketFee + listDetails.totalFarmerMarketFee)}
-  </span>
-</div>
-<div>
-ರೀಲರ್ ವ್ಯವಹಾರ ಮೊತ್ತ:{" "}
-  <span style={{ color: "green" }}>
-    {Math.round(listDetails.totalReelerAmount)}
-  </span>
-</div>
+                                ಒಟ್ಟು ಮೊತ್ತ:{" "}
+                                <span style={{ color: "green" }}>
+                                  {Math.round(
+                                    listDetails.totallotSoldOutAmount
+                                  )}
+                                </span>
+                              </div>
+                              <div>
+                                ರೈತರ ಚೆಕ್ ಮೊತ್ತ:{" "}
+                                <span style={{ color: "green" }}>
+                                  {Math.round(listDetails.totalFarmerAmount)}
+                                </span>
+                              </div>
+                              <div>
+                                ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
+                                <span style={{ color: "green" }}>
+                                  {Math.round(
+                                    listDetails.totalReelerMarketFee +
+                                      listDetails.totalFarmerMarketFee
+                                  )}
+                                </span>
+                              </div>
+                              <div>
+                                ರೀಲರ್ ವ್ಯವಹಾರ ಮೊತ್ತ:{" "}
+                                <span style={{ color: "green" }}>
+                                  {Math.round(listDetails.totalReelerAmount)}
+                                </span>
+                              </div>
 
                               <div>
-                              ಗರಿಷ್ಠ ಮೊತ್ತ:{" "}
+                                ಗರಿಷ್ಠ ಮೊತ್ತ:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.maxAmount}
                                 </span>
                               </div>
                               <div>
-                              ಕನಿಷ್ಠ ಮೊತ್ತ: {" "}
+                                ಕನಿಷ್ಠ ಮೊತ್ತ:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.minAmount}
                                 </span>
                               </div>
                               <div>
-                              ಸರಾಸರಿ ಮೊತ್ತ: {" "}
+                                ಸರಾಸರಿ ಮೊತ್ತ:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.avgAmount}
                                 </span>

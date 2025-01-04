@@ -492,7 +492,7 @@ function DashboardReport() {
                               <>
                                 {/* <td style={styles.ctstyle}>{dashboard.totalBids}</td> */}
                                 <td style={styles.ctstyle}>
-                                  {dashboard.auctionCount}
+                                  {dashboard.totalBids}
                                 </td>
                               </>
                             ))}
@@ -519,7 +519,7 @@ function DashboardReport() {
                             {dashboardList.map((dashboard) => (
                               <>
                                 <td style={styles.ctstyle}>
-                                  {dashboard.currentAuctionMaxBid}
+                                  {dashboard.currentAuctionMaxAmount}
                                 </td>
                               </>
                             ))}

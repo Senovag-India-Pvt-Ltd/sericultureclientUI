@@ -8,12 +8,16 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function FlexTime() {
+  // Translation
+           const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
@@ -290,11 +294,11 @@ function FlexTime() {
     });
   };
   return (
-    <Layout title="Flex Time">
+    <Layout title={t("Flex Time")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Flex Time</Block.Title>
+            <Block.Title tag="h2">{t("Flex Time")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -350,7 +354,7 @@ function FlexTime() {
                         </Form.Select>
                       </Col> */}
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Godown
+                        {t("Godown")}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Select
@@ -358,7 +362,7 @@ function FlexTime() {
                           value={data.godownId}
                           onChange={handleChangeInputs}
                         >
-                          <option value="0">Select Godown</option>
+                          <option value="0">{t("Select Godown")}</option>
                           {godownListData.map((list) => (
                             <option key={list.godownId} value={list.godownId}>
                               {list.godownName}
@@ -387,7 +391,7 @@ function FlexTime() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Issue Bidding Slip
+                        {t("Issue Bidding Slip")}
                       </Form.Label>
                       <Col sm={3}>
                         <Button
@@ -395,7 +399,7 @@ function FlexTime() {
                           variant="primary"
                           onClick={biddingSlipStart}
                         >
-                          Start
+                          {t("Start")}
                         </Button>
                         <Button
                           type="button"
@@ -403,13 +407,13 @@ function FlexTime() {
                           onClick={biddingSlipStop}
                           className="ms-2"
                         >
-                          Stop
+                          {t("Stop")}
                         </Button>
                       </Col>
                       {biddingSlipStatus ? (
                         <Col sm={3}>
                           <span className="fw-bold" style={{ color: "green" }}>
-                            Issue Bidding Slip Flex Time Started
+                            {t("Issue Bidding Slip Flex Time Started")}
                           </span>
                         </Col>
                       ) : (
@@ -422,7 +426,7 @@ function FlexTime() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Auction
+                        {t("Auction")}
                       </Form.Label>
                       <Col sm={3}>
                         <Button
@@ -430,7 +434,7 @@ function FlexTime() {
                           variant="primary"
                           onClick={auctionStart}
                         >
-                          Start
+                          {t("Start")}
                         </Button>
                         <Button
                           type="button"
@@ -438,13 +442,13 @@ function FlexTime() {
                           onClick={auctionStop}
                           className="ms-2"
                         >
-                          Stop
+                          {t("Stop")}
                         </Button>
                       </Col>
                       {auctionStatus ? (
                         <Col sm={3}>
                           <span className="fw-bold" style={{ color: "green" }}>
-                            Auction Flex Time Started
+                            {t("Auction Flex Time Started")}
                           </span>
                         </Col>
                       ) : (
@@ -457,7 +461,7 @@ function FlexTime() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Auction Accept
+                        {t("Auction Accept")}
                       </Form.Label>
                       <Col sm={3}>
                         <Button
@@ -465,7 +469,7 @@ function FlexTime() {
                           variant="primary"
                           onClick={auctionAcceptStart}
                         >
-                          Start
+                          {t("Start")}
                         </Button>
                         <Button
                           type="button"
@@ -473,13 +477,13 @@ function FlexTime() {
                           onClick={auctionAcceptStop}
                           className="ms-2"
                         >
-                          Stop
+                          {t("Stop")}
                         </Button>
                       </Col>
                       {auctionAcceptStatus ? (
                         <Col sm={3}>
                           <span className="fw-bold" style={{ color: "green" }}>
-                            Auction Acceptance Flex Time Started
+                            {t("Auction Acceptance Flex Time Started")}
                           </span>
                         </Col>
                       ) : (

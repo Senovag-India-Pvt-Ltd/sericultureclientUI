@@ -167,7 +167,7 @@ function TrainingTarget() {
         _params
       )
       .then((response) => {
-        setListData(response.data.content.body.content.target);
+        setListData(response.data.content.body.content.targets);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })
@@ -774,7 +774,7 @@ function TrainingTarget() {
       hide: "md",
     },
     {
-      name: "Training Course",
+      name: "Training Program",
       selector: (row) => row.courseName,
       cell: (row) => <span>{row.courseName}</span>,
       sortable: true,
@@ -985,7 +985,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Training Course
+                            Training Program
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1000,7 +1000,7 @@ function TrainingTarget() {
                                   data.courseName === "0"
                                 }
                               >
-                                <option value="">Select Course</option>
+                                <option value="">Select Program</option>
                                 {trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
@@ -1011,7 +1011,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Training Course is required
+                              Training Program is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1168,7 +1168,8 @@ function TrainingTarget() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              // readOnly
+                              required
                             />
                           </Form.Group>
                         </Col>
@@ -1290,7 +1291,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Training Course
+                            Training Program
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1305,7 +1306,7 @@ function TrainingTarget() {
                                   editData.courseName === "0"
                                 }
                               >
-                                <option value="">Select Course</option>
+                                <option value="">Select Program</option>
                                 {trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
@@ -1316,7 +1317,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Training Course is required
+                              Training Program is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>

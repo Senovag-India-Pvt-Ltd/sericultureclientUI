@@ -181,6 +181,9 @@ function NewTscMulberryTarget() {
       )
       .then((response) => {
         setEditData(response.data.content.body.content.mulberryTargets);
+        setUserNameEdit(
+          response.data.content.body.content.mulberryTargets.userMasterName
+        );
         setShowModal3(true);
         setLoading(false);
       })
@@ -312,6 +315,7 @@ function NewTscMulberryTarget() {
           )
           .then((response) => {
             // deleteConfirm(_id);
+            getFinancialList();
             getList();
             Swal.fire(
               "Deleted",
@@ -402,6 +406,13 @@ function NewTscMulberryTarget() {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -697,8 +708,8 @@ function NewTscMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -744,27 +755,27 @@ function NewTscMulberryTarget() {
 
     if (!financialYearMasterId || financialYearMasterId === "0") {
       Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: "Financial Year is required.",
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
       });
       return;
     }
 
     if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
       Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: "Target is required.",
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
       });
       return;
     }
 
     if (!targetType || targetType === "0") {
       Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: "Target Type is required.",
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
       });
       return;
     }
@@ -835,8 +846,8 @@ function NewTscMulberryTarget() {
     },
     {
       name: "Tsc",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -904,8 +915,43 @@ function NewTscMulberryTarget() {
     userMasterId: "",
   });
 
+  const userSearchClear = () => {
+    setSearchData({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
+  const [searchDataEdit, setSearchDataEdit] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
+
+  const userSearchEditClear = () => {
+    setSearchDataEdit({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
   //   to get data from api
   const [userName, setUserName] = useState("");
+  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
     api
@@ -928,16 +974,54 @@ function NewTscMulberryTarget() {
     }
   }, [searchData.userMasterId]);
 
+    const getIdListEdit = (id) => {
+      setLoading(true);
+      api
+        .get(baseURLMasterData + `userMaster/get/${id}`)
+        .then((response) => {
+          console.log("heheheeh", response.data.content.username);
+          setUserNameEdit(response.data.content.username);
+          setLoading(false);
+        })
+        .catch((err) => {
+          const message = err.response.data.errorMessages[0].message[0].message;
+          setUserNameEdit("");
+          setLoading(false);
+        });
+    };
+
+    useEffect(() => {
+      if (searchDataEdit.userMasterId) {
+        getIdListEdit(searchDataEdit.userMasterId);
+      }
+    }, [searchDataEdit.userMasterId]);
+
   const handleSearchInputs = (e) => {
     // debugger;
     let { name, value } = e.target;
     setSearchData({ ...searchData, [name]: value });
   };
 
+  const handleSearchInputsEdit = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setSearchDataEdit({ ...searchDataEdit, [name]: value });
+  };
+
   const [showModal5, setShowModal5] = useState(false);
 
   const handleShowModal5 = () => setShowModal5(true);
-  const handleCloseModal5 = () => setShowModal5(false);
+  const [showModal7, setShowModal7] = useState(false);
+
+  const handleCloseModal5 = () => {
+    setShowModal5(false);
+    userSearchClear();
+  };
+
+  const handleCloseModal7 = () => {
+    setShowModal7(false);
+    userSearchEditClear();
+  };
 
   const handleUserSelect = (userId) => {
     // Update both `userMasterId` in `data` and `searchData` states
@@ -947,6 +1031,13 @@ function NewTscMulberryTarget() {
     }));
 
     setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+
+  const handleUserEditSelect = (userId) => {
+    setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
     }));
@@ -963,6 +1054,45 @@ function NewTscMulberryTarget() {
       params.designationId = searchData.designationId;
     if (searchData.phoneNumber) params.phoneNumber = searchData.phoneNumber;
     if (searchData.username) params.username = searchData.username;
+
+    api
+      .post(
+        baseURLMasterData +
+          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (
+          response.data &&
+          response.data.content &&
+          response.data.content.userMaster
+        ) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
+
+  const searchUserEdit = (e) => {
+    // Build the params object dynamically
+    const params = {};
+
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchDataEdit.districtId)
+      params.districtId = searchDataEdit.districtId;
+    if (searchDataEdit.talukId) params.talukId = searchDataEdit.talukId;
+    if (searchDataEdit.designationId)
+      params.designationId = searchDataEdit.designationId;
+    if (searchDataEdit.phoneNumber)
+      params.phoneNumber = searchDataEdit.phoneNumber;
+    if (searchDataEdit.username) params.username = searchDataEdit.username;
 
     api
       .post(
@@ -1038,6 +1168,29 @@ function NewTscMulberryTarget() {
       getTalukList(districtId);
     }
   }, [searchData.districtId, data.districtId, editData.districtId]);
+
+  // to get taluk edit user
+  const [talukListDataEdit, setTalukListDataEdit] = useState([]);
+
+  const getTalukListEdit = (_id) => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListDataEdit(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListDataEdit([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.districtId) {
+      getTalukListEdit(searchDataEdit.districtId);
+    }
+  }, [searchDataEdit.districtId]);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -1346,9 +1499,9 @@ function NewTscMulberryTarget() {
                                 name="value"
                                 value={data.value}
                                 onChange={handleInputs}
-                                type="text"
+                                type="number"
                                 placeholder="Enter Target No."
-                                // required
+                                required
                               />
                               <Form.Control.Feedback type="invalid">
                                 Target No. is required.
@@ -1431,6 +1584,9 @@ function NewTscMulberryTarget() {
                               // readOnly
                               required
                             />
+                            <Form.Control.Feedback type="invalid">
+                              User is required
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
@@ -1763,7 +1919,7 @@ function NewTscMulberryTarget() {
                       name="value"
                       value={editData.value}
                       onChange={handleEditInputs}
-                      type="text"
+                      type="number"
                       placeholder="Enter Target No."
                       // required
                     />
@@ -1774,37 +1930,49 @@ function NewTscMulberryTarget() {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     User<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
-                    <Form.Select
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowModal7(true)}
+                    >
+                      Select User
+                    </Button>
+                    <Form.Control
+                      type="hidden"
                       name="userMasterId"
                       value={editData.userMasterId}
-                      onChange={handleEditInputs}
-                      onBlur={() => handleEditInputs}
+                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                       required
-                      isInvalid={
-                        editData.userMasterId === undefined ||
-                        editData.userMasterId === "0"
-                      }
-                    >
-                      <option value="">Select User</option>
-                      {userListData.map((list) => (
-                        <option
-                          key={list.userMasterId}
-                          value={list.userMasterId}
-                        >
-                          {list.username}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    />
                     <Form.Control.Feedback type="invalid">
                       User is required
                     </Form.Control.Feedback>
                   </div>
+                </Form.Group>
+              </Col>
+
+              <Col sm={3}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>User Name</Form.Label>
+                  <Form.Control
+                    id="username"
+                    name="username"
+                    value={userNameEdit}
+                    // onChange={handleSearchInputs}
+                    type="text"
+                    placeholder="Enter User Name"
+                    className="form-control"
+                    // readOnly
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    User is required
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
 
@@ -2025,6 +2193,164 @@ function NewTscMulberryTarget() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal5()}>
+                    Submit
+                  </Button>
+                </div>
+              </Row>
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Select User In Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-n4">
+            <Card className="mt-3 p-4 shadow-lg rounded">
+              <Row className="g-4">
+                {/* District Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>District</Form.Label>
+                    <Form.Select
+                      name="districtId"
+                      value={searchDataEdit.districtId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">Select District</option>
+                      {districtListData &&
+                        districtListData.length &&
+                        districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Taluk Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Taluk</Form.Label>
+                    <Form.Select
+                      name="talukId"
+                      value={searchDataEdit.talukId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">Select Taluk</option>
+                      {talukListDataEdit &&
+                        talukListDataEdit.length &&
+                        talukListDataEdit.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Designation Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Designation</Form.Label>
+                    <Form.Select
+                      name="designationId"
+                      value={searchDataEdit.designationId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">Select Designation</option>
+                      {designationListData &&
+                        designationListData.length &&
+                        designationListData.map((list) => (
+                          <option
+                            key={list.designationId}
+                            value={list.designationId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Mobile Number Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Control
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      value={searchDataEdit.phoneNumber}
+                      onChange={handleSearchInputsEdit}
+                      type="text"
+                      placeholder="Enter Mobile Number"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Username Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>User Name</Form.Label>
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      value={searchDataEdit.username}
+                      onChange={handleSearchInputsEdit}
+                      type="text"
+                      placeholder="Enter User Name"
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+                {/* Search Button */}
+                <Col sm={4} className="d-flex align-items-end">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={searchUserEdit}
+                    className="w-100"
+                  >
+                    Search
+                  </Button>
+                </Col>
+              </Row>
+
+              {/* User Selection */}
+              <Row className="m-4">
+                <Col sm={12}>
+                  <Form.Label>User</Form.Label>
+                  <Form.Select
+                    name="userMasterId"
+                    value={searchDataEdit.userMasterId}
+                    onChange={(e) => handleUserEditSelect(e.target.value)}
+                    className="form-control"
+                  >
+                    <option value="">Select User</option>
+                    {userListData && userListData.length > 0 ? (
+                      userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No Users Found</option> // Show a message if no users are found
+                    )}
+                  </Form.Select>
+                </Col>
+              </Row>
+              <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal7()}>
                     Submit
                   </Button>
                 </div>

@@ -11,6 +11,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { t } from "i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -141,7 +142,7 @@ function MarketTypeList() {
 
   const MarketTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +152,7 @@ function MarketTypeList() {
             size="sm"
             onClick={() => handleView(row.marketTypeMasterId)}
           >
-            View
+             {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +160,7 @@ function MarketTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.marketTypeMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -175,35 +176,35 @@ function MarketTypeList() {
       hide: "md",
     },
     {
-      name: "Market Type",
+      name: t("Market Type"),
       selector: (row) => row.marketTypeMasterName,
       cell: (row) => <span>{row.marketTypeMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market Type Name in Kannada",
+      name: t("Market Type Name In Kannada"),
       selector: (row) => row.marketTypeNameInKannada,
       cell: (row) => <span>{row.marketTypeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Fee",
+      name: t("Reeler Fee"),
       selector: (row) => row.reelerFee,
       cell: (row) => <span>{row.reelerFee}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Fee",
+      name: t("Farmer Fee"),
       selector: (row) => row.farmerFee,
       cell: (row) => <span>{row.farmerFee}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Trader Fee",
+      name: t("Trader Fee"),
       selector: (row) => row.traderFee,
       cell: (row) => <span>{row.traderFee}</span>,
       sortable: true,
@@ -212,11 +213,11 @@ function MarketTypeList() {
   ];
 
   return (
-    <Layout title="Market Type List">
+    <Layout title={t("Market Type List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market Type List</Block.Title>
+            <Block.Title tag="h2">{t("Market Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -226,7 +227,7 @@ function MarketTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -235,7 +236,7 @@ function MarketTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Select } from "../../components";
+import { PDFDocument } from "pdf-lib";
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -335,10 +336,12 @@ function BiddingSlip() {
           ) {
             const list = response.data.content.allotedLotList;
             const openWindows = [];
-            for (const item of list) {
-              const promise = generateBiddingSlip(item);
-              openWindows.push(promise);
-            }
+            // for (const item of list) {
+            //   const promise = generateBiddingSlip(item);
+            //   openWindows.push(promise);
+            // }
+            const promise = generateBiddingSlip(list);
+            openWindows.push(promise);
             await Promise.all(openWindows);
           }
 
@@ -523,7 +526,49 @@ function BiddingSlip() {
   //       });
   // }
 
-  const generateBiddingSlip = async (allotedLotId) => {
+  // const generateBiddingSlip = async (allotedLotId) => {
+  //   const newDate = new Date();
+  //   const formattedDate =
+  //     newDate.getFullYear() +
+  //     "-" +
+  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     newDate.getDate().toString().padStart(2, "0");
+
+  //   try {
+  //     const response = await api.post(
+  //       baseURLReport + `getfarmercopy-kannada`,
+  //       {
+  //         marketId: data.marketId,
+  //         godownId: data.godownId,
+  //         allottedLotId: allotedLotId,
+  //         auctionDate: formattedDate,
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+
+  //     // const file = new Blob([response.data], { type: "application/pdf" });
+  //     // const fileURL = URL.createObjectURL(file);
+  //     // const printWindow = window.open(fileURL);
+  //     // if (printWindow) {
+  //     //   printWindow.onload = () => {
+  //     //     printWindow.print();
+  //     //   };
+  //     // } else {
+  //     //   console.error("Failed to open the print window.");
+  //     // }
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+
+  const generateBiddingSlip = async (allotedLotIds) => {
     const newDate = new Date();
     const formattedDate =
       newDate.getFullYear() +
@@ -531,37 +576,39 @@ function BiddingSlip() {
       (newDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       newDate.getDate().toString().padStart(2, "0");
-
+  
     try {
-      const response = await api.post(
-        baseURLReport + `getfarmercopy-kannada`,
-        {
-          marketId: data.marketId,
-          godownId: data.godownId,
-          allottedLotId: allotedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
-        }
-      );
+      const pdfDocs = [];
+      for (const allotedLotId of allotedLotIds) {
+        const response = await api.post(
+          `${baseURLReport}getfarmercopy-kannada`,
+          {
+            marketId: data.marketId,
+            godownId: data.godownId,
+            allottedLotId: allotedLotId,
+            auctionDate: formattedDate,
+          },
+          {
+            responseType: "blob",
+          }
+        );
+        const arrayBuffer = await response.data.arrayBuffer();
+        pdfDocs.push(arrayBuffer);
+      }
 
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
+      const mergedPdf = await PDFDocument.create();
+      for (const pdfBytes of pdfDocs) {
+        const pdf = await PDFDocument.load(pdfBytes);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
+      }
+  
+      const mergedPdfBytes = await mergedPdf.save();
+      const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(blob);
       window.open(fileURL);
-
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      // const fileURL = URL.createObjectURL(file);
-      // const printWindow = window.open(fileURL);
-      // if (printWindow) {
-      //   printWindow.onload = () => {
-      //     printWindow.print();
-      //   };
-      // } else {
-      //   console.error("Failed to open the print window.");
-      // }
     } catch (error) {
-      // console.log("error", error);
+      console.error("Error generating PDF:", error);
     }
   };
 

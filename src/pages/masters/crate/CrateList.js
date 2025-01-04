@@ -10,10 +10,14 @@ import React from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function CrateList() {
+  // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -140,7 +144,7 @@ function CrateList() {
 
   const CrateDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +154,7 @@ function CrateList() {
             size="sm"
             onClick={() => handleView(row.crateMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +162,7 @@ function CrateList() {
             className="ms-2"
             onClick={() => handleEdit(row.crateMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +170,7 @@ function CrateList() {
             onClick={() => deleteConfirm(row.crateMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -175,14 +179,14 @@ function CrateList() {
     },
 
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
@@ -196,7 +200,7 @@ function CrateList() {
     //   hide: "md",
     // },
     {
-      name: "Approx Weight",
+      name: t("Approx Weight"),
       selector: (row) => row.approxWeightPerCrate,
       cell: (row) => <span>{row.approxWeightPerCrate}</span>,
       sortable: true,
@@ -205,11 +209,11 @@ function CrateList() {
   ];
 
   return (
-    <Layout title="Crate List">
+    <Layout title={t("Crate List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Crate List</Block.Title>
+            <Block.Title tag="h2">{t("Crate List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -219,7 +223,7 @@ function CrateList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -228,7 +232,7 @@ function CrateList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

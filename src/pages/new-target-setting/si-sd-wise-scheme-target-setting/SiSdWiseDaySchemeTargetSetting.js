@@ -20,6 +20,7 @@ function SiSdWiseDaySchemeTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -186,6 +187,7 @@ function SiSdWiseDaySchemeTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -635,6 +637,7 @@ function SiSdWiseDaySchemeTargetSetting() {
             saveSuccess();
             getList();
             editClear();
+            handleCloseModal3();
           }
         })
         .catch((err) => {
@@ -658,6 +661,7 @@ function SiSdWiseDaySchemeTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -1087,6 +1091,7 @@ function SiSdWiseDaySchemeTargetSetting() {
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
+      talukId: "",
       month: "",
       targetType: "",
       value: "",
@@ -1784,7 +1789,8 @@ function SiSdWiseDaySchemeTargetSetting() {
                               type="text"
                               placeholder="Enter User Name"
                               className="form-control"
-                              readOnly
+                              required
+                              // readOnly
                             />
                           </Form.Group>
                         </Col>
