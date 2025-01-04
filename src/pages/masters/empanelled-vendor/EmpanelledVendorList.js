@@ -10,6 +10,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { createTheme } from "react-data-table-component";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -20,6 +21,7 @@ function EmpanelledVendorList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -53,18 +55,18 @@ function EmpanelledVendorList() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -73,8 +75,8 @@ function EmpanelledVendorList() {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -84,7 +86,7 @@ function EmpanelledVendorList() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -140,7 +142,7 @@ function EmpanelledVendorList() {
 
   const EmpanelledVendorDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +152,7 @@ function EmpanelledVendorList() {
             size="sm"
             onClick={() => handleView(row.vendorMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +160,7 @@ function EmpanelledVendorList() {
             className="ms-2"
             onClick={() => handleEdit(row.vendorMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +168,7 @@ function EmpanelledVendorList() {
             onClick={() => deleteConfirm(row.vendorMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -174,7 +176,7 @@ function EmpanelledVendorList() {
       hide: "md",
     },
     {
-      name: "Empaneled Vendor",
+      name: t("Empaneled Vendor"),
       selector: (row) => row.vendorMasterName,
       cell: (row) => <span>{row.vendorMasterName}</span>,
       sortable: true,
@@ -183,11 +185,11 @@ function EmpanelledVendorList() {
   ];
 
   return (
-    <Layout title="Empaneled Vendor List">
+    <Layout title={t("Empaneled Vendor List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Empaneled Vendor List</Block.Title>
+            <Block.Title tag="h2">{t("Empaneled Vendor List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -197,7 +199,7 @@ function EmpanelledVendorList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -206,7 +208,7 @@ function EmpanelledVendorList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

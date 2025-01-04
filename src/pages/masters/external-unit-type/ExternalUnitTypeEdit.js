@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ExternalUnitTypeEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -98,8 +100,7 @@ function ExternalUnitTypeEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
-      // text: "You clicked the button!",
+      title: t("Updated successfully"),
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
@@ -111,7 +112,7 @@ function ExternalUnitTypeEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -119,16 +120,16 @@ function ExternalUnitTypeEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("/seriui/external-unit-type-list"));
   };
 
   return (
-    <Layout title="Edit External Unit Type">
+    <Layout title={t("Edit External Unit Type")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit External Unit Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit External Unit Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -138,7 +139,7 @@ function ExternalUnitTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -147,7 +148,7 @@ function ExternalUnitTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -156,21 +157,20 @@ function ExternalUnitTypeEdit() {
       </Block.Head>
 
       <Block className="mt-n5">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="externalUnitType">
-                          External Unit Type
+                          {t("External Unit Type")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -180,11 +180,11 @@ function ExternalUnitTypeEdit() {
                             value={data.externalUnitTypeName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter External Unit Type"
+                            placeholder={t("Enter External Unit Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            External Unit Type is required.
+                            {t("External Unit Type is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -193,7 +193,7 @@ function ExternalUnitTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="externalUnitType">
-                          External Unit Type Name in Kannada
+                          {t("External Unit Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -203,11 +203,11 @@ function ExternalUnitTypeEdit() {
                             value={data.externalUnitTypeNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter External Unit Type Name in Kannada"
+                            placeholder={t("Enter External Unit Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            External Unit Type Name in Kannada is required.
+                            {t("External Unit Type Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -220,17 +220,13 @@ function ExternalUnitTypeEdit() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
-                  {/* <Link to="/seriui/external-unit-type-list" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

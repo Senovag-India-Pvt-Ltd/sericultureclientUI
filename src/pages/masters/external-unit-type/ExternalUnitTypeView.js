@@ -7,6 +7,7 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import ExternalUnitType from "./ExternalUnitType";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -23,6 +24,7 @@ function ExternalUnitTypeView() {
   // const [data] = useState(LandCategoryDatas);
   const [ExternalUnitType, setExternalUnitType] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -50,11 +52,11 @@ function ExternalUnitTypeView() {
   }, [id]);
 
   return (
-    <Layout title="External Unit Type View" content="container">
+    <Layout title={t("External Unit Type View")} content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">External Unit Type View</Block.Title>
+            <Block.Title tag="h2">{t("External Unit Type View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +66,7 @@ function ExternalUnitTypeView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +75,7 @@ function ExternalUnitTypeView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,11 +85,11 @@ function ExternalUnitTypeView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>External Unit Type Details</Card.Header>
+          <Card.Header>{t("External Unit Type Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -95,21 +97,16 @@ function ExternalUnitTypeView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{ExternalUnitType.externalUnitTypeId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> External Unit Type:</td>
+                        <td style={styles.ctstyle}>{t("External Unit Type")}:</td>
                         <td>{ExternalUnitType.externalUnitTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          External Unit Type Name in Kannada:
-                        </td>
-                        <td>
-                          {ExternalUnitType.externalUnitTypeNameInKannada}
-                        </td>
+                        <td style={styles.ctstyle}>{t("External Unit Type Name in Kannada")}:</td>
+                        <td>{ExternalUnitType.externalUnitTypeNameInKannada}</td>
                       </tr>
                     </tbody>
                   </table>

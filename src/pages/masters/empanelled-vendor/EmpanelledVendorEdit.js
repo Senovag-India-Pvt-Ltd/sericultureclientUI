@@ -8,6 +8,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -115,12 +116,14 @@ function EmpanelledVendorEdit() {
     }).then(() => navigate("/seriui/empanelled-vendor-list"));
   };
 
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Edit Empaneled Vendor">
+    <Layout title={t("Edit Empaneled Vendor")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Empaneled Vendor</Block.Title>
+            <Block.Title tag="h2">{t("Edit Empaneled Vendor")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +133,7 @@ function EmpanelledVendorEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -139,7 +142,7 @@ function EmpanelledVendorEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -155,14 +158,15 @@ function EmpanelledVendorEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="vendorMaster">
-                          Empaneled Vendor<span className="text-danger">*</span>
+                          {t("Empaneled Vendor")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -171,11 +175,11 @@ function EmpanelledVendorEdit() {
                             type="text"
                             value={data.vendorMasterName}
                             onChange={handleInputs}
-                            placeholder="Enter Empaneled Vendor"
+                            placeholder={t("Enter Empaneled Vendor")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Vendor Name is required.
+                            {t("Vendor Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -190,12 +194,12 @@ function EmpanelledVendorEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

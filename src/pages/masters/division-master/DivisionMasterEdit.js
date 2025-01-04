@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 //import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -15,6 +16,7 @@ function DivisionMasterEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -129,11 +131,11 @@ function DivisionMasterEdit() {
   };
 
   return (
-    <Layout title="Edit Division">
+    <Layout title={t("Edit Division")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Division</Block.Title>
+            <Block.Title tag="h2">{t("Edit Division")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -143,7 +145,7 @@ function DivisionMasterEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -152,7 +154,7 @@ function DivisionMasterEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -168,14 +170,14 @@ function DivisionMasterEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="division">
-                          Division<span className="text-danger">*</span>
+                          {t("Division")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -184,11 +186,11 @@ function DivisionMasterEdit() {
                             value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Division Name"
+                            placeholder={t("Enter Division Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Division Name is required
+                            {t("Division Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -197,7 +199,7 @@ function DivisionMasterEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Division Name in Kannada
+                          {t("Division Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -207,11 +209,11 @@ function DivisionMasterEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Division Name in Kannada"
+                            placeholder={t("Enter Division Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Division Name in Kannada is required.
+                            {t("Division Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -226,12 +228,12 @@ function DivisionMasterEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

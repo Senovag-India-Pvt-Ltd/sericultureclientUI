@@ -8,10 +8,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ExternalUnitType() {
+   // Translation
+    const { t } = useTranslation();
   const [data, setData] = useState({
     externalUnitTypeName: "",
     externalUnitTypeNameInKannada: "",
@@ -95,11 +99,11 @@ function ExternalUnitType() {
     });
   };
   return (
-    <Layout title="External Unit Type">
+    <Layout title={t("External Unit Type")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">External Unit Type</Block.Title>
+            <Block.Title tag="h2">{t("External Unit Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -109,7 +113,7 @@ function ExternalUnitType() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
               <li>
@@ -118,7 +122,7 @@ function ExternalUnitType() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go To List")}</span>
                 </Link>
               </li>
             </ul>
@@ -137,7 +141,7 @@ function ExternalUnitType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="externalUnitType">
-                        External Unit Type<span className="text-danger">*</span>
+                        {t("External Unit Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -146,11 +150,11 @@ function ExternalUnitType() {
                           value={data.externalUnitTypeName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter External Unit Type"
+                          placeholder={t("Enter External Unit Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          External Unit Type is required.
+                          {t("External Unit Type is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -159,7 +163,7 @@ function ExternalUnitType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="externalUnitType">
-                        External Unit Type Name in Kannada
+                        {t("External Unit Type Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -169,11 +173,11 @@ function ExternalUnitType() {
                           value={data.externalUnitTypeNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter External Unit Type Name in Kannada"
+                          placeholder={t("Enter External Unit Type Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          External Unit Type Name in Kannada is required.
+                          {t("External Unit Type Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -187,7 +191,7 @@ function ExternalUnitType() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                  {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -195,7 +199,7 @@ function ExternalUnitType() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("cancel")}
                   </Button>
                 </li>
               </ul>

@@ -6,6 +6,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -21,6 +22,7 @@ function EmpanelledVendorView() {
   const { id } = useParams();
   const [empanelledVendor, setEmpanelledVendor] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const getIdList = () => {
     setLoading(true);
@@ -42,11 +44,11 @@ function EmpanelledVendorView() {
   }, [id]);
 
   return (
-    <Layout title="Empaneled Vendor View" content="container">
+    <Layout title={t("Empaneled Vendor View")} content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Empaneled Vendor View</Block.Title>
+            <Block.Title tag="h2">{t("Empaneled Vendor View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -56,7 +58,7 @@ function EmpanelledVendorView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -65,7 +67,7 @@ function EmpanelledVendorView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -75,11 +77,11 @@ function EmpanelledVendorView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>Empaneled Vendor Details</Card.Header>
+          <Card.Header>{t("Empaneled Vendor Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -87,11 +89,11 @@ function EmpanelledVendorView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{empanelledVendor.vendorMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Empaneled Vendor :</td>
+                        <td style={styles.ctstyle}>{t("Empaneled Vendor")}:</td>
                         <td>{empanelledVendor.vendorMasterName}</td>
                       </tr>
                     </tbody>
