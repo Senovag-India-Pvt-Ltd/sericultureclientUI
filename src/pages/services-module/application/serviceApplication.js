@@ -1876,7 +1876,7 @@ function ServiceApplication() {
   const handleAttachFileUpload = async (documentId) => {
     const param = {
       // applicationFormId: applicationId,
-      applicationFormId: 1,
+      applicationFormId: applicationId,
       documentTypeId: documentId,
     };
 

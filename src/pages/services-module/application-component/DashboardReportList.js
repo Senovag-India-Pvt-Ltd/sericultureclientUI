@@ -63,7 +63,7 @@ function DashboardReportList() {
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
-  const handleShowModal = (fid) => {
+  const handleShowModal = (fid,schemeId) => {
     setShowModal(true);
     // getActionFarmerList(fid); // Call getList with userId and stepId
   };
@@ -95,8 +95,8 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
-  const checkToShowModal = (fid) => {
-    getActionFarmerList(fid);
+  const checkToShowModal = (fid,schemeId) => {
+    getActionFarmerList(fid,schemeId);
   };
 
   const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
@@ -579,7 +579,7 @@ function DashboardReportList() {
   const [subSchemeId, setSubSchemeId] = useState(null); // State to hold subSchemeId
   const [approvalStageId, setApprovalStageId] = useState(null);
 
-  const getActionFarmerList = (fid) => {
+  const getActionFarmerList = (fid,schemeId) => {
     setLoading(true);
     api
       .post(
@@ -590,6 +590,7 @@ function DashboardReportList() {
             userId: localStorage.getItem("userMasterId"),
             stepId: id,
             fid: fid,
+            schemeId: schemeId,
           },
         }
       )
@@ -615,7 +616,7 @@ function DashboardReportList() {
             )
             .then((response) => {
               if (response.data) {
-                handleShowModal(fid);
+                handleShowModal(fid,schemeId);
               } else {
                 Swal.fire({
                   icon: "error",
@@ -626,7 +627,7 @@ function DashboardReportList() {
             })
             .catch((err) => {});
         } else {
-          handleShowModal(fid);
+          handleShowModal(fid,schemeId);
         }
 
         if (recordData.pushToDbt) {
@@ -1617,7 +1618,7 @@ const handleActionInputs = (e) => {
             onClick={() =>
               // handleShowModal(row.fruitsId, row.applicationDocumentId)
               // checkToShowModal(row.fruitsId, row.applicationDocumentId)
-              checkToShowModal(row.fruitsId)
+              checkToShowModal(row.fruitsId,row.schemeId)
             }
             className="me-2" // Adds space between buttons
           >
