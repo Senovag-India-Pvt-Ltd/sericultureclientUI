@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -20,6 +21,8 @@ function MaintenanceofMulberryfarmUpdate() {
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -141,11 +144,11 @@ function MaintenanceofMulberryfarmUpdate() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Update Pruning Date">
+    <Layout title={t("Update Pruning Date")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Pruning Date</Block.Title>
+            <Block.Title tag="h2">{t("Pruning Date")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -155,7 +158,7 @@ function MaintenanceofMulberryfarmUpdate() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -164,7 +167,7 @@ function MaintenanceofMulberryfarmUpdate() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -178,17 +181,17 @@ function MaintenanceofMulberryfarmUpdate() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Update Pruning Date
+              {t("Update Pruning Date")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                   <Form.Label column sm={2}>
-                    Pruning Date
+                    {t("Pruning Date")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <Col sm={2}>
@@ -216,12 +219,12 @@ function MaintenanceofMulberryfarmUpdate() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                      {t("Update")}
                     </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </li>
                 </ul>

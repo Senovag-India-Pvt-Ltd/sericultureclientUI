@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -25,6 +26,8 @@ function MaintenanceofMulberryfarm() {
   });
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -176,12 +179,12 @@ function MaintenanceofMulberryfarm() {
   };
 
   return (
-    <Layout title="Maintenance of Mulberry Garden in the Farms">
+    <Layout title={t("Maintenance of Mulberry Garden in the Farms")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of Mulberry Garden in the Farms
+              {t("Maintenance of Mulberry Garden in the Farms")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -192,7 +195,7 @@ function MaintenanceofMulberryfarm() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -201,7 +204,7 @@ function MaintenanceofMulberryfarm() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -214,7 +217,7 @@ function MaintenanceofMulberryfarm() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Maintenance of Mulberry Garden in the Farms
+              {t("Maintenance of Mulberry Garden in the Farms")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -222,7 +225,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="plotNumber">
-                      Plot Number<span className="text-danger">*</span>
+                      {t("Plot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -231,11 +234,11 @@ function MaintenanceofMulberryfarm() {
                         value={data.plotNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Plot Number"
+                        placeholder={t("Enter Plot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Plot Number is required
+                        {t("Plot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -244,7 +247,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Mulberry Variety<span className="text-danger">*</span>
+                      {t("Mulberry Variety")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -258,7 +261,7 @@ function MaintenanceofMulberryfarm() {
                           data.variety === undefined || data.variety === "0"
                         }
                       >
-                        <option value="">Select Mulberry Variety</option>
+                        <option value="">{t("Select Mulberry Variety")}</option>
                         {varietyListData.map((list) => (
                           <option
                             key={list.mulberryVarietyId}
@@ -269,7 +272,7 @@ function MaintenanceofMulberryfarm() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Mulberry Variety is required
+                        {t("Mulberry Variety is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -278,7 +281,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="areaUnderEachVariety">
-                      Area(In Acres)
+                      {t("Area(In Acres)")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -288,7 +291,7 @@ function MaintenanceofMulberryfarm() {
                         onChange={handleInputs}
                         maxLength="4"
                         type="text"
-                        placeholder="Enter Area(In Hectares)"
+                        placeholder={t("Enter Area(In Hectares)")}
                       />
                     </div>
                   </Form.Group>
@@ -297,7 +300,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Soil Type<span className="text-danger">*</span>
+                      {t("Soil Type")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -311,7 +314,7 @@ function MaintenanceofMulberryfarm() {
                           data.variety === undefined || data.variety === "0"
                         }
                       >
-                        <option value="">Select Soil Type</option>
+                        <option value="">{t("Select Soil Type")}</option>
                         {soilTypeListData.map((list) => (
                           <option key={list.soilTypeId} value={list.soilTypeId}>
                             {list.soilTypeName}
@@ -319,7 +322,7 @@ function MaintenanceofMulberryfarm() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Soil Type is required
+                        {t("Soil Type is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -328,7 +331,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="mulberrySpacing">
-                      Mulberry Spacing
+                      {t("Mulberry Spacing")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -338,7 +341,7 @@ function MaintenanceofMulberryfarm() {
                         onChange={handleInputs}
                         maxLength="6"
                         type="text"
-                        placeholder="Enter Mulberry Spacing"
+                        placeholder={t("Enter Mulberry Spacing")}
                       />
                     </div>
                   </Form.Group>
@@ -347,7 +350,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Pruning Date
+                      {t("Pruning Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -372,7 +375,7 @@ function MaintenanceofMulberryfarm() {
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Plantation Date
+                      {t("Plantation Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -402,7 +405,7 @@ function MaintenanceofMulberryfarm() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               {/* <li>
@@ -415,7 +418,7 @@ function MaintenanceofMulberryfarm() {
                     to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                     className="btn btn-secondary border-0"
                   >
-                   Cancel
+                   {t("Cancel")}
                   </Link>
                 </li>
             </ul>

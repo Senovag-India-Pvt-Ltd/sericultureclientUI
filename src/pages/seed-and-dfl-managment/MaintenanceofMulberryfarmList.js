@@ -12,12 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmList() {
+  const { t } = useTranslation();
   // const { id } = useParams();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
@@ -485,7 +487,7 @@ const handleUpdateAllDates = (row) => {
 
   const MaintenanceofmulberryGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -495,7 +497,7 @@ const handleUpdateAllDates = (row) => {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -503,7 +505,7 @@ const handleUpdateAllDates = (row) => {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="primary"
@@ -511,7 +513,7 @@ const handleUpdateAllDates = (row) => {
             className="ms-2"
             onClick={() => handleUpdate(row.id)}
           >
-            Update Pruning Date
+            {t("Update Pruning Date")}
           </Button>
           <Button
             variant="primary"
@@ -519,7 +521,7 @@ const handleUpdateAllDates = (row) => {
             className="ms-2"
             onClick={() => handleUpdateAllDates(row)}
           >
-            Update Dates
+            {t("Update Dates")}
           </Button>
           {/* <Button
             variant="primary"
@@ -545,14 +547,14 @@ const handleUpdateAllDates = (row) => {
     },
 
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
+      name: t("Variety"),
       selector: (row) => row.variety,
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
@@ -560,42 +562,42 @@ const handleUpdateAllDates = (row) => {
       // grow: 2,
     },
     {
-      name: "Soil Type",
+      name: t("Soil Type"),
       selector: (row) => row.soilTypeName,
       cell: (row) => <span>{row.soilTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Area(In Acres)",
+      name: t("Area(In Acres)"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spacing",
+      name: t("Spacing"),
       selector: (row) => row.mulberrySpacing,
       cell: (row) => <span>{row.mulberrySpacing}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Plantation Date",
+      name: t("Plantation Date"),
       selector: (row) => row.plantationDate,
       cell: (row) => <span>{row.plantationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM (Farm Yard Manure) application date",
+      name: t("FYM (Farm Yard Manure) application date"),
       selector: (row) => row.fymApplicationDate,
       cell: (row) => <span>{row.fymApplicationDate}</span>,
       sortable: true,
@@ -603,7 +605,7 @@ const handleUpdateAllDates = (row) => {
     },
     
     {
-      name: "Fertilizer Application Date",
+      name: t("Fertilizer Application Date"),
       selector: (row) => row.fertilizerApplicationDate,
       cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
       sortable: true,
@@ -611,28 +613,28 @@ const handleUpdateAllDates = (row) => {
     },
     
     {
-      name: "Irrigation Date",
+      name: t("Irrigation Date"),
       selector: (row) => row.irrigationDate,
       cell: (row) => <span>{row.irrigationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Brushing Date",
+      name: t("Brushing Date"),
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Foliar Spray 1 Date",
+      name: t("Foliar Spray 1 Date"),
       selector: (row) => row.foliarSpray1,
       cell: (row) => <span>{row.foliarSpray1}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Foliar Spray 2 Date",
+      name: t("Foliar Spray 2 Date"),
       selector: (row) => row.foliarSpray2,
       cell: (row) => <span>{row.foliarSpray2}</span>,
       sortable: true,
@@ -647,7 +649,7 @@ const handleUpdateAllDates = (row) => {
     // },
 
     {
-      name: "Activity Logs",
+      name: t("Activity Logs"),
       cell: (row) => (
         <div className="text-end">
           <AiOutlineInfoCircle // Use the information icon instead of Button
@@ -664,7 +666,7 @@ const handleUpdateAllDates = (row) => {
 
   const MulberryGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -673,7 +675,7 @@ const handleUpdateAllDates = (row) => {
             className="ms-2"
             onClick={() => handleStatusEdit(row)}
           >
-            Edit
+            {t("Edit")}
           </Button>
         </div>
       ),
@@ -681,21 +683,21 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM Application Status",
+      name: t("FYM Application Status"),
       selector: (row) => row.fymApplicationStatus,
       cell: (row) => (
         <span>
@@ -710,7 +712,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Fertilizer Application Status",
+      name: t("Fertilizer Application Status"),
       selector: (row) => row.fertilizerApplicationStatus,
       cell: (row) => (
         <span>
@@ -726,7 +728,7 @@ const handleUpdateAllDates = (row) => {
     },
     
     {
-      name: "Irrigation Status",
+      name: t("Irrigation Status"),
       selector: (row) => row.irrigationStatus,
       cell: (row) => (
         <span>
@@ -741,7 +743,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Brushing Status",
+      name: t("Brushing Status"),
       selector: (row) => row.brushingStatus,
       cell: (row) => (
         <span>
@@ -756,7 +758,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Foliar Spray 1 Status",
+      name: t("Foliar Spray 1 Status"),
       selector: (row) => row.foliarSpray1Status,
       cell: (row) => (
         <span>
@@ -771,7 +773,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Foliar Spray 2 Status",
+      name: t("Foliar Spray 2 Status"),
       selector: (row) => row.foliarSpray1Status,
       cell: (row) => (
         <span>
@@ -791,42 +793,42 @@ const handleUpdateAllDates = (row) => {
 
   const MaintenanceofmulberryGardenLogsDataColumns = [
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
+      name: t("Variety"),
       selector: (row) => row.variety,
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Area Under Each Variety",
+      name: t("Area Under Each Variety"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM Date",
+      name: t("FYM Date"),
       selector: (row) => row.fymApplicationDate,
       cell: (row) => <span>{row.fymApplicationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Date",
+      name: t("Fertilizer Application Date"),
       selector: (row) => row.fertilizerApplicationDate,
       cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
       sortable: true,
@@ -834,21 +836,21 @@ const handleUpdateAllDates = (row) => {
     },
     
     {
-      name: "Irrigation Date",
+      name: t("Irrigation Date"),
       selector: (row) => row.irrigationDate,
       cell: (row) => <span>{row.irrigationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Brushing Date",
+      name: t("Brushing Date"),
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Status",
+      name: t("Fertilizer Application Status"),
       selector: (row) => row.fertilizerApplicationStatus,
       cell: (row) => (
         <span>
@@ -865,7 +867,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "FYM Application Status",
+      name: t("FYM Application Status"),
       selector: (row) => row.fymApplicationStatus,
       cell: (row) => (
         <span>
@@ -882,7 +884,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Irrigation Status",
+      name: t("Irrigation Status"),
       selector: (row) => row.irrigationStatus,
       cell: (row) => (
         <span>
@@ -899,7 +901,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Brushing Status",
+      name: t("Brushing Status"),
       selector: (row) => row.brushingStatus,
       cell: (row) => (
         <span>
@@ -916,7 +918,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Foliar Spray 1 Status",
+      name: t("Foliar Spray 1 Status"),
       selector: (row) => row.foliarSpray1Status,
       cell: (row) => (
         <span>
@@ -933,7 +935,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: "Foliar Spray 2 Status",
+      name: t("Foliar Spray 2 Status"),
       selector: (row) => row.foliarSpray2Status,
       cell: (row) => (
         <span>
@@ -952,12 +954,12 @@ const handleUpdateAllDates = (row) => {
   ];
 
   return (
-    <Layout title="Maintenance Of Mulberry Garden in Farms List">
+    <Layout title={t("Maintenance Of Mulberry Garden in Farms List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance Of Mulberry Garden in Farms List
+              {t("Maintenance Of Mulberry Garden in Farms List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -968,7 +970,7 @@ const handleUpdateAllDates = (row) => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -977,7 +979,7 @@ const handleUpdateAllDates = (row) => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -1010,7 +1012,7 @@ const handleUpdateAllDates = (row) => {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
+          <Modal.Title>{t("Activity Logs")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">
@@ -1040,7 +1042,7 @@ const handleUpdateAllDates = (row) => {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update Status</Modal.Title>
+          <Modal.Title>{t("Update Status")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">
@@ -1070,7 +1072,7 @@ const handleUpdateAllDates = (row) => {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update Status</Modal.Title>
+          <Modal.Title>{t("Update Status")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1082,7 +1084,7 @@ const handleUpdateAllDates = (row) => {
             <Row className="g-5 px-5">
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Fertilizer Application Status</Form.Label>
+                  <Form.Label>{t("Fertilizer Application Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="fertilizerApplicationStatus"
@@ -1091,11 +1093,11 @@ const handleUpdateAllDates = (row) => {
                       // disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
                     >
                       <option value="">
-                        Select Fertilizer Application Status
+                        {t("Select Fertilizer Application Status")}
                       </option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1103,7 +1105,7 @@ const handleUpdateAllDates = (row) => {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Farm Yard Manure Application Status</Form.Label>
+                  <Form.Label>{t("Farm Yard Manure Application Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="fymApplicationStatus"
@@ -1111,10 +1113,10 @@ const handleUpdateAllDates = (row) => {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
                     >
-                      <option value="">Select FYM Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select FYM Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1122,7 +1124,7 @@ const handleUpdateAllDates = (row) => {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Irrigation Status</Form.Label>
+                  <Form.Label>{t("Irrigation Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="irrigationStatus"
@@ -1131,10 +1133,10 @@ const handleUpdateAllDates = (row) => {
                       // disabled={!isTodayOrFutureDate(dates.irrigationDate)}
                       
                     >
-                      <option value="">Select Irrigation Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Irrigation Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1142,7 +1144,7 @@ const handleUpdateAllDates = (row) => {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Brushing Status</Form.Label>
+                  <Form.Label>{t("Brushing Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="brushingStatus"
@@ -1150,10 +1152,10 @@ const handleUpdateAllDates = (row) => {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.brushingDate)}
                     >
-                      <option value="">Select Brushing Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Brushing Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1161,7 +1163,7 @@ const handleUpdateAllDates = (row) => {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Foliar Spray 1 Status</Form.Label>
+                  <Form.Label>{t("Foliar Spray 1 Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="foliarSpray1Status"
@@ -1169,10 +1171,10 @@ const handleUpdateAllDates = (row) => {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.foliarSpray1Status)}
                     >
-                      <option value="">Select Foliar Spray 1 Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Foliar Spray 1 Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1180,7 +1182,7 @@ const handleUpdateAllDates = (row) => {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Foliar Spray 2 Status</Form.Label>
+                  <Form.Label>{t("Foliar Spray 2 Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="foliarSpray2Status"
@@ -1188,10 +1190,10 @@ const handleUpdateAllDates = (row) => {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.foliarSpray2Status)}
                     >
-                      <option value="">Select Foliar Spray 2 Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Foliar Spray 2 Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1202,7 +1204,7 @@ const handleUpdateAllDates = (row) => {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1215,7 +1217,7 @@ const handleUpdateAllDates = (row) => {
                     to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                     className="btn btn-secondary border-0"
                   >
-                   Cancel
+                   {t("Cancel")}
                   </Link>
                 </li>
                 </div>
@@ -1227,7 +1229,7 @@ const handleUpdateAllDates = (row) => {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update Dates</Modal.Title>
+          <Modal.Title>{t("Update Dates")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1240,7 +1242,7 @@ const handleUpdateAllDates = (row) => {
             <Col lg="4">
                 <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Brushing Date
+                      {t("Brushing Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1265,7 +1267,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Irrigation Date
+                      {t("Irrigation Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1290,7 +1292,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                 <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      FYM Application Date
+                      {t("FYM Application Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1315,7 +1317,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Fertilizer Application Date
+                      {t("Fertilizer Application Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1340,7 +1342,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Foilar Spray 1
+                      {t("Foilar Spray 1")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1364,7 +1366,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                    Foilar Spray 2
+                    {t("Foilar Spray 2")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1391,7 +1393,7 @@ const handleUpdateAllDates = (row) => {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update Dates
+                      {t("Update Dates")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
