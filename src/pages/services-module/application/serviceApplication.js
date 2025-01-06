@@ -890,7 +890,7 @@ function ServiceApplication() {
     });
     setData({
       ...data,
-      expectedAmount: calculatedAmount.toFixed(2), // Set the calculated amount as the Subsidy Amount
+      expectedAmount: calculatedAmount, // Set the calculated amount as the Subsidy Amount
     });
   };
   
