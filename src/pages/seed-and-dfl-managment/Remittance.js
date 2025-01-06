@@ -268,7 +268,8 @@ function Remittance() {
               <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      Lot Number
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -279,11 +280,11 @@ function Remittance() {
                         maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                         Lot Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -323,7 +324,8 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Race<span className="text-danger">*</span>
+                      Race
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -332,7 +334,7 @@ function Remittance() {
                           value={data.raceId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
-                          required
+                          // required
                         >
                           <option value="">Select Race</option>
                           {raceListData.map((list) => (
@@ -344,9 +346,9 @@ function Remittance() {
                             </option>
                           ))}
                         </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Race is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Col>
                   </Form.Group>
@@ -356,7 +358,7 @@ function Remittance() {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                       Number Of DFLs 
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -367,11 +369,11 @@ function Remittance() {
                         maxLength="4"
                         type="number"
                         placeholder="Enter Number Of DFLs"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                         Number Of DFLs is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -401,7 +403,8 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bill Number<span className="text-danger">*</span>
+                      Bill Number
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -411,11 +414,11 @@ function Remittance() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Bill Number"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Bill Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -423,7 +426,8 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      KTC 25 <span className="text-danger">*</span>
+                      KTC 25 
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -432,12 +436,12 @@ function Remittance() {
                         value={data.rtc25}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter RTC 25"
-                        required
+                        placeholder="Enter KTC 25"
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       RTC 25 is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -447,7 +451,8 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bank Challan Number<span className="text-danger">*</span>
+                      Bank Challan Number
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -457,11 +462,11 @@ function Remittance() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Bank Challan Number"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Bank Challan Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
