@@ -24,11 +24,28 @@ function DispatchofCocoonstoP4GrainageEdit() {
   const isDataDispatchDate = !!data.dispatchDate;
   const isDataSpunDate = !!data.spunOnDate;
 
-  let name, value;
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+    const { name, options, type } = e.target;
+  
+    if (type === "select-multiple") {
+      // Ensure `options` exists for a multi-select element
+      const selectedValues = Array.from(options)
+        .filter((option) => option.selected)
+        .map((option) => option.value);
+  
+      // Update the state with a comma-separated string of selected values
+      setData({ ...data, [name]: selectedValues.join(",") });
+    } else {
+      // For other input types, handle normally
+      const value = e.target.value;
+      setData({ ...data, [name]: value });
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -536,6 +553,42 @@ function DispatchofCocoonstoP4GrainageEdit() {
                                 type="text"
                                 placeholder="Enter Number of Cocoons Dispatched"
                                 />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                                Selected Bed as per the Mean Performance
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="selectedBedAsPerTheMeanPerformance"
+                                  value={data.selectedBedAsPerTheMeanPerformance.split(",")}
+                                  onChange={handleInputs}
+                                  required
+                                  multiple
+                                  // isInvalid={
+                                  //   !data.selectedBedAsPerTheMeanPerformance ||
+                                  //   data.selectedBedAsPerTheMeanPerformance === "0"
+                                  // }
+                                >
+                                  <option value="Bed 1">Bed 1</option>
+                                  <option value="Bed 2">Bed 2</option>
+                                  <option value="Bed 3">Bed 3</option>
+                                  <option value="Bed 4">Bed 4</option>
+                                  <option value="Bed 5">Bed 5</option>
+                                  <option value="Bed 6">Bed 6</option>
+                                  <option value="Bed 7">Bed 7</option>
+                                  <option value="Bed 8">Bed 8</option>
+                                  <option value="Bed 9">Bed 9</option>
+                                  <option value="Bed 10">Bed 10</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Selected Bed as per the Mean Performance is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>

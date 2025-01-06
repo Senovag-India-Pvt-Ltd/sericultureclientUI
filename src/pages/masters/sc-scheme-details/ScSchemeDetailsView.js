@@ -124,6 +124,10 @@ function ScSchemeDetailsView() {
                         <td style={styles.ctstyle}> {t("Dbt Code")}</td>
                         <td>{ScSchemeDetails.dbtCode}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Calculation Based On")}</td>
+                        <td>{ScSchemeDetails.calculationBasedOn}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

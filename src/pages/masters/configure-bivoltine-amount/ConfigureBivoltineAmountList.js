@@ -1,41 +1,34 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import StateDatas from "../../../store/masters/state/StateData";
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import React from "react";
 import Swal from "sweetalert2";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-// import axios from "axios";
-import api from "../../../../src/services/auth/api";
-import { useTranslation } from "react-i18next";
+import api from "../../../services/auth/api";
+import { useState, useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-function ScSchemeDetailsList() {
-  // Translation
-  const { t } = useTranslation();
+function ConfigureBivoltineAmountList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, pageSize: countPerPage } };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scSchemeDetails/list`, _params)
+      .get(baseURLDBT + `configureBivoltineAmount/getListOfConfigureBivoltineAmountDetails`, _params)
       .then((response) => {
-        setListData(response.data.content.ScSchemeDetails);
-        setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content);
+        setTotalRows(response.data.content.totalRecords);
         setLoading(false);
       })
       .catch((err) => {
@@ -49,13 +42,13 @@ function ScSchemeDetailsList() {
   }, [page]);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/sc-scheme-details-view/${_id}`);
-  };
+//   const handleView = (_id) => {
+//     navigate(`/seriui/race-mapping-view/${_id}`);
+//   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-scheme-details-edit/${_id}`);
-    // navigate("/seriui/state");
+    navigate(`/seriui/configure-bivoltine-amount-edit/${_id}`);
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -76,7 +69,7 @@ function ScSchemeDetailsList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `scSchemeDetails/delete/${_id}`)
+          .delete(baseURL + `configureBivoltineAmount/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -146,116 +139,90 @@ function ScSchemeDetailsList() {
     },
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return format(date, "dd/MM/yyyy");
-  };
-
-  const ScSchemeDetailsDataColumns = [
+  const RaceMappingDataColumns = [
     {
-      name: t("Action"),
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.scSchemeDetailsId)}
+            onClick={() => handleView(row.raceMarketMasterId)}
           >
-            {t("View")}
-          </Button>
+            View
+          </Button> */}
           <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scSchemeDetailsId)}
+            onClick={() => handleEdit(row.configureBivoltineAmountId)}
           >
-            {t("Edit")}
+            Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.scSchemeDetailsId)}
+            onClick={() => deleteConfirm(row.configureBivoltineAmountId)}
             className="ms-2"
           >
-            {t("delete")}
+            Delete
           </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
     },
+
     {
-      name:t("Scheme Name"),
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      name: "Component",
+      selector: (row) => row.componentName,
+      cell: (row) => <span>{row.componentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Scheme Name in Kannada"),
-      selector: (row) => row.schemeNameInKannada,
-      cell: (row) => <span>{row.schemeNameInKannada}</span>,
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: t("Scheme Start Date"),
-        selector: (row) => row.schemeStartDate,
-        cell: (row) => <span>{formatDate(row.schemeStartDate)}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: t("Scheme End Date"),
-        selector: (row) => row.schemeEndDate,
-        cell: (row) => <span>{formatDate(row.schemeEndDate)}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: t("Dbt Code"),
-        selector: (row) => row.dbtCode,
-        cell: (row) => <span>{row.dbtCode}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name:t("Calculation Based On"),
-        selector: (row) => row.calculationBasedOn,
-        cell: (row) => <span>{row.calculationBasedOn}</span>,
+        name: "Amount Per Kg",
+        selector: (row) => row.amountPerKg,
+        cell: (row) => <span>{row.amountPerKg}</span>,
         sortable: true,
         hide: "md",
       },
   ];
 
   return (
-    <Layout title="Scheme Details List">
+    <Layout title="List of Configured Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Scheme Details List")}</Block.Title>
+            <Block.Title tag="h2">List of Configured Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-scheme-details"
+                  to="/seriui/configure-bivoltine-amountt"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-scheme-details"
+                  to="/seriui/configure-bivoltine-amount"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
             </ul>
@@ -266,9 +233,9 @@ function ScSchemeDetailsList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
-            // title="TrainingProgram List"
+            // title="Crate List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ScSchemeDetailsDataColumns}
+            columns={RaceMappingDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -289,4 +256,4 @@ function ScSchemeDetailsList() {
   );
 }
 
-export default ScSchemeDetailsList;
+export default ConfigureBivoltineAmountList;
