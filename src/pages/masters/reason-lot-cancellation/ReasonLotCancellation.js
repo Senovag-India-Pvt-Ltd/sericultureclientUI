@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 // import axios from "axios";
 import { useState } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next"; // Add this line
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonLotCancellation() {
+  const { t } = useTranslation(); // Add this line
   const [data, setData] = useState({
     reasonLotRejectName: "",
   });
@@ -58,7 +60,7 @@ function ReasonLotCancellation() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"), // Add translation function
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
@@ -66,17 +68,17 @@ function ReasonLotCancellation() {
   const saveError = (message) => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"), // Add translation function
       text: message,
     });
   };
 
   return (
-    <Layout title="Reason for Lot Cancellation">
+    <Layout title={t("Reason for Lot Cancellation")}> {/* Add translation function */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reason for Lot Cancellation</Block.Title>
+            <Block.Title tag="h2">{t("Reason for Lot Cancellation")}</Block.Title> {/* Add translation function */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -86,7 +88,7 @@ function ReasonLotCancellation() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Add translation function */}
                 </Link>
               </li>
               <li>
@@ -95,7 +97,7 @@ function ReasonLotCancellation() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Add translation function */}
                 </Link>
               </li>
             </ul>
@@ -114,7 +116,7 @@ function ReasonLotCancellation() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="rear">
-                        Reason for Lot Cancellation
+                        {t("Reason for Lot Cancellation")} {/* Add translation function */}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -124,11 +126,11 @@ function ReasonLotCancellation() {
                           type="text"
                           value={data.reasonLotRejectName}
                           onChange={handleInputs}
-                          placeholder="Enter Reason for Lot Cancellation"
+                          placeholder={t("Enter Reason for Lot Cancellation")} 
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reason for Lot Cancellation is required
+                          {t("Reason for Lot Cancellation is required")} {/* Add translation function */}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -142,7 +144,7 @@ function ReasonLotCancellation() {
                 <li>
                   <Button type="submit" variant="primary">
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
-                    Save
+                    {t("Save")} {/* Add translation function */}
                   </Button>
                 </li>
                 <li>
@@ -150,7 +152,7 @@ function ReasonLotCancellation() {
                     to="/seriui/reason-lot-cancellation-list"
                     className="btn btn-secondary border-0"
                   >
-                    Cancel
+                    {t("Cancel")} {/* Add translation function */}
                   </Link>
                 </li>
               </ul>

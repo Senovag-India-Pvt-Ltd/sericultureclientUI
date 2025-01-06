@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -17,6 +18,7 @@ function RearingOfDFLsForThe8LinesEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -250,12 +252,12 @@ function RearingOfDFLsForThe8LinesEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Rearing of DFLs for the 8 lines">
+    <Layout title={t("Edit Rearing of DFLs for the 8 lines")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Rearing of DFLs for the 8 lines
+              {t("Edit Rearing of DFLs for the 8 lines")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -266,7 +268,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -275,7 +277,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -287,19 +289,19 @@ function RearingOfDFLsForThe8LinesEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Rearing of DFLs for the 8 lines
+              {t("Edit Rearing of DFLs for the 8 lines")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Disinfectant Usage Details
+                      {t("Disinfectant Usage Details")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -310,7 +312,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Disinfectant Usage Details</option>
+                          <option value="">{t("Select Disinfectant Usage Details")}</option>
                           {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
                             <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
                               {list.disinfectantMasterName}
@@ -318,7 +320,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Disinfectant Usage Details is required
+                        {t("Disinfectant Usage Details is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -328,7 +330,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Crop Detail<span className="text-danger">*</span>
+                        {t("Crop Detail")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -337,11 +339,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.cropDetail}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crop Detail"
+                          placeholder={t("Enter Crop Detail")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Crop Detail is required
+                          {t("Crop Detail is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -350,7 +352,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Crop Number
+                        {t("Crop Number")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -360,11 +362,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.cropNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crop number"
+                          placeholder={t("Enter Crop number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
-                          Crop number is required
+                          {t("Crop number is required")}
                         </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
@@ -372,7 +374,7 @@ function RearingOfDFLsForThe8LinesEdit() {
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label>Lot Number</Form.Label>
+                      <Form.Label>{t("Lot Number")}</Form.Label>
                       <Col>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -382,7 +384,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                             onBlur={() => handleInputs}
                             // required
                           >
-                            <option value="">Select Lot Number</option>
+                            <option value="">{t("Select Lot Number")}</option>
                             {lotListData && lotListData.length
                               ? lotListData.map((list) => (
                                   <option key={list.id} value={list.lotNumber}>
@@ -392,7 +394,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Lot Number is required
+                            {t("Lot Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -402,7 +404,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Number of DFLs<span className="text-danger">*</span>
+                        {t("Number of DFLs")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -411,11 +413,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.numberOfDFLs}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Number of DFLs"
+                          placeholder={t("Enter Number of DFLs")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Number of DFLs is required
+                          {t("Number of DFLs is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -424,7 +426,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Cold Storage Details
+                        {t("Cold Storage Details")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -434,11 +436,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.coldStorageDetails}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Cold Storage Details"
+                          placeholder={t("Enter Cold Storage Details")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
-                          Cold Storage Details is required
+                          {t("Cold Storage Details is required")}
                         </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
@@ -447,7 +449,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Chawki percentage<span className="text-danger">*</span>
+                        {t("Chawki percentage")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -456,11 +458,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.chawkiPercentage}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Chawki percentage "
+                          placeholder={t("Enter Chawki percentage")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Chawki percentage is required
+                          {t("Chawki percentage is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -469,8 +471,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Worm weight (In grms)
-                        <span className="text-danger">*</span>
+                        {t("Worm weight (In grms)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -479,11 +480,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.wormWeightInGrams}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Worm weight (In grms)"
+                          placeholder={t("Enter Worm weight (In grms)")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Worm weight (In grms) is required
+                          {t("Worm weight (In grms) is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -492,7 +493,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Worm Test results
+                        {t("Worm Test results")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -502,22 +503,20 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.wormTestDatesAndResults}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Worm Test results"
+                          placeholder={t("Enter Worm Test results")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
-                        Worm Test results is required
+                        {t("Worm Test results is required")}
                         </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
 
-                 
-
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Crop Failure details
+                        {t("Crop Failure details")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -527,11 +526,11 @@ function RearingOfDFLsForThe8LinesEdit() {
                           value={data.cropFailureDetails}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crop failure details"
+                          placeholder={t("Enter Crop failure details")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
-                          Crop failure details is required
+                          {t("Crop failure details is required")}
                         </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
@@ -540,7 +539,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4 ">
                       <Form.Label>
-                        Laid on (L/O) date<span className="text-danger">*</span>
+                        {t("Laid on (L/O) date")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         {/* {isDataLaidDate && ( */}
@@ -566,7 +565,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Released on 
+                        {t("Released on")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -593,7 +592,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Spun on Date
+                        {t("Spun on Date")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -620,7 +619,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                       <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date
+                                {t("Date")}
                                 {/* <span className="text-danger">*</span> */}
                                 </Form.Label>
                                 <div className="form-control-wrap">
@@ -653,12 +652,12 @@ function RearingOfDFLsForThe8LinesEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

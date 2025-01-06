@@ -12,11 +12,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingofDFLsforthe8LinesList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -626,7 +628,7 @@ function RearingofDFLsforthe8LinesList() {
     //   // grow: 2,
     // },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -640,7 +642,7 @@ function RearingofDFLsforthe8LinesList() {
     //   hide: "md",
     // },
     {
-      name: "Date",
+      name: t("Date"),
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
       sortable: true,
@@ -648,14 +650,14 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "First Feeding",
+      name: t("First Feeding"),
       selector: (row) => row.firstFeeding,
       cell: (row) => <span>{row.firstFeeding}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Second Feeding",
+      name: t("Second Feeding"),
       selector: (row) => row.secondFeeding,
       cell: (row) => <span>{row.secondFeeding}</span>,
       sortable: true,
@@ -663,14 +665,14 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Third Feeding",
+      name: t("Third Feeding"),
       selector: (row) => row.thirdFeeding,
       cell: (row) => <span>{row.thirdFeeding}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Leaf Quantity",
+      name: t("Leaf Quantity"),
       selector: (row) => row.leafQuantity,
       cell: (row) => <span>{row.leafQuantity}</span>,
       sortable: true,
@@ -678,21 +680,21 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Worm Stage",
+      name: t("Worm Stage"),
       selector: (row) => row.wormStage,
       cell: (row) => <span>{row.wormStage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Temperature",
+      name: t("Temperature"),
       selector: (row) => row.temperature,
       cell: (row) => <span>{row.temperature}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Humidity",
+      name: t("Humidity"),
       selector: (row) => row.humidity,
       cell: (row) => <span>{row.humidity}</span>,
       sortable: true,
@@ -941,7 +943,7 @@ function RearingofDFLsforthe8LinesList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -949,7 +951,7 @@ function RearingofDFLsforthe8LinesList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -957,7 +959,7 @@ function RearingofDFLsforthe8LinesList() {
             onClick={() => handleShowModal3(row)}
             className="ms-2"
           >
-            Add Moult Table
+            {t("Add Moult Table")}
           </Button>
         </div>
       ),
@@ -966,7 +968,7 @@ function RearingofDFLsforthe8LinesList() {
       grow: 2,
     },
     {
-      name: "Disinfectant Usage Details",
+      name: t("Disinfectant Usage Details"),
       selector: (row) => row.disinfectantMasterName,
       cell: (row) => <span>{row.disinfectantMasterName}</span>,
       sortable: true,
@@ -980,7 +982,7 @@ function RearingofDFLsforthe8LinesList() {
     //   hide: "md",
     // },
     {
-      name: "Crop Number",
+      name: t("Crop Number"),
       selector: (row) => row.cropNumber,
       cell: (row) => <span>{row.cropNumber}</span>,
       sortable: true,
@@ -988,14 +990,14 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of DFLs",
+      name: t("Number Of DFLs"),
       selector: (row) => row.numberOfDFLs,
       cell: (row) => <span>{row.numberOfDFLs}</span>,
       sortable: true,
@@ -1003,14 +1005,14 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{formatDate(row.laidOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cold Storage Details",
+      name: t("Cold Storage Details"),
       selector: (row) => row.coldStorageDetails,
       cell: (row) => <span>{row.coldStorageDetails}</span>,
       sortable: true,
@@ -1018,21 +1020,21 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Released On",
+      name: t("Released On"),
       selector: (row) => row.releasedOnDate,
       cell: (row) => <span>{formatDate(row.releasedOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Chawki Percentage",
+      name: t("Chawki Percentage"),
       selector: (row) => row.chawkiPercentage,
       cell: (row) => <span>{row.chawkiPercentage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Worm Weight In Grams",
+      name: t("Worm Weight In Grams"),
       selector: (row) => row.wormWeightInGrams,
       cell: (row) => <span>{row.wormWeightInGrams}</span>,
       sortable: true,
@@ -1040,21 +1042,21 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Spun On Date",
+      name: t("Spun On Date"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{formatDate(row.spunOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Worm Test results",
+      name: t("Worm Test results"),
       selector: (row) => row.wormTestDatesAndResults,
       cell: (row) => <span>{row.wormTestDatesAndResults}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Crop Failure Details",
+      name: t("Crop Failure Details"),
       selector: (row) => row.cropFailureDetails,
       cell: (row) => <span>{row.cropFailureDetails}</span>,
       sortable: true,
@@ -1062,14 +1064,14 @@ function RearingofDFLsforthe8LinesList() {
     },
 
     {
-      name: "Cocoon Produced in NOs",
+      name: t("Cocoon Produced in NOs"),
       selector: (row) => row.cocoonAssessmentDetails,
       cell: (row) => <span>{row.cocoonAssessmentDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon Assesment Details",
+      name: t("Cocoon Assesment Details"),
       cell: (row) => (
         <Button
           className="d-flex justify-content-center"
@@ -1077,14 +1079,14 @@ function RearingofDFLsforthe8LinesList() {
           size="sm"
           onClick={() => getCocoonList(row.id)}
         >
-          Show
+          {t("Show")}
         </Button>
       ),
       sortable: true,
       hide: "md",
     },
     {
-      name: "View Cocoon Assesment Details",
+      name: t("View Cocoon Assesment Details"),
       cell: (row) => (
         <Button
           className="d-flex justify-content-center"
@@ -1092,7 +1094,7 @@ function RearingofDFLsforthe8LinesList() {
           size="sm"
           onClick={() => viewDetails(row.id)}
         >
-          View
+          {t("View")}
         </Button>
       ),
       sortable: true,
@@ -1100,12 +1102,12 @@ function RearingofDFLsforthe8LinesList() {
     },
   ];
   return (
-    <Layout title="List Of Rearing of DFLs for the 8 lines">
+    <Layout title={t("List Of Rearing of DFLs for the 8 lines")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            List Of Rearing of DFLs for the 8 lines
+            {t("List Of Rearing of DFLs for the 8 lines")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -1116,7 +1118,7 @@ function RearingofDFLsforthe8LinesList() {
                 className="btn btn-primary btn-md d-md-none"
               >
                 <Icon name="plus" />
-                <span>Create</span>
+                <span>{t("Create")}</span>
               </Link>
             </li>
             <li>
@@ -1125,7 +1127,7 @@ function RearingofDFLsforthe8LinesList() {
                 className="btn btn-primary d-none d-md-inline-flex"
               >
                 <Icon name="plus" />
-                <span>Create</span>
+                <span>{t("Create")}</span>
               </Link>
             </li>
             <li>
@@ -1135,7 +1137,7 @@ function RearingofDFLsforthe8LinesList() {
                 onClick={() => getMoultList()}
                 className="ms-2"
               >
-                Moult Table List
+                {t("Moult Table List")}
               </Button>
             </li>
           </ul>
@@ -1169,7 +1171,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>Moult Table</Modal.Title>
+    <Modal.Title>{t("Moult Table")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -1196,7 +1198,7 @@ function RearingofDFLsforthe8LinesList() {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal4}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>
@@ -1205,7 +1207,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Cocoon Assesment Details</Modal.Title>
+          <Modal.Title>{t("Cocoon Assesment Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -1217,14 +1219,14 @@ function RearingofDFLsforthe8LinesList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 1
+                       {t("Bed 1")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1235,7 +1237,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1249,7 +1251,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1261,7 +1263,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1273,7 +1275,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1285,7 +1287,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1297,7 +1299,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1309,7 +1311,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1321,7 +1323,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1333,7 +1335,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1345,7 +1347,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1354,7 +1356,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={cocoonAssesmentDetailsBedWise.bed1Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1366,7 +1368,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1377,7 +1379,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1389,7 +1391,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1400,7 +1402,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1415,7 +1417,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1449,14 +1451,14 @@ function RearingofDFLsforthe8LinesList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 2
+                       {t("Bed 2")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name      
+                                {t("Bed Name")}      
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1467,7 +1469,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1481,7 +1483,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1493,7 +1495,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1505,7 +1507,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1517,7 +1519,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1529,7 +1531,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1541,7 +1543,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1553,7 +1555,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1565,7 +1567,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1577,7 +1579,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1586,7 +1588,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={cocoonAssesmentDetailsBedWise.bed2Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1598,7 +1600,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1610,7 +1612,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1622,7 +1624,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1634,7 +1636,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1650,7 +1652,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1684,14 +1686,14 @@ function RearingofDFLsforthe8LinesList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 3
+                       {t("Bed 3")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1702,7 +1704,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1715,7 +1717,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1727,7 +1729,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1739,7 +1741,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1750,7 +1752,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1762,7 +1764,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1773,7 +1775,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1785,7 +1787,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage        
+                                {t("Shell Percentage")}        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1796,7 +1798,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1808,7 +1810,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                                  Err
+                                  {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1817,7 +1819,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={cocoonAssesmentDetailsBedWise.bed3Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1829,7 +1831,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1841,7 +1843,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1853,7 +1855,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed3WormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1865,7 +1867,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1880,7 +1882,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1914,14 +1916,14 @@ function RearingofDFLsforthe8LinesList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 4
+                       {t("Bed 4")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name       
+                                {t("Bed Name")}       
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1932,7 +1934,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1946,7 +1948,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1958,7 +1960,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1970,7 +1972,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1982,7 +1984,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1994,7 +1996,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2006,7 +2008,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2018,7 +2020,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2030,7 +2032,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2042,7 +2044,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2051,7 +2053,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={cocoonAssesmentDetailsBedWise.bed4Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2063,7 +2065,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2075,7 +2077,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2087,7 +2089,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2098,7 +2100,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2113,7 +2115,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -2147,14 +2149,14 @@ function RearingofDFLsforthe8LinesList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 5
+                       {t("Bed 5")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2165,7 +2167,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -2179,7 +2181,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2191,7 +2193,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2203,7 +2205,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2215,7 +2217,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2227,7 +2229,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2239,7 +2241,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2251,7 +2253,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5ShellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2263,7 +2265,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2275,7 +2277,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2284,7 +2286,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={cocoonAssesmentDetailsBedWise.bed5Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2296,7 +2298,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5CacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2308,7 +2310,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2320,7 +2322,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2332,7 +2334,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2347,7 +2349,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -2378,18 +2380,18 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>View</Modal.Title>
+          <Modal.Title>{t("View")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {loading ? (
             <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
+              {t("Loading...")}
             </h1>
           ) : (
             <>
             <Card className="mt-3">
             <Card.Header>
-              Bed 1
+              {t("Bed 1")}
             </Card.Header>
             <Card.Body>
             <Row className="g-gs">
@@ -2397,35 +2399,35 @@ function RearingofDFLsforthe8LinesList() {
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
-                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td style={styles.ctstyle}>{t("Bed Name")}:</td>
                       <td>{viewDetailsData.bed1Name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
                       <td>{viewDetailsData.bed1WeightCacoons}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed1WeightPupa}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed1WeightShells}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
                       <td>{viewDetailsData.bed1ShellPercentage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>ERR</td>
+                      <td style={styles.ctstyle}>{t("ERR")}</td>
                       <td>{viewDetailsData.bed1Err}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
                       <td>{viewDetailsData.bed1CacoonsFormed}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed1WormsBrushed}</td>
                     </tr>
                     
@@ -2438,7 +2440,7 @@ function RearingofDFLsforthe8LinesList() {
 
             <Card className="mt-3">
             <Card.Header>
-              Bed 2
+              {t("Bed 2")}
             </Card.Header>
             <Card.Body>
             <Row className="g-gs">
@@ -2446,35 +2448,35 @@ function RearingofDFLsforthe8LinesList() {
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
-                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td style={styles.ctstyle}>{t("Bed Name")}:</td>
                       <td>{viewDetailsData.bed2Name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
                       <td>{viewDetailsData.bed2WeightCacoons}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed2WeightPupa}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed2WeightShells}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
                       <td>{viewDetailsData.bed2ShellPercentage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>ERR</td>
+                      <td style={styles.ctstyle}>{t("ERR")}</td>
                       <td>{viewDetailsData.bed2Err}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
                       <td>{viewDetailsData.bed2WormsBrushed}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed2CacoonsFormed}</td>
                     </tr>
                     
@@ -2487,7 +2489,7 @@ function RearingofDFLsforthe8LinesList() {
 
             <Card className="mt-3">
             <Card.Header>
-              Bed 3
+              {t("Bed 3")}
             </Card.Header>
             <Card.Body>
             <Row className="g-gs">
@@ -2495,35 +2497,35 @@ function RearingofDFLsforthe8LinesList() {
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
-                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td style={styles.ctstyle}>{t("Bed Name")}:</td>
                       <td>{viewDetailsData.bed3Name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
                       <td>{viewDetailsData.bed3WeightCacoons}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed3WeightPupa}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed3WeightShells}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
                       <td>{viewDetailsData.bed3ShellPercentage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>ERR</td>
+                      <td style={styles.ctstyle}>{t("ERR")}</td>
                       <td>{viewDetailsData.bed3Err}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
                       <td>{viewDetailsData.bed3WormsBrushed}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed3CacoonsFormed}</td>
                     </tr>
                     
@@ -2536,7 +2538,7 @@ function RearingofDFLsforthe8LinesList() {
 
             <Card className="mt-3">
             <Card.Header>
-              Bed 4
+              {t("Bed 4")}
             </Card.Header>
             <Card.Body>
             <Row className="g-gs">
@@ -2544,35 +2546,35 @@ function RearingofDFLsforthe8LinesList() {
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
-                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td style={styles.ctstyle}>{t("Bed Name")}:</td>
                       <td>{viewDetailsData.bed4Name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
                       <td>{viewDetailsData.bed4WeightCacoons}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed4WeightPupa}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed4WeightShells}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
                       <td>{viewDetailsData.bed4ShellPercentage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>ERR</td>
+                      <td style={styles.ctstyle}>{t("ERR")}</td>
                       <td>{viewDetailsData.bed4Err}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
                       <td>{viewDetailsData.bed4WormsBrushed}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed4CacoonsFormed}</td>
                     </tr>
                     
@@ -2585,7 +2587,7 @@ function RearingofDFLsforthe8LinesList() {
 
             <Card className="mt-3">
             <Card.Header>
-              Bed 5
+              {t("Bed 5")}
             </Card.Header>
             <Card.Body>
             <Row className="g-gs">
@@ -2593,35 +2595,35 @@ function RearingofDFLsforthe8LinesList() {
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
-                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td style={styles.ctstyle}>{t("Bed Name")}:</td>
                       <td>{viewDetailsData.bed5Name}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
                       <td>{viewDetailsData.bed5WeightCacoons}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed5WeightPupa}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed5WeightShells}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
                       <td>{viewDetailsData.bed5ShellPercentage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>ERR</td>
+                      <td style={styles.ctstyle}>{t("ERR")}</td>
                       <td>{viewDetailsData.bed5Err}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
                       <td>{viewDetailsData.bed5WormsBrushed}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed5CacoonsFormed}</td>
                     </tr>
                     
@@ -2638,7 +2640,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Moult Table</Modal.Title>
+          <Modal.Title>{t("Moult Table")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -2652,7 +2654,7 @@ function RearingofDFLsforthe8LinesList() {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="sordfl">
-                                Date
+                                {t("Date")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2677,7 +2679,7 @@ function RearingofDFLsforthe8LinesList() {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Lot Number
+                                {t("Lot Number")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2688,7 +2690,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Lot Number"
+                                  placeholder={t("Lot Number")}
                                   // readOnly
                                   // required
                                 />
@@ -2703,7 +2705,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               1st Feeding
+                               {t("1st Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2714,7 +2716,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="1st Feeding"
+                                  placeholder={t("1st Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2726,7 +2728,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               2nd Feeding
+                               {t("2nd Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2737,7 +2739,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="2nd Feeding"
+                                  placeholder={t("2nd Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2749,7 +2751,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               3rd Feeding
+                               {t("3rd Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2760,7 +2762,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="3rd Feeding"
+                                  placeholder={t("3rd Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2772,7 +2774,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Leaf Quantity in Gms/Kg
+                              {t("Leaf Quantity in Gms/Kg")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2781,7 +2783,7 @@ function RearingofDFLsforthe8LinesList() {
                                   value={feedingTableDetails.leafQuantity || ""}
                                   onChange={handleFeedingMoultInputs}
                                   type="number"
-                                  placeholder="Leaf Quantity in Gms/Kg"
+                                  placeholder={t("Leaf Quantity in Gms/Kg")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2793,7 +2795,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                              Worm Stage
+                              {t("Worm Stage")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2808,16 +2810,16 @@ function RearingofDFLsforthe8LinesList() {
                                   // }
                                 >
                                   <option value="">
-                                    Select Worm Stage
+                                    {t("Select Worm Stage")}
                                   </option>
-                                  <option value="Hatching">Hatching</option>
-                                  <option value="1st Moult">1st Moult</option>
-                                  <option value="2nd Moult">2nd Moult</option>
-                                  <option value="3rd Moult">3rd Moult</option>
-                                  <option value="4th Moult">4th Moult</option>
-                                  <option value="Spinning">Spinning</option>
-                                  <option value="Harvest">Harvest</option>
-                                  <option value="Supply/Market">Supply/Market</option>
+                                  <option value="Hatching">{t("Hatching")}</option>
+                                  <option value="1st Moult">{t("1st Moult")}</option>
+                                  <option value="2nd Moult">{t("2nd Moult")}</option>
+                                  <option value="3rd Moult">{t("3rd Moult")}</option>
+                                  <option value="4th Moult">{t("4th Moult")}</option>
+                                  <option value="Spinning">{t("Spinning")}</option>
+                                  <option value="Harvest">{t("Harvest")}</option>
+                                  <option value="Supply/Market">{t("Supply/Market")}</option>
                                 </Form.Select>
                               </div>
                             </Form.Group>
@@ -2826,7 +2828,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                Temperature
+                                {t("Temperature")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2837,7 +2839,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Enter temperature"
+                                  placeholder={t("Enter temperature")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2850,7 +2852,7 @@ function RearingofDFLsforthe8LinesList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                Humidity
+                                {t("Humidity")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2861,7 +2863,7 @@ function RearingofDFLsforthe8LinesList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Enter Humidity"
+                                  placeholder={t("Enter Humidity")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2876,7 +2878,7 @@ function RearingofDFLsforthe8LinesList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>

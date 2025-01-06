@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReceiptofDFLsfromtheP4grainage() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -225,7 +227,7 @@ function ReceiptofDFLsfromtheP4grainage() {
 
   const ReceiptofDFLsfromtheP4grainageDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -233,7 +235,7 @@ function ReceiptofDFLsfromtheP4grainage() {
             size="sm"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
          
           {/* <Button
@@ -251,63 +253,63 @@ function ReceiptofDFLsfromtheP4grainage() {
       // grow: 3,
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hatching Date",
+      name: t("Hatching Date"),
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Grainage",
+      name: t("Grainage"),
       selector: (row) => row.grainageMasterName,
       cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
       cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice Number",
+      name: t("Invoice Number"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice Date",
+      name: t("Invoice Date"),
       selector: (row) => row.invoiceDate,
       cell: (row) => <span>{row.invoiceDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of DFLs Received",
+      name: t("No Of DFLs Received"),
       selector: (row) => row.numberOfDflsReleased,
       cell: (row) => <span>{row.numberOfDflsReleased}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Generation Number",
+      name: t("Generation Number"),
       selector: (row) => row.generationNumber,
       cell: (row) => <span>{row.generationNumber}</span>,
       sortable: true,
@@ -317,7 +319,7 @@ function ReceiptofDFLsfromtheP4grainage() {
 
   const ReceiptofDFLsfromtheP4grainageGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -327,7 +329,7 @@ function ReceiptofDFLsfromtheP4grainage() {
             size="sm"
             onClick={() => acceptConfirm(row.sodId, 1)}
           >
-            Accept
+            {t("Accept")}
           </Button>
          
           <Button
@@ -336,7 +338,7 @@ function ReceiptofDFLsfromtheP4grainage() {
             onClick={() => deleteConfirm(row.sodId, 2)}
             className="ms-2"
           >
-            Reject
+            {t("Reject")}
           </Button>
         </div>
       ),
@@ -346,42 +348,42 @@ function ReceiptofDFLsfromtheP4grainage() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Grainage",
+      name: t("Grainage"),
       selector: (row) => row.grainageMasterName,
       cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice Number",
+      name: t("Invoice Number"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice Date",
+      name: t("Invoice Date"),
       selector: (row) => row.invoiceDate,
       cell: (row) => <span>{row.invoiceDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of DFLs Received",
+      name: t("No Of DFLs Received"),
       selector: (row) => row.numberOfDflsDisposed,
       cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Accepted or not",
+      name: t("Accepted or not"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span>
@@ -402,12 +404,12 @@ function ReceiptofDFLsfromtheP4grainage() {
 
   
   return (
-    <Layout title="Receipt of DFLs from the P4 grainage">
+    <Layout title={t("Receipt of DFLs from the P4 grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Receipt of DFLs from the P4 grainage
+              {t("Receipt of DFLs from the P4 grainage")}
             </Block.Title>
            
           </Block.HeadContent>
@@ -419,7 +421,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -428,7 +430,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link> */}
               </li>
             </ul>
@@ -601,7 +603,7 @@ function ReceiptofDFLsfromtheP4grainage() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Alerts Window</Modal.Title>
+          <Modal.Title>{t("Alerts Window")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">

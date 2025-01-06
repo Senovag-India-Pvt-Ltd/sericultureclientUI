@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from 'react-i18next'; // Add this line
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofScreeningBatchRecordsView() {
+  const { t } = useTranslation(); // Add this line
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -45,12 +47,12 @@ function MaintenanceofScreeningBatchRecordsView() {
   }, [id]);
 
   return (
-    <Layout title="Maintenance of Screening Batch Records View">
+    <Layout title={t("Maintenance of Screening Batch Records View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of Screening Batch Records View
+              {t("Maintenance of Screening Batch Records View")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -61,7 +63,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +72,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,12 +83,12 @@ function MaintenanceofScreeningBatchRecordsView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-            Maintenance of Screening Batch Records Details
+            {t("Maintenance of Screening Batch Records Details")}
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -94,63 +96,63 @@ function MaintenanceofScreeningBatchRecordsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{maintenanceScreen.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total number of cocoons produced:
+                          {t("Total number of cocoons produced")}:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachGeneration}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot number:</td>
+                        <td style={styles.ctstyle}>{t("Lot number")}:</td>
                         <td>{maintenanceScreen.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Line Name:</td>
+                        <td style={styles.ctstyle}>{t("Line Name")}:</td>
                         <td>{maintenanceScreen.lineName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Incubation Date:</td>
+                        <td style={styles.ctstyle}>{t("Incubation Date")}:</td>
                         <td>{maintenanceScreen.incubationDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Black Boxing Date:</td>
+                        <td style={styles.ctstyle}>{t("Black Boxing Date")}:</td>
                         <td>{maintenanceScreen.blackBoxingDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Brushed on date:</td>
+                        <td style={styles.ctstyle}>{t("Brushed on date")}:</td>
                         <td>{maintenanceScreen.brushedOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Spun on date:</td>
+                        <td style={styles.ctstyle}>{t("Spun on date")}:</td>
                         <td>{maintenanceScreen.spunOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Screening Batch Number:</td>
+                        <td style={styles.ctstyle}>{t("Screening Batch Number")}:</td>
                         <td>{maintenanceScreen.screeningBatchNo}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total No of Cocoons Produced Screening:
+                          {t("Total No of Cocoons Produced Screening")}:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachScreening}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Screening Batch Results:</td>
+                        <td style={styles.ctstyle}>{t("Screening Batch Results")}:</td>
                         <td>{maintenanceScreen.screeningBatchResults}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Chawki Percentage:</td>
+                        <td style={styles.ctstyle}>{t("Chawki Percentage")}:</td>
                         <td>{maintenanceScreen.chawkiPercentage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Selected Bed as per the Mean Performance:</td>
+                        <td style={styles.ctstyle}>{t("Selected Bed as per the Mean Performance")}:</td>
                         <td>{maintenanceScreen.selectedBedAsPerTheMeanPerformance}</td>
                       </tr>
                       {/* <tr>
@@ -185,7 +187,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                     </td>
                     </tr>  */}
                       <tr>
-                        <td style={styles.ctstyle}>Crop Failure Details:</td>
+                        <td style={styles.ctstyle}>{t("Crop Failure Details")}:</td>
                         <td>{maintenanceScreen.cropFailureDetails}</td>
                       </tr>
                     </tbody>

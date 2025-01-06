@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import { createTheme } from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
@@ -21,6 +22,7 @@ function ReasonLotCancellationList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -141,7 +143,7 @@ function ReasonLotCancellationList() {
 
   const ReasonLotCancellationDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -151,7 +153,7 @@ function ReasonLotCancellationList() {
             size="sm"
             onClick={() => handleView(row.reasonLotRejectId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -159,7 +161,7 @@ function ReasonLotCancellationList() {
             className="ms-2"
             onClick={() => handleEdit(row.reasonLotRejectId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -167,7 +169,7 @@ function ReasonLotCancellationList() {
             onClick={() => deleteConfirm(row.reasonLotRejectId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -175,7 +177,7 @@ function ReasonLotCancellationList() {
       hide: "md",
     },
     {
-      name: "Reason for Lot  Cancellation",
+      name: t("Reason for Lot Cancellation"),
       selector: (row) => row.reasonLotRejectName,
       cell: (row) => <span>{row.reasonLotRejectName}</span>,
       sortable: true,
@@ -184,13 +186,12 @@ function ReasonLotCancellationList() {
   ];
 
   return (
-    <Layout title="Reason for Lot Cancellation List">
+    <Layout title={t("Reason for Lot Cancellation List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {" "}
-              Reason for Lot Cancellation List
+              {t("Reason for Lot Cancellation List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -201,7 +202,7 @@ function ReasonLotCancellationList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -210,7 +211,7 @@ function ReasonLotCancellationList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

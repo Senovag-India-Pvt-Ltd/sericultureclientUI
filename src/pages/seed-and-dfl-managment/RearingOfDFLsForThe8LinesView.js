@@ -7,10 +7,12 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingOfDFLsForThe8LinesView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -57,11 +59,11 @@ function RearingOfDFLsForThe8LinesView() {
   }, [id]);
 
   return (
-    <Layout title="View  Rearing of DFLs for the 8 lines Details">
+    <Layout title={t("View Rearing of DFLs for the 8 lines Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View  Rearing of DFLs for the 8 lines Details </Block.Title>
+            <Block.Title tag="h2">{t("View Rearing of DFLs for the 8 lines Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -71,7 +73,7 @@ function RearingOfDFLsForThe8LinesView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -80,7 +82,7 @@ function RearingOfDFLsForThe8LinesView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -90,11 +92,11 @@ function RearingOfDFLsForThe8LinesView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Rearing of DFLs for the 8 lines Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Rearing of DFLs for the 8 lines Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -106,9 +108,7 @@ function RearingOfDFLsForThe8LinesView() {
                         <td>{rearing8Lines.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Disinfectant Usage Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Disinfectant Usage Details")}:</td>
                         <td>{rearing8Lines.disinfectantMasterName}</td>
                       </tr>
                       {/* <tr>
@@ -116,76 +116,52 @@ function RearingOfDFLsForThe8LinesView() {
                         <td>{rearing8Lines.cropDetail}</td>
                       </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Crop Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Crop Number")}:</td>
                         <td>{rearing8Lines.cropNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Lot Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{rearing8Lines.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Number Of DFLs:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
                         <td>{rearing8Lines.numberOfDFLs}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Laid On Date:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
                         <td>{formatDate(rearing8Lines.laidOnDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Cold Storage Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Cold Storage Details")}:</td>
                         <td>{rearing8Lines.coldStorageDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Released On:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Released On")}:</td>
                         <td>{formatDate(rearing8Lines.releasedOnDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Chawki Percentage:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Chawki Percentage")}:</td>
                         <td>{rearing8Lines.chawkiPercentage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Worm Weight In Grams:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Worm Weight In Grams")}:</td>
                         <td>{rearing8Lines.wormWeightInGrams}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Spun On Date:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
                         <td>{formatDate(rearing8Lines.spunOnDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Worm Test Results:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Worm Test Results")}:</td>
                         <td>{rearing8Lines.wormTestDatesAndResults}</td>
                       </tr>
                       
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Crop Failure Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Crop Failure Details")}:</td>
                         <td>{rearing8Lines.cropFailureDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Cocoon Produced in NOs:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
                         <td>{rearing8Lines.cocoonAssessmentDetails}</td>
                       </tr>
                     </tbody>

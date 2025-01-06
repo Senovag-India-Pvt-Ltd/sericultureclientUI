@@ -8,11 +8,14 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next"; // Add this import
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function FormReportByDist() {
+  const { t } = useTranslation(); // Add this line
+
   const [data, setData] = useState({
     districtId: localStorage.getItem("districtId"),
     marketId: localStorage.getItem("marketId"),
@@ -199,11 +202,11 @@ function FormReportByDist() {
     });
   };
   return (
-    <Layout title="District Wise Abstract District">
+    <Layout title={t("District Wise Abstract District")}> {/* Add t function */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Abstract District</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Abstract District")}</Block.Title> {/* Add t function */}
           </Block.HeadContent>
           <Block.HeadContent>
             
@@ -222,7 +225,7 @@ function FormReportByDist() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        District
+                        {t("District")} {/* Add t function */}
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
@@ -233,7 +236,7 @@ function FormReportByDist() {
                         onBlur={() => handleInputs}
                         // required
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option> {/* Add t function */}
                           {districtListData.map((list) => (
                             <option key={list.districtId} value={list.districtId}>
                               {list.districtName}
@@ -244,7 +247,7 @@ function FormReportByDist() {
                             </Col>
 
                             <Form.Label column sm={1}>
-                        From Date
+                        {t("From Date")} {/* Add t function */}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -259,7 +262,7 @@ function FormReportByDist() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t("To Date")} {/* Add t function */}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -276,7 +279,7 @@ function FormReportByDist() {
                       <Col sm={2}>
                       
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")} {/* Add t function */}
                         </Button>
                       </Col>
                     </Form.Group>

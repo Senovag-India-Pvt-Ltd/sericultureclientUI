@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -22,6 +23,7 @@ function ActivateExternalUnit() {
   });
 
   const [validated, setValidated] = useState(false);
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -153,7 +155,7 @@ function ActivateExternalUnit() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/external-unit-registration-list");
@@ -168,17 +170,17 @@ function ActivateExternalUnit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Activate External Units">
+    <Layout title={t("Activate External Units")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activate External Units</Block.Title>
+            <Block.Title tag="h2">{t("Activate External Units")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -188,7 +190,7 @@ function ActivateExternalUnit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -197,7 +199,7 @@ function ActivateExternalUnit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -215,7 +217,7 @@ function ActivateExternalUnit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        External Unit Type
+                        {t("External Unit Type")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -230,7 +232,7 @@ function ActivateExternalUnit() {
                             data.externalUnitTypeId === "0"
                           }
                         >
-                          <option value="">Select External Unit Type </option>
+                          <option value="">{t("Select External Unit Type")}</option>
                           {externalUnitTypeListData.map((list) => (
                             <option
                               key={list.externalUnitTypeId}
@@ -241,13 +243,13 @@ function ActivateExternalUnit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          External Unit Type is required
+                          {t("External Unit Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="username">User Name</Form.Label>
+                      <Form.Label htmlFor="username">{t("User Name")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="username"
@@ -255,13 +257,13 @@ function ActivateExternalUnit() {
                           value={data.username}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Username"
+                          placeholder={t("Enter Username")}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">Mobile Number</Form.Label>
+                      <Form.Label htmlFor="name">{t("Mobile Number")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="phoneNumber"
@@ -269,12 +271,11 @@ function ActivateExternalUnit() {
                           value={data.phoneNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Mobile number"
+                          placeholder={t("Enter Mobile number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mobile Number is required or Number is greater than
-                          and less than 10 Digit
+                          {t("Mobile Number is required or Number is greater than and less than 10 Digit")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -335,7 +336,7 @@ function ActivateExternalUnit() {
                     </Form.Group> */}
                     <Form.Group className="form-group">
                       <Form.Label>
-                        External Unit
+                        {t("External Unit")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -350,7 +351,7 @@ function ActivateExternalUnit() {
                             data.externalUnitRegistrationId === "0"
                           }
                         >
-                          <option value="">Select External Unit</option>
+                          <option value="">{t("Select External Unit")}</option>
                           {externalUnitListData.map((list) => (
                             <option
                               key={list.externalUnitRegistrationId}
@@ -361,13 +362,13 @@ function ActivateExternalUnit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          External Unit Type is required
+                          {t("External Unit Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="password">Password</Form.Label>
+                      <Form.Label htmlFor="password">{t("Password")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="password"
@@ -375,7 +376,7 @@ function ActivateExternalUnit() {
                           value={data.password}
                           onChange={handleInputs}
                           type="password"
-                          placeholder="Enter Address"
+                          placeholder={t("Enter Address")}
                         />
                       </div>
                     </Form.Group>
@@ -405,7 +406,7 @@ function ActivateExternalUnit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
@@ -416,7 +417,7 @@ function ActivateExternalUnit() {
                     Cancel
                   </Link> */}
                   <Button variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

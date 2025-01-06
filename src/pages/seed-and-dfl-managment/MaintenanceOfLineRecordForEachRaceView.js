@@ -7,10 +7,14 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next";
+
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfLineRecordForEachRaceView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -57,11 +61,11 @@ function MaintenanceOfLineRecordForEachRaceView() {
   };
 
   return (
-    <Layout title="View Maintenance of Line records for each race Details">
+    <Layout title={t("View Maintenance of Line records for each race Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Maintenance of Line records for each race Details </Block.Title>
+            <Block.Title tag="h2">{t("View Maintenance of Line records for each race Details")} </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -71,7 +75,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -80,7 +84,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -90,11 +94,11 @@ function MaintenanceOfLineRecordForEachRaceView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Line records for each race Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance of Line records for each race Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -102,75 +106,75 @@ function MaintenanceOfLineRecordForEachRaceView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{lineRecord.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Line Name:
+                        {t("Line Name")}:
                         </td>
                         <td>{lineRecord.lineName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date Of Selection Cocoon:</td>
+                        <td style={styles.ctstyle}>{t("Date Of Selection Cocoon")}:</td>
                         <td>{formatDate(lineRecord.dateOfSelectionCocoon)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Race:
+                        {t("Race")}:
                         </td>
                         <td>{lineRecord.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
                         <td>{lineRecord.noOfDfls}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Farmer Name:
+                        {t("Farmer Name")}:
                         </td>
                         <td>{lineRecord.farmerName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Pupa Test Details:</td>
+                        <td style={styles.ctstyle}>{t("Pupa Test Details")}:</td>
                         <td>{lineRecord.pupaTestDetails}</td>
                       </tr>
                       
                       <tr>
-                        <td style={styles.ctstyle}>Market:</td>
+                        <td style={styles.ctstyle}>{t("Market")}:</td>
                         <td>{lineRecord.marketMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Lot Number:
+                          {t("Lot Number")}:
                         </td>
                         <td>{lineRecord.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        No Of Cocoons Selected:
+                        {t("No Of Cocoons Selected")}:
                         </td>
                         <td>{lineRecord.noOfCocoonsSelected}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Single Cocoon Weight in Grams:
+                        {t("Single Cocoon Weight in Grams")}:
                         </td>
                         <td>{lineRecord.averageWeight}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Farmer Name (Male Cocoon):
+                        {t("Farmer Name (Male Cocoon)")}:
                         </td>
                         <td>{lineRecord.farmerNameMale}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number (Male Cocoon):</td>
+                        <td style={styles.ctstyle}>{t("Lot Number (Male Cocoon)")}:</td>
                         <td>{lineRecord.lotNumberMale}</td>
                       </tr>
                       
                       <tr>
-                        <td style={styles.ctstyle}>Market (Male Cocoon):</td>
+                        <td style={styles.ctstyle}>{t("Market (Male Cocoon)")}:</td>
                         <td>{lineRecord.marketMasterNameMale}</td>
                       </tr>
                       {/* <tr>
@@ -181,13 +185,13 @@ function MaintenanceOfLineRecordForEachRaceView() {
                       </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
-                        No Of Cocoons Selected (Male Cocoon):
+                        {t("No Of Cocoons Selected (Male Cocoon)")}:
                         </td>
                         <td>{lineRecord.noOfCocoonsSelectedMale}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Single Cocoon Weight in Grams (Male Cocoon):
+                        {t("Single Cocoon Weight in Grams (Male Cocoon)")}:
                         </td>
                         <td>{lineRecord.averageWeightMale}</td>
                       </tr>

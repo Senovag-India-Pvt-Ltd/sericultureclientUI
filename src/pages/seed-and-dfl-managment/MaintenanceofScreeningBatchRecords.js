@@ -13,6 +13,7 @@ import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -36,6 +37,8 @@ function MaintenanceofScreeningBatchRecords() {
     selectedBedAsPerTheMeanPerformance: "",
     cropFailureDetails: "",
   });
+
+  const { t } = useTranslation();
 
   const clear = () => {
     setData({
@@ -210,12 +213,12 @@ function MaintenanceofScreeningBatchRecords() {
 
  
   return (
-    <Layout title="Maintenance of screening batch records">
+    <Layout title={t("Maintenance of screening batch records")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of screening batch records
+              {t("Maintenance of screening batch records")}
             </Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
@@ -239,7 +242,7 @@ function MaintenanceofScreeningBatchRecords() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -248,7 +251,7 @@ function MaintenanceofScreeningBatchRecords() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -265,14 +268,14 @@ function MaintenanceofScreeningBatchRecords() {
                   <Block>
                     <Card>
                       <Card.Header>
-                        Maintenance of screening batch records{" "}
+                        {t("Maintenance of screening batch records")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cocoonsProducedAtEachGeneration">
-                                Total number of cocoons produced
+                                {t("Total number of cocoons produced")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -282,18 +285,18 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cocoonsProducedAtEachGeneration}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Total number of cocoons produced"
+                                  placeholder={t("Total number of cocoons produced")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Total number of cocoons produced is required
+                                  {t("Total number of cocoons produced is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
-                              <Form.Label>Lot Number</Form.Label>
+                              <Form.Label>{t("Lot Number")}</Form.Label>
                               <Col>
                                 <div className="form-control-wrap">
                                   <Form.Select
@@ -303,7 +306,7 @@ function MaintenanceofScreeningBatchRecords() {
                                     onBlur={() => handleInputs}
                                     // required
                                   >
-                                    <option value="">Select Lot Number</option>
+                                    <option value="">{t("Select Lot Number")}</option>
                                     {lotListData && lotListData.length
                                       ? lotListData.map((list) => (
                                           <option
@@ -316,7 +319,7 @@ function MaintenanceofScreeningBatchRecords() {
                                       : ""}
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
-                                    Lot Number is required
+                                    {t("Lot Number is required")}
                                   </Form.Control.Feedback>
                                 </div>
                               </Col>
@@ -347,7 +350,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                                Line Name
+                                {t("Line Name")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -361,7 +364,7 @@ function MaintenanceofScreeningBatchRecords() {
                                     data.lineNameId === "0"
                                   }
                                 >
-                                  <option value="">Select Line Name</option>
+                                  <option value="">{t("Select Line Name")}</option>
                                   {lineNameListData.map((list) => (
                                     <option
                                       key={list.lineNameId}
@@ -372,7 +375,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   ))}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Line Name is required
+                                  {t("Line Name is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -397,7 +400,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="screeningBatchNo">
-                                Screening Batch Number
+                                {t("Screening Batch Number")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -407,11 +410,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.screeningBatchNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Screening Batch Number"
+                                  placeholder={t("Enter Screening Batch Number")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Screening Batch Number is required
+                                  {t("Screening Batch Number is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -419,8 +422,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cocoonsProducedAtEachScreening">
-                                Total Number of Cocoons Produced at
-                                Screening
+                                {t("Total Number of Cocoons Produced at Screening")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -430,13 +432,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cocoonsProducedAtEachScreening}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Total Number of Cocoons Produced at
-                                  Screening"
+                                  placeholder={t("Enter Total Number of Cocoons Produced at Screening")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Total Number of Cocoons Produced
-                                  Screening is required
+                                  {t("Total Number of Cocoons Produced Screening is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -444,7 +444,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="screeningBatchResults">
-                                Screening Batch Results
+                                {t("Screening Batch Results")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -454,7 +454,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.screeningBatchResults}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Screening Batch Results"
+                                  placeholder={t("Screening Batch Results")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -466,7 +466,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="chawkiPercentage">
-                                Chawki Percentage
+                                {t("Chawki Percentage")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -476,11 +476,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.chawkiPercentage}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Chawki Percentage"
+                                  placeholder={t("Enter Chawki Percentage")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Chawki Percentage is required
+                                  {t("Chawki Percentage is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -516,7 +516,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cropFailureDetails">
-                                Crop Failure Details
+                                {t("Crop Failure Details")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -526,7 +526,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cropFailureDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Crop Failure Details"
+                                  placeholder={t("Enter Crop Failure Details")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -539,7 +539,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                                Selected Bed as per the Mean Performance
+                                {t("Selected Bed as per the Mean Performance")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -554,19 +554,19 @@ function MaintenanceofScreeningBatchRecords() {
                                   //   data.selectedBedAsPerTheMeanPerformance === "0"
                                   // }
                                 >
-                                  <option value="Bed 1">Bed 1</option>
-                                  <option value="Bed 2">Bed 2</option>
-                                  <option value="Bed 3">Bed 3</option>
-                                  <option value="Bed 4">Bed 4</option>
-                                  <option value="Bed 5">Bed 5</option>
-                                  <option value="Bed 6">Bed 6</option>
-                                  <option value="Bed 7">Bed 7</option>
-                                  <option value="Bed 8">Bed 8</option>
-                                  <option value="Bed 9">Bed 9</option>
-                                  <option value="Bed 10">Bed 10</option>
+                                  <option value="Bed 1">{t("Bed 1")}</option>
+                                  <option value="Bed 2">{t("Bed 2")}</option>
+                                  <option value="Bed 3">{t("Bed 3")}</option>
+                                  <option value="Bed 4">{t("Bed 4")}</option>
+                                  <option value="Bed 5">{t("Bed 5")}</option>
+                                  <option value="Bed 6">{t("Bed 6")}</option>
+                                  <option value="Bed 7">{t("Bed 7")}</option>
+                                  <option value="Bed 8">{t("Bed 8")}</option>
+                                  <option value="Bed 9">{t("Bed 9")}</option>
+                                  <option value="Bed 10">{t("Bed 10")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Selected Bed as per the Mean Performance is required
+                                  {t("Selected Bed as per the Mean Performance is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -574,7 +574,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="incubation">
-                                Incubation Date
+                                {t("Incubation Date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -593,7 +593,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Incubation Date is required
+                                  {t("Incubation Date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -601,7 +601,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="blackBox">
-                                Black Boxing Date
+                                {t("Black Boxing Date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -620,7 +620,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Black Boxing Date is required
+                                  {t("Black Boxing Date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -629,7 +629,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="brushedOnDate">
-                                Brushed on date
+                                {t("Brushed on date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -648,7 +648,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Brushed on date is required
+                                  {t("Brushed on date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -657,7 +657,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="sordfl">
-                                Spun on date
+                                {t("Spun on date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -676,7 +676,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Spun on date is required
+                                  {t("Spun on date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -690,7 +690,7 @@ function MaintenanceofScreeningBatchRecords() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Save
+                          {t("Save")}
                         </Button>
                       </li>
                       <li>
@@ -699,7 +699,7 @@ function MaintenanceofScreeningBatchRecords() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Cancel
+                          {t("Cancel")}
                         </Button>
                       </li>
                     </ul>

@@ -4,12 +4,13 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next"; // Add translation hook
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonLotCancellationView() {
+  const { t } = useTranslation(); // Initialize translation function
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -49,11 +50,11 @@ function ReasonLotCancellationView() {
   }, [id]);
 
   return (
-    <Layout title="Reason for Lot Cancellation View">
+    <Layout title={t("Reason for Lot Cancellation View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reason for Lot Cancellation View</Block.Title>
+            <Block.Title tag="h2">{t("Reason for Lot Cancellation View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -63,7 +64,7 @@ function ReasonLotCancellationView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +73,7 @@ function ReasonLotCancellationView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -82,11 +83,11 @@ function ReasonLotCancellationView() {
 
       <Block className="mt-n4">
         <Card className="card-gutter-md">
-          <Card.Header>Reason for Lot Cancellation Details</Card.Header>
+          <Card.Header>{t("Reason for Lot Cancellation Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -94,14 +95,11 @@ function ReasonLotCancellationView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{ReasonLotRejectMaster.reasonLotRejectId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Reason for Lot Cancellation:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Reason for Lot Cancellation")}:</td>
                         <td>{ReasonLotRejectMaster.reasonLotRejectName}</td>
                       </tr>
                     </tbody>

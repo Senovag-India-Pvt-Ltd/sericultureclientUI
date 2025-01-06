@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofScreeningBatchRecordsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -703,7 +705,7 @@ function MaintenanceofScreeningBatchRecordsList() {
 
   const MaintenanceofScreeningBatchDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -739,49 +741,49 @@ function MaintenanceofScreeningBatchRecordsList() {
     },
 
     {
-      name: "Total number of cocoons produced",
+      name: t("Total number of cocoons produced"),
       selector: (row) => row.cocoonsProducedAtEachGeneration,
       cell: (row) => <span>{row.cocoonsProducedAtEachGeneration}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot number",
+      name: t("Lot number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
       cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Incubation Date",
+      name: t("Incubation Date"),
       selector: (row) => row.incubationDate,
       cell: (row) => <span>{row.incubationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Black Boxing Date",
+      name: t("Black Boxing Date"),
       selector: (row) => row.blackBoxingDate,
       cell: (row) => <span>{row.blackBoxingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Brushed on date",
+      name: t("Brushed on date"),
       selector: (row) => row.brushedOnDate,
       cell: (row) => <span>{row.brushedOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spun on date",
+      name: t("Spun on date"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
@@ -795,7 +797,7 @@ function MaintenanceofScreeningBatchRecordsList() {
     //   hide: "md",
     // },
     {
-      name: "Total No of Cocoons Produced at each Screening",
+      name: t("Total No of Cocoons Produced at each Screening"),
       selector: (row) => row.cocoonsProducedAtEachScreening,
       cell: (row) => <span>{row.cocoonsProducedAtEachScreening}</span>,
       sortable: true,
@@ -803,21 +805,21 @@ function MaintenanceofScreeningBatchRecordsList() {
     },
 
     {
-      name: "Screening Batch Results",
+      name: t("Screening Batch Results"),
       selector: (row) => row.screeningBatchResults,
       cell: (row) => <span>{row.screeningBatchResults}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Chawki Percentage",
+      name: t("Chawki Percentage"),
       selector: (row) => row.chawkiPercentage,
       cell: (row) => <span>{row.chawkiPercentage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Selected Bed as per the Mean Performance",
+      name: t("Selected Bed as per the Mean Performance"),
       selector: (row) => row.selectedBedAsPerTheMeanPerformance,
       cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
       sortable: true,
@@ -848,7 +850,7 @@ function MaintenanceofScreeningBatchRecordsList() {
     //   hide: "md",
     // },    
     {
-      name: "Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day (Bedwise)",
+      name: t("Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day (Bedwise)"),
       cell: (row) => (
         <Button
           className="d-flex justify-content-center"
@@ -856,14 +858,14 @@ function MaintenanceofScreeningBatchRecordsList() {
           size="sm"
           onClick={() => getLogsList(row.id)}
         >
-          Show
+          {t("Show")}
         </Button>
       ),
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon Assesment Details",
+      name: t("Cocoon Assesment Details"),
       cell: (row) => (
         <Button
           className="d-flex justify-content-center"
@@ -880,7 +882,7 @@ function MaintenanceofScreeningBatchRecordsList() {
    
     
     {
-      name: "Crop Failure Details",
+      name: t("Crop Failure Details"),
       selector: (row) => row.cropFailureDetails,
       cell: (row) => <span>{row.cropFailureDetails}</span>,
       sortable: true,
@@ -890,12 +892,12 @@ function MaintenanceofScreeningBatchRecordsList() {
 
   
   return (
-    <Layout title="Maintenance of screening batch records List">
+    <Layout title={t("Maintenance of screening batch records List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of screening batch records List
+              {t("Maintenance of screening batch records List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -906,7 +908,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -915,7 +917,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -949,8 +951,7 @@ function MaintenanceofScreeningBatchRecordsList() {
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day
-            (Bedwise)
+            {t("Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day (Bedwise)")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -993,7 +994,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed1">
-                                Bed 1<span className="text-danger">*</span>
+                                {t("Bed 1")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1002,11 +1003,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed1 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 1"
+                                  placeholder={t("Bed 1")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 1 is required
+                                  {t("Bed 1 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1014,7 +1015,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed2">
-                                Bed 2<span className="text-danger">*</span>
+                                {t("Bed 2")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1023,11 +1024,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed2 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 2"
+                                  placeholder={t("Bed 2")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 2 is required
+                                  {t("Bed 2 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1035,7 +1036,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed3">
-                                Bed 3<span className="text-danger">*</span>
+                                {t("Bed 3")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1044,11 +1045,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed3 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 3"
+                                  placeholder={t("Bed 3")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 3 is required
+                                  {t("Bed 3 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1056,7 +1057,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed4">
-                                Bed 4<span className="text-danger">*</span>
+                                {t("Bed 4")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1065,11 +1066,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed4 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 4"
+                                  placeholder={t("Bed 4")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 4 is required
+                                  {t("Bed 4 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1077,7 +1078,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5">
-                                Bed 5<span className="text-danger">*</span>
+                                {t("Bed 5")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1086,11 +1087,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed5 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 5"
+                                  placeholder={t("Bed 5")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 5 is required
+                                  {t("Bed 5 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1098,7 +1099,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed6">
-                                Bed 6<span className="text-danger">*</span>
+                                {t("Bed 6")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1107,11 +1108,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed6 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 6"
+                                  placeholder={t("Bed 6")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 6 is required
+                                  {t("Bed 6 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1119,7 +1120,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed7">
-                                Bed 7<span className="text-danger">*</span>
+                                {t("Bed 7")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1128,11 +1129,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed7 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 7"
+                                  placeholder={t("Bed 7")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 7 is required
+                                  {t("Bed 7 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1140,7 +1141,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed8">
-                                Bed 8<span className="text-danger">*</span>
+                                {t("Bed 8")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1149,11 +1150,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed8 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 8"
+                                  placeholder={t("Bed 8")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 8 is required
+                                  {t("Bed 8 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1161,7 +1162,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed9">
-                                Bed 9<span className="text-danger">*</span>
+                                {t("Bed 9")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1170,11 +1171,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed9 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 9"
+                                  placeholder={t("Bed 9")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 9 is required
+                                  {t("Bed 9 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1182,7 +1183,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed10">
-                                Bed 10
+                                {t("Bed 10")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1192,11 +1193,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed10 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 10"
+                                  placeholder={t("Bed 10")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 10 is required
+                                  {t("Bed 10 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1210,7 +1211,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Save
+                              {t("Save")}
                             </Button>
                           </li>
                           <li>
@@ -1219,7 +1220,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                               variant="secondary"
                               onClick={clear}
                             >
-                              Cancel
+                              {t("Cancel")}
                             </Button>
                           </li>
                         </ul>
@@ -1235,7 +1236,7 @@ function MaintenanceofScreeningBatchRecordsList() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Cocoon Assesment Details</Modal.Title>
+          <Modal.Title>{t("Cocoon Assesment Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -1247,14 +1248,14 @@ function MaintenanceofScreeningBatchRecordsList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 1
+                       {t("Bed 1")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1265,7 +1266,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1279,7 +1280,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1291,7 +1292,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1303,7 +1304,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1315,7 +1316,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1327,7 +1328,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1339,7 +1340,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1351,7 +1352,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1363,7 +1364,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1375,7 +1376,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1384,7 +1385,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={cocoonAssesmentDetailsBedWise.bed1Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1396,7 +1397,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1408,7 +1409,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1420,7 +1421,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1432,7 +1433,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1447,7 +1448,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1481,7 +1482,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 2
+                       {t("Bed 2")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
@@ -1489,7 +1490,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1500,7 +1501,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1514,7 +1515,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1526,7 +1527,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1538,7 +1539,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1550,7 +1551,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1562,7 +1563,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1574,7 +1575,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1586,7 +1587,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1598,7 +1599,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1610,7 +1611,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1619,7 +1620,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={cocoonAssesmentDetailsBedWise.bed2Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1631,7 +1632,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1643,7 +1644,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1655,7 +1656,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1667,7 +1668,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1682,7 +1683,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1715,14 +1716,14 @@ function MaintenanceofScreeningBatchRecordsList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 3
+                       {t("Bed 3")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1733,7 +1734,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1746,7 +1747,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1758,7 +1759,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1770,7 +1771,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1781,7 +1782,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1793,7 +1794,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1804,7 +1805,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1816,7 +1817,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage        
+                                {t("Shell Percentage")}        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1827,7 +1828,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1839,7 +1840,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                                  Err
+                                  {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1848,7 +1849,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={cocoonAssesmentDetailsBedWise.bed3Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1860,7 +1861,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed       
+                                {t("No of Cocoon's Formed")}       
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1871,7 +1872,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1883,7 +1884,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed3WormsBrushed">
-                                No of Worms Brushed        
+                                {t("No of Worms Brushed")}        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1894,7 +1895,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1909,7 +1910,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -1942,14 +1943,14 @@ function MaintenanceofScreeningBatchRecordsList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 4
+                       {t("Bed 4")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name      
+                                {t("Bed Name")}      
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1960,7 +1961,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -1974,7 +1975,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1985,7 +1986,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1997,7 +1998,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2009,7 +2010,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2021,7 +2022,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2033,7 +2034,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2045,7 +2046,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2057,7 +2058,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2069,7 +2070,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2078,7 +2079,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={cocoonAssesmentDetailsBedWise.bed4Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2090,7 +2091,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2102,7 +2103,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2114,7 +2115,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2125,7 +2126,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2140,7 +2141,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -2173,14 +2174,14 @@ function MaintenanceofScreeningBatchRecordsList() {
                       <Block>
                       <Card>
                       <Card.Header>
-                       Bed 5
+                       {t("Bed 5")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Bed Name
+                                {t("Bed Name")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2191,7 +2192,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Bed Name"
+                                  placeholder={t("Bed Name")}
                                   readOnly
                                   // required
                                 />
@@ -2205,7 +2206,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Average Weight of 25 Cocoons
+                                {t("Average Weight of 25 Cocoons")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2217,7 +2218,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Cocoons"
+                                  placeholder={t("Average Weight of 25 Cocoons")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2229,7 +2230,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                Average Weight of 25 Pupa
+                                {t("Average Weight of 25 Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2241,7 +2242,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Pupa"
+                                  placeholder={t("Average Weight of 25 Pupa")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2253,7 +2254,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
-                                Average Weight of 25 Shells
+                                {t("Average Weight of 25 Shells")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2265,7 +2266,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Average Weight of 25 Shells"
+                                  placeholder={t("Average Weight of 25 Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2277,7 +2278,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5ShellPercentage">
-                                Shell Percentage
+                                {t("Shell Percentage")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2289,7 +2290,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Shell Percentage"
+                                  placeholder={t("Shell Percentage")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2301,7 +2302,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Err
+                              {t("Err")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -2310,7 +2311,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={cocoonAssesmentDetailsBedWise.bed5Err || ""}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="ERR"
+                                  placeholder={t("ERR")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2322,7 +2323,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5CacoonsFormed">
-                                No of Cocoon's Formed
+                                {t("No of Cocoon's Formed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2334,7 +2335,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Cocoon's Formed"
+                                  placeholder={t("No of Cocoon's Formed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2346,7 +2347,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                No of Worms Brushed
+                                {t("No of Worms Brushed")}
         
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -2358,7 +2359,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   }
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="No of Worms Brushed"
+                                  placeholder={t("No of Worms Brushed")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -2374,7 +2375,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
