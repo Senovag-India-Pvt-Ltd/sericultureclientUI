@@ -288,7 +288,8 @@ function RearingOfDFLsEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        Crop Number<span className="text-danger">*</span>
+                        Crop Number
+                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -299,11 +300,11 @@ function RearingOfDFLsEdit() {
                           type="text"
                           maxLength="12"
                           placeholder="Enter Crop Number"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Crop Number is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>

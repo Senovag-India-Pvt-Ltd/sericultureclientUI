@@ -62,6 +62,7 @@ function ScSchemeDetailsEdit() {
                 dbtCode: "",
                 hectare: "",
                 spacing: "",
+                calculationBasedOn: "",
             });
             setValidated(false);
           }
@@ -91,6 +92,7 @@ function ScSchemeDetailsEdit() {
         dbtCode: "",
         hectare: "",
         spacing: "",
+        calculationBasedOn: "",
     });
   };
 
@@ -268,6 +270,37 @@ function ScSchemeDetailsEdit() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Calculation Based On
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="calculationBasedOn"
+                          value={data.calculationBasedOn}
+                          onChange={handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.calculationBasedOn === undefined ||
+                          //   data.calculationBasedOn === "0"
+                          // }
+                        >
+                          <option value="">
+                            Select Calculation Based On
+                          </option>
+                          <option value="PDMC">PDMC</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Test Results is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -321,7 +354,7 @@ function ScSchemeDetailsEdit() {
                     </Col>
                     </Row>
 
-                    <Row>
+                    {/* <Row>
                   <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
@@ -354,7 +387,7 @@ function ScSchemeDetailsEdit() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
-                </Row>
+                </Row> */}
                 </>
                 )}    
               </Card.Body>

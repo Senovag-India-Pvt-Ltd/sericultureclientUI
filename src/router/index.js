@@ -942,6 +942,9 @@ import ReelerDailyTransaction from "../pages/reports-admin/ReelerDailyTransactio
 import ConfigurePmkysAmount from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmount";
 import ConfigurePmkysAmountEdit from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmountEdit";
 import ConfigurePmkysAmountList from "../pages/masters/configure-pmkys-amount/ConfigurePmkysAmountList";
+import ConfigureBivoltineAmount from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmount";
+import ConfigureBivoltineAmountList from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountList";
+import ConfigureBivoltineAmountEdit from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountEdit";
 
 // Admin and Reports
 
@@ -2027,6 +2030,13 @@ function Router() {
               element={<ConfigurePmkysAmountEdit />}
             />
             <Route path="configure-pmkys-list" element={<ConfigurePmkysAmountList />} />
+
+            <Route path="configure-bivoltine-amount" element={<ConfigureBivoltineAmount />} />
+            <Route
+              path="configure-bivoltine-amount-edit/:id"
+              element={<ConfigureBivoltineAmountEdit />}
+            />
+            <Route path="configure-bivoltine-list" element={<ConfigureBivoltineAmountList />} />
             <Route
               path="financial-year-edit/:id"
               element={<FinancialYearEdit />}

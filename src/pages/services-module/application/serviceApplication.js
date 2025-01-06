@@ -877,6 +877,78 @@ function ServiceApplication() {
         setLoading(false);
       });
   };
+
+  const calculateBonusAmount = () => {
+    const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+    const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+    const calculatedAmount = cocoonsWeight * amountPerKg;
+  
+    setAmountValue({
+      ...amountValue,
+      // unitPrice: calculatedAmount.toFixed(2),
+      unitPrice: calculatedAmount, // Set the Unit Price to amountPerKg
+    });
+    setData({
+      ...data,
+      expectedAmount: calculatedAmount, // Set the calculated amount as the Subsidy Amount
+    });
+  };
+  
+  // const handleCalculateUnitPrice = () => {
+  //   if (schemeDetails.calculateBasedOn === "PDMC") {
+  //     getAmountList();
+  //   } else if (schemeDetails.calculateBasedOn === "Bivoltine Bonus") {
+  //     calculateBonusAmount();
+  //   }
+  // };
+  const handleCalculateUnitPrice = () => {
+    // if (!schemeDetails || !schemeDetails.calculateBasedOn) {
+    //   alert("Scheme details are not loaded. Please try again.");
+    //   return;
+    // }
+  
+    if (schemeDetails.calculationBasedOn === "PDMC") {
+      getAmountList();
+    } else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+      calculateBonusAmount();
+    } else {
+      alert("Invalid calculation method.");
+    }
+  };
+
+  // to get bonus Amount by component and category
+  const [bonusAmountData, setBonusAmountListData] = useState(
+    []
+  );
+  const getBonusAmountList = (componentId, categoryId) => {
+    api
+      .get(
+        `${baseURLDBT}configureBivoltineAmount/get-amount-by-category-and-component`, 
+        {
+          params: {
+            componentId,
+            categoryId,
+            // isActive: true
+          }
+        }
+      )
+      .then((response) => {
+        if (response.data.content.configureBivoltineAmount) {
+          setBonusAmountListData(response.data.content.configureBivoltineAmount);
+        }
+      })
+      .catch((err) => {
+        setBonusAmountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+  
+
+  useEffect(() => {
+    if (data.scComponentId && data.scCategoryId) {
+      getBonusAmountList(data.scComponentId,data.scCategoryId);
+    }
+  }, [data.scComponentId, data.scCategoryId]);
   
 
 
@@ -1115,7 +1187,7 @@ function ServiceApplication() {
   const generateAcknowledgment = async (applicationFormId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        baseURLReport + `getAcknowledementPMKSY`,
         {
           applicationFormId: applicationFormId,
         },
@@ -2262,7 +2334,7 @@ function ServiceApplication() {
                         </Col>
 
                         {/* Conditionally Render Spacing Field */}
-                        {schemeDetails.spacing && (
+                        {schemeDetails.calculationBasedOn === "PDMC" && (
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="spacing">
@@ -2300,7 +2372,7 @@ function ServiceApplication() {
                         )}
 
                         {/* Conditionally Render Hectare Field */}
-                        {schemeDetails.hectare && (
+                        {schemeDetails.calculationBasedOn === "PDMC" && (
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="hectare">
@@ -2336,6 +2408,8 @@ function ServiceApplication() {
                             </Form.Group>
                           </Col>
                         )}
+
+                        
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -2516,6 +2590,31 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
+                        {schemeDetails.calculationBasedOn ==="Bivoltine Bonus" && (
+                          <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="schemeAmount">
+                              Total Cocoons Weight
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="cocoonsWeight"
+                                type="text"
+                                name="cocoonsWeight"
+                                value={data.cocoonsWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter Total Cocoons Weight"
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        )}
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
@@ -2553,58 +2652,7 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              {t("From Date")}
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.periodFrom}
-                                onChange={(date) =>
-                                  handleDateChange(date, "periodFrom")
-                                }
-                                // minDate={new Date("01/04/2023")}
-                                // maxDate={new Date("31/03/2024")}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                // readOnly
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              {t("To Date")}
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.periodTo}
-                                onChange={(date) =>
-                                  handleDateChange(date, "periodTo")
-                                }
-                                // minDate={new Date("01/04/2023")}
-                                // maxDate={new Date("31/03/2024")}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                required
-                                // readOnly
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
+                        
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -2681,6 +2729,59 @@ function ServiceApplication() {
                               </Form.Control.Feedback>
                               </div>
                             </Col>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              {t("From Date")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodFrom}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodFrom")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                // readOnly
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              {t("To Date")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodTo}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodTo")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                required
+                                // readOnly
+                              />
+                            </div>
                           </Form.Group>
                         </Col>
 
@@ -3261,7 +3362,15 @@ function ServiceApplication() {
                       <ul className="d-flex align-items-left justify-content-left gap g-3">
                       
                         <li>
-                          <Button type="button" variant="secondary" onClick={getAmountList}>
+                          {/* <Button type="button" variant="secondary" onClick={handleCalculateUnitPrice}>
+                            Calculate Unit Price
+                          </Button> */}
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={handleCalculateUnitPrice}
+                            disabled={!schemeDetails.calculationBasedOn}
+                          >
                             Calculate Unit Price
                           </Button>
                         </li>
