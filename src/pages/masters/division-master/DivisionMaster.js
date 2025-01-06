@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import React from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -19,6 +20,7 @@ function DivisionMaster() {
   });
 
   const [validated, setValidated] = useState(false);
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -97,11 +99,11 @@ function DivisionMaster() {
   };
 
   return (
-    <Layout title="Division ">
+    <Layout title={t("Division")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Division</Block.Title>
+            <Block.Title tag="h2">{t("Division")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -111,7 +113,7 @@ function DivisionMaster() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -120,7 +122,7 @@ function DivisionMaster() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -139,7 +141,7 @@ function DivisionMaster() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Name
+                        {t("Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -149,11 +151,11 @@ function DivisionMaster() {
                           type="text"
                           value={data.name}
                           onChange={handleInputs}
-                          placeholder="Enter Division name"
+                          placeholder={t("Enter Division name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Division Name is required
+                          {t("Division Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -162,7 +164,7 @@ function DivisionMaster() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Division Name in Kannada
+                        {t("Division Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -172,11 +174,11 @@ function DivisionMaster() {
                           value={data.nameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Division Name in Kannada"
+                          placeholder={t("Enter Division Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Division Name in Kannada is required.
+                          {t("Division Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -190,12 +192,12 @@ function DivisionMaster() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

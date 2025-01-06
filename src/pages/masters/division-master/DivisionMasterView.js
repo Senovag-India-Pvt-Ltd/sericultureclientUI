@@ -6,9 +6,11 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next"; // Add this line
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DivisionMasterView() {
+  const { t } = useTranslation(); // Add this line
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -48,11 +50,11 @@ function DivisionMasterView() {
   }, [id]);
 
   return (
-    <Layout title="Division View">
+    <Layout title={t("Division View")}> {/* Modify this line */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Division View</Block.Title>
+            <Block.Title tag="h2">{t("Division View")}</Block.Title> {/* Modify this line */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +64,7 @@ function DivisionMasterView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Modify this line */}
                 </Link>
               </li>
               <li>
@@ -71,7 +73,7 @@ function DivisionMasterView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Modify this line */}
                 </Link>
               </li>
             </ul>
@@ -81,11 +83,11 @@ function DivisionMasterView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Division Details</Card.Header>
+          <Card.Header>{t("Division Details")}</Card.Header> {/* Modify this line */}
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")} {/* Modify this line */}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,18 +95,15 @@ function DivisionMasterView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td> {/* Modify this line */}
                         <td>{Division.divisionMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Division Name:</td>
+                        <td style={styles.ctstyle}>{t("Division Name")}:</td> {/* Modify this line */}
                         <td>{Division.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Division Name In Kannada:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Division Name In Kannada")}:</td> {/* Modify this line */}
                         <td>{Division.nameInKannada}</td>
                       </tr>
                     </tbody>

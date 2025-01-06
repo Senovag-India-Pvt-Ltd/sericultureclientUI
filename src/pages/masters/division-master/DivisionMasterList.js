@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -23,6 +24,7 @@ function DivisionMasterList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -143,7 +145,7 @@ function DivisionMasterList() {
 
   const DivisionMasterDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +155,7 @@ function DivisionMasterList() {
             size="sm"
             onClick={() => handleView(row.divisionMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +163,7 @@ function DivisionMasterList() {
             className="ms-2"
             onClick={() => handleEdit(row.divisionMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +171,7 @@ function DivisionMasterList() {
             onClick={() => deleteConfirm(row.divisionMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,14 +179,14 @@ function DivisionMasterList() {
       hide: "md",
     },
     {
-      name: "Division Name",
+      name: t("Division Name"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Division Name in Kannada",
+      name: t("Division Name in Kannada"),
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
@@ -193,11 +195,11 @@ function DivisionMasterList() {
   ];
 
   return (
-    <Layout title="Division List">
+    <Layout title={t("Division List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Division List</Block.Title>
+            <Block.Title tag="h2">{t("Division List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -207,7 +209,7 @@ function DivisionMasterList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +218,7 @@ function DivisionMasterList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

@@ -6,6 +6,9 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -47,11 +50,11 @@ function ReelerTypeView() {
   }, [id]);
 
   return (
-    <Layout title="Reeler Type View">
+    <Layout title={t("Reeler Type View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Type View</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Type View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -61,7 +64,7 @@ function ReelerTypeView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +73,7 @@ function ReelerTypeView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -80,11 +83,11 @@ function ReelerTypeView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Reeler Type Details</Card.Header>
+          <Card.Header>{t("Reeler Type Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -92,23 +95,23 @@ function ReelerTypeView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{reelerType.reelerTypeMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Reeler Type:</td>
+                        <td style={styles.ctstyle}> {t("Reeler Type")}:</td>
                         <td>{reelerType.reelerTypeMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Reeler Type Name in Kannada:
+                          {t("Reeler Type Name in Kannada")}:
                         </td>
                         <td>{reelerType.reelerTypeNameInKannada}</td>
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}> No Of Device Allowed:</td>
+                        <td style={styles.ctstyle}> {t("No Of Device Allowed")}:</td>
                         <td>{reelerType.noOfDeviceAllowed}</td>
                       </tr>
                     </tbody>

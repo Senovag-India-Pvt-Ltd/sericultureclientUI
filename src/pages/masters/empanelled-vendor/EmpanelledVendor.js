@@ -5,6 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
+import { useTranslation } from "react-i18next";
 
 import { useState } from "react";
 import axios from "axios";
@@ -88,12 +89,14 @@ function EmpanelledVendor() {
     });
   };
 
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Empaneled Vendor">
+    <Layout title={t("Empaneled Vendor")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Empaneled Vendor </Block.Title>
+            <Block.Title tag="h2">{t("Empaneled Vendor")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -103,7 +106,7 @@ function EmpanelledVendor() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -112,7 +115,7 @@ function EmpanelledVendor() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -131,7 +134,7 @@ function EmpanelledVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="vendorMaster">
-                        Empaneled Vendor<span className="text-danger">*</span>
+                        {t("Empaneled Vendor")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -140,11 +143,11 @@ function EmpanelledVendor() {
                           type="text"
                           value={data.vendorMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Empaneled Vendor"
+                          placeholder={t("Enter Empaneled Vendor")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Vendor Name is required.
+                          {t("Vendor Name is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -158,12 +161,12 @@ function EmpanelledVendor() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

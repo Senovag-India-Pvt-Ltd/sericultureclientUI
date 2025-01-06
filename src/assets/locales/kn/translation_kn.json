@@ -341,7 +341,7 @@
   "Select Trader Type": "ವ್ಯಾಪಾರಿ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
   "Trader Type is required": "ವ್ಯಾಪಾರಿ ಪ್ರಕಾರ ಅಗತ್ಯವಿದೆ",
   "Name of the Applicant": "ಅರ್ಜಿ ಸಲ್ಲಿಸಿದವರ ಹೆಸರು",
-  "Enter Name of the Applicant": "ಅರ್ಜಿ ಸಲ್ಲಿಸಿದವರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Enter Name of the Applicant": "ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಿದವರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
   "Father's Name": "ತಂದೆಯ ಹೆಸರು",
   "Enter Father's Name": "ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
   "Premises Description": "ಆವರಣದ ವಿವರ",
@@ -538,7 +538,7 @@
     "No Transaction Details Available": "ವಹಿವಾಟು ವಿವರಗಳು ಲಭ್ಯವಿಲ್ಲ",
     "No Land Details Available": "ಜಮೀನು ವಿವರಗಳು ಲಭ್ಯವಿಲ್ಲ",
     "Pull Back": "ಹಿಂತೆಗೆದುಕೆ",
-    "Re-Push": "ಮತ್ತೆ ತಳ್ಳು",
+    "Re-Push": "ಮತ್ತೆ ತಳ್ಳಿ",
     "Report Success List": "ವರದಿ ಯಶಸ್ವಿ ಪಟ್ಟಿ",
     "DBT Pushed List": "ಡಿಬಿಟಿ ತಳ್ಳಲಾದ ಪಟ್ಟಿ",
   "Select Financial Year": "ಹಣಕಿಯ ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
@@ -1052,7 +1052,7 @@
     "Inspection": "ಪರಿಶೀಲನೆ",
     "Work Order": "ಕೆಲಸದ ಆದೇಶ",
     "Sanction Order": "ಮಂಜೂರು ಆದೇಶ",
-    "Push to DBT": "DBT ಗೆ ತಳ್ಳು",
+    "Push to DBT": "DBT ಗೆ ತಳ್ಳಿ",
     "Financial Delegation": "ಆರ್ಥಿಕ ನಿಯೋಜನೆ",
     "List Of Approval Stages": "ಅನುಮೋದನೆ ಹಂತಗಳ ಪಟ್ಟಿ",
     "View Approval Stage Details": "ಅನುಮೋದನೆ ಹಂತದ ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
@@ -1271,7 +1271,7 @@
   "Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿ",
   "Edit Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿಯನ್ನು ಸಂಪಾದಿಸಿ",
   "Enter Crop Status": "ಬೆಳೆ ಸ್ಥಿತಿಯನ್ನು ನಮೂದಿಸಿ",
-  "Update": "ಅವರಣ ಮಾಡಿ",
+  "Update": "ನವೀಕರಿಸಿ",
   "Loading...": "ಸಾಧನೆಯಾಗಿದೆ...",
   "Crop Status List": "ಬೆಳೆ ಸ್ಥಿತಿ ಪಟ್ಟಿಗಳು",
   "Create": "ನಮ್ಮಡೆ",
@@ -1396,9 +1396,9 @@
   "Worm Stage Details": "ಹುಳು ಹಂತದ ವಿವರಗಳು",
   "External Unit Type": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರ",
   "Enter External Unit Type": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರವನ್ನು ನಮೂದಿಸಿ",
-  "External Unit Type Name in Kannada": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರದ ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ",
-  "Enter External Unit Type Name in Kannada": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರದ ಹೆಸರನ್ನು ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ",
-  "External Unit Type Name in Kannada is required": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರದ ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ ಅಗತ್ಯವಿದೆ",
+  "External Unit Type Name in Kannada": "ಕನ್ನಡದಲ್ಲಿ ಬಾಹ್ಯ ಘಟಕದ ಹೆಸರು",
+  "Enter External Unit Type Name in Kannada": "ಕನ್ನಡದಲ್ಲಿ ಬಾಹ್ಯ ಘಟಕದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "External Unit Type Name in Kannada is required": "ಕನ್ನಡದಲ್ಲಿ ಬಾಹ್ಯ ಘಟಕದ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
   "Bin": "ಕೊಂಡಿ",
   "Godown": "ಗೋದಾಮು",
   "Select Godown": "ಗೋದಾಮನ್ನು ಆಯ್ಕೆಮಾಡಿ",
@@ -1585,38 +1585,132 @@
   "Trader Fee (in %)": "ವ್ಯಾಪಾರಿಗಳ ಶುಲ್ಕ (ಶೇ)",
   "Enter Trader Fee": "ವ್ಯಾಪಾರಿಗಳ ಶುಲ್ಕ ನಮೂದಿಸಿ",
   "Trader Fee is required": "ವ್ಯಾಪಾರಿಗಳ ಶುಲ್ಕ ಅಗತ್ಯವಿದೆ",
-   "Edit Market Type": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರವನ್ನು ಸಂಪಾದಿಸಿ",
-   "Market Type List": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ಪಟ್ಟಿ",
-   "Reeler Fee": "ರೀಲರ್ ಶುಲ್ಕ",
+  "Edit Market Type": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರವನ್ನು ಸಂಪಾದಿಸಿ",
+  "Market Type List": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ಪಟ್ಟಿ",
+  "Reeler Fee": "ರೀಲರ್ ಶುಲ್ಕ",
   "Farmer Fee": "ಕೃಷಿಕ ಶುಲ್ಕ",
   "Trader Fee": " ವ್ಯಾಪಾರಿ ಶುಲ್ಕ",
-   "Market Type View": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ವೀಕ್ಷಣೆ",
-  "Market Type Details": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ವಿವರಗಳು"
+  "Market Type View": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ವೀಕ್ಷಣೆ",
+  "Market Type Details": "ಮಾರುಕಟ್ಟೆ ಪ್ರಕಾರ ವಿವರಗಳು",
+  "Reeler Type Name is required": "ರೀಲರ್ ಪ್ರಕಾರದ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
+  "Reeler Type Name in Kannada": "ರೀಲರ್ ಪ್ರಕಾರದ ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ",
+  "Enter Reeler Type Name in Kannada": "ರೀಲರ್ ಪ್ರಕಾರದ ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ",
+  "Reeler Type Name in Kannada is required": "ರೀಲರ್ ಪ್ರಕಾರದ ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ ಅಗತ್ಯವಿದೆ",
+  "Enter No Of Device": "ಉಪಕರಣಗಳ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+  "Number of device is required": "ಉಪಕರಣಗಳ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
+  "Enter Reeler Type": "ರೀಲರ್ ಪ್ರಕಾರವನ್ನು ನಮೂದಿಸಿ",
+  "Number of device Allowed": "ಅನುಮೋದಿತ ಸಾಧನಗಳ ಸಂಖ್ಯೆ",
+  "Reeler Type List": "ರೀಲರ್ ಟೈಪ್ ಪಟ್ಟಿ",
+  "Reeler Type View": "ರೀಲರ್ ಟೈಪ್ ವೀಕ್ಷಣೆ",
+  "Reeler Type Details": "ರೀಲರ್ ಟೈಪ್ ವಿವರಗಳು",
+  "Search Farmer Details By": "ರೈತರ ವಿವರಗಳನ್ನು ಹುಡುಕಿ",
+  "Fruits Id": "ಫ್ರೂಟ್ಸ್ ಐಡಿ",
+  "Farmer Number": "ರೈತ ನಂಬರ್",
+  "Enter Bank Name": "ಬ್ಯಾಂಕ್ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Bank Name is required": "ಬ್ಯಾಂಕ್ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
+  "Enter Branch Name": "ಶಾಖೆ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Branch Name is required": "ಶಾಖೆ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
+  "IFSC Code is required and equals to 11 digit": "ಐಎಫ್ಎಸ್ಸಿ ಕೋಡ್ ಅಗತ್ಯವಿದೆ ಮತ್ತು 11 ಅಂಕೆಗಳಾಗಿರಬೇಕು",
+  "Enter Bank Account Number": "ಬ್ಯಾಂಕ್ ಖಾತೆ ನಂಬರವನ್ನು ನಮೂದಿಸಿ",
+  "Bank Account Number is required": "ಬ್ಯಾಂಕ್ ಖಾತೆ ನಂಬರ್ ಅಗತ್ಯವಿದೆ",
+  "Enter Remarks": "ಟಿಪ್ಪಣಿಗಳನ್ನು ನಮೂದಿಸಿ",
+  "Remarks is required": "ಟಿಪ್ಪಣಿಗಳು ಅಗತ್ಯವಿದೆ",
+  "Select Reason": "ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Update Bank Details": "ಬ್ಯಾಂಕ್ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಿ",
+  "Enter IFSC Code":"ಐಎಫ್ಎಸ್ಸಿ ಕೋಡ್ ನಮೂದಿಸಿ",
+  "Edit External Unit Type": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರವನ್ನು ತಿದ್ದು",
+  "Updated successfully": "ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+  "Save attempt was not successful": "ಉಳಿಸುವ ಪ್ರಯತ್ನ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ",
+  "Something went wrong!": "ಏನೋ ತಪ್ಪಾಗಿದೆ!",
+  "External Unit Type List": "ಬಾಹ್ಯ ಘಟಕ ಪ್ರಕಾರ ಪಟ್ಟಿ",
+ 
+  "External Unit Type Name": "ಬಾಹ್ಯ ಘಟಕದ ಹೆಸರು",
+  "External Unit Type View": "ಬಾಹ್ಯ ಘಟಕದ ವೀಕ್ಷಣೆ",
+  "External Unit Type Details": "ಬಾಹ್ಯ ಘಟಕದ ವಿವರಗಳು",
+  "Delete": "ಅಳಿಸಿ",
+  "Are you sure?": "ನೀವು ಖಚಿತವಾಗಿ ಇದನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?",
+  "It will delete permanently!": "ಇದು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಲಿದೆ!",
+  "Yes, delete it!": "ಹೌದು, ಅಳಿಸಿ!",
+  "Deleted": "ಅಳಿಸಲಾಗಿದೆ",
+  "You successfully deleted this record": "ನೀವು ಯಶಸ್ವಿಯಾಗಿ ಈ ದಾಖಲೆ ಅಳಿಸಿದ್ದೀರಿ",
+  "Cancelled": "ರದ್ದು ಮಾಡಲಾಗಿದೆ",
+  "Your record is not deleted": "ನಿಮ್ಮ ದಾಖಲೆ ಅಳಿಸಲಾಗಿಲ್ಲ",
+  "Empaneled Vendor": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್",
+  "Enter Empaneled Vendor": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್ ನಮೂದಿಸಿ",
+  "Vendor Name is required.": "ವ್ಯಾಪಾರಿಯ ಹೆಸರು ಅಗತ್ಯವಿದೆ.",
+  "Save": "ಉಳಿಸಿ",
+  "Saved successfully": "ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ",
+  "Edit Empaneled Vendor": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್ ತಿದ್ದು",
+  "Empaneled Vendor List": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್ ಪಟ್ಟಿ",
+  "Delete attempt was not successful": "ಅಳಿಸುವ ಪ್ರಯತ್ನ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ",
+  "Empaneled Vendor View": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್ ವೀಕ್ಷಣೆ",
+  "Empaneled Vendor Details": "ಎಂಪಾನೆಲ್ಡ್ ವೆಂಡರ್ ವಿವರಗಳು",
+  "Race Mapping": "ಜಾತಿ ಮ್ಯಾಪಿಂಗ್",
+  "Enter Division name": "ವಿಭಾಗದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Division Name in Kannada": "ಕನ್ನಡದಲ್ಲಿ ವಿಭಾಗದ ಹೆಸರು",
+  "Enter Division Name in Kannada": "ಕನ್ನಡದಲ್ಲಿ ವಿಭಾಗದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Division Name in Kannada is required.": "ಕನ್ನಡದಲ್ಲಿ ವಿಭಾಗದ ಹೆಸರು ಅಗತ್ಯವಿದೆ.",
+  "Edit Division": "ವಿಭಾಗವನ್ನು ತಿದ್ದು",
+  "Enter Division Name": "ವಿಭಾಗದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "Division List": "ವಿಭಾಗ ಪಟ್ಟಿ",
+  "Division Name": "ವಿಭಾಗದ ಹೆಸರು",
+  "Division View": "ವಿಭಾಗದ ವೀಕ್ಷಣೆ",
+  "Division Details": "ವಿಭಾಗದ ವಿವರಗಳು",
+  "Maintenance of Mulberry Garden in the Farms": "ಫಾರ್ಮ್‌ಗಳಲ್ಲಿ ಶಾಲ್ಮಲ ತೋಟದ ನಿರ್ವಹಣೆ",
+  "Plot Number": "ಪ್ಲಾಟ್ ಸಂಖ್ಯೆ",
+  "Enter Plot Number": "ಪ್ಲಾಟ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+  "Plot Number is required": "ಪ್ಲಾಟ್ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
+  "Select Mulberry Variety": "ಶಾಲ್ಮಲ ತಳಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Mulberry Variety is required": "ಶಾಲ್ಮಲ ತಳಿ ಅಗತ್ಯವಿದೆ",
+  "Area(In Acres)": "ಪ್ರದೇಶ (ಎಕರೆಗಳಲ್ಲಿ)",
+  "Enter Area(In Hectares)": "ಪ್ರದೇಶವನ್ನು (ಹೆಕ್ಟೇರ್‌ಗಳಲ್ಲಿ) ನಮೂದಿಸಿ",
+  "Soil Type": "ಮಣ್ಣಿನ ಪ್ರಕಾರ",
+  "Select Soil Type": "ಮಣ್ಣಿನ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Soil Type is required": "ಮಣ್ಣಿನ ಪ್ರಕಾರ ಅಗತ್ಯವಿದೆ",
+  "Mulberry Spacing": "ಶಾಲ್ಮಲ ಅಂತರ",
+  "Enter Mulberry Spacing": "ಶಾಲ್ಮಲ ಅಂತರವನ್ನು ನಮೂದಿಸಿ",
+  "Pruning Date": "ಕತ್ತರಿಸುವ ದಿನಾಂಕ",
+  "Plantation Date": "ನೆಡುವ ದಿನಾಂಕ",
+  "Attempt was not successful": "ಪ್ರಯತ್ನ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ",
+  "Division Name In Kannada": "ಕನ್ನಡದಲ್ಲಿ ವಿಭಾಗದ ಹೆಸರು:",
+  "Alert Window": "ಎಚ್ಚರಿಕೆ ವಿಂಡೋ",
+  "Update Status": "ಸ್ಥಿತಿಯನ್ನು ನವೀಕರಿಸಿ",
+  "Select Fertilizer Application Status": "ರಸಗೊಬ್ಬರ ಅನ್ವಯ ಸ್ಥಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
+  "Activity Not Required": "ಚಟುವಟಿಕೆ ಅಗತ್ಯವಿಲ್ಲ",
+  "Farm Yard Manure Application Status": "ಫಾರ್ಮ್ ಯಾರ್ಡ್ ಮಣ್ಣು ಅನ್ವಯ ಸ್ಥಿತಿ",
+  "Select FYM Status": "FYM ಸ್ಥಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Select Irrigation Status": "ನೀರಾವರಿ ಸ್ಥಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Select Brushing Status": "ಬ್ರಷಿಂಗ್ ಸ್ಥಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "Fertilizer Application Status": "ರಸಗೊಬ್ಬರ ಅನ್ವಯ ಸ್ಥಿತಿ",
+  "FYM Application Status": "ಫಾರ್ಮ್ ಯಾರ್ಡ್ ಮಣ್ಣು ಅನ್ವಯ ಸ್ಥಿತಿ",
+  "Irrigation Status": "ನೀರಾವರಿ ಸ್ಥಿತಿ",
+  "Brushing Status": "ಬ್ರಷಿಂಗ್ ಸ್ಥಿತಿ",
+  "Foliar Spray 1 Status": "ಫೋಲಿಯರ್ ಸ್ಪ್ರೇ 1 ಸ್ಥಿತಿ",
+  "Foliar Spray 2 Status": "ಫೋಲಿಯರ್ ಸ್ಪ್ರೇ 2 ಸ್ಥಿತಿ",
+  "Update Pruning Date": "ಕತ್ತರಿಸುವ ದಿನಾಂಕವನ್ನು ನವೀಕರಿಸಿ",
+  "Update Dates": "ದಿನಾಂಕಗಳನ್ನು ನವೀಕರಿಸಿ",
+  "Activity Logs": "ಚಟುವಟಿಕೆ ಲಾಗ್‌ಗಳು",
+  "Variety": "ವೈವಿಧ್ಯತೆ",
+  "Area Under Each Variety": "ಪ್ರತಿ ವೈವಿಧ್ಯತೆಯ ಅಡಿಯಲ್ಲಿ ಪ್ರದೇಶ",
+  "FYM Date": "FYM ದಿನಾಂಕ",
+  "Fertilizer Application Date": "ರಸಗೊಬ್ಬರ ಅನ್ವಯ ದಿನಾಂಕ",
+  "Irrigation Date": "ನೀರಾವರಿ ದಿನಾಂಕ",
+  "Brushing Date": "ಬ್ರಷಿಂಗ್ ದಿನಾಂಕ",
+  "Foliar Spray 1 Date": "ಫೋಲಿಯರ್ ಸ್ಪ್ರೇ 1 ದಿನಾಂಕ",
+  "Maintenance Of Mulberry Garden in Farms List": "ಫಾರ್ಮ್‌ಗಳಲ್ಲಿ ಶಾಲ್ಮಲ ತೋಟದ ನಿರ್ವಹಣೆ ಪಟ್ಟಿ",
+  "Edit Maintenance of Mulberry Garden in the Farms": "ಫಾರ್ಮ್‌ಗಳಲ್ಲಿ ಶಾಲ್ಮಲ ತೋಟದ ನಿರ್ವಹಣೆಯನ್ನು ತಿದ್ದು"
+ 
+
+
+
+
+
+
+
+ 
   
   
   
-
-  
-
-
-
-
-
-
-
-  
-  
-
-      
-      
-
-
-    
-    
-  
-  
-
-
-
   }
 }

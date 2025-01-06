@@ -8,10 +8,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReelerTypeEdit() {
+   // Translation
+   const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -119,11 +123,11 @@ function ReelerTypeEdit() {
   };
 
   return (
-    <Layout title="Edit Reeler Type">
+    <Layout title={t("Edit Reeler Type")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Reeler Type</Block.Title>
+            <Block.Title tag="h2">{t("Edit Reeler Type")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -133,7 +137,7 @@ function ReelerTypeEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
               <li>
@@ -142,7 +146,7 @@ function ReelerTypeEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t('Go to List')}</span>
                 </Link>
               </li>
             </ul>
@@ -158,14 +162,14 @@ function ReelerTypeEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerTypeMaster">
-                          Releer Type <span className="text-danger">*</span>
+                          {t("Reeler Type")} <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -174,11 +178,11 @@ function ReelerTypeEdit() {
                             value={data.reelerTypeMasterName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeler Type"
+                            placeholder={t("Enter Reeler Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reeler Type Name is required.
+                            {t("Reeler Type Name is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -187,7 +191,7 @@ function ReelerTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Releer Type">
-                          Releer Type Name in Kannada
+                          {t("Reeler Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -197,11 +201,11 @@ function ReelerTypeEdit() {
                             value={data.reelerTypeNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reeler Type Name in Kannada"
+                            placeholder={t("Enter Reeler Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reeler Type Name in Kannada is required
+                            {t("Reeler Type Name in Kannada is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -210,7 +214,7 @@ function ReelerTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="noOfDeviceAllowed">
-                          Number of device Allowed
+                          {t("Number of device Allowed")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -220,11 +224,11 @@ function ReelerTypeEdit() {
                             value={data.noOfDeviceAllowed}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter No Of Device "
+                            placeholder={t("Enter No Of Device")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of device is required
+                           {t("Number of device is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -241,12 +245,12 @@ function ReelerTypeEdit() {
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Update
+                      {t("Update")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                      {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

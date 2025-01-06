@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -22,6 +23,7 @@ function ExternalUnitTypeList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -142,7 +144,7 @@ function ExternalUnitTypeList() {
 
   const ExternalUnitTypeDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -152,7 +154,7 @@ function ExternalUnitTypeList() {
             size="sm"
             onClick={() => handleView(row.externalUnitTypeId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -160,7 +162,7 @@ function ExternalUnitTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.externalUnitTypeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -168,7 +170,7 @@ function ExternalUnitTypeList() {
             onClick={() => deleteConfirm(row.externalUnitTypeId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -176,14 +178,14 @@ function ExternalUnitTypeList() {
       hide: "md",
     },
     {
-      name: "External Unit Type",
+      name: t("External Unit Type"),
       selector: (row) => row.externalUnitTypeName,
       cell: (row) => <span>{row.externalUnitTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "External Unit Type Name in Kannada",
+      name: t("External Unit Type Name in Kannada"),
       selector: (row) => row.externalUnitTypeNameInKannada,
       cell: (row) => <span>{row.externalUnitTypeNameInKannada}</span>,
       sortable: true,
@@ -192,11 +194,11 @@ function ExternalUnitTypeList() {
   ];
 
   return (
-    <Layout title="External Unit Type List">
+    <Layout title={t("External Unit Type List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">External Unit Type List</Block.Title>
+            <Block.Title tag="h2">{t("External Unit Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -206,7 +208,7 @@ function ExternalUnitTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -215,7 +217,7 @@ function ExternalUnitTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

@@ -10,11 +10,15 @@ import { useState, useEffect } from "react";
 import { createTheme } from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function UpdateBankDetails() {
+  // Translation
+           const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const { id } = useParams();
@@ -354,11 +358,11 @@ function UpdateBankDetails() {
   };
 
   return (
-    <Layout title="Update Bank Details">
+    <Layout title={t("Update Bank Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Update Bank Details</Block.Title>
+            <Block.Title tag="h2">{t("Update Bank Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
            
@@ -375,7 +379,7 @@ function UpdateBankDetails() {
               <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Farmer Details By
+                      {t("Search Farmer Details By")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -385,9 +389,9 @@ function UpdateBankDetails() {
                           onChange={handleFarmerIdInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="fruitsId">Fruits Id</option>
-                          <option value="farmerNumber">Farmer Number</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="fruitsId">{t("Fruits Id")}</option>
+                          <option value="farmerNumber">{t("Farmer Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -399,16 +403,16 @@ function UpdateBankDetails() {
                         value={bankSearch.text}
                         onChange={handleFarmerIdInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -427,14 +431,14 @@ function UpdateBankDetails() {
           <Row className="g-0">
             <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Bank Account Details
+                  {t("Bank Account Details")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="farmerBankName">
-                          Bank Name
+                          {t("Bank Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -444,11 +448,11 @@ function UpdateBankDetails() {
                             value={bank.farmerBankName}
                             onChange={handleBankInputs}
                             type="text"
-                            placeholder="Enter Bank Name"
+                            placeholder={t("Enter Bank Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Bank Name is required
+                            {t("Bank Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -457,7 +461,7 @@ function UpdateBankDetails() {
                       <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="farmerBankBranchName">
-                         Branch Name
+                         {t("Branch Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -467,11 +471,11 @@ function UpdateBankDetails() {
                             value={bank.farmerBankBranchName}
                             onChange={handleBankInputs}
                             type="text"
-                            placeholder= "Enter Branch Name"
+                            placeholder= {t("Enter Branch Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Branch Name is required
+                            {t("Branch Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -480,7 +484,7 @@ function UpdateBankDetails() {
                       <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="farmerBankIfscCode">
-                         IFSC Code
+                         {t("IFSC Code")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -491,11 +495,11 @@ function UpdateBankDetails() {
                             onChange={handleBankInputs}
                             type="text"
                             maxLength="11"
-                            placeholder="Enter IFSC Code"
+                            placeholder={t("Enter IFSC Code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required and equals to 11 digit
+                            {t("IFSC Code is required and equals to 11 digit")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -504,7 +508,7 @@ function UpdateBankDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="farmerBankAccountNumber">
-                          Bank Account Number
+                          {t("Bank Account Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -514,11 +518,11 @@ function UpdateBankDetails() {
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
                             type="text"
-                            placeholder="Enter Bank Account Number"
+                            placeholder={t("Enter Bank Account Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Bank Account Number is required
+                            {t("Bank Account Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -527,7 +531,7 @@ function UpdateBankDetails() {
                         <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="farmerBankAccountNumber">
-                          Remarks
+                          {t("Remarks")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -538,11 +542,11 @@ function UpdateBankDetails() {
                             onChange={handleBankInputs}
                             // type="textarea"
                             as="textarea"
-                            placeholder="Enter Remarks"
+                            placeholder={t("Enter Remarks")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Remarks is required
+                            {t("Remarks is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -551,7 +555,7 @@ function UpdateBankDetails() {
                         <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Reason
+                      {t("Reason")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
@@ -563,7 +567,7 @@ function UpdateBankDetails() {
                           onBlur={() => handleBankInputs}
                           required
                         >
-                          <option value="">Select Reason</option>
+                          <option value="">{t("Select Reason")}</option>
                           {farmerBankReasonData.map((list) => (
                             <option
                               key={list.farmerBankAccountReasonId}
@@ -590,12 +594,12 @@ function UpdateBankDetails() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update Bank Details
+                    {t("Update Bank Details")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

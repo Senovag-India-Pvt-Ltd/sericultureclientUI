@@ -10,6 +10,7 @@ import { createTheme } from "react-data-table-component";
 import { Icon } from "../../components";
 import DataTable from "react-data-table-component";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -220,9 +221,11 @@ function MaintenanceofMulberryfarmAlert() {
     },
   };
 
+  const { t } = useTranslation();
+
   const MulberryGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -239,21 +242,21 @@ function MaintenanceofMulberryfarmAlert() {
       hide: "md",
     },
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Status",
+      name: t("Fertilizer Application Status"),
       selector: (row) => row.fertilizerApplicationStatus,
       cell: (row) => (
         <span>
@@ -268,7 +271,7 @@ function MaintenanceofMulberryfarmAlert() {
       hide: "md",
     },
     {
-      name: "FYM Application Status",
+      name: t("FYM Application Status"),
       selector: (row) => row.fymApplicationStatus,
       cell: (row) => (
         <span>
@@ -283,7 +286,7 @@ function MaintenanceofMulberryfarmAlert() {
       hide: "md",
     },
     {
-      name: "Irrigation Status",
+      name: t("Irrigation Status"),
       selector: (row) => row.irrigationStatus,
       cell: (row) => (
         <span>
@@ -298,7 +301,7 @@ function MaintenanceofMulberryfarmAlert() {
       hide: "md",
     },
     {
-      name: "Brushing Status",
+      name: t("Brushing Status"),
       selector: (row) => row.brushingStatus,
       cell: (row) => (
         <span>
@@ -315,11 +318,11 @@ function MaintenanceofMulberryfarmAlert() {
   ];
 
   return (
-    <Layout title="Alert Window">
+    <Layout title={t("Alert Window")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Alert Window</Block.Title>
+            <Block.Title tag="h2">{t("Alert Window")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -329,7 +332,7 @@ function MaintenanceofMulberryfarmAlert() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -338,7 +341,7 @@ function MaintenanceofMulberryfarmAlert() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -371,7 +374,7 @@ function MaintenanceofMulberryfarmAlert() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update Status</Modal.Title>
+          <Modal.Title>{t("Update Status")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -383,7 +386,7 @@ function MaintenanceofMulberryfarmAlert() {
             <Row className="g-5 px-5">
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Fertilizer Application Status</Form.Label>
+                  <Form.Label>{t("Fertilizer Application Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="fertilizerApplicationStatus"
@@ -391,12 +394,10 @@ function MaintenanceofMulberryfarmAlert() {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
                     >
-                      <option value="">
-                        Select Fertilizer Application Status
-                      </option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Fertilizer Application Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -404,7 +405,7 @@ function MaintenanceofMulberryfarmAlert() {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Farm Yard Manure Application Status</Form.Label>
+                  <Form.Label>{t("Farm Yard Manure Application Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="fymApplicationStatus"
@@ -412,10 +413,10 @@ function MaintenanceofMulberryfarmAlert() {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
                     >
-                      <option value="">Select FYM Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select FYM Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -423,7 +424,7 @@ function MaintenanceofMulberryfarmAlert() {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Irrigation Status</Form.Label>
+                  <Form.Label>{t("Irrigation Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="irrigationStatus"
@@ -432,10 +433,10 @@ function MaintenanceofMulberryfarmAlert() {
                       // disabled={!isTodayOrFutureDate(dates.irrigationDate)}
                       
                     >
-                      <option value="">Select Irrigation Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Irrigation Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -443,7 +444,7 @@ function MaintenanceofMulberryfarmAlert() {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Brushing Status</Form.Label>
+                  <Form.Label>{t("Brushing Status")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="brushingStatus"
@@ -451,10 +452,10 @@ function MaintenanceofMulberryfarmAlert() {
                       onChange={handlePruningInputs}
                       // disabled={!isTodayOrFutureDate(dates.brushingDate)}
                     >
-                      <option value="">Select Brushing Status</option>
-                      <option value="0">Pending</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Activity Not Required</option>
+                      <option value="">{t("Select Brushing Status")}</option>
+                      <option value="0">{t("Pending")}</option>
+                      <option value="1">{t("Completed")}</option>
+                      <option value="2">{t("Activity Not Required")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -465,12 +466,12 @@ function MaintenanceofMulberryfarmAlert() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -484,4 +485,3 @@ function MaintenanceofMulberryfarmAlert() {
 }
 
 export default MaintenanceofMulberryfarmAlert;
- 

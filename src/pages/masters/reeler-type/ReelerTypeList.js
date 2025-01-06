@@ -13,10 +13,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReelerTypeList() {
+  // Translation
+      const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +147,7 @@ function ReelerTypeList() {
 
   const ReleerTypeMasterDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +157,7 @@ function ReelerTypeList() {
             size="sm"
             onClick={() => handleView(row.reelerTypeMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +165,7 @@ function ReelerTypeList() {
             className="ms-2"
             onClick={() => handleEdit(row.reelerTypeMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -169,7 +173,7 @@ function ReelerTypeList() {
             onClick={() => deleteConfirm(row.reelerTypeMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -177,21 +181,21 @@ function ReelerTypeList() {
       hide: "md",
     },
     {
-      name: "Reeler Type",
+      name: t("Reeler Type"),
       selector: (row) => row.reelerTypeMasterName,
       cell: (row) => <span>{row.reelerTypeMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Type Name in Kannada",
+      name: t("Reeler Type Name in Kannada"),
       selector: (row) => row.reelerTypeNameInKannada,
       cell: (row) => <span>{row.reelerTypeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of Device Allowed",
+      name: t("No Of Device Allowed"),
       selector: (row) => row.noOfDeviceAllowed,
       cell: (row) => <span>{row.noOfDeviceAllowed}</span>,
       sortable: true,
@@ -200,11 +204,11 @@ function ReelerTypeList() {
   ];
 
   return (
-    <Layout title="Reeler Type List">
+    <Layout title={t("Reeler Type List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Type List</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Type List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -214,7 +218,7 @@ function ReelerTypeList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -223,7 +227,7 @@ function ReelerTypeList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
