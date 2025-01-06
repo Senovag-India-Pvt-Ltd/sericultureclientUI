@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -22,6 +23,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BiddingSlip() {
+  const { t } = useTranslation();
   const [farmerDetails, setFarmerDetails] = useState({});
   const [farmerAddress, setFarmerAddress] = useState({});
   const [loading, setLoading] = useState(false);
@@ -722,11 +724,11 @@ function BiddingSlip() {
   };
 
   return (
-    <Layout title="Bidding Slip" show="true">
+    <Layout title={t("Bidding Slip")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Slip</Block.Title>
+            <Block.Title tag="h2">{t("Bidding Slip")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -765,7 +767,7 @@ function BiddingSlip() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Farmer Details By
+                      {t("Search Farmer Details By")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -775,9 +777,9 @@ function BiddingSlip() {
                           onChange={handleFarmerIdInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="fruitsId">Fruits Id</option>
-                          <option value="farmerNumber">Farmer Number</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="fruitsId">{t("Fruits Id")}</option>
+                          <option value="farmerNumber">{t("Farmer Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -789,16 +791,16 @@ function BiddingSlip() {
                         value={farmer.text}
                         onChange={handleFarmerIdInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                     {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
@@ -807,13 +809,13 @@ function BiddingSlip() {
                         to="/seriui/stake-holder-registration"
                         className="btn btn-primary border-0"
                       >
-                        Add New
+                        {t("Add New")}
                       </Link>
                     </Col>
                     <Col sm={1} lg={3} style={{ marginLeft: "-5%" }}>
                       <Form.Group as={Row} className="form-group" id="date">
                         <Form.Label column sm={2} lg={3}>
-                          Date
+                          {t("Date")}
                         </Form.Label>
                         <Col sm={1} lg={1} style={{ marginLeft: "-10%" }}>
                           <div className="form-control-wrap">
@@ -853,7 +855,7 @@ function BiddingSlip() {
                             id="source"
                           >
                             <Form.Label column sm={4}>
-                              Source
+                              {t("Source")}
                             </Form.Label>
                             <Col sm={8}>
                               <div className="form-control-wrap">
@@ -862,7 +864,7 @@ function BiddingSlip() {
                                   value={data.sourceMasterId}
                                   onChange={handleInputs}
                                 >
-                                  <option value="0">Select Source</option>
+                                  <option value="0">{t("Select Source")}</option>
                                   {sourceListData.map((list) => (
                                     <option
                                       key={list.sourceMasterId}
@@ -882,7 +884,7 @@ function BiddingSlip() {
                             id="race"
                           >
                             <Form.Label column sm={4}>
-                              Race<span className="text-danger">*</span>
+                              {t("Race")}<span className="text-danger">*</span>
                             </Form.Label>
                             {/* <Col sm={8}>
                               <div className="form-control-wrap">
@@ -911,7 +913,7 @@ function BiddingSlip() {
                                   onChange={handleInputs}
                                   required
                                 >
-                                  <option value="">Select Race</option>
+                                  <option value="">{t("Select Race")}</option>
                                   {raceListData ? (
                                     raceListData.map((list) => (
                                       <option
@@ -923,12 +925,12 @@ function BiddingSlip() {
                                     ))
                                   ) : (
                                     <option value="" disabled>
-                                      No Race found for this market
+                                      {t("No Race found for this market")}
                                     </option>
                                   )}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Race is required
+                                  {t("Race is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Col>
@@ -1007,7 +1009,7 @@ function BiddingSlip() {
                             id="dfl"
                           >
                             <Form.Label column sm={4}>
-                              No. of DFL's<span className="text-danger">*</span>
+                              {t("No. of DFL's")}<span className="text-danger">*</span>
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control
@@ -1016,11 +1018,11 @@ function BiddingSlip() {
                                 min={0}
                                 value={data.dflCount}
                                 onChange={handleInputs}
-                                placeholder="Enter No. of DFL's"
+                                placeholder={t("Enter No. of DFL's")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                No of DFL's is required
+                                {t("No of DFL's is required")}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -1050,7 +1052,7 @@ function BiddingSlip() {
                             id="dfl"
                           >
                             <Form.Label column sm={4}>
-                              Weight<span className="text-danger">*</span>
+                              {t("Weight")}<span className="text-danger">*</span>
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control
@@ -1059,11 +1061,11 @@ function BiddingSlip() {
                                 name="estimatedWeight"
                                 value={data.estimatedWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter Weight"
+                                placeholder={t("Enter Weight")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Weight is required
+                                {t("Weight is required")}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -1074,7 +1076,7 @@ function BiddingSlip() {
                             id="numberOfLot"
                           >
                             <Form.Label column sm={4}>
-                              No. of Lot<span className="text-danger">*</span>
+                              {t("No. of Lot")}<span className="text-danger">*</span>
                             </Form.Label>
                             <Col sm={8}>
                               <Form.Control
@@ -1087,7 +1089,7 @@ function BiddingSlip() {
                                 // placeholder="Enter No. of DFL's"
                               />
                               <Form.Control.Feedback type="invalid">
-                                No. of Lot is required
+                                {t("No. of Lot is required")}
                               </Form.Control.Feedback>
                             </Col>
                             {/* <Col sm={4}>
@@ -1105,7 +1107,7 @@ function BiddingSlip() {
                               id="numberOfBigBin"
                             >
                               <Form.Label column sm={6}>
-                                No. of Bin(Big)
+                                {t("No. of Bin(Big)")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <Col sm={6}>
@@ -1128,7 +1130,7 @@ function BiddingSlip() {
                               id="numberOfSmallBin"
                             >
                               <Form.Label column sm={6}>
-                                No. of Bin(small)
+                                {t("No. of Bin(small)")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <Col sm={6}>
@@ -1185,7 +1187,7 @@ function BiddingSlip() {
                           onClick={postData}
                         > */}
                         <Button type="submit" variant="primary">
-                          Submit
+                          {t("Submit")}
                         </Button>
                       </li>
                       {/* <li>
@@ -1353,7 +1355,7 @@ function BiddingSlip() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.top}>Farmer Number</td>
+                        <td style={styles.top}>{t("Farmer Number")}</td>
                       </tr>
                       <tr>
                         <td style={styles.bottom}>
@@ -1361,7 +1363,7 @@ function BiddingSlip() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.top}> Lot Number</td>
+                        <td style={styles.top}>{t("Lot Number")}</td>
                       </tr>
                       <tr>
                         {/* <td style={styles.bottom}>
@@ -1384,16 +1386,16 @@ function BiddingSlip() {
                         </td> */}
                       </tr>
                       <tr>
-                        <td style={styles.top}> Bin Number</td>
+                        <td style={styles.top}>{t("Bin Number")}</td>
                       </tr>
                       <tr>
                         <td style={styles.bottom}>
                           {/* {data.numberOfBigBin ? data.numberOfBigBin : "---"} */}
                           {bigBinList.length
-                            ? `Big Bin: ${bigBinList.join(",")}`
+                            ? `${t("Big Bin")}: ${bigBinList.join(",")}`
                             : "---"}{" "}
                           {smallBinList.length
-                            ? `Small Bin: ${smallBinList.join(",")}`
+                            ? `${t("Small Bin")}: ${smallBinList.join(",")}`
                             : "---"}
                         </td>
                       </tr>
@@ -1406,40 +1408,39 @@ function BiddingSlip() {
 
                 <Col lg="5">
                   <Card>
-                    <Card.Header>Farmer Personal Info</Card.Header>
+                    <Card.Header>{t("Farmer Personal Info")}</Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
                           <table className="table small table-bordered">
                             <tbody>
                               <tr>
-                                <td style={styles.ctstyle}> Farmer Number:</td>
+                                <td style={styles.ctstyle}>{t("Farmer Number")}:</td>
                                 <td>{farmerNumber}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Farmer Name:</td>
+                                <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                                 <td>
                                   {farmerDetails && farmerDetails.firstName}
                                 </td>
                               </tr>
                               <tr>
                                 <td style={styles.ctstyle}>
-                                  {" "}
-                                  Father's/Husband's Name:
+                                  {t("Father's/Husband's Name")}:
                                 </td>
                                 <td>
                                   {farmerDetails && farmerDetails.fatherName}
                                 </td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Gender:</td>
+                                <td style={styles.ctstyle}>{t("Gender")}:</td>
                                 <td>
                                   {farmerDetails && farmerDetails.genderId === 1
-                                    ? "Male"
+                                    ? t("Male")
                                     : farmerDetails &&
                                       farmerDetails.genderId === 2
-                                    ? "Female"
-                                    : "Other"}
+                                    ? t("Female")
+                                    : t("Other")}
                                 </td>
                               </tr>
                               {/* <tr>
@@ -1455,7 +1456,7 @@ function BiddingSlip() {
                                 <td>{fruitsId.farmerId}</td>
                               </tr> */}
                               <tr>
-                                <td style={styles.ctstyle}> Phone Number:</td>
+                                <td style={styles.ctstyle}>{t("Phone Number")}:</td>
                                 <td>
                                   {farmerDetails && farmerDetails.mobileNumber}
                                 </td>
@@ -1471,7 +1472,7 @@ function BiddingSlip() {
                                 </td>
                               </tr> */}
                               <tr>
-                                <td style={styles.ctstyle}> Farmer Address:</td>
+                                <td style={styles.ctstyle}>{t("Farmer Address")}:</td>
                                 <td>
                                   {/* {farmerAddress.length &&
                                     farmerAddress[0].villageName} */}
@@ -1489,7 +1490,7 @@ function BiddingSlip() {
                   </Card>
 
                   <Card className="card-gutter-md mt-4">
-                    <Card.Header>Bank Details</Card.Header>
+                    <Card.Header>{t("Bank Details")}</Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
@@ -1499,19 +1500,19 @@ function BiddingSlip() {
                           <table className="table small table-bordered">
                             <tbody>
                               <tr>
-                                <td style={styles.ctstyle}> Bank Name:</td>
+                                <td style={styles.ctstyle}>{t("Bank Name")}:</td>
                                 <td>{bank.farmerBankName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Branch:</td>
+                                <td style={styles.ctstyle}>{t("Branch")}:</td>
                                 <td>{bank.farmerBankBranchName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Account Number:</td>
+                                <td style={styles.ctstyle}>{t("Account Number")}:</td>
                                 <td>{bank.farmerBankAccountNumber}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> IFSC Code:</td>
+                                <td style={styles.ctstyle}>{t("IFSC Code")}:</td>
                                 <td>{bank.farmerBankIfscCode}</td>
                               </tr>
                             </tbody>

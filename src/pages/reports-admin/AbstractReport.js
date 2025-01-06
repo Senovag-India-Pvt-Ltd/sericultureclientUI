@@ -206,11 +206,13 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function AbstractReport() {
+  const { t } = useTranslation(); // Initialize useTranslation
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     fromDate: new Date(),
@@ -312,7 +314,7 @@ useEffect(() => {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "No Record Found",
+              title: t("No Record Found"),
             });
           }
           //console.log("hello world", response.data);
@@ -320,7 +322,7 @@ useEffect(() => {
         .catch((err) => {
           Swal.fire({
             icon: "warning",
-            title: "No record found!!!",
+            title: t("No record found!!!"),
           });
         });
     }
@@ -330,23 +332,22 @@ useEffect(() => {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
+      title: t("Saved successfully"),
     })
   };
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
   return (
-    <Layout title="Abstract Report">
+    <Layout title={t("Abstract Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Abstract Report</Block.Title>
+            <Block.Title tag="h2">{t("Abstract Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
            
@@ -365,7 +366,7 @@ useEffect(() => {
                   <Col lg="12">
                   
                   <Form.Group as={Row} className="form-group">                    
-    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>Race</Form.Label>
+    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>{t("Race")}</Form.Label>
     <Col>
         <Form.Select
             name="raceId"
@@ -377,7 +378,7 @@ useEffect(() => {
             // Removed validation for raceId being undefined or "0"
             isInvalid={false}
         >
-            <option value="">Select Race</option>
+            <option value="">{t("Select Race")}</option>
             {raceListData.map((list) => (
                 <option
                     key={list.raceMasterId}
@@ -395,7 +396,7 @@ useEffect(() => {
 {/* </Form.Group> */}
       
                       <Form.Label column sm={1}>
-                        From Date
+                        {t("From Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -410,7 +411,7 @@ useEffect(() => {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t("To Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -427,7 +428,7 @@ useEffect(() => {
                       <Col sm={2}>
                        
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>
