@@ -378,6 +378,7 @@ function Menu() {
     Admin_Master_Service_Spacing: false,
     Admin_Master_Service_Hectare: false,
     Admin_Master_Service_Configure_Pmkys_Amount: false,
+    Admin_Master_Service_Configure_Bonus_Amount: false,
     Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
@@ -3138,6 +3139,11 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Configure_Pmkys_Amount ? (
                           <MenuItem>
                             <MenuItemLink text="Configure Amount" to="/seriui/configure-pmkys-amount" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Configure_Bonus_Amount ? (
+                          <MenuItem>
+                            <MenuItemLink text="Configure Bonus Amount" to="/seriui/configure-bivoltine-amount" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (

@@ -1187,7 +1187,7 @@ function ServiceApplication() {
   const generateAcknowledgment = async (applicationFormId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        baseURLReport + `getAcknowledementPMKSY`,
         {
           applicationFormId: applicationFormId,
         },
