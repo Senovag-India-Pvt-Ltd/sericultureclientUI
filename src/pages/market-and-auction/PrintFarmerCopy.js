@@ -9,11 +9,13 @@ import { Icon } from "../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from 'react-i18next';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PrintFarmerCopy() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
@@ -130,11 +132,11 @@ function PrintFarmerCopy() {
     });
   };
   return (
-    <Layout title="Generated Bidding Slip">
+    <Layout title={t("Generated Bidding Slip")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Generated Bidding Slip</Block.Title>
+            <Block.Title tag="h2">{t("Generated Bidding Slip")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -172,7 +174,7 @@ function PrintFarmerCopy() {
                   <Col lg="">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
+                        {t("Lot ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -181,15 +183,15 @@ function PrintFarmerCopy() {
                           value={data.allottedLotId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot ID"
+                          placeholder={t("Enter Lot ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
+                          {t("Lot ID is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={2}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -213,7 +215,7 @@ function PrintFarmerCopy() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Get Details
+                          {t("Get Details")}
                         </Button>
                       </Col>
                     </Form.Group>

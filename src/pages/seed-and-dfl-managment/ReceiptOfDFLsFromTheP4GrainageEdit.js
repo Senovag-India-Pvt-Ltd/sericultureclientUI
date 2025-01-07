@@ -10,12 +10,14 @@ import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 import ReceiptofDFLsfromtheP4grainage from "./ReceiptofDFLsfromtheP4grainage";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function ReceiptOfDFLsFromTheP4GrainageEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -168,11 +170,11 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
   };
   
   return (
-    <Layout title="Receipt of DFLs from the P4 grainage ">
+    <Layout title={t("Receipt of DFLs from the P4 grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Receipt of DFLs from the P4 grainage</Block.Title>
+            <Block.Title tag="h2">{t("Receipt of DFLs from the P4 grainage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -182,7 +184,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -191,7 +193,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -203,12 +205,12 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Receipt of DFLs from the P4 grainage
+              {t("Edit Receipt of DFLs from the P4 grainage")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
@@ -216,7 +218,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Name
+                          {t("Line Name")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -228,7 +230,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -249,7 +251,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -261,7 +263,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -282,7 +284,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Laid on Date
+                                {t("Laid on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataLaidDate && ( */}
@@ -308,7 +310,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Hatching Date
+                                {t("Hatching Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataLaidDate && ( */}
@@ -340,12 +342,12 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ReceiptofDFLsfromtheP4grainageList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -180,7 +182,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
 
   const MaintenanceofmulberryGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -190,7 +192,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -198,7 +200,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="primary"
@@ -206,7 +208,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
             className="ms-2"
             onClick={() => handleUpdate(row.id)}
           >
-            Update
+            {t("Update")}
           </Button>
           <Button
             variant="primary"
@@ -214,7 +216,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
             className="ms-2"
             onClick={() => handleAlert(row.id)}
           >
-            Alert
+            {t("Alert")}
           </Button>
           {/* <Button
             variant="danger"
@@ -232,28 +234,28 @@ function ReceiptofDFLsfromtheP4grainageList() {
     },
 
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
+      name: t("Variety"),
       selector: (row) => row.variety,
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Area(In Hectares)",
+      name: t(" Area(In Hectares)"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
@@ -283,7 +285,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
     //   hide: "md",
     // },
     {
-      name: "Activity Logs",
+      name: t("Activity Logs"),
       cell: (row) => (
         <div className="text-end">
           <AiOutlineInfoCircle // Use the information icon instead of Button
@@ -300,63 +302,63 @@ function ReceiptofDFLsfromtheP4grainageList() {
 
   const MaintenanceofmulberryGardenLogsDataColumns = [
     {
-      name: "Plot Number",
+      name: t("Plot Number"),
       selector: (row) => row.plotNumber,
       cell: (row) => <span>{row.plotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
+      name: t("Variety"),
       selector: (row) => row.variety,
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Area Under Each Variety",
+      name: t("Area Under Each Variety"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
+      name: t("Pruning Date"),
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Date",
+      name: t("Fertilizer Application Date"),
       selector: (row) => row.fertilizerApplicationDate,
       cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM Date",
+      name: t("FYM Date"),
       selector: (row) => row.fymApplicationDate,
       cell: (row) => <span>{row.fymApplicationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Irrigation Date",
+      name: t("Irrigation Date"),
       selector: (row) => row.irrigationDate,
       cell: (row) => <span>{row.irrigationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Brushing Date",
+      name: t("Brushing Date"),
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Status",
+      name: t("Fertilizer Application Status"),
       selector: (row) => row.fertilizerApplicationStatus,
       cell: (row) => (
         <span>
@@ -371,7 +373,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
       hide: "md",
     },
     {
-      name: "FYM Application Status",
+      name: t("FYM Application Status"),
       selector: (row) => row.fymApplicationStatus,
       cell: (row) => (
         <span>
@@ -386,7 +388,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
       hide: "md",
     },
     {
-      name: "Irrigation Status",
+      name: t("Irrigation Status"),
       selector: (row) => row.irrigationStatus,
       cell: (row) => (
         <span>
@@ -401,7 +403,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
       hide: "md",
     },
     {
-      name: "Brushing Status",
+      name: t("Brushing Status"),
       selector: (row) => row.brushingStatus,
       cell: (row) => (
         <span>
@@ -418,12 +420,12 @@ function ReceiptofDFLsfromtheP4grainageList() {
   ];
 
   return (
-    <Layout title="Receipt of DFLs from the P4 grainage List">
+    <Layout title={t("Receipt of DFLs from the P4 grainage List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Receipt of DFLs from the P4 grainage List
+              {t("Receipt of DFLs from the P4 grainage List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -434,7 +436,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -443,7 +445,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -476,7 +478,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
+          <Modal.Title>{t("Activity Logs")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">

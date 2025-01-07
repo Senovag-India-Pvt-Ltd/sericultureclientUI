@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { Icon } from "../../components";
 import { useState, useEffect } from "react";
 import { createTheme } from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -15,6 +16,7 @@ const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReelerCurrentBalance() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     reelerId: "",
     username: "",
@@ -494,49 +496,49 @@ function ReelerCurrentBalance() {
 
   const ReelerDataColumns = [
     {
-      name: "User Type Id",
+      name: t("User Type Id"),
       selector: (row) => row.userTypeId,
       cell: (row) => <span>{row.userTypeId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User ID",
+      name: t("User ID"),
       selector: (row) => row.userMasterId,
       cell: (row) => <span>{row.userMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterId,
       cell: (row) => <span>{row.marketMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Device Id",
+      name: t("Device Id"),
       selector: (row) => row.deviceId,
       cell: (row) => <span>{row.deviceId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -657,11 +659,11 @@ function ReelerCurrentBalance() {
   };
 
   return (
-    <Layout title="Reeler Current Balance Report">
+    <Layout title={t("Reeler Current Balance Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Current Balance Report</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Current Balance Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -694,7 +696,7 @@ function ReelerCurrentBalance() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Reeler
+                      {t("Search Reeler")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -703,11 +705,9 @@ function ReelerCurrentBalance() {
                           value={reelerSearch.select}
                           onChange={handleReelerSearchInputs}
                         >
-                          <option value="">All</option>
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="reelingLicenseNumber">
-                            Reeler License Number
-                          </option>
+                          <option value="">{t("All")}</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="reelingLicenseNumber">{t("Reeler License Number")}</option>
                           {/* <option value="reelerNumber">Reeler Number</option> */}
                         </Form.Select>
                       </div>
@@ -720,16 +720,16 @@ function ReelerCurrentBalance() {
                         value={reelerSearch.text}
                         onChange={handleReelerSearchInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         // required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -761,7 +761,7 @@ function ReelerCurrentBalance() {
                 <Col lg="8">
                   <Card>
                     <Card.Header className="d-flex flex-column justify-content-center align-items-center">
-                      <div style={{fontSize:"150%",fontWeight:"bold"}}>Government Cocoon Market:<span style={{color:"#a1ffe5"}}> {marketData.marketMasterName} </span> </div>
+                      <div style={{fontSize:"150%",fontWeight:"bold"}}>{t("Government Cocoon Market")}:<span style={{color:"#a1ffe5"}}> {marketData.marketMasterName} </span> </div>
                     </Card.Header>
                     <Card.Body>
                       <table
@@ -778,7 +778,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ಕ್ರಮ ಸಂಖ್ಯೆ */}
-                              SL No
+                              {t("SL No")}
                             </th>
                             <th
                               style={{
@@ -788,7 +788,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ಲಾಟ್ ಸಂಖ್ಯೆ */}
-                              Reeler ID
+                              {t("Reeler ID")}
                             </th>
                             <th
                               style={{
@@ -798,7 +798,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ರೈತರ ವಿವರಗಳು */}
-                              Reeler Name
+                              {t("Reeler Name")}
                             </th>
                             <th
                               style={{
@@ -808,7 +808,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ತೂಕ */}
-                              Contact Number
+                              {t("Contact Number")}
                             </th>
                             <th
                               style={{
@@ -818,7 +818,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ಗೂಡಿನ  ವಯಸ್ಸು  */}
-                              Current Balance
+                              {t("Current Balance")}
                             </th>
                             <th
                               style={{
@@ -828,7 +828,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Online
+                              {t("Online")}
                             </th>
                             <th
                               style={{
@@ -838,7 +838,7 @@ function ReelerCurrentBalance() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Updated Date Time
+                              {t("Updated Date Time")}
                             </th>
                           </tr>
                         </thead>
@@ -850,7 +850,7 @@ function ReelerCurrentBalance() {
                               <td>{list.name}</td>
                               <td>{list.mobileNumber}</td>
                               <td>{list.balance}</td>
-                              <td>Yes</td>
+                              <td>{t("Yes")}</td>
                               <td>{list.updatedDate}</td>
                               {/* <td>{parseFloat(list.farmerAmount.toFixed(2))}</td>
                             <td>
@@ -875,7 +875,7 @@ function ReelerCurrentBalance() {
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td style={{fontWeight:"bold"}}>Total:</td>
+                          <td style={{fontWeight:"bold"}}>{t("Total")}:</td>
                           <td>{total?total:0}</td>
                           <td></td>
                           <td></td>

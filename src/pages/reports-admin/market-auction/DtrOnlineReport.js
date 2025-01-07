@@ -9,6 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { t } from "i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -272,11 +273,11 @@ function DtrOnlineReport() {
     });
   };
   return (
-    <Layout title="DTR Online">
+    <Layout title={t("DTR Online")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">DTR Online</Block.Title>
+            <Block.Title tag="h2">{t("DTR Online")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -314,7 +315,7 @@ function DtrOnlineReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number
+                        {t("Reeler Number")}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -331,7 +332,7 @@ function DtrOnlineReport() {
                         </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
-                        From Date
+                        {t("From Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -346,7 +347,7 @@ function DtrOnlineReport() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t("To Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -390,12 +391,12 @@ function DtrOnlineReport() {
                           onClick={display}
                         > */}
                 <Button type="submit" variant="primary">
-                  Generate Report
+                  {t("Generate Report")}
                 </Button>
               </Col>
               <Col sm={2}>
                 <Button type="button" variant="primary" onClick={exportCsv}>
-                  Export Excel
+                  {t("Export Excel")}
                 </Button>
               </Col>
             </Row>
@@ -432,7 +433,7 @@ function DtrOnlineReport() {
                       size="sm"
                       onClick={generateDtrReport}
                     >
-                      Print
+                      {t("Print")}
                     </Button>
                   </Col>
                 </Row>

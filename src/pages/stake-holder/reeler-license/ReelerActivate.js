@@ -10,10 +10,16 @@ import { useState, useEffect } from "react";
 import { createTheme } from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
+
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReelerActivate() {
+   // Translation
+           const { t } = useTranslation();
   const [data, setData] = useState({
     reelerId: "",
     username: "",
@@ -471,49 +477,49 @@ function ReelerActivate() {
 
   const ReelerDataColumns = [
     {
-      name: "User Type Id",
+      name: t("User Type Id"),
       selector: (row) => row.userTypeId,
       cell: (row) => <span>{row.userTypeId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User ID",
+      name: t("User ID"),
       selector: (row) => row.userMasterId,
       cell: (row) => <span>{row.userMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterId,
       cell: (row) => <span>{row.marketMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Device Id",
+      name: t("Device Id"),
       selector: (row) => row.deviceId,
       cell: (row) => <span>{row.deviceId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -527,7 +533,7 @@ function ReelerActivate() {
             // onClick={handleShowModal}
             onClick={() => getEdit(row)}
           >
-            Edit
+            {t("Edit")}
           </Button>
         </div>
       ),
@@ -634,11 +640,11 @@ function ReelerActivate() {
   };
 
   return (
-    <Layout title="Activate Reeler">
+    <Layout title={t("Activate Reeler")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activate Reeler</Block.Title>
+            <Block.Title tag="h2">{t("Activate Reeler")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -671,7 +677,7 @@ function ReelerActivate() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Reeler
+                      {t("Search Reeler")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -681,11 +687,11 @@ function ReelerActivate() {
                           onChange={handleReelerSearchInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
                           <option value="reelingLicenseNumber">
-                            Reeler License Number
+                            {t("Reeler License Number")}
                           </option>
-                          <option value="reelerNumber">Reeler Number</option>
+                          <option value="reelerNumber">{t("Reeler Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -697,16 +703,16 @@ function ReelerActivate() {
                         value={reelerSearch.text}
                         onChange={handleReelerSearchInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -800,7 +806,7 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="user">
-                        Reeler Name<span className="text-danger">*</span>
+                        {t("Reeler Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -809,11 +815,11 @@ function ReelerActivate() {
                           value={reelerName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter User Name"
+                          placeholder={t("Enter User Name")}
                           readOnly
                         />
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                          {t("User Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -822,7 +828,7 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="user">
-                        User Name<span className="text-danger">*</span>
+                        {t("User Name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -831,11 +837,11 @@ function ReelerActivate() {
                           value={data.username}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter User Name"
+                          placeholder={t("Enter User Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                          {t("User Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -843,7 +849,7 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="password">
-                        Password<span className="text-danger">*</span>
+                        {t("Password")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -852,11 +858,11 @@ function ReelerActivate() {
                           value={data.password}
                           onChange={handleInputs}
                           type="password"
-                          placeholder="Enter Password"
+                          placeholder={t("Enter Password")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Password is required
+                          {t("Password is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -864,7 +870,7 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="phoneNumber">
-                        Mobile number<span className="text-danger">*</span>
+                        {t("Mobile Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -874,11 +880,11 @@ function ReelerActivate() {
                           onChange={handleInputs}
                           type="text"
                           maxLength="10"
-                          placeholder="Enter Mobile Number"
+                          placeholder={t("Enter Mobile Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mobile Number Should Contain 10 digits
+                          {t("Mobile Number Should Contain 10 digits")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -887,7 +893,7 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="phoneNumber">
-                        Device ID<span className="text-danger">*</span>
+                        {t("Device ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -896,11 +902,11 @@ function ReelerActivate() {
                           value={data.deviceId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Device Id"
+                          placeholder={t("Enter Device Id")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Device Id is required
+                          {t("Device Id is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -936,12 +942,12 @@ function ReelerActivate() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" disabled={show}>
-                    Activate
+                    {t("Activate")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                  {t("Cancel")}
                   </Button>
                 </li>
               </ul>

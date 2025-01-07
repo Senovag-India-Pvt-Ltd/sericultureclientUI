@@ -11,11 +11,13 @@ import { createTheme } from "react-data-table-component";
 import DatePicker from "react-datepicker";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReelerDailyTransaction() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     reelerId: "",
     username: "",
@@ -501,49 +503,49 @@ function ReelerDailyTransaction() {
 
   const ReelerDataColumns = [
     {
-      name: "User Type Id",
+      name: t("User Type Id"),
       selector: (row) => row.userTypeId,
       cell: (row) => <span>{row.userTypeId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User ID",
+      name: t("User ID"),
       selector: (row) => row.userMasterId,
       cell: (row) => <span>{row.userMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterId,
       cell: (row) => <span>{row.marketMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Device Id",
+      name: t("Device Id"),
       selector: (row) => row.deviceId,
       cell: (row) => <span>{row.deviceId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -664,11 +666,11 @@ function ReelerDailyTransaction() {
   };
 
   return (
-    <Layout title="Reeler Credit Transaction Report">
+    <Layout title={t("Reeler Credit Transaction Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Credit Transaction Report</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Credit Transaction Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -701,7 +703,7 @@ function ReelerDailyTransaction() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={1}>
-                      Search Reeler
+                      {t("Search Reeler")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -710,11 +712,9 @@ function ReelerDailyTransaction() {
                           value={reelerSearch.select}
                           onChange={handleReelerSearchInputs}
                         >
-                          <option value="">All</option>
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="reelingLicenseNumber">
-                            Reeler License Number
-                          </option>
+                          <option value="">{t("All")}</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="reelingLicenseNumber">{t("Reeler License Number")}</option>
                           {/* <option value="reelerNumber">Reeler Number</option> */}
                         </Form.Select>
                       </div>
@@ -727,17 +727,17 @@ function ReelerDailyTransaction() {
                         value={reelerSearch.text}
                         onChange={handleReelerSearchInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         // required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={3} lg={4}>
                       <Form.Group as={Row} className="form-group" id="fid">
                         <Form.Label column sm={3}>
-                          Transaction Date
+                          {t("Transaction Date")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <Col sm={3}>
@@ -753,7 +753,7 @@ function ReelerDailyTransaction() {
                         </Col>
                         <Col sm={2} lg={3}>
                           <Button type="submit" variant="primary">
-                            Search
+                            {t("Search")}
                           </Button>
                         </Col>
                         {/* <Form.Label column sm={2}>
@@ -803,7 +803,7 @@ function ReelerDailyTransaction() {
                   <Card>
                     <Card.Header className="d-flex flex-column justify-content-center align-items-center">
                       <div style={{ fontSize: "150%", fontWeight: "bold" }}>
-                        Government Cocoon Market:
+                        {t("Government Cocoon Market")}:
                         <span style={{ color: "#a1ffe5" }}>
                           {" "}
                           {marketData.marketMasterName}{" "}
@@ -825,7 +825,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಕ್ರಮ ಸಂಖ್ಯೆ */}
-                              SL No
+                              {t("SL No")}
                             </th>
                             <th
                               style={{
@@ -833,7 +833,7 @@ function ReelerDailyTransaction() {
                                 color: "#fff",
                               }}
                             >
-                              Posting Date
+                              {t("Posting Date")}
                             </th>
                             <th
                               style={{
@@ -843,7 +843,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ರೈತರ ವಿವರಗಳು */}
-                              Client Code
+                              {t("Client Code")}
                             </th>
                             <th
                               style={{
@@ -853,7 +853,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ತೂಕ */}
-                              Client Name
+                              {t("Client Name")}
                             </th>
                             <th
                               style={{
@@ -863,7 +863,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಗೂಡಿನ  ವಯಸ್ಸು  */}
-                              Amount
+                              {t("Amount")}
                             </th>
                             <th
                               style={{
@@ -873,7 +873,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Remitter Account
+                              {t("Remitter Account")}
                             </th>
                             <th
                               style={{
@@ -883,7 +883,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Remitter Bank
+                              {t("Remitter Bank")}
                             </th>
                             <th
                               style={{
@@ -893,7 +893,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Sq no
+                              {t("Sq no")}
                             </th>
                             <th
                               style={{
@@ -903,7 +903,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Ref No
+                              {t("Ref No")}
                             </th>
                             <th
                               style={{
@@ -913,7 +913,7 @@ function ReelerDailyTransaction() {
                               // colSpan="2"
                             >
                               {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              Time
+                              {t("Time")}
                             </th>
                           </tr>
                         </thead>
@@ -953,7 +953,7 @@ function ReelerDailyTransaction() {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td style={{fontWeight:"bold"}}>Total:</td>
+                            <td style={{fontWeight:"bold"}}>{t("Total")}:</td>
                             <td>{total?total:0}</td>
                             <td></td>
                             <td></td>

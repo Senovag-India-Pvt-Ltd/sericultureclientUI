@@ -11,11 +11,15 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofLineRecordsforEachRaceList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -149,7 +153,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
 
   const LineRecordDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -159,7 +163,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -167,7 +171,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
          
           {/* <Button
@@ -186,84 +190,84 @@ function MaintenanceofLineRecordsforEachRaceList() {
     },
 
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
       cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of DFLs",
+      name: t("Number Of DFLs"),
       selector: (row) => row.numberOfDfls,
       cell: (row) => <span>{row.numberOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: t("Farmer Name"),
       selector: (row) => row.farmerName,
       cell: (row) => <span>{row.farmerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Selection Cocoon",
+      name: t("Date Of Selection Cocoon"),
       selector: (row) => row.dateOfSelectionCocoon,
       cell: (row) => <span>{row.dateOfSelectionCocoon}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pupa Test Details",
+      name: t("Pupa Test Details"),
       selector: (row) => row.pupaTestDetails,
       cell: (row) => <span>{row.pupaTestDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of Cocoons Selected",
+      name: t("No Of Cocoons Selected"),
       selector: (row) => row.noOfCocoonsSelected,
       cell: (row) => <span>{row.noOfCocoonsSelected}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Single Cocoon Weight in Grams",
+      name: t("Single Cocoon Weight in Grams"),
       selector: (row) => row.averageWeight,
       cell: (row) => <span>{row.averageWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Name (Male Cocoon)",
+      name: t("Farmer Name (Male Cocoon)"),
       selector: (row) => row.farmerNameMale,
       cell: (row) => <span>{row.farmerNameMale}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number (Male Cocoon)",
+      name: t("Lot Number (Male Cocoon)"),
       selector: (row) => row.lotNumberMale,
       cell: (row) => <span>{row.lotNumberMale}</span>,
       sortable: true,
@@ -271,21 +275,21 @@ function MaintenanceofLineRecordsforEachRaceList() {
     },
     
     {
-      name: "Market (Male Cocoon)",
+      name: t("Market (Male Cocoon)"),
       selector: (row) => row.marketMasterNameMale,
       cell: (row) => <span>{row.marketMasterNameMale}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of Cocoons Selected (Male Cocoon)",
+      name: t("No Of Cocoons Selected (Male Cocoon)"),
       selector: (row) => row.noOfCocoonsSelectedMale,
       cell: (row) => <span>{row.noOfCocoonsSelectedMale}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Single Cocoon Weight in Grams (Male Cocoon)",
+      name: t("Single Cocoon Weight in Grams (Male Cocoon)"),
       selector: (row) => row.averageWeightMale,
       cell: (row) => <span>{row.averageWeightMale}</span>,
       sortable: true,
@@ -294,12 +298,12 @@ function MaintenanceofLineRecordsforEachRaceList() {
   ];
 
   return (
-    <Layout title="List Of Maintenance of Line records for each race">
+    <Layout title={t("List Of Maintenance of Line records for each race")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            List Of Maintenance of Line records for each race
+            {t("List Of Maintenance of Line records for each race")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -310,7 +314,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -319,7 +323,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

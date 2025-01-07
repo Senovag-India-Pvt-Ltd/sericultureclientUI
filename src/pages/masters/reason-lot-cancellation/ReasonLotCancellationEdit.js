@@ -8,10 +8,12 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next"; // Add this line
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonLotCancellationEdit() {
+  const { t } = useTranslation(); // Add this line
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -77,14 +79,14 @@ function ReasonLotCancellationEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"), // Add translation function
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
-      title: "Update attempt was not successful",
+      title: t("Update attempt was not successful"), // Add translation function
       text: message,
     });
   };
@@ -92,16 +94,16 @@ function ReasonLotCancellationEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"), // Add translation function
     }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
 
   return (
-    <Layout title="Edit Reason for Lot Cancellation">
+    <Layout title={t("Edit Reason for Lot Cancellation")}> {/* Add translation function */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Reason for Lot Cancellation</Block.Title>
+            <Block.Title tag="h2">{t("Edit Reason for Lot Cancellation")}</Block.Title> {/* Add translation function */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -111,7 +113,7 @@ function ReasonLotCancellationEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Add translation function */}
                 </Link>
               </li>
               <li>
@@ -120,7 +122,7 @@ function ReasonLotCancellationEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span> {/* Add translation function */}
                 </Link>
               </li>
             </ul>
@@ -136,14 +138,14 @@ function ReasonLotCancellationEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")} {/* Add translation function */}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rear">
-                          Reason for Lot Cancellation
+                          {t("Reason for Lot Cancellation")} {/* Add translation function */}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -153,11 +155,11 @@ function ReasonLotCancellationEdit() {
                             value={data.reasonLotRejectName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Reason for Lot Cancellation"
+                            placeholder={t("Enter Reason for Lot Cancellation")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Reason for Lot Cancellation is required
+                            {t("Reason for Lot Cancellation is required")} {/* Add translation function */}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -172,7 +174,7 @@ function ReasonLotCancellationEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")} {/* Add translation function */}
                   </Button>
                 </li>
                 <li>
@@ -180,7 +182,7 @@ function ReasonLotCancellationEdit() {
                     to="/seriui/reason-lot-cancellation-list"
                     className="btn btn-secondary border-0"
                   >
-                    Cancel
+                    {t("Cancel")} {/* Add translation function */}
                   </Link>
                 </li>
               </ul>

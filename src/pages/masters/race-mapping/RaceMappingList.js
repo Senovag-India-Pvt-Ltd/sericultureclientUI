@@ -10,6 +10,7 @@ import React from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -20,6 +21,7 @@ function RaceMappingList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -140,7 +142,7 @@ function RaceMappingList() {
 
   const RaceMappingDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -150,7 +152,7 @@ function RaceMappingList() {
             size="sm"
             onClick={() => handleView(row.raceMarketMasterId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -158,7 +160,7 @@ function RaceMappingList() {
             className="ms-2"
             onClick={() => handleEdit(row.raceMarketMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -166,7 +168,7 @@ function RaceMappingList() {
             onClick={() => deleteConfirm(row.raceMarketMasterId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -175,14 +177,14 @@ function RaceMappingList() {
     },
 
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
@@ -191,11 +193,11 @@ function RaceMappingList() {
   ];
 
   return (
-    <Layout title="Race Mapping List">
+    <Layout title={t("Race Mapping List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Race Mapping List</Block.Title>
+            <Block.Title tag="h2">{t("Race Mapping List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -205,7 +207,7 @@ function RaceMappingList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -214,7 +216,7 @@ function RaceMappingList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

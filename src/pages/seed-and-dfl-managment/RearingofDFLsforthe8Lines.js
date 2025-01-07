@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingofDFLsforthe8Lines() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     disinfectantMasterId: "",
     cropDetail: "",
@@ -238,11 +240,11 @@ function RearingofDFLsforthe8Lines() {
   };
 
   return (
-    <Layout title=" Rearing of DFLs for the 8 lines">
+    <Layout title={t("Rearing of DFLs for the 8 lines")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Rearing of DFLs for the 8 lines</Block.Title>
+            <Block.Title tag="h2">{t("Rearing of DFLs for the 8 lines")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -253,7 +255,7 @@ function RearingofDFLsforthe8Lines() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -262,7 +264,7 @@ function RearingofDFLsforthe8Lines() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -274,14 +276,14 @@ function RearingofDFLsforthe8Lines() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Rearing of DFLs for the 8 lines
+            {t("Rearing of DFLs for the 8 lines")}
                 </Card.Header>
                     <Card.Body>
                         <Row className="g-gs">
                   <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Disinfectant Usage Details
+                      {t("Disinfectant Usage Details")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -292,7 +294,7 @@ function RearingofDFLsforthe8Lines() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Disinfectant Usage Details</option>
+                          <option value="">{t("Select Disinfectant Usage Details")}</option>
                           {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
                             <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
                               {list.disinfectantMasterName}
@@ -300,7 +302,7 @@ function RearingofDFLsforthe8Lines() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Disinfectant Usage Details is required
+                        {t("Disinfectant Usage Details is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -331,7 +333,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Crop Number
+                                {t("Crop Number")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -341,7 +343,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.cropNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Crop number"
+                                  placeholder={t("Enter Crop number")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -354,7 +356,7 @@ function RearingofDFLsforthe8Lines() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                      {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -365,7 +367,7 @@ function RearingofDFLsforthe8Lines() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -373,7 +375,7 @@ function RearingofDFLsforthe8Lines() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -383,7 +385,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number of DFLs<span className="text-danger">*</span>
+                                {t("Number of DFLs")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -392,11 +394,11 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.numberOfDFLs}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Number of DFLs"
+                                  placeholder={t("Enter Number of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Number of DFLs is required
+                                {t("Number of DFLs is required")}
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -405,7 +407,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Cold Storage Details
+                              {t("Cold Storage Details")}
                               {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -415,7 +417,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.coldStorageDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Cold Storage Details"
+                                  placeholder={t("Enter Cold Storage Details")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -430,7 +432,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Chawki percentage<span className="text-danger">*</span>
+                                {t("Chawki percentage")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -439,11 +441,11 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.chawkiPercentage}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Chawki percentage "
+                                  placeholder={t("Enter Chawki percentage")}
                                   required
                                 />
                                  <Form.Control.Feedback type="invalid">
-                                 Chawki percentage  is required
+                                 {t("Chawki percentage is required")}
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -452,7 +454,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Worm weight (In grms)<span className="text-danger">*</span>
+                                {t("Worm weight (In grms)")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -461,11 +463,11 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.wormWeightInGrams}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Worm weight (In grms)"
+                                  placeholder={t("Enter Worm weight (In grms)")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Worm weight (In grms) is required
+                                {t("Worm weight (In grms) is required")}
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -476,7 +478,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Worm Test results
+                              {t("Worm Test results")}
                               {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -486,7 +488,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.wormTestDatesAndResults}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Worm Test results"
+                                  placeholder={t("Enter Worm Test results")}
                                   // required
                                 />
                                  {/* <Form.Control.Feedback type="invalid">
@@ -499,7 +501,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Cocoon Produced in NOs
+                                {t("Cocoon Produced in NOs")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -509,7 +511,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.cocoonAssessmentDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Cocoon Produced in NOs"
+                                  placeholder={t("Enter Cocoon Produced in NOs")}
                                   // required
                                 />
                                  {/* <Form.Control.Feedback type="invalid">
@@ -522,7 +524,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Crop Failure details
+                                {t("Crop Failure details")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -532,7 +534,7 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.cropFailureDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Crop failure details"
+                                  placeholder={t("Enter Crop failure details")}
                                   // required
                                 />
                                  {/* <Form.Control.Feedback type="invalid">
@@ -545,7 +547,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Laid on (L/O) date<span className="text-danger">*</span>
+                                {t("Laid on (L/O) date")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -568,7 +570,7 @@ function RearingofDFLsforthe8Lines() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Released on 
+                              <Form.Label> {t("Released on")}
                               {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -593,7 +595,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Spun on date
+                                {t("Spun on date")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -618,7 +620,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date
+                                {t("Date")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -647,12 +649,12 @@ function RearingofDFLsforthe8Lines() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

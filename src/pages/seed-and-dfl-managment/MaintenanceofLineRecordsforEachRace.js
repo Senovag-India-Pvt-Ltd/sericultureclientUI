@@ -12,6 +12,9 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
   const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -19,6 +22,8 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
   
   
   function MaintenanceofLineRecordsforEachRace() {
+    // Translation
+    const { t } = useTranslation();
     const [data, setData] = useState({
       lineNameId: "",
       raceId: "",
@@ -320,12 +325,12 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
     };
 
   return (
-    <Layout title="Maintenance of Line records for each race">
+    <Layout title={t("Maintenance of Line records for each race")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of Line records for each race
+              {t("Maintenance of Line records for each race")}
             </Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
@@ -349,7 +354,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -358,7 +363,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -371,14 +376,14 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Maintenance of Line records for each Female race</Card.Header>
+                <Card.Header>{t("Maintenance of Line records for each Female race")}</Card.Header>
                 <Card.Body>
                         <Row className="g-gs">
 
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Farmer’s name<span className="text-danger">*</span>
+                          {t("Farmer’s name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -387,11 +392,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                             value={data.farmerName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farmer’s name"
+                            placeholder={t("Enter Farmer’s name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name is required
+                            {t("Farmer Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -400,7 +405,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Name<span className="text-danger">*</span>
+                          {t("Line Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -411,7 +416,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Line Name</option>
+                              <option value="">{t("Select Line Name")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -422,7 +427,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Line Name is required
+                              {t("Line Name is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -432,7 +437,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -443,7 +448,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Race</option>
+                              <option value="">{t("Select Race")}</option>
                               {raceListData.map((list) => (
                                 <option
                                   key={list.raceMasterId}
@@ -454,7 +459,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Race is required
+                              {t("Race is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -526,7 +531,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                 <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Lot Number<span className="text-danger">*</span>
+                                {t("Lot Number")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -535,11 +540,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.lotNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Lot Number"
+                                  placeholder={t("Enter Lot Number")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Lot Number is required
+                                {t("Lot Number is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -548,8 +553,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Pupa Test Details
-                                {/* <span className="text-danger">*</span> */}
+                                {t("Pupa Test Details")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -558,7 +562,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.pupaTestDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Pupa Test Details"
+                                  placeholder={t("Enter Pupa Test Details")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -571,7 +575,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Market<span className="text-danger">*</span>
+                          {t("Market")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -582,7 +586,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Market</option>
+                              <option value="">{t("Select Market")}</option>
                               {marketListData && marketListData.length?(marketListData.map((list) => (
                                 <option
                                   key={list.marketMasterId}
@@ -593,7 +597,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Market is required
+                              {t("Market is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -603,7 +607,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number Of DFLs<span className="text-danger">*</span>
+                                {t("Number Of DFLs")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -612,11 +616,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.numberOfDfls}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter  Number Of DFLs"
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Number Of DFLs is required
+                                {t("Number Of DFLs is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -626,7 +630,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                No. of cocoons selected<span className="text-danger">*</span>
+                                {t("No. of cocoons selected")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -635,11 +639,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.noOfCocoonsSelected}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter No. of cocoons selected"
+                                  placeholder={t("Enter No. of cocoons selected")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                No. of cocoons is required
+                                {t("No. of cocoons is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -648,7 +652,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Single Cocoon Weight in Grams<span className="text-danger">*</span>
+                              {t("Single Cocoon Weight in Grams")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -657,11 +661,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.averageWeight}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Single Cocoon Weight in Grams"
+                                  placeholder={t("Enter Single Cocoon Weight in Grams")}
                                   required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                  Single Cocoon Weight in Grams is required
+                                  {t("Single Cocoon Weight in Grams is required")}
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -670,7 +674,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                Date of selection of Cocoon<span className="text-danger">*</span>
+                                {t("Date of selection of Cocoon")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -697,14 +701,14 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
                 <Block className="mt-3">
               <Card>
-                <Card.Header>Maintenance of Line records for each Male race</Card.Header>
+                <Card.Header>{t("Maintenance of Line records for each Male race")}</Card.Header>
                 <Card.Body>
                         <Row className="g-gs">
 
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Farmer’s name<span className="text-danger">*</span>
+                          {t("Farmer’s name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -713,11 +717,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                             value={data.farmerNameMale}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farmer’s name"
+                            placeholder={t("Enter Farmer’s name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name is required
+                            {t("Farmer Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -852,7 +856,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                 <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Lot Number<span className="text-danger">*</span>
+                              {t("Lot Number")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -861,11 +865,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.lotNumberMale}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Lot Number"
+                                  placeholder={t("Enter Lot Number")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Lot Number is required
+                                {t("Lot Number is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -896,7 +900,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Market<span className="text-danger">*</span>
+                          {t("Market")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -907,7 +911,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Market</option>
+                              <option value="">{t("Select Market")}</option>
                               {marketListData && marketListData.length?(marketListData.map((list) => (
                                 <option
                                   key={list.marketMasterId}
@@ -918,7 +922,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Market is required
+                              {t("Market is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -928,7 +932,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number Of DFLs<span className="text-danger">*</span>
+                                {t("Number Of DFLs")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -937,11 +941,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.numberOfDflsMale}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter  Number Of DFLs"
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Number Of DFLs is required
+                                {t("Number Of DFLs is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -951,7 +955,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                No. of cocoons selected<span className="text-danger">*</span>
+                                {t("No. of cocoons selected")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -960,11 +964,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.noOfCocoonsSelectedMale}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter No. of cocoons selected"
+                                  placeholder={t("Enter No. of cocoons selected")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                No. of cocoons is required
+                                {t("No. of cocoons is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -973,7 +977,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Single Cocoon Weight in Grams<span className="text-danger">*</span>
+                              {t("Single Cocoon Weight in Grams")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -982,11 +986,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.averageWeightMale}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Single Cocoon Weight in Grams"
+                                  placeholder={t("Enter Single Cocoon Weight in Grams")}
                                   required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                  Single Cocoon Weight in Grams is required
+                                  {t("Single Cocoon Weight in Grams is required")}
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1003,12 +1007,12 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     <li>
                       {/* <Button type="button" variant="primary" onClick={postData}> */}
                       <Button type="submit" variant="primary">
-                        Save
+                        {t("Save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t("Cancel")}
                       </Button>
                     </li>
                   </ul>

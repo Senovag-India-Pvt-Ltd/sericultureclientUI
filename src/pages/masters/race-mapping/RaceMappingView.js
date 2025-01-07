@@ -5,6 +5,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -21,6 +22,7 @@ function RaceMappingView() {
   // const [data] = useState(EducationDatas);
   const [crate, setCrate] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -49,11 +51,11 @@ function RaceMappingView() {
   }, [id]);
 
   return (
-    <Layout title="Race Mapping View">
+    <Layout title={t("Race Mapping View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Race Mapping View</Block.Title>
+            <Block.Title tag="h2">{t("Race Mapping View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -63,7 +65,7 @@ function RaceMappingView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +74,7 @@ function RaceMappingView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -82,22 +84,22 @@ function RaceMappingView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Race Mapping Details</Card.Header>
+          <Card.Header>{t("Race Mapping Details")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}>{t("ID")}:</td>
                       <td>{crate.raceMarketMasterId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Market:</td>
+                      <td style={styles.ctstyle}>{t("Market")}:</td>
                       <td>{crate.marketMasterName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Race:</td>
+                      <td style={styles.ctstyle}>{t("Race")}:</td>
                       <td>{crate.raceMasterName}</td>
                     </tr>
                   </tbody>
