@@ -15,11 +15,13 @@ import {
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next"; // Add this line
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ReadyForPaymentForSeedMarket() {
+  const { t } = useTranslation(); // Add this line
 
   const [page, setPage] = useState(0);
   const countPerPage = 1000;
@@ -182,7 +184,7 @@ function ReadyForPaymentForSeedMarket() {
 
   const PaymentDataColumns = [
     {
-      name: "Action",
+      name: t("Action"), // Add translation function
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -198,7 +200,7 @@ function ReadyForPaymentForSeedMarket() {
               )
             }
           >
-              Add to Payment
+              {t("Add to Payment")}
             </Button>
           )}
 
@@ -211,35 +213,35 @@ function ReadyForPaymentForSeedMarket() {
       hide: "md",
     },
     {
-      name: "SLNo",
+      name: t("SLNo"), // Add translation function
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot No",
+      name: t("Lot No"), // Add translation function
       selector: (row) => row.allottedLotId,
       cell: (row) => <span>{row.allottedLotId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Transaction Date",
+      name: t("Transaction Date"), // Add translation function
       selector: (row) => convertDateFormat(row.auctionDate),
       cell: (row) => <span>{convertDateFormat(row.auctionDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer",
+      name: t("Farmer"), // Add translation function
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Phone",
+      name: t("Phone"), // Add translation function
       selector: (row) => row.farmerMobileNumber,
       cell: (row) => <span>{row.farmerMobileNumber}</span>,
       sortable: true,
@@ -247,42 +249,42 @@ function ReadyForPaymentForSeedMarket() {
     },
    
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"), // Add translation function
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Buyer Name",
+        name: t("Buyer Name"), // Add translation function
         selector: (row) => row.buyerName,
         cell: (row) => <span>{row.buyerName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Lot Weight",
+      name: t("Lot Weight"), // Add translation function
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Amount",
+      name: t("Amount"), // Add translation function
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Amount",
+      name: t("Sold Amount"), // Add translation function
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "MF",
+      name: t("MF"), // Add translation function
       selector: (row) => row.marketFee,
       cell: (row) => <span>{row.marketFee}</span>,
       sortable: true,
@@ -292,11 +294,11 @@ function ReadyForPaymentForSeedMarket() {
   ];
 
   return (
-    <Layout title="Ready for Payment For Seed Market" show="true">
+    <Layout title={t("Ready for Payment For Seed Market")} show="true"> {/* Add translation function */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Ready for Payment For Seed Market</Block.Title>
+            <Block.Title tag="h2">{t("Ready for Payment For Seed Market")}</Block.Title> {/* Add translation function */}
           </Block.HeadContent>
          
         </Block.HeadBetween>

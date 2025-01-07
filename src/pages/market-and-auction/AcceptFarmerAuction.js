@@ -9,12 +9,14 @@ import React, { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function AcceptFarmerAuction() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [data, setData] = useState({
     allotedLotId: "",
@@ -248,11 +250,11 @@ function AcceptFarmerAuction() {
   // }, [highestBid.marketId]);
 
   return (
-    <Layout title="Accept Farmer Auction" show="true">
+    <Layout title={t("Accept Farmer Auction")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Accept Farmer Auction</Block.Title>
+            <Block.Title tag="h2">{t("Accept Farmer Auction")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -286,7 +288,7 @@ function AcceptFarmerAuction() {
                   <Form noValidate validated={validated} onSubmit={display}>
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
+                        {t("Lot ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -295,11 +297,11 @@ function AcceptFarmerAuction() {
                           value={highestBid.allottedLotId}
                           onChange={handleLotIdInputs}
                           type="number"
-                          placeholder="Enter Lot ID"
+                          placeholder={t("Enter Lot ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
+                          {t("Lot ID is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       {/* <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
@@ -332,7 +334,7 @@ function AcceptFarmerAuction() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Get Details
+                          {t("Get Details")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -359,7 +361,7 @@ function AcceptFarmerAuction() {
                         }}
                         colSpan="2"
                       >
-                        Farmer Details
+                        {t("Farmer Details")}
                       </th>
                       <th
                         style={{
@@ -368,17 +370,15 @@ function AcceptFarmerAuction() {
                         }}
                         colSpan="2"
                       >
-                        Reeler Details
+                        {t("Reeler Details")}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
-                        {/* <td>{farmerAuction && farmerAuction.farmerFruitsId}</td>
-                              <td>{farmerAuction && farmerAuction.reelerFruitsId}</td> */}
                         <span style={{ fontWeight: "bold" }}>
-                          Farmer Number:
+                          {t("Farmer Number")}:
                         </span>
                         <span className="ms-1">
                           {farmerAuction.farmerNumber
@@ -387,7 +387,7 @@ function AcceptFarmerAuction() {
                         </span>
                       </td>
                       <td style={{ backgroundColor: "#fff" }}>
-                        <span style={{ fontWeight: "bold" }}>Farmer Name:</span>
+                        <span style={{ fontWeight: "bold" }}>{t("Farmer Name")}:</span>
                         <span className="ms-1">
                           {farmerAuction.farmerFirstName
                             ? farmerAuction.farmerFirstName
@@ -397,7 +397,7 @@ function AcceptFarmerAuction() {
 
                       <td>
                         <span style={{ fontWeight: "bold" }}>
-                          Reeler Fruits Id:
+                          {t("Reeler Fruits Id")}:
                         </span>
                         <span className="ms-1">
                           {farmerAuction.reelerFruitsId
@@ -407,7 +407,7 @@ function AcceptFarmerAuction() {
                       </td>
 
                       <td>
-                        <span style={{ fontWeight: "bold" }}>Reeler Name:</span>
+                        <span style={{ fontWeight: "bold" }}>{t("Reeler Name")}:</span>
                         <span className="ms-1">
                           {farmerAuction.reelerName
                             ? farmerAuction.reelerName
@@ -419,7 +419,7 @@ function AcceptFarmerAuction() {
                     <tr>
                       <td style={{ backgroundColor: "#f7f7f7" }}>
                         <span style={{ fontWeight: "bold" }}>
-                          Farmer Middle Name:
+                          {t("Farmer Middle Name")}:
                         </span>
                         <span className="ms-1">
                           {farmerAuction.farmerMiddleName
@@ -428,7 +428,7 @@ function AcceptFarmerAuction() {
                         </span>
                       </td>
                       <td style={{ backgroundColor: "#f7f7f7" }}>
-                        <span style={{ fontWeight: "bold" }}>Amount:</span>
+                        <span style={{ fontWeight: "bold" }}>{t("Amount")}:</span>
                         <span className="ms-1">
                           {farmerAuction.amount ? farmerAuction.amount : "---"}
                         </span>
@@ -437,7 +437,7 @@ function AcceptFarmerAuction() {
                       <td style={{ backgroundColor: "#f7f7f7" }}>
                         {" "}
                         <span style={{ fontWeight: "bold" }}>
-                          Reeler License Number:
+                          {t("Reeler License Number")}:
                         </span>
                         <span
                           style={{ color: "green", fontWeight: "bold" }}
@@ -451,7 +451,7 @@ function AcceptFarmerAuction() {
                       <td style={{ backgroundColor: "#f7f7f7" }}>
                         {" "}
                         <span style={{ fontWeight: "bold" }}>
-                          Reeler Auction Id:
+                          {t("Reeler Auction Id")}:
                         </span>
                         <span
                           style={{ color: "green", fontWeight: "bold" }}
@@ -478,12 +478,12 @@ function AcceptFarmerAuction() {
                                   onClick={postData}
                                   // disabled={disable}
                                 >
-                                  Accept
+                                  {t("Accept")}
                                 </Button>
                               </div>
                               <div className={showAccept ? "d-none" : ""}>
                                 <span style={{ fontWeight: "bold" }}>
-                                  Already accepted by{" "}
+                                  {t("Already accepted by")}{" "}
                                 </span>
                                 <span
                                   style={{ fontWeight: "bold", color: "green" }}
@@ -492,7 +492,7 @@ function AcceptFarmerAuction() {
                                 </span>
                                 <span style={{ fontWeight: "bold" }}>
                                   {" "}
-                                  on behalf of Farmer{" "}
+                                  {t("on behalf of Farmer")}{" "}
                                 </span>
                               </div>
                             </li>

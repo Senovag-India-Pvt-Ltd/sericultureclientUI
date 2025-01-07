@@ -980,7 +980,7 @@ function ReelerActivate() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Activate Reeler</Modal.Title>
+          <Modal.Title>{t("Edit Activate Reeler")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validatedEdit} onSubmit={editPostData}>
@@ -1025,7 +1025,7 @@ function ReelerActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="user">
-                          Reeler Name<span className="text-danger">*</span>
+                          {t("Reeler Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1034,11 +1034,11 @@ function ReelerActivate() {
                             value={editReelerName}
                             // onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter User Name"
+                            placeholder={t("Enter User Name")}
                             readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            {t("User Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1082,7 +1082,7 @@ function ReelerActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="user">
-                          User Name<span className="text-danger">*</span>
+                          {t("User Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1091,11 +1091,11 @@ function ReelerActivate() {
                             value={editData.username}
                             onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter User Name"
+                            placeholder={t("Enter User Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            {t("User Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1103,7 +1103,7 @@ function ReelerActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="password">
-                          Password<span className="text-danger">*</span>
+                          {t("Password")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1112,11 +1112,11 @@ function ReelerActivate() {
                             value={editData.password}
                             onChange={handleEditInputs}
                             type="password"
-                            placeholder="Enter Password"
+                            placeholder={t("Enter Password")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Password is required
+                            {t("Password is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1124,7 +1124,7 @@ function ReelerActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="phoneNumber">
-                          Mobile number<span className="text-danger">*</span>
+                          {t("Mobile Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1134,11 +1134,11 @@ function ReelerActivate() {
                             onChange={handleEditInputs}
                             type="text"
                             maxLength="10"
-                            placeholder="Enter Mobile Number"
+                            placeholder={t("Enter Mobile Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number Should Contain 10 digits
+                            {t("Mobile Number Should Contain 10 digits")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1147,7 +1147,7 @@ function ReelerActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="phoneNumber">
-                          Device ID<span className="text-danger">*</span>
+                          {t("Device ID")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1156,11 +1156,11 @@ function ReelerActivate() {
                             value={editData.deviceId}
                             onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter Device Id"
+                            placeholder={t("Enter Device Id")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Device Id is required
+                            {t("Device Id is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1174,7 +1174,7 @@ function ReelerActivate() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                      {t("Update")}
                     </Button>
                   </li>
                   <li>
@@ -1183,7 +1183,7 @@ function ReelerActivate() {
                       variant="secondary"
                       onClick={clearEdit}
                     >
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </li>
                 </ul>

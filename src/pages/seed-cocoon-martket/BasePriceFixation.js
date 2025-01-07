@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -33,6 +34,7 @@ function BasePriceFixation() {
   const [isActive,setIsActive] = useState(false);
 
   const { id } = useParams();
+  const { t } = useTranslation();
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -41,13 +43,13 @@ function BasePriceFixation() {
   const acceptSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Price Added successfully",
+      title: t("Price Added successfully"),
       // text: "Auction Accepted Successfully",
     });
     setIsActive(true);
   };
 
-  const acceptError = (message = "Something went wrong!") => {
+  const acceptError = (message = t("Something went wrong!")) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -56,7 +58,7 @@ function BasePriceFixation() {
     }
     Swal.fire({
       icon: "error",
-      title: "Accept attempt was not successful",
+      title: t("Accept attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -217,7 +219,7 @@ const customStyles = {
 
 const UserDataColumns = [
   {
-    name: "Sl.No.",
+    name: t("Sl.No."),
     selector: (row) => row.marketId,
     cell: (row,i) => <span>{i+1}</span>,
     sortable: true,
@@ -225,7 +227,7 @@ const UserDataColumns = [
     hide: "md",
   },
   {
-    name: "Fixation Date",
+    name: t("Fixation Date"),
     selector: (row) => row.fixationDate,
     cell: (row) => <span>{row.fixationDate}</span>,
     sortable: true,
@@ -233,7 +235,7 @@ const UserDataColumns = [
     hide: "md",
   },
   {
-    name: "Price Per Kg",
+    name: t("Price Per Kg"),
     selector: (row) => row.pricePerKg,
     cell: (row) => <span>{row.pricePerKg}</span>,
     sortable: true,
@@ -244,11 +246,11 @@ const UserDataColumns = [
 ];
 
   return (
-    <Layout title="Base Price Fixation" show="true">
+    <Layout title={t("Base Price Fixation")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Base Price Fixation</Block.Title>
+            <Block.Title tag="h2">{t("Base Price Fixation")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -282,7 +284,7 @@ const UserDataColumns = [
                   <Form noValidate validated={validated} onSubmit={postData}>
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Price
+                        {t("Price")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -292,15 +294,15 @@ const UserDataColumns = [
                           value={data.pricePerKg}
                           onChange={handleLotIdInputs}
                           type="number"
-                          placeholder="Enter Price"
+                          placeholder={t("Enter Price")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Price is required.
+                          {t("Price is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Market Date<span className="text-danger">*</span>
+                        {t("Market Date")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4} className="ms-n5">
                         <DatePicker
@@ -321,7 +323,7 @@ const UserDataColumns = [
                       <Col sm={2} className="ms-n5">
                        
                         <Button type="submit" variant="primary">
-                          Submit
+                          {t("Submit")}
                         </Button>
                       </Col>
                     </Form.Group>

@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../components";
 import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -15,6 +16,7 @@ const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function LotGroupageEdit() {
     const { id } = useParams();
+    const { t } = useTranslation();
     
   const [dataLotList, setDataLotList] = useState([]); 
   const [data, setData] = useState({
@@ -357,7 +359,7 @@ function LotGroupageEdit() {
       const saveSuccess = () => {
         Swal.fire({
           icon: "success",
-          title: "Saved successfully",
+          title: t("Saved successfully"),
           // text: "You clicked the button!",
         }).then(() => {
           navigate("#");
@@ -372,17 +374,17 @@ function LotGroupageEdit() {
         }
         Swal.fire({
           icon: "error",
-          title: "Save attempt was not successful",
+          title: t("Save attempt was not successful"),
           html: errorMessage,
         });
       };
 
       return (
-        <Layout title="Lot Distribution">
+        <Layout title={t("Lot Distribution")}>
           <Block.Head>
             <Block.HeadBetween>
               <Block.HeadContent>
-                <Block.Title tag="h2">Lot Distribution</Block.Title>
+                <Block.Title tag="h2">{t("Lot Distribution")}</Block.Title>
               </Block.HeadContent>
               <Block.HeadContent>
                 <ul className="d-flex">
@@ -392,7 +394,7 @@ function LotGroupageEdit() {
                       className="btn btn-primary btn-md d-md-none"
                     >
                       <Icon name="arrow-long-left" />
-                      <span>Go to List</span>
+                      <span>{t("Go to List")}</span>
                     </Link>
                   </li>
                   <li>
@@ -401,7 +403,7 @@ function LotGroupageEdit() {
                       className="btn btn-primary d-none d-md-inline-flex"
                     >
                       <Icon name="arrow-long-left" />
-                      <span>Go to List</span>
+                      <span>{t("Go to List")}</span>
                     </Link>
                   </li>
                 </ul>
@@ -421,7 +423,7 @@ function LotGroupageEdit() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Lot Number<span className="text-danger">*</span>
+                        {t("Lot Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -430,15 +432,15 @@ function LotGroupageEdit() {
                           value={data.allottedLotId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot Number"
+                          placeholder={t("Enter Lot Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot Number is required.
+                          {t("Lot Number is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={1}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -454,7 +456,7 @@ function LotGroupageEdit() {
                       </Col>
                       <Col sm={2}>
                       <Button type="submit" variant="primary">
-                       Search
+                       {t("Search")}
                       </Button>
                       </Col>
                     </Form.Group>
@@ -466,18 +468,18 @@ function LotGroupageEdit() {
 
             <Col lg="12">
                   <Card>
-                    <Card.Header>Farmer Details</Card.Header>
+                    <Card.Header>{t("Farmer Details")}</Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
                           <table className="table small table-bordered">
                             <tbody>
                               <tr>
-                              <td style={styles.ctstyle}> Farmer Name:</td>
+                              <td style={styles.ctstyle}>{t("Farmer Name:")}</td>
                               <td>{data.farmerFirstName}</td>
-                              <td style={styles.ctstyle}> Farmer Middle Name:</td>
+                              <td style={styles.ctstyle}>{t("Farmer Middle Name:")}</td>
                               <td>{data.farmerMiddleName}</td>
-                              <td style={styles.ctstyle}> Fruits Id :</td>
+                              <td style={styles.ctstyle}>{t("Fruits Id :")}</td>
                               <td>{data.farmerFruitsId}</td>
                              </tr>
                             </tbody>
@@ -495,7 +497,7 @@ function LotGroupageEdit() {
       <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                 Buyers List
+                 {t("Buyers List")}
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Family Members</h3> */}
@@ -518,7 +520,7 @@ function LotGroupageEdit() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("Add")}</span>
                               </Button>
                             </li>
                             <li>
@@ -528,7 +530,7 @@ function LotGroupageEdit() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("Add")}</span>
                               </Button>
                             </li>
                           </ul>
@@ -548,13 +550,13 @@ function LotGroupageEdit() {
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Buyer Type</th>
-                                  <th>Buyer</th>
-                                  <th>Lot Weight</th>
-                                  <th>Amount</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("Buyer Type")}</th>
+                                  <th>{t("Buyer")}</th>
+                                  <th>{t("Lot Weight")}</th>
+                                  <th>{t("Amount")}</th>
                                   {/* <th>Market Fee</th> */}
-                                  <th>Sold Amount</th>
+                                  <th>{t("Sold Amount")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -567,7 +569,7 @@ function LotGroupageEdit() {
                                           size="sm"
                                           onClick={() => handleGetLotDetails(i)}
                                         >
-                                          Edit
+                                          {t("Edit")}
                                         </Button>
                                         <Button
                                           variant="danger"
@@ -578,7 +580,7 @@ function LotGroupageEdit() {
                                           // onClick={handleShowModal2}
                                           className="ms-2"
                                         >
-                                          Delete
+                                          {t("Delete")}
                                         </Button>
                                       </div>
                                     </td>
@@ -619,7 +621,7 @@ function LotGroupageEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
@@ -630,7 +632,7 @@ function LotGroupageEdit() {
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>
@@ -646,7 +648,7 @@ function LotGroupageEdit() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Lot Distribution Details</Modal.Title>
+          <Modal.Title>{t("Add Lot Distribution Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form noValidate validated={validatedLot} onSubmit={handleAddLotDetails}>
@@ -654,7 +656,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Buyer Type<span className="text-danger">*</span>
+                          {t("Buyer Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -668,12 +670,12 @@ function LotGroupageEdit() {
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Budget Type</option>
-                            <option value="Reeler">Reeler</option>
-                            <option value="ExternalStakeHolders">External Stake Holders</option>
+                            <option value="">{t("Select Budget Type")}</option>
+                            <option value="Reeler">{t("Reeler")}</option>
+                            <option value="ExternalStakeHolders">{t("External Stake Holders")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Buyer Type is required
+                          {t("Buyer Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -758,7 +760,7 @@ function LotGroupageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Reeler<span className="text-danger">*</span>
+                          {t("Reeler")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -772,7 +774,7 @@ function LotGroupageEdit() {
                               data.buyerId === "0"
                             }
                           >
-                            <option value="">Select Reeler</option>
+                            <option value="">{t("Select Reeler")}</option>
                             {reelerListData.map((list) => (
                               <option
                                 key={`${list.reelerId}_${list.reelerName}`}
@@ -783,7 +785,7 @@ function LotGroupageEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Reeler is required
+                            {t("Reeler is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -796,7 +798,7 @@ function LotGroupageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          External Stake Holders<span className="text-danger">*</span>
+                          {t("External Stake Holders")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -810,7 +812,7 @@ function LotGroupageEdit() {
                               data.buyerId === "0"
                             }
                           >
-                            <option value="">Select External Stake Holders</option>
+                            <option value="">{t("Select External Stake Holders")}</option>
                             {externalListData.map((list) => (
                               <option
                                 key={`${list.externalUnitRegistrationId}_${list.name}`}
@@ -821,7 +823,7 @@ function LotGroupageEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            External Stake Holders is required
+                            {t("External Stake Holders is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -833,7 +835,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Purchase Lot
+                        {t("Purchase Lot")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -843,11 +845,11 @@ function LotGroupageEdit() {
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Lot Weight"
+                          placeholder={t("Enter Lot Weight")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Purchase Lot is required.
+                        {t("Purchase Lot is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -856,7 +858,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Amount Per Kg
+                        {t("Amount Per Kg")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -866,11 +868,11 @@ function LotGroupageEdit() {
                           value={data.amount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter  Amount Per Kg"
+                          placeholder={t("Enter Amount Per Kg")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Amount Per Kg is required.
+                        {t("Amount Per Kg is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -902,7 +904,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                       Sold Amount
+                       {t("Sold Amount")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -912,11 +914,11 @@ function LotGroupageEdit() {
                           value={data.soldAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Sold Amount"
+                          placeholder={t("Enter Sold Amount")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sold Amount is required.
+                        {t("Sold Amount is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -927,12 +929,12 @@ function LotGroupageEdit() {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
                     <Button type="submit" variant="primary">
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -944,7 +946,7 @@ function LotGroupageEdit() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Lot Distribution Details</Modal.Title>
+          <Modal.Title>{t("Edit Lot Distribution Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form
@@ -956,7 +958,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Buyer Type<span className="text-danger">*</span>
+                          {t("Buyer Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -970,12 +972,12 @@ function LotGroupageEdit() {
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Budget Type</option>
-                            <option value="Reeler">Reeler</option>
-                            <option value="ExternalStakeHolders">External Stake Holders</option>
+                            <option value="">{t("Select Budget Type")}</option>
+                            <option value="Reeler">{t("Reeler")}</option>
+                            <option value="ExternalStakeHolders">{t("External Stake Holders")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Buyer Type is required
+                          {t("Buyer Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -985,7 +987,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Reeler<span className="text-danger">*</span>
+                        {t("Reeler")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -999,7 +1001,7 @@ function LotGroupageEdit() {
                             data.buyerId === "0"
                           }
                         >
-                          <option value="">Select Reeler</option>
+                          <option value="">{t("Select Reeler")}</option>
                           {reelerListData.map((list) => (
                             <option
                               key={`${list.reelerId}_${list.reelerName}`}
@@ -1010,7 +1012,7 @@ function LotGroupageEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Reeler is required
+                          {t("Reeler is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1023,7 +1025,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        External Stake Holders<span className="text-danger">*</span>
+                        {t("External Stake Holders")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1037,7 +1039,7 @@ function LotGroupageEdit() {
                             data.buyerId === "0"
                           }
                         >
-                          <option value="">Select External Stake Holders</option>
+                          <option value="">{t("Select External Stake Holders")}</option>
                           {externalListData.map((list) => (
                             <option
                               key={`${list.externalUnitRegistrationId}_${list.name}`}
@@ -1048,7 +1050,7 @@ function LotGroupageEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          External Stake Holders is required
+                          {t("External Stake Holders is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1060,7 +1062,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Purchase Lot
+                      {t("Purchase Lot")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1070,11 +1072,11 @@ function LotGroupageEdit() {
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Lot Weight"
+                          placeholder={t("Enter Lot Weight")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Purchase Lot is required.
+                        {t("Purchase Lot is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1083,7 +1085,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Amount Per Kg
+                      {t("Amount Per Kg")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1093,11 +1095,11 @@ function LotGroupageEdit() {
                           value={data.amount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Amount Per Kg"
+                          placeholder={t("Enter Amount Per Kg")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Amount Per Kg is required.
+                        {t("Amount Per Kg is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1129,7 +1131,7 @@ function LotGroupageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                       Sold Amount
+                       {t("Sold Amount")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1139,11 +1141,11 @@ function LotGroupageEdit() {
                           value={data.soldAmount}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Sold Amount"
+                          placeholder={t("Enter Sold Amount")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sold Amount is required.
+                        {t("Sold Amount is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1154,12 +1156,12 @@ function LotGroupageEdit() {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

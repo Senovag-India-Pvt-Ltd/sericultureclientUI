@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from 'react-i18next';
 
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -31,6 +32,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 
 function ReelerMFReports() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
@@ -193,11 +195,11 @@ function ReelerMFReports() {
     });
   };
   return (
-    <Layout title="Reeler MF Report">
+    <Layout title={t("Reeler MF Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler MF Report</Block.Title>
+            <Block.Title tag="h2">{t("Reeler MF Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -236,7 +238,7 @@ function ReelerMFReports() {
                      
                        <Form.Group as={Row} className="form-group">
                       
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>Reeler Number</Form.Label>
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>{t("Reeler Number")}</Form.Label>
                       <Col sm={2}>
                         <Form.Control
                           id="reelerNumber"
@@ -244,14 +246,14 @@ function ReelerMFReports() {
                           value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reeler Number"
+                          placeholder={t("Enter Reeler Number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
                           Reeler Number is required.
                         </Form.Control.Feedback> */}
                       </Col>
-                      <Form.Label column sm={1}>From Date<span className="text-danger">*</span>
+                      <Form.Label column sm={1}>{t("From Date")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={1}>
                         <div className="form-control-wrap">
@@ -264,7 +266,7 @@ function ReelerMFReports() {
                           />
                         </div>
                       </Col>
-                      <Form.Label column sm={1}>To Date<span className="text-danger">*</span>
+                      <Form.Label column sm={1}>{t("To Date")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={1}>
                         <div className="form-control-wrap">
@@ -284,12 +286,12 @@ function ReelerMFReports() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                       <Col sm={1}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export
+                        {t("Export")}
                     </Button>
                       </Col>
                     </Form.Group>
@@ -333,7 +335,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                           Serial Number
+                           {t("Serial Number")}
                           </th>
                           <th
                             style={{
@@ -342,7 +344,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                           Lot No
+                           {t("Lot No")}
                           </th>
                           <th
                             style={{
@@ -351,7 +353,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            Date
+                            {t("Date")}
                           </th>
                           <th
                             style={{
@@ -360,7 +362,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Id
+                            {t("Reeler Id")}
                           </th>
                           <th
                             style={{
@@ -369,7 +371,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                          Reeler Name
+                          {t("Reeler Name")}
                           </th>
                           <th
                             style={{
@@ -378,7 +380,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            Bid Amt
+                            {t("Bid Amt")}
                           </th>
                           <th
                             style={{
@@ -387,7 +389,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            Weight
+                            {t("Weight")}
                           </th>
                           <th
                             style={{
@@ -396,7 +398,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            Amount
+                            {t("Amount")}
                           </th>
                           <th
                             style={{
@@ -405,7 +407,7 @@ function ReelerMFReports() {
                             }}
                             // colSpan="2"
                           >
-                            MF Amt
+                            {t("MF Amt")}
                           </th>
                           
                         </tr>
