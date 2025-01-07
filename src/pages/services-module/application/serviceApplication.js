@@ -3682,7 +3682,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               {t("Vendor Name")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -3715,7 +3715,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="description">
                               {t("Description")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control

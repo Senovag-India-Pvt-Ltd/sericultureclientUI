@@ -857,12 +857,13 @@ function DashboardReportList() {
   //   }
   // }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
-  const generateWorkOrderAcknowledgment = async (applicationFormId) => {
+  const generateWorkOrderAcknowledgment = async (applicationFormId,schemeId) => {
     try {
       const response = await api.post(
         baseURLReport + `getAuthorisationLetterFromFarmer`,
         {
           applicationFormId: applicationFormId,
+          schemeId: schemeId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -891,7 +892,29 @@ function DashboardReportList() {
   //     }
   //   });
   // };
-  const handleGenerateSanctionOrder = (applicationFormId,schemeId) => {
+  // const handleGenerateSanctionOrder = (applicationFormId,schemeId) => {
+  //   Swal.fire({
+  //     title: "Generate Sanction Order",
+  //     text: "Select the recipient:",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Farmer",
+  //     cancelButtonText: "Company",
+  //     showCloseButton: true,
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       // Call the Farmer endpoint
+  //       generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer");
+  //     } else if (result.dismiss === Swal.DismissReason.cancel) {
+  //       // Call the Company endpoint
+  //       generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company");
+  //     }
+  //   });
+  // };
+
+  const handleGenerateSanctionOrder = (applicationFormId) => {
+    const schemeId = actionFarmerData[0]?.schemeId;
+    const schemeType = actionFarmerData[0]?.sanctionOrderForScheme; // Fetch the scheme type from the response
+  
     Swal.fire({
       title: "Generate Sanction Order",
       text: "Select the recipient:",
@@ -901,14 +924,27 @@ function DashboardReportList() {
       showCloseButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        // Call the Farmer endpoint
-        generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer");
+        // Call the Farmer endpoint based on the scheme type
+        if (schemeType === "PMKSY") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PMKSY");
+        } else if (schemeType === "PDMC") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PDMC");
+        } else {
+          console.error("Unknown scheme type for farmer sanction order.");
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Call the Company endpoint
-        generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company");
+        // Call the Company endpoint based on the scheme type
+        if (schemeType === "PMKSY") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PMKSY");
+        } else if (schemeType === "PDMC") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PDMC");
+        } else {
+          console.error("Unknown scheme type for company sanction order.");
+        }
       }
     });
   };
+  
   
 
   // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
@@ -930,13 +966,49 @@ function DashboardReportList() {
   //     // console.log("error", error);
   //   }
   // };
-  const generateSanctionOrderAcknowledgment = async (applicationId,schemeId,recipientType) => {
+  // const generateSanctionOrderAcknowledgment = async (applicationId,schemeId,recipientType) => {
+  //   try {
+  //     // Determine the appropriate endpoint based on the recipient type
+  //     const endpoint =
+  //       recipientType === "farmer"
+  //         ? baseURLReport + `getSanctionOrderPDMC`
+  //         : baseURLReport + `getSanctionOrderPDMCCompany`;
+  
+  //     const response = await api.post(
+  //       endpoint,
+  //       {
+  //         applicationFormId: applicationId,
+  //         schemeId: schemeId,
+  //       },
+  //       {
+  //         responseType: "blob", // Force to receive data in a Blob Format
+  //       }
+  //     );
+  
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     console.error("Error generating sanction order:", error);
+  //   }
+  // };
+  const generateSanctionOrderAcknowledgment = async (applicationId, schemeId, recipientType, schemeType) => {
     try {
-      // Determine the appropriate endpoint based on the recipient type
-      const endpoint =
-        recipientType === "farmer"
-          ? baseURLReport + `getSanctionOrderPDMC`
-          : baseURLReport + `getSanctionOrderPDMCCompany`;
+      // Determine the appropriate endpoint based on the recipient type and scheme type
+      let endpoint;
+      if (recipientType === "farmer") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksy`
+            : baseURLReport + `getSanctionOrderPDMC`;
+      } else if (recipientType === "company") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksyCompany`
+            : baseURLReport + `getSanctionOrderPDMCCompany`;
+      } else {
+        throw new Error("Invalid recipient type.");
+      }
   
       const response = await api.post(
         endpoint,
@@ -956,6 +1028,7 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
+  
   
 
   // to get Financial Year
@@ -1422,8 +1495,11 @@ const handleActionInputs = (e) => {
               saveError(response.data.error_description);
             } else {
               // Generate the acknowledgment after a successful work order update
-              if (actionFarmerData[0].workOrder) {
-                generateWorkOrderAcknowledgment(applicationFormId);
+              // if (actionFarmerData[0].workOrder) {
+              //   generateWorkOrderAcknowledgment(applicationFormId,schemeId);
+              // }
+              if (actionFarmerData[0].workOrder && actionFarmerData[0].workOrderForScheme === "PDMC") {
+                generateWorkOrderAcknowledgment(applicationFormId,schemeId); // Pass schemeId to API
               }
   
               saveSuccess();
@@ -2848,7 +2924,7 @@ const handleActionInputs = (e) => {
                         <Button
                           type="button"
                           variant="primary"
-                          onClick={() => handleGenerateSanctionOrder(applicationId, schemeId)}
+                          onClick={() => handleGenerateSanctionOrder(applicationId)}
                         >
                           Generate Sanction Order
                         </Button>
