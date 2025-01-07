@@ -199,11 +199,11 @@ function ConfigureBivoltineAmountList() {
   ];
 
   return (
-    <Layout title="List of Configured Amount">
+    <Layout title="List of Configured Bonus Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List of Configured Amount</Block.Title>
+            <Block.Title tag="h2">List of Configured Bonus Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

@@ -128,6 +128,22 @@ function ScSchemeDetailsView() {
                         <td style={styles.ctstyle}> {t("Calculation Based On")}</td>
                         <td>{ScSchemeDetails.calculationBasedOn}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Work Order For Scheme")}</td>
+                        <td>{ScSchemeDetails.workOrderForScheme}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Sanction Order For Scheme")}</td>
+                        <td>{ScSchemeDetails.sanctionOrderForScheme}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Unit For Scheme")}</td>
+                        <td>{ScSchemeDetails.unitForScheme}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Acknowledgement For Scheme")}</td>
+                        <td>{ScSchemeDetails.acknowledgementForScheme}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

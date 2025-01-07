@@ -63,6 +63,10 @@ function ScSchemeDetailsEdit() {
                 hectare: "",
                 spacing: "",
                 calculationBasedOn: "",
+                workOrderForScheme: "",
+                sanctionOrderForScheme: "",
+                unitForScheme: "",
+                acknowledgementForScheme: "",
             });
             setValidated(false);
           }
@@ -93,6 +97,10 @@ function ScSchemeDetailsEdit() {
         hectare: "",
         spacing: "",
         calculationBasedOn: "",
+        workOrderForScheme: "",
+        sanctionOrderForScheme: "",
+        unitForScheme: "",
+        acknowledgementForScheme: "",
     });
   };
 
@@ -301,15 +309,139 @@ function ScSchemeDetailsEdit() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Work Order
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="workOrderForScheme"
+                            value={data.workOrderForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Work Order
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Sanction Order 
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="sanctionOrderForScheme"
+                            value={data.sanctionOrderForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Sanction Order
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Acknowledgement
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="acknowledgementForScheme"
+                            value={data.acknowledgementForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Acknowledgement
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Unit
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="unitForScheme"
+                            value={data.unitForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Unit
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
                           {t("Scheme Start Date")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
-                              {isDataFromSet && (
+                              {/* {isDataFromSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.schemeStartDate)}
+                                  selected={data.schemeStartDate ? new Date(data.schemeStartDate) : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "schemeStartDate")
                                   }
@@ -322,7 +454,7 @@ function ScSchemeDetailsEdit() {
                                   // minDate={new Date()}
                                   required
                                 />
-                              )}
+                              {/* )} */}
                             </div>
                             </Form.Group>
                         </Col>
@@ -333,9 +465,9 @@ function ScSchemeDetailsEdit() {
                               {t("Scheme End Date")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                              {isDataToSet && (
+                              {/* {isDataToSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.schemeEndDate)}
+                                  selected={data.schemeEndDate ? new Date(data.schemeEndDate) : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "schemeEndDate")
                                   }
@@ -348,7 +480,7 @@ function ScSchemeDetailsEdit() {
                                   // minDate={new Date(data.schemeStartDate)}
                                   required
                                 />
-                              )}
+                              {/* )} */}
                             </div>
                       </Form.Group>
                     </Col>
