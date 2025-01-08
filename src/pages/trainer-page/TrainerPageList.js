@@ -12,11 +12,13 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TrainerPageList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -279,7 +281,7 @@ function TrainerPageList() {
 
   const TrTraineeLicenseDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -292,7 +294,7 @@ function TrainerPageList() {
             size="sm"
             onClick={() => handleView(row.trScheduleId)}
           >
-            View
+            {t("View")}
           </Button>
           {/* <Button
             variant="primary"
@@ -308,7 +310,7 @@ function TrainerPageList() {
             onClick={() => handleAttendance(row.trScheduleId)}
             className="ms-2"
           >
-            Attendance
+            {t("Attendance")}
           </Button>
         </div>
       ),
@@ -317,14 +319,14 @@ function TrainerPageList() {
       grow: 2,
     },
     {
-      name: "Training Schedule Id",
+      name: t("Training Schedule Id"),
       selector: (row) => row.trScheduleId,
       cell: (row) => <span>{row.trScheduleId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date",
+      name: t("Date"),
       selector: (row) => row.trStartDate,
       cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
       sortable: true,
@@ -338,28 +340,28 @@ function TrainerPageList() {
     //   hide: "md",
     // },
     {
-      name: "Training Group Name",
+      name: t("Training Group Name"),
       selector: (row) => row.trGroupMasterName,
       cell: (row) => <span>{row.trGroupMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program Name",
+      name: t("Training Program Name"),
       selector: (row) => row.trProgramMasterName,
       cell: (row) => <span>{row.trProgramMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Course Name",
+      name: t("Training Course Name"),
       selector: (row) => row.trCourseMasterName,
       cell: (row) => <span>{row.trCourseMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Mode",
+      name: t("Training Mode"),
       selector: (row) => row.trModeMasterName,
       cell: (row) => <span>{row.trModeMasterName}</span>,
       sortable: true,
@@ -368,11 +370,11 @@ function TrainerPageList() {
   ];
 
   return (
-    <Layout title="Trainer Page List">
+    <Layout title={t("Trainer Page List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page List</Block.Title>
+            <Block.Title tag="h2">{t("Trainer Page List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -405,7 +407,7 @@ function TrainerPageList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -415,8 +417,8 @@ function TrainerPageList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="trStartDate">Start Date</option>
-                      <option value="trGroupMasterName">Training Group</option>
+                      <option value="trStartDate">{t("Start Date")}</option>
+                      <option value="trGroupMasterName">{t("Training Group")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -449,14 +451,14 @@ function TrainerPageList() {
                       value={data.text}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Search"
+                      placeholder={t("Search")}
                     />
                   </Col>
                 )}
 
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

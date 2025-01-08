@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -24,6 +25,7 @@ function ColdStorageScheduleBVView() {
   // const [data] = useState(CasteDatas);
   const [scheduleBV, setScheduleBV] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -52,11 +54,11 @@ function ColdStorageScheduleBVView() {
   }, [id]);
 
   return (
-    <Layout title="View Cold Storage Schedule BV Details">
+    <Layout title={t("View Cold Storage Schedule BV Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Cold Storage Schedule BV Details </Block.Title>
+            <Block.Title tag="h2"> {t("View Cold Storage Schedule BV Details")} </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -66,7 +68,7 @@ function ColdStorageScheduleBVView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +77,7 @@ function ColdStorageScheduleBVView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -85,11 +87,11 @@ function ColdStorageScheduleBVView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Cold Storage Schedule BV Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Cold Storage Schedule BV Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -97,58 +99,58 @@ function ColdStorageScheduleBVView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{scheduleBV.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Grainage Details:
+                          {t("Grainage Details")}:
                         </td>
                         <td>{scheduleBV.grainageDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{scheduleBV.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Laid On Date:
+                          {t("Laid On Date")}:
                         </td>
                         <td>{scheduleBV.laidOnDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Date Of Deposit:
+                          {t("Date Of Deposit")}:
                         </td>
                         <td>{scheduleBV.dateOfDeposit}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Schedule Type:
+                          {t("Schedule Type")}:
                         </td>
                         <td>{scheduleBV.scheduleType}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Date Of Release:
+                          {t("Date Of Release")}:
                         </td>
                         <td>{scheduleBV.dateOfRelease}</td>
                       </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>
-                        Storage Temperature:
+                          {t("Storage Temperature")}:
                         </td>
                         <td>{scheduleBV.storageTemperature}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Storage Duration:
+                          {t("Storage Duration")}:
                         </td>
                         <td>{scheduleBV.storageDuration}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Remaining Duration:
+                          {t("Remaining Duration")}:
                         </td>
                         <td>{scheduleBV.remainingDuration}</td>
                       </tr> */}

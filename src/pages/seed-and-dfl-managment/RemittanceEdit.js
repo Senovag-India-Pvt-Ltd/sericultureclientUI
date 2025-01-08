@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -19,6 +20,8 @@ function RemittanceEdit() {
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -253,11 +256,11 @@ const getUploadReceipt = async (file) => {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Remittance(Eggs/PC/Others) Details">
+    <Layout title={t("Edit Remittance(Eggs/PC/Others) Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Remittance(Eggs/PC/Others) Details</Block.Title>
+            <Block.Title tag="h2">{t("Edit Remittance(Eggs/PC/Others) Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -267,7 +270,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -276,7 +279,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -288,19 +291,19 @@ const getUploadReceipt = async (file) => {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Remittance(Eggs/PC/Others) Details
+              {t("Edit Remittance(Eggs/PC/Others) Details")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number
+                      {t("Lot Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -311,7 +314,7 @@ const getUploadReceipt = async (file) => {
                         onChange={handleInputs}
                         maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -356,7 +359,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Race
+                      {t("Race")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <Col>
@@ -368,7 +371,7 @@ const getUploadReceipt = async (file) => {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Race</option>
+                          <option value="">{t("Select Race")}</option>
                           {raceListData.map((list) => (
                             <option
                               key={list.raceMasterId}
@@ -391,7 +394,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs 
+                      {t("Number Of DFLs")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -402,7 +405,7 @@ const getUploadReceipt = async (file) => {
                         onChange={handleInputs}
                         maxLength="4"
                         type="number"
-                        placeholder="Enter Number Of DFLs received"
+                        placeholder={t("Enter Number Of DFLs received")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -415,7 +418,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Total Amount<span className="text-danger">*</span>
+                      {t("Total Amount")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -424,11 +427,11 @@ const getUploadReceipt = async (file) => {
                         value={data.totalAmount}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Total Amount"
+                        placeholder={t("Enter Total Amount")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Total Amounts is required
+                      {t("Total Amount is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -437,7 +440,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bill Number
+                      {t("Bill Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -447,7 +450,7 @@ const getUploadReceipt = async (file) => {
                         value={data.billNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Bill Number"
+                        placeholder={t("Enter Bill Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -460,7 +463,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    KTC 25
+                    {t("KTC 25")}
                     {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -470,7 +473,7 @@ const getUploadReceipt = async (file) => {
                         value={data.rtc25}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter KTC 25"
+                        placeholder={t("Enter KTC 25")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -483,7 +486,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bank Challan Number
+                      {t("Bank Challan Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -493,7 +496,7 @@ const getUploadReceipt = async (file) => {
                         value={data.bankChallanNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Bank Challan Number"
+                        placeholder={t("Enter Bank Challan Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -506,8 +509,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Date
-                      <span className="text-danger">*</span>
+                      {t("Date")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -566,12 +568,12 @@ const getUploadReceipt = async (file) => {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

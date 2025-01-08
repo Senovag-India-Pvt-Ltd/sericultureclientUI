@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -27,7 +28,7 @@ function ColdStorageScheduleBV() {
   });
 
   const [validated, setValidated] = useState(false);
-
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -171,24 +172,24 @@ function ColdStorageScheduleBV() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   return (
-    <Layout title=" Cold Storage Schedule BV">
+    <Layout title={t("Cold Storage Schedule BV")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Cold Storage Schedule BV</Block.Title>
+            <Block.Title tag="h2">{t("Cold Storage Schedule BV")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -199,7 +200,7 @@ function ColdStorageScheduleBV() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -208,7 +209,7 @@ function ColdStorageScheduleBV() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -220,8 +221,8 @@ function ColdStorageScheduleBV() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Cold Storage Schedule BV
-                </Card.Header>
+              {t("Cold Storage Schedule BV")}
+            </Card.Header>
                     <Card.Body>
                         <Row className="g-gs">
 
@@ -259,9 +260,7 @@ function ColdStorageScheduleBV() {
 
                     <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Lot Number
-                    </Form.Label>
+                    <Form.Label>{t("Lot Number")}</Form.Label>
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -271,7 +270,7 @@ function ColdStorageScheduleBV() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -279,8 +278,8 @@ function ColdStorageScheduleBV() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
+                          {t("Lot Number is required")}
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
@@ -312,7 +311,7 @@ function ColdStorageScheduleBV() {
                     <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                              Schedule Type
+                                {t("Schedule Type")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -327,14 +326,14 @@ function ColdStorageScheduleBV() {
                                   }
                                 >
                                   <option value="">
-                                    Select Schedule Type
+                                    {t("Select Schedule Type")}
                                   </option>
-                                  <option value="4-Months">4-Months</option>
-                                  <option value="6-Months">6-Months</option>\
-                                  <option value="10-Months">10-Months</option>
+                                  <option value="4-Months">{t("4-Months")}</option>
+                                  <option value="6-Months">{t("6-Months")}</option>\
+                                  <option value="10-Months">{t("10-Months")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Schedule Type is required
+                                  {t("Schedule Type is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -343,9 +342,7 @@ function ColdStorageScheduleBV() {
                           
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Laid on Date
-                              </Form.Label>
+                              <Form.Label>{t("Laid on Date")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.laidOnDate}
@@ -367,7 +364,7 @@ function ColdStorageScheduleBV() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Date of Deposit</Form.Label>
+                              <Form.Label>{t("Date of Deposit")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.dateOfDeposit}
@@ -389,9 +386,7 @@ function ColdStorageScheduleBV() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Release Date
-                              </Form.Label>
+                              <Form.Label>{t("Release Date")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.dateOfRelease}
@@ -419,12 +414,12 @@ function ColdStorageScheduleBV() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

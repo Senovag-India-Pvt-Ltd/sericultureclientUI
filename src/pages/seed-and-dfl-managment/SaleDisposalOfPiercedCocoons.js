@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalOfPiercedCocoons() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     lotNumber: "",
     raceId: "",
@@ -179,11 +181,11 @@ function SaleDisposalOfPiercedCocoons() {
   
 
   return (
-    <Layout title="Sale/Disposal of Pierced Cocoons">
+    <Layout title={t("Sale/Disposal of Pierced Cocoons")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sale/Disposal of Pierced Cocoons</Block.Title>
+            <Block.Title tag="h2">{t("Sale/Disposal of Pierced Cocoons")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -193,7 +195,7 @@ function SaleDisposalOfPiercedCocoons() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -202,7 +204,7 @@ function SaleDisposalOfPiercedCocoons() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -216,7 +218,7 @@ function SaleDisposalOfPiercedCocoons() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Sale/Disposal of Pierced Cocoons
+              {t("Sale/Disposal of Pierced Cocoons")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -224,7 +226,7 @@ function SaleDisposalOfPiercedCocoons() {
               {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                    Total Lots<span className="text-danger">*</span>
+                    {t("Total Lots")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -235,7 +237,7 @@ function SaleDisposalOfPiercedCocoons() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option
                               key={list.id}
@@ -246,7 +248,7 @@ function SaleDisposalOfPiercedCocoons() {
                           ))):""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -256,7 +258,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4" >
                   <Form.Group className="form-group mt-n4 ">
                     <Form.Label htmlFor="plotNumber">
-                      Total Lots<span className="text-danger">*</span>
+                      {t("Total Lots")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -266,11 +268,11 @@ function SaleDisposalOfPiercedCocoons() {
                         onChange={handleInputs}
                         // maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -279,7 +281,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Race<span className="text-danger">*</span>
+                      {t("Race")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -290,7 +292,7 @@ function SaleDisposalOfPiercedCocoons() {
                           onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Race</option>
+                          <option value="">{t("Select Race")}</option>
                           {raceListData.map((list) => (
                             <option
                               key={list.raceMasterId}
@@ -301,7 +303,7 @@ function SaleDisposalOfPiercedCocoons() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Race is required
+                          {t("Race is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -311,7 +313,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Date of disposal
+                      {t("Date of disposal")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -336,7 +338,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Name and address of the PC Merchant
+                      {t("Name and address of the PC Merchant")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -347,11 +349,11 @@ function SaleDisposalOfPiercedCocoons() {
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
-                        placeholder="Enter Name and address of the PC Merchant"
+                        placeholder={t("Enter Name and address of the PC Merchant")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Name and address of the PC Merchant is required
+                        {t("Name and address of the PC Merchant is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -360,7 +362,7 @@ function SaleDisposalOfPiercedCocoons() {
                 {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Number of cocoons
+                      {t("Number of cocoons")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -370,11 +372,11 @@ function SaleDisposalOfPiercedCocoons() {
                         value={data.numberOfCocoons}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Number of cocoons"
+                        placeholder={t("Enter Number of cocoons")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Number of cocoons is required
+                        {t("Number of cocoons is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -383,7 +385,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Number Of Cocoons in Kgs
+                    {t("Number Of Cocoons in Kgs")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -393,11 +395,11 @@ function SaleDisposalOfPiercedCocoons() {
                         value={data.quantityInKgs}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Quantity in kgs"
+                        placeholder={t("Enter Quantity in gs")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Quantity in kgs is required
+                        {t("Quantity in kgs is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -406,7 +408,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Rate per Kgs
+                      {t("Rate per Kgs")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -416,11 +418,11 @@ function SaleDisposalOfPiercedCocoons() {
                         value={data.ratePerKg}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Rate per Kgs"
+                        placeholder={t("Enter Rate per Kgs")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Rate per Kgs is required
+                        {t("Rate per Kgs is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -429,7 +431,7 @@ function SaleDisposalOfPiercedCocoons() {
                 {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Total Amount (In Rs)
+                      {t("Total Amount (In Rs)")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -439,11 +441,11 @@ function SaleDisposalOfPiercedCocoons() {
                         value={data.totalAmount}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Total Amount"
+                        placeholder={t("Enter Total Amount")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Total Amount is required
+                        {t("Total Amount is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -457,12 +459,12 @@ function SaleDisposalOfPiercedCocoons() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

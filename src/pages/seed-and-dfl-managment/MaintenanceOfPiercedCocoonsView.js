@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -23,6 +24,7 @@ function MaintenanceOfPiercedCocoonsView() {
   // const [data] = useState(CasteDatas);
   const [piercedCocoons, setPiercedCocoons] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -57,11 +59,11 @@ function MaintenanceOfPiercedCocoonsView() {
   };
 
   return (
-    <Layout title="View Maintenance Of Pierced Cocoons Details">
+    <Layout title={t("View Maintenance Of Pierced Cocoons Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Maintenance Of Pierced Cocoons Details </Block.Title>
+            <Block.Title tag="h2">{t("View Maintenance Of Pierced Cocoons Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -71,7 +73,7 @@ function MaintenanceOfPiercedCocoonsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -80,7 +82,7 @@ function MaintenanceOfPiercedCocoonsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -90,11 +92,11 @@ function MaintenanceOfPiercedCocoonsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance Of Pierced Cocoons Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance Of Pierced Cocoons Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -102,22 +104,22 @@ function MaintenanceOfPiercedCocoonsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{piercedCocoons.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Lot Number:
+                          {t("Lot Number")}:
                         </td>
                         <td>{piercedCocoons.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Storage Date:</td>
+                        <td style={styles.ctstyle}>{t("Storage Date")}:</td>
                         <td>{formatDate(piercedCocoons.storageDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Quantity in Kgs:
+                        {t("Quantity in Kgs")}:
                         </td>
                         <td>{piercedCocoons.quantityInNumberAndKgs}</td>
                       </tr>

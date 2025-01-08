@@ -13,12 +13,14 @@ import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLs() {
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -335,11 +337,11 @@ function PreparationofeggsDFLs() {
  
 
   return (
-    <Layout title="Preparation of Eggs (DFLs)">
+    <Layout title={t("Preparation of Eggs (DFLs)")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Preparation of Eggs (DFLs)</Block.Title>
+            <Block.Title tag="h2">{t("Preparation of Eggs (DFLs)")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -350,7 +352,7 @@ function PreparationofeggsDFLs() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -359,7 +361,7 @@ function PreparationofeggsDFLs() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -415,7 +417,7 @@ function PreparationofeggsDFLs() {
                 <Col lg="12">
                   <Block>
                     <Card>
-                      <Card.Header> Preparation of Eggs (DFLs) </Card.Header>
+                      <Card.Header> {t("Preparation of Eggs (DFLs)")} </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         {/* <Col lg="4">
@@ -508,7 +510,7 @@ function PreparationofeggsDFLs() {
             <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                     Lot Number
+                     {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -519,7 +521,7 @@ function PreparationofeggsDFLs() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {presentLotListData && presentLotListData.length?(presentLotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -527,7 +529,7 @@ function PreparationofeggsDFLs() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -539,7 +541,7 @@ function PreparationofeggsDFLs() {
                       <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                     Cocoon Lot Number
+                     {t("Cocoon Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -550,7 +552,7 @@ function PreparationofeggsDFLs() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.parentLotNumber}>
                               {list.parentLotNumber}
@@ -558,7 +560,7 @@ function PreparationofeggsDFLs() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -568,7 +570,7 @@ function PreparationofeggsDFLs() {
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -579,7 +581,7 @@ function PreparationofeggsDFLs() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Race</option>
+                              <option value="">{t("Select Race")}</option>
                               {raceListData.map((list) => (
                                 <option
                                   key={list.raceMasterId}
@@ -590,7 +592,7 @@ function PreparationofeggsDFLs() {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Race is required
+                              {t("Race is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -600,7 +602,7 @@ function PreparationofeggsDFLs() {
                       <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year
+                          {t("Line Details/year")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -612,7 +614,7 @@ function PreparationofeggsDFLs() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -634,7 +636,7 @@ function PreparationofeggsDFLs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -646,7 +648,7 @@ function PreparationofeggsDFLs() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -667,7 +669,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                              Cocoon's Purchased in Kg's 
+                              {t("Cocoon's Purchased in Kg's")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -677,7 +679,7 @@ function PreparationofeggsDFLs() {
                                   value={data.numberOfCocoonsCB}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Cocoon's Purchased (in Kg's / Nos)"
+                                  placeholder={t("Enter Cocoon's Purchased (in Kg's / Nos)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -690,7 +692,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="dateOfMothEmergence">
-                                Date of moth emergence
+                                {t("Date of moth emergence")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -712,7 +714,7 @@ function PreparationofeggsDFLs() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Date of moth emergence is required
+                                  {t("Date of moth emergence is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -721,7 +723,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="laidOnDate">
-                                Laid On Date
+                                {t("Laid On Date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -740,7 +742,7 @@ function PreparationofeggsDFLs() {
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Laid On Date is required
+                                  {t("Laid On Date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -749,7 +751,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggSheetSerialNumber">
-                                Egg sheet serial number
+                                {t("Egg sheet serial number")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -759,7 +761,7 @@ function PreparationofeggsDFLs() {
                                   value={data.eggSheetSerialNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Egg sheet serial number"
+                                  placeholder={t("Egg sheet serial number")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -772,7 +774,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedCocoon">
-                              Selected Cocoon's in Nos
+                              {t("Selected Cocoon's in Nos")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -781,7 +783,7 @@ function PreparationofeggsDFLs() {
                                   value={data.selectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Selected Cocoon's in Nos"
+                                  placeholder={t("Selected Cocoon's in Nos")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -794,7 +796,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="rejectedCocoon">
-                              Rejected Cocoon's in Nos
+                              {t("Rejected Cocoon's in Nos")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -803,7 +805,7 @@ function PreparationofeggsDFLs() {
                                   value={data.rejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Rejected Cocoon's in Nos"
+                                  placeholder={t("Rejected Cocoon's in Nos")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -816,7 +818,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Selected Cocoon's)
+                              {t("No of Pairs (%) (Selected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -825,7 +827,7 @@ function PreparationofeggsDFLs() {
                                   value={data.pairNoSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Selected Cocoon's)"
+                                  placeholder={t("No of Pairs (%) (Selected Cocoon's)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -838,7 +840,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Rejected Cocoon's)
+                              {t("No of Pairs (%) (Rejected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -847,7 +849,7 @@ function PreparationofeggsDFLs() {
                                   value={data.pairNoRejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Rejected Cocoon's)"
+                                  placeholder={t("No of Pairs (%) (Rejected Cocoon's)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -860,8 +862,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                                Number of pairs
-                                <span className="text-danger">*</span>
+                                {t("Number of pairs")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -870,11 +871,11 @@ function PreparationofeggsDFLs() {
                                   value={data.numberOfPairs}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Number of pairs"
+                                  placeholder={t("Number of pairs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Number of pairs is required
+                                  {t("Number of pairs is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -883,8 +884,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfRejection">
-                                Number of Rejection
-                                <span className="text-danger">*</span>
+                                {t("Number of Rejection")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -893,11 +893,11 @@ function PreparationofeggsDFLs() {
                                   value={data.numberOfRejection}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Number of Rejection"
+                                  placeholder={t("Number of Rejection")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Number of Rejection is required
+                                  {t("Number of Rejection is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -906,8 +906,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="dflsObtained">
-                                DFLs obtained
-                                <span className="text-danger">*</span>
+                                {t("DFLs obtained")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -916,12 +915,12 @@ function PreparationofeggsDFLs() {
                                   value={data.dflsObtained}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="DFLs obtained"
+                                  placeholder={t("DFLs obtained")}
                                   readOnly
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  DFLs obtained is required
+                                  {t("DFLs obtained is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -930,7 +929,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                              Err %(Selected Cocoon's)
+                              {t("Err %(Selected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -939,7 +938,7 @@ function PreparationofeggsDFLs() {
                                   value={data.errPerSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Err %(Selected Cocoon's)"
+                                  placeholder={t("Err %(Selected Cocoon's)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -952,7 +951,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                              Err %(Rejected Cocoon's)
+                              {t("Err %(Rejected Cocoon's)")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -962,7 +961,7 @@ function PreparationofeggsDFLs() {
                                   value={data.errPerRejectedCocoonsNo }
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Err %(Rejected Cocoon's)"
+                                  placeholder={t("Err %(Rejected Cocoon's)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -975,7 +974,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                                Egg Recovery %
+                                {t("Egg Recovery %")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -985,7 +984,7 @@ function PreparationofeggsDFLs() {
                                   value={data.eggRecoveryPercentage}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Egg Recovery %"
+                                  placeholder={t("Egg Recovery %")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1037,7 +1036,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                              Test results
+                              {t("Test results")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1052,13 +1051,13 @@ function PreparationofeggsDFLs() {
                                   }
                                 >
                                   <option value="">
-                                    Select Test Results
+                                    {t("Select Test Results")}
                                   </option>
-                                  <option value="Diseased">Diseased</option>
-                                  <option value="Disease-Free">Disease-Free</option>
+                                  <option value="Diseased">{t("Diseased")}</option>
+                                  <option value="Disease-Free">{t("Disease-Free")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Test Results is required
+                                {t("Test Results is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1097,7 +1096,7 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="additionalRemarks">
-                                Additional remarks
+                                {t("Additional remarks")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1107,7 +1106,7 @@ function PreparationofeggsDFLs() {
                                   value={data.additionalRemarks}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Additional remarks"
+                                  placeholder={t("Additional remarks")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1125,7 +1124,7 @@ function PreparationofeggsDFLs() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Save
+                          {t("Save")}
                         </Button>
                       </li>
                       <li>
@@ -1134,7 +1133,7 @@ function PreparationofeggsDFLs() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Clear
+                          {t("Clear")}
                         </Button>
                       </li>
                       {/* <li>

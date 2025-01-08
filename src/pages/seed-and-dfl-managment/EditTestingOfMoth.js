@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -17,6 +18,7 @@ function EditTestingOfMoth() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -147,11 +149,11 @@ function EditTestingOfMoth() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Testing Of Moth">
+    <Layout title={t("Edit Testing Of Moth")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Testing Of Moth</Block.Title>
+            <Block.Title tag="h2">{t("Edit Testing Of Moth")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -161,7 +163,7 @@ function EditTestingOfMoth() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -170,7 +172,7 @@ function EditTestingOfMoth() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -182,19 +184,19 @@ function EditTestingOfMoth() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Testing Of Moth
+              {t("Edit Testing Of Moth")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 {/* <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                    Lot Number<span className="text-danger">*</span>
+                    {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -205,7 +207,7 @@ function EditTestingOfMoth() {
                           onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option
                               key={list.id}
@@ -216,7 +218,7 @@ function EditTestingOfMoth() {
                           ))):""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -226,7 +228,7 @@ function EditTestingOfMoth() {
                 <Col lg="4" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -236,11 +238,11 @@ function EditTestingOfMoth() {
                         onChange={handleInputs}
                         // maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -250,7 +252,7 @@ function EditTestingOfMoth() {
                 {/* <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Pebrine Free Status Of Pupa & Moth
+                      {t("Pebrine Free Status Of Pupa & Moth")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -261,11 +263,11 @@ function EditTestingOfMoth() {
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
-                        placeholder="Enter Pebrine Free Status Of Pupa & Moth"
+                        placeholder={t("Enter Pebrine Free Status Of Pupa & Moth")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Pebrine Free Status Of Pupa & Moth is required
+                        {t("Pebrine Free Status Of Pupa & Moth is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -273,7 +275,7 @@ function EditTestingOfMoth() {
                 <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label>
-                              Pebrine Free Status Of Pupa & Moth
+                              {t("Pebrine Free Status Of Pupa & Moth")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -288,13 +290,13 @@ function EditTestingOfMoth() {
                                   }
                                 >
                                   <option value="">
-                                    Select Pebrine Free Status Of Pupa & Moth
+                                    {t("Select Pebrine Free Status Of Pupa & Moth")}
                                   </option>
-                                  <option value="Diseased">Diseased</option>
-                                  <option value="Disease-Free">Disease-Free</option>
+                                  <option value="Diseased">{t("Diseased")}</option>
+                                  <option value="Disease-Free">{t("Disease-Free")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Pebrine Free Status Of Pupa & Moth is required
+                                {t("Pebrine Free Status Of Pupa & Moth is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -304,7 +306,7 @@ function EditTestingOfMoth() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                      Source Details
+                      {t("Source Details")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -314,11 +316,11 @@ function EditTestingOfMoth() {
                         value={data.sourceDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Source Details"
+                        placeholder={t("Enter Source Details")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
-                      Source Details is required
+                      {t("Source Details is required")}
                       </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
@@ -333,12 +335,12 @@ function EditTestingOfMoth() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

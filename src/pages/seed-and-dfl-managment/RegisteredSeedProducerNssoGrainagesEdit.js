@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -222,12 +224,12 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Preparation Of Eggs (DFLs) RSP/NSSO">
+    <Layout title={t("Edit Preparation Of Eggs (DFLs) RSP/NSSO")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Preparation Of Eggs (DFLs) RSP/NSSO
+              {t("Edit Preparation Of Eggs (DFLs) RSP/NSSO")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -238,7 +240,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -247,7 +249,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -261,14 +263,14 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Preparation Of Eggs (DFLs) RSP/NSSO
+            {t("Preparation Of Eggs (DFLs) RSP/NSSO")}
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
               <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Cocoon Lot Number(MSC,Fc1,Fc2)
+                        {t("Cocoon Lot Number(MSC,Fc1,Fc2)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -278,11 +280,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.cocoonLotNumber}
                             onChange={handleInputs}
-                            placeholder="Enter Cocoon Lot Number(MSC,Fc1,Fc2)"
+                            placeholder={t("Enter Cocoon Lot Number(MSC,Fc1,Fc2)")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Cocoon Lot Number(MSC,Fc1,Fc2) is required
+                          {t("Cocoon Lot Number(MSC,Fc1,Fc2) is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -290,7 +292,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
               <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Number of Cocoons (MSC,Fc1,Fc2)
+                        {t("Number of Cocoons (MSC,Fc1,Fc2)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -300,11 +302,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.numberOfCocoonsCB}
                             onChange={handleInputs}
-                            placeholder="Enter Number of Cocoons (MSC,Fc1,Fc2)"
+                            placeholder={t("Enter Number of Cocoons (MSC,Fc1,Fc2)")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of Cocoons (MSC,Fc1,Fc2) is required
+                          {t("Number of Cocoons (MSC,Fc1,Fc2) is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -347,7 +349,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                       Seed Cocoon Market
+                      {t("Seed Cocoon Market")}
                        {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <Col>
@@ -363,7 +365,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             //   data.sourceMasterId === "0"
                             // }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -384,7 +386,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of moth emergence
+                        {t("Date of moth emergence")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -413,7 +415,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Laid On Date
+                        {t("Laid On Date")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -442,7 +444,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Egg sheet serial number
+                        {t("Egg sheet serial number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -452,7 +454,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.eggSheetSerialNumber}
                             onChange={handleInputs}
-                            placeholder="Enter Egg sheet serial number"                        required
+                            placeholder={t("Enter Egg sheet serial number")}                        required
                           />
                           {/* <Form.Control.Feedback type="invalid">
                             Egg sheet serial number is required
@@ -464,7 +466,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of pairs
+                        {t("Number of pairs")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -474,11 +476,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.numberOfPairs}
                             onChange={handleInputs}
-                            placeholder="Enter Number of pairs"
+                            placeholder={t("Enter Number of pairs")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of pairs is required
+                          {t("Number of pairs is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -487,7 +489,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of Rejection
+                        {t("Number of Rejection")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -497,11 +499,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.numberOfRejection}
                             onChange={handleInputs}
-                            placeholder="Enter Number of Rejection"
+                            placeholder={t("Enter Number of Rejection")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of Rejection is required
+                          {t("Number of Rejection is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -510,7 +512,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          DFLs obtained
+                        {t("DFLs obtained")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -520,12 +522,12 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.dflsObtained}
                             onChange={handleInputs}
-                            placeholder="Enter DFLs obtained"
+                            placeholder={t("Enter DFLs obtained")}
                             required
                             readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                            DFLs obtained is required
+                          {t("DFLs obtained is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -534,7 +536,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Egg Recovery %<span className="text-danger">*</span>
+                        {t("Egg Recovery %")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -543,11 +545,11 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="number"
                             value={data.eggRecoveryPercentage}
                             onChange={handleInputs}
-                            placeholder="Enter Egg Recovery %"
+                            placeholder={t("Enter Egg Recovery %")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Egg Recovery % is required
+                          {t("Egg Recovery % is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -557,7 +559,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Test results
+                        {t("Test results")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -567,7 +569,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="text"
                             value={data.testResults}
                             onChange={handleInputs}
-                            placeholder="Enter Test results"
+                            placeholder={t("Enter Test results")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -580,7 +582,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Certification (Yes/No)
+                        {t("Certification (Yes/No)")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -590,7 +592,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="text"
                             value={data.certification}
                             onChange={handleInputs}
-                            placeholder="Enter Certification (Yes/No)"
+                            placeholder={t("Enter Certification (Yes/No)")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -603,7 +605,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Additional remarks
+                        {t("Additional remarks")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -613,7 +615,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                             type="text"
                             value={data.additionalRemarks}
                             onChange={handleInputs}
-                            placeholder="Enter Additional remarks"
+                            placeholder={t("Enter Additional remarks")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -631,12 +633,12 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                {t("Cancel")}
                 </Button>
               </li>
             </ul>

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -20,7 +21,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
 
   const [validated, setValidated] = useState(false);
 
-  
+  const { t } = useTranslation();
 
   // let name, value;
   // const handleInputs = (e) => {
@@ -220,11 +221,11 @@ function MaintenanceOfEggsAtColdStorageEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Maintenance Of Eggs At Cold Storage">
+    <Layout title={t("Edit Maintenance Of Eggs At Cold Storage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Maintenance Of Eggs At Cold Storage</Block.Title>
+            <Block.Title tag="h2">{t("Edit Maintenance Of Eggs At Cold Storage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -234,7 +235,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -243,7 +244,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -255,19 +256,19 @@ function MaintenanceOfEggsAtColdStorageEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Maintenance Of Eggs At Cold Storage
+              {t("Edit Maintenance Of Eggs At Cold Storage")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                    Lot Number<span className="text-danger">*</span>
+                    {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -278,7 +279,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListEggPreparationData && lotListEggPreparationData.length?(lotListEggPreparationData.map((list) => (
                             <option
                               key={list.id}
@@ -289,7 +290,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           ))):""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -320,7 +321,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs 
+                      {t("Number Of DFLs")} 
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -331,11 +332,11 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                         onChange={handleInputs}
                         maxLength="8"
                         type="text"
-                        placeholder="Enter Number Of DFLs received"
+                        placeholder={t("Enter Number Of DFLs received")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Number Of DFLs is required
+                        {t("Number Of DFLs is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -344,7 +345,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Incubation Details
+                                {t("Incubation Details")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -353,7 +354,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                   value={data.incubationDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Incubation Details"
+                                  placeholder={t("Enter Incubation Details")}
                                 />
                               </div>
                             </Form.Group>
@@ -362,7 +363,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of Cold storage<span className="text-danger">*</span>
+                                {t("Date of Cold storage")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Cold Storage">
                               {/* { isDataColdSet && ( */}
@@ -390,7 +391,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Laid On Date<span className="text-danger">*</span>
+                      {t("Laid On Date")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                     {/* {isDataLaidDate && ( */}
@@ -417,7 +418,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of release<span className="text-danger">*</span>
+                                {t("Date of release")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataReleaseSet && ( */}
@@ -453,12 +454,12 @@ function MaintenanceOfEggsAtColdStorageEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

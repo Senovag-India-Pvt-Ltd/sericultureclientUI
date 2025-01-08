@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -220,13 +221,15 @@ function Remittance() {
     });
   };
 
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Remittance(Eggs/PC/Others)">
+    <Layout title={t("Remittance(Eggs/PC/Others)")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            Remittance(Eggs/PC/Others)
+              {t("Remittance(Eggs/PC/Others)")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -237,7 +240,7 @@ function Remittance() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -246,7 +249,7 @@ function Remittance() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -260,7 +263,7 @@ function Remittance() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Remittance(Eggs/PC/Others)
+              {t("Remittance(Eggs/PC/Others)")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -268,7 +271,7 @@ function Remittance() {
               <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number
+                      {t("Lot Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -279,7 +282,7 @@ function Remittance() {
                         onChange={handleInputs}
                         maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -324,7 +327,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Race
+                      {t("Race")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <Col>
@@ -336,7 +339,7 @@ function Remittance() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Race</option>
+                          <option value="">{t("Select Race")}</option>
                           {raceListData.map((list) => (
                             <option
                               key={list.raceMasterId}
@@ -357,7 +360,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs 
+                      {t("Number Of DFLs")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -368,7 +371,7 @@ function Remittance() {
                         onChange={handleInputs}
                         maxLength="4"
                         type="number"
-                        placeholder="Enter Number Of DFLs"
+                        placeholder={t("Enter Number Of DFLs")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -381,7 +384,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Total Amount<span className="text-danger">*</span>
+                      {t("Total Amount")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -390,11 +393,11 @@ function Remittance() {
                         value={data.totalAmount}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Total Amount"
+                        placeholder={t("Enter Total Amount")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Total Amounts is required
+                      {t("Total Amount is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -403,7 +406,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bill Number
+                      {t("Bill Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -413,7 +416,7 @@ function Remittance() {
                         value={data.billNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Bill Number"
+                        placeholder={t("Enter Bill Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -426,7 +429,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      KTC 25 
+                      {t("KTC 25")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -436,7 +439,7 @@ function Remittance() {
                         value={data.rtc25}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter KTC 25"
+                        placeholder={t("Enter KTC 25")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -451,7 +454,7 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bank Challan Number
+                      {t("Bank Challan Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -461,7 +464,7 @@ function Remittance() {
                         value={data.bankChallanNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Bank Challan Number"
+                        placeholder={t("Enter Bank Challan Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -476,7 +479,7 @@ function Remittance() {
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Date
+                      {t("Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -506,12 +509,12 @@ function Remittance() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

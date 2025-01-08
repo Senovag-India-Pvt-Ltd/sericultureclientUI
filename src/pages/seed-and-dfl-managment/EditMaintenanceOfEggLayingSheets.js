@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function EditMaintenanceOfEggLayingSheets() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -170,13 +172,11 @@ function EditMaintenanceOfEggLayingSheets() {
   };
 
   return (
-    <Layout title="Maintenance Of Egg Laying Sheets">
+    <Layout title={t("Maintenance Of Egg Laying Sheets")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-            Maintenance Of Egg Laying Sheets
-            </Block.Title>
+            <Block.Title tag="h2">{t("Maintenance Of Egg Laying Sheets")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -186,7 +186,7 @@ function EditMaintenanceOfEggLayingSheets() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -195,7 +195,7 @@ function EditMaintenanceOfEggLayingSheets() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -208,16 +208,14 @@ function EditMaintenanceOfEggLayingSheets() {
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
           <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Maintenance Of Egg Laying Sheets
-            </Card.Header>
+            <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance Of Egg Laying Sheets")}</Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
                 <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -227,11 +225,11 @@ function EditMaintenanceOfEggLayingSheets() {
                         onChange={handleInputs}
                         maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -270,7 +268,7 @@ function EditMaintenanceOfEggLayingSheets() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                    Number of Egg sheets used <span className="text-danger">*</span>
+                    {t("Number of Egg sheets used")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -279,11 +277,11 @@ function EditMaintenanceOfEggLayingSheets() {
                         value={data.numberOfEggSheetsUsed}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Number of Egg sheets Used"
+                        placeholder={t("Enter Number of Egg sheets Used")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Number of Egg sheets used is required
+                      {t("Number of Egg sheets used is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -292,7 +290,7 @@ function EditMaintenanceOfEggLayingSheets() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                   Egg Sheet Number <span className="text-danger">*</span>
+                   {t("Egg Sheet Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -301,11 +299,11 @@ function EditMaintenanceOfEggLayingSheets() {
                         value={data.eggSheetNumbers}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Egg Sheet Number"
+                        placeholder={t("Enter Egg Sheet Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Egg Sheet Number is required
+                      {t("Egg Sheet Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -314,7 +312,7 @@ function EditMaintenanceOfEggLayingSheets() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Balance Number Of Sheets 
+                    {t("Balance Number Of Sheets")}
                     {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -324,7 +322,7 @@ function EditMaintenanceOfEggLayingSheets() {
                         value={data.balanceNumberOfSheets}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Balance Number Of Sheets"
+                        placeholder={t("Enter Balance Number Of Sheets")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -337,7 +335,7 @@ function EditMaintenanceOfEggLayingSheets() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Date
+                      {t("Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -369,12 +367,12 @@ function EditMaintenanceOfEggLayingSheets() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

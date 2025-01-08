@@ -11,12 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSOList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -149,7 +151,7 @@ function SaleAndDisposalOfEggsNSSOList() {
 
   const MaintenanceofmulberryGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -159,7 +161,7 @@ function SaleAndDisposalOfEggsNSSOList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -167,7 +169,7 @@ function SaleAndDisposalOfEggsNSSOList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -175,7 +177,7 @@ function SaleAndDisposalOfEggsNSSOList() {
             onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -184,28 +186,28 @@ function SaleAndDisposalOfEggsNSSOList() {
       grow: 2,
     },
     {
-      name: "Fruits Id",
+      name: t("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Egg Sheet Numbers",
+      name: t("Egg Sheet Numbers"),
       selector: (row) => row.eggSheetNumbers,
       cell: (row) => <span>{row.eggSheetNumbers}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
@@ -213,28 +215,28 @@ function SaleAndDisposalOfEggsNSSOList() {
     },
     
     {
-      name: "Date of Disposal",
+      name: t("Date of Disposal"),
       selector: (row) => row.dateOfDisposal,
       cell: (row) => <span>{row.dateOfDisposal}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of DFLs Disposed",
+      name: t("Number Of DFLs Disposed"),
       selector: (row) => row.numberOfDflsDisposed,
       cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name And Address Of the Farm",
+      name: t("Name And Address Of the Farm"),
       selector: (row) => row.nameAndAddressOfTheFarm,
       cell: (row) => <span>{row.nameAndAddressOfTheFarm}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rate Per 100Dfls Price",
+      name: t("Rate Per 100Dfls Price"),
       selector: (row) => row.ratePer100DflsPrice,
       cell: (row) => <span>{row.ratePer100DflsPrice}</span>,
       sortable: true,
@@ -242,7 +244,7 @@ function SaleAndDisposalOfEggsNSSOList() {
     },
 
     {
-      name: "Invoice Number",
+      name: t("Invoice Number"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
@@ -255,12 +257,12 @@ function SaleAndDisposalOfEggsNSSOList() {
  
 
   return (
-    <Layout title="Sale / Disposal of DFL's(eggs) NSSO List">
+    <Layout title={t("Sale / Disposal of DFL's(eggs) NSSO List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Sale / Disposal of DFL's(eggs) NSSO List
+              {t("Sale / Disposal of DFL's(eggs) NSSO List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -271,7 +273,7 @@ function SaleAndDisposalOfEggsNSSOList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -280,7 +282,7 @@ function SaleAndDisposalOfEggsNSSOList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

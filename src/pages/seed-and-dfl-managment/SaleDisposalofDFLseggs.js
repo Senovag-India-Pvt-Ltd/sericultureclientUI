@@ -13,6 +13,7 @@ import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -20,6 +21,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalofDFLseggs() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     lotNumber: "",
     eggSheetNumbers: "",
@@ -439,8 +441,8 @@ function SaleDisposalofDFLseggs() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: `Invoice Number ${message}`,
+      title: t("Saved successfully"),
+      text: `${t("Invoice Number")} ${message}`,
     });
   };
 
@@ -453,7 +455,7 @@ function SaleDisposalofDFLseggs() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -463,11 +465,11 @@ function SaleDisposalofDFLseggs() {
   };
 
   return (
-    <Layout title="Sale / Disposal of DFL's(eggs) ">
+    <Layout title={t("Sale / Disposal of DFL's(eggs)")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sale / Disposal of DFL's(eggs)</Block.Title>
+            <Block.Title tag="h2">{t("Sale / Disposal of DFL's(eggs)")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -477,7 +479,7 @@ function SaleDisposalofDFLseggs() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -486,7 +488,7 @@ function SaleDisposalofDFLseggs() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -511,7 +513,7 @@ function SaleDisposalofDFLseggs() {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="farm">
-                    Farm
+                    {t("Farm")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -527,7 +529,7 @@ function SaleDisposalofDFLseggs() {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="farmer">
-                    Farmer
+                    {t("Farmer")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -543,7 +545,7 @@ function SaleDisposalofDFLseggs() {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="crc">
-                    CRC
+                    {t("CRC")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -560,7 +562,7 @@ function SaleDisposalofDFLseggs() {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="discard">
-                    Discard
+                    {t("Discard")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -581,7 +583,7 @@ function SaleDisposalofDFLseggs() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group" controlId="fid">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
+                        {t("FRUITS ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -589,17 +591,17 @@ function SaleDisposalofDFLseggs() {
                           name="fruitsId"
                           value={data.fruitsId}
                           onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
+                          placeholder={t("Enter FRUITS ID")}
                           required
                           maxLength="16"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
+                          {t("Fruits ID Should Contain 16 digits")}
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
                         <Button type="submit" variant="primary">
-                          Search
+                          {t("Search")}
                         </Button>
                       </Col>
                       {/* <Col sm={2}>
@@ -627,12 +629,12 @@ function SaleDisposalofDFLseggs() {
             <Block className="mt-3">
             {data.userType === "discard" ? (
     <Card>
-      <Card.Header style={{ fontWeight: "bold" }}>Discard Details</Card.Header>
+      <Card.Header style={{ fontWeight: "bold" }}>{t("Discard Details")}</Card.Header>
       <Card.Body>
         <Row className="g-gs">
           <Col lg="4">
             <Form.Group className="form-group mt-n4">
-              <Form.Label>Lot Number</Form.Label>
+              <Form.Label>{t("Lot Number")}</Form.Label>
               <Col>
                 <div className="form-control-wrap">
                   <Form.Select
@@ -642,7 +644,7 @@ function SaleDisposalofDFLseggs() {
                     onBlur={() => handleInputs}
                     // required
                   >
-                    <option value="">Select Lot Number</option>
+                    <option value="">{t("Select Lot Number")}</option>
                     {lotListData && lotListData.length
                       ? lotListData.map((list) => (
                           <option key={list.id} value={list.lotNumber}>
@@ -663,7 +665,7 @@ function SaleDisposalofDFLseggs() {
           <Col lg="4">
             <Form.Group className="form-group mt-n4">
               <Form.Label>
-                Remarks<span className="text-danger">*</span>
+                {t("Remarks")}<span className="text-danger">*</span>
               </Form.Label>
               <div className="form-control-wrap">
                 <Form.Control
@@ -672,11 +674,11 @@ function SaleDisposalofDFLseggs() {
                   value={data.reason}
                   onChange={handleInputs}
                   type="text"
-                  placeholder="Enter Reason for Disposal"
+                  placeholder={t("Enter Reason for Disposal")}
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                  Reason for disposal is required
+                  {t("Reason for disposal is required")}
                 </Form.Control.Feedback>
               </div>
             </Form.Group>
@@ -685,7 +687,7 @@ function SaleDisposalofDFLseggs() {
           <Col lg="4">
             <Form.Group className="form-group mt-n4">
               <Form.Label>
-                Remaining DFLs<span className="text-danger">*</span>
+                {t("Remaining DFLs")}<span className="text-danger">*</span>
               </Form.Label>
               <div className="form-control-wrap">
                 <Form.Control
@@ -695,11 +697,11 @@ function SaleDisposalofDFLseggs() {
                   onChange={handleInputs}
                   type="number"
                   min="0"
-                  placeholder="Enter Remaining DFLs"
+                  placeholder={t("Enter Remaining DFLs")}
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                  Remaining DFLs is required
+                  {t("Remaining DFLs is required")}
                 </Form.Control.Feedback>
               </div>
             </Form.Group>
@@ -708,7 +710,7 @@ function SaleDisposalofDFLseggs() {
           <Col lg="4">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                  DFLs Type
+                  {t("DFLs Type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -723,10 +725,10 @@ function SaleDisposalofDFLseggs() {
                       // }
                     >
                       <option value="">
-                        Select  DFLs Type
+                        {t("Select DFLs Type")}
                       </option>
-                      <option value="Acid Treated">Acid Treated</option>
-                      <option value="Hibernated">Hibernated</option>
+                      <option value="Acid Treated">{t("Acid Treated")}</option>
+                      <option value="Hibernated">{t("Hibernated")}</option>
                     </Form.Select>
                     {/* <Form.Control.Feedback type="invalid">
                     Selected Bed as per the Mean Performance is required
@@ -739,7 +741,7 @@ function SaleDisposalofDFLseggs() {
           <Col lg="4">
             <Form.Group className="form-group mt-n4">
               <Form.Label>
-                Date of Disposal
+                {t("Date of Disposal")}
                 {/* <span className="text-danger">*</span> */}
               </Form.Label>
               <div className="form-control-wrap">
@@ -763,7 +765,7 @@ function SaleDisposalofDFLseggs() {
   ) : (
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Sale / Disposal of DFLs 's (egg) s{" "}
+                  {t("Sale / Disposal of DFLs 's (egg) s")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -791,7 +793,7 @@ function SaleDisposalofDFLseggs() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
-                        <Form.Label>Lot Number</Form.Label>
+                        <Form.Label>{t("Lot Number")}</Form.Label>
                         <Col>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -801,7 +803,7 @@ function SaleDisposalofDFLseggs() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Lot Number</option>
+                              <option value="">{t("Select Lot Number")}</option>
                               {lotListData && lotListData.length
                                 ? lotListData.map((list) => (
                                     <option
@@ -814,7 +816,7 @@ function SaleDisposalofDFLseggs() {
                                 : ""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Lot Number is required
+                              {t("Lot Number is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -824,7 +826,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
-                          Egg Sheet Numbers
+                          {t("Egg Sheet Numbers")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -835,7 +837,7 @@ function SaleDisposalofDFLseggs() {
                             // min="1"
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
-                            placeholder="Enter Egg Sheet Numbers"
+                            placeholder={t("Enter Egg Sheet Numbers")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -848,7 +850,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -862,7 +864,7 @@ function SaleDisposalofDFLseggs() {
                               data.raceId === undefined || data.raceId === "0"
                             }
                           >
-                            <option value="">Select Race</option>
+                            <option value="">{t("Select Race")}</option>
                             {raceListData.map((list) => (
                               <option
                                 key={list.raceMasterId}
@@ -873,7 +875,7 @@ function SaleDisposalofDFLseggs() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Race is required
+                            {t("Race is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -882,7 +884,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFLs disposed
+                          {t("Number of DFLs disposed")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -893,11 +895,11 @@ function SaleDisposalofDFLseggs() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="6"
-                            placeholder="Enter Number of DFLs disposed"
+                            placeholder={t("Enter Number of DFLs disposed")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of DFLs disposed is required
+                            {t("Number of DFLs disposed is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -906,7 +908,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                              DFLs Type
+                              {t("DFLs Type")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -921,10 +923,10 @@ function SaleDisposalofDFLseggs() {
                                   // }
                                 >
                                   <option value="">
-                                    Select  DFLs Type
+                                    {t("Select DFLs Type")}
                                   </option>
-                                  <option value="Acid Treated">Acid Treated</option>
-                                  <option value="Hibernated">Hibernated</option>
+                                  <option value="Acid Treated">{t("Acid Treated")}</option>
+                                  <option value="Hibernated">{t("Hibernated")}</option>
                                 </Form.Select>
                                 {/* <Form.Control.Feedback type="invalid">
                                 Selected Bed as per the Mean Performance is required
@@ -937,7 +939,7 @@ function SaleDisposalofDFLseggs() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Farm
+                            {t("Farm")}
                             {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -953,7 +955,7 @@ function SaleDisposalofDFLseggs() {
                               //   data.userTypeId === "0"
                               // }
                             >
-                              <option value="">Select Farm</option>
+                              <option value="">{t("Select Farm")}</option>
                               {farmListData.map((list) => (
                                 <option
                                   key={list.farmId}
@@ -973,7 +975,7 @@ function SaleDisposalofDFLseggs() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address farmer
+                            {t("Name and address farmer")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -983,12 +985,12 @@ function SaleDisposalofDFLseggs() {
                               value={data.nameAndAddressOfTheFarm}
                               onChange={handleInputs}
                               type="text"
-                              placeholder=" Enter Name and address farmer"
+                              placeholder={t("Enter Name and address farmer")}
                               required
                               readOnly
                             />
                             <Form.Control.Feedback type="invalid">
-                              Name and address farmer is required
+                              {t("Name and address farmer is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -997,7 +999,7 @@ function SaleDisposalofDFLseggs() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address CRC
+                            {t("Name and address CRC")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -1007,11 +1009,11 @@ function SaleDisposalofDFLseggs() {
                               value={data.nameAndAddressOfTheFarm}
                               onChange={handleInputs}
                               type="text"
-                              placeholder=" Enter Name and address CRC"
+                              placeholder={t("Enter Name and address CRC")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              Name and address CRC is required
+                              {t("Name and address CRC is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -1021,7 +1023,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs Price (in Rupees)
+                          {t("Rate per 100 DFLs Price (in Rupees)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1032,11 +1034,11 @@ function SaleDisposalofDFLseggs() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="3"
-                            placeholder="Enter Rate per 100 DFLs Price"
+                            placeholder={t("Enter Rate per 100 DFLs Price")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Rate per 100 DFLs Price is required
+                            {t("Rate per 100 DFLs Price is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1045,7 +1047,7 @@ function SaleDisposalofDFLseggs() {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address of Farm
+                            {t("Name and address of Farm")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -1055,11 +1057,11 @@ function SaleDisposalofDFLseggs() {
                               value={data.nameAndAddressOfTheFarm}
                               onChange={handleInputs}
                               type="text"
-                              placeholder=" Enter Name and address of Farm"
+                              placeholder={t("Enter Name and address of Farm")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              Name and address of Farm is required
+                              {t("Name and address of Farm is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -1070,7 +1072,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Release Date
+                          {t("Release Date")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1094,7 +1096,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of disposal<span className="text-danger">*</span>
+                          {t("Date of disposal")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -1117,8 +1119,7 @@ function SaleDisposalofDFLseggs() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Expected Date of Hatching
-                          <span className="text-danger">*</span>
+                          {t("Expected Date of Hatching")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -1148,12 +1149,12 @@ function SaleDisposalofDFLseggs() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

@@ -12,11 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -98,8 +101,6 @@ function PreparationofeggsDFLsList() {
     let value = e.target.value;
     setBedDetails({ ...bedDetails, [name]: value });
   };
-
-
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -197,7 +198,6 @@ function PreparationofeggsDFLsList() {
         if (preparationOfEggsId) {
           getIdList(preparationOfEggsId);
         }
-  
         setLoading(false);
       })
       .catch((err) => {
@@ -377,7 +377,6 @@ function PreparationofeggsDFLsList() {
 
   const { preparationOfEggsId } = useParams();
 
-
   const [showModal1, setShowModal1] = useState(false);
 
   const handleShowModal1 = () => setShowModal1(true);
@@ -413,7 +412,7 @@ function PreparationofeggsDFLsList() {
 
   const PreparationofeggsDFLsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -423,7 +422,7 @@ function PreparationofeggsDFLsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -431,16 +430,15 @@ function PreparationofeggsDFLsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
-        
           <Button
             variant="danger"
             size="sm"
             className="ms-2"
             onClick={() => handleAddEggs(row.id)}
           >
-            Add DFLs
+            {t("Add DFLs")}
           </Button>
           {/* <Button
             variant="danger"
@@ -451,21 +449,21 @@ function PreparationofeggsDFLsList() {
             View DFLs
           </Button> */}
           <Button
-          variant="danger"
-          size="sm"
-          className="ms-2"
-          onClick={() => {
-            const preparationOfEggsId = row.id; // Use row.id instead of row.preparationOfEggsId
-            if (preparationOfEggsId) {
-              getIdList(preparationOfEggsId); // Call getIdList with the correct ID
-            } else {
-              console.error('preparationOfEggsId is undefined for this row:', row);
-              alert('Error: preparationOfEggsId is undefined!');
-            }
-          }}
-        >
-          View DFLs
-        </Button>
+            variant="danger"
+            size="sm"
+            className="ms-2"
+            onClick={() => {
+              const preparationOfEggsId = row.id;
+              if (preparationOfEggsId) {
+                getIdList(preparationOfEggsId);
+              } else {
+                console.error('preparationOfEggsId is undefined for this row:', row);
+                alert(t('Error: preparationOfEggsId is undefined!'));
+              }
+            }}
+          >
+            {t("View DFLs")}
+          </Button>
         </div>
       ),
       sortable: false,
@@ -481,142 +479,140 @@ function PreparationofeggsDFLsList() {
     //   hide: "md",
     // },
     {
-      name: "Lot number",
+      name: t("Lot number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Number of Cocoons in Kg",
+      name: t("Number of Cocoons in Kg"),
       selector: (row) => row.numberOfCocoonsCB,
       cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date of moth emergence",
+      name: t("Date of moth emergence"),
       selector: (row) => row.dateOfMothEmergence,
       cell: (row) => <span>{row.dateOfMothEmergence}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Generation Number",
+      name: t("Generation Number"),
       selector: (row) => row.generationNumber,
       cell: (row) => <span>{row.generationNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
-      cell: (row) => <span>{row.lineName  }</span>,
+      cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Egg sheet serial number",
+      name: t("Egg sheet serial number"),
       selector: (row) => row.eggSheetSerialNumber,
       cell: (row) => <span>{row.eggSheetSerialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of pairs",
+      name: t("Number of pairs"),
       selector: (row) => row.numberOfPairs,
       cell: (row) => <span>{row.numberOfPairs}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Number of Rejection",
+      name: t("Number of Rejection"),
       selector: (row) => row.numberOfRejection,
       cell: (row) => <span>{row.numberOfRejection}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DFLs obtained",
+      name: t("DFLs obtained"),
       selector: (row) => row.dflsObtained,
       cell: (row) => <span>{row.dflsObtained}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Egg Recovery %",
+      name: t("Egg Recovery %"),
       selector: (row) => row.eggRecoveryPercentage,
       cell: (row) => <span>{row.eggRecoveryPercentage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Parent Lot Number",
+      name: t("Parent Lot Number"),
       selector: (row) => row.parentLotNumber,
       cell: (row) => <span>{row.parentLotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Selected Cocoon's in Nos",
+      name: t("Selected Cocoon's in Nos"),
       selector: (row) => row.selectedCocoonsNo,
       cell: (row) => <span>{row.selectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rejected Cocoon's in Nos",
+      name: t("Rejected Cocoon's in Nos"),
       selector: (row) => row.rejectedCocoonsNo,
       cell: (row) => <span>{row.rejectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No of Pairs (%) (Selected Cocoon's)",
+      name: t("No of Pairs (%) (Selected Cocoon's)"),
       selector: (row) => row.pairNoSelectedCocoonsNo,
       cell: (row) => <span>{row.pairNoSelectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No of Pairs (%) (Rejected Cocoon's)",
+      name: t("No of Pairs (%) (Rejected Cocoon's)"),
       selector: (row) => row.pairNoRejectedCocoonsNo,
       cell: (row) => <span>{row.pairNoRejectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Err %(Selected Cocoon's)",
+      name: t("Err %(Selected Cocoon's)"),
       selector: (row) => row.errPerSelectedCocoonsNo,
       cell: (row) => <span>{row.errPerSelectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Err %(Rejected Cocoon's)",
+      name: t("Err %(Rejected Cocoon's)"),
       selector: (row) => row.errPerRejectedCocoonsNo,
       cell: (row) => <span>{row.errPerRejectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Remaining DFLs ",
+      name: t("Remaining DFLs"),
       selector: (row) => row.remainingDfls,
       cell: (row) => <span>{row.remainingDfls}</span>,
       sortable: true,
@@ -660,24 +656,21 @@ function PreparationofeggsDFLsList() {
     //   hide: "md",
     // },
     {
-      name: "Additional remarks",
+      name: t("Additional remarks"),
       selector: (row) => row.additionalRemarks,
       cell: (row) => <span>{row.additionalRemarks}</span>,
       sortable: true,
       hide: "md",
     },
-
   ];
 
-  
-
   return (
-    <Layout title="Preparation of Eggs (DFLs) List">
+    <Layout title={t("Preparation of Eggs (DFLs) List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Preparation of Eggs (DFLs) List
+              {t("Preparation of Eggs (DFLs) List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -688,7 +681,7 @@ function PreparationofeggsDFLsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -697,7 +690,7 @@ function PreparationofeggsDFLsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -731,8 +724,7 @@ function PreparationofeggsDFLsList() {
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day
-            (Bedwise)
+            {t("Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day (Bedwise)")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -775,7 +767,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed1">
-                                Bed 1<span className="text-danger">*</span>
+                                {t("Bed 1")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -784,11 +776,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed1 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 1"
+                                  placeholder={t("Bed 1")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 1 is required
+                                  {t("Bed 1 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -796,7 +788,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed2">
-                                Bed 2<span className="text-danger">*</span>
+                                {t("Bed 2")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -805,11 +797,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed2 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 1"
+                                  placeholder={t("Bed 2")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 2 is required
+                                  {t("Bed 2 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -817,7 +809,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed3">
-                                Bed 3<span className="text-danger">*</span>
+                                {t("Bed 3")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -826,11 +818,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed3 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 3"
+                                  placeholder={t("Bed 3")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 3 is required
+                                  {t("Bed 3 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -838,7 +830,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed4">
-                                Bed 4<span className="text-danger">*</span>
+                                {t("Bed 4")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -847,11 +839,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed4 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 4"
+                                  placeholder={t("Bed 4")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 4 is required
+                                  {t("Bed 4 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -859,7 +851,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5">
-                                Bed 5<span className="text-danger">*</span>
+                                {t("Bed 5")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -868,11 +860,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed5 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 5"
+                                  placeholder={t("Bed 5")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 5 is required
+                                  {t("Bed 5 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -880,7 +872,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed6">
-                                Bed 6<span className="text-danger">*</span>
+                                {t("Bed 6")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -889,11 +881,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed6 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 6"
+                                  placeholder={t("Bed 6")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 6 is required
+                                  {t("Bed 6 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -901,7 +893,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed7">
-                                Bed 7<span className="text-danger">*</span>
+                                {t("Bed 7")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -910,11 +902,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed7 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 7"
+                                  placeholder={t("Bed 7")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 7 is required
+                                  {t("Bed 7 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -922,7 +914,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed8">
-                                Bed 8<span className="text-danger">*</span>
+                                {t("Bed 8")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -931,11 +923,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed8 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 8"
+                                  placeholder={t("Bed 8")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 8 is required
+                                  {t("Bed 8 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -943,7 +935,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed9">
-                                Bed 9<span className="text-danger">*</span>
+                                {t("Bed 9")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -952,11 +944,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed9 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 9"
+                                  placeholder={t("Bed 9")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 9 is required
+                                  {t("Bed 9 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -964,8 +956,7 @@ function PreparationofeggsDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed10">
-                                Bed 10
-                                <span className="text-danger">*</span>
+                                {t("Bed 10")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -974,11 +965,11 @@ function PreparationofeggsDFLsList() {
                                   value={bedDetails.bed10 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 10"
+                                  placeholder={t("Bed 10")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Bed 10 is required
+                                  {t("Bed 10 is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -990,9 +981,8 @@ function PreparationofeggsDFLsList() {
                       <div className="gap-col mt-2">
                         <ul className="d-flex align-items-center justify-content-center gap g-3">
                           <li>
-                            {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Save
+                              {t("Save")}
                             </Button>
                           </li>
                           <li>
@@ -1001,7 +991,7 @@ function PreparationofeggsDFLsList() {
                               variant="secondary"
                               onClick={clear}
                             >
-                              Cancel
+                              {t("Cancel")}
                             </Button>
                           </li>
                         </ul>
@@ -1017,11 +1007,11 @@ function PreparationofeggsDFLsList() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
     <Modal.Header closeButton>
-        <Modal.Title>View DFL Details</Modal.Title>
+        <Modal.Title>{t("View DFL Details")}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
         {loading ? (
-            <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>
+            <h1 className="d-flex justify-content-center align-items-center">{t("Loading...")}</h1>
         ) : (
             <div style={{ overflowX: "auto", width: "100%" }}>
                 <table 
@@ -1029,24 +1019,24 @@ function PreparationofeggsDFLsList() {
                     style={{ 
                         tableLayout: "auto", 
                         width: "100%", 
-                        border: "1px solid black", // Set black border color
-                        borderCollapse: "collapse" // Ensure borders collapse correctly
+                        border: "1px solid black",
+                        borderCollapse: "collapse"
                     }}
                 >
                     <thead style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}>
                         <tr>
-                            <th style={{ width: "8%", border: "1px solid black" }}>ID</th>
-                            <th style={{ width: "19%", border: "1px solid black" }}>Lot Number</th>
-                            <th style={{ width: "18%", border: "1px solid black" }}>Parent Lot Number</th>
-                            <th style={{ width: "15%", border: "1px solid black" }}>Date of Moth Emergence</th>
-                            <th style={{ width: "15%", border: "1px solid black" }}>Laid On Date</th>
-                            <th style={{ width: "15%", border: "1px solid black" }}>Egg Sheet Serial Number</th>
-                            <th style={{ width: "10%", border: "1px solid black" }}>Number of Pairs</th>
-                            <th style={{ width: "10%", border: "1px solid black" }}>Number of Rejection</th>
-                            <th style={{ width: "10%", border: "1px solid black" }}>DFLs Obtained</th>
-                            <th style={{ width: "10%", border: "1px solid black" }}>Remaining DFLs</th>
-                            <th style={{ width: "10%", border: "1px solid black" }}>Test Results</th>
-                            <th style={{ width: "18%", border: "1px solid black" }}>Remarks</th>
+                            <th style={{ width: "8%", border: "1px solid black" }}>{t("ID")}</th>
+                            <th style={{ width: "19%", border: "1px solid black" }}>{t("Lot Number")}</th>
+                            <th style={{ width: "18%", border: "1px solid black" }}>{t("Parent Lot Number")}</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>{t("Date of Moth Emergence")}</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>{t("Laid On Date")}</th>
+                            <th style={{ width: "15%", border: "1px solid black" }}>{t("Egg Sheet Serial Number")}</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>{t("Number of Pairs")}</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>{t("Number of Rejection")}</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>{t("DFLs Obtained")}</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>{t("Remaining DFLs")}</th>
+                            <th style={{ width: "10%", border: "1px solid black" }}>{t("Test Results")}</th>
+                            <th style={{ width: "18%", border: "1px solid black" }}>{t("Remarks")}</th>
                         </tr>
                     </thead>
                     <tbody>

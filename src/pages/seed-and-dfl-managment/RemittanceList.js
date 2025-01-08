@@ -10,6 +10,7 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -22,6 +23,7 @@ function RemittanceList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -145,7 +147,7 @@ function RemittanceList() {
 
   const RemittanceDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -155,7 +157,7 @@ function RemittanceList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -163,7 +165,7 @@ function RemittanceList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -180,56 +182,56 @@ function RemittanceList() {
       grow: 2,
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "No Of DFls",
+        name: t("No Of DFls"),
         selector: (row) => row.numberOfDFLs,
         cell: (row) => <span>{row.numberOfDFLs}</span>,
         sortable: true,
         hide: "md",
       },
     {
-        name: "Total Amount",
+        name: t("Total Amount"),
         selector: (row) => row.totalAmount,
         cell: (row) => <span>{row.totalAmount}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Bill Number",
+        name: t("Bill Number"),
         selector: (row) => row.billNumber,
         cell: (row) => <span>{row.billNumber}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Bank Challan No",
+        name: t("Bank Challan No"),
         selector: (row) => row.bankChallanNumber,
         cell: (row) => <span>{row.bankChallanNumber}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Rtc 25",
+        name: t("Rtc 25"),
         selector: (row) => row.rtc25,
         cell: (row) => <span>{row.rtc25}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Date",
+        name: t("Date"),
         selector: (row) => row.date,
         cell: (row) => <span>{row.date}</span>,
         sortable: true,
@@ -239,11 +241,11 @@ function RemittanceList() {
   ];
 
   return (
-    <Layout title="List Of Remittance(Eggs/PC/Others)">
+    <Layout title={t("List Of Remittance(Eggs/PC/Others)")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Remittance(Eggs/PC/Others)"</Block.Title>
+            <Block.Title tag="h2">{t("List Of Remittance(Eggs/PC/Others)")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -253,7 +255,7 @@ function RemittanceList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -262,7 +264,7 @@ function RemittanceList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

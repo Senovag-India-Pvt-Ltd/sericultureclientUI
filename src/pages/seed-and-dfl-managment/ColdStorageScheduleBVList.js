@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function ColdStorageScheduleBVList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [listCalendarData, setCalendarData] = useState({});
@@ -269,7 +271,7 @@ function ColdStorageScheduleBVList() {
 
   const ColdStorageAlertDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -298,35 +300,35 @@ function ColdStorageScheduleBVList() {
     },
 
     {
-      name: "Grainage Details",
+      name: t("Grainage Details"),
       selector: (row) => row.grainageDetails,
       cell: (row) => <span>{row.grainageDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date of Deposit",
+      name: t("Date of Deposit"),
       selector: (row) => row.dateOfDeposit,
       cell: (row) => <span>{row.dateOfDeposit}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Remaining Duration",
+      name: t("Remaining Duration"),
       selector: (row) => row.remainingDuration,
       cell: (row) => <span>{row.remainingDuration}</span>,
       sortable: true,
@@ -334,7 +336,7 @@ function ColdStorageScheduleBVList() {
     },
     
     {
-      name: "Is Changed",
+      name: t("Is Changed"),
       selector: (row) => row.isChanged,
       cell: (row) => (
         <span>
@@ -352,7 +354,7 @@ function ColdStorageScheduleBVList() {
 
   const ColdStorageScheduleBVDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -390,42 +392,42 @@ function ColdStorageScheduleBVList() {
     },
 
     {
-      name: "Grainage Details",
+      name: t("Grainage Details"),
       selector: (row) => row.grainageDetails,
       cell: (row) => <span>{row.grainageDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Deposit",
+      name: t("Date Of Deposit"),
       selector: (row) => row.dateOfDeposit,
       cell: (row) => <span>{row.dateOfDeposit}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Schedule Type",
+      name: t("Schedule Type"),
       selector: (row) => row.scheduleType,
       cell: (row) => <span>{row.scheduleType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Release",
+      name: t("Date Of Release"),
       selector: (row) => row.dateOfRelease,
       cell: (row) => <span>{row.dateOfRelease}</span>,
       sortable: true,
@@ -454,7 +456,7 @@ function ColdStorageScheduleBVList() {
     // },
     
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -497,28 +499,28 @@ function ColdStorageScheduleBVList() {
       //   hide: "md",
       // },
       {
-        name: "Storage Temp ",
+        name: t("Storage Temp"),
         selector: (row) => row.storageTemp,
         cell: (row) => <span>{row.storageTemp}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "From Date",
+        name: t("From Date"),
         selector: (row) => row.fromDate,
         cell: (row) => <span>{row.fromDate}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "To Date",
+        name: t("To Date"),
         selector: (row) => row.toDate,
         cell: (row) => <span>{row.toDate}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Storage Duration",
+        name: t("Storage Duration"),
         selector: (row) => row.storageDuration,
         cell: (row) => <span>{row.storageDuration}</span>,
         sortable: true,
@@ -528,11 +530,11 @@ function ColdStorageScheduleBVList() {
   ];
 
   return (
-    <Layout title="Cold-Storage-Schedule BV List">
+    <Layout title={t("Cold Storage Schedule BV List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Cold-Storage Schedule BV List</Block.Title>
+            <Block.Title tag="h2">{t("Cold Storage Schedule BV List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -542,7 +544,7 @@ function ColdStorageScheduleBVList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -551,7 +553,7 @@ function ColdStorageScheduleBVList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -584,7 +586,7 @@ function ColdStorageScheduleBVList() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Alerts Window</Modal.Title>
+          <Modal.Title>{t("Alerts Window")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">
@@ -614,7 +616,7 @@ function ColdStorageScheduleBVList() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Schedule Table</Modal.Title>
+          <Modal.Title>{t("Schedule Table")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -17,6 +18,7 @@ function MaintenanceOfEggsAtColdEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -179,12 +181,12 @@ function MaintenanceOfEggsAtColdEdit() {
   };
 
 return (
-  <Layout title="Edit Maintenance of eggs at cold storage NSSO">
+  <Layout title={t("Edit Maintenance of eggs at cold storage NSSO")}>
     <Block.Head>
       <Block.HeadBetween>
         <Block.HeadContent>
           <Block.Title tag="h2">
-            Edit Maintenance of eggs at cold storage NSSO
+            {t("Edit Maintenance of eggs at cold storage NSSO")}
           </Block.Title>
          
         </Block.HeadContent>
@@ -196,7 +198,7 @@ return (
                 className="btn btn-primary btn-md d-md-none"
               >
                 <Icon name="arrow-long-left" />
-                <span>Go to List</span>
+                <span>{t("Go to List")}</span>
               </Link>
             </li>
             <li>
@@ -205,7 +207,7 @@ return (
                 className="btn btn-primary d-none d-md-inline-flex"
               >
                 <Icon name="arrow-long-left" />
-                <span>Go to List</span>
+                <span>{t("Go to List")}</span>
               </Link>
             </li>
           </ul>
@@ -217,12 +219,12 @@ return (
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Maintenance Of Eggs At Cold Storage
+              {t("Edit Maintenance Of Eggs At Cold Storage")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
@@ -260,7 +262,7 @@ return (
                 <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Lot Number<span className="text-danger">*</span>
+                                {t("Lot Number")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -269,11 +271,11 @@ return (
                                   value={data.lotNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Lot Number"
+                                  placeholder={t("Enter Lot Number")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Lot Number is required
+                                {t("Lot Number is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -282,7 +284,7 @@ return (
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs 
+                      {t("Number Of DFLs")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -293,7 +295,7 @@ return (
                         onChange={handleInputs}
                         maxLength="6"
                         type="text"
-                        placeholder="Enter Number Of DFLs received"
+                        placeholder={t("Enter Number Of DFLs received")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -306,7 +308,7 @@ return (
                 <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Incubation Details
+                                {t("Incubation Details")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -315,7 +317,7 @@ return (
                                   value={data.incubationDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Incubation Details"
+                                  placeholder={t("Enter Incubation Details")}
                                 />
                               </div>
                             </Form.Group>
@@ -324,7 +326,7 @@ return (
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of Cold storage<span className="text-danger">*</span>
+                                {t("Date of Cold storage")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Cold Storage">
                               {/* { isDataColdSet && ( */}
@@ -352,7 +354,7 @@ return (
                           <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Laid On Date<span className="text-danger">*</span>
+                      {t("Laid On Date")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                     {/* {isDataLaidDate && ( */}
@@ -379,7 +381,7 @@ return (
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of release<span className="text-danger">*</span>
+                                {t("Date of release")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataReleaseSet && ( */}
@@ -414,12 +416,12 @@ return (
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

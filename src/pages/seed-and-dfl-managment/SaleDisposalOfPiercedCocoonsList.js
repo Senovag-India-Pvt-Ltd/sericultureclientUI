@@ -10,11 +10,13 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalOfPiercedCocoonsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -145,7 +147,7 @@ function SaleDisposalOfPiercedCocoonsList() {
 
   const SaleOfDisposalDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -155,7 +157,7 @@ function SaleDisposalOfPiercedCocoonsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -163,7 +165,7 @@ function SaleDisposalOfPiercedCocoonsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -180,56 +182,56 @@ function SaleDisposalOfPiercedCocoonsList() {
       grow: 2,
     },
     {
-      name: "Total Lots",
+      name: t("Total Lots"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date of Disposal",
+      name: t("Date of Disposal"),
       selector: (row) => row.dateOfDisposal,
       cell: (row) => <span>{row.dateOfDisposal}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name and address of the PC Merchant",
+      name: t("Name and address of the PC Merchant"),
       selector: (row) => row.merchantNameAndAddress,
       cell: (row) => <span>{row.merchantNameAndAddress}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of cocoons",
+      name: t("Number of cocoons"),
       selector: (row) => row.numberOfCocoons,
       cell: (row) => <span>{row.numberOfCocoons}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Number Of Cocoons in Kgs",
+      name: t("Number Of Cocoons in Kgs"),
       selector: (row) => row.quantityInKgs,
       cell: (row) => <span>{row.quantityInKgs}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rate per Kgs",
+      name: t("Rate per Kgs"),
       selector: (row) => row.ratePerKg,
       cell: (row) => <span>{row.ratePerKg}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Total Amount",
+      name: t("Total Amount"),
       selector: (row) => row.totalAmount,
       cell: (row) => <span>{row.totalAmount}</span>,
       sortable: true,
@@ -238,12 +240,12 @@ function SaleDisposalOfPiercedCocoonsList() {
   ];
 
   return (
-    <Layout title="Sale/Disposal of Pierced Cocoons List">
+    <Layout title={t("Sale/Disposal of Pierced Cocoons List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Sale/Disposal of Pierced Cocoons List
+              {t("Sale/Disposal of Pierced Cocoons List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -254,7 +256,7 @@ function SaleDisposalOfPiercedCocoonsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -263,7 +265,7 @@ function SaleDisposalOfPiercedCocoonsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

@@ -10,11 +10,13 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -143,7 +145,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
 
   const RegisteredSeedProducerDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -153,7 +155,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -161,7 +163,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -178,77 +180,77 @@ function RegisteredSeedProducerNssoGrainagesList() {
       grow: 2,
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon Lot Number (MSC,Fc1,Fc2)",
+      name: t("Cocoon Lot Number (MSC,Fc1,Fc2)"),
       selector: (row) => row.cocoonLotNumber,
       cell: (row) => <span>{row.cocoonLotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of Cocoons (MSC,Fc1,Fc2)",
+      name: t("Number of Cocoons (MSC,Fc1,Fc2)"),
       selector: (row) => row.numberOfCocoonsCB,
       cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Source of Seed Cocoon's",
+      name: t("Source of Seed Cocoon's"),
       selector: (row) => row.sourceMasterName,
       cell: (row) => <span>{row.sourceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date of moth emergence",
+      name: t("Date of moth emergence"),
       selector: (row) => row.dateOfMothEmergence,
       cell: (row) => <span>{row.dateOfMothEmergence}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Egg sheet serial number",
+      name: t("Egg sheet serial number"),
       selector: (row) => row.eggSheetSerialNumber,
       cell: (row) => <span>{row.eggSheetSerialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of pairs",
+      name: t("Number of pairs"),
       selector: (row) => row.numberOfPairs,
       cell: (row) => <span>{row.numberOfPairs}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of Rejection",
+      name: t("Number of Rejection"),
       selector: (row) => row.numberOfRejection,
       cell: (row) => <span>{row.numberOfRejection}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DFLs obtained",
+      name: t("DFLs obtained"),
       selector: (row) => row.dflsObtained,
       cell: (row) => <span>{row.dflsObtained}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Egg Recovery %",
+      name: t("Egg Recovery %"),
       selector: (row) => row.eggRecoveryPercentage,
       cell: (row) => <span>{row.eggRecoveryPercentage}</span>,
       sortable: true,
@@ -256,21 +258,21 @@ function RegisteredSeedProducerNssoGrainagesList() {
     },
     
     {
-      name: "Test results",
+      name: t("Test results"),
       selector: (row) => row.testResults,
       cell: (row) => <span>{row.testResults}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Certification (Yes/No)",
+      name: t("Certification (Yes/No)"),
       selector: (row) => row.certification,
       cell: (row) => <span>{row.certification}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Additional remarks",
+      name: t("Additional remarks"),
       selector: (row) => row.additionalRemarks,
       cell: (row) => <span>{row.additionalRemarks}</span>,
       sortable: true,
@@ -279,12 +281,12 @@ function RegisteredSeedProducerNssoGrainagesList() {
   ];
 
   return (
-    <Layout title="List Of Preparation Of Eggs (DFLs) RSP/NSSO">
+    <Layout title={t("List Of Preparation Of Eggs (DFLs) RSP/NSSO")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              List Of Preparation Of Eggs (DFLs) RSP/NSSO
+              {t("List Of Preparation Of Eggs (DFLs) RSP/NSSO")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -295,7 +297,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -304,7 +306,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -21,6 +22,8 @@ function InspectionConfig() {
   });
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -205,15 +208,15 @@ function InspectionConfig() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
@@ -226,17 +229,17 @@ function InspectionConfig() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Inspection Config">
+    <Layout title={t("Inspection Config")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Inspection Config</Block.Title>
+            <Block.Title tag="h2">{t("Inspection Config")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -274,7 +277,7 @@ function InspectionConfig() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n2">
                       <Form.Label>
-                        Inspection Type<span className="text-danger">*</span>
+                        {t("Inspection Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -288,13 +291,13 @@ function InspectionConfig() {
                             data.inspectionType === "0"
                           }
                         >
-                          <option value="">Select Inspection Type</option>
-                          <option value="1">Farmer</option>
-                          <option value="2">Reeler</option>
-                          <option value="3">Reeler License Renewal</option>
+                          <option value="">{t("Select Inspection Type")}</option>
+                          <option value="1">{t("Farmer")}</option>
+                          <option value="2">{t("Reeler")}</option>
+                          <option value="3">{t("Reeler License Renewal")}</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Inspection Type is required
+                          {t("Inspection Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -312,12 +315,12 @@ function InspectionConfig() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2 ms-n4">
-                        Is GPS Inspection Required?
+                        {t("Is GPS Inspection Required?")}
                       </Form.Label>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
-                    <Form.Label>Select Documents</Form.Label>
+                    <Form.Label>{t("Select Documents")}</Form.Label>
                     {documentListData.map((doc) => (
                       <div key={doc.documentMasterId}>
                         <Form.Group as={Row} className="form-group mt-1">
@@ -349,12 +352,12 @@ function InspectionConfig() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

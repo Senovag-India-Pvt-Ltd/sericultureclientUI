@@ -12,11 +12,13 @@ import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreservationofseedcocoonforprocessingList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [listLogsForMarketData, setListLogsForMarketData] = useState({});
@@ -364,7 +366,7 @@ function PreservationofseedcocoonforprocessingList() {
 
   const ReceiptofDFLsfromtheP4grainageGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -393,7 +395,7 @@ function PreservationofseedcocoonforprocessingList() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -401,35 +403,35 @@ function PreservationofseedcocoonforprocessingList() {
     },
     
     {
-      name: "Name Of Supplier",
+      name: t("Name Of Supplier"),
       selector: (row) => row.nameOfSupplier,
       cell: (row) => <span>{row.nameOfSupplier}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spun On Date",
+      name: t("Spun On Date"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date of supply",
+      name: t("Date of supply"),
       selector: (row) => row.dateOfSupply,
       cell: (row) => <span>{row.dateOfSupply}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "No Of Cocoons Dispatched",
+      name: t("No Of Cocoons Dispatched"),
       selector: (row) => row.numberOfCocoonsDispatched,
       cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNo,
       cell: (row) => <span>{row.invoiceNo}</span>,
       sortable: true,
@@ -446,7 +448,7 @@ function PreservationofseedcocoonforprocessingList() {
     //   hide: "md",
     // },
     {
-      name: "Accepted or not",
+      name: t("Accepted or not"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span>
@@ -463,7 +465,7 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
-      name: "Sender Type",
+      name: t("Sender Type"),
       selector: (row) => row.senderType,
       cell: (row) => <span>{row.senderType}</span>,
       sortable: true,
@@ -473,7 +475,7 @@ function PreservationofseedcocoonforprocessingList() {
 
   const PreservationOfSeedCocoonGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -502,14 +504,14 @@ function PreservationofseedcocoonforprocessingList() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotParentLevel,
       cell: (row) => <span>{row.lotParentLevel}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"),
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
@@ -517,35 +519,35 @@ function PreservationofseedcocoonforprocessingList() {
     },
     
     {
-      name: "Buyer",
+      name: t("Buyer"),
       selector: (row) => row.buyerName,
       cell: (row) => <span>{row.buyerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Of Cocoons in Kgs",
+      name: t("Quantity Of Cocoons in Kgs"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Price",
+      name: t("Price"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Out Amount",
+      name: t("Sold Out Amount"),
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
@@ -553,7 +555,7 @@ function PreservationofseedcocoonforprocessingList() {
     },
 
     {
-      name: "Accepted or not",
+      name: t("Accepted or not"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span>
@@ -601,14 +603,14 @@ function PreservationofseedcocoonforprocessingList() {
     //   grow: 2,
     // },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotParentLevel,
       cell: (row) => <span>{row.lotParentLevel}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"),
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
@@ -616,42 +618,42 @@ function PreservationofseedcocoonforprocessingList() {
     },
     
     {
-      name: "Buyer",
+      name: t("Buyer"),
       selector: (row) => row.buyerName,
       cell: (row) => <span>{row.buyerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Of Cocoons in Kgs",
+      name: t("Quantity Of Cocoons in Kgs"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Price",
+      name: t("Price"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Out Amount",
+      name: t("Sold Out Amount"),
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Status",
+      name: t("Status"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span style={{ color: row.isAccepted === 2 ? 'red' : 'inherit', fontWeight: row.isAccepted === 2 ? 'bold' : 'normal' }}>
@@ -675,7 +677,7 @@ function PreservationofseedcocoonforprocessingList() {
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -685,7 +687,7 @@ function PreservationofseedcocoonforprocessingList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -693,7 +695,7 @@ function PreservationofseedcocoonforprocessingList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -711,7 +713,7 @@ function PreservationofseedcocoonforprocessingList() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -725,35 +727,35 @@ function PreservationofseedcocoonforprocessingList() {
     //   hide: "md",
     // },
     {
-      name: "Race ",
+      name: t("Race "),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterName,
       cell: (row) => <span>{row.marketMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm",
+      name: t("Farm"),
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Name of the Farmer",
+      name: t(" Name of the Farmer"),
       selector: (row) => row.nameOfTheGovernmentSeedFarmOrFarmer,
       cell: (row) => <span>{row.nameOfTheGovernmentSeedFarmOrFarmer}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Seed Cocoon Supply",
+      name: t("Date Of Seed Cocoon Supply"),
       selector: (row) => row.dateOfSeedCocoonSupply,
       cell: (row) => <span>{row.dateOfSeedCocoonSupply}</span>,
       sortable: true,
@@ -761,49 +763,49 @@ function PreservationofseedcocoonforprocessingList() {
     },
     
     {
-      name: "Spun On Date",
+      name: t("Spun On Date"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{formatDate(row.spunOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Crop Number",
+      name: t("Crop Number"),
       selector: (row) => row.cropNumber,
       cell: (row) => <span>{row.cropNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Name",
+      name: t("Line Name"),
       selector: (row) => row.lineName,
       cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon supplied in Kg",
+      name: t("Cocoon supplied in Kg"),
       selector: (row) => row.bedNumberOrKgsOfCocoonsSupplied,
       cell: (row) => <span>{row.bedNumberOrKgsOfCocoonsSupplied}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon supplied in Nos",
+      name: t("Cocoon supplied in Nos"),
       selector: (row) => row.cacoonSuppliedNumbers,
       cell: (row) => <span>{row.cacoonSuppliedNumbers}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of pupa examined",
+      name: t("Number of pupa examined"),
       selector: (row) => row.numberOfPupaExamined,
       cell: (row) => <span>{row.numberOfPupaExamined}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cocoon rejection details/ numbers",
+      name: t("Cocoon rejection details/ numbers"),
       selector: (row) => row.cocoonRejectionDetails,
       cell: (row) => <span>{row.cocoonRejectionDetails}</span>,
       sortable: true,
@@ -811,14 +813,14 @@ function PreservationofseedcocoonforprocessingList() {
     },
     
     {
-      name: "Invoice Date",
+      name: t("Invoice Date"),
       selector: (row) => row.invoiceDate,
       cell: (row) => <span>{formatDate(row.invoiceDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Rate Per Kg",
+      name: t("Rate Per Kg"),
       selector: (row) => row.ratePerKg,
       cell: (row) => <span>{row.ratePerKg}</span>,
       sortable: true,
@@ -828,12 +830,12 @@ function PreservationofseedcocoonforprocessingList() {
   ];
 
   return (
-    <Layout title="Preservation of seed cocoon for processing List">
+    <Layout title={t("Preservation of seed cocoon for processing List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Preservation of seed cocoon for processing List
+              {t("Preservation of seed cocoon for processing List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -844,7 +846,7 @@ function PreservationofseedcocoonforprocessingList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -854,7 +856,7 @@ function PreservationofseedcocoonforprocessingList() {
                 onClick={() => getRejectedList()}
                 className="ms-2"
               >
-                Rejected List For Market
+                {t("Rejected List For Market")}
               </Button>
             </li>
               <li>
@@ -863,7 +865,7 @@ function PreservationofseedcocoonforprocessingList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -897,7 +899,7 @@ function PreservationofseedcocoonforprocessingList() {
       {showModal && (
         <Modal show={showModal} onHide={handleCloseModal} size="xl" className="modal-item">
           <Modal.Header closeButton>
-            <Modal.Title>Alerts Window</Modal.Title>
+            <Modal.Title>{t("Alerts Window")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Block className="mt-2">
@@ -927,7 +929,7 @@ function PreservationofseedcocoonforprocessingList() {
       {showModal1 && (
         <Modal show={showModal1} onHide={handleCloseModal1} size="xl" className="modal-item">
           <Modal.Header closeButton>
-            <Modal.Title>Alerts Window For Market</Modal.Title>
+            <Modal.Title>{t("Alerts Window For Market")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Block className="mt-2">
@@ -955,7 +957,7 @@ function PreservationofseedcocoonforprocessingList() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>Rejected List For Market</Modal.Title>
+    <Modal.Title>{t("Rejected List For Market")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -982,7 +984,7 @@ function PreservationofseedcocoonforprocessingList() {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal4}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import MaintenanceOfPiercedCocoons from "./MaintenanceOfPiercedCocoons";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggLayingSheetsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -146,7 +148,7 @@ function MaintenanceOfEggLayingSheetsList() {
 
   const MaintenanceOfEggLayingSheetsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -156,7 +158,7 @@ function MaintenanceOfEggLayingSheetsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -164,7 +166,7 @@ function MaintenanceOfEggLayingSheetsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -181,35 +183,35 @@ function MaintenanceOfEggLayingSheetsList() {
       // grow: 2,
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of Egg Sheets Used",
+      name: t("Number Of Egg Sheets Used"),
       selector: (row) => row.numberOfEggSheetsUsed,
       cell: (row) => <span>{row.numberOfEggSheetsUsed}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Egg Sheet Number",
+      name: t("Egg Sheet Number"),
       selector: (row) => row.eggSheetNumbers,
       cell: (row) => <span>{row.eggSheetNumbers}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Balance Number Of Sheets",
+      name: t("Balance Number Of Sheets"),
       selector: (row) => row.balanceNumberOfSheets,
       cell: (row) => <span>{row.balanceNumberOfSheets}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Date",
+        name: t("Date"),
         selector: (row) => row.date,
         cell: (row) => <span>{row.date}</span>,
         sortable: true,
@@ -219,11 +221,11 @@ function MaintenanceOfEggLayingSheetsList() {
   ];
 
   return (
-    <Layout title="List Of Maintenance Of Egg Laying Sheets">
+    <Layout title={t("List Of Maintenance Of Egg Laying Sheets")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Maintenance Of Egg Laying Sheets"</Block.Title>
+            <Block.Title tag="h2">{t("List Of Maintenance Of Egg Laying Sheets")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -233,7 +235,7 @@ function MaintenanceOfEggLayingSheetsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -242,7 +244,7 @@ function MaintenanceOfEggLayingSheetsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
