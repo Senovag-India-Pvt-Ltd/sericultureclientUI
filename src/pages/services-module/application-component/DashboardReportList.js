@@ -860,7 +860,7 @@ function DashboardReportList() {
   const generateWorkOrderAcknowledgment = async (applicationFormId,schemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        baseURLReport + `pdmcWorkOrder`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
