@@ -12,11 +12,13 @@ import Swal from "sweetalert2";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function DispatchofCocoonstoP4Grainage() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     grainageUserMasterId: "",
     lineYear: "",
@@ -259,12 +261,12 @@ function DispatchofCocoonstoP4Grainage() {
   };
 
   return (
-    <Layout title=" Dispatch of Cocoons to P4 Grainage">
+    <Layout title={t("Dispatch of Cocoons to P4 Grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Dispatch of Cocoons to P4 Grainage
+              {t("Dispatch of Cocoons to P4 Grainage")}
             </Block.Title>
            
           </Block.HeadContent>
@@ -276,7 +278,7 @@ function DispatchofCocoonstoP4Grainage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -285,7 +287,7 @@ function DispatchofCocoonstoP4Grainage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -297,7 +299,7 @@ function DispatchofCocoonstoP4Grainage() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Dispatch Of Cocoons To P4 Grainage
+              {t("Dispatch of Cocoons to P4 Grainage")}
                 </Card.Header>
                     <Card.Body>
                         <Row className="g-gs">
@@ -305,7 +307,7 @@ function DispatchofCocoonstoP4Grainage() {
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Grainage<span className="text-danger">*</span>
+                          {t("Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -316,7 +318,7 @@ function DispatchofCocoonstoP4Grainage() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Grainage</option>
+                              <option value="">{t("Select Grainage")}</option>
                               {grainageListData && grainageListData.length?(grainageListData.map((list) => (
                                 <option
                                   key={list.userMasterId}
@@ -327,7 +329,7 @@ function DispatchofCocoonstoP4Grainage() {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Grainage is required
+                              {t("Grainage is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -337,7 +339,7 @@ function DispatchofCocoonstoP4Grainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year
+                          {t("Line Details/year")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -349,7 +351,7 @@ function DispatchofCocoonstoP4Grainage() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -402,7 +404,7 @@ function DispatchofCocoonstoP4Grainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Screening Batch No
+                          {t("Screening Batch No")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -411,7 +413,7 @@ function DispatchofCocoonstoP4Grainage() {
                             value={data.screeningBatchNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Screening Batch No"
+                            placeholder={t("Enter Screening Batch No")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -424,7 +426,7 @@ function DispatchofCocoonstoP4Grainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -436,7 +438,7 @@ function DispatchofCocoonstoP4Grainage() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -457,7 +459,7 @@ function DispatchofCocoonstoP4Grainage() {
                     <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                      {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -468,7 +470,7 @@ function DispatchofCocoonstoP4Grainage() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -476,7 +478,7 @@ function DispatchofCocoonstoP4Grainage() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -507,7 +509,7 @@ function DispatchofCocoonstoP4Grainage() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number of Cocoons Dispatched
+                                {t("Number of Cocoons Dispatched")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -516,7 +518,7 @@ function DispatchofCocoonstoP4Grainage() {
                                 value={data.numberOfCocoonsDispatched}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter Number of Cocoons Dispatched"
+                                placeholder={t("Enter Number of Cocoons Dispatched")}
                                 />
                               </div>
                             </Form.Group>
@@ -525,7 +527,7 @@ function DispatchofCocoonstoP4Grainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Spun on Date
+                                {t("Spun on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -548,7 +550,7 @@ function DispatchofCocoonstoP4Grainage() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Date of Supply</Form.Label>
+                              <Form.Label>{t("Date of Supply")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.dateOfSupply}
@@ -571,7 +573,7 @@ function DispatchofCocoonstoP4Grainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Dispatch Date
+                                {t("Dispatch Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -600,12 +602,12 @@ function DispatchofCocoonstoP4Grainage() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

@@ -10,10 +10,15 @@ import { useState, useEffect } from "react";
 import { createTheme } from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TraderActivate() {
+  // Translation
+  const { t } = useTranslation();
+  
   const [data, setData] = useState({
     traderLicenseId: "",
     username: "",
@@ -629,11 +634,11 @@ function TraderActivate() {
   };
 
   return (
-    <Layout title="Activate trader">
+    <Layout title="Activate Trader">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activate trader</Block.Title>
+            <Block.Title tag="h2">{t('Activate Trader')}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -666,7 +671,7 @@ function TraderActivate() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Trader
+                      {t('Search Trader')}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -676,10 +681,8 @@ function TraderActivate() {
                           onChange={handleTraderSearchInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="traderLicenseNumber">
-                            Trader License Number
-                          </option>
+                          <option value="mobileNumber">{t('Mobile Number')}</option>
+                          <option value="traderLicenseNumber">{t('Trader License Number')}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -691,7 +694,7 @@ function TraderActivate() {
                         value={traderSearch.text}
                         onChange={handleTraderSearchInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t('Search')}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -700,7 +703,7 @@ function TraderActivate() {
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t('Search')}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -794,7 +797,7 @@ function TraderActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="user">
-                        Trader Name<span className="text-danger">*</span>
+                        {t('Trader Name')}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -803,11 +806,11 @@ function TraderActivate() {
                           value={traderName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter User Name"
+                          placeholder={t('Enter User Name')}
                           readOnly
                         />
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                          {t('User Name is required')}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -816,7 +819,7 @@ function TraderActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="user">
-                        User Name<span className="text-danger">*</span>
+                        {t('User Name')}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -825,11 +828,11 @@ function TraderActivate() {
                           value={data.username}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter User Name"
+                          placeholder={t('Enter User Name')}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          User Name is required
+                          {t('User Name is required')}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -837,7 +840,7 @@ function TraderActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="password">
-                        Password<span className="text-danger">*</span>
+                        {t('Password')}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -846,11 +849,11 @@ function TraderActivate() {
                           value={data.password}
                           onChange={handleInputs}
                           type="password"
-                          placeholder="Enter Password"
+                          placeholder={t('Enter Password')}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Password is required
+                          {t('Password is required')}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -858,7 +861,7 @@ function TraderActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="phoneNumber">
-                        Mobile number<span className="text-danger">*</span>
+                        {t('Mobile Number')}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -868,11 +871,11 @@ function TraderActivate() {
                           onChange={handleInputs}
                           type="text"
                           maxLength="10"
-                          placeholder="Enter Mobile Number"
+                          placeholder={t('Enter Mobile Number')}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mobile Number Should Contain 10 digits
+                          {t('Mobile Number Should Contain 10 digits')}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -881,7 +884,7 @@ function TraderActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="phoneNumber">
-                        Device ID<span className="text-danger">*</span>
+                        {t('Device ID')}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -890,11 +893,11 @@ function TraderActivate() {
                           value={data.deviceId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Device Id"
+                          placeholder={t('Enter Device Id')}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Device Id is required
+                          {t('Device Id is required')}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -930,12 +933,12 @@ function TraderActivate() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" disabled={show}>
-                    Activate
+                    {t('Activate')}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
                 </li>
               </ul>
@@ -968,7 +971,7 @@ function TraderActivate() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Activate trader</Modal.Title>
+          <Modal.Title>{t('Edit Activate trader')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validatedEdit} onSubmit={editPostData}>
@@ -1013,7 +1016,7 @@ function TraderActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="user">
-                          Trader Name<span className="text-danger">*</span>
+                          {t('Trader Name')}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1022,11 +1025,11 @@ function TraderActivate() {
                             value={editTraderName}
                             // onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter User Name"
+                            placeholder={t('Enter User Name')}
                             readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            {t('User Name is required')}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1070,7 +1073,7 @@ function TraderActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="user">
-                          User Name<span className="text-danger">*</span>
+                          {t('User Name')}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1079,11 +1082,11 @@ function TraderActivate() {
                             value={editData.username}
                             onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter User Name"
+                            placeholder={t('Enter User Name')}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            {t('User Name is required')}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1091,7 +1094,7 @@ function TraderActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="password">
-                          Password<span className="text-danger">*</span>
+                          {t('Password')}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1100,11 +1103,11 @@ function TraderActivate() {
                             value={editData.password}
                             onChange={handleEditInputs}
                             type="password"
-                            placeholder="Enter Password"
+                            placeholder={t('Enter Password')}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Password is required
+                            {t('Password is required')}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1112,7 +1115,7 @@ function TraderActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="phoneNumber">
-                          Mobile number<span className="text-danger">*</span>
+                          {t('Mobile Number')}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1122,11 +1125,11 @@ function TraderActivate() {
                             onChange={handleEditInputs}
                             type="text"
                             maxLength="10"
-                            placeholder="Enter Mobile Number"
+                            placeholder={t('Enter Mobile Number')}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number Should Contain 10 digits
+                            {t('Mobile Number Should Contain 10 digits')}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1135,7 +1138,7 @@ function TraderActivate() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="phoneNumber">
-                          Device ID<span className="text-danger">*</span>
+                          {t('Device ID')}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1144,11 +1147,11 @@ function TraderActivate() {
                             value={editData.deviceId}
                             onChange={handleEditInputs}
                             type="text"
-                            placeholder="Enter Device Id"
+                            placeholder={t('Enter Device Id')}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Device Id is required
+                            {t('Device Id is required')}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1162,7 +1165,7 @@ function TraderActivate() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                      {t('Update')}
                     </Button>
                   </li>
                   <li>
@@ -1171,7 +1174,7 @@ function TraderActivate() {
                       variant="secondary"
                       onClick={clearEdit}
                     >
-                      Cancel
+                      {t('Cancel')}
                     </Button>
                   </li>
                 </ul>

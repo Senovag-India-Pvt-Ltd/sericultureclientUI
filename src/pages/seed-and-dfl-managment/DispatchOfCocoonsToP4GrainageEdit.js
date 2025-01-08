@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DispatchofCocoonstoP4GrainageEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -293,11 +295,11 @@ function DispatchofCocoonstoP4GrainageEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Dispatch of Cocoons to P4 Grainage">
+    <Layout title={t("Edit Dispatch of Cocoons to P4 Grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Dispatch of Cocoons to P4 Grainage</Block.Title>
+            <Block.Title tag="h2">{t("Edit Dispatch of Cocoons to P4 Grainage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -307,7 +309,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -316,7 +318,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -328,19 +330,19 @@ function DispatchofCocoonstoP4GrainageEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Dispatch of Cocoons to P4 Grainage
+              {t("Edit Dispatch of Cocoons to P4 Grainage")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Grainage<span className="text-danger">*</span>
+                          {t("Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -351,7 +353,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Grainage</option>
+                              <option value="">{t("Select Grainage")}</option>
                               {grainageListData && grainageListData.length?(grainageListData.map((list) => (
                                 <option
                                   key={list.userMasterId}
@@ -362,7 +364,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Grainage is required
+                              {t("Grainage is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -372,7 +374,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year
+                          {t("Line Details/year")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -384,7 +386,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -437,7 +439,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Screening Batch No
+                          {t("Screening Batch No")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -446,7 +448,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                             value={data.screeningBatchNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Screening Batch No"
+                            placeholder={t("Enter Screening Batch No")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -459,7 +461,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -471,7 +473,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -492,7 +494,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                     <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                      {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -503,7 +505,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           onBlur={() => handleInputs}
                         //   required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -511,7 +513,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -542,7 +544,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number of Cocoons Dispatched
+                                {t("Number of Cocoons Dispatched")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -551,7 +553,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                                 value={data.numberOfCocoonsDispatched}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter Number of Cocoons Dispatched"
+                                placeholder={t("Enter Number of Cocoons Dispatched")}
                                 />
                               </div>
                             </Form.Group>
@@ -560,7 +562,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                                Selected Bed as per the Mean Performance
+                                {t("Selected Bed as per the Mean Performance")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -575,19 +577,19 @@ function DispatchofCocoonstoP4GrainageEdit() {
                                   //   data.selectedBedAsPerTheMeanPerformance === "0"
                                   // }
                                 >
-                                  <option value="Bed 1">Bed 1</option>
-                                  <option value="Bed 2">Bed 2</option>
-                                  <option value="Bed 3">Bed 3</option>
-                                  <option value="Bed 4">Bed 4</option>
-                                  <option value="Bed 5">Bed 5</option>
-                                  <option value="Bed 6">Bed 6</option>
-                                  <option value="Bed 7">Bed 7</option>
-                                  <option value="Bed 8">Bed 8</option>
-                                  <option value="Bed 9">Bed 9</option>
-                                  <option value="Bed 10">Bed 10</option>
+                                  <option value="Bed 1">{t("Bed 1")}</option>
+                                  <option value="Bed 2">{t("Bed 2")}</option>
+                                  <option value="Bed 3">{t("Bed 3")}</option>
+                                  <option value="Bed 4">{t("Bed 4")}</option>
+                                  <option value="Bed 5">{t("Bed 5")}</option>
+                                  <option value="Bed 6">{t("Bed 6")}</option>
+                                  <option value="Bed 7">{t("Bed 7")}</option>
+                                  <option value="Bed 8">{t("Bed 8")}</option>
+                                  <option value="Bed 9">{t("Bed 9")}</option>
+                                  <option value="Bed 10">{t("Bed 10")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Selected Bed as per the Mean Performance is required
+                                  {t("Selected Bed as per the Mean Performance is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -596,7 +598,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Spun on Date
+                                {t("Spun on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataSpunDate && (
@@ -621,7 +623,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Date of Supply</Form.Label>
+                              <Form.Label> {t("Date of Supply")}</Form.Label>
                               <div className="form-control-wrap">
                               {isDataSupplyDate && (
                                 <DatePicker
@@ -646,7 +648,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Dispatch Date
+                                {t("Dispatch Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataDispatchDate && (
@@ -678,12 +680,12 @@ function DispatchofCocoonstoP4GrainageEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

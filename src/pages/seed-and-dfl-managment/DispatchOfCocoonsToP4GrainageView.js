@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import DispatchofCocoonstoP4Grainage from "./DispatchofCocoonstoP4Grainage";
-
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -24,6 +24,7 @@ function DispatchofCocoonstoP4GrainageView() {
   // const [data] = useState(CasteDatas);
   const [dispatchCocoon, setDispatchCocoon] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -52,11 +53,11 @@ function DispatchofCocoonstoP4GrainageView() {
   }, [id]);
 
   return (
-    <Layout title="View Dispatch of Cocoons to P4 Grainage">
+    <Layout title={t("View Dispatch of Cocoons to P4 Grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Dispatch of Cocoons to P4 Grainage Details </Block.Title>
+            <Block.Title tag="h2">{t("View Dispatch of Cocoons to P4 Grainage Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -66,7 +67,7 @@ function DispatchofCocoonstoP4GrainageView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +76,7 @@ function DispatchofCocoonstoP4GrainageView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -85,11 +86,11 @@ function DispatchofCocoonstoP4GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Dispatch of Cocoons to P4 Grainage Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Dispatch of Cocoons to P4 Grainage Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -97,70 +98,70 @@ function DispatchofCocoonstoP4GrainageView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{dispatchCocoon.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Grainage:
+                          {t("Grainage")}:
                         </td>
                         <td>{dispatchCocoon.grainageMasterName}</td>
                       </tr>
                       {/* <tr>
-                        <td style={styles.ctstyle}>Line Year:</td>
+                        <td style={styles.ctstyle}>{t("Line Year")}:</td>
                         <td>{dispatchCocoon.lineName}</td>
                       </tr> */}
                       {/* <tr>
                         <td style={styles.ctstyle}>
-                        Source:
+                        {t("Source")}:
                         </td>
                         <td>{dispatchCocoon.sourceMasterName}</td>
                       </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
-                        Screening Batch No:
+                        {t("Screening Batch No")}:
                         </td>
                         <td>{dispatchCocoon.screeningBatchNo}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Generation Number:
+                        {t("Generation Number")}:
                         </td>
                         <td>{dispatchCocoon.generationNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Spun On Date:
+                        {t("Spun On Date")}:
                         </td>
                         <td>{dispatchCocoon.spunOnDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Lot Number:
+                        {t("Lot Number")}:
                         </td>
                         <td>{dispatchCocoon.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Number Of Cocoons Dispatched:
+                        {t("Number Of Cocoons Dispatched")}:
                         </td>
                         <td>{dispatchCocoon.numberOfCocoonsDispatched}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Date Of Supply:
+                        {t("Date Of Supply")}:
                         </td>
                         <td>{dispatchCocoon.dateOfSupply}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Dispatch Date:
+                        {t("Dispatch Date")}:
                         </td>
                         <td>{dispatchCocoon.dispatchDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Invoice No:
+                        {t("Invoice No")}:
                         </td>
                         <td>{dispatchCocoon.invoiceNo}</td>
                       </tr>
