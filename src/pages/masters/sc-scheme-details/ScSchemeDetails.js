@@ -27,6 +27,10 @@ function ScSchemeDetails() {
     hectare: "",
     spacing: "",
     calculationBasedOn: "",
+    workOrderForScheme: "",
+    sanctionOrderForScheme: "",
+    unitForScheme: "",
+    acknowledgementForScheme: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -69,6 +73,10 @@ function ScSchemeDetails() {
                 hectare: "",
                 spacing: "",
                 calculationBasedOn: "",
+                workOrderForScheme: "",
+                sanctionOrderForScheme: "",
+                unitForScheme: "",
+                acknowledgementForScheme: "",
             });
             setValidated(false);
           }
@@ -99,6 +107,10 @@ function ScSchemeDetails() {
         hectare: "",
         spacing: "",
         calculationBasedOn: "",
+        workOrderForScheme: "",
+        sanctionOrderForScheme: "",
+        unitForScheme: "",
+        acknowledgementForScheme: "",
     });
   };
 
@@ -282,6 +294,132 @@ function ScSchemeDetails() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme For Work Order
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="workOrderForScheme"
+                          value={data.workOrderForScheme}
+                          onChange={handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.calculationBasedOn === undefined ||
+                          //   data.calculationBasedOn === "0"
+                          // }
+                        >
+                          <option value="">
+                            Select Scheme For Work Order
+                          </option>
+                          <option value="PDMC">PDMC</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Test Results is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme For Sanction Order 
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="sanctionOrderForScheme"
+                          value={data.sanctionOrderForScheme}
+                          onChange={handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.calculationBasedOn === undefined ||
+                          //   data.calculationBasedOn === "0"
+                          // }
+                        >
+                          <option value="">
+                            Select Scheme For Sanction Order
+                          </option>
+                          <option value="PDMC">PDMC</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Test Results is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme For Acknowledgement
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="acknowledgementForScheme"
+                          value={data.acknowledgementForScheme}
+                          onChange={handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.calculationBasedOn === undefined ||
+                          //   data.calculationBasedOn === "0"
+                          // }
+                        >
+                          <option value="">
+                            Select Scheme For Acknowledgement
+                          </option>
+                          <option value="PDMC">PDMC</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Test Results is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme For Unit
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="unitForScheme"
+                          value={data.unitForScheme}
+                          onChange={handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.calculationBasedOn === undefined ||
+                          //   data.calculationBasedOn === "0"
+                          // }
+                        >
+                          <option value="">
+                            Select Scheme For Unit
+                          </option>
+                          <option value="PDMC">PDMC</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Test Results is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  
 
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">

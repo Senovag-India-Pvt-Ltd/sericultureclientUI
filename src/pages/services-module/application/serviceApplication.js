@@ -45,8 +45,14 @@ function ServiceApplication() {
     userId: "",
     spacingId: "",
     hectareId: "",
-    periodFrom: new Date("2023-04-01"),
-    periodTo: new Date("2024-03-31"),
+    periodFrom: new Date(),
+    periodTo: new Date(),
+    cocoonsWeight:"",
+    availBonus:"",
+    // availBonus: true,
+    lotWeight:"",
+    lotNo:"",
+    transactionDate:""
   });
 
   // console.log("nodu", data);
@@ -111,21 +117,42 @@ function ServiceApplication() {
 
   const [schemeDetails, setSchemeDetails] = useState({});
   const [schemeId, setSchemeId] = useState("");
+  const [showButton, setShowButton] = useState(false); 
 
   // Get data from API
-  const getAreaDetailsList = () => {
-    setLoading(true);
-    api
-      .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
-      .then((response) => {
-        setSchemeDetails(response.data.content); // Store response data in state
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
-  };
-
+  // const getAreaDetailsList = () => {
+  //   setLoading(true);
+  //   api
+  //     .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+  //     .then((response) => {
+  //       setSchemeDetails(response.data.content); // Store response data in state
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //     });
+  // };
+ // Get data from API
+ const getAreaDetailsList = () => {
+  setLoading(true);
+  api
+    .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+    .then((response) => {
+      const details = response.data.content;
+      setSchemeDetails(details); // Store response data in state
+      // Check if unitForScheme matches "Bivoltine Bonus"
+      if (details.unitForScheme === "Bivoltine Bonus") {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+      setShowButton(false); // Hide button in case of error
+    });
+};
   useEffect(() => {
     if (schemeId) {
       getAreaDetailsList();
@@ -318,6 +345,12 @@ function ServiceApplication() {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
 
   // const handleShowModal = (post) => {
   //   setPendingPostData(post); // Store post data in state
@@ -811,6 +844,18 @@ function ServiceApplication() {
     }
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -901,20 +946,114 @@ function ServiceApplication() {
   //     calculateBonusAmount();
   //   }
   // };
-  const handleCalculateUnitPrice = () => {
-    // if (!schemeDetails || !schemeDetails.calculateBasedOn) {
-    //   alert("Scheme details are not loaded. Please try again.");
-    //   return;
-    // }
+  // const handleCalculateUnitPrice = () => {
+  //   // if (!schemeDetails || !schemeDetails.calculateBasedOn) {
+  //   //   alert("Scheme details are not loaded. Please try again.");
+  //   //   return;
+  //   // }
   
+  //   if (schemeDetails.calculationBasedOn === "PDMC") {
+  //     getAmountList();
+  //   } else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+  //     calculateBonusAmount();
+  //   } else {
+  //     alert("Invalid calculation method.");
+  //   }
+  // };
+
+  // const handleCalculateUnitPrice = () => {
+  //   // Validation for PDMC
+  //   if (schemeDetails.calculationBasedOn === "PDMC") {
+  //     if (!data.spacingId) {
+  //       alert("Please select a Spacing ID.");
+  //       return;
+  //     }
+  //     if (!data.hectareId) {
+  //       alert("Please select a Hectare ID.");
+  //       return;
+  //     } 
+  //     getAmountList();
+  //   } 
+  //   // Validation for Bivoltine Bonus
+  //   else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+  //     if (!data.scCategoryId) {
+  //       alert("Please select a Category ID.");
+  //       return;
+  //     }
+  //     if (!data.scComponentId) {
+  //       alert("Please select a Component ID.");
+  //       return;
+  //     }
+  //     if (!data.cocoonsWeight) {
+  //       alert("Please enter the Cocoons Weight.");
+  //       return;
+  //     }
+  //     calculateBonusAmount();
+  //   } 
+  //   // Fallback for invalid calculation method
+  //   else {
+  //     alert("Invalid calculation method.");
+  //   }
+  // };
+  const handleCalculateUnitPrice = () => {
+    // Validation for PDMC
     if (schemeDetails.calculationBasedOn === "PDMC") {
+      if (!data.spacingId) {
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select a Spacing.",
+        });
+        return;
+      }
+      if (!data.hectareId) {
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select a Hectare.",
+        });
+        return;
+      }
       getAmountList();
-    } else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+    } 
+    // Validation for Bivoltine Bonus
+    else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+      if (!data.scCategoryId) {
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select a Sub Component.",
+        });
+        return;
+      }
+      if (!data.scComponentId) {
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please select a Component.",
+        });
+        return;
+      }
+      if (!data.cocoonsWeight) {
+        Swal.fire({
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please enter the Cocoons Weight.",
+        });
+        return;
+      }
       calculateBonusAmount();
-    } else {
-      alert("Invalid calculation method.");
+    } 
+    // Fallback for invalid calculation method
+    else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Invalid calculation method.",
+      });
     }
   };
+  
 
   // to get bonus Amount by component and category
   const [bonusAmountData, setBonusAmountListData] = useState(
@@ -1040,6 +1179,12 @@ function ServiceApplication() {
       return; // Exit if the form is not valid
     }
 
+    const formattedDates = {
+      periodFrom: formatDate(data.periodFrom),
+      periodTo: formatDate(data.periodTo),
+      transactionDate: formatDate(data.transactionDate),
+    };
+
     const transformedData = Object.keys(developedArea).map((id) => ({
       ...developedArea[id],
     }));
@@ -1065,11 +1210,19 @@ function ServiceApplication() {
       schemeAmount: data.schemeAmount,
       sanctionNumber: data.sanctionNumber,
       initialAmount: data.expectedAmount,
-      periodFrom: data.periodFrom,
-      periodTo: data.periodTo,
+      // periodFrom: data.periodFrom,
+      // periodTo: data.periodTo,
       vendorId: equipment.vendorId,
       spacingId: data.spacingId,
       hectareId: data.hectareId,
+      cocoonsWeight: data.cocoonsWeight,
+      lotNo: data.lotNo,
+      lotWeight: data.lotWeight,
+      // transactionDate: data.transactionDate,
+      periodFrom: formattedDates.periodFrom,
+      periodTo: formattedDates.periodTo,
+      transactionDate: formattedDates.transactionDate,
+      availBonus: data.availBonus,
       description: equipment.description,
       loggedInUserId: localStorage.getItem("userMasterId"),
     };
@@ -1248,8 +1401,14 @@ function ServiceApplication() {
       hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
-      periodFrom: new Date("2023-04-01"),
-      periodTo: new Date("2024-03-31"),
+      periodFrom: new Date(),
+      periodTo: new Date(),
+      cocoonsWeight:"",
+      availBonus:"",
+      // availBonus: true,
+      lotWeight:"",
+      lotNo:"",
+      transactionDate:""
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -2069,6 +2228,20 @@ function ServiceApplication() {
     }
   };
 
+  // const handleBonusCheckBox = (e) => {
+  //   const { name, checked } = e.target; // Get the name and checked state from the event
+  //   setData((prev) => ({
+  //     ...prev,
+  //     [name]: checked, // Dynamically update the correct field based on the checkbox name
+  //   }));
+  // };
+  const handleBonusCheckBox = (event) => {
+    setData((prevData) => ({
+      ...prevData,
+      availBonus: event.target.checked,
+    })); 
+  };
+
   //  console.log("nodappa",document);
   //  console.log("nodappa2",uploadDocuments);
 
@@ -2752,6 +2925,7 @@ function ServiceApplication() {
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
+                                maxDate={new Date()}
                                 // readOnly
                                 required
                               />
@@ -2778,6 +2952,7 @@ function ServiceApplication() {
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
+                                maxDate={new Date()}
                                 required
                                 // readOnly
                               />
@@ -3373,11 +3548,43 @@ function ServiceApplication() {
                           >
                             Calculate Unit Price
                           </Button>
+                          </li>
+
+                          {/* <li>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => setShowModal2(true)}
+                          >
+                            Select Transaction Details
+                          </Button>
+                        </li> */}
+                        <li>
+                          {showButton && ( // Conditionally render the button
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={() => setShowModal2(true)}
+                            >
+                              Select Transaction Details
+                            </Button>
+                          )}
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="gap-col">
+                      <ul className="d-flex align-items-left justify-content-left gap g-3">
+                      
+                        <li>
+                          {/* <Button type="button" variant="secondary" onClick={handleCalculateUnitPrice}>
+                            Calculate Unit Price
+                          </Button> */}
+                          
                         </li>
                       </ul>
                     </div>
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
+                        <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="landDeveloped">
                             {t("Unit Price")}
                             <span className="text-danger">*</span>
@@ -3398,10 +3605,11 @@ function ServiceApplication() {
                           </div>
                         </Form.Group>
                       </Col>
+
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
+                        <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
-                            {t("Subsidy Amount")}
+                            {t("Subsidy/Bonus/Incentive Amount")}
                             {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -3474,18 +3682,18 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               {t("Vendor Name")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="vendorId"
                                 value={equipment.vendorId}
                                 onChange={handleEquipmentInputs}
-                                required
-                                isInvalid={
-                                  equipment.vendorId === undefined ||
-                                  equipment.vendorId === "0"
-                                }
+                                // required
+                                // isInvalid={
+                                //   equipment.vendorId === undefined ||
+                                //   equipment.vendorId === "0"
+                                // }
                               >
                                 <option value="">{t("Select Vendor Name")}</option>
                                 {scVendorListData.map((list) => (
@@ -3497,9 +3705,9 @@ function ServiceApplication() {
                                   </option>
                                 ))}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Vendor Name is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -3507,7 +3715,7 @@ function ServiceApplication() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="description">
                               {t("Description")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -3517,11 +3725,11 @@ function ServiceApplication() {
                                 value={equipment.description}
                                 onChange={handleEquipmentInputs}
                                 placeholder="Enter Description"
-                                required
+                                // required
                               />
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Description is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -3807,12 +4015,112 @@ function ServiceApplication() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Break Up")}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body></Modal.Body>
-      </Modal>
+       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>Select Transaction Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Block className="mt-n4">
+                  <Card className="mt-3 p-4 shadow-lg rounded">
+                    <Row className="g-4">
+                    <Col sm={4}>
+                        <Form.Group className="form-group">
+                          <Form.Label>Bidding Slip Lot No</Form.Label>
+                          <Form.Control
+                            id="lotNo"
+                            name="lotNo"
+                            value={data.lotNo}
+                            onChange={handleInputs}
+                            type="number"
+                            placeholder="Enter Bidding Slip Lot No"
+                            className="form-control"
+                          />
+                        </Form.Group>
+                      </Col>
+      
+                      <Col sm={4}>
+                        <Form.Group className="form-group">
+                          <Form.Label>Lot Weight</Form.Label>
+                          <Form.Control
+                            id="lotWeight"
+                            name="lotWeight"
+                            value={data.lotWeight}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Lot Weight"
+                            className="form-control"
+                          />
+                        </Form.Group>
+                      </Col>
+      
+                      <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Transaction Date")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.transactionDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "transactionDate")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                maxDate={new Date()}
+                                // readOnly
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                    </Row>
+                    <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="availBonus"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="availBonus"
+                          value="availBonus"
+                          checked={data.availBonus}
+                          onChange={handleBonusCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2">
+                      {t("Avail Bonus")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+    
+                    <Row>
+                      <div className="gap-col d-flex justify-content-center">
+                        <Button variant="primary" onClick={() => handleCloseModal2()}>
+                          Submit
+                        </Button>
+                      </div>
+                    </Row>
+                  </Card>
+                </Block>
+              </Modal.Body>
+            </Modal>
+
+          <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
+            <Modal.Header closeButton>
+              <Modal.Title>{t("Break Up")}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body></Modal.Body>
+          </Modal>
     </Layout>
   );
 }
