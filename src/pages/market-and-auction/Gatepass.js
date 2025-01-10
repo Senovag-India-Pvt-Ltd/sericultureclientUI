@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -16,6 +17,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function Gatepass() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -218,11 +220,11 @@ function Gatepass() {
   }, []);
 
   return (
-    <Layout title="Gatepass" show="true">
+    <Layout title={t("Gatepass")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Gatepass</Block.Title>
+            <Block.Title tag="h2">{t("Gatepass")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -256,7 +258,7 @@ function Gatepass() {
                   <Form noValidate validated={validated} onSubmit={display}>
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
+                        {t("Lot ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -265,11 +267,11 @@ function Gatepass() {
                           value={highestBid.allottedLotId}
                           onChange={handleLotIdInputs}
                           type="text"
-                          placeholder="Enter Lot ID"
+                          placeholder={t("Enter Lot ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
+                          {t("Lot ID is required.")}
                         </Form.Control.Feedback>
                       </Col>
 
@@ -280,7 +282,7 @@ function Gatepass() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Pass
+                          {t("Generate Pass")}
                         </Button>
                       </Col>
                     </Form.Group>

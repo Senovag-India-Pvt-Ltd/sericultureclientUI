@@ -5,6 +5,7 @@ import { Dropdown } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable, { createTheme } from "react-data-table-component";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 // import axios from "axios";
 
 import {
@@ -19,6 +20,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ReadyForPayment() {
+  const { t } = useTranslation(); // Initialize translation
+
   // const [showModal, setShowModal] = useState(false);
   // const [showModal1, setShowModal1] = useState(false);
   // const [showModal2, setShowModal2] = useState(false);
@@ -229,7 +232,7 @@ function ReadyForPayment() {
 
   const PaymentDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -249,16 +252,16 @@ function ReadyForPayment() {
                 )
               }
             >
-              Add to Bank
+              {t("Add to Bank")}
             </Button>
           )}
 
           {!row.ifscCode && row.reelerCurrentBalance > 0 && (
-            <span style={{ fontWeight: "bold" }}>No Bank Details</span>
+            <span style={{ fontWeight: "bold" }}>{t("No Bank Details")}</span>
           )}
           {row.reelerCurrentBalance < 0 && (
             <span style={{ fontWeight: "bold" }}>
-              Minus {Math.round(row.reelerCurrentBalance)}
+              {t("Minus")} {Math.round(row.reelerCurrentBalance)}
             </span>
           )}
 
@@ -269,77 +272,77 @@ function ReadyForPayment() {
       hide: "md",
     },
     {
-      name: "SLNo",
+      name: t("SLNo"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot No",
+      name: t("Lot No"),
       selector: (row) => row.allottedLotId,
       cell: (row) => <span>{row.allottedLotId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Transaction Date",
+      name: t("Transaction Date"),
       selector: (row) => convertDateFormat(row.lotTransactionDate),
       cell: (row) => <span>{convertDateFormat(row.lotTransactionDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer",
+      name: t("Farmer"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Phone",
+      name: t("Phone"),
       selector: (row) => row.farmerMobileNumber,
       cell: (row) => <span>{row.farmerMobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler",
+      name: t("Reeler"),
       selector: (row) => row.reelerLicense,
       cell: (row) => <span>{row.reelerLicense}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bank",
+      name: t("Bank"),
       selector: (row) => row.bankName,
       cell: (row) => <span>{row.bankName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "IFSC",
+      name: t("IFSC"),
       selector: (row) => row.ifscCode,
       cell: (row) => <span>{row.ifscCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Account Number",
+      name: t("Account Number"),
       selector: (row) => row.accountNumber,
       cell: (row) => <span>{row.accountNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Amount",
+      name: t("Amount"),
       selector: (row) => row.lotSoldOutAmount,
       cell: (row) => <span>{row.lotSoldOutAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "MF",
+      name: t("MF"),
       selector: (row) => row.farmerMarketFee,
       cell: (row) => <span>{row.farmerMarketFee}</span>,
       sortable: true,
@@ -348,11 +351,11 @@ function ReadyForPayment() {
   ];
 
   return (
-    <Layout title="Ready for Payment" show="true">
+    <Layout title={t("Ready for Payment")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Ready for Payment</Block.Title>
+            <Block.Title tag="h2">{t("Ready for Payment")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -362,7 +365,7 @@ function ReadyForPayment() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -371,7 +374,7 @@ function ReadyForPayment() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -385,7 +388,7 @@ function ReadyForPayment() {
             <Col lg="12">
               <Form.Group as={Row} className="form-group">
                 <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                  Godown
+                  {t("Godown")}
                 </Form.Label>
                 <Col sm={3}>
                   <Form.Select
@@ -393,7 +396,7 @@ function ReadyForPayment() {
                     value={payment.godownId}
                     onChange={handleChangeInputs}
                   >
-                    <option value="0">Select Godown</option>
+                    <option value="0">{t("Select Godown")}</option>
                     {godownListData.map((list) => (
                       <option key={list.godownId} value={list.godownId}>
                         {list.godownName}
@@ -403,7 +406,7 @@ function ReadyForPayment() {
                 </Col>
                 <Col sm={2}>
                   <Button type="button" variant="primary" onClick={postData}>
-                    Get Details
+                    {t("Get Details")}
                   </Button>
                 </Col>
               </Form.Group>
@@ -414,28 +417,28 @@ function ReadyForPayment() {
 
       {/* <Block className="mt-4">
         <Card>
-          <Card.Header className="text-center">Ready For Payment</Card.Header>
+          <Card.Header className="text-center">{t("Ready For Payment")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table table-striped table-bordered" style={{backgroundColor:"white"}}>
                   <thead>
                     <tr>
-                      <th>Actions</th>
-                      <th>SL No</th>
-                      <th>Lot Nbr</th>
-                      <th>Transaction_Date</th>
-                      <th>Farmer</th>
-                      <th>TSC</th>
-                      <th>Phone</th>
-                      <th>Reeler</th>
-                      <th>Bank</th>
-                      <th>IFSC Len</th>
-                      <th>IFSC</th>
-                      <th>Account No</th>
-                      <th>Amount</th>
-                      <th>MF</th>
-                      <th>Update Farmer</th>
+                      <th>{t("Actions")}</th>
+                      <th>{t("SL No")}</th>
+                      <th>{t("Lot Nbr")}</th>
+                      <th>{t("Transaction_Date")}</th>
+                      <th>{t("Farmer")}</th>
+                      <th>{t("TSC")}</th>
+                      <th>{t("Phone")}</th>
+                      <th>{t("Reeler")}</th>
+                      <th>{t("Bank")}</th>
+                      <th>{t("IFSC Len")}</th>
+                      <th>{t("IFSC")}</th>
+                      <th>{t("Account No")}</th>
+                      <th>{t("Amount")}</th>
+                      <th>{t("MF")}</th>
+                      <th>{t("Update Farmer")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -446,7 +449,7 @@ function ReadyForPayment() {
                             className="btn btn-info"
                             onClick={handleAddToBank}
                           >
-                            Add To Bank
+                            {t("Add To Bank")}
                           </button>
                         </td>
                         <td>{listItem.serialNumber}</td>
@@ -463,7 +466,7 @@ function ReadyForPayment() {
                         <td>4000</td>
                         <td>112</td>
                         <td>
-                          <button className="btn btn-info">Update</button>
+                          <button className="btn btn-info">{t("Update")}</button>
                         </td>
                       </tr>
                     ))}
@@ -503,7 +506,7 @@ function ReadyForPayment() {
             <Col lg="12">
               <Form.Group as={Row} className="form-group">
                 {/* <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                  Lot ID
+                  {t("Lot ID")}
                 </Form.Label>
                 <Col sm={4}>
                   <Form.Control
@@ -512,12 +515,12 @@ function ReadyForPayment() {
                     // value={highestBid.allottedLotId}
                     onChange={handleLotIdInputs}
                     type="text"
-                    placeholder="Enter Lot ID"
+                    placeholder={t("Enter Lot ID")}
                   />
                 </Col> */}
                 {/* <Form.Group as={Row} className="form-group mt-3" id="date"> */}
                 <Form.Label column sm={4} style={{ fontWeight: "bold" }}>
-                  Total Amount Payable to Bank/Farmer:{" "}
+                  {t("Total Amount Payable to Bank/Farmer")}:{" "}
                   <span style={{ color: "green" }}>{totalAmount}</span>
                 </Form.Label>
 
@@ -532,7 +535,7 @@ function ReadyForPayment() {
                 </Col> */}
                 {/* </Form.Group> */}
                 {/* <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                  Godown
+                  {t("Godown")}
                 </Form.Label>
                 <Col sm={3}>
                   <Form.Select
@@ -540,7 +543,7 @@ function ReadyForPayment() {
                     value={payment.godownId}
                     onChange={handleChangeInputs}
                   >
-                    <option value="0">Select Godown</option>
+                    <option value="0">{t("Select Godown")}</option>
                     {godownListData.map((list) => (
                       <option key={list.godownId} value={list.godownId}>
                         {list.godownName}
@@ -550,7 +553,7 @@ function ReadyForPayment() {
                 </Col> */}
                 {/* <Col sm={2}>
                   <Button type="button" variant="primary" onClick={postData}>
-                    Get Details
+                    {t("Get Details")}
                   </Button>
                 </Col> */}
               </Form.Group>
@@ -564,23 +567,23 @@ function ReadyForPayment() {
               <Col lg="6">
 
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="actions">Actions</Form.Label>
+                  <Form.Label htmlFor="actions">{t("Actions")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="actions"
                       type="text"
-                      placeholder="Actions"
+                      placeholder={t("Actions")}
                       value="actions1"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="slno">SL No</Form.Label>
+                  <Form.Label htmlFor="slno">{t("SL No")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="slno"
                       type="text"
-                      placeholder="SL No"
+                      placeholder={t("SL No")}
                       value="1"
                     />
                   </div>
@@ -588,23 +591,23 @@ function ReadyForPayment() {
               </Col>
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="lotno">Lot Nbr</Form.Label>
+                  <Form.Label htmlFor="lotno">{t("Lot Nbr")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="lotno"
                       type="text"
-                      placeholder="Lot Nbr"
+                      placeholder={t("Lot Nbr")}
                       value="411"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="tradate">Transaction_Date</Form.Label>
+                  <Form.Label htmlFor="tradate">{t("Transaction_Date")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="tradate"
                       type="text"
-                      placeholder="Transaction_Date"
+                      placeholder={t("Transaction_Date")}
                       value="16/05/2001"
                     />
                   </div>
@@ -613,11 +616,11 @@ function ReadyForPayment() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="cmt">Comment</Form.Label>
+                  <Form.Label htmlFor="cmt">{t("Comment")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       as="textarea"
-                      placeholder="Enter Comment"
+                      placeholder={t("Enter Comment")}
                       id="cmt"
                       rows="3"
                     />
@@ -629,12 +632,12 @@ function ReadyForPayment() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      {/* <Form.Label>With Land</Form.Label> */}
+                      {/* <Form.Label>{t("With Land")}</Form.Label> */}
       {/* <div className="form-control-wrap">
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Pre Inspection"
+                          label={t("Pre Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -642,12 +645,12 @@ function ReadyForPayment() {
 
       {/* <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      {/* <Form.Label>With Land</Form.Label> */}
+                      {/* <Form.Label>{t("With Land")}</Form.Label> */}
       {/* <div className="form-control-wrap">
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Post Inspection"
+                          label={t("Post Inspection")}
                         />
                       </div>
                     </Form.Group>

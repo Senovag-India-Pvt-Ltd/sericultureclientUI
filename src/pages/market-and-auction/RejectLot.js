@@ -8,11 +8,13 @@ import Block from "../../components/Block/Block";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function RejectLot() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -59,8 +61,8 @@ function RejectLot() {
   const cancelSuccess = (id) => {
     Swal.fire({
       icon: "success",
-      title: "Rejected successfully",
-      text: `Lot-${id} has been Rejected!`,
+      title: t("Rejected successfully"),
+      text: `Lot-${id} ${t("has been Rejected!")}`,
     });
   };
 
@@ -73,7 +75,7 @@ function RejectLot() {
     }
     Swal.fire({
       icon: "error",
-      title: "Details not Found",
+      title: t("Details not Found"),
       html: errorMessage,
     });
   };
@@ -150,11 +152,11 @@ function RejectLot() {
   };
 
   return (
-    <Layout title="Reject Lot" show="true">
+    <Layout title={t("Reject Lot")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reject Lot</Block.Title>
+            <Block.Title tag="h2">{t("Reject Lot")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -200,7 +202,7 @@ function RejectLot() {
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group" controlId="fid">
                       <Form.Label column sm={2}>
-                        Lot Number
+                        {t("Lot Number")}
                       </Form.Label>
                       <Col sm={6}>
                         <Form.Control
@@ -208,7 +210,7 @@ function RejectLot() {
                           name="allottedLotId"
                           value={data.allottedLotId}
                           onChange={handleInputs}
-                          placeholder="Enter Lot Number"
+                          placeholder={t("Enter Lot Number")}
                         />
                       </Col>
                       <Col sm={4}>
@@ -217,7 +219,7 @@ function RejectLot() {
                           variant="primary"
                           onClick={display}
                         >
-                          Search
+                          {t("Search")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -241,7 +243,7 @@ function RejectLot() {
                             controlId="source"
                           >
                             <Form.Label column sm={4}>
-                              Reason of Rejection
+                              {t("Reason of Rejection")}
                             </Form.Label>
                             <Col sm={8}>
                               <div className="form-control-wrap">
@@ -250,13 +252,13 @@ function RejectLot() {
                                   value={data.cancellationReason}
                                   onChange={handleInputs}
                                 >
-                                  <option value="0">Select Reason</option>
+                                  <option value="0">{t("Select Reason")}</option>
                                   {lotRejectionListData.map((list) => (
                                     <option
                                       key={list.reasonLotRejectId}
                                       value={list.reasonLotRejectId}
                                     >
-                                      {list.reasonLotRejectName}
+                                      {t(list.reasonLotRejectName)}
                                     </option>
                                   ))}
                                 </Form.Select>
@@ -271,7 +273,7 @@ function RejectLot() {
 
                     <Col lg="6">
                       <Card>
-                        <Card.Header>Lot Details</Card.Header>
+                        <Card.Header>{t("Lot Details")}</Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
                             <Col lg="12">
@@ -279,40 +281,37 @@ function RejectLot() {
                                 <tbody>
                                   <tr>
                                     <td style={styles.ctstyle}>
-                                      {" "}
-                                      Farmer Number:
+                                      {t("Farmer Number")}:
                                     </td>
                                     <td>{lotDetails.farmerNumber}</td>
                                   </tr>
                                   <tr>
                                     <td style={styles.ctstyle}>
-                                      {" "}
-                                      Farmer First Name:
+                                      {t("Farmer First Name")}:
                                     </td>
                                     <td>{lotDetails.farmerFirstName}</td>
                                   </tr>
                                   <tr>
                                     <td style={styles.ctstyle}>
-                                      {" "}
-                                      Farmer Middle Name:
+                                      {t("Farmer Middle Name")}:
                                     </td>
                                     <td>{lotDetails.farmerMiddleName}</td>
                                   </tr>
                                   <tr>
-                                    <td style={styles.ctstyle}> IFSC Code:</td>
+                                    <td style={styles.ctstyle}>
+                                      {t("IFSC Code")}:
+                                    </td>
                                     <td>{lotDetails.ifscCode}</td>
                                   </tr>
                                   <tr>
                                     <td style={styles.ctstyle}>
-                                      {" "}
-                                      Bank Account Number:
+                                      {t("Bank Account Number")}:
                                     </td>
                                     <td>{lotDetails.accountNumber}</td>
                                   </tr>
                                   <tr>
                                     <td style={styles.ctstyle}>
-                                      {" "}
-                                      Auction Date:
+                                      {t("Auction Date")}:
                                     </td>
                                     <td>{lotDetails.auctionDate}</td>
                                   </tr>
@@ -330,7 +329,7 @@ function RejectLot() {
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
                   <li>
                     <Button type="button" variant="danger" onClick={rejectLot}>
-                      Reject Lot
+                      {t("Reject Lot")}
                     </Button>
                   </li>
                   {/* <li>

@@ -7,10 +7,12 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import MaintenanceOfEggLayingSheets from "./MaintenanceOfEggLayingSheets";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggLayingSheetsView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,11 +53,11 @@ function MaintenanceOfEggLayingSheetsView() {
   }, [id]);
 
   return (
-    <Layout title="View  Maintenance Of Egg Laying Sheets Details">
+    <Layout title={t("View Maintenance Of Egg Laying Sheets Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View  Maintenance Of Egg Laying Sheets Details </Block.Title>
+            <Block.Title tag="h2">{t("View Maintenance Of Egg Laying Sheets Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -65,7 +67,7 @@ function MaintenanceOfEggLayingSheetsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -74,7 +76,7 @@ function MaintenanceOfEggLayingSheetsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -84,11 +86,11 @@ function MaintenanceOfEggLayingSheetsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}> Maintenance Of Egg Laying Sheets Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance Of Egg Laying Sheets Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -96,35 +98,27 @@ function MaintenanceOfEggLayingSheetsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{eggSheets.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Lot Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{eggSheets.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
+                        <td style={styles.ctstyle}>{t("Date")}:</td>
                         <td>{eggSheets.date}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Number Of Egg Sheets:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Number Of Egg Sheets")}:</td>
                         <td>{eggSheets.numberOfEggSheetsUsed}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Egg Sheet Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Egg Sheet Number")}:</td>
                         <td>{eggSheets.eggSheetNumbers}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                       Balance No Of Sheets:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Balance No Of Sheets")}:</td>
                         <td>{eggSheets.balanceNumberOfSheets}</td>
                       </tr>
                     </tbody>

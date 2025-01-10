@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Select } from "../../components";
+import { useTranslation } from "react-i18next"; // Add this line
 
 import React, { useState } from "react";
 
 function RejectBid() {
+  const { t } = useTranslation(); // Add this line
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -35,21 +37,21 @@ function RejectBid() {
   };
 
   return (
-    <Layout title="Reject Bid">
+    <Layout title={t("Reject Bid")}> {/* Add t function */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reject Bid</Block.Title>
+            <Block.Title tag="h2">{t("Reject Bid")}</Block.Title> {/* Add t function */}
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
+                  <Link to="/seriui/">{t("Home")}</Link> {/* Add t function */}
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                  Reject Bid
+                  {t("Reject Bid")} {/* Add t function */}
                 </li>
               </ol>
             </nav>
@@ -85,12 +87,12 @@ function RejectBid() {
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group" controlId="fid">
                       <Form.Label column sm={2}>
-                        Lot Number
+                        {t("Lot Number")} 
                       </Form.Label>
                       <Col sm={6}>
                         <Form.Control
                           type="text"
-                          placeholder="Enter Lot Number"
+                          placeholder={t("Enter Lot Number")} 
                         />
                       </Col>
                       <Col sm={4}>
@@ -99,7 +101,7 @@ function RejectBid() {
                           variant="primary"
                           onClick={display}
                         >
-                          Search
+                          {t("Search")} {/* Add t function */}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -121,20 +123,20 @@ function RejectBid() {
                             controlId="source"
                           >
                             <Form.Label column sm={4}>
-                              Reason of Rejection
+                              {t("Reason of Rejection")} {/* Add t function */}
                             </Form.Label>
                             <Col sm={8}>
                               <div className="form-control-wrap">
                                 <Select removeItemButton>
-                                  <option value="">Select Reason</option>
+                                  <option value="">{t("Select Reason")}</option> {/* Add t function */}
                                   <option value="1">
-                                    Cancellation Reason 1
+                                    {t("Cancellation Reason 1")} {/* Add t function */}
                                   </option>
                                   <option value="2">
-                                    Cancellation Reason 2
+                                    {t("Cancellation Reason 2")} {/* Add t function */}
                                   </option>
                                   <option value="3">
-                                    Cancellation Reason 3
+                                    {t("Cancellation Reason 3")} {/* Add t function */}
                                   </option>
                                 </Select>
                               </div>
@@ -152,7 +154,7 @@ function RejectBid() {
                           variant="danger"
                           onClick={() => rejectSuccess()}
                         >
-                          Reject Lot
+                          {t("Reject Lot")} {/* Add t function */}
                         </Button>
                       </li>
                       {/* <li>
@@ -166,18 +168,18 @@ function RejectBid() {
 
                 <Col lg="6">
                   <Card>
-                    <Card.Header>Lot Details</Card.Header>
+                    <Card.Header>{t("Lot Details")}</Card.Header> {/* Add t function */}
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
                           <table className="table small table-bordered">
                             <tbody>
                               <tr>
-                                <td style={styles.ctstyle}> Lot No:</td>
+                                <td style={styles.ctstyle}>{t("Lot No:")}</td> {/* Add t function */}
                                 <td>Lot-002</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Bid Amount:</td>
+                                <td style={styles.ctstyle}>{t("Bid Amount:")}</td> {/* Add t function */}
                                 <td>&#8377;12000</td>
                               </tr>
                             </tbody>

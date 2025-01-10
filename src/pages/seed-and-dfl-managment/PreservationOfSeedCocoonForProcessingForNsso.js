@@ -12,11 +12,13 @@ import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreservationofseedcocoonforprocessingListForNsso() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [listLogsForMarketData, setListLogsForMarketData] = useState({});
@@ -473,7 +475,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
 
   const PreservationOfSeedCocoonGardenDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -483,7 +485,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
             size="sm"
             onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
           >
-            Accept
+            {t("Accept")}
           </Button>
          
           <Button
@@ -492,7 +494,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
             onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
             className="ms-2"
           >
-            Reject
+            {t("Reject")}
           </Button>
         </div>
       ),
@@ -502,14 +504,14 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotParentLevel,
       cell: (row) => <span>{row.lotParentLevel}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"),
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
@@ -517,35 +519,35 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
     
     {
-      name: "Buyer",
+      name: t("Buyer"),
       selector: (row) => row.buyerName,
       cell: (row) => <span>{row.buyerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Of Cocoons in Kgs",
+      name: t("Quantity Of Cocoons in Kgs"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Price",
+      name: t("Price"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Out Amount",
+      name: t("Sold Out Amount"),
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
@@ -553,7 +555,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
 
     {
-      name: "Accepted or not",
+      name: t("Accepted or not"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span>
@@ -601,14 +603,14 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     //   grow: 2,
     // },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotParentLevel,
       cell: (row) => <span>{row.lotParentLevel}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"),
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
@@ -616,42 +618,42 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
     
     {
-      name: "Buyer",
+      name: t("Buyer"),
       selector: (row) => row.buyerName,
       cell: (row) => <span>{row.buyerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Of Cocoons in Kgs",
+      name: t("Quantity Of Cocoons in Kgs"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Price",
+      name: t("Price"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Out Amount",
+      name: t("Sold Out Amount"),
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Status",
+      name: t("Status"),
       selector: (row) => row.isAccepted,
       cell: (row) => (
         <span style={{ color: row.isAccepted === 2 ? 'red' : 'inherit', fontWeight: row.isAccepted === 2 ? 'bold' : 'normal' }}>
@@ -711,7 +713,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     // },
 
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -719,7 +721,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
    
     {
-      name: "Date Of Seed Cocoon Supply",
+      name: t("Date Of Seed Cocoon Supply"),
       selector: (row) => row.dateOfSeedCocoonSupply,
       cell: (row) => <span>{row.dateOfSeedCocoonSupply}</span>,
       sortable: true,
@@ -727,7 +729,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
 
     {
-      name: "Cocoon supplied in Kg",
+      name: t("Cocoon supplied in Kg"),
       selector: (row) => row.bedNumberOrKgsOfCocoonsSupplied,
       cell: (row) => <span>{row.bedNumberOrKgsOfCocoonsSupplied}</span>,
       sortable: true,
@@ -735,7 +737,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
     },
 
     {
-      name: "Rate Per Kg",
+      name: t("Rate Per Kg"),
       selector: (row) => row.ratePerKg,
       cell: (row) => <span>{row.ratePerKg}</span>,
       sortable: true,
@@ -747,12 +749,12 @@ function PreservationofseedcocoonforprocessingListForNsso() {
   ];
 
   return (
-    <Layout title="List Of Preservation of seed cocoon for processing">
+    <Layout title={t("List Of Preservation of seed cocoon for processing")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            List Of  Preservation of seed cocoon for processing
+              {t("List Of Preservation of seed cocoon for processing")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -773,7 +775,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
                 onClick={() => getRejectedList()}
                 className="ms-2"
               >
-                Rejected List For Market
+                {t("Rejected List For Market")}
               </Button>
             </li>
               {/* <li>
@@ -846,7 +848,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
       {showModal1 && (
         <Modal show={showModal1} onHide={handleCloseModal1} size="xl" className="modal-item">
           <Modal.Header closeButton>
-            <Modal.Title>Alerts Window For Market</Modal.Title>
+            <Modal.Title>{t("Alerts Window For Market")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Block className="mt-2">
@@ -874,7 +876,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>Rejected List For Market</Modal.Title>
+    <Modal.Title>{t("Rejected List For Market")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -901,7 +903,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal4}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

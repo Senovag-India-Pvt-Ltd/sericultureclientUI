@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -22,6 +23,7 @@ function RemittanceView() {
   // const [data] = useState(CasteDatas);
   const [remittance, setRemittance] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -101,11 +103,11 @@ const getUploadReceipt = async (file) => {
   };
 
   return (
-    <Layout title="View Remittance(Eggs/PC/Others) Details">
+    <Layout title={t("View Remittance(Eggs/PC/Others) Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Remittance(Eggs/PC/Others) Details</Block.Title>
+            <Block.Title tag="h2">{t("View Remittance(Eggs/PC/Others) Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -115,7 +117,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -124,7 +126,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -134,11 +136,11 @@ const getUploadReceipt = async (file) => {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Remittance(Eggs/PC/Others) Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Remittance(Eggs/PC/Others) Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -146,39 +148,39 @@ const getUploadReceipt = async (file) => {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID:")}</td>
                         <td>{remittance.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Lot Number:")}</td>
                         <td>{remittance.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Race Of DFLs:")}</td>
                         <td>{remittance.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs:")}</td>
                         <td>{remittance.numberOfDFLs}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Total Amount:</td>
+                        <td style={styles.ctstyle}>{t("Total Amount:")}</td>
                         <td>{remittance.totalAmount}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Bill Number:</td>
+                        <td style={styles.ctstyle}>{t("Bill Number:")}</td>
                         <td>{remittance.billNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Bank Challan No:</td>
+                        <td style={styles.ctstyle}>{t("Bank Challan No:")}</td>
                         <td>{remittance.bankChallanNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>RTC 25:</td>
+                        <td style={styles.ctstyle}>{t("KTC 25:")}</td>
                         <td>{remittance.rtc25}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
+                        <td style={styles.ctstyle}>{t("Date:")}</td>
                         <td>{remittance.date}</td>
                       </tr>
                       {/* <tr>

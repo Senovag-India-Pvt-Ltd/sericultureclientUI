@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -17,6 +18,7 @@ function ColdStorageScheduleBVEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -187,7 +189,7 @@ function ColdStorageScheduleBVEdit() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       text: message,
     });
   };
@@ -200,7 +202,7 @@ function ColdStorageScheduleBVEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -208,15 +210,15 @@ function ColdStorageScheduleBVEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title=" Edit Cold Storage Schedule BV">
+    <Layout title={t("Edit Cold Storage Schedule BV")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Edit Cold Storage Schedule BV</Block.Title>
+            <Block.Title tag="h2">{t("Edit Cold Storage Schedule BV")}</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -227,7 +229,7 @@ function ColdStorageScheduleBVEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -236,7 +238,7 @@ function ColdStorageScheduleBVEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -248,12 +250,12 @@ function ColdStorageScheduleBVEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Edit Cold Storage Schedule BV
+            {t("Edit Cold Storage Schedule BV")}
                 </Card.Header>
                     <Card.Body>
                     {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                         <Row className="g-gs">
@@ -293,7 +295,7 @@ function ColdStorageScheduleBVEdit() {
                     <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                      {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -304,7 +306,7 @@ function ColdStorageScheduleBVEdit() {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -312,7 +314,7 @@ function ColdStorageScheduleBVEdit() {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -344,7 +346,7 @@ function ColdStorageScheduleBVEdit() {
                     <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                              Schedule Type
+                              {t("Schedule Type")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -359,14 +361,14 @@ function ColdStorageScheduleBVEdit() {
                                   }
                                 >
                                   <option value="">
-                                    Select Schedule Type
+                                    {t("Select Schedule Type")}
                                   </option>
-                                  <option value="4-Months">4-Months</option>
-                                  <option value="6-Months">6-Months</option>\
-                                  <option value="10-Months">10-Months</option>
+                                  <option value="4-Months">{t("4-Months")}</option>
+                                  <option value="6-Months">{t("6-Months")}</option>\
+                                  <option value="10-Months">{t("10-Months")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Schedule Type is required
+                                {t("Schedule Type is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -376,7 +378,7 @@ function ColdStorageScheduleBVEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Laid on Date
+                                {t("Laid on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataLaidDate && (
@@ -401,7 +403,7 @@ function ColdStorageScheduleBVEdit() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Date of Deposit</Form.Label>
+                              <Form.Label> {t("Date of Deposit")}</Form.Label>
                               <div className="form-control-wrap">
                               {isDataDepositDate && (
                                 <DatePicker
@@ -426,7 +428,7 @@ function ColdStorageScheduleBVEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Release Date
+                                {t("Release Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataReleaseDate && (
@@ -458,12 +460,12 @@ function ColdStorageScheduleBVEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

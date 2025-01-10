@@ -14,9 +14,11 @@ import {
 } from "../../components";
 
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function BulkSendToBank() {
+  const { t } = useTranslation();
   // const [selectedDate, setSelectedDate] = useState("");
 
   const [data, setData] = useState({
@@ -141,11 +143,11 @@ function BulkSendToBank() {
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
   return (
-    <Layout title="Bulk Send To Bank" show="true">
+    <Layout title={t("Bulk Send To Bank")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bulk Send To Bank</Block.Title>
+            <Block.Title tag="h2">{t("Bulk Send To Bank")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -174,7 +176,7 @@ function BulkSendToBank() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header className="text-center">Bulk Send To Bank</Card.Header>
+          <Card.Header className="text-center">{t("Bulk Send To Bank")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
@@ -196,14 +198,14 @@ function BulkSendToBank() {
                   </Dropdown.Menu>
                 </Dropdown> */}
                 <Form.Group className="form-group">
-                  <Form.Label>Date</Form.Label>
+                  <Form.Label>{t("Date")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="paymentDate"
                       value={data.paymentDate}
                       onChange={handleInputs}
                     >
-                      <option value="0">Select Date</option>
+                      <option value="0">{t("Select Date")}</option>
                       {auctionDateList.map((list) => (
                         <option key={list} value={list}>
                           {list}
@@ -241,7 +243,7 @@ function BulkSendToBank() {
                         variant="primary"
                         onClick={onSubmitBulkDate}
                       >
-                        Update
+                        {t("Update")}
                       </Button>
                     </li>
                   </ul>
@@ -264,7 +266,7 @@ function BulkSendToBank() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Approve/Reject</Modal.Title>
+          <Modal.Title>{t("Approve/Reject")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -290,7 +292,7 @@ function BulkSendToBank() {
                   controlId="date"
                 >
                   <Form.Label column sm={4}>
-                    Market Auction Date
+                    {t("Market Auction Date")}
                   </Form.Label>
                   <Col sm={8}>
                     <div className="form-control-wrap">
@@ -303,12 +305,12 @@ function BulkSendToBank() {
                 </Form.Group>
 
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="actions">Actions</Form.Label>
+                  <Form.Label htmlFor="actions">{t("Actions")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="actions"
                       type="text"
-                      placeholder="Actions"
+                      placeholder={t("Actions")}
                       value="actions1"
                     />
                   </div>
@@ -352,11 +354,11 @@ function BulkSendToBank() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="cmt">Comment</Form.Label>
+                  <Form.Label htmlFor="cmt">{t("Comment")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       as="textarea"
-                      placeholder="Enter Comment"
+                      placeholder={t("Enter Comment")}
                       id="cmt"
                       rows="3"
                     />
@@ -373,7 +375,7 @@ function BulkSendToBank() {
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Pre Inspection"
+                          label={t("Pre Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -386,7 +388,7 @@ function BulkSendToBank() {
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Post Inspection"
+                          label={t("Post Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -398,17 +400,17 @@ function BulkSendToBank() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal}>
-                      Approve
+                      {t("Approve")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="danger" onClick={handleCloseModal}>
-                      Reject
+                      {t("Reject")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -420,7 +422,7 @@ function BulkSendToBank() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>View Model</Modal.Title>
+          <Modal.Title>{t("View Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -547,7 +549,7 @@ function BulkSendToBank() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal1}>
-                      Close
+                      {t("Close")}
                     </Button>
                   </div>
                 </div>
@@ -559,7 +561,7 @@ function BulkSendToBank() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Modify Model</Modal.Title>
+          <Modal.Title>{t("Modify Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -676,7 +678,7 @@ function BulkSendToBank() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal2}>
-                      Save
+                      {t("Save")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -686,7 +688,7 @@ function BulkSendToBank() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

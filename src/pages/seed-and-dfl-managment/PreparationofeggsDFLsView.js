@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from 'react-i18next'; // Add this line
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLsView() {
+  const { t } = useTranslation(); // Add this line
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -45,12 +47,12 @@ function PreparationofeggsDFLsView() {
   }, [id]);
 
   return (
-    <Layout title="Preparation of Eggs (DFLs) View">
+    <Layout title={t("Preparation of Eggs (DFLs) View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Preparation of Eggs (DFLs) View
+              {t("Preparation of Eggs (DFLs) View")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -61,7 +63,7 @@ function PreparationofeggsDFLsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -70,7 +72,7 @@ function PreparationofeggsDFLsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,12 +83,12 @@ function PreparationofeggsDFLsView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-          Preparation of Eggs (DFLs) Details
+            {t("Preparation of Eggs (DFLs) Details")}
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -94,105 +96,105 @@ function PreparationofeggsDFLsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{prepareEggs.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot number:</td>
+                        <td style={styles.ctstyle}>{t("Lot number")}:</td>
                         <td>{prepareEggs.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Number of Cocoons in Kg:
+                          {t("Number of Cocoons in Kg")}:
                         </td>
                         <td>{prepareEggs.numberOfCocoonsCB}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race:</td>
+                        <td style={styles.ctstyle}>{t("Race")}:</td>
                         <td>{prepareEggs.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Generation Number:</td>
+                        <td style={styles.ctstyle}>{t("Generation Number")}:</td>
                         <td>{prepareEggs.generationNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Line Name:
+                          {t("Line Name")}:
                         </td>
                         <td>{prepareEggs.lineName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date of moth emergence:</td>
+                        <td style={styles.ctstyle}>{t("Date of moth emergence")}:</td>
                         <td>{prepareEggs.dateOfMothEmergence}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Laid On Date:</td>
+                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
                         <td>{prepareEggs.laidOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Egg sheet serial number:</td>
+                        <td style={styles.ctstyle}>{t("Egg sheet serial number")}:</td>
                         <td>{prepareEggs.eggSheetSerialNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number of pairs:</td>
+                        <td style={styles.ctstyle}>{t("Number of pairs")}:</td>
                         <td>{prepareEggs.numberOfPairs}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number of Rejection:</td>
+                        <td style={styles.ctstyle}>{t("Number of Rejection")}:</td>
                         <td>{prepareEggs.numberOfRejection}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DFLs obtained:</td>
+                        <td style={styles.ctstyle}>{t("DFLs obtained")}:</td>
                         <td>{prepareEggs.dflsObtained}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Egg Recovery %:</td>
+                        <td style={styles.ctstyle}>{t("Egg Recovery %")}:</td>
                         <td>{prepareEggs.eggRecoveryPercentage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Parent Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Parent Lot Number")}:</td>
                         <td>{prepareEggs.parentLotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Selected Cocoon's in Nos:</td>
+                        <td style={styles.ctstyle}>{t("Selected Cocoon's in Nos")}:</td>
                         <td>{prepareEggs.selectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Rejected Cocoon's in Nos:</td>
+                        <td style={styles.ctstyle}>{t("Rejected Cocoon's in Nos")}:</td>
                         <td>{prepareEggs.rejectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>No of Pairs (%) (Selected Cocoon's):</td>
+                        <td style={styles.ctstyle}>{t("No of Pairs (%) (Selected Cocoon's)")}:</td>
                         <td>{prepareEggs.pairNoSelectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>No of Pairs (%) (Rejected Cocoon's):</td>
+                        <td style={styles.ctstyle}>{t("No of Pairs (%) (Rejected Cocoon's)")}:</td>
                         <td>{prepareEggs.pairNoRejectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Err %(Selected Cocoon's):</td>
+                        <td style={styles.ctstyle}>{t("Err %(Selected Cocoon's)")}:</td>
                         <td>{prepareEggs.errPerSelectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Err %(Rejected Cocoon's):</td>
+                        <td style={styles.ctstyle}>{t("Err %(Rejected Cocoon's)")}:</td>
                         <td>{prepareEggs.errPerRejectedCocoonsNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Remaining DFLs :</td>
+                        <td style={styles.ctstyle}>{t("Remaining DFLs")}:</td>
                         <td>{prepareEggs.remainingDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Test results:</td>
+                        <td style={styles.ctstyle}>{t("Test results")}:</td>
                         <td>{prepareEggs.testResults}</td>
                       </tr>
                       {/* <tr>
-                        <td style={styles.ctstyle}>Certification (Yes/No):</td>
+                        <td style={styles.ctstyle}>{t("Certification (Yes/No)")}:</td>
                         <td>
                           {prepareEggs.certification === "1" ? "Yes" : "No"}
                         </td>
                       </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>Additional remarks:</td>
+                        <td style={styles.ctstyle}>{t("Additional remarks")}:</td>
                         <td>{prepareEggs.additionalRemarks}</td>
                       </tr>
                     </tbody>

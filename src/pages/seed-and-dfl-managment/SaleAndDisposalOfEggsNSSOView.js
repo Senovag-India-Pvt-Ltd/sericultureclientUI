@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSOView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,13 +53,12 @@ function SaleAndDisposalOfEggsNSSOView() {
   }, [id]);
 
   return (
-    <Layout title="Sale / Disposal of DFL's(eggs) NSSO View">
+    <Layout title={t("Sale / Disposal of DFL's(eggs) NSSO View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {" "}
-              Sale / Disposal of DFL's(eggs) NSSO View{" "}
+              {t("Sale / Disposal of DFL's(eggs) NSSO View")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -68,7 +69,7 @@ function SaleAndDisposalOfEggsNSSOView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -77,7 +78,7 @@ function SaleAndDisposalOfEggsNSSOView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -88,12 +89,12 @@ function SaleAndDisposalOfEggsNSSOView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-            Sale / Disposal of DFL's(eggs) View
+            {t("Sale / Disposal of DFL's(eggs) View")}
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -101,49 +102,43 @@ function SaleAndDisposalOfEggsNSSOView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID:")}</td>
                         <td>{seedDisposal.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td style={styles.ctstyle}>{t("Fruits ID:")}</td>
                         <td>{seedDisposal.fruitsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Lot Number:")}</td>
                         <td>{seedDisposal.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race:</td>
+                        <td style={styles.ctstyle}>{t("Race:")}</td>
                         <td>{seedDisposal.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Egg Sheet Numbers:</td>
+                        <td style={styles.ctstyle}>{t("Egg Sheet Numbers:")}</td>
                         <td>{seedDisposal.eggSheetNumbers}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date of disposal:</td>
+                        <td style={styles.ctstyle}>{t("Date of disposal:")}</td>
                         <td>{seedDisposal.dateOfDisposal}</td>
                       </tr>
-                    
-
                       <tr>
-                        <td style={styles.ctstyle}>Number Of Dfls Disposed:</td>
+                        <td style={styles.ctstyle}>{t("Number Of Dfls Disposed:")}</td>
                         <td>{seedDisposal.numberOfDflsDisposed}</td>
                       </tr>
-
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Name and address of the Farm:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Name and address of the Farm:")}</td>
                         <td>{seedDisposal.nameAndAddressOfTheFarm}</td>
                       </tr>
-
                       <tr>
-                        <td style={styles.ctstyle}>Rate per 100 Dfls Price:</td>
+                        <td style={styles.ctstyle}>{t("Rate per 100 Dfls Price:")}</td>
                         <td>{seedDisposal.ratePer100DflsPrice}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Invoice Number:</td>
+                        <td style={styles.ctstyle}>{t("Invoice Number:")}</td>
                         <td>{seedDisposal.invoiceNumber}</td>
                       </tr>
                     </tbody>

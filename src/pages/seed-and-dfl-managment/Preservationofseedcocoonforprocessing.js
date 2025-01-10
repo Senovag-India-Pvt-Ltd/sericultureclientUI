@@ -12,12 +12,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function Preservationofseedcocoonforprocessing() {
-  
+  const { t } = useTranslation();
 
   const [data, setData] = useState({
     lotNumber: "",
@@ -285,12 +286,12 @@ useEffect(() => {
 
 
   return (
-    <Layout title="Preservation of seed Cocoon for processing">
+    <Layout title={t("Preservation of seed Cocoon for processing")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Preservation of seed cocoon for processing
+              {t("Preservation of seed Cocoon for processing")}
             </Block.Title>
             
           </Block.HeadContent>
@@ -302,7 +303,7 @@ useEffect(() => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -311,7 +312,7 @@ useEffect(() => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -325,7 +326,7 @@ useEffect(() => {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Preservation of seed cocoon for processing
+              {t("Preservation of seed Cocoon for processing")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -365,8 +366,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                   Lot Number
-                   {/* <span className="text-danger">*</span> */}
+                      {t("Lot Number")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -375,12 +375,8 @@ useEffect(() => {
                         value={data.lotNumber}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Lot Number"
-                        // required
+                        placeholder={t("Enter Lot Number")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Lot Number is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -417,23 +413,15 @@ useEffect(() => {
                 <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Farm
-                            {/* <span className="text-danger">*</span> */}
+                            {t("Farm")}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
                               name="farmId"
                               value={data.farmId}
                               onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // multiple
-                              // required
-                              // isInvalid={
-                              //   data.farmId === undefined ||
-                              //   data.farmId === "0"
-                              // }
                             >
-                              <option value="">Select Farm</option>
+                              <option value="">{t("Select Farm")}</option>
                               {farmListData.map((list) => (
                                 <option
                                   key={list.farmId}
@@ -444,7 +432,7 @@ useEffect(() => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Farm is required
+                              {t("Farm is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -453,8 +441,7 @@ useEffect(() => {
                       <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Market
-                         {/* <span className="text-danger">*</span> */}
+                        {t("Market")}
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -462,14 +449,8 @@ useEffect(() => {
                             name="marketMasterId"
                             value={data.marketMasterId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // required
-                            // isInvalid={
-                            //   data.marketMasterId === undefined ||
-                            //   data.marketMasterId === "0"
-                            // }
                           >
-                            <option value="">Select Market</option>
+                            <option value="">{t("Select Market")}</option>
                             {marketListData.map((list) => (
                               <option
                                 key={list.marketMasterId}
@@ -480,7 +461,7 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Market is required
+                            {t("Market is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -491,7 +472,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Race<span className="text-danger">*</span>
+                      {t("Race")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -499,10 +480,9 @@ useEffect(() => {
                           name="raceId"
                           value={data.raceId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Race</option>
+                          <option value="">{t("Select Race")}</option>
                           {raceListData.map((list) => (
                             <option
                               key={list.raceMasterId}
@@ -513,7 +493,7 @@ useEffect(() => {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Race is required
+                          {t("Race is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -523,8 +503,7 @@ useEffect(() => {
                           <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Name of the Farmer
-                    {/* <span className="text-danger">*</span> */}
+                      {t("Name of the Farmer")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -533,12 +512,8 @@ useEffect(() => {
                         value={data.nameOfTheGovernmentSeedFarmOrFarmer}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Name of the Government Seed Farm/Farmer"
-                        // required
+                        placeholder={t("Enter Name of the Government Seed Farm/Farmer")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Name of the Government Seed Farm/Farmer is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -546,8 +521,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                    Crop Number
-                      {/* <span className="text-danger">*</span> */}
+                      {t("Crop Number")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -557,12 +531,8 @@ useEffect(() => {
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
-                        placeholder="Enter Crop Number"
-                        // required
+                        placeholder={t("Enter Crop Number")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Crop Number is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -570,8 +540,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Line Name
-                      {/* <span className="text-danger">*</span> */}
+                      {t("Line Name")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -579,10 +548,8 @@ useEffect(() => {
                           name="lineNameId"  
                           value={data.lineNameId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          // required
                         >
-                          <option value="">Select Line Name</option>
+                          <option value="">{t("Select Line Name")}</option>
                           {lineNameListData.map((list) => (
                             <option
                               key={list.lineNameId}
@@ -592,9 +559,6 @@ useEffect(() => {
                             </option>
                           ))}
                         </Form.Select>
-                        {/* <Form.Control.Feedback type="invalid">
-                          Line Name is required
-                        </Form.Control.Feedback> */}
                       </div>
                     </Col>
                   </Form.Group>
@@ -603,8 +567,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon Supplied in Kg
-                    {/* <span className="text-danger">*</span> */}
+                      {t("Cocoon Supplied in Kg")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -613,12 +576,8 @@ useEffect(() => {
                         value={data.bedNumberOrKgsOfCocoonsSupplied}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Supplied in Kg"
-                        // required
+                        placeholder={t("Enter Cocoon Supplied in Kg")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Cocoon Supplied in Kg is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -626,8 +585,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon Supplied in No's
-                    {/* <span className="text-danger">*</span> */}
+                      {t("Cocoon Supplied in No's")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -636,12 +594,8 @@ useEffect(() => {
                         value={data.cacoonSuppliedNumbers}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Supplied in No's"
-                        // required
+                        placeholder={t("Enter Cocoon Supplied in No's")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Cocoon Supplied in Kg is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -649,8 +603,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Number of pupa examined
-                    {/* <span className="text-danger">*</span> */}
+                      {t("Number of pupa examined")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -659,12 +612,8 @@ useEffect(() => {
                         value={data.numberOfPupaExamined}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Number of pupa examined"
-                        // required
+                        placeholder={t("Enter Number of pupa examined")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Number of pupa examined is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -672,8 +621,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon rejection details/ numbers
-                    {/* <span className="text-danger">*</span> */}
+                      {t("Cocoon rejection details/ numbers")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -682,12 +630,8 @@ useEffect(() => {
                         value={data.cocoonRejectionDetails}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Cocoon rejection details/ numbers"
-                        // required
+                        placeholder={t("Enter Cocoon rejection details/ numbers")}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      Cocoon rejection details/ numbers is required
-                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -695,7 +639,7 @@ useEffect(() => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Rate Per Kg<span className="text-danger">*</span>
+                      {t("Rate Per Kg")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -704,11 +648,11 @@ useEffect(() => {
                         value={data.ratePerKg}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Rate Per Kg"
+                        placeholder={t("Enter Rate Per Kg")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Rate Per Kg is required
+                        {t("Rate Per Kg is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -718,7 +662,7 @@ useEffect(() => {
                 <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                              Date of seed cocoon supply<span className="text-danger">*</span>
+                                {t("Date of seed cocoon supply")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of seed cocoon supply">
                                 <DatePicker
@@ -742,8 +686,7 @@ useEffect(() => {
                           <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Spun On Date
-                      {/* <span className="text-danger">*</span> */}
+                      {t("Spun On Date")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -757,7 +700,6 @@ useEffect(() => {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        // required
                       />
                     </div>
                   </Form.Group>
@@ -766,8 +708,7 @@ useEffect(() => {
                     <Col lg="2">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Invoice Date
-                      {/* <span className="text-danger">*</span> */}
+                      {t("Invoice Date")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -781,7 +722,6 @@ useEffect(() => {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        // required
                       />
                     </div>
                   </Form.Group>
@@ -797,12 +737,12 @@ useEffect(() => {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -50,12 +52,12 @@ function RegisteredSeedProducerNssoGrainagesView() {
   }, [id]);
 
   return (
-    <Layout title="View Preparation Of Eggs (DFLs) RSP/NSSO Details">
+    <Layout title={t("View Preparation Of Eggs (DFLs) RSP/NSSO Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            View Preparation Of Eggs (DFLs) RSP/NSSO Details
+              {t("View Preparation Of Eggs (DFLs) RSP/NSSO Details")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -66,7 +68,7 @@ function RegisteredSeedProducerNssoGrainagesView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +77,7 @@ function RegisteredSeedProducerNssoGrainagesView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -86,12 +88,12 @@ function RegisteredSeedProducerNssoGrainagesView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-          View Preparation Of Eggs (DFLs) RSP/NSSO Details
+            {t("View Preparation Of Eggs (DFLs) RSP/NSSO Details")}
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -99,65 +101,61 @@ function RegisteredSeedProducerNssoGrainagesView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{testingMoth.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Lot Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{testingMoth.lotNumber}</td>
                       </tr>
-                      
                       <tr>
                         <td style={styles.ctstyle}>
-                          Number of Cocoons (CB, Hybrid):
+                          {t("Number of Cocoons (CB, Hybrid)")}:
                         </td>
                         <td>{testingMoth.numberOfCocoonsCB}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Source of Seed Cocoon's:</td>
+                        <td style={styles.ctstyle}>{t("Source of Seed Cocoon's")}:</td>
                         <td>{testingMoth.sourceMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date of moth emergence:</td>
+                        <td style={styles.ctstyle}>{t("Date of moth emergence")}:</td>
                         <td>{testingMoth.dateOfMothEmergence}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Laid On Date:</td>
+                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
                         <td>{testingMoth.laidOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Egg sheet serial number:</td>
+                        <td style={styles.ctstyle}>{t("Egg sheet serial number")}:</td>
                         <td>{testingMoth.eggSheetSerialNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number of pairs:</td>
+                        <td style={styles.ctstyle}>{t("Number of pairs")}:</td>
                         <td>{testingMoth.numberOfPairs}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number of Rejection:</td>
+                        <td style={styles.ctstyle}>{t("Number of Rejection")}:</td>
                         <td>{testingMoth.numberOfRejection}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DFLs obtained:</td>
+                        <td style={styles.ctstyle}>{t("DFLs obtained")}:</td>
                         <td>{testingMoth.dflsObtained}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Egg Recovery %:</td>
+                        <td style={styles.ctstyle}>{t("Egg Recovery %")}:</td>
                         <td>{testingMoth.eggRecoveryPercentage}</td>
                       </tr>
-                      
                       <tr>
-                        <td style={styles.ctstyle}>Test results:</td>
+                        <td style={styles.ctstyle}>{t("Test results")}:</td>
                         <td>{testingMoth.testResults}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Certification (Yes/No):</td>
+                        <td style={styles.ctstyle}>{t("Certification (Yes/No)")}:</td>
                         <td>{testingMoth.certification}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Additional remarks:</td>
+                        <td style={styles.ctstyle}>{t("Additional remarks")}:</td>
                         <td>{testingMoth.additionalRemarks}</td>
                       </tr>
                     </tbody>

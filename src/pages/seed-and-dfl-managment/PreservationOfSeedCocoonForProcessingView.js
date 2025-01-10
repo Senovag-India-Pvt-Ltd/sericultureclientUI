@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -23,8 +23,7 @@ function PreservationOfSeedCocoonForProcessingView() {
   // const [data] = useState(CasteDatas);
   const [seedCocoon, setSeedCocoon] = useState({});
   const [loading, setLoading] = useState(false);
-
- 
+  const { t } = useTranslation();
 
   const getIdList = () => {
     setLoading(true);
@@ -48,11 +47,11 @@ function PreservationOfSeedCocoonForProcessingView() {
 
 
   return (
-    <Layout title="View Preservation of seed cocoon for processing Details">
+    <Layout title={t("View Preservation of seed cocoon for processing Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Preservation of seed cocoon for processing Details </Block.Title>
+            <Block.Title tag="h2">{t("View Preservation of seed cocoon for processing Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +61,7 @@ function PreservationOfSeedCocoonForProcessingView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +70,7 @@ function PreservationOfSeedCocoonForProcessingView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,11 +80,11 @@ function PreservationOfSeedCocoonForProcessingView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Preservation of seed cocoon for processing Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Preservation of seed cocoon for processing Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,102 +92,102 @@ function PreservationOfSeedCocoonForProcessingView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{seedCocoon.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Lot Number:
+                          {t("Lot Number")}:
                         </td>
                         <td>{seedCocoon.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Parent Lot Number:
+                          {t("Parent Lot Number")}:
                         </td>
                         <td>{seedCocoon.parentLotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Market:</td>
+                        <td style={styles.ctstyle}>{t("Market")}:</td>
                         <td>{seedCocoon.marketMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farm:</td>
+                        <td style={styles.ctstyle}>{t("Farm")}:</td>
                         <td>{seedCocoon.farmName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race:</td>
+                        <td style={styles.ctstyle}>{t("Race")}:</td>
                         <td>{seedCocoon.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Name of the Government Seed Farm/Farmer:
+                          {t("Name of the Government Seed Farm/Farmer")}:
                         </td>
                         <td>{seedCocoon.nameOfTheGovernmentSeedFarmOrFarmer}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Date Of Seed Cocoon Supply:
+                          {t("Date Of Seed Cocoon Supply")}:
                         </td>
                         <td>{seedCocoon.dateOfSeedCocoonSupply}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Spun On Date:
+                          {t("Spun On Date")}:
                         </td>
                         <td>{seedCocoon.spunOnDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Crop Number:
+                          {t("Crop Number")}:
                         </td>
                         <td>{seedCocoon.cropNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Line Name:
+                          {t("Line Name")}:
                         </td>
                         <td>{seedCocoon.lineName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Cocoons Supplied in Kg:
+                          {t("Cocoons Supplied in Kg")}:
                         </td>
                         <td>{seedCocoon.bedNumberOrKgsOfCocoonsSupplied}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Cocoons Supplied in Nos:
+                          {t("Cocoons Supplied in Nos")}:
                         </td>
                         <td>{seedCocoon.cacoonSuppliedNumbers}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Number of pupa examined:
+                          {t("Number of pupa examined")}:
                         </td>
                         <td>{seedCocoon.numberOfPupaExamined}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Cocoon rejection details/ numbers:
+                          {t("Cocoon rejection details/ numbers")}:
                         </td>
                         <td>{seedCocoon.cocoonRejectionDetails}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Invoice Date:
+                          {t("Invoice Date")}:
                         </td>
                         <td>{seedCocoon.invoiceDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Invoice No:
+                          {t("Invoice No")}:
                         </td>
                         <td>{seedCocoon.invoiceNo}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Rate Per Kg:
+                          {t("Rate Per Kg")}:
                         </td>
                         <td>{seedCocoon.ratePerKg}</td>
                       </tr>

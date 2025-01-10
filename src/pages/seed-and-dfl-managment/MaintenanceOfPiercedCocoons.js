@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from 'react-i18next';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -26,6 +27,7 @@ function MaintenanceOfPiercedCocoons() {
   });
 
   const [validated, setValidated] = useState(false);
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -141,12 +143,12 @@ function MaintenanceOfPiercedCocoons() {
   };
 
   return (
-    <Layout title="Maintenance Of Pierced Cocoons">
+    <Layout title={t("Maintenance Of Pierced Cocoons")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            Maintenance Of Pierced Cocoons
+              {t("Maintenance Of Pierced Cocoons")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -157,7 +159,7 @@ function MaintenanceOfPiercedCocoons() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -166,7 +168,7 @@ function MaintenanceOfPiercedCocoons() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -178,7 +180,7 @@ function MaintenanceOfPiercedCocoons() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Maintenance Of Pierced Cocoons
+              {t("Maintenance Of Pierced Cocoons")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -186,7 +188,7 @@ function MaintenanceOfPiercedCocoons() {
                 <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -196,11 +198,11 @@ function MaintenanceOfPiercedCocoons() {
                         onChange={handleInputs}
                         // maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -242,7 +244,7 @@ function MaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                    Quantity in  Kgs<span className="text-danger">*</span>
+                      {t("Quantity in Kgs")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -251,11 +253,11 @@ function MaintenanceOfPiercedCocoons() {
                         value={data.quantityInNumberAndKgs}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Quantity in Kgs"
+                        placeholder={t("Enter Quantity in Kgs")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Quantity in Kgs is required
+                        {t("Quantity in Kgs is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -264,7 +266,7 @@ function MaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Storage Date
+                      {t("Storage Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -294,12 +296,12 @@ function MaintenanceOfPiercedCocoons() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

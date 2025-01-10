@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -22,6 +23,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function SeedCocoonInward() {
+  const { t } = useTranslation();
   const [farmerDetails, setFarmerDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [farmer, setFarmer] = useState({
@@ -910,11 +912,11 @@ function SeedCocoonInward() {
   //  }, [id]);
 
   return (
-    <Layout title="Seed Cocoon E-Inward" show="true">
+    <Layout title={t("Seed Cocoon E-Inward")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed Cocoon E-Inward</Block.Title>
+            <Block.Title tag="h2">{t("Seed Cocoon E-Inward")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -953,7 +955,7 @@ function SeedCocoonInward() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Farmer Details By
+                      {t("Search Farmer Details By")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -963,9 +965,9 @@ function SeedCocoonInward() {
                           onChange={handleFarmerIdInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="fruitsId">Fruits Id</option>
-                          <option value="farmerNumber">CSB Number</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="fruitsId">{t("Fruits Id")}</option>
+                          <option value="farmerNumber">{t("CSB Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -977,16 +979,16 @@ function SeedCocoonInward() {
                         value={farmer.text}
                         onChange={handleFarmerIdInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                     {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
@@ -995,7 +997,7 @@ function SeedCocoonInward() {
                         to="/seriui/issue-new-trader-license"
                         className="btn btn-primary border-0"
                       >
-                        Add New
+                        {t("Add New")}
                       </Link>
                     </Col>
                   </Form.Group>
@@ -1025,7 +1027,7 @@ function SeedCocoonInward() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Personal Details</span>
+                                <span>{t("Personal Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -1040,7 +1042,7 @@ function SeedCocoonInward() {
                                 onClick={handleShowModalFC}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>FC Details</span>
+                                <span>{t("FC Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -1055,7 +1057,7 @@ function SeedCocoonInward() {
                                 onClick={handleShowModalCrop}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Crop Details</span>
+                                <span>{t("Crop Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -1070,7 +1072,7 @@ function SeedCocoonInward() {
                                 onClick={handleShowModalWeighment}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Initial Weighment</span>
+                                <span>{t("Initial Weighment")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -1083,7 +1085,7 @@ function SeedCocoonInward() {
                     <ul className="d-flex align-items-center justify-content-center gap g-3">
                       <li>
                         <Button type="submit" variant="primary">
-                          Submit
+                          {t("Submit")}
                         </Button>
                       </li>
                     </ul>
@@ -1096,7 +1098,7 @@ function SeedCocoonInward() {
       </Block>
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton style={styles.modalHeader}>
-          <Modal.Title style={styles.modalTitle}>Personal Details</Modal.Title>
+          <Modal.Title style={styles.modalTitle}>{t("Personal Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={styles.modalBody}>
           <div className="d-flex justify-content-center">
@@ -1112,39 +1114,39 @@ function SeedCocoonInward() {
                 >
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>Farmer Number:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Number")}:</td>
                       <td>{farmerDetails?.farmerNumber || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Farmer Name:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                       <td>{farmerDetails?.firstName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Father's/Husband's Name:</td>
+                      <td style={styles.ctstyle}>{t("Father's/Husband's Name")}:</td>
                       <td>{farmerDetails?.fatherName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Phone Number:</td>
+                      <td style={styles.ctstyle}>{t("Phone Number")}:</td>
                       <td>{farmerDetails?.mobileNumber || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>TSC:</td>
+                      <td style={styles.ctstyle}>{t("TSC")}:</td>
                       <td>{farmerDetails?.tscName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>State:</td>
+                      <td style={styles.ctstyle}>{t("State")}:</td>
                       <td>{farmerDetails?.stateName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>District:</td>
+                      <td style={styles.ctstyle}>{t("District")}:</td>
                       <td>{farmerDetails?.districtName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Taluk:</td>
+                      <td style={styles.ctstyle}>{t("Taluk")}:</td>
                       <td>{farmerDetails?.talukName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Village:</td>
+                      <td style={styles.ctstyle}>{t("Village")}:</td>
                       <td>{farmerDetails?.villageName || "N/A"}</td>
                     </tr>
                   </tbody>
@@ -1244,12 +1246,12 @@ function SeedCocoonInward() {
       </Modal> */}
       <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>FC Details</Modal.Title>
+          <Modal.Title>{t("FC Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column justify-content-center">
             <tr>
-              <td style={styles.ctstyle}>Fitness Certificate:</td>
+              <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
               <td>
                 {selectedDocumentFile?.length > 0 &&
                   selectedDocumentFile.map((file) => (
@@ -1265,7 +1267,7 @@ function SeedCocoonInward() {
                         className="ms-2"
                         onClick={() => downloadFile(pathList[0])}
                       >
-                        Download File
+                        {t("Download File")}
                       </Button>
                     </>
                   ))}
@@ -1277,7 +1279,7 @@ function SeedCocoonInward() {
 
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
         <Modal.Header closeButton style={styles.modalHeader}>
-          <Modal.Title style={styles.modalTitle}>Crop Details</Modal.Title>
+          <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={styles.modalBody}>
           <div className="d-flex justify-content-center">
@@ -1300,19 +1302,19 @@ function SeedCocoonInward() {
                 </thead> */}
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>No of DFL's:</td>
+                      <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
                       <td>{farmerDetails?.numbersOfDfls || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Lot No:</td>
+                      <td style={styles.ctstyle}>{t("Lot No")}:</td>
                       <td>{farmerDetails?.lotNumberRsp || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
+                      <td style={styles.ctstyle}>{t("Rate Per 100 Dfls")}:</td>
                       <td>{farmerDetails?.dflsSource || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Variety:</td>
+                      <td style={styles.ctstyle}>{t("Variety")}:</td>
                       <td>{farmerDetails?.raceName || "N/A"}</td>
                     </tr>
                   </tbody>
@@ -1328,7 +1330,7 @@ function SeedCocoonInward() {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Initial Weighment</Modal.Title>
+          <Modal.Title>{t("Initial Weighment")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -1340,7 +1342,7 @@ function SeedCocoonInward() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                    Initial Weighment in Kg's
+                    {t("Initial Weighment in Kg's")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1350,11 +1352,11 @@ function SeedCocoonInward() {
                       value={data.estimatedWeight}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter Initial Weighment in Kg's"
+                      placeholder={t("Enter Initial Weighment in Kg's")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Initial Weight is required
+                      {t("Initial Weight is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1363,7 +1365,7 @@ function SeedCocoonInward() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                    No Of Lot
+                    {t("No Of Lot")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1373,11 +1375,11 @@ function SeedCocoonInward() {
                       min={0}
                       value={data.numberOfLot}
                       onChange={handleInputs}
-                      placeholder="Enter No Of Lot"
+                      placeholder={t("Enter No Of Lot")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      No Of Lot is required
+                      {t("No Of Lot is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1388,7 +1390,7 @@ function SeedCocoonInward() {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
                     <Button type="submit" variant="primary">
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   <div className="gap-col">
@@ -1396,7 +1398,7 @@ function SeedCocoonInward() {
                       variant="secondary"
                       onClick={handleCloseModalWeighment}
                     >
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

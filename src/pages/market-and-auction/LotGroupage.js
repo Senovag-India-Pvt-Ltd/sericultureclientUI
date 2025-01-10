@@ -9,12 +9,14 @@ import { Icon, Select } from "../../components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function LotGroupage() {
+  const { t } = useTranslation();
 
 const [dataLotList, setDataLotList] = useState([]); 
   const [data, setData] = useState({
@@ -1049,11 +1051,11 @@ setAllottedLotId("");
   };
 
   return (
-    <Layout title="Lot Distribution">
+    <Layout title={t("Lot Distribution")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Lot Distribution</Block.Title>
+            <Block.Title tag="h2">{t("Lot Distribution")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1091,7 +1093,7 @@ setAllottedLotId("");
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Bidding Slip Lot NO.<span className="text-danger">*</span>
+                        {t("Bidding Slip Lot NO.")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -1100,15 +1102,15 @@ setAllottedLotId("");
                           value={allottedLotId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot Number"
+                          placeholder={t("Enter Lot Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot Number is required.
+                          {t("Lot Number is required.")}
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={1}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -1124,7 +1126,7 @@ setAllottedLotId("");
                       </Col>
                       <Col sm={2}>
                       <Button type="submit" variant="primary">
-                       Search
+                       {t("Search")}
                       </Button>
                       </Col>
                     </Form.Group>
@@ -1138,42 +1140,42 @@ setAllottedLotId("");
             {showFarmerDetails && (
                   <Col lg="12">
                   <Card>
-                    <Card.Header style={styles.cardHeader}>Farmer Details</Card.Header>
+                    <Card.Header style={styles.cardHeader}>{t("Farmer Details")}</Card.Header>
                     <Card.Body style={styles.cardBody}>
                       <Row className="g-gs">
                         <Col lg="12">
                           <table style={styles.table} className="table small table-bordered">
                             <tbody>
                               <tr style={styles.tableRow}>
-                                <td style={styles.ctstyle}>Fruits Id:</td>
+                                <td style={styles.ctstyle}>{t("Fruits Id:")}</td>
                                 <td style={styles.cell}>{farmerdetails.farmerFruitsId}</td>
-                                <td style={styles.ctstyle}>Farmer Name:</td>
+                                <td style={styles.ctstyle}>{t("Farmer Name:")}</td>
                                 <td style={styles.cell}>{farmerdetails.farmerFirstName}</td>
-                                <td style={styles.ctstyle}>Bidding Slip Issued Date:</td>
+                                <td style={styles.ctstyle}>{t("Bidding Slip Issued Date:")}</td>
                                 <td style={styles.cell}>{farmerdetails.marketAuctionDate}</td>
                               </tr>
                               <tr style={styles.tableRow}>
-                                <td style={styles.ctstyle}>Lot No:</td>
+                                <td style={styles.ctstyle}>{t("Lot No:")}</td>
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
-                                <td style={styles.ctstyle}>No OF DFLs:</td>
+                                <td style={styles.ctstyle}>{t("No OF DFLs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
-                                <td style={styles.ctstyle}>Price:</td>
+                                <td style={styles.ctstyle}>{t("Price:")}</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
                               </tr>
                               <tr style={styles.tableRow}>
-                                <td style={styles.ctstyle}>Initial Weighment:</td>
+                                <td style={styles.ctstyle}>{t("Initial Weighment:")}</td>
                                 <td style={styles.cell}>{farmerdetails.initialWeighment}</td>
-                                <td style={styles.ctstyle}>Final Weighment in Kgs:</td>
+                                <td style={styles.ctstyle}>{t("Final Weighment in Kgs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.lotWeightAfterWeighment}</td>
-                                <td style={styles.ctstyle}>Average Yield:</td>
+                                <td style={styles.ctstyle}>{t("Average Yield:")}</td>
                                 <td style={styles.cell}>{farmerdetails.calculatedAverageYield}</td>
                               </tr>
                               <tr style={styles.tableRow}>
-                              <td style={styles.ctstyle}>Sold Cocoon in Kgs:</td>
+                              <td style={styles.ctstyle}>{t("Sold Cocoon in Kgs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.soldCocoonInKgs}</td>
-                                <td style={styles.ctstyle}>Remaining Cocoon in Kgs:</td>
+                                <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
                                 <td style={styles.cell}>{remainingCocoonWeight}</td>
-                                <td style={styles.ctstyle}>Remaining Cocoon in Store:</td>
+                                <td style={styles.ctstyle}>{t("Remaining Cocoon in Store:")}</td>
                                 <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
                               </tr>
                             </tbody>
@@ -1193,7 +1195,7 @@ setAllottedLotId("");
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                 Buyers List
+                 {t("Buyers List")}
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Family Members</h3> */}
@@ -1236,7 +1238,7 @@ setAllottedLotId("");
                                 disabled={totalLotWeight >= farmerdetails.netWeight}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("Add")}</span>
                               </Button>
                             </li>
                             <li>
@@ -1247,7 +1249,7 @@ setAllottedLotId("");
                                 disabled={totalLotWeight >= farmerdetails.netWeight}
                               >
                                 <Icon name="plus" />
-                                <span>Add</span>
+                                <span>{t("Add")}</span>
                               </Button>
                             </li>
                           </ul>
@@ -1267,15 +1269,15 @@ setAllottedLotId("");
                               <thead>
                                 <tr style={{ backgroundColor: "#f1f2f7" }}>
                                   {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Buyer Type</th>
-                                  <th>License Number/Address/Grainage</th>
-                                  <th>Quantity of Cocoons(In Kgs)</th>
+                                  <th>{t("Action")}</th>
+                                  <th>{t("Buyer Type")}</th>
+                                  <th>{t("License Number/Address/Grainage")}</th>
+                                  <th>{t("Quantity of Cocoons(In Kgs)")}</th>
                                   {/* <th>No Of DFL</th>
                                   <th>Average Yield</th> */}
-                                  <th>Price(In Rs.)</th>
-                                  <th>Total Amount</th>
-                                  <th>Invoice Number</th>
+                                  <th>{t("Price(In Rs.)")}</th>
+                                  <th>{t("Total Amount")}</th>
+                                  <th>{t("Invoice Number")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1289,7 +1291,7 @@ setAllottedLotId("");
                                           onClick={() => handleGetLotDetails(i)}
                                           disabled={!!item.lotGroupageId}
                                         >
-                                          Edit
+                                          {t("Edit")}
                                         </Button>
                                         {/* <Button
                                           variant="danger"
@@ -1345,7 +1347,7 @@ setAllottedLotId("");
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
 
                 </li>
@@ -1364,7 +1366,7 @@ setAllottedLotId("");
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>
@@ -1380,7 +1382,7 @@ setAllottedLotId("");
 
        <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Lot Distribution Details</Modal.Title>
+          <Modal.Title>{t("Add Lot Distribution Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form noValidate validated={validatedLot} onSubmit={handleAddLotDetails}>
@@ -1388,7 +1390,7 @@ setAllottedLotId("");
                   <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Buyer Type<span className="text-danger">*</span>
+                          {t("Buyer Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1402,14 +1404,14 @@ setAllottedLotId("");
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Buyer Type</option>
-                            <option value="RSP">RSP</option>
-                            <option value="NSSO">NSSO</option>
-                            <option value="Govt Grainage">Govt Grainage</option>
-                            <option value="Reeling">Reeling</option>
+                            <option value="">{t("Select Buyer Type")}</option>
+                            <option value="RSP">{t("RSP")}</option>
+                            <option value="NSSO">{t("NSSO")}</option>
+                            <option value="Govt Grainage">{t("Govt Grainage")}</option>
+                            <option value="Reeling">{t("Reeling")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Buyer Type is required
+                          {t("Buyer Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1494,7 +1496,7 @@ setAllottedLotId("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Address<span className="text-danger">*</span>
+                            {t("Address")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -1508,7 +1510,7 @@ setAllottedLotId("");
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select Address</option>
+                              <option value="">{t("Select Address")}</option>
                               {externalListData.map((list) => (
                                 <option
                                   key={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
@@ -1519,7 +1521,7 @@ setAllottedLotId("");
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Address is required
+                              {t("Address is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -1530,7 +1532,7 @@ setAllottedLotId("");
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Grainage<span className="text-danger">*</span>
+                          {t("Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1540,7 +1542,7 @@ setAllottedLotId("");
                             onBlur={handleGrainageOption} // Correctly set as function reference
                             required
                           >
-                            <option value="">Select Grainage</option>
+                            <option value="">{t("Select Grainage")}</option>
                             {grainageListData && grainageListData.length ? (
                               grainageListData.map((list) => (
                                 <option
@@ -1553,7 +1555,7 @@ setAllottedLotId("");
                             ) : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Grainage is required
+                            {t("Grainage is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1565,7 +1567,7 @@ setAllottedLotId("");
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          License Number<span className="text-danger">*</span>
+                          {t("License Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1579,7 +1581,7 @@ setAllottedLotId("");
                               data.buyerId === "0"
                             }
                           >
-                            <option value="">Select License Number</option>
+                            <option value="">{t("Select License Number")}</option>
                             {externalListData.map((list) => (
                               <option
                                 key={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
@@ -1590,7 +1592,7 @@ setAllottedLotId("");
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            License Number is required
+                            {t("License Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1601,7 +1603,7 @@ setAllottedLotId("");
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Quantity of Cocoons Allotted (In Kgs)
+                      {t("Quantity of Cocoons Allotted (In Kgs)")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1611,12 +1613,12 @@ setAllottedLotId("");
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
+                          placeholder={t("Enter Quantity of Cocoons Allotted (In Kgs)")}
                           required
                           isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
                         />
                         <Form.Control.Feedback type="invalid">
-                        Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon
+                        {t("Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1675,7 +1677,7 @@ setAllottedLotId("");
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="amount">
-                  Price(In Rs.)
+                  {t("Price(In Rs.)")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                 <div className="form-control-wrap">
@@ -1685,12 +1687,12 @@ setAllottedLotId("");
                     value={data.amount}
                     onChange={handleInputs}
                     type="number"
-                    placeholder="Enter Price(In Rs.)"
+                    placeholder={t("Enter Price(In Rs.)")}
                     required
                     readOnly
                   />
                   <Form.Control.Feedback type="invalid">
-                    Price(In Rs.) is required.
+                    {t("Price(In Rs.) is required.")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -1699,7 +1701,7 @@ setAllottedLotId("");
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="soldAmount">
-                  Total Amount
+                  {t("Total Amount")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                 <div className="form-control-wrap">
@@ -1709,11 +1711,11 @@ setAllottedLotId("");
                     value={data.soldAmount}
                     onChange={handleInputs}
                     type="number"
-                    placeholder="Enter Total Amount"
+                    placeholder={t("Enter Total Amount")}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    Total Amount is required.
+                    {t("Total Amount is required.")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -1729,12 +1731,12 @@ setAllottedLotId("");
                     // disabled={totalLotWeight >= farmerdetails.netWeight}
                     disabled={isAddDisabled}
                     >
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -1746,7 +1748,7 @@ setAllottedLotId("");
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Lot Distribution Details</Modal.Title>
+          <Modal.Title>{t("Edit Lot Distribution Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form
@@ -1758,7 +1760,7 @@ setAllottedLotId("");
           <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Buyer Type<span className="text-danger">*</span>
+                          {t("Buyer Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1772,14 +1774,14 @@ setAllottedLotId("");
                               data.buyerType === "0"
                             }
                           >
-                            <option value="">Select Buyer Type</option>
-                            <option value="RSP">RSP</option>
-                            <option value="NSSO">NSSO</option>
-                            <option value="Govt Grainage">Govt Grainage</option>
-                            <option value="Reeling">Reeling</option>
+                            <option value="">{t("Select Buyer Type")}</option>
+                            <option value="RSP">{t("RSP")}</option>
+                            <option value="NSSO">{t("NSSO")}</option>
+                            <option value="Govt Grainage">{t("Govt Grainage")}</option>
+                            <option value="Reeling">{t("Reeling")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Buyer Type is required
+                          {t("Buyer Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1864,7 +1866,7 @@ setAllottedLotId("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                            Address<span className="text-danger">*</span>
+                            {t("Address")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -1878,7 +1880,7 @@ setAllottedLotId("");
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select Address</option>
+                              <option value="">{t("Select Address")}</option>
                               {externalListData.map((list) => (
                                 <option
                                   key={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
@@ -1889,7 +1891,7 @@ setAllottedLotId("");
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Address is required
+                              {t("Address is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -1900,7 +1902,7 @@ setAllottedLotId("");
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Grainage<span className="text-danger">*</span>
+                          {t("Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1910,7 +1912,7 @@ setAllottedLotId("");
                             onBlur={handleGrainageOption} // Correctly set as function reference
                             required
                           >
-                            <option value="">Select Grainage</option>
+                            <option value="">{t("Select Grainage")}</option>
                             {grainageListData && grainageListData.length ? (
                               grainageListData.map((list) => (
                                 <option
@@ -1923,7 +1925,7 @@ setAllottedLotId("");
                             ) : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Grainage is required
+                            {t("Grainage is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1935,7 +1937,7 @@ setAllottedLotId("");
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          License Number<span className="text-danger">*</span>
+                          {t("License Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1949,7 +1951,7 @@ setAllottedLotId("");
                               data.buyerId === "0"
                             }
                           >
-                            <option value="">Select License Number</option>
+                            <option value="">{t("Select License Number")}</option>
                             {externalListData.map((list) => (
                               <option
                                 key={`${list.userMasterId}_${list.licenseNumber}_${list.externalUnitRegistrationId}`}
@@ -1960,7 +1962,7 @@ setAllottedLotId("");
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            License Number is required
+                            {t("License Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1971,7 +1973,7 @@ setAllottedLotId("");
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                      Quantity of Cocoons Allotted (In Kgs)
+                      {t("Quantity of Cocoons Allotted (In Kgs)")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -1981,12 +1983,12 @@ setAllottedLotId("");
                           value={data.lotWeight}
                           onChange={handleInputs}
                           type="number"
-                          placeholder="Enter Quantity of Cocoons Allotted (In Kgs)"
+                          placeholder={t("Enter Quantity of Cocoons Allotted (In Kgs)")}
                           required
                           isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
                         />
                         <Form.Control.Feedback type="invalid">
-                        Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon
+                        {t("Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon")}
                         </Form.Control.Feedback>
                        
                       </div>
@@ -2046,7 +2048,7 @@ setAllottedLotId("");
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="amount">
-                  Price(In Rs.)
+                  {t("Price(In Rs.)")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                 <div className="form-control-wrap">
@@ -2056,12 +2058,12 @@ setAllottedLotId("");
                     value={data.amount}
                     onChange={handleInputs}
                     type="number"
-                    placeholder="Enter Price(In Rs.)"
+                    placeholder={t("Enter Price(In Rs.)")}
                     required
                     readOnly
                   />
                   <Form.Control.Feedback type="invalid">
-                    Price(In Rs.) is required.
+                    {t("Price(In Rs.) is required.")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -2070,7 +2072,7 @@ setAllottedLotId("");
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="soldAmount">
-                  Total Amount
+                  {t("Total Amount")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                 <div className="form-control-wrap">
@@ -2080,11 +2082,11 @@ setAllottedLotId("");
                     value={data.soldAmount}
                     onChange={handleInputs}
                     type="number"
-                    placeholder="Enter Total Amount"
+                    placeholder={t("Enter Total Amount")}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    Total Amount is required.
+                    {t("Total Amount is required.")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -2100,12 +2102,12 @@ setAllottedLotId("");
                     // disabled={totalLotWeight >= farmerdetails.netWeight}
                     disabled={isAddDisabled}
                     >
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

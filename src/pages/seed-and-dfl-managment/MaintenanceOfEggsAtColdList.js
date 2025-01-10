@@ -10,6 +10,7 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -151,9 +152,11 @@ function MaintenanceOfEggsAtColdList() {
     },
   };
 
+  const { t } = useTranslation();
+
   const MaintenanceOfEggsAtColdStorageDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -163,7 +166,7 @@ function MaintenanceOfEggsAtColdList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -171,7 +174,7 @@ function MaintenanceOfEggsAtColdList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -188,49 +191,49 @@ function MaintenanceOfEggsAtColdList() {
       grow: 2,
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of DFLs",
+      name: t("Number Of DFLs"),
       selector: (row) => row.numberOfDFLs,
       cell: (row) => <span>{row.numberOfDFLs}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Grainage Details",
+        name: t("Grainage Details"),
         selector: (row) => row.grainageDetails,
         cell: (row) => <span>{row.grainageDetails}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Date Of Cold Storage",
+        name: t("Date Of Cold Storage"),
         selector: (row) => row.dateOfColdStore,
         cell: (row) => <span>{row.dateOfColdStore}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Laid On Date",
+        name: t("Laid On Date"),
         selector: (row) => row.laidOnDate,
         cell: (row) => <span>{row.laidOnDate}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Date Of Release",
+        name: t("Date Of Release"),
         selector: (row) => row.dateOfRelease,
         cell: (row) => <span>{row.dateOfRelease}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Incubation Details",
+        name: t("Incubation Details"),
         selector: (row) => row.incubationDetails,
         cell: (row) => <span>{row.incubationDetails}</span>,
         sortable: true,
@@ -240,11 +243,11 @@ function MaintenanceOfEggsAtColdList() {
   ];
 
   return (
-    <Layout title="List Of Maintenance Of Eggs At Cold Storage NSSO">
+    <Layout title={t("List Of Maintenance Of Eggs At Cold Storage NSSO")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Maintenance Of Eggs At Cold Storage NSSO</Block.Title>
+            <Block.Title tag="h2">{t("List Of Maintenance Of Eggs At Cold Storage NSSO")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -254,7 +257,7 @@ function MaintenanceOfEggsAtColdList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -263,7 +266,7 @@ function MaintenanceOfEggsAtColdList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

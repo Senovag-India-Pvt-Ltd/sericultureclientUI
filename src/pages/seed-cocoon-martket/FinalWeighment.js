@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Form, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2/src/sweetalert2.js";
+import { useTranslation } from 'react-i18next'; // Import the translation hook
 
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function FinalWeighment() {
+  const { t } = useTranslation(); // Initialize the translation hook
+
   const [data, setData] = useState({
     marketAuctionId: "",
     testDate: "",
@@ -443,11 +446,11 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
 
 
   return (
-    <Layout title="Final Weighment Details">
+    <Layout title={t("Final Weighment Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Final Weighment Details</Block.Title>
+            <Block.Title tag="h2">{t("Final Weighment Details")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -467,20 +470,20 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                   <Table striped bordered hover>
                   <thead>
                     <tr style={{ backgroundColor: '#0f6cbe', color: 'white', fontWeight: 'bold' }}>
-                      <th style={{ width: '80px' }}>Action</th>
-                      <th style={{ width: '50px' }}>Sl.No</th> {/* Custom width for Sl.No */}
-                      <th style={{ width: '150px' }}>Date of Issuance of Bidding Slip</th>
-                      <th style={{ width: '150px' }}>Bidding Slip Lot NO.</th>
-                      <th style={{ width: '150px' }}>FID</th>
-                      <th style={{ width: '150px' }}>Farmer Name</th>
-                      <th style={{ width: '150px' }}>Phone Number</th>
-                      <th style={{ width: '150px' }}>Personal Details</th>
-                      <th style={{ width: '150px' }}>Crop Details</th>
-                      <th style={{ width: '150px' }}>FC Details</th>
-                      <th style={{ width: '150px' }}>Pupa Testing Result</th>
-                      <th style={{ width: '150px' }}>Cocoon assessment Result</th>
-                      <th style={{ width: '150px' }}>Weighment Details</th>
-                      <th style={{ width: '100px' }}>Price</th>
+                      <th style={{ width: '80px' }}>{t("Action")}</th>
+                      <th style={{ width: '50px' }}>{t("Sl.No")}</th> {/* Custom width for Sl.No */}
+                      <th style={{ width: '150px' }}>{t("Date of Issuance of Bidding Slip")}</th>
+                      <th style={{ width: '150px' }}>{t("Bidding Slip Lot NO.")}</th>
+                      <th style={{ width: '150px' }}>{t("FID")}</th>
+                      <th style={{ width: '150px' }}>{t("Farmer Name")}</th>
+                      <th style={{ width: '150px' }}>{t("Phone Number")}</th>
+                      <th style={{ width: '150px' }}>{t("Personal Details")}</th>
+                      <th style={{ width: '150px' }}>{t("Crop Details")}</th>
+                      <th style={{ width: '150px' }}>{t("FC Details")}</th>
+                      <th style={{ width: '150px' }}>{t("Pupa Testing Result")}</th>
+                      <th style={{ width: '150px' }}>{t("Cocoon assessment Result")}</th>
+                      <th style={{ width: '150px' }}>{t("Weighment Details")}</th>
+                      <th style={{ width: '100px' }}>{t("Price")}</th>
                     </tr>
                   </thead>
                     <tbody>
@@ -492,7 +495,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                           style={{ backgroundColor: 'white', color: 'red', fontWeight: 'bold', borderColor: 'red' }} 
                           onClick={() => handleShowModalAssesment(item)}
                         >
-                          Click For Final Weighment
+                          {t("Click For Final Weighment")}
                         </Button>
                         </td>
                         <td>{item.serialNumber}</td>
@@ -554,7 +557,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         </Row>
         <Modal show={showModal} onHide={handleCloseModal} size="lg">
       <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Personal Details</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Personal Details")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -563,39 +566,39 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Table striped bordered hover responsive className="table-sm" style={styles.table}>
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>Farmer Number:</td>
+                    <td style={styles.ctstyle}>{t("Farmer Number")}:</td>
                     <td>{farmerDetails?.farmerNumber || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Farmer Name:</td>
+                    <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                     <td>{farmerDetails?.firstName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Father's/Husband's Name:</td>
+                    <td style={styles.ctstyle}>{t("Father's/Husband's Name")}:</td>
                     <td>{farmerDetails?.fatherName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Phone Number:</td>
+                    <td style={styles.ctstyle}>{t("Phone Number")}:</td>
                     <td>{farmerDetails?.mobileNumber || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>TSC:</td>
+                    <td style={styles.ctstyle}>{t("TSC")}:</td>
                     <td>{farmerDetails?.tscName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>State:</td>
+                    <td style={styles.ctstyle}>{t("State")}:</td>
                     <td>{farmerDetails?.stateName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>District:</td>
+                    <td style={styles.ctstyle}>{t("District")}:</td>
                     <td>{farmerDetails?.districtName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Taluk:</td>
+                    <td style={styles.ctstyle}>{t("Taluk")}:</td>
                     <td>{farmerDetails?.talukName || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Village:</td>
+                    <td style={styles.ctstyle}>{t("Village")}:</td>
                     <td>{farmerDetails?.villageName || 'N/A'}</td>
                   </tr>
                 </tbody>
@@ -608,7 +611,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
 
       <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>FC Details</Modal.Title>
+          <Modal.Title>{t("FC Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <div className="d-flex flex-column justify-content-center">
@@ -668,7 +671,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
           </div> */}
           <div className="d-flex flex-column justify-content-center">
       <tr>
-      <td style={styles.ctstyle}>Fitness Certificate:</td>
+      <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
         <td>
         {
           selectedDocumentFile?.length > 0 && (
@@ -687,7 +690,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                 // onClick={() => downloadFile(fitnessCertificate.fitnessCertificatePath)}
                 onClick={() => downloadFile(pathList[0])}
               >
-                Download File
+                {t("Download File")}
               </Button>
               </>
           ))
@@ -702,7 +705,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
       </Modal>
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
       <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Crop Details</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -717,11 +720,11 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                 </thead> */}
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>No of DFL's:</td>
+                    <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
                     <td>{farmerDetails?.numbersOfDfls || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Lot No.:</td>
+                    <td style={styles.ctstyle}>{t("Lot No.")}:</td>
                     <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
                   </tr>
                   {/* <tr>
@@ -729,7 +732,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                     <td>{farmerDetails?.dflsSource || 'N/A'}</td>
                   </tr> */}
                   <tr>
-                    <td style={styles.ctstyle}>Variety:</td>
+                    <td style={styles.ctstyle}>{t("Variety")}:</td>
                     <td>{farmerDetails?.raceName   || 'N/A'}</td>
                   </tr>
                 </tbody>
@@ -745,7 +748,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         size="lg"
       >
         <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Weighment Details</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Weighment Details")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -755,7 +758,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                 
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>Initial Weighment:</td>
+                    <td style={styles.ctstyle}>{t("Initial Weighment")}:</td>
                     <td>{farmerDetails?.initialWeighment || 'N/A'}</td>
                   </tr>
                   
@@ -773,7 +776,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         size="lg"
       >
         <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Price</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Price")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -783,11 +786,11 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               {/* <table> */}
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>Price:</td>
+                    <td style={styles.ctstyle}>{t("Price")}:</td>
                     <td>{farmerDetails?.pricePerKg || 'N/A'}</td>
                   </tr>
                   <tr>
-                    <td style={styles.ctstyle}>Fixation Date:</td>
+                    <td style={styles.ctstyle}>{t("Fixation Date")}:</td>
                     <td>{farmerDetails?.fixationDate || 'N/A'}</td>
                   </tr>
                   
@@ -806,7 +809,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         size="lg"
       >
         <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Pupa Testing Result</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Pupa Testing Result")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -815,17 +818,17 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
             <Table striped bordered hover responsive className="table-sm" style={styles.table}>
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>No Of Cocoon Taken For Examination:</td>
+                    <td style={styles.ctstyle}>{t("No Of Cocoon Taken For Examination")}:</td>
                     <td>{farmerDetails?.noOfCocoonTakenForExamination || 'N/A'}</td>
                     </tr>
 
                     <tr>
-                    <td style={styles.ctstyle}>No Of DFL From FC:</td>
+                    <td style={styles.ctstyle}>{t("No Of DFL From FC")}:</td>
                     <td>{farmerDetails?.noOfDFlFromFc || 'N/A'}</td>
                   </tr>
 
                   <tr>
-                    <td style={styles.ctstyle}>Date:</td>
+                    <td style={styles.ctstyle}>{t("Date")}:</td>
                     <td>{farmerDetails?.testDate || 'N/A'}</td>
                     </tr>
 
@@ -834,17 +837,17 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                     <td>{farmerDetails?.diseaseFree || 'N/A'}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}>Disease Free:</td>
-                      <td>{farmerDetails?.diseaseFree === "1" ? 'Yes' : 'No'}</td>
+                      <td style={styles.ctstyle}>{t("Disease Free")}:</td>
+                      <td>{farmerDetails?.diseaseFree === "1" ? t('Yes') : t('No')}</td>
                     </tr>
 
                     <tr>
-                    <td style={styles.ctstyle}>Disease Type:</td>
+                    <td style={styles.ctstyle}>{t("Disease Type")}:</td>
                     <td>{farmerDetails?.diseaseType || 'N/A'}</td>
                     </tr>
 
                     <tr>
-                    <td style={styles.ctstyle}>No Of Cocoon Examined:</td>
+                    <td style={styles.ctstyle}>{t("No Of Cocoon Examined")}:</td>
                     <td>{farmerDetails?.noOfCocoonsExamined || 'N/A'}</td>
                   </tr>
                   
@@ -862,7 +865,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         size="lg"
       >
         <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>Cocoon Assessment Result</Modal.Title>
+        <Modal.Title style={styles.modalTitle}>{t("Cocoon Assessment Result")}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={styles.modalBody}>
         <div className="d-flex justify-content-center">
@@ -871,12 +874,12 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
             <Table striped bordered hover responsive className="table-sm" style={styles.table}>
                 <tbody>
                   <tr>
-                    <td style={styles.ctstyle}>No Of Cocoon Per Kg:</td>
+                    <td style={styles.ctstyle}>{t("No Of Cocoon Per Kg")}:</td>
                     <td>{farmerDetails?.noOfCocoonPerKg || 'N/A'}</td>
                     </tr>
 
                     <tr>
-                    <td style={styles.ctstyle}>Melt Percentage:</td>
+                    <td style={styles.ctstyle}>{t("Melt Percentage")}:</td>
                     <td>{farmerDetails?.meltPercentage || 'N/A'}</td>
                   </tr>
                   
@@ -894,7 +897,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Assess Now </Modal.Title>
+          <Modal.Title>{t("Assess Now")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -906,7 +909,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  No. of Cocoons Taken for Examination
+                  {t("No. of Cocoons Taken for Examination")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -916,7 +919,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       value={data.noOfCocoonTakenForExamination}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter No. of Cocoons Taken for Examination"
+                      placeholder={t("Enter No. of Cocoons Taken for Examination")}
                       required
                     />
                     {/* <Form.Control.Feedback type="invalid">
@@ -929,7 +932,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  No. of DFLs From the Fc
+                  {t("No. of DFLs From the Fc")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -939,7 +942,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       value={data.noOfDflFromFc}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter No. of DFL’s from FC"
+                      placeholder={t("Enter No. of DFL’s from FC")}
                       required
                     />
                     {/* <Form.Control.Feedback type="invalid">
@@ -952,7 +955,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  No. of Pupa Examined
+                  {t("No. of Pupa Examined")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -962,7 +965,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       value={data.pupaTestResult}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter No. of Pupa Examined"
+                      placeholder={t("Enter No. of Pupa Examined")}
                       required
                     />
                     {/* <Form.Control.Feedback type="invalid">
@@ -975,7 +978,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sordfl">
-                          Test Date
+                        {t("Test Date")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -998,7 +1001,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
 
               <Col lg="6">
               <Form.Group className="form-group mt-3">
-                <Form.Label style={{ fontSize: "20px" }}>Disease Free</Form.Label>
+                <Form.Label style={{ fontSize: "20px" }}>{t("Disease Free")}</Form.Label>
                 <div className="form-control-wrap">
                   <Row className="d-flex align-items-center">
                     <Col lg="auto">
@@ -1006,7 +1009,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                         type="radio"
                         id="yes"
                         name="diseaseFree"
-                        label="Yes"
+                        label={t("Yes")}
                         value="true" // Set the value to "yes"
                         checked={data.diseaseFree === "true"} // Check if the value in state is "yes"
                         onChange={handleRadioChange} // Handle radio button change
@@ -1017,7 +1020,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                         type="radio"
                         id="no"
                         name="diseaseFree"
-                        label="No"
+                        label={t("No")}
                         value="false" // Set the value to "no"
                         checked={data.diseaseFree === "false"} // Check if the value in state is "no"
                         onChange={handleRadioChange} // Handle radio button change
@@ -1030,14 +1033,14 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                 {data.diseaseFree === "true" && (
                   <Col lg="6">
                   <Form.Group className="mt-3">
-                    <Form.Label>Disease Type</Form.Label>
+                    <Form.Label>{t("Disease Type")}</Form.Label>
                     <Form.Control
                       id="diseaseType"
                       name="diseaseType"
                       value={data.diseaseType || ""}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter Disease Type"
+                      placeholder={t("Enter Disease Type")}
                     />
                   </Form.Group>
                   </Col>
@@ -1063,7 +1066,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                               position: "relative",
                               color: "white",
                               overflow: "hidden",
-                            }}> <span>Cocoon Assessment</span>
+                            }}> <span>{t("Cocoon Assessment")}</span>
                             <div
                               style={{
                                 position: "absolute",
@@ -1084,7 +1087,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
             <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  No. of Cocoons per Kg. 
+                  {t("No. of Cocoons per Kg.")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1094,7 +1097,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       value={data.noOfCocoonPerKg}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="No. of Cocoons per Kg."
+                      placeholder={t("No. of Cocoons per Kg.")}
                       // required
                     />
                   </div>
@@ -1103,7 +1106,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  Melt %
+                  {t("Melt %")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1113,7 +1116,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       value={data.meltPercentage}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Melt %"
+                      placeholder={t("Melt %")}
                       // required
                     />
                   </div>
@@ -1133,7 +1136,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
                     <Button type="submit" variant="primary">
-                      Proceed To Allotment
+                    {t("Proceed To Allotment")}
                     </Button>
                   </div>
                   <div className="gap-col">
@@ -1141,7 +1144,7 @@ const [fitnessCertificate, setFitnessCertificate] = useState({});
                       variant="secondary"
                       onClick={handleCloseModalAssesment}
                     >
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

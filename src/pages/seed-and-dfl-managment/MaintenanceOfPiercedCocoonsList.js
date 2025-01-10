@@ -12,6 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import MaintenanceOfPiercedCocoons from "./MaintenanceOfPiercedCocoons";
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -24,6 +25,7 @@ function MaintenanceOfPiercedCocoonsList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const { t } = useTranslation();
 
   const getList = () => {
     setLoading(true);
@@ -153,7 +155,7 @@ function MaintenanceOfPiercedCocoonsList() {
 
   const MaintenanceOfPiercedCocoonsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -163,7 +165,7 @@ function MaintenanceOfPiercedCocoonsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -171,7 +173,7 @@ function MaintenanceOfPiercedCocoonsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -188,21 +190,21 @@ function MaintenanceOfPiercedCocoonsList() {
       // grow: 2,
     },
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Storage Date",
+      name: t("Storage Date"),
       selector: (row) => row.storageDate,
       cell: (row) => <span>{formatDate(row.storageDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Quantity in Kgs",
+        name: t("Quantity in Kgs"),
         selector: (row) => row.quantityInNumberAndKgs,
         cell: (row) => <span>{row.quantityInNumberAndKgs}</span>,
         sortable: true,
@@ -212,11 +214,11 @@ function MaintenanceOfPiercedCocoonsList() {
   ];
 
   return (
-    <Layout title="List Of Maintenance Of Pierced Cocoons">
+    <Layout title={t("List Of Maintenance Of Pierced Cocoons")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Maintenance Of Pierced Cocoons"</Block.Title>
+            <Block.Title tag="h2">{t("List Of Maintenance Of Pierced Cocoons")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -226,7 +228,7 @@ function MaintenanceOfPiercedCocoonsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -235,7 +237,7 @@ function MaintenanceOfPiercedCocoonsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

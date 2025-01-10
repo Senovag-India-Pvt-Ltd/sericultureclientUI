@@ -15,10 +15,13 @@ import DataTable, { createTheme } from "react-data-table-component";
 import Swal from "sweetalert2/src/sweetalert2.js";
 // import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
+
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BankStatement() {
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -143,7 +146,7 @@ function BankStatement() {
 
   const PaymentDataColumns = [
     {
-      name: "action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -161,7 +164,7 @@ function BankStatement() {
               )
             }
           >
-            Remove
+            {t("Remove")}
           </Button>
 
           {/* {showBankError?( <span style={{fontWeight:"bold"}}>No Bank Details</span>):""} */}
@@ -171,77 +174,77 @@ function BankStatement() {
       hide: "md",
     },
     {
-      name: "SLNo",
+      name: t("SLNo"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot No",
+      name: t("Lot No"),
       selector: (row) => row.allottedLotId,
       cell: (row) => <span>{row.allottedLotId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Transaction Date",
+      name: t("Transaction Date"),
       selector: (row) => convertDateFormat(row.lotTransactionDate),
       cell: (row) => <span>{convertDateFormat(row.lotTransactionDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer",
+      name: t("Farmer"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Phone",
+      name: t("Phone"),
       selector: (row) => row.farmerMobileNumber,
       cell: (row) => <span>{row.farmerMobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler",
+      name: t("Reeler"),
       selector: (row) => row.reelerLicense,
       cell: (row) => <span>{row.reelerLicense}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bank",
+      name: t("Bank"),
       selector: (row) => row.bankName,
       cell: (row) => <span>{row.bankName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "IFSC",
+      name: t("IFSC"),
       selector: (row) => row.ifscCode,
       cell: (row) => <span>{row.ifscCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Account Number",
+      name: t("Account Number"),
       selector: (row) => row.accountNumber,
       cell: (row) => <span>{row.accountNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Amount",
+      name: t("Amount"),
       selector: (row) => row.lotSoldOutAmount,
       cell: (row) => <span>{row.lotSoldOutAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "MF",
+      name: t("MF"),
       selector: (row) => row.farmerMarketFee,
       cell: (row) => <span>{row.farmerMarketFee}</span>,
       sortable: true,
@@ -538,11 +541,11 @@ function BankStatement() {
   // };
 
   return (
-    <Layout title="Bank Statement" show="true">
+    <Layout title={t("Bank Statement")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bank Statement</Block.Title>
+            <Block.Title tag="h2">{t("Bank Statement")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -589,7 +592,7 @@ function BankStatement() {
                 </Col> */}
                 {/* <Form.Group as={Row} className="form-group mt-3" id="date"> */}
                 <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                  Date
+                  {t("Date")}
                 </Form.Label>
                 <Col sm={3} style={{ marginLeft: "-200px" }}>
                   <div className="form-control-wrap">
@@ -604,7 +607,7 @@ function BankStatement() {
                       value={data.paymentDate}
                       onChange={handleInputs}
                     >
-                      <option value="0">Select Date</option>
+                      <option value="0">{t("Select Date")}</option>
                       {auctionDateList.map((list) => (
                         <option key={list} value={list}>
                           {list}
@@ -654,7 +657,7 @@ function BankStatement() {
                     variant="primary"
                     onClick={getBankStatement}
                   >
-                    Get Details
+                    {t("Get Details")}
                   </Button>
                 </Col>
               </Form.Group>
@@ -701,7 +704,7 @@ function BankStatement() {
                       value={data.fileName}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter File Name"
+                      placeholder={t("Enter File Name")}
                       isInvalid={isFormSubmitted && !!fileNameError}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -715,7 +718,7 @@ function BankStatement() {
                     variant="primary"
                     onClick={() => handleButtonClick(generateCsv)}
                   >
-                    Generate CSV File
+                    {t("Generate CSV File")}
                   </Button>
                 </Col>
                 {paymentMode === "cash" ? (
@@ -728,7 +731,7 @@ function BankStatement() {
                           handleButtonClick(markCashPaymentLotListToSuccess)
                         }
                       >
-                        Mark Payment Completed
+                        {t("Mark Payment Completed")}
                       </Button>
                     </Col>
                   </>
@@ -742,7 +745,7 @@ function BankStatement() {
                           handleButtonClick(requestJobToProcessPayment)
                         }
                       >
-                        Process For Payment
+                        {t("Process For Payment")}
                       </Button>
                     </Col>
 
@@ -754,7 +757,7 @@ function BankStatement() {
                           handleButtonClick(checkBankGeneratedStatement)
                         }
                       >
-                        Check Bank Generated File
+                        {t("Check Bank Generated File")}
                       </Button>
                     </Col>
                   </>
@@ -773,7 +776,7 @@ function BankStatement() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Approve/Reject</Modal.Title>
+          <Modal.Title>{t("Approve/Reject")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -795,23 +798,23 @@ function BankStatement() {
                     </Form.Group> */}
 
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="actions">Actions</Form.Label>
+                  <Form.Label htmlFor="actions">{t("Actions")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="actions"
                       type="text"
-                      placeholder="Actions"
+                      placeholder={t("Actions")}
                       value="actions1"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="slno">SL No</Form.Label>
+                  <Form.Label htmlFor="slno">{t("SL No")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="slno"
                       type="text"
-                      placeholder="SL No"
+                      placeholder={t("SL No")}
                       value="1"
                     />
                   </div>
@@ -819,23 +822,25 @@ function BankStatement() {
               </Col>
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="lotno">Lot Nbr</Form.Label>
+                  <Form.Label htmlFor="lotno">{t("Lot Nbr")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="lotno"
                       type="text"
-                      placeholder="Lot Nbr"
+                      placeholder={t("Lot Nbr")}
                       value="411"
                     />
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="tradate">Transaction_Date</Form.Label>
+                  <Form.Label htmlFor="tradate">
+                    {t("Transaction_Date")}
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="tradate"
                       type="text"
-                      placeholder="Transaction_Date"
+                      placeholder={t("Transaction_Date")}
                       value="16/05/2001"
                     />
                   </div>
@@ -844,11 +849,11 @@ function BankStatement() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="cmt">Comment</Form.Label>
+                  <Form.Label htmlFor="cmt">{t("Comment")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       as="textarea"
-                      placeholder="Enter Comment"
+                      placeholder={t("Enter Comment")}
                       id="cmt"
                       rows="3"
                     />
@@ -860,12 +865,11 @@ function BankStatement() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      {/* <Form.Label>With Land</Form.Label> */}
                       <div className="form-control-wrap">
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Pre Inspection"
+                          label={t("Pre Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -873,12 +877,11 @@ function BankStatement() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      {/* <Form.Label>With Land</Form.Label> */}
                       <div className="form-control-wrap">
                         <Form.Check
                           type="checkbox"
                           id="flexCheckChecked"
-                          label="Post Inspection"
+                          label={t("Post Inspection")}
                         />
                       </div>
                     </Form.Group>
@@ -890,17 +893,17 @@ function BankStatement() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal}>
-                      Approve
+                      {t("Approve")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="danger" onClick={handleCloseModal}>
-                      Reject
+                      {t("Reject")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>
@@ -912,7 +915,7 @@ function BankStatement() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>View Model</Modal.Title>
+          <Modal.Title>{t("View Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -1039,7 +1042,7 @@ function BankStatement() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal1}>
-                      Close
+                      {t("Close")}
                     </Button>
                   </div>
                 </div>
@@ -1051,7 +1054,7 @@ function BankStatement() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Modify Model</Modal.Title>
+          <Modal.Title>{t("Modify Model")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form action="#">
@@ -1168,7 +1171,7 @@ function BankStatement() {
                 <div className="d-flex justify-content-center gap g-2 mt-3">
                   <div className="gap-col">
                     <Button variant="success" onClick={handleCloseModal2}>
-                      Save
+                      {t("Save")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1178,7 +1181,7 @@ function BankStatement() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

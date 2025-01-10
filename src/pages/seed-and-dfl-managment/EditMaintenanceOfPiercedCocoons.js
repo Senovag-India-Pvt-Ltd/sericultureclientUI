@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from 'react-i18next';
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -162,12 +163,15 @@ function EditMaintenanceOfPiercedCocoons() {
       text: "Something went wrong!",
     }).then(() => navigate("#"));
   };
+
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Edit Maintenance Of Pierced Cocoon">
+    <Layout title={t("Edit Maintenance Of Pierced Cocoon")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Maintenance Of Pierced Cocoon</Block.Title>
+            <Block.Title tag="h2">{t("Edit Maintenance Of Pierced Cocoon")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -177,7 +181,7 @@ function EditMaintenanceOfPiercedCocoons() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -186,7 +190,7 @@ function EditMaintenanceOfPiercedCocoons() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -198,19 +202,19 @@ function EditMaintenanceOfPiercedCocoons() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Maintenance Of Pierced Cocoons
+              {t("Edit Maintenance Of Pierced Cocoons")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -218,13 +222,12 @@ function EditMaintenanceOfPiercedCocoons() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        // maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -267,7 +270,7 @@ function EditMaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                    Quantity in  Kgs<span className="text-danger">*</span>
+                      {t("Quantity in Kgs")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -276,11 +279,11 @@ function EditMaintenanceOfPiercedCocoons() {
                         value={data.quantityInNumberAndKgs}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Quantity in Kgs"
+                        placeholder={t("Enter Quantity in Kgs")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Quantity in Kgs is required
+                        {t("Quantity in Kgs is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -289,7 +292,7 @@ function EditMaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      Storage Date
+                      {t("Storage Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -319,19 +322,17 @@ function EditMaintenanceOfPiercedCocoons() {
           <div className="gap-col">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
-                {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>
           </div>
-          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

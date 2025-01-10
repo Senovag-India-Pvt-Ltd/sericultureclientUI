@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -19,6 +20,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSO() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     lotNumber: "",
     eggSheetNumbers: "",
@@ -282,8 +284,8 @@ function SaleAndDisposalOfEggsNSSO() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: `Invoice Number ${message}`,
+      title: t("Saved successfully"),
+      text: `${t("Invoice Number")} ${message}`,
     });
   };
 
@@ -296,7 +298,7 @@ function SaleAndDisposalOfEggsNSSO() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -306,11 +308,11 @@ function SaleAndDisposalOfEggsNSSO() {
   };
 
   return (
-    <Layout title="Sale/Disposal of Eggs NSSO">
+    <Layout title={t("Sale/Disposal of Eggs NSSO")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sale/Disposal of Eggs NSSO</Block.Title>
+            <Block.Title tag="h2">{t("Sale/Disposal of Eggs NSSO")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -320,7 +322,7 @@ function SaleAndDisposalOfEggsNSSO() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -329,15 +331,14 @@ function SaleAndDisposalOfEggsNSSO() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
-
-      <Block className="mt-n4">
+      
         {/* <Form action="#"> */}
         {/* <Card>
           <Card.Body>
@@ -395,51 +396,53 @@ function SaleAndDisposalOfEggsNSSO() {
         </Card> */}
 
         {/* {data.userType === "farmer" ? ( */}
-          <Form
-            noValidate
-            validated={searchValidated}
-            onSubmit={search}
-            className="mt-1"
-          >
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
-                          required
-                          maxLength="16"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button type="submit" variant="primary">
-                          Search
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Form>
+
+      <Block className="mt-n4">
+        <Form
+          noValidate
+          validated={searchValidated}
+          onSubmit={search}
+          className="mt-1"
+        >
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      {t("FRUITS ID")}<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        type="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder={t("Enter FRUITS ID")}
+                        required
+                        maxLength="16"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {t("Fruits ID Should Contain 16 digits")}
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        {t("Search")}
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Sale / Disposal of DFLs(egg)
+                  {t("Sale / Disposal of DFLs(egg)")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -467,7 +470,7 @@ function SaleAndDisposalOfEggsNSSO() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
-                        <Form.Label>Lot Number</Form.Label>
+                        <Form.Label>{t("Lot Number")}</Form.Label>
                         <Col>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -475,9 +478,8 @@ function SaleAndDisposalOfEggsNSSO() {
                               value={data.lotNumber}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              // required
                             >
-                              <option value="">Select Lot Number</option>
+                              <option value="">{t("Select Lot Number")}</option>
                               {lotListData && lotListData.length
                                 ? lotListData.map((list) => (
                                     <option
@@ -490,7 +492,7 @@ function SaleAndDisposalOfEggsNSSO() {
                                 : ""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Lot Number is required
+                              {t("Lot Number is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -500,19 +502,16 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
-                          Egg Sheet Numbers
-                          {/* <span className="text-danger">*</span> */}
+                          {t("Egg Sheet Numbers")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="eggSheetNumbers"
                             name="eggSheetNumbers"
                             type="text"
-                            // min="1"
                             value={data.eggSheetNumbers}
                             onChange={handleInputs}
-                            placeholder="Enter Egg Sheet Numbers"
-                            // required
+                            placeholder={t("Enter Egg Sheet Numbers")}
                           />
                           {/* <Form.Control.Feedback type="invalid">
                             Egg Sheet Numbers is required
@@ -524,7 +523,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -532,13 +531,12 @@ function SaleAndDisposalOfEggsNSSO() {
                             value={data.raceId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.raceId === undefined || data.raceId === "0"
                             }
                           >
-                            <option value="">Select Race</option>
+                            <option value="">{t("Select Race")}</option>
                             {raceListData.map((list) => (
                               <option
                                 key={list.raceMasterId}
@@ -549,7 +547,7 @@ function SaleAndDisposalOfEggsNSSO() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Race is required
+                            {t("Race is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -558,7 +556,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFLs disposed
+                          {t("Number of DFLs disposed")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -569,11 +567,11 @@ function SaleAndDisposalOfEggsNSSO() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="6"
-                            placeholder="Enter Number of DFLs disposed"
+                            placeholder={t("Enter Number of DFLs disposed")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of DFLs disposed is required
+                            {t("Number of DFLs disposed is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -666,7 +664,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address of the Farmer
+                            {t("Name and address of the Farmer")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -676,12 +674,12 @@ function SaleAndDisposalOfEggsNSSO() {
                               value={data.nameAndAddressOfTheFarm}
                               onChange={handleInputs}
                               type="text"
-                              placeholder=" Enter Name and address farm"
+                              placeholder={t("Enter Name and address farm")}
                               required
                               readOnly
                             />
                             <Form.Control.Feedback type="invalid">
-                              Name and address farm is required
+                              {t("Name and address farm is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -690,7 +688,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs Price (in Rupees)
+                          {t("Rate per 100 DFLs Price (in Rupees)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -701,11 +699,11 @@ function SaleAndDisposalOfEggsNSSO() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="3"
-                            placeholder="Enter Rate per 100 DFLs Price"
+                            placeholder={t("Enter Rate per 100 DFLs Price")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Rate per 100 DFLs Price is required
+                            {t("Rate per 100 DFLs Price is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -762,7 +760,7 @@ function SaleAndDisposalOfEggsNSSO() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of disposal<span className="text-danger">*</span>
+                          {t("Date of disposal")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -813,14 +811,13 @@ function SaleAndDisposalOfEggsNSSO() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

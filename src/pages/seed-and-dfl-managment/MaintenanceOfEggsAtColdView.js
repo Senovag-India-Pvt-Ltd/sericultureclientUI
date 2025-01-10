@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -23,8 +23,7 @@ function MaintenanceOfEggsAtColdView() {
   // const [data] = useState(CasteDatas);
   const [coldStorage, setColdStorage] = useState({});
   const [loading, setLoading] = useState(false);
-
-  
+  const { t } = useTranslation();
 
   const getIdList = () => {
     setLoading(true);
@@ -48,11 +47,11 @@ function MaintenanceOfEggsAtColdView() {
 
 
   return (
-    <Layout title="View Maintenance Of Egg At Cold Storage NSSO Details">
+    <Layout title={t("View Maintenance Of Egg At Cold Storage NSSO Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Maintenance Of Egg At Cold Storage NSSO Details </Block.Title>
+            <Block.Title tag="h2">{t("View Maintenance Of Egg At Cold Storage NSSO Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -62,7 +61,7 @@ function MaintenanceOfEggsAtColdView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -71,7 +70,7 @@ function MaintenanceOfEggsAtColdView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -81,11 +80,11 @@ function MaintenanceOfEggsAtColdView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance Of Eggs At Cold Storage Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance Of Eggs At Cold Storage Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -93,47 +92,35 @@ function MaintenanceOfEggsAtColdView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID:")}</td>
                         <td>{coldStorage.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Lot Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Lot Number:")}</td>
                         <td>{coldStorage.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs:")}</td>
                         <td>{coldStorage.noOfDFLs}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Grainage Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Grainage Details:")}</td>
                         <td>{coldStorage.grainageDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Date Of Cold Storage:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Date Of Cold Storage:")}</td>
                         <td>{coldStorage.dateOfColdStorage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Laid On Date:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Laid On Date:")}</td>
                         <td>{coldStorage.laidOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Date Of Release:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Date Of Release:")}</td>
                         <td>{coldStorage.releaseDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Incubation Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Incubation Details:")}</td>
                         <td>{coldStorage.incubationDetails}</td>
                       </tr>
                       

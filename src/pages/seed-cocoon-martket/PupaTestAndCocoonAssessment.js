@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -22,7 +23,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PupaTestAndCocoonAssessment() {
-
+  const { t } = useTranslation();
 
   const [farmer, setFarmer] = useState({
     text: "",
@@ -733,11 +734,11 @@ function PupaTestAndCocoonAssessment() {
   };
 
   return (
-    <Layout title="Pupa test and assessment" show="true">
+    <Layout title={t("Pupa test and assessment")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Pupa test and assessment</Block.Title>
+            <Block.Title tag="h2">{t("Pupa test and assessment")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -776,7 +777,7 @@ function PupaTestAndCocoonAssessment() {
                 <Col sm={8} lg={12}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={2}>
-                      Search Farmer Details By
+                      {t("Search Farmer Details By")}
                     </Form.Label>
                     <Col sm={1} lg={2}>
                       <div className="form-control-wrap">
@@ -786,9 +787,9 @@ function PupaTestAndCocoonAssessment() {
                           onChange={handleFarmerIdInputs}
                         >
                           {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="fruitsId">Fruits Id</option>
-                          <option value="csbNumber">CSB Number</option>
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="fruitsId">{t("Fruits Id")}</option>
+                          <option value="csbNumber">{t("CSB Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -800,16 +801,16 @@ function PupaTestAndCocoonAssessment() {
                         value={farmer.text}
                         onChange={handleFarmerIdInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                     {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
@@ -818,7 +819,7 @@ function PupaTestAndCocoonAssessment() {
                         to="/seriui/stake-holder-registration"
                         className="btn btn-primary border-0"
                       >
-                        Clear
+                        {t("Clear")}
                       </Link>
                     </Col>
                   </Form.Group>
@@ -848,7 +849,7 @@ function PupaTestAndCocoonAssessment() {
                                 onClick={handleShowModal}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Personal Details</span>
+                                <span>{t("Personal Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -863,7 +864,7 @@ function PupaTestAndCocoonAssessment() {
                                 onClick={handleShowModalFC}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>FC Details</span>
+                                <span>{t("FC Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -878,7 +879,7 @@ function PupaTestAndCocoonAssessment() {
                                 onClick={handleShowModalCrop}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Crop Details</span>
+                                <span>{t("Crop Details")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -893,7 +894,7 @@ function PupaTestAndCocoonAssessment() {
                                 onClick={handleShowModalWeighment}
                               >
                                 <Icon name="info-fill" size="lg"></Icon>
-                                <span>Initial Weighment</span>
+                                <span>{t("Initial Weighment")}</span>
                               </div>
                             </Form.Label>
                           </Form.Group>
@@ -905,8 +906,8 @@ function PupaTestAndCocoonAssessment() {
                   <div className="gap-col mt-1">
                     <ul className="d-flex align-items-center justify-content-center gap g-3">
                       <li>
-                        <Button type="submit" variant="primary" >
-                          Submit
+                        <Button type="submit" variant="primary">
+                          {t("Submit")}
                         </Button>
                       </li>
                     </ul>
@@ -919,7 +920,7 @@ function PupaTestAndCocoonAssessment() {
       </Block>
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Personal Details</Modal.Title>
+          <Modal.Title>{t("Personal Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex justify-content-center">
@@ -928,22 +929,22 @@ function PupaTestAndCocoonAssessment() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Number:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Number")}:</td>
                       {/* <td>{farmerNumber}</td> */}
                       <td>00004825062024</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Name:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                       {/* <td>{farmerDetails && farmerDetails.firstName}</td> */}
                       <td>SHIVANNA</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Father's/Husband's Name:</td>
+                      <td style={styles.ctstyle}>{t("Father's/Husband's Name")}:</td>
                       {/* <td>{farmerDetails && farmerDetails.fatherName}</td> */}
                       <td>Veerabhadraiah</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Gender:</td>
+                      <td style={styles.ctstyle}>{t("Gender")}:</td>
                       {/* <td>
                         {farmerDetails && farmerDetails.genderId === 1
                           ? "Male"
@@ -954,12 +955,12 @@ function PupaTestAndCocoonAssessment() {
                       <td>Male</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Phone Number:</td>
+                      <td style={styles.ctstyle}>{t("Phone Number")}:</td>
                       {/* <td>{farmerDetails && farmerDetails.mobileNumber}</td> */}
                       <td>9632297390</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Farmer Address:</td>
+                      <td style={styles.ctstyle}>{t("Farmer Address")}:</td>
                       {/* <td>
                         {farmerAddress &&
                           farmerAddress.length > 0 &&
@@ -978,7 +979,7 @@ function PupaTestAndCocoonAssessment() {
 
       <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>FC Details</Modal.Title>
+          <Modal.Title>{t("FC Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column justify-content-center">
@@ -987,10 +988,10 @@ function PupaTestAndCocoonAssessment() {
                 lg="12"
                 className="d-flex flex-column justify-content-center align-items-center"
               >
-                <h3>Fitness Certificate</h3>
+                <h3>{t("Fitness Certificate")}</h3>
                 <img
                   src="https://5.imimg.com/data5/ANDROID/Default/2024/7/434434494/XL/GV/OX/14251721/prod-20240712-2228471980760355427493851-jpg-1000x1000.jpg"
-                  alt="FC Details"
+                  alt={t("FC Details")}
                   width="300"
                   height="300"
                 />
@@ -1003,7 +1004,7 @@ function PupaTestAndCocoonAssessment() {
               >
                 <Form.Group className="form-group mt-3">
                   <Form.Label style={{ fontSize: "20px" }}>
-                    Confirmed
+                    {t("Confirmed")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Row className="d-flex align-items-center">
@@ -1012,7 +1013,7 @@ function PupaTestAndCocoonAssessment() {
                           type="radio"
                           id="yes"
                           name="subsidyAvailed"
-                          label="Yes"
+                          label={t("Yes")}
                           value="yes"
                           // onChange={handleChange}
                           // checked={selected === "yes"}
@@ -1027,7 +1028,7 @@ function PupaTestAndCocoonAssessment() {
                           defaultChecked
                           // onChange={handleChange}
                           // checked={selected === "no"}
-                          label="No"
+                          label={t("No")}
                         />
                       </Col>
                     </Row>
@@ -1040,7 +1041,7 @@ function PupaTestAndCocoonAssessment() {
       </Modal>
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Crop Details</Modal.Title>
+          <Modal.Title>{t("Crop Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex justify-content-center">
@@ -1055,23 +1056,23 @@ function PupaTestAndCocoonAssessment() {
                 >
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> No of DFL's:</td>
+                      <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
                       <td>200</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Lot No.:</td>
+                      <td style={styles.ctstyle}>{t("Lot No.")}:</td>
                       <td>MAG003</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Source(Grainage Name):</td>
+                      <td style={styles.ctstyle}>{t("Source(Grainage Name)")}:</td>
                       <td>CV</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Variety(Field Name):</td>
+                      <td style={styles.ctstyle}>{t("Variety(Field Name)")}:</td>
                       <td>Magadi</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Parental Level:</td>
+                      <td style={styles.ctstyle}>{t("Parental Level")}:</td>
                       <td>P3</td>
                     </tr>
                   </tbody>
@@ -1087,7 +1088,7 @@ function PupaTestAndCocoonAssessment() {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Crop Details</Modal.Title>
+          <Modal.Title>{t("Crop Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -1099,7 +1100,7 @@ function PupaTestAndCocoonAssessment() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                    Initial Weighment in Kg's
+                    {t("Initial Weighment in Kg's")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1109,11 +1110,11 @@ function PupaTestAndCocoonAssessment() {
                       // value={familyMembers.farmerFamilyName}
                       // onChange={handleFMInputs}
                       type="text"
-                      placeholder="Enter Initial Weighment in Kg's"
+                      placeholder={t("Enter Initial Weighment in Kg's")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Name is required
+                      {t("Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1121,7 +1122,7 @@ function PupaTestAndCocoonAssessment() {
 
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label>Market Date</Form.Label>
+                  <Form.Label>{t("Market Date")}</Form.Label>
                   <div className="form-control-wrap">
                     <DatePicker
                       selected={data.dob}
@@ -1144,7 +1145,7 @@ function PupaTestAndCocoonAssessment() {
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
                     <Button type="submit" variant="primary">
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   <div className="gap-col">
@@ -1152,7 +1153,7 @@ function PupaTestAndCocoonAssessment() {
                       variant="secondary"
                       onClick={handleCloseModalWeighment}
                     >
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </div>
                 </div>

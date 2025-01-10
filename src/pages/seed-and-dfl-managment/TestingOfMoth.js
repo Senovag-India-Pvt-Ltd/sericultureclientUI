@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -125,13 +126,15 @@ function TestingOfMoth() {
     });
   };
 
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Testing Of Moth/Pupa">
+    <Layout title={t("Testing Of Moth/Pupa")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            Testing Of Moth/Pupa
+              {t("Testing Of Moth/Pupa")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -142,7 +145,7 @@ function TestingOfMoth() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -151,7 +154,7 @@ function TestingOfMoth() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -165,7 +168,7 @@ function TestingOfMoth() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Testing Of Moth/Pupa
+              {t("Testing Of Moth/Pupa")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -173,7 +176,7 @@ function TestingOfMoth() {
                 <Col lg="4" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -183,11 +186,11 @@ function TestingOfMoth() {
                         onChange={handleInputs}
                         // maxLength="12"
                         type="text"
-                        placeholder="Enter Lot Number"
+                        placeholder={t("Enter Lot Number")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -253,7 +256,7 @@ function TestingOfMoth() {
                 <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label>
-                              Pebrine Free Status Of Pupa & Moth
+                              {t("Pebrine Free Status Of Pupa & Moth")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -268,13 +271,13 @@ function TestingOfMoth() {
                                   }
                                 >
                                   <option value="">
-                                    Select Pebrine Free Status Of Pupa & Moth
+                                    {t("Select Pebrine Free Status Of Pupa & Moth")}
                                   </option>
-                                  <option value="Diseased">Diseased</option>
-                                  <option value="Disease-Free">Disease-Free</option>
+                                  <option value="Diseased">{t("Diseased")}</option>
+                                  <option value="Disease-Free">{t("Disease-Free")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Pebrine Free Status Of Pupa & Moth is required
+                                {t("Pebrine Free Status Of Pupa & Moth is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -283,7 +286,7 @@ function TestingOfMoth() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                      Source Details
+                      {t("Source Details")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -293,7 +296,7 @@ function TestingOfMoth() {
                         value={data.sourceDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Source Details"
+                        placeholder={t("Enter Source Details")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -311,12 +314,12 @@ function TestingOfMoth() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>
