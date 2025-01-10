@@ -12,6 +12,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
+
 import ViewAllApplication from "../services-module/application-component/ViewAllApplication";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -19,6 +21,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TscMulberryTargets() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 30;
@@ -605,11 +608,11 @@ const [farmerdetails,setFarmerDetails] = useState({
 
   
   return (
-    <Layout title="District Wise Mulberry">
+    <Layout title={t("District Wise Mulberry")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Mulberry</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Mulberry")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -642,7 +645,7 @@ const [farmerdetails,setFarmerDetails] = useState({
     <Col sm={2} lg={2}>
         <Form.Group className="form-group">
           <Form.Label>
-            Select Target Type<span className="text-danger">*</span>
+            {t('Select Target Type')}<span className="text-danger">*</span>
           </Form.Label>
           <div className="form-control-wrap">
             <Form.Select
@@ -651,10 +654,10 @@ const [farmerdetails,setFarmerDetails] = useState({
               onChange={handleInputs}
             >
               {/* <option value="">Select Target Type</option> */}
-              <option value="Mulberry Extension">Mulberry Extension</option>
-              <option value="DFL Production">DFL Production</option>
-              <option value="Cocoon Production">Cocoon Production</option>
-              <option value="Raw Silk Production">Raw Silk Production</option>
+              <option value="Mulberry Extension">{t('Mulberry Extension')}</option>
+              <option value="DFL Production">{t('DFL Production')}</option>
+              <option value="Cocoon Production">{t('Cocoon Production')}</option>
+              <option value="Raw Silk Production">{t('Raw Silk Production')}</option>
             </Form.Select>
           </div>
         </Form.Group>
@@ -662,7 +665,7 @@ const [farmerdetails,setFarmerDetails] = useState({
       <Col sm={2} lg={2}>
         <Form.Group className="form-group">
           <Form.Label>
-            Select Financial Year<span className="text-danger">*</span>
+            {t('Select Financial Year')}<span className="text-danger">*</span>
           </Form.Label>
           <div className="form-control-wrap">
             <Form.Select
@@ -673,7 +676,7 @@ const [farmerdetails,setFarmerDetails] = useState({
               required
               isInvalid={searchData.financialYearMasterId === "0"}
             >
-              <option value="">Select Year</option>
+              <option value="">{t('Select Year')}</option>
               {financialyearListData.map((list) => (
                 <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
                   {list.financialYear}
@@ -687,7 +690,7 @@ const [farmerdetails,setFarmerDetails] = useState({
       <Col sm={2} lg={2}>
         <Form.Group className="form-group">
           <Form.Label>
-            Select District<span className="text-danger">*</span>
+            {t('Select District')}<span className="text-danger">*</span>
           </Form.Label>
           <div className="form-control-wrap">
             <Form.Select
@@ -698,7 +701,7 @@ const [farmerdetails,setFarmerDetails] = useState({
               required
               isInvalid={searchData.districtId === "0"}
             >
-              <option value="">Select District</option>
+              <option value="">{t('Select District')}</option>
               {districtListData.map((list) => (
                 <option key={list.districtId} value={list.districtId}>
                   {list.districtName}
@@ -721,11 +724,11 @@ const [farmerdetails,setFarmerDetails] = useState({
           <table style={styles.table} className="table small table-bordered">
             <tbody>
               <tr style={styles.tableRow}>
-                <td style={styles.ctstyle}>Yearly Target:</td>
+                <td style={styles.ctstyle}>{t('Yearly Target')}:</td>
                 <td style={styles.cell}>{farmerdetails.farmerFruitsId}</td>
-                <td style={styles.ctstyle}>NAREGA Yearly:</td>
+                <td style={styles.ctstyle}>{t('NAREGA Yearly')}:</td>
                 <td style={styles.cell}>{farmerdetails.farmerFirstName}</td>
-                <td style={styles.ctstyle}>Non-NAREGA Yearly:</td>
+                <td style={styles.ctstyle}>{t('Non-NAREGA Yearly')}:</td>
                 <td style={styles.cell}>{farmerdetails.marketAuctionDate}</td>
               </tr>
             </tbody>

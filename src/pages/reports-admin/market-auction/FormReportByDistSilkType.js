@@ -8,11 +8,13 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function FormReportByDistSilkType() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     districtId: localStorage.getItem("districtId"),
     marketId: localStorage.getItem("marketId"),
@@ -199,11 +201,11 @@ function FormReportByDistSilkType() {
     });
   };
   return (
-    <Layout title="District Wise Abstract Report">
+    <Layout title={t("District Wise Abstract Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Abstract Report</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Abstract Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             
@@ -222,7 +224,7 @@ function FormReportByDistSilkType() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        District
+                        {t("District")}
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
@@ -233,7 +235,7 @@ function FormReportByDistSilkType() {
                         onBlur={() => handleInputs}
                         // required
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option>
                           {districtListData.map((list) => (
                             <option key={list.districtId} value={list.districtId}>
                               {list.districtName}
@@ -244,7 +246,7 @@ function FormReportByDistSilkType() {
                             </Col>
 
                             <Form.Label column sm={1}>
-                        From Date
+                        {t("From Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -259,7 +261,7 @@ function FormReportByDistSilkType() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t("To Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -276,7 +278,7 @@ function FormReportByDistSilkType() {
                       <Col sm={2}>
                       
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>

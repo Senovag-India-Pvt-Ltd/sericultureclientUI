@@ -10,12 +10,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictWiseReelerCountList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -251,14 +253,14 @@ function DistrictWiseReelerCountList() {
     
 
     {
-      name: "District Name",
+      name: t("District Name"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Count",
+      name: t("Reeler Count"),
       selector: (row) => row.reelerCount,
       cell: (row) => <span>{row.reelerCount}</span>,
       sortable: true,
@@ -269,14 +271,14 @@ function DistrictWiseReelerCountList() {
   const TalukDataColumns = [
     
     {
-      name: "Taluk Name",
+      name: t("Taluk Name"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Count",
+      name: t("Reeler Count"),
       selector: (row) => row.reelerCount,
       cell: (row) => <span>{row.reelerCount}</span>,
       sortable: true,
@@ -287,14 +289,14 @@ function DistrictWiseReelerCountList() {
   const MarketDataColumns = [
     
     {
-      name: "Market Name",
+      name: t("Market Name"),
       selector: (row) => row.marketName,
       cell: (row) => <span>{row.marketName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Reeler Count",
+      name: t("Reeler Count"),
       selector: (row) => row.reelerCount,
       cell: (row) => <span>{row.reelerCount}</span>,
       sortable: true,
@@ -304,11 +306,11 @@ function DistrictWiseReelerCountList() {
 
 
   return (
-    <Layout title="District Wise Reeler Count">
+    <Layout title={t("District Wise Reeler Count")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Reeler Count</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Reeler Count")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -318,7 +320,7 @@ function DistrictWiseReelerCountList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -327,7 +329,7 @@ function DistrictWiseReelerCountList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul> */}
@@ -341,7 +343,7 @@ function DistrictWiseReelerCountList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label>
-                  District
+                  {t("District")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -355,7 +357,7 @@ function DistrictWiseReelerCountList() {
                         data.districtId === undefined || data.districtId === "0"
                       }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -373,7 +375,7 @@ function DistrictWiseReelerCountList() {
                     variant="primary"
                     onClick={() => getTalukList(data.districtId)}
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>
@@ -384,7 +386,7 @@ function DistrictWiseReelerCountList() {
       <Card style={{width:"48rem"}}>
         <Row className="m-2 align-items-center">
       <Col sm={1}>
-        <Form.Label>District</Form.Label>
+        <Form.Label>{t("District")}</Form.Label>
       </Col>
       <Col sm={4}>
         <div className="form-control-wrap">
@@ -398,7 +400,7 @@ function DistrictWiseReelerCountList() {
               data.districtId === undefined || data.districtId === "0"
             }
           >
-            <option value="">Select District</option>
+            <option value="">{t("Select District")}</option>
             {districtListData.map((list) => (
               <option key={list.districtId} value={list.districtId}>
                 {list.districtName}
@@ -413,7 +415,7 @@ function DistrictWiseReelerCountList() {
           variant="primary"
           onClick={() => getTalukList(data.districtId)}
         >
-          Search
+          {t("Search")}
         </Button>
       </Col>
     </Row>

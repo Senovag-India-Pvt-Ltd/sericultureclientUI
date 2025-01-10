@@ -8,6 +8,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 
@@ -16,6 +17,7 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function TscwiseSchemeTargetSetting() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -885,7 +887,7 @@ function TscwiseSchemeTargetSetting() {
 
   const ProductionPhysicalDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -903,7 +905,7 @@ function TscwiseSchemeTargetSetting() {
             className="ms-2"
             onClick={() => handleEdit(row.schemeTargetsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -911,7 +913,7 @@ function TscwiseSchemeTargetSetting() {
             onClick={() => deleteConfirm(row.schemeTargetsId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -920,84 +922,84 @@ function TscwiseSchemeTargetSetting() {
       grow: 2,
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme",
+      name: t("Scheme"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component",
+      name: t("Component"),
       selector: (row) => row.scComponentName,
       cell: (row) => <span>{row.scComponentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sub Component",
+      name: t("Sub Component"),
       selector: (row) => row.categoryName,
       cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Head of Account",
+      name: t("Head of Account"),
       selector: (row) => row.scHeadAccountName,
       cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Central Budget (In Lakhs)",
+      name: t("Central Budget (In Lakhs)"),
       selector: (row) => row.centralShare,
       cell: (row) => <span>{row.centralShare}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "State Budget (In Lakhs)",
+      name: t("State Budget (In Lakhs)"),
       selector: (row) => row.stateShare,
       cell: (row) => <span>{row.stateShare}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk ",
+      name: t("Taluk "),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "TSC",
+      name: t("TSC"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -1005,21 +1007,21 @@ function TscwiseSchemeTargetSetting() {
     },
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -1029,84 +1031,84 @@ function TscwiseSchemeTargetSetting() {
 
   const ProductionPhysicalDataColumnsView = [
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme",
+      name: t("Scheme"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component Type",
+      name: t("Component Type"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Component",
+      name: t("Component"),
       selector: (row) => row.scComponentName,
       cell: (row) => <span>{row.scComponentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sub Component",
+      name: t("Sub Component"),
       selector: (row) => row.categoryName,
       cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Head of Account",
+      name: t("Head of Account"),
       selector: (row) => row.scHeadAccountName,
       cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Central Budget (In Lakhs)",
+      name: t("Central Budget (In Lakhs)"),
       selector: (row) => row.centralShare,
       cell: (row) => <span>{row.centralShare}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "State Budget (In Lakhs)",
+      name: t("State Budget (In Lakhs)"),
       selector: (row) => row.stateShare,
       cell: (row) => <span>{row.stateShare}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk ",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "TSC",
+      name: t("TSC"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -1114,21 +1116,21 @@ function TscwiseSchemeTargetSetting() {
     },
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -1191,12 +1193,12 @@ function TscwiseSchemeTargetSetting() {
     });
   };
   return (
-    <Layout title="TSC Wise Target Setting for Subsidies">
+    <Layout title={t("TSC Wise Target Setting for Subsidies")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              TSC Wise Target Setting for Subsidies
+              {t("TSC Wise Target Setting for Subsidies")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -1223,7 +1225,7 @@ function TscwiseSchemeTargetSetting() {
                   variant="secondary"
                   onClick={handleShowModal}
                 >
-                  View
+                  {t("View")}
                 </Button>
               </li>
             </ul>
@@ -1240,7 +1242,7 @@ function TscwiseSchemeTargetSetting() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      TSC Wise Target Setting for Subsidies{" "}
+                      {t("TSC Wise Target Setting for Subsidies")}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -1248,7 +1250,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1263,7 +1265,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1274,7 +1276,7 @@ function TscwiseSchemeTargetSetting() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1283,7 +1285,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                              {t("Scheme")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1299,7 +1301,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.scSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
+                                <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData &&
                                   scSchemeDetailsListData.map((list) => (
                                     <option
@@ -1311,7 +1313,7 @@ function TscwiseSchemeTargetSetting() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                                {t("Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1320,7 +1322,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
+                              {t("Component Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1336,7 +1338,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Component Type</option>
+                                <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData &&
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
@@ -1345,7 +1347,7 @@ function TscwiseSchemeTargetSetting() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                                {t("Component Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1354,7 +1356,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Component
+                              {t("Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1370,7 +1372,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Component</option>
+                                <option value="">{t("Select Component")}</option>
                                 {scComponentListData &&
                                   scComponentListData.map((list) => (
                                     <option
@@ -1382,7 +1384,7 @@ function TscwiseSchemeTargetSetting() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component is required
+                                {t("Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1391,7 +1393,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                              {t("Sub Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1407,7 +1409,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Sub Component</option>
+                                <option value="">{t("Select Sub Component")}</option>
                                 {scCategoryListData &&
                                   scCategoryListData.map((list) => (
                                     <option
@@ -1419,7 +1421,7 @@ function TscwiseSchemeTargetSetting() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Sub Component is required
+                                {t("Sub Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1428,7 +1430,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Head of Account
+                              {t("Head of Account")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1444,7 +1446,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.scHeadAccountId === "0"
                                 }
                               >
-                                <option value="">Select Head of Account</option>
+                                <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData &&
                                   scHeadAccountListData.map((list) => (
                                     <option
@@ -1456,7 +1458,7 @@ function TscwiseSchemeTargetSetting() {
                                   ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Head of Account is required
+                                {t("Head of Account is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1465,7 +1467,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="centralShare">
-                              Central Budget Amount (in Lakhs)
+                              {t("Central Budget Amount (in Lakhs)")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1475,11 +1477,11 @@ function TscwiseSchemeTargetSetting() {
                                 value={data.centralShare}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter Central Budget Amount"
+                                placeholder={t("Enter Central Budget Amount")}
                                 // required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Central Budget Amount is required.
+                                {t("Central Budget Amount is required.")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1488,7 +1490,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="stateShare">
-                              State Budget Amount (in Lakhs)
+                              {t("State Budget Amount (in Lakhs)")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1498,11 +1500,11 @@ function TscwiseSchemeTargetSetting() {
                                 value={data.stateShare}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter State Budget Amount"
+                                placeholder={t("Enter State Budget Amount")}
                                 // required
                               />
                               <Form.Control.Feedback type="invalid">
-                                State Budget Amount is required.
+                                {t("State Budget Amount is required.")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1633,7 +1635,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              District<span className="text-danger">*</span>
+                              {t("District")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1647,7 +1649,7 @@ function TscwiseSchemeTargetSetting() {
                                 //   data.districtId === "0"
                                 // }
                               >
-                                <option value="">Select District</option>
+                                <option value="">{t("Select District")}</option>
                                 {districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
@@ -1658,7 +1660,7 @@ function TscwiseSchemeTargetSetting() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                District is required
+                                {t("District is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1667,7 +1669,7 @@ function TscwiseSchemeTargetSetting() {
 <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Taluk<span className="text-danger">*</span>
+                              {t("Taluk")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1681,7 +1683,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.talukId === "0"
                                 }
                               >
-                                <option value="">Select Taluk</option>
+                                <option value="">{t("Select Taluk")}</option>
                                 {talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
@@ -1692,7 +1694,7 @@ function TscwiseSchemeTargetSetting() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Taluk is required
+                                {t("Taluk is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1701,7 +1703,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              TSC<span className="text-danger">*</span>
+                              {t("TSC")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1715,7 +1717,7 @@ function TscwiseSchemeTargetSetting() {
                                   data.tscMasterId === "0"
                                 }
                               >
-                                <option value="">Select TSC</option>
+                                <option value="">{t("Select TSC")}</option>
                                 {tscListData.map((list) => (
                                   <option
                                     key={list.tscMasterId}
@@ -1726,7 +1728,7 @@ function TscwiseSchemeTargetSetting() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                TSC is required
+                                {t("TSC is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1769,7 +1771,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Target Type<span className="text-danger">*</span>
+                              {t("Target Type")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1783,12 +1785,12 @@ function TscwiseSchemeTargetSetting() {
                                 //   data.targetType === "0"
                                 // }
                               >
-                                <option value="">Select Target Type</option>
+                                <option value="">{t("Select Target Type")}</option>
                                 <option value="Physical Target">
-                                  Physical Target
+                                  {t("Physical Target")}
                                 </option>
                                 <option value="Financial Target">
-                                  Financial Target
+                                  {t("Financial Target")}
                                 </option>
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1797,7 +1799,7 @@ function TscwiseSchemeTargetSetting() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Target Type is required
+                                {t("Target Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1806,7 +1808,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Month<span className="text-danger">*</span>
+                              {t("Month")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1820,19 +1822,19 @@ function TscwiseSchemeTargetSetting() {
                                 //   data.month === "0"
                                 // }
                               >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+                                <option value="">{t("Select Month")}</option>
+                                <option value="JANUARY">{t("January")}</option>
+                                <option value="FEBRUARY">{t("February")}</option>
+                                <option value="MARCH">{t("March")}</option>
+                                <option value="APRIL">{t("April")}</option>
+                                <option value="MAY">{t("May")}</option>
+                                <option value="JUNE">{t("June")}</option>
+                                <option value="JULY">{t("July")}</option>
+                                <option value="AUGUST">{t("August")}</option>
+                                <option value="SEPTEMBER">{t("September")}</option>
+                                <option value="OCTOBER">{t("October")}</option>
+                                <option value="NOVEMBER">{t("November")}</option>
+                                <option value="DECEMBER">{t("December")}</option>
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1841,7 +1843,7 @@ function TscwiseSchemeTargetSetting() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Month is required
+                                {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1850,7 +1852,7 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              Target No.
+                              {t("Target No.")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1860,11 +1862,11 @@ function TscwiseSchemeTargetSetting() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="Enter Target No."
+                                placeholder={t("Enter Target No.")}
                                 // required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Target No. is required.
+                                {t("Target No. is required.")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1873,14 +1875,14 @@ function TscwiseSchemeTargetSetting() {
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User<span className="text-danger">*</span>
+                              {t("User")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Button
                                 variant="primary"
                                 onClick={() => setShowModal2(true)}
                               >
-                                Select User
+                                {t("Select User")}
                               </Button>
                               <Form.Control
                                 type="hidden"
@@ -1890,7 +1892,7 @@ function TscwiseSchemeTargetSetting() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                User is required
+                                {t("User is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1898,14 +1900,14 @@ function TscwiseSchemeTargetSetting() {
 
                         <Col sm={3}>
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label>User Name</Form.Label>
+                            <Form.Label>{t("User Name")}</Form.Label>
                             <Form.Control
                               id="username"
                               name="username"
                               value={userName}
                               // onChange={handleSearchInputs}
                               type="text"
-                              placeholder="Enter User Name"
+                              placeholder={t("Enter User Name")}
                               className="form-control"
                               required
                               // readOnly
@@ -1981,12 +1983,12 @@ function TscwiseSchemeTargetSetting() {
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
                       <Button type="submit" variant="primary">
-                        Save
+                        {t("Save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t("Cancel")}
                       </Button>
                     </li>
                   </ul>
@@ -1998,13 +2000,13 @@ function TscwiseSchemeTargetSetting() {
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Available Budget Balance
+                  {t("Available Budget Balance")}
                 </Card.Header>
                 <Card.Body>
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Balance Amount:</td>
+                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
                         {/* <td>{balanceAmount}</td> */}
                         <td>0</td>
                       </tr>
@@ -2040,7 +2042,7 @@ function TscwiseSchemeTargetSetting() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Tsc Wise Target Setting for Subsidies</Modal.Title>
+          <Modal.Title>{t("Tsc Wise Target Setting for Subsidies")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2053,7 +2055,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Financial Year
+                    {t("Financial Year")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2068,7 +2070,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.financialYearMasterId === "0"
                       }
                     >
-                      <option value="">Select Year</option>
+                      <option value="">{t("Select Year")}</option>
                       {financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
@@ -2079,7 +2081,7 @@ function TscwiseSchemeTargetSetting() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Financial Year is required
+                      {t("Financial Year is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2088,7 +2090,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label htmlFor="sordfl">
-                    Scheme
+                    {t("Scheme")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2104,7 +2106,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.scSchemeDetailsId === "0"
                       }
                     >
-                      <option value="">Select Scheme Names</option>
+                      <option value="">{t("Select Scheme Names")}</option>
                       {scSchemeDetailsListData &&
                         scSchemeDetailsListData.map((list) => (
                           <option
@@ -2116,7 +2118,7 @@ function TscwiseSchemeTargetSetting() {
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Scheme is required
+                      {t("Scheme is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2125,7 +2127,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Component Type
+                    {t("Component Type")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2141,7 +2143,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.scSubSchemeDetailsId === "0"
                       }
                     >
-                      <option value="">Select Component Type</option>
+                      <option value="">{t("Select Component Type")}</option>
                       {scSubSchemeDetailsListData &&
                         scSubSchemeDetailsListData.map((list, i) => (
                           <option key={i} value={list.subSchemeId}>
@@ -2150,7 +2152,7 @@ function TscwiseSchemeTargetSetting() {
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Component Type is required
+                      {t("Component Type is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2159,7 +2161,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label htmlFor="sordfl">
-                    Component
+                    {t("Component")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2175,7 +2177,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.scComponentId === "0"
                       }
                     >
-                      <option value="">Select Component</option>
+                      <option value="">{t("Select Component")}</option>
                       {scComponentListData &&
                         scComponentListData.map((list) => (
                           <option
@@ -2187,7 +2189,7 @@ function TscwiseSchemeTargetSetting() {
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Component is required
+                      {t("Component is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2196,7 +2198,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label htmlFor="sordfl">
-                    Sub Component
+                    {t("Sub Component")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2212,7 +2214,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.scCategoryId === "0"
                       }
                     >
-                      <option value="">Select Sub Component</option>
+                      <option value="">{t("Select Sub Component")}</option>
                       {scCategoryListData &&
                         scCategoryListData.map((list) => (
                           <option
@@ -2224,7 +2226,7 @@ function TscwiseSchemeTargetSetting() {
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Sub Component is required
+                      {t("Sub Component is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2233,7 +2235,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label htmlFor="sordfl">
-                    Head of Account
+                    {t("Head of Account")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2249,7 +2251,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.scHeadAccountId === "0"
                       }
                     >
-                      <option value="">Select Head of Account</option>
+                      <option value="">{t("Select Head of Account")}</option>
                       {scHeadAccountListData &&
                         scHeadAccountListData.map((list) => (
                           <option
@@ -2261,7 +2263,7 @@ function TscwiseSchemeTargetSetting() {
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Head of Account is required
+                      {t("Head of Account is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2270,7 +2272,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="centralShare">
-                    Central Budget Amount (in Lakhs)
+                    {t("Central Budget Amount (in Lakhs)")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2280,11 +2282,11 @@ function TscwiseSchemeTargetSetting() {
                       value={editData.centralShare}
                       onChange={handleEditInputs}
                       type="text"
-                      placeholder="Enter Central Budget Amount"
+                      placeholder={t("Enter Central Budget Amount")}
                       // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Central Budget Amount is required.
+                      {t("Central Budget Amount is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2293,7 +2295,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="stateShare">
-                    State Budget Amount (in Lakhs)
+                    {t("State Budget Amount (in Lakhs)")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2303,11 +2305,11 @@ function TscwiseSchemeTargetSetting() {
                       value={editData.stateShare}
                       onChange={handleEditInputs}
                       type="text"
-                      placeholder="Enter State Budget Amount"
+                      placeholder={t("Enter State Budget Amount")}
                       // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      State Budget Amount is required.
+                      {t("State Budget Amount is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2316,7 +2318,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    District<span className="text-danger">*</span>
+                    {t("District")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2330,7 +2332,7 @@ function TscwiseSchemeTargetSetting() {
                       //   editData.districtId === "0"
                       // }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -2338,7 +2340,7 @@ function TscwiseSchemeTargetSetting() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      District is required
+                      {t("District is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2347,7 +2349,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    TSC<span className="text-danger">*</span>
+                    {t("TSC")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2361,7 +2363,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.tscMasterId === "0"
                       }
                     >
-                      <option value="">Select TSC</option>
+                      <option value="">{t("Select TSC")}</option>
                       {tscListData.map((list) => (
                         <option key={list.tscMasterId} value={list.tscMasterId}>
                           {list.name}
@@ -2369,7 +2371,7 @@ function TscwiseSchemeTargetSetting() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      TSC is required
+                      {t("TSC is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2378,7 +2380,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    User<span className="text-danger">*</span>
+                    {t("User")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2392,7 +2394,7 @@ function TscwiseSchemeTargetSetting() {
                         editData.userMasterId === "0"
                       }
                     >
-                      <option value="">Select User</option>
+                      <option value="">{t("Select User")}</option>
                       {userListData.map((list) => (
                         <option
                           key={list.userMasterId}
@@ -2403,7 +2405,7 @@ function TscwiseSchemeTargetSetting() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      User is required
+                      {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2412,7 +2414,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Target Type<span className="text-danger">*</span>
+                    {t("Target Type")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2426,9 +2428,9 @@ function TscwiseSchemeTargetSetting() {
                       //   editData.targetType === "0"
                       // }
                     >
-                      <option value="">Select Target Type</option>
-                      <option value="Physical Target">Physical Target</option>
-                      <option value="Financial Target">Financial Target</option>
+                      <option value="">{t("Select Target Type")}</option>
+                      <option value="Physical Target">{t("Physical Target")}</option>
+                      <option value="Financial Target">{t("Financial Target")}</option>
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
@@ -2436,7 +2438,7 @@ function TscwiseSchemeTargetSetting() {
                         ))} */}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Target Type is required
+                      {t("Target Type is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2445,7 +2447,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Month<span className="text-danger">*</span>
+                    {t("Month")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2459,19 +2461,19 @@ function TscwiseSchemeTargetSetting() {
                       //   editData.month === "0"
                       // }
                     >
-                      <option value="">Select Month</option>
-                      <option value="JANUARY">January</option>
-                      <option value="FEBRUARY">February</option>
-                      <option value="MARCH">March</option>
-                      <option value="APRIL">April</option>
-                      <option value="MAY">May</option>
-                      <option value="JUNE">June</option>
-                      <option value="JULY">July</option>
-                      <option value="AUGUST">August</option>
-                      <option value="SEPTEMBER">September</option>
-                      <option value="OCTOBER">October</option>
-                      <option value="NOVEMBER">November</option>
-                      <option value="DECEMBER">December</option>
+                      <option value="">{t("Select Month")}</option>
+                      <option value="JANUARY">{t("January")}</option>
+                      <option value="FEBRUARY">{t("February")}</option>
+                      <option value="MARCH">{t("March")}</option>
+                      <option value="APRIL">{t("April")}</option>
+                      <option value="MAY">{t("May")}</option>
+                      <option value="JUNE">{t("June")}</option>
+                      <option value="JULY">{t("July")}</option>
+                      <option value="AUGUST">{t("August")}</option>
+                      <option value="SEPTEMBER">{t("September")}</option>
+                      <option value="OCTOBER">{t("October")}</option>
+                      <option value="NOVEMBER">{t("November")}</option>
+                      <option value="DECEMBER">{t("December")}</option>
 
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -2480,7 +2482,7 @@ function TscwiseSchemeTargetSetting() {
                         ))} */}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Month is required
+                      {t("Month is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2489,7 +2491,7 @@ function TscwiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    Target No.
+                    {t("Target No.")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2499,11 +2501,11 @@ function TscwiseSchemeTargetSetting() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="text"
-                      placeholder="Enter Target No."
+                      placeholder={t("Enter Target No.")}
                       // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Target No. is required.
+                      {t("Target No. is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2514,7 +2516,7 @@ function TscwiseSchemeTargetSetting() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                 </div>
@@ -2525,7 +2527,7 @@ function TscwiseSchemeTargetSetting() {
       </Modal>
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Alloted Details</Modal.Title>
+          <Modal.Title>{t("Alloted Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2535,7 +2537,7 @@ function TscwiseSchemeTargetSetting() {
                 style={{ fontWeight: "bold", color: "brown", fontSize: "1vw" }}
                 className="d-flex justify-content-center"
               >
-                Target Allotted by Head Office
+                {t("Target Allotted by Head Office")}
               </div>
               <DataTable
                 tableClassName="data-table-head-light table-responsive"
@@ -2563,8 +2565,7 @@ function TscwiseSchemeTargetSetting() {
                   className="ms-2"
                   onClick={() => toggle()}
                 >
-                  {!toggleButton ? "Show" : "Hide"} Hierarchical Assigned
-                  Targets
+                  {!toggleButton ? t("Show") : t("Hide")} {t("Hierarchical Assigned Targets")}
                 </Button>
               </Col>
             )}
@@ -2578,7 +2579,7 @@ function TscwiseSchemeTargetSetting() {
                   }}
                   className="d-flex justify-content-center"
                 >
-                  Target Allotted by You
+                  {t("Target Allotted by You")}
                 </div>
                 <DataTable
                   tableClassName="data-table-head-light table-responsive"
@@ -2604,7 +2605,7 @@ function TscwiseSchemeTargetSetting() {
       </Modal>
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Select User</Modal.Title>
+          <Modal.Title>{t("Select User")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
@@ -2613,14 +2614,14 @@ function TscwiseSchemeTargetSetting() {
                 {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t("District")}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchData.districtId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -2635,14 +2636,14 @@ function TscwiseSchemeTargetSetting() {
                 {/* Taluk Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
+                    <Form.Label>{t("Taluk")}</Form.Label>
                     <Form.Select
                       name="talukId"
                       value={searchData.talukId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData &&
                         talukListData.length &&
                         talukListData.map((list) => (
@@ -2657,14 +2658,14 @@ function TscwiseSchemeTargetSetting() {
                 {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t("Designation")}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchData.designationId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -2682,14 +2683,14 @@ function TscwiseSchemeTargetSetting() {
                 {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t("Mobile Number")}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchData.phoneNumber}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2698,14 +2699,14 @@ function TscwiseSchemeTargetSetting() {
                 {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t("User Name")}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchData.username}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t("Enter User Name")}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2719,7 +2720,7 @@ function TscwiseSchemeTargetSetting() {
                     onClick={searchUser}
                     className="w-100"
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Row>
@@ -2727,14 +2728,14 @@ function TscwiseSchemeTargetSetting() {
               {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t("User")}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchData.userMasterId}
                     onChange={(e) => handleUserSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t("Select User")}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -2745,7 +2746,7 @@ function TscwiseSchemeTargetSetting() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t("No Users Found")}</option> // Show a message if no users are found
                     )}
                   </Form.Select>
                 </Col>
@@ -2753,7 +2754,7 @@ function TscwiseSchemeTargetSetting() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal2()}>
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </Row>

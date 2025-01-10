@@ -11,12 +11,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictWiseFarmerCountList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -221,14 +223,14 @@ function DistrictWiseFarmerCountList() {
     
 
     {
-      name: "District Name",
+      name: t("District Name"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Count",
+      name: t("Farmer Count"),
       selector: (row) => row.farmerCount,
       cell: (row) => <span>{row.farmerCount}</span>,
       sortable: true,
@@ -239,14 +241,14 @@ function DistrictWiseFarmerCountList() {
   const TalukDataColumns = [
     
     {
-      name: "Taluk Name",
+      name: t("Taluk Name"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Count",
+      name: t("Farmer Count"),
       selector: (row) => row.farmerCount,
       cell: (row) => <span>{row.farmerCount}</span>,
       sortable: true,
@@ -275,11 +277,11 @@ function DistrictWiseFarmerCountList() {
   
 
   return (
-    <Layout title="District Wise Farmer Count">
+    <Layout title={t("District Wise Farmer Count")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Farmer Count</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Farmer Count")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -289,7 +291,7 @@ function DistrictWiseFarmerCountList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -298,7 +300,7 @@ function DistrictWiseFarmerCountList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul> */}
@@ -312,7 +314,7 @@ function DistrictWiseFarmerCountList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label>
-                  District
+                  {t("District")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -326,7 +328,7 @@ function DistrictWiseFarmerCountList() {
                         data.districtId === undefined || data.districtId === "0"
                       }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -344,7 +346,7 @@ function DistrictWiseFarmerCountList() {
                     variant="primary"
                     onClick={() => getTalukList(data.districtId)}
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>
@@ -355,7 +357,7 @@ function DistrictWiseFarmerCountList() {
       <Card style={{width:"48rem"}}>
         <Row className="m-2 align-items-center">
       <Col sm={1}>
-        <Form.Label>District</Form.Label>
+        <Form.Label>{t("District")}</Form.Label>
       </Col>
       <Col sm={4}>
         <div className="form-control-wrap">
@@ -369,7 +371,7 @@ function DistrictWiseFarmerCountList() {
               data.districtId === undefined || data.districtId === "0"
             }
           >
-            <option value="">Select District</option>
+            <option value="">{t("Select District")}</option>
             {districtListData.map((list) => (
               <option key={list.districtId} value={list.districtId}>
                 {list.districtName}
@@ -384,7 +386,7 @@ function DistrictWiseFarmerCountList() {
           variant="primary"
           onClick={() => getTalukList(data.districtId)}
         >
-          Search
+          {t("Search")}
         </Button>
       </Col>
     </Row>

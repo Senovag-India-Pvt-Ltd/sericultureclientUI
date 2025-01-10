@@ -9,11 +9,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next"; // Add this import
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function ReelerTransactionReports() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
@@ -143,11 +147,11 @@ function ReelerTransactionReports() {
     });
   };
   return (
-    <Layout title="Reeler Transaction Report">
+    <Layout title={t("Reeler Transaction Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Transaction Report</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Transaction Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -185,7 +189,7 @@ function ReelerTransactionReports() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number<span className="text-danger">*</span>
+                        {t('Reeler Number')}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -194,15 +198,15 @@ function ReelerTransactionReports() {
                           value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reeler Number"
+                          placeholder={t('Enter Reeler Number')}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Reeler Number is required.
+                          {t("Reeler Number is required")}.
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={1}>
-                        From Date
+                        {t('From Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -217,7 +221,7 @@ function ReelerTransactionReports() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t('To Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -261,7 +265,7 @@ function ReelerTransactionReports() {
                           onClick={display}
                         > */}
                 <Button type="submit" variant="primary">
-                  Generate Report
+                  {t('Generate Report')}
                 </Button>
               </Col>
             </Row>

@@ -8,6 +8,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 
@@ -15,6 +16,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function TrainingTarget() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -744,7 +746,7 @@ function TrainingTarget() {
             className="ms-2"
             onClick={() => handleEdit(row.targetsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -752,7 +754,7 @@ function TrainingTarget() {
             onClick={() => deleteConfirm(row.targetsId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -760,21 +762,21 @@ function TrainingTarget() {
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Institution",
+      name: t("Training Institution"),
       selector: (row) => row.trInstitutionMasterName,
       cell: (row) => <span>{row.trInstitutionMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program",
+      name: t("Training Program"),
       selector: (row) => row.courseName,
       cell: (row) => <span>{row.courseName}</span>,
       sortable: true,
@@ -790,14 +792,14 @@ function TrainingTarget() {
    
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
@@ -814,42 +816,42 @@ function TrainingTarget() {
 
   const ProductionPhysicalDataColumnsView = [
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm",
+      name: t("Farm"),
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -908,12 +910,12 @@ function TrainingTarget() {
     });
   };
   return (
-    <Layout title="Training Wise Target Setting">
+    <Layout title={t("Training Wise Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Training Wise Target Setting
+              {t("Training Wise Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <ul className="d-flex">
@@ -924,7 +926,7 @@ function TrainingTarget() {
                   variant="secondary"
                   onClick={handleShowModal}
                 >
-                  View
+                  {t("View")}
                 </Button>
               </li>
             </ul>
@@ -940,7 +942,7 @@ function TrainingTarget() {
                 <Block>
                   <Card>
                     <Card.Header>
-                    Training Wise Target Setting{" "}
+                      {t("Training Wise Target Setting")}
                     </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -948,7 +950,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -963,7 +965,7 @@ function TrainingTarget() {
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -974,7 +976,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -985,7 +987,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                            Training Program
+                              {t("Training Program")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1000,7 +1002,7 @@ function TrainingTarget() {
                                   data.courseName === "0"
                                 }
                               >
-                                <option value="">Select Program</option>
+                                <option value="">{t("Select Program")}</option>
                                 {trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
@@ -1011,7 +1013,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                              Training Program is required
+                                {t("Training Program is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1020,7 +1022,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Training Institution
+                              {t("Training Institution")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1035,7 +1037,7 @@ function TrainingTarget() {
                                   data.trainingInstitutionId === "0"
                                 }
                               >
-                                <option value="">Select Institution</option>
+                                <option value="">{t("Select Institution")}</option>
                                 {trInstituteListData.map((list) => (
                                   <option
                                     key={list.trInstitutionMasterId}
@@ -1046,7 +1048,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Training Institution is required
+                                {t("Training Institution is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1057,7 +1059,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Month<span className="text-danger">*</span>
+                              {t("Month")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1071,19 +1073,19 @@ function TrainingTarget() {
                                 //   data.month === "0"
                                 // }
                               >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+                                <option value="">{t("Select Month")}</option>
+                                <option value="JANUARY">{t("January")}</option>
+                                <option value="FEBRUARY">{t("February")}</option>
+                                <option value="MARCH">{t("March")}</option>
+                                <option value="APRIL">{t("April")}</option>
+                                <option value="MAY">{t("May")}</option>
+                                <option value="JUNE">{t("June")}</option>
+                                <option value="JULY">{t("July")}</option>
+                                <option value="AUGUST">{t("August")}</option>
+                                <option value="SEPTEMBER">{t("September")}</option>
+                                <option value="OCTOBER">{t("October")}</option>
+                                <option value="NOVEMBER">{t("November")}</option>
+                                <option value="DECEMBER">{t("December")}</option>
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1092,7 +1094,7 @@ function TrainingTarget() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Month is required
+                                {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1134,14 +1136,14 @@ function TrainingTarget() {
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User<span className="text-danger">*</span>
+                              {t("User")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Button
                                 variant="primary"
                                 onClick={() => setShowModal2(true)}
                               >
-                                Select User
+                                {t("Select User")}
                               </Button>
                               <Form.Control
                                 type="hidden"
@@ -1151,7 +1153,7 @@ function TrainingTarget() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                User is required
+                                {t("User is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1159,14 +1161,14 @@ function TrainingTarget() {
 
                         <Col sm={3}>
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label>User Name</Form.Label>
+                            <Form.Label>{t("User Name")}</Form.Label>
                             <Form.Control
                               id="username"
                               name="username"
                               value={userName}
                               // onChange={handleSearchInputs}
                               type="text"
-                              placeholder="Enter User Name"
+                              placeholder={t("Enter User Name")}
                               className="form-control"
                               // readOnly
                               required
@@ -1184,12 +1186,12 @@ function TrainingTarget() {
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
                       <Button type="submit" variant="primary">
-                        Save
+                        {t("Save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t("Cancel")}
                       </Button>
                     </li>
                   </ul>
@@ -1201,13 +1203,13 @@ function TrainingTarget() {
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Available Budget Balance
+                  {t("Available Budget Balance")}
                 </Card.Header>
                 <Card.Body>
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Balance Amount:</td>
+                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
                         {/* <td>{balanceAmount}</td> */}
                         <td>0</td>
                       </tr>
@@ -1243,7 +1245,7 @@ function TrainingTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Training Wise Target Setting</Modal.Title>
+          <Modal.Title>{t("Training Wise Target Setting")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1256,7 +1258,7 @@ function TrainingTarget() {
                   <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1271,7 +1273,7 @@ function TrainingTarget() {
                                   editData.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1282,7 +1284,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1291,7 +1293,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                            Training Program
+                              {t("Training Program")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1306,7 +1308,7 @@ function TrainingTarget() {
                                   editData.courseName === "0"
                                 }
                               >
-                                <option value="">Select Program</option>
+                                <option value="">{t("Select Program")}</option>
                                 {trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
@@ -1317,7 +1319,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                              Training Program is required
+                                {t("Training Program is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1326,7 +1328,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Training Institution
+                              {t("Training Institution")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1341,7 +1343,7 @@ function TrainingTarget() {
                                   editData.trainingInstitutionId === "0"
                                 }
                               >
-                                <option value="">Select Institution</option>
+                                <option value="">{t("Select Institution")}</option>
                                 {trInstituteListData.map((list) => (
                                   <option
                                     key={list.trInstitutionMasterId}
@@ -1352,7 +1354,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Training Institution is required
+                                {t("Training Institution is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1361,7 +1363,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Month<span className="text-danger">*</span>
+                              {t("Month")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1375,19 +1377,19 @@ function TrainingTarget() {
                                 //   editData.month === "0"
                                 // }
                               >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+                                <option value="">{t("Select Month")}</option>
+                                <option value="JANUARY">{t("January")}</option>
+                                <option value="FEBRUARY">{t("February")}</option>
+                                <option value="MARCH">{t("March")}</option>
+                                <option value="APRIL">{t("April")}</option>
+                                <option value="MAY">{t("May")}</option>
+                                <option value="JUNE">{t("June")}</option>
+                                <option value="JULY">{t("July")}</option>
+                                <option value="AUGUST">{t("August")}</option>
+                                <option value="SEPTEMBER">{t("September")}</option>
+                                <option value="OCTOBER">{t("October")}</option>
+                                <option value="NOVEMBER">{t("November")}</option>
+                                <option value="DECEMBER">{t("December")}</option>
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1396,7 +1398,7 @@ function TrainingTarget() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Month is required
+                                {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1405,7 +1407,7 @@ function TrainingTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User<span className="text-danger">*</span>
+                              {t("User")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1419,7 +1421,7 @@ function TrainingTarget() {
                                   editData.userMasterId === "0"
                                 }
                               >
-                                <option value="">Select User</option>
+                                <option value="">{t("Select User")}</option>
                                 {userListData.map((list) => (
                                   <option
                                     key={list.userMasterId}
@@ -1430,7 +1432,7 @@ function TrainingTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                User is required
+                                {t("User is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1441,7 +1443,7 @@ function TrainingTarget() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                  
@@ -1453,7 +1455,7 @@ function TrainingTarget() {
       </Modal>
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Alloted Details</Modal.Title>
+          <Modal.Title>{t("Alloted Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1463,7 +1465,7 @@ function TrainingTarget() {
                 style={{ fontWeight: "bold", color: "brown", fontSize: "1vw" }}
                 className="d-flex justify-content-center"
               >
-                Target Allotted by Head Office
+                {t("Target Allotted by Head Office")}
               </div>
               <DataTable
                 tableClassName="data-table-head-light table-responsive"
@@ -1491,8 +1493,7 @@ function TrainingTarget() {
                   className="ms-2"
                   onClick={() => toggle()}
                 >
-                  {!toggleButton ? "Show" : "Hide"} Hierarchical Assigned
-                  Targets
+                  {!toggleButton ? t("Show") : t("Hide")} {t("Hierarchical Assigned Targets")}
                 </Button>
               </Col>
             )}
@@ -1506,7 +1507,7 @@ function TrainingTarget() {
                   }}
                   className="d-flex justify-content-center"
                 >
-                  Target Allotted by You
+                  {t("Target Allotted by You")}
                 </div>
                 <DataTable
                   tableClassName="data-table-head-light table-responsive"
@@ -1532,7 +1533,7 @@ function TrainingTarget() {
       </Modal>
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Select User</Modal.Title>
+          <Modal.Title>{t("Select User")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
@@ -1541,14 +1542,14 @@ function TrainingTarget() {
                 {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t("District")}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchData.districtId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -1563,14 +1564,14 @@ function TrainingTarget() {
                 {/* Taluk Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
+                    <Form.Label>{t("Taluk")}</Form.Label>
                     <Form.Select
                       name="talukId"
                       value={searchData.talukId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData &&
                         talukListData.length &&
                         talukListData.map((list) => (
@@ -1585,14 +1586,14 @@ function TrainingTarget() {
                 {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t("Designation")}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchData.designationId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -1610,14 +1611,14 @@ function TrainingTarget() {
                 {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t("Mobile Number")}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchData.phoneNumber}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       className="form-control"
                     />
                   </Form.Group>
@@ -1626,14 +1627,14 @@ function TrainingTarget() {
                 {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t("User Name")}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchData.username}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t("Enter User Name")}
                       className="form-control"
                     />
                   </Form.Group>
@@ -1647,7 +1648,7 @@ function TrainingTarget() {
                     onClick={searchUser}
                     className="w-100"
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Row>
@@ -1655,14 +1656,14 @@ function TrainingTarget() {
               {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t("User")}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchData.userMasterId}
                     onChange={(e) => handleUserSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t("Select User")}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -1673,7 +1674,7 @@ function TrainingTarget() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t("No Users Found")}</option> // Show a message if no users are found
                     )}
                   </Form.Select>
                 </Col>
@@ -1681,7 +1682,7 @@ function TrainingTarget() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal2()}>
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </Row>
