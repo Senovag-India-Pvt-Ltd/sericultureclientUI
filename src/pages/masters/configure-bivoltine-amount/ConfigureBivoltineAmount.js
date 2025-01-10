@@ -89,7 +89,7 @@ function ConfigureBivoltineAmount() {
     getComponentList();
   }, []);
 
-  // to get hectare-details
+  // to get Category-details
   const [categoryListData, setCategoryListData] = useState([]);
 
   const getCategoryList = () => {
@@ -215,7 +215,7 @@ function ConfigureBivoltineAmount() {
                             data.categoryId === "0"
                         }
                         >
-                        <option value="">Select Hectare</option>
+                        <option value="">Select Category</option>
                         {categoryListData && categoryListData.length > 0
                             ? categoryListData.map((list) => (
                                 <option
