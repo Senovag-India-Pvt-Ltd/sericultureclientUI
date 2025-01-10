@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -181,7 +183,7 @@ function RearingOfDFLsEdit() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       text: message,
     });
   };
@@ -194,7 +196,7 @@ function RearingOfDFLsEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -202,16 +204,16 @@ function RearingOfDFLsEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
 
   return (
-    <Layout title="Edit Rearing of DFLs">
+    <Layout title={t("Edit Rearing of DFLs")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Rearing of DFLs</Block.Title>
+            <Block.Title tag="h2">{t("Edit Rearing of DFLs")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -221,7 +223,7 @@ function RearingOfDFLsEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -230,7 +232,7 @@ function RearingOfDFLsEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -244,19 +246,20 @@ function RearingOfDFLsEdit() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Rearing Of DFLs
+              {t("Edit Rearing Of DFLs")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Disinfactant Usage Details<span className="text-danger">*</span>
+                        {t("Disinfactant Usage Details")}
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -266,7 +269,7 @@ function RearingOfDFLsEdit() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                           >
-                            <option value="">Select Disinfactant Usage</option>
+                            <option value="">{t("Select Disinfactant Usage")}</option>
                             {disinfactantListData.map((list) => (
                               <option
                                 key={list.disinfectantMasterId}
@@ -277,8 +280,8 @@ function RearingOfDFLsEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Disinfactant Usage Details is required
-                      </Form.Control.Feedback>
+                            {t("Disinfactant Usage Details is required")}
+                          </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -288,7 +291,7 @@ function RearingOfDFLsEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        Crop Number
+                        {t("Crop Number")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -299,7 +302,7 @@ function RearingOfDFLsEdit() {
                           onChange={handleInputs}
                           type="text"
                           maxLength="12"
-                          placeholder="Enter Crop Number"
+                          placeholder={t("Enter Crop Number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -314,7 +317,7 @@ function RearingOfDFLsEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="coldStorageDetails">
-                      Cold Storage Status
+                        {t("Cold Storage Status")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -323,7 +326,7 @@ function RearingOfDFLsEdit() {
                         value={data.coldStorageDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter  Cold Storage Status"
+                        placeholder={t("Enter Cold Storage Status")}
                         />
                       </div>
                     </Form.Group>
@@ -332,7 +335,8 @@ function RearingOfDFLsEdit() {
                   <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Chawki Percentage<span className="text-danger">*</span>
+                      {t("Chawki Percentage")}
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -341,11 +345,11 @@ function RearingOfDFLsEdit() {
                         value={data.chawkiPercentage}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Chawki Percentage"
+                        placeholder={t("Enter Chawki Percentage")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Chawki Percentage is required
+                        {t("Chawki Percentage is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -354,7 +358,8 @@ function RearingOfDFLsEdit() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Weight(In Grams)<span className="text-danger">*</span>
+                      {t("Worm Weight (In Grams)")}
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -363,11 +368,11 @@ function RearingOfDFLsEdit() {
                         value={data.wormWeight}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter  Cold Storage Details"
+                        placeholder={t("Enter Worm Weight (In Grams)")}
                         required
                       />
                        <Form.Control.Feedback type="invalid">
-                       Worm Weight(In Grams) is required
+                        {t("Worm Weight (In Grams) is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -376,7 +381,8 @@ function RearingOfDFLsEdit() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Test Status<span className="text-danger">*</span>
+                      {t("Worm Test Status")}
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -385,11 +391,11 @@ function RearingOfDFLsEdit() {
                         value={data.wormTestDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Worm Test Details"
+                        placeholder={t("Enter Worm Test Details")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Worm Test Status is required
+                        {t("Worm Test Status is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -398,7 +404,8 @@ function RearingOfDFLsEdit() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                    Cocoon Produced in NOs<span className="text-danger">*</span>
+                      {t("Cocoon Produced in NOs")}
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -407,11 +414,11 @@ function RearingOfDFLsEdit() {
                         value={data.cocoonAssessmentDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Produced in NOs"
+                        placeholder={t("Enter Cocoon Produced in NOs")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Cocoon Produced in NOs is required
+                        {t("Cocoon Produced in NOs is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -420,7 +427,7 @@ function RearingOfDFLsEdit() {
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                    Released On Date
+                    {t("Released On Date")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                     <div className="form-control-wrap">
@@ -446,7 +453,7 @@ function RearingOfDFLsEdit() {
                   <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                    Brushing Date
+                    {t("Brushing Date")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                     <div className="form-control-wrap">
@@ -473,7 +480,7 @@ function RearingOfDFLsEdit() {
                   <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                    Spun Date
+                    {t("Spun Date")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                     <div className="form-control-wrap">
@@ -505,12 +512,12 @@ function RearingOfDFLsEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
+import { useTranslation } from 'react-i18next';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTrackerList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -196,17 +198,16 @@ function TrainingDeputationTrackerList() {
 
   const TrainingDeputationTrackerDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.trainingDeputationId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -214,7 +215,7 @@ function TrainingDeputationTrackerList() {
             className="ms-2"
             onClick={() => handleEdit(row.trainingDeputationId)}
           >
-            Update Date Of Completion
+            {t("Update Date Of Completion")}
           </Button>
           {/* <Button
             variant="danger"
@@ -230,28 +231,28 @@ function TrainingDeputationTrackerList() {
       hide: "md",
     },
     {
-      name: "Official Name",
+      name: t("Official Name"),
       selector: (row) => row.officialName,
       cell: (row) => <span>{row.officialName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program Name",
+      name: t("Training Program Name"),
       selector: (row) => row.trProgramMasterName,
       cell: (row) => <span>{row.trProgramMasterName}</span>,
       sortable: true,
@@ -260,11 +261,11 @@ function TrainingDeputationTrackerList() {
   ];
 
   return (
-    <Layout title="Training Deputation Tracker List">
+    <Layout title={t("Training Deputation Tracker List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker List</Block.Title>
+            <Block.Title tag="h2">{t("Training Deputation Tracker List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -274,7 +275,7 @@ function TrainingDeputationTrackerList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -283,7 +284,7 @@ function TrainingDeputationTrackerList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -297,7 +298,7 @@ function TrainingDeputationTrackerList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -306,9 +307,8 @@ function TrainingDeputationTrackerList() {
                       value={data.searchBy}
                       onChange={handleInputs}
                     >
-                      {/* <option value="">Select</option> */}
-                      <option value="officialName">Official Name</option>
-                      <option value="mobileNumber">Mobile Number</option>
+                      <option value="officialName">{t("Official Name")}</option>
+                      <option value="mobileNumber">{t("Mobile Number")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -320,12 +320,12 @@ function TrainingDeputationTrackerList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

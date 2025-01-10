@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceandSaleofNurserytoFarmersList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -149,106 +151,99 @@ function MaintenanceandSaleofNurserytoFarmersList() {
 
   const GardenNursaryDataColumns = [
     {
-      name: "Fruits Id",
+      name: t("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: t("Farmer Name"),
       selector: (row) => row.farmerName,
       cell: (row) => <span>{row.farmerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mulberry Variety",
+      name: t("Mulberry Variety"),
       selector: (row) => row.mulberryVariety,
       cell: (row) => <span>{row.mulberryVariety}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Area",
+      name: t("Area"),
       selector: (row) => row.area,
       cell: (row) => <span>{row.area}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Planting",
+      name: t("Date Of Planting"),
       selector: (row) => row.dateOfPlanting,
       cell: (row) => <span>{row.dateOfPlanting}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Nursery Sale Details",
+      name: t("Nursery Sale Details"),
       selector: (row) => row.nurserySaleDetails,
       cell: (row) => <span>{row.nurserySaleDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity",
+      name: t("Quantity"),
       selector: (row) => row.quantity,
       cell: (row) => <span>{row.quantity}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Date",
+      name: t("Date"),
       selector: (row) => row.date,
       cell: (row) => <span>{row.date}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Rate",
+      name: t("Rate"),
       selector: (row) => row.rate,
       cell: (row) => <span>{row.rate}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Sapling Age",
+      name: t("Sapling Age"),
       selector: (row) => row.saplingAge,
       cell: (row) => <span>{row.saplingAge}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Receipt Number",
+      name: t("Receipt Number"),
       selector: (row) => row.receiptNumber,
       cell: (row) => <span>{row.receiptNumber}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Remittance Details",
+      name: t("Remittance Details"),
       selector: (row) => row.remittanceDetails,
       cell: (row) => <span>{row.remittanceDetails}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
-        //   Button style
         <div className="text-start w-100">
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -256,16 +251,8 @@ function MaintenanceandSaleofNurserytoFarmersList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
-          {/* <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.id)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
         </div>
       ),
       sortable: false,
@@ -274,12 +261,12 @@ function MaintenanceandSaleofNurserytoFarmersList() {
     },
   ];
   return (
-    <Layout title="Maintenance and Sale of Nursery to Farmers List">
+    <Layout title={t("Maintenance and Sale of Nursery to Farmers List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance and Sale of Nursery to Farmers List
+              {t("Maintenance and Sale of Nursery to Farmers List")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -287,7 +274,7 @@ function MaintenanceandSaleofNurserytoFarmersList() {
               <li>
                 <Link to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers" className="btn btn-primary btn-md d-md-none">
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -296,7 +283,7 @@ function MaintenanceandSaleofNurserytoFarmersList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

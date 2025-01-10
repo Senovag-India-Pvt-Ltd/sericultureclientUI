@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -30,6 +31,7 @@ function TrainingDeputationTracker() {
   });
 
   const [validated, setValidated] = useState(false);
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -242,7 +244,7 @@ function TrainingDeputationTracker() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("#");
@@ -257,17 +259,17 @@ function TrainingDeputationTracker() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Training Deputation Tracker">
+    <Layout title={t("Training Deputation Tracker")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker</Block.Title>
+            <Block.Title tag="h2">{t("Training Deputation Tracker")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -277,7 +279,7 @@ function TrainingDeputationTracker() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -286,7 +288,7 @@ function TrainingDeputationTracker() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -298,14 +300,14 @@ function TrainingDeputationTracker() {
         <Form noValidate validated={validated} onSubmit={postData}>
             <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Training Deputation Tracker
+              {t("Training Deputation Tracker")}
             </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label htmlFor="official Name">
-                        Name Of the Official
+                        {t("Name Of the Official")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -315,20 +317,20 @@ function TrainingDeputationTracker() {
                           value={data.officialName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Name Of the Official"
+                          placeholder={t("Enter Name Of the Official")}
                           required
                         />
                       </div>
                     </Form.Group>
                     <Form.Control.Feedback type="invalid">
-                      Name Of the Official is required
+                      {t("Name Of the Official is required")}
                     </Form.Control.Feedback>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
-                        Designation<span className="text-danger">*</span>
+                        {t("Designation")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -342,7 +344,7 @@ function TrainingDeputationTracker() {
                             data.designationId === "0"
                           }
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">{t("Select Designation")}</option>
                           {designationListData.map((list) => (
                             <option
                               key={list.designationId}
@@ -353,7 +355,7 @@ function TrainingDeputationTracker() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Designation is required
+                          {t("Designation is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -377,7 +379,7 @@ function TrainingDeputationTracker() {
                             data.deputedInstituteId === "0"
                           }
                         >
-                          <option value="">Select Deputed Institute</option>
+                          <option value="">{t("Select Deputed Institute")}</option>
                           {deputedInstituteListData.map((list) => (
                             <option
                               key={list.deputedInstituteId}
@@ -388,7 +390,7 @@ function TrainingDeputationTracker() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Deputed Institute is required
+                          {t("Deputed Institute is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -397,7 +399,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="official Name">
-                        Deputed to Institute Name and Details
+                        {t("Deputed to Institute Name and Details")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -406,7 +408,7 @@ function TrainingDeputationTracker() {
                           value={data.deputedInstitute}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Deputed Institute Details"
+                          placeholder={t("Enter Deputed Institute Details")}
                         />
                       </div>
                     </Form.Group>
@@ -415,7 +417,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Training Program<span className="text-danger">*</span>
+                        {t("Training Program")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -429,7 +431,7 @@ function TrainingDeputationTracker() {
                             data.trProgramMasterId === "0"
                           }
                         >
-                          <option value="">Select Program</option>
+                          <option value="">{t("Select Program")}</option>
                           {trProgramListData.map((list) => (
                             <option
                               key={list.trProgramMasterId}
@@ -440,7 +442,7 @@ function TrainingDeputationTracker() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Training Program is required
+                          {t("Training Program is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -449,7 +451,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Training Course<span className="text-danger">*</span>
+                        {t("Training Course")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -463,7 +465,7 @@ function TrainingDeputationTracker() {
                             data.trCourseMasterId === "0"
                           }
                         >
-                          <option value="">Select Course</option>
+                          <option value="">{t("Select Course")}</option>
                           {trCourseListData.map((list) => (
                             <option
                               key={list.trCourseMasterId}
@@ -474,7 +476,7 @@ function TrainingDeputationTracker() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Training Course is required
+                          {t("Training Course is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -483,7 +485,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                        Official Address
+                        {t("Official Address")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -492,7 +494,7 @@ function TrainingDeputationTracker() {
                           value={data.officialAddress}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Official Address"
+                          placeholder={t("Enter Official Address")}
                         />
                       </div>
                     </Form.Group>
@@ -501,7 +503,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                        Mobile Number<span className="text-danger">*</span>
+                        {t("Mobile Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -511,11 +513,11 @@ function TrainingDeputationTracker() {
                           onChange={handleInputs}
                           maxLength="10"
                           type="text"
-                          placeholder="Enter Mobile Number"
+                          placeholder={t("Enter Mobile Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Mobile Number Should Contain Only 10 digits
+                        {t("Mobile Number Should Contain Only 10 digits")}
                       </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -523,16 +525,16 @@ function TrainingDeputationTracker() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label>Training Attended</Form.Label>
+                      <Form.Label>{t("Training Attended")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="deputedAttended"
                           value={data.deputedAttended}
                           onChange={handleInputs}
                         >
-                          <option value="">Select</option>
-                          <option value="1">Yes</option>
-                          <option value="2">No</option>
+                          <option value="">{t("Select")}</option>
+                          <option value="1">{t("Yes")}</option>
+                          <option value="2">{t("No")}</option>
                           {/* <option value="3">Third Gender</option> */}
                         </Form.Select>
                       </div>
@@ -542,7 +544,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trNoOfParticipant">
-                        Remarks
+                        {t("Remarks")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -551,7 +553,7 @@ function TrainingDeputationTracker() {
                           value={data.deputedRemarks}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Remarks "
+                          placeholder={t("Enter Remarks")}
                         />
                       </div>
                     </Form.Group>
@@ -560,7 +562,7 @@ function TrainingDeputationTracker() {
                     <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                          Training Period Start Date<span className="text-danger">*</span>
+                          {t("Training Period Start Date")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                         <DatePicker
@@ -580,14 +582,14 @@ function TrainingDeputationTracker() {
                           </div>
                           </Form.Group>
                           <Form.Control.Feedback type="invalid">
-                        Start Date is Required
+                        {t("Start Date is Required")}
                       </Form.Control.Feedback>
                         </Col>
 
                         <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date Of Completion<span className="text-danger">*</span>
+                                {t("Date Of Completion")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                             <DatePicker
@@ -607,14 +609,14 @@ function TrainingDeputationTracker() {
                           </div>
                           </Form.Group>
                           <Form.Control.Feedback type="invalid">
-                          Completion Date is Required
+                          {t("Completion Date is Required")}
                         </Form.Control.Feedback>
                         </Col>
 
                   <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="fileUploadPath">
-                      Upload Pdf/PPt/Video(Max:2mb)
+                      {t("Upload Pdf/PPt/Video(Max:2mb)")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -647,12 +649,12 @@ function TrainingDeputationTracker() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
+                    {t("Clear")}
                   </Button>
                 </li>
               </ul>

@@ -8,6 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
 import SeedCuttingBank from "./SeedCuttingBank";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
@@ -20,6 +21,7 @@ function SeedCuttingBankView() {
     },
   };
 
+  const { t } = useTranslation();
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
   const [seedCuttingBank, setSeedCuttingBank] = useState({});
@@ -106,11 +108,11 @@ function SeedCuttingBankView() {
   };
 
   return (
-    <Layout title="View Seed Cutting Bank Details ">
+    <Layout title={t("View Seed Cutting Bank Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Seed Cutting Bank Details</Block.Title>
+            <Block.Title tag="h2">{t("View Seed Cutting Bank Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -120,7 +122,7 @@ function SeedCuttingBankView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -129,7 +131,7 @@ function SeedCuttingBankView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -139,11 +141,11 @@ function SeedCuttingBankView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Seed Cutting Bank Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Seed Cutting Bank Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -151,42 +153,40 @@ function SeedCuttingBankView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{seedCuttingBank.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td style={styles.ctstyle}>{t("Fruits ID")}:</td>
                         <td>{seedCuttingBank.fruitsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farmer Name:</td>
+                        <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                         <td>{seedCuttingBank.farmerName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Quantity Of Seed Cuttings:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Quantity Of Seed Cuttings")}:</td>
                         <td>{seedCuttingBank.quantityOfSeedCuttings}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date Of Pruning:</td>
+                        <td style={styles.ctstyle}>{t("Date Of Pruning")}:</td>
                         <td>{seedCuttingBank.dateOfPruning}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Rate Per Tonne:</td>
+                        <td style={styles.ctstyle}>{t("Rate Per Tonne")}:</td>
                         <td>{seedCuttingBank.ratePerTonne}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Receipt Number:</td>
+                        <td style={styles.ctstyle}>{t("Receipt Number")}:</td>
                         <td>{seedCuttingBank.receiptNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Remittance Details:</td>
+                        <td style={styles.ctstyle}>{t("Remittance Details")}:</td>
                         <td>{seedCuttingBank.remittanceDetails}</td>
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded Challan:</td>
+                        <td style={styles.ctstyle}>{t("Uploaded Challan")}:</td>
                         <td>
                           {" "}
                           {selectedChallanFile && (
@@ -194,7 +194,7 @@ function SeedCuttingBankView() {
                             <img
                               style={{ height: "100px", width: "100px" }}
                               src={selectedChallanFile}
-                              alt="Selected File"
+                              alt={t("Selected File")}
                             />
                             <Button
                                 variant="primary"
@@ -204,7 +204,7 @@ function SeedCuttingBankView() {
                                   downloadFile(seedCuttingBank.challanUpload)
                                 }
                               >
-                                Download File
+                                {t("Download File")}
                               </Button>
                               </>
                           )}

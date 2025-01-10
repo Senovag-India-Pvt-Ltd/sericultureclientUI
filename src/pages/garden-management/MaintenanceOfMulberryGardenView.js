@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next"; // Add this line
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenView() {
+  const { t } = useTranslation(); // Add this line
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -44,12 +46,12 @@ function MaintenanceOfMulberryGardenView() {
   }, [id]);
 
   return (
-    <Layout title="Maintenance of Mulberry Garden View">
+    <Layout title={t("Maintenance of Mulberry Garden View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              View Maintenance of Mulberry Garden Details
+              {t("View Maintenance of Mulberry Garden Details")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -60,7 +62,7 @@ function MaintenanceOfMulberryGardenView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -69,7 +71,7 @@ function MaintenanceOfMulberryGardenView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -79,11 +81,11 @@ function MaintenanceOfMulberryGardenView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Mulberry Garden Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Maintenance of Mulberry Garden Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -91,50 +93,50 @@ function MaintenanceOfMulberryGardenView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{maintenanceGarden.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Plot Number:</td>
+                        <td style={styles.ctstyle}>{t("Plot Number")}:</td>
                         <td>{maintenanceGarden.plotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mulberry Variety:</td>
+                        <td style={styles.ctstyle}>{t("Mulberry Variety")}:</td>
                         <td>{maintenanceGarden.variety}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Area(In Hectares):</td>
+                        <td style={styles.ctstyle}>{t("Area(In Hectares)")}:</td>
                         <td>{maintenanceGarden.areaUnderEachVariety}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Pruning Date:</td>
+                        <td style={styles.ctstyle}>{t("Pruning Date")}:</td>
                         <td>{maintenanceGarden.pruningDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Fertilizer Application Date:
+                          {t("Fertilizer Application Date")}:
                         </td>
                         <td>{maintenanceGarden.fertilizerApplicationDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>FYM Date:</td>
+                        <td style={styles.ctstyle}>{t("FYM Date")}:</td>
                         <td>{maintenanceGarden.fymApplicationDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Irrigation Date:</td>
+                        <td style={styles.ctstyle}>{t("Irrigation Date")}:</td>
                         <td>{maintenanceGarden.irrigationDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Brushing Date:</td>
+                        <td style={styles.ctstyle}>{t("Brushing Date")}:</td>
                         <td>{maintenanceGarden.brushingDate}</td>
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}>Foliar Spray 1 Date:</td>
+                        <td style={styles.ctstyle}>{t("Foliar Spray 1 Date")}:</td>
                         <td>{maintenanceGarden.foliarSpray1}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Foliar Spray 2 Date:</td>
+                        <td style={styles.ctstyle}>{t("Foliar Spray 2 Date")}:</td>
                         <td>{maintenanceGarden.foliarSpray2}</td>
                       </tr>
                      

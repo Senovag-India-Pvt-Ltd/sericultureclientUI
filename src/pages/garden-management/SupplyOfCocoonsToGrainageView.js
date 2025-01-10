@@ -8,6 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
 import SeedCuttingBank from "./SeedCuttingBank";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
@@ -24,6 +25,7 @@ function SupplyOfCocoonsToGrainageView() {
   // const [data] = useState(CasteDatas);
   const [supplyOfCoocons, setSupplyOfCocoons] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -52,11 +54,11 @@ function SupplyOfCocoonsToGrainageView() {
   }, [id]);
 
   return (
-    <Layout title="Supply Of Cocoons To Grainage View">
+    <Layout title={t("Supply Of Cocoons To Grainage View")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply Of Cocoons To Grainage View</Block.Title>
+            <Block.Title tag="h2">{t("Supply Of Cocoons To Grainage View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -66,7 +68,7 @@ function SupplyOfCocoonsToGrainageView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -75,7 +77,7 @@ function SupplyOfCocoonsToGrainageView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -85,11 +87,11 @@ function SupplyOfCocoonsToGrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Supply Of Cocoons To Grainage Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Supply Of Cocoons To Grainage Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -97,13 +99,11 @@ function SupplyOfCocoonsToGrainageView() {
                   <table className="table small table-bordered">
                     <tbody>
                     <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{supplyOfCoocons.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Grainage:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Grainage")}:</td>
                         <td>{supplyOfCoocons.grainageMasterName}</td>
                       </tr>
                       {/* <tr>
@@ -117,57 +117,39 @@ function SupplyOfCocoonsToGrainageView() {
                         <td>{dispatchCocoon.sourceMasterName}</td>
                       </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Screening Batch No:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Screening Batch No")}:</td>
                         <td>{supplyOfCoocons.screeningBatchNo}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Generation Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Generation Number")}:</td>
                         <td>{supplyOfCoocons.generationNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Spun On Date:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
                         <td>{supplyOfCoocons.spunOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Lot Number:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{supplyOfCoocons.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Cocoon Supplied in Kg:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Cocoon Supplied in Kg")}:</td>
                         <td>{supplyOfCoocons.cacoonsSuppliedInKg}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Number Of Cocoons Dispatched:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Number Of Cocoons Dispatched")}:</td>
                         <td>{supplyOfCoocons.numberOfCocoonsDispatched}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Date Of Supply:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Date Of Supply")}:</td>
                         <td>{supplyOfCoocons.dateOfSupply}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Dispatch Date:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Dispatch Date")}:</td>
                         <td>{supplyOfCoocons.dispatchDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Invoice No:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Invoice No")}:</td>
                         <td>{supplyOfCoocons.invoiceNo}</td>
                       </tr>
                     </tbody>

@@ -8,11 +8,13 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import { format } from 'date-fns';
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
+import { useTranslation } from 'react-i18next';
 
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTrackerView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -106,11 +108,11 @@ function TrainingDeputationTrackerView() {
   };
 
   return (
-    <Layout title="View Training Deputation Tracker Details">
+    <Layout title={t("View Training Deputation Tracker Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Training Deputation Tracker Details</Block.Title>
+            <Block.Title tag="h2">{t("View Training Deputation Tracker Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -120,7 +122,7 @@ function TrainingDeputationTrackerView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -129,7 +131,7 @@ function TrainingDeputationTrackerView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -139,11 +141,11 @@ function TrainingDeputationTrackerView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Deputation Tracker Details</Card.Header>
+          <Card.Header>{t("Training Deputation Tracker Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -151,65 +153,65 @@ function TrainingDeputationTrackerView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>
                           {trainingDeputationTracker.trainingDeputationId}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Official Name:</td>
+                        <td style={styles.ctstyle}>{t("Official Name")}:</td>
                         <td>{trainingDeputationTracker.officialName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Designation:</td>
+                        <td style={styles.ctstyle}>{t("Designation")}:</td>
                         <td>{trainingDeputationTracker.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Official Address:</td>
+                        <td style={styles.ctstyle}>{t("Official Address")}:</td>
                         <td>{trainingDeputationTracker.officialAddress}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mobile Number:</td>
+                        <td style={styles.ctstyle}>{t("Mobile Number")}:</td>
                         <td>{trainingDeputationTracker.mobileNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Deputed Institute Details:</td>
+                        <td style={styles.ctstyle}>{t("Deputed Institute Details")}:</td>
                         <td>
                           {trainingDeputationTracker.deputedInstitute}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Deputed From Date:</td>
+                        <td style={styles.ctstyle}>{t("Deputed From Date")}:</td>
                         <td>{formatDate(trainingDeputationTracker.deputedFromDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Deputed To Date:</td>
+                        <td style={styles.ctstyle}>{t("Deputed To Date")}:</td>
                         <td>{formatDate(trainingDeputationTracker.deputedToDate)}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Program:</td>
+                        <td style={styles.ctstyle}>{t("Training Program")}:</td>
                         <td>{trainingDeputationTracker.trProgramMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Training Course:</td>
+                        <td style={styles.ctstyle}>{t("Training Course")}:</td>
                         <td>{trainingDeputationTracker.trCourseMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Attended:</td>
+                        <td style={styles.ctstyle}>{t("Attended")}:</td>
                         <td>
                           {trainingDeputationTracker.deputedAttended === 1
-                            ? "Yes"
+                            ? t("Yes")
                             : trainingDeputationTracker.deputedAttended === 2
-                            ? "No"
-                            : "Other"}
+                            ? t("No")
+                            : t("Other")}
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Remarks:</td>
+                        <td style={styles.ctstyle}>{t("Remarks")}:</td>
                         <td>{trainingDeputationTracker.deputedRemarks}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
+                        <td style={styles.ctstyle}>{t("Uploaded Pdf/PPt/Video")}:</td>
                         <td>
                           {" "}
                           {selectedUploadFile && (
@@ -220,7 +222,7 @@ function TrainingDeputationTrackerView() {
                                   width: "100px",
                                 }}
                                 src={selectedUploadFile}
-                                alt="Selected File"
+                                alt={t("Selected File")}
                               />
                               <Button
                                 variant="primary"
@@ -230,7 +232,7 @@ function TrainingDeputationTrackerView() {
                                   downloadFile(trainingDeputationTracker.fileUploadPath)
                                 }
                               >
-                                Download File
+                                {t("Download File")}
                               </Button>
                             </>
                           )}

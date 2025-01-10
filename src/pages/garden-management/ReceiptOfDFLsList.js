@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
+import { useTranslation } from 'react-i18next';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ReceiptOfDFLsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -146,17 +148,15 @@ function ReceiptOfDFLsList() {
 
   const ReceiptOfDFLsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
-        //   Button style
         <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -164,16 +164,8 @@ function ReceiptOfDFLsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
-          {/* <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.id)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
         </div>
       ),
       sortable: false,
@@ -181,56 +173,56 @@ function ReceiptOfDFLsList() {
       grow: 2,
     },
     {
-      name: "Race Of DFLs",
+      name: t("Race Of DFLs"),
       selector: (row) => row.raceOfDfls,
       cell: (row) => <span>{row.raceOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Grainage",
+      name: t("Grainage"),
       selector: (row) => row.grainage,
       cell: (row) => <span>{row.grainage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DFLs Received Date",
+      name: t("DFLs Received Date"),
       selector: (row) => row.dflsRecDate,
       cell: (row) => <span>{row.dflsRecDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Number Of DFLs Received",
+      name: t("Number Of DFLs Received"),
       selector: (row) => row.numberOfDFLsReceived,
       cell: (row) => <span>{row.numberOfDFLsReceived}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Generation Details",
+      name: t("Generation Details"),
       selector: (row) => row.generationDetails,
       cell: (row) => <span>{row.generationDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Invoice Details",
+      name: t("Invoice Details"),
       selector: (row) => row.invoiceDetails,
       cell: (row) => <span>{row.invoiceDetails}</span>,
       sortable: true,
@@ -239,11 +231,11 @@ function ReceiptOfDFLsList() {
   ];
 
   return (
-    <Layout title="Receipt of DFLs List">
+    <Layout title={t("Receipt of DFLs List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Receipt of DFLs List</Block.Title>
+            <Block.Title tag="h2">{t("Receipt of DFLs List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -253,7 +245,7 @@ function ReceiptOfDFLsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -262,7 +254,7 @@ function ReceiptOfDFLsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

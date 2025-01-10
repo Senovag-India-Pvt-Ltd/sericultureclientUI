@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 import api from "../../services/auth/api";
 
@@ -17,6 +18,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 
 function SupplyOfDisinfectantsToFarmerEdit() {
+  const { t } = useTranslation();
 //   const [data, setData] = useState({
 //     farmerId: "",
 //     disinfectantMasterId: "",
@@ -190,7 +192,7 @@ const [loading, setLoading] = useState(false);
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
     //   text: `Receipt Number ${message}`,
     });
   };
@@ -204,17 +206,17 @@ const [loading, setLoading] = useState(false);
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Supply Of Disinfectants">
+    <Layout title={t("Supply Of Disinfectants")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply Of Disinfectants</Block.Title>
+            <Block.Title tag="h2">{t("Supply Of Disinfectants")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -224,7 +226,7 @@ const [loading, setLoading] = useState(false);
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -233,7 +235,7 @@ const [loading, setLoading] = useState(false);
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -247,14 +249,14 @@ const [loading, setLoading] = useState(false);
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Supply Of Disinfectants Details</Card.Header>
+                <Card.Header>{t("Supply Of Disinfectants Details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Disinfectant<span className="text-danger">*</span>
+                          {t("Disinfectant")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -265,7 +267,7 @@ const [loading, setLoading] = useState(false);
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Disinfectant</option>
+                              <option value="">{t("Select Disinfectant")}</option>
                               {disInfectantListData.map((list) => (
                                 <option
                                   key={list.disinfectantMasterId}
@@ -276,7 +278,7 @@ const [loading, setLoading] = useState(false);
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            Disinfectant is required
+                            {t("Disinfectant is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -286,7 +288,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Invoice No and Date
+                          {t("Invoice No and Date")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -296,11 +298,11 @@ const [loading, setLoading] = useState(false);
                             value={data.invoiceNoDate}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Invoice No and Date"
+                            placeholder={t("Enter Invoice No and Date")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Invoice No and Date is required
+                          {t("Invoice No and Date is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -309,7 +311,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Quantity
+                          {t("Quantity")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -319,11 +321,11 @@ const [loading, setLoading] = useState(false);
                             value={data.quantity}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Quantity"
+                            placeholder={t("Enter Quantity")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Quantity is required
+                          {t("Quantity is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -332,7 +334,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Quantity Supplied
+                          {t("Quantity Supplied")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -342,11 +344,11 @@ const [loading, setLoading] = useState(false);
                             value={data.quantitySupplied}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Quantity Supplied"
+                            placeholder={t("Enter Quantity Supplied")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Quantity Supplied is required
+                          {t("Quantity Supplied is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -356,7 +358,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                        Disinfectant Name
+                        {t("Disinfectant Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -365,12 +367,12 @@ const [loading, setLoading] = useState(false);
                             value={data.disinfectantName}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
-                            <option value="General">General</option>
-                            <option value="Bed">Bed</option>
+                            <option value="">{t("Select")}</option>
+                            <option value="General">{t("General")}</option>
+                            <option value="Bed">{t("Bed")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Disinfectant Name is required
+                          {t("Disinfectant Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -379,7 +381,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFL’s<span className="text-danger">*</span>
+                          {t("Number of DFL’s")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -389,11 +391,11 @@ const [loading, setLoading] = useState(false);
                             onChange={handleInputs}
                             type="text"
                             // maxLength="4"
-                            placeholder=" Number of DFL’s"
+                            placeholder={t("Number of DFL’s")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of DFL’s is required
+                            {t("Number of DFL’s is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -402,7 +404,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Size Of Rearing House<span className="text-danger">*</span>
+                          {t("Size Of Rearing House")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -412,11 +414,11 @@ const [loading, setLoading] = useState(false);
                             onChange={handleInputs}
                             type="text"
                             // maxLength="4"
-                            placeholder="Size Of Rearing House"
+                            placeholder={t("Size Of Rearing House")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Size Of Rearing House is required
+                          {t("Size Of Rearing House is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -426,7 +428,7 @@ const [loading, setLoading] = useState(false);
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                           Date Of Supply
+                           {t("Date Of Supply")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -457,12 +459,12 @@ const [loading, setLoading] = useState(false);
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

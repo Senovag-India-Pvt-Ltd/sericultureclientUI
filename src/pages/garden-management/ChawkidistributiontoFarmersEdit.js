@@ -15,6 +15,7 @@ import axios from "axios";
 import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -25,6 +26,8 @@ function ChawkidistributiontoFarmersEdit() {
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -351,7 +354,7 @@ function ChawkidistributiontoFarmersEdit() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Chawki Distribution</Block.Title>
+            <Block.Title tag="h2">{t("Edit Chawki Distribution")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -361,7 +364,7 @@ function ChawkidistributiontoFarmersEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -370,7 +373,7 @@ function ChawkidistributiontoFarmersEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -388,7 +391,7 @@ function ChawkidistributiontoFarmersEdit() {
                   <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
+                        {t("FRUITS ID")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -396,12 +399,12 @@ function ChawkidistributiontoFarmersEdit() {
                           name="fruitsId"
                           value={data.fruitsId}
                           onChange={handleInputs}
-                          placeholder="Enter FRUITS ID "
+                          placeholder={t("Enter FRUITS ID")}
                           required
                           maxLength= "16"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
+                          {t("Fruits ID Should Contain 16 digits")}
                         </Form.Control.Feedback>
                       </Col>
                       {/* <Col sm={2}>
@@ -421,13 +424,13 @@ function ChawkidistributiontoFarmersEdit() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>Chawki Sales Details</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>{t("Chawki Sales Details")}</Card.Header>
                   <Card.Body>
                       <Row className="g-gs">
                       <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sordfl">
-                          Farmer’s name<span className="text-danger">*</span>
+                          {t("Farmer’s name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -436,11 +439,11 @@ function ChawkidistributiontoFarmersEdit() {
                             value={data.farmerName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farmer’s name"
+                            placeholder={t("Enter Farmer’s name")}
                             required
                           />
                            <Form.Control.Feedback type="invalid">
-                          Farmer Name is required
+                          {t("Farmer Name is required")}
                         </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -449,7 +452,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sordfl">
-                          Father’s Name<span className="text-danger">*</span>
+                          {t("Father’s Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -458,11 +461,11 @@ function ChawkidistributiontoFarmersEdit() {
                             value={data.fatherName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Father Name"
+                            placeholder={t("Enter Father Name")}
                             required
                           /> 
                           <Form.Control.Feedback type="invalid">
-                            Father Name is required
+                            {t("Father Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -471,7 +474,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sordfl">
-                          Lot Number<span className="text-danger">*</span>
+                          {t("Lot Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -480,12 +483,12 @@ function ChawkidistributiontoFarmersEdit() {
                             value={data.lotNumberRsp}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Lot Number"
+                            placeholder={t("Enter Lot Number")}
                             required
                             // maxLength="6"
                           />
                            <Form.Control.Feedback type="invalid">
-                            Lot Number is required
+                            {t("Lot Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -517,7 +520,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFL’s<span className="text-danger">*</span>
+                          {t("Number of DFL’s")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -527,11 +530,11 @@ function ChawkidistributiontoFarmersEdit() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="4"
-                            placeholder=" Number of DFL’s"
+                            placeholder={t("Number of DFL’s")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of DFL’s is required
+                          {t("Number of DFL’s is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -540,7 +543,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs<span className="text-danger">*</span>
+                          {t("Rate per 100 DFLs")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -550,11 +553,11 @@ function ChawkidistributiontoFarmersEdit() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="4"
-                            placeholder=" Enter Rate per 100 DFL"
+                            placeholder={t("Enter Rate per 100 DFL")}
                             required
                           />
                            <Form.Control.Feedback type="invalid">
-                          Rate Per 100 DFL’s is required
+                          {t("Rate Per 100 DFL’s is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -563,7 +566,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Price (in Rupees)
+                          {t("Price (in Rupees)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -572,7 +575,7 @@ function ChawkidistributiontoFarmersEdit() {
                             value={data.price}
                             onChange={handleInputs}
                             type="number"
-                            placeholder=" Price (in Rupees)"
+                            placeholder={t("Price (in Rupees)")}
                             readOnly
                           />
                         </div>
@@ -581,7 +584,7 @@ function ChawkidistributiontoFarmersEdit() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">Source of DFLs<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="sordfl">{t("Source of DFLs")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="dflsSource"
@@ -589,11 +592,11 @@ function ChawkidistributiontoFarmersEdit() {
                             value={data.dflsSource}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Source"
+                            placeholder={t("Enter Source")}
                             required
                           />
                            <Form.Control.Feedback type="invalid">
-                           Source of DFLs is required
+                           {t("Source of DFLs is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -602,7 +605,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -613,7 +616,7 @@ function ChawkidistributiontoFarmersEdit() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Race</option>
+                              <option value="">{t("Select Race")}</option>
                               {raceListData.map((list) => (
                                 <option
                                   key={list.raceMasterId}
@@ -624,7 +627,7 @@ function ChawkidistributiontoFarmersEdit() {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            Race is required
+                            {t("Race is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -634,7 +637,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          TSC<span className="text-danger">*</span>
+                          {t("TSC")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -647,7 +650,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.tsc === undefined || data.tsc === "0"
                             }
                           >
-                            <option value="">Select TSC</option>
+                            <option value="">{t("Select TSC")}</option>
                             {chawkiListData.map((list) => (
                               <option
                                 key={list.tscMasterId}
@@ -658,7 +661,7 @@ function ChawkidistributiontoFarmersEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            TSC is required
+                            {t("TSC is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -666,21 +669,21 @@ function ChawkidistributiontoFarmersEdit() {
 
                     <Col lg="4">
                     <Form.Group className="form-group mt-n4">
-                    <Form.Label> Sold after 1st/2nd/3rd Moult<span className="text-danger">*</span></Form.Label>
+                    <Form.Label>{t("Sold after 1st/2nd/3rd Moult")}<span className="text-danger">*</span></Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
                         name="soldAfter1stOr2ndMould"
                         value={data.soldAfter1stOr2ndMould}
                         onChange={handleInputs}
                       >
-                      <option value="">Select</option>
+                      <option value="">{t("Select")}</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         {/* <option value="3">Other</option> */}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Sold after 1st/2nd/3rd Moult is required
+                        {t("Sold after 1st/2nd/3rd Moult is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -690,7 +693,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                      Hatching Date
+                      {t("Hatching Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                       <div className="form-control-wrap">
@@ -719,7 +722,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                     Dispatch Date
+                     {t("Dispatch Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                       <div className="form-control-wrap">
@@ -749,13 +752,13 @@ function ChawkidistributiontoFarmersEdit() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>Address</Card.Header>
+                <Card.Header>{t("Address")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                   <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                          {t("State")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -768,7 +771,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.state === undefined || data.state === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("Select State")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -776,7 +779,7 @@ function ChawkidistributiontoFarmersEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            State Name is required
+                            {t("State Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -785,7 +788,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                          {t("District")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -799,7 +802,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.district === "0"
                             }
                           >
-                            <option value="">Select District</option>
+                            <option value="">{t("Select District")}</option>
                             {districtListData && districtListData.length
                               ? districtListData.map((list) => (
                                   <option
@@ -812,7 +815,7 @@ function ChawkidistributiontoFarmersEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                            {t("District Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -821,7 +824,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                          {t("Taluk")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -834,7 +837,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.taluk === undefined || data.taluk === "0"
                             }
                           >
-                            <option value="">Select Taluk</option>
+                            <option value="">{t("Select Taluk")}</option>
                             {talukListData && talukListData.length
                               ? talukListData.map((list) => (
                                   <option
@@ -847,7 +850,7 @@ function ChawkidistributiontoFarmersEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
+                            {t("Taluk Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -856,7 +859,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg ="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Hobli<span className="text-danger">*</span>
+                          {t("Hobli")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -869,7 +872,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.hobli === undefined || data.hobli === "0"
                             }
                           >
-                            <option value="">Select Hobli</option>
+                            <option value="">{t("Select Hobli")}</option>
                             {hobliListData && hobliListData.length
                               ? hobliListData.map((list) => (
                                   <option
@@ -882,7 +885,7 @@ function ChawkidistributiontoFarmersEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Hobli Name is required
+                            {t("Hobli Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -891,7 +894,7 @@ function ChawkidistributiontoFarmersEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Village<span className="text-danger">*</span>
+                          {t("Village")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -904,7 +907,7 @@ function ChawkidistributiontoFarmersEdit() {
                               data.village === undefined || data.village === "0"
                             }
                           >
-                            <option value="">Select Village</option>
+                            <option value="">{t("Select Village")}</option>
                             {villageListData && villageListData.length
                               ? villageListData.map((list) => (
                                   <option
@@ -917,7 +920,7 @@ function ChawkidistributiontoFarmersEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Village Name is required
+                            {t("Village Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -932,12 +935,12 @@ function ChawkidistributiontoFarmersEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

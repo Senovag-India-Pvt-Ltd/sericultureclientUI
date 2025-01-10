@@ -9,6 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
@@ -23,6 +24,8 @@ function BiddingReport() {
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
+
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -128,11 +131,11 @@ function BiddingReport() {
     });
   };
   return (
-    <Layout title="Bidding Report">
+    <Layout title={t("Bidding Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Lot Wise Bidding Report</Block.Title>
+            <Block.Title tag="h2">{t("Lot Wise Bidding Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -170,7 +173,7 @@ function BiddingReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Lot Number
+                        {t("Lot Number")}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -179,7 +182,7 @@ function BiddingReport() {
                           value={data.allottedLotId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot Number"
+                          placeholder={t("Enter Lot Number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -187,7 +190,7 @@ function BiddingReport() {
                         </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -208,7 +211,7 @@ function BiddingReport() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>

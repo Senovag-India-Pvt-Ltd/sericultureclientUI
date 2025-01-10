@@ -12,10 +12,12 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import ChawkiManagement from "./ChawkiManagement";
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function SupplyOfDisinfectantsList() {
+  const { t } = useTranslation();
 /* get table detais */
 
 const [listData, setListData] = useState([]);
@@ -115,7 +117,7 @@ useEffect(() => {
 
   const ChawkiDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -133,7 +135,7 @@ useEffect(() => {
             className="ms-2"
             onClick={() => handleEdit(row.supplyOfDisinfectantsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -150,63 +152,63 @@ useEffect(() => {
       // grow: 2,
     },
     {
-        name: "First Name",
+        name: t("First Name"),
         selector: (row) => row.firstName,
         cell: (row) => <span>{row.firstName}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Disinfectant",
+        name: t("Disinfectant"),
         selector: (row) => row.disinfectantMasterName,
         cell: (row) => <span>{row.disinfectantMasterName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Invoice No",
+      name: t("Invoice No"),
       selector: (row) => row.invoiceNoDate,
       cell: (row) => <span>{row.invoiceNoDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity",
+      name: t("Quantity"),
       selector: (row) => row.quantity,
       cell: (row) => <span>{row.quantity}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Disinfectant Name",
+      name: t("Disinfectant Name"),
       selector: (row) => row.disinfectantName,
       cell: (row) => <span>{row.disinfectantName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Supplied",
+      name: t("Quantity Supplied"),
       selector: (row) => row.quantitySupplied,
       cell: (row) => <span>{row.quantitySupplied}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Date Of Supply",
+        name: t("Date Of Supply"),
         selector: (row) => row.supplyDate,
         cell: (row) => <span>{row.supplyDate}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Size Of Rearing House",
+      name: t("Size Of Rearing House"),
       selector: (row) => row.sizeOfRearingHouse,
       cell: (row) => <span>{row.sizeOfRearingHouse}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of Dfls",
+      name: t("Number Of Dfls"),
       selector: (row) => row.numbersOfDfls,
       cell: (row) => <span>{row.numbersOfDfls}</span>,
       sortable: true,
@@ -216,11 +218,11 @@ useEffect(() => {
   ];
 
   return (
-    <Layout title="Supply Of Disinfectants">
+    <Layout title={t("Supply Of Disinfectants")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply Of Disinfectants</Block.Title>
+            <Block.Title tag="h2">{t("Supply Of Disinfectants")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -230,7 +232,7 @@ useEffect(() => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -239,7 +241,7 @@ useEffect(() => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

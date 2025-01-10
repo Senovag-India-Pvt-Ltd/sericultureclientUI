@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceAndSaleOfNurseryToFarmersView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -95,12 +97,12 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
   };
 
   return (
-    <Layout title="View Maintenance And Sale Of Nursery To Farmers Details">
+    <Layout title={t("View Maintenance And Sale Of Nursery To Farmers Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            View Maintenance And Sale Of Nursery To Farmers Details
+              {t("View Maintenance And Sale Of Nursery To Farmers Details")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -111,7 +113,7 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -120,7 +122,7 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -130,11 +132,13 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}> Maintenance And Sale Of Nursery To Farmers  Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>
+            {t("Maintenance And Sale Of Nursery To Farmers Details")}
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -142,49 +146,47 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{maintenanceNursery.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Fruits Id:</td>
+                        <td style={styles.ctstyle}>{t("Fruits Id")}:</td>
                         <td>{maintenanceNursery.fruitsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farmer Name:</td>
+                        <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                         <td>{maintenanceNursery.farmerName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mulberry Variety:</td>
+                        <td style={styles.ctstyle}>{t("Mulberry Variety")}:</td>
                         <td>{maintenanceNursery.mulberryVariety}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Area:</td>
+                        <td style={styles.ctstyle}>{t("Area")}:</td>
                         <td>{maintenanceNursery.area}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Date Of Planting:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Date Of Planting")}:</td>
                         <td>{maintenanceNursery.dateOfPlanting}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Nursery Details:</td>
+                        <td style={styles.ctstyle}>{t("Nursery Details")}:</td>
                         <td>{maintenanceNursery.nurserySaleDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Quantity:</td>
+                        <td style={styles.ctstyle}>{t("Quantity")}:</td>
                         <td>{maintenanceNursery.quantity}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
+                        <td style={styles.ctstyle}>{t("Date")}:</td>
                         <td>{maintenanceNursery.date}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Rate:</td>
+                        <td style={styles.ctstyle}>{t("Rate")}:</td>
                         <td>{maintenanceNursery.rate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sapling Age:</td>
+                        <td style={styles.ctstyle}>{t("Sapling Age")}:</td>
                         <td>{maintenanceNursery.saplingAge}</td>
                       </tr> 
                       {/* <tr>
@@ -192,15 +194,15 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                         <td>{maintenanceNursery.generateRecipt}</td>
                       </tr>  */}
                       <tr>
-                        <td style={styles.ctstyle}>Receipt Number:</td>
+                        <td style={styles.ctstyle}>{t("Receipt Number")}:</td>
                         <td>{maintenanceNursery.receiptNumber}</td>
                       </tr> 
                       <tr>
-                        <td style={styles.ctstyle}>Remittance Details:</td>
+                        <td style={styles.ctstyle}>{t("Remittance Details")}:</td>
                         <td>{maintenanceNursery.remittanceDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Challan:</td>
+                        <td style={styles.ctstyle}>{t("Challan")}:</td>
                         <td>
                           {" "}
                           {selectedChallanFile && (
@@ -208,7 +210,7 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                             <img
                               style={{ height: "100px", width: "100px" }}
                               src={selectedChallanFile}
-                              alt="Selected File"
+                              alt={t("Selected File")}
                             />
                              <Button
                                 variant="primary"
@@ -218,7 +220,7 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                                   downloadFile(maintenanceNursery.challanUploadKey)
                                 }
                               >
-                                Download File
+                                {t("Download File")}
                               </Button>
                               </>
                           )}

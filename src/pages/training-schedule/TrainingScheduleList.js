@@ -12,11 +12,13 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingScheduleList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -147,18 +149,18 @@ function TrainingScheduleList() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -168,8 +170,8 @@ function TrainingScheduleList() {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -179,7 +181,7 @@ function TrainingScheduleList() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -245,7 +247,7 @@ function TrainingScheduleList() {
 
   const TrainingScheduleDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -255,7 +257,7 @@ function TrainingScheduleList() {
             size="sm"
             onClick={() => handleView(row.trScheduleId)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -263,7 +265,7 @@ function TrainingScheduleList() {
             className="ms-2"
             onClick={() => handleEdit(row.trScheduleId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -271,7 +273,7 @@ function TrainingScheduleList() {
             onClick={() => deleteConfirm(row.trScheduleId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -280,14 +282,14 @@ function TrainingScheduleList() {
       grow:2,
     },
     {
-      name: "Training Schedule",
+      name: t("Training Schedule"),
       selector: (row) => row.trScheduleId,
       cell: (row) => <span>{row.trScheduleId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Start Date",
+      name: t("Start Date"),
       selector: (row) => row.trStartDate,
       cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
       sortable: true,
@@ -295,7 +297,7 @@ function TrainingScheduleList() {
     },
 
     {
-      name: "Date Of Completion",
+      name: t("Date Of Completion"),
       selector: (row) => row.trDateOfCompletion,
       cell: (row) => <span>{formatDate(row.trDateOfCompletion)}</span>,
       sortable: true,
@@ -309,21 +311,21 @@ function TrainingScheduleList() {
     //   hide: "md",
     // },
     {
-      name: "Training Group Name",
+      name: t("Training Group Name"),
       selector: (row) => row.trGroupMasterName,
       cell: (row) => <span>{row.trGroupMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program Name",
+      name: t("Training Program Name"),
       selector: (row) => row.trProgramMasterName,
       cell: (row) => <span>{row.trProgramMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Course Name",
+      name: t("Training Course Name"),
       selector: (row) => row.trCourseMasterName,
       cell: (row) => <span>{row.trCourseMasterName}</span>,
       sortable: true,
@@ -332,11 +334,11 @@ function TrainingScheduleList() {
   ];
 
   return (
-    <Layout title="Training Schedule List">
+    <Layout title={t("Training Schedule List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule List</Block.Title>
+            <Block.Title tag="h2">{t("Training Schedule List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -346,7 +348,7 @@ function TrainingScheduleList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -355,7 +357,7 @@ function TrainingScheduleList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -369,7 +371,7 @@ function TrainingScheduleList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -379,8 +381,8 @@ function TrainingScheduleList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="trStartDate">Start Date</option>
-                      <option value="trGroupMasterName">Training Group</option>
+                      <option value="trStartDate">{t("Start Date")}</option>
+                      <option value="trGroupMasterName">{t("Training Group")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -414,14 +416,14 @@ function TrainingScheduleList() {
                       value={data.text}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Search"
+                      placeholder={t("Search")}
                     />
                   </Col>
                 )}
 
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

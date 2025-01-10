@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 import api from "../../services/auth/api";
 
@@ -16,6 +17,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 
 function SupplyOfDisinfectantsToFarmers() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     farmerId: "",
     disinfectantMasterId: "",
@@ -256,11 +258,11 @@ const searchError = (message = "Something went wrong!") => {
   };
 
   return (
-    <Layout title="Supply Of Disinfectants">
+    <Layout title={t("Supply Of Disinfectants")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply Of Disinfectants</Block.Title>
+            <Block.Title tag="h2">{t("Supply Of Disinfectants")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -270,7 +272,7 @@ const searchError = (message = "Something went wrong!") => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -279,7 +281,7 @@ const searchError = (message = "Something went wrong!") => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -296,7 +298,7 @@ const searchError = (message = "Something went wrong!") => {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                      {t("FRUITS ID")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -304,17 +306,17 @@ const searchError = (message = "Something went wrong!") => {
                         name="fruitsId"
                         value={farmerDetails.fruitsId}
                         onChange={handleFruitsInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t("Enter FRUITS ID")}
                         required
                         maxLength="16"
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
+                        {t("Fruits ID Should Contain 16 digits")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -330,15 +332,15 @@ const searchError = (message = "Something went wrong!") => {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}>Fruits Id:</td>
+                          <td style={styles.ctstyle}>{t("Fruits Id")}:</td>
                           <td>{farmerDetails.fruitsId}</td>
-                          <td style={styles.ctstyle}> Father Name:</td>
+                          <td style={styles.ctstyle}>{t("Father Name")}:</td>
                           <td>{farmerDetails.fatherName}</td>
-                          <td style={styles.ctstyle}> Village:</td>
+                          <td style={styles.ctstyle}>{t("Village")}:</td>
                           <td>{farmerDetails.villageName}</td>
-                          <td style={styles.ctstyle}> Addres:</td>
+                          <td style={styles.ctstyle}>{t("Address")}:</td>
                           <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
@@ -354,14 +356,14 @@ const searchError = (message = "Something went wrong!") => {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Supply Of Disinfectants Details</Card.Header>
+                <Card.Header>{t("Supply Of Disinfectants Details")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Disinfectant<span className="text-danger">*</span>
+                          {t("Disinfectant")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -372,7 +374,7 @@ const searchError = (message = "Something went wrong!") => {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Disinfectant</option>
+                              <option value="">{t("Select Disinfectant")}</option>
                               {disInfectantListData.map((list) => (
                                 <option
                                   key={list.disinfectantMasterId}
@@ -383,7 +385,7 @@ const searchError = (message = "Something went wrong!") => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            Disinfectant is required
+                            {t("Disinfectant is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -393,7 +395,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Invoice No and Date
+                          {t("Invoice No and Date")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -403,11 +405,11 @@ const searchError = (message = "Something went wrong!") => {
                             value={data.invoiceNoDate}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Invoice No and Date"
+                            placeholder={t("Enter Invoice No and Date")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Invoice No and Date is required
+                          {t("Invoice No and Date is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -416,7 +418,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Quantity
+                          {t("Quantity")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -426,11 +428,11 @@ const searchError = (message = "Something went wrong!") => {
                             value={data.quantity}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Quantity"
+                            placeholder={t("Enter Quantity")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Quantity is required
+                          {t("Quantity is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -439,7 +441,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Quantity Supplied
+                          {t("Quantity Supplied")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -449,11 +451,11 @@ const searchError = (message = "Something went wrong!") => {
                             value={data.quantitySupplied}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Quantity Supplied"
+                            placeholder={t("Enter Quantity Supplied")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Quantity Supplied is required
+                          {t("Quantity Supplied is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -463,7 +465,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                        Disinfectant Name
+                        {t("Disinfectant Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -472,12 +474,12 @@ const searchError = (message = "Something went wrong!") => {
                             value={data.disinfectantName}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
-                            <option value="General">General</option>
-                            <option value="Bed">Bed</option>
+                            <option value="">{t("Select")}</option>
+                            <option value="General">{t("General")}</option>
+                            <option value="Bed">{t("Bed")}</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Disinfectant Name is required
+                          {t("Disinfectant Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -486,7 +488,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFL’s<span className="text-danger">*</span>
+                          {t("Number of DFL’s")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -496,11 +498,11 @@ const searchError = (message = "Something went wrong!") => {
                             onChange={handleInputs}
                             type="text"
                             // maxLength="4"
-                            placeholder=" Number of DFL’s"
+                            placeholder={t("Number of DFL’s")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Number of DFL’s is required
+                            {t("Number of DFL’s is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -509,7 +511,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Size Of Rearing House<span className="text-danger">*</span>
+                          {t("Size Of Rearing House")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -519,11 +521,11 @@ const searchError = (message = "Something went wrong!") => {
                             onChange={handleInputs}
                             type="text"
                             // maxLength="4"
-                            placeholder="Size Of Rearing House"
+                            placeholder={t("Size Of Rearing House")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Size Of Rearing House is required
+                          {t("Size Of Rearing House is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -533,7 +535,7 @@ const searchError = (message = "Something went wrong!") => {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                           Date Of Supply
+                           {t("Date Of Supply")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -564,12 +566,12 @@ const searchError = (message = "Something went wrong!") => {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

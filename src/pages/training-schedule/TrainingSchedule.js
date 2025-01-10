@@ -9,11 +9,14 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingSchedule() {
+  const { t } = useTranslation();
   const [trainerUserList, setTrainerUserList] = useState([]);
   const [trainerUser, setTrainerUser] = useState({
     trScheduleId: "",
@@ -505,7 +508,7 @@ function TrainingSchedule() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Schedule Training</Block.Title>
+            <Block.Title tag="h2">{t("Schedule Training")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -515,7 +518,7 @@ function TrainingSchedule() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -524,7 +527,7 @@ function TrainingSchedule() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -538,7 +541,7 @@ function TrainingSchedule() {
           {/* <Row className="g-1 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Schedule Training
+              {t("Schedule Training")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -546,7 +549,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Group<span className="text-danger">*</span>
+                      {t("Training Group")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -560,7 +563,7 @@ function TrainingSchedule() {
                           data.trGroupMasterId === "0"
                         }
                       >
-                        <option value="">Select Group</option>
+                        <option value="">{t("Select Group")}</option>
                         {trGroupListData.map((list) => (
                           <option
                             key={list.trGroupMasterId}
@@ -571,7 +574,7 @@ function TrainingSchedule() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Group is required
+                        {t("Training Group is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -580,7 +583,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Program<span className="text-danger">*</span>
+                      {t("Training Program")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -594,7 +597,7 @@ function TrainingSchedule() {
                           data.trProgramMasterId === "0"
                         }
                       >
-                        <option value="">Select Program</option>
+                        <option value="">{t("Select Program")}</option>
                         {trProgramListData.map((list) => (
                           <option
                             key={list.trProgramMasterId}
@@ -605,7 +608,7 @@ function TrainingSchedule() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Program is required
+                        {t("Training Program is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -614,7 +617,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Course<span className="text-danger">*</span>
+                      {t("Training Course")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -628,7 +631,7 @@ function TrainingSchedule() {
                           data.trCourseMasterId === "0"
                         }
                       >
-                        <option value="">Select Course</option>
+                        <option value="">{t("Select Course")}</option>
                         {trCourseListData.map((list) => (
                           <option
                             key={list.trCourseMasterId}
@@ -639,7 +642,7 @@ function TrainingSchedule() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Course is required
+                        {t("Training Course is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -648,7 +651,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Mode<span className="text-danger">*</span>
+                      {t("Training Mode")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -662,7 +665,7 @@ function TrainingSchedule() {
                           data.trModeMasterId === "0"
                         }
                       >
-                        <option value="">Select Training Mode</option>
+                        <option value="">{t("Select Training Mode")}</option>
                         {trModeListData.map((list) => (
                           <option
                             key={list.trModeMasterId}
@@ -673,7 +676,7 @@ function TrainingSchedule() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Mode is required
+                        {t("Training Mode is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -682,8 +685,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trDuration">
-                      Training Duration Per Day(In Hours)
-                      <span className="text-danger">*</span>
+                      {t("Training Duration Per Day (In Hours)")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -693,11 +695,11 @@ function TrainingSchedule() {
                         onChange={handleInputs}
                         type="text"
                         maxLength="2"
-                        placeholder="Enter Training Duration"
+                        placeholder={t("Enter Training Duration")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Training Duration Should Be Less Than 24 Hours
+                        {t("Training Duration Should Be Less Than 24 Hours")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -706,8 +708,7 @@ function TrainingSchedule() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trPeriod">
-                      Training Period(In Days)
-                      <span className="text-danger">*</span>
+                      {t("Training Period (In Days)")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -717,11 +718,11 @@ function TrainingSchedule() {
                         onChange={handleInputs}
                         type="text"
                         maxLength="2"
-                        placeholder="Enter Training Period"
+                        placeholder={t("Enter Training Period")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Training Period Must Be Limited To 2 Digits or Less
+                        {t("Training Period Must Be Limited To 2 Digits or Less")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -730,8 +731,7 @@ function TrainingSchedule() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trNoOfParticipant">
-                      Training No Of Participant
-                      <span className="text-danger">*</span>
+                      {t("Training No Of Participant")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -741,20 +741,18 @@ function TrainingSchedule() {
                         onChange={handleInputs}
                         type="text"
                         maxLength="3"
-                        placeholder="Enter No Of Participant "
+                        placeholder={t("Enter No Of Participant")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Participant Number Must Be Limited To Three Digits or
-                        Less
+                        {t("Participant Number Must Be Limited To Three Digits or Less")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
                 <Form.Label column sm={2}>
-                  Training Period Start Date
-                  <span className="text-danger">*</span>
+                  {t("Training Period Start Date")}<span className="text-danger">*</span>
                 </Form.Label>
                 <Col sm={2}>
                   <div className="form-control-wrap">
@@ -774,8 +772,7 @@ function TrainingSchedule() {
                 </Col>
 
                 <Form.Label column sm={2}>
-                  Expected Date of Completion
-                  <span className="text-danger">*</span>
+                  {t("Expected Date of Completion")}<span className="text-danger">*</span>
                 </Form.Label>
                 <Col sm={2}>
                   <div className="form-control-wrap">
@@ -799,7 +796,7 @@ function TrainingSchedule() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trUploadPath">
-                    Upload Pdf/PPt/Video(Max:2mb)
+                      {t("Upload Pdf/PPt/Video (Max: 2mb)")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -829,7 +826,7 @@ function TrainingSchedule() {
 
           <Block className="mt-3">
             <Card>
-              <Card.Header>Add Trainer</Card.Header>
+              <Card.Header>{t("Add Trainer")}</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -851,7 +848,7 @@ function TrainingSchedule() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                           <li>
@@ -861,7 +858,7 @@ function TrainingSchedule() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                         </ul>
@@ -881,9 +878,9 @@ function TrainingSchedule() {
                             <thead>
                               <tr style={{ backgroundColor: "#f1f2f7" }}>
                                 {/* <th></th> */}
-                                <th>Action</th>
-                                <th>User Name</th>
-                                <th>Training Institution</th>
+                                <th>{t("Action")}</th>
+                                <th>{t("User Name")}</th>
+                                <th>{t("Training Institution")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -896,7 +893,7 @@ function TrainingSchedule() {
                                         size="sm"
                                         onClick={() => handleGet(i)}
                                       >
-                                        Edit
+                                        {t("Edit")}
                                       </Button>
                                       <Button
                                         variant="danger"
@@ -904,7 +901,7 @@ function TrainingSchedule() {
                                         onClick={() => handleDelete(i)}
                                         className="ms-2"
                                       >
-                                        Delete
+                                        {t("Delete")}
                                       </Button>
                                     </div>
                                   </td>
@@ -930,12 +927,12 @@ function TrainingSchedule() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Clear
+                  {t("Clear")}
                 </Button>
               </li>
             </ul>
@@ -946,7 +943,7 @@ function TrainingSchedule() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Trainer</Modal.Title>
+          <Modal.Title>{t("Add Trainer")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -959,7 +956,7 @@ function TrainingSchedule() {
               <Col lg="6">
                 <Form.Group className="form-group mt-2">
                   <Form.Label>
-                    User<span className="text-danger">*</span>
+                    {t("User")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -974,7 +971,7 @@ function TrainingSchedule() {
                         trainerUser.userMasterId === "0"
                       }
                     >
-                      <option value="">Select Trainer</option>
+                      <option value="">{t("Select Trainer")}</option>
                       {trUserListData.length
                         ? trUserListData.map((list) => (
                             <option
@@ -987,7 +984,7 @@ function TrainingSchedule() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      User is required
+                      {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -996,7 +993,7 @@ function TrainingSchedule() {
               <Col lg="6">
                 <Form.Group className="form-group mt-2">
                   <Form.Label>
-                    Training Institution<span className="text-danger">*</span>
+                    {t("Training Institution")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1011,7 +1008,7 @@ function TrainingSchedule() {
                         trainerUser.trInstitutionMasterId === "0"
                       }
                     >
-                      <option value="">Select Training Institution</option>
+                      <option value="">{t("Select Training Institution")}</option>
                       {trInstituteListData.length
                         ? trInstituteListData.map((list) => (
                             <option
@@ -1024,7 +1021,7 @@ function TrainingSchedule() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Training Institution is required
+                      {t("Training Institution is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1055,7 +1052,7 @@ function TrainingSchedule() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Add
+                      {t("Add")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1072,7 +1069,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>
@@ -1084,7 +1081,7 @@ function TrainingSchedule() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Trainer</Modal.Title>
+          <Modal.Title>{t("Edit Trainer")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1097,7 +1094,7 @@ function TrainingSchedule() {
               <Col lg="6">
                 <Form.Group className="form-group mt-2">
                   <Form.Label>
-                    User<span className="text-danger">*</span>
+                    {t("User")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1112,7 +1109,7 @@ function TrainingSchedule() {
                         trainerUser.userMasterId === "0"
                       }
                     >
-                      <option value="">Select Trainer</option>
+                      <option value="">{t("Select Trainer")}</option>
                       {trUserListData.length
                         ? trUserListData.map((list) => (
                             <option
@@ -1125,7 +1122,7 @@ function TrainingSchedule() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      User is required
+                      {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1134,7 +1131,7 @@ function TrainingSchedule() {
               <Col lg="6">
                 <Form.Group className="form-group mt-2">
                   <Form.Label>
-                    Training Institution<span className="text-danger">*</span>
+                    {t("Training Institution")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1149,7 +1146,7 @@ function TrainingSchedule() {
                         trainerUser.trInstitutionMasterId === "0"
                       }
                     >
-                      <option value="">Select Training Institution</option>
+                      <option value="">{t("Select Training Institution")}</option>
                       {trInstituteListData.length
                         ? trInstituteListData.map((list) => (
                             <option
@@ -1162,7 +1159,7 @@ function TrainingSchedule() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Training Institution is required
+                      {t("Training Institution is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1176,7 +1173,7 @@ function TrainingSchedule() {
                       onClick={() => handleUpdate(vbId, vbAccount)}
                     > */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1193,7 +1190,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   </div>
                 </div>

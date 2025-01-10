@@ -10,6 +10,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next"; // Add this line
+
 
 // import { SerialPort } from "serialport";
 import api from "../../../src/services/auth/api";
@@ -20,6 +22,7 @@ const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function WeighmentForSilkMarket() {
+  const { t } = useTranslation();
   const [weighStream, setWeighStream] = useState("");
   const [lastWeight, setLastWeight] = useState("0");
   const [totalWeight, setTotalWeight] = useState(0);
@@ -42,12 +45,12 @@ function WeighmentForSilkMarket() {
 
   const notify = (what) => {
     if (what === "lot") {
-      toast.warn("Please Enter Lot No", {
+      toast.warn(t("Please Enter Lot No"), {
         position: "top-center",
       });
     }
     if (what === "crate") {
-      toast.warn("Please Enter No of Crates", {
+      toast.warn(t("Please Enter No of Crates"), {
         position: "top-center",
       });
     }
@@ -210,10 +213,10 @@ function WeighmentForSilkMarket() {
       });
   };
 
-  const submitError = (message = "Something went wrong!") => {
+  const submitError = (message = t("Something went wrong!")) => {
     Swal.fire({
       icon: "error",
-      title: "Not Saved",
+      title: t("Not Saved"),
       text: message,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -241,7 +244,7 @@ function WeighmentForSilkMarket() {
     });
   };
 
-  const submitWarning = (message = "Something went wrong!") => {
+  const submitWarning = (message = t("Something went wrong!")) => {
     Swal.fire({
       icon: "warning",
       text: message,
@@ -274,8 +277,8 @@ function WeighmentForSilkMarket() {
   const submitSuccess = (amount, lot) => {
     Swal.fire({
       icon: "warning",
-      title: "Weighment Completed",
-      text: `Total amount Debited is ${amount} for Lot ${lot}`,
+      title: t("Weighment Completed"),
+      text: `${t("Total amount Debited is")} ${amount} ${t("for Lot")} ${lot}`,
     }).then((result) => {
       if (result.value) {
         if (result.isConfirmed) {
@@ -303,7 +306,7 @@ function WeighmentForSilkMarket() {
           if (isTriplet) {
             printTriplet();
           } else {
-            console.log("In Market Master Change setting");
+            console.log(t("In Market Master Change setting"));
           }
         }
       } else {
@@ -331,7 +334,7 @@ function WeighmentForSilkMarket() {
         if (isTriplet) {
           printTriplet();
         } else {
-          console.log("In Market Master Change setting");
+          console.log(t("In Market Master Change setting"));
         }
       }
     });
@@ -423,11 +426,11 @@ function WeighmentForSilkMarket() {
     // debugger
     try {
       const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "Insufficient balance, Do you want to continue with the Weighment?",
+        title: t("Are you sure?"),
+        text: t("Insufficient balance, Do you want to continue with the Weighment?"),
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, Continue!",
+        confirmButtonText: t("Yes, Continue!"),
       });
 
       if (result.isConfirmed) {
@@ -437,7 +440,7 @@ function WeighmentForSilkMarket() {
       }
     } catch (error) {
       console.error("Error during submitConfirm:", error);
-      Swal.fire("Error", "An error occurred", "error");
+      Swal.fire(t("Error"), t("An error occurred"), "error");
     }
 
     // Swal.fire({
@@ -533,7 +536,7 @@ function WeighmentForSilkMarket() {
       //   }
       // })
       const isConfirmed = window.confirm(
-        "Insufficient Balance,Do you want to continue with the Weighment?"
+        t("Insufficient Balance,Do you want to continue with the Weighment?")
       );
       // debugger;
       if (isConfirmed) {
@@ -543,7 +546,7 @@ function WeighmentForSilkMarket() {
       }
     } catch (error) {
       console.error("Error during submitConfirm:", error);
-      Swal.fire("Error", "An error occurred", "error");
+      Swal.fire(t("Error"), t("An error occurred"), "error");
     }
   };
 
@@ -977,7 +980,7 @@ function WeighmentForSilkMarket() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
 
       // text: "You clicked the button!",
     }).then(() => {
@@ -987,8 +990,8 @@ function WeighmentForSilkMarket() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
   return (
@@ -1047,9 +1050,9 @@ function WeighmentForSilkMarket() {
                         <table className="table small table-bordered weightmenttable marginbottom0">
                           <thead>
                             <tr>
-                              <th style={styles.top}>No of Crate(s)</th>
-                              <th style={styles.top}>Lot No</th>
-                              <th style={styles.top}>Bid Price / Kg</th>
+                              <th style={styles.top}>{t("No of Crate(s)")}</th>
+                              <th style={styles.top}>{t("Lot No")}</th>
+                              <th style={styles.top}>{t("Bid Price / Kg")}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1152,7 +1155,7 @@ function WeighmentForSilkMarket() {
                               >
                                 {" "}
                                 {/* &#8377; {totalNetPrice } */}
-                                Balance: &#8377;{" "}
+                                {t("Balance")}: &#8377;{" "}
                                 {Math.round(
                                   weigh.reelerCurrentBalance -
                                     weight * weigh.bidAmount
@@ -1186,13 +1189,13 @@ function WeighmentForSilkMarket() {
                           <tbody>
                             <tr>
                               <td style={styles.small}>
-                                Tare wt: {tareWeight}
+                                {t("Tare wt")}: {tareWeight}
                               </td>
                             </tr>
                             <tr>
                               <td style={styles.small}>
                                 {" "}
-                                Crates {data.noOfCrates} - {counter}
+                                {t("Crates")} {data.noOfCrates} - {counter}
                               </td>
                             </tr>
                           </tbody>
@@ -1205,14 +1208,14 @@ function WeighmentForSilkMarket() {
                           <tbody>
                             <tr>
                               <td style={styles.smallwhiteback}>
-                                Reeler Details: {weigh.reelerName}{" "}
+                                {t("Reeler Details")}: {weigh.reelerName}{" "}
                                 {weigh.reelerNumber}
                                 {/* RMG3333-RAM (SAK 3333) */}
                               </td>
                             </tr>
                             <tr>
                               <td style={styles.smallwhiteback}>
-                                Trader Details:{weigh.traderName}{" "}
+                                {t("Trader Details")}: {weigh.traderName}{" "}
                                 {weigh.traderLicenseNumber}
                                 {/* 353535-MARUTI */}
                               </td>
@@ -1248,7 +1251,7 @@ function WeighmentForSilkMarket() {
                                   variant="primary"
                                   onClick={testSerialPort}
                                 >
-                                  Generate
+                                  {t("Generate")}
                                 </Button>
                                 {/* <Button
                                   type="button"
@@ -1286,7 +1289,7 @@ function WeighmentForSilkMarket() {
                               >
                                 {/* Total Gross Wt: {totalWeight} */}
                                 {/* Total Gross Wt: {Number(totalWeight).toFixed(2)} */}
-                                Total Gross Wt:{" "}
+                                {t("Total Gross Wt")}:{" "}
                                 {Number.isInteger(Number(totalWeight))
                                   ? Number(totalWeight).toFixed(0)
                                   : Number(totalWeight).toFixed(2)}
@@ -1302,7 +1305,7 @@ function WeighmentForSilkMarket() {
                               >
                                 {/* Total Net Wt: {totalNetWeight} */}
                                 {/* Total Net Wt: {Number(totalNetWeight).toFixed(2)} */}
-                                Total Net Wt:{" "}
+                                {t("Total Net Wt")}:{" "}
                                 {Number.isInteger(Number(totalNetWeight))
                                   ? Number(totalNetWeight).toFixed(0)
                                   : Number(totalNetWeight).toFixed(2)}
@@ -1350,7 +1353,7 @@ function WeighmentForSilkMarket() {
                                           size="sm"
                                           onClick={() => deleteRow(index)}
                                         >
-                                          Delete
+                                          {t("Delete")}
                                         </Button>
                                       </span>
                                     </td>
@@ -1392,7 +1395,7 @@ function WeighmentForSilkMarket() {
                             <tr>
                               <td style={styles.smallwhiteback}>
                                 {/* Date: {new Date().toDateString()} */}
-                                Date:{" "}
+                                {t("Date")}:{" "}
                                 {weigh.date
                                   .getDate()
                                   .toString()
@@ -1427,7 +1430,7 @@ function WeighmentForSilkMarket() {
                                   variant="primary"
                                   onClick={testSerialPort}
                                 >
-                                  Check Weight
+                                  {t("Check Weight")}
                                 </Button>
                                 <Button
                                   type="button"
@@ -1435,7 +1438,7 @@ function WeighmentForSilkMarket() {
                                   onClick={continueWeighment}
                                   className="ms-1"
                                 >
-                                  Continue weighment
+                                  {t("Continue weighment")}
                                 </Button>
                               </td>
                             </tr>

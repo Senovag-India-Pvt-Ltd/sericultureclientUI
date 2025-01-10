@@ -15,10 +15,14 @@ import DataTable, { createTheme } from "react-data-table-component";
 import Swal from "sweetalert2/src/sweetalert2.js";
 // import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
+
+
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PaymentStatementForSeedMarket() {
+    const { t } = useTranslation();
   
 
   const [page, setPage] = useState(0);
@@ -145,7 +149,7 @@ function PaymentStatementForSeedMarket() {
 
   const PaymentDataColumns = [
     {
-      name: "action",
+      name: t("action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -163,7 +167,7 @@ function PaymentStatementForSeedMarket() {
               )
             }
           >
-            Remove
+            {t("Remove")}
           </Button> */}
         </div>
       ),
@@ -171,77 +175,77 @@ function PaymentStatementForSeedMarket() {
       hide: "md",
     },
     {
-      name: "SLNo",
+      name: t("SLNo"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot No",
+      name: t("Lot No"),
       selector: (row) => row.allottedLotId,
       cell: (row) => <span>{row.allottedLotId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Transaction Date",
+      name: t("Transaction Date"),
       selector: (row) => convertDateFormat(row.auctionDate),
       cell: (row) => <span>{convertDateFormat(row.auctionDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer",
+      name: t("Farmer"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Phone",
+      name: t("Phone"),
       selector: (row) => row.farmerMobileNumber,
       cell: (row) => <span>{row.farmerMobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Type",
+      name: t("Buyer Type"),
       selector: (row) => row.buyerType,
       cell: (row) => <span>{row.buyerType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Buyer Name",
+      name: t("Buyer Name"),
       selector: (row) => row.buyerName,
       cell: (row) => <span>{row.buyerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot weight",
+      name: t("Lot weight"),
       selector: (row) => row.lotWeight,
       cell: (row) => <span>{row.lotWeight}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Amount",
+      name: t("Amount"),
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market Fee",
+      name: t("Market Fee"),
       selector: (row) => row.marketFee,
       cell: (row) => <span>{row.marketFee}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sold Amount",
+      name: t("Sold Amount"),
       selector: (row) => row.soldAmount,
       cell: (row) => <span>{row.soldAmount}</span>,
       sortable: true,
@@ -524,11 +528,11 @@ function PaymentStatementForSeedMarket() {
   // };
 
   return (
-    <Layout title="Payment Statement" show="true">
+    <Layout title={t("Payment Statement")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Payment Statement</Block.Title>
+            <Block.Title tag="h2">{t("Payment Statement")}</Block.Title>
           </Block.HeadContent>
           
         </Block.HeadBetween>
@@ -541,7 +545,7 @@ function PaymentStatementForSeedMarket() {
               <Form.Group as={Row} className="form-group">
                 
                 <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                  Date
+                  {t("Date")}
                 </Form.Label>
                 <Col sm={3} style={{ marginLeft: "-200px" }}>
                   <div className="form-control-wrap">
@@ -556,7 +560,7 @@ function PaymentStatementForSeedMarket() {
                       value={data.paymentDate}
                       onChange={handleInputs}
                     >
-                      <option value="0">Select Date</option>
+                      <option value="0">{t("Select Date")}</option>
                       {auctionDateList.map((list) => (
                         <option key={list} value={list}>
                           {list}
@@ -572,7 +576,7 @@ function PaymentStatementForSeedMarket() {
                     variant="primary"
                     onClick={getBankStatement}
                   >
-                    Get Details
+                    {t("Get Details")}
                   </Button>
                 </Col>
               </Form.Group>
@@ -617,7 +621,7 @@ function PaymentStatementForSeedMarket() {
                       value={data.fileName}
                       onChange={handleInputs}
                       type="text"
-                      placeholder="Enter File Name"
+                      placeholder={t("Enter File Name")}
                       isInvalid={isFormSubmitted && !!fileNameError}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -631,7 +635,7 @@ function PaymentStatementForSeedMarket() {
                     variant="primary"
                     onClick={() => handleButtonClick(generateCsv)}
                   >
-                    Generate CSV File
+                    {t("Generate CSV File")}
                   </Button>
                 </Col>
                 {paymentMode === "cash" ? (
@@ -644,7 +648,7 @@ function PaymentStatementForSeedMarket() {
                           handleButtonClick(markCashPaymentLotListToSuccess)
                         }
                       >
-                        Mark Payment Completed
+                        {t("Mark Payment Completed")}
                       </Button>
                     </Col>
                   </>
@@ -658,7 +662,7 @@ function PaymentStatementForSeedMarket() {
                           handleButtonClick(requestJobToProcessPayment)
                         }
                       >
-                        Process For Payment
+                        {t("Process For Payment")}
                       </Button>
                     </Col> */}
 
@@ -670,7 +674,7 @@ function PaymentStatementForSeedMarket() {
                           handleButtonClick(checkBankGeneratedStatement)
                         }
                       >
-                        Check Bank Generated File
+                        {t("Check Bank Generated File")}
                       </Button>
                     </Col> */}
                   </>

@@ -7,10 +7,12 @@ import { Icon } from "../../components";
 import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TraineeAttendancePage() {
+  const { t } = useTranslation(); // Initialize useTranslation
   const { id } = useParams();
   const [trDetailsList, setTrDetailsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -113,7 +115,7 @@ function TraineeAttendancePage() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Attendance Updated Successfully",
+      title: t("Attendance Updated Successfully"),
     });
   };
 
@@ -126,7 +128,7 @@ function TraineeAttendancePage() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -140,11 +142,11 @@ function TraineeAttendancePage() {
   };
 
   return (
-    <Layout title="Trainee Attendance Page">
+    <Layout title={t("Trainee Attendance Page")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainee Attendance Page</Block.Title>
+            <Block.Title tag="h2">{t("Trainee Attendance Page")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -154,7 +156,7 @@ function TraineeAttendancePage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -163,7 +165,7 @@ function TraineeAttendancePage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -173,12 +175,12 @@ function TraineeAttendancePage() {
 
             <Block className="mt-n4">
                 <Card className="mt-3">
-                <Card.Header>Trainees</Card.Header>
+                <Card.Header>{t("Trainees")}</Card.Header>
                 <Card.Body>
 
                 <Col lg="6">
                     <Form.Group className="form-group mt-n3">
-                      <Form.Label> Date</Form.Label>
+                      <Form.Label>{t("Date")}</Form.Label>
                       <Row>
                         <Col lg="6">
                           <div className="form-control-wrap">
@@ -206,7 +208,7 @@ function TraineeAttendancePage() {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}>Trainee Name:</td>
+                          <td style={styles.ctstyle}>{t("Trainee Name")}:</td>
                           <td>
                             <input
                               type="checkbox"
@@ -231,7 +233,7 @@ function TraineeAttendancePage() {
                 </Row>
               ))
             ) : (
-              <p>No trainees available.</p>
+              <p>{t("No trainees available")}.</p>
             )}
           </Card.Body>
         </Card>
@@ -240,12 +242,12 @@ function TraineeAttendancePage() {
           <ul className="d-flex align-items-center justify-content-center gap g-3">
             <li>
               <Button type="button" variant="primary" onClick={postData}>
-                Submit
+                {t("Submit")}
               </Button>
             </li>
             <li>
               <Button type="button" variant="secondary" onClick={clear}>
-                Cancel
+                {t("Cancel")}
               </Button>
             </li>
           </ul>

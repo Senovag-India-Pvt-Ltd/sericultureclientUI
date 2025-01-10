@@ -9,6 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -207,12 +208,15 @@ function PendingReport() {
       text: message,
     });
   };
+
+  const { t } = useTranslation();
+
   return (
-    <Layout title="Pending Report">
+    <Layout title={t("Pending Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Pending Report</Block.Title>
+            <Block.Title tag="h2">{t("Pending Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -267,7 +271,7 @@ function PendingReport() {
                         </Form.Control.Feedback>
                       </Col> */}
                       <Form.Label column sm={1}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -288,7 +292,7 @@ function PendingReport() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -330,7 +334,7 @@ function PendingReport() {
                       size="sm"
                       onClick={generatePendingReport}
                     >
-                      Print
+                      {t("Print")}
                     </Button>
                   </Col>
                 </Row>
@@ -349,7 +353,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            SL No
+                            {t("SL No")}
                           </th>
                           <th
                             style={{
@@ -358,7 +362,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Lot No
+                            {t("Lot No")}
                           </th>
                           {/* <th
                             style={{
@@ -376,7 +380,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Shed
+                            {t("Shed")}
                           </th>
                           <th
                             style={{
@@ -385,7 +389,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Farmer ID
+                            {t("Farmer ID")}
                           </th>
                           <th
                             style={{
@@ -394,7 +398,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Name
+                            {t("Name")}
                           </th>
                           <th
                             style={{
@@ -403,7 +407,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Village
+                            {t("Village")}
                           </th>
                           <th
                             style={{
@@ -412,7 +416,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Phone
+                            {t("Phone")}
                           </th>
                           <th
                             style={{
@@ -421,7 +425,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Accepted User
+                            {t("Accepted User")}
                           </th>
                           <th
                             style={{
@@ -430,7 +434,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler ID
+                            {t("Reeler ID")}
                           </th>
                           <th
                             style={{
@@ -439,7 +443,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Name
+                            {t("Reeler Name")}
                           </th>
                           <th
                             style={{
@@ -448,7 +452,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Ph
+                            {t("Reeler Ph")}
                           </th>
                           <th
                             style={{
@@ -457,7 +461,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            Balance
+                            {t("Balance")}
                           </th>
                         </tr>
                       </thead>
