@@ -3525,6 +3525,20 @@ const handleActionInputs = (e) => {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Work Order No:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]?.workOrderNumber ||
+                            "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sanction Order No:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]?.sanctionOrderNumber ||
+                            "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Created Date:</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]?.createdDate ||
