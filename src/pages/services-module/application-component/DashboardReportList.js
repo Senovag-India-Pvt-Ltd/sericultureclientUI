@@ -611,6 +611,7 @@ function DashboardReportList() {
                   approvalStageId: recordData.approvalStageId,
                   designationId,
                   schemeAmount: recordData.schemeAmount,
+                  subSchemeId: recordData.subSchemeId,
                 },
               }
             )
