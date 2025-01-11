@@ -944,6 +944,77 @@ function DashboardReportList() {
       }
     });
   };
+
+  const handleDownloadSanctionOrder = (applicationFormId,schemeId,schemeType) => {
+    // const schemeId = schemeId;
+    // const schemeType = sanctionOrderForScheme; // Fetch the scheme type from the response
+  
+    Swal.fire({
+      title: "Generate Sanction Order",
+      text: "Select the recipient:",
+      showCancelButton: true,
+      confirmButtonText: "Farmer",
+      cancelButtonText: "Company",
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call the Farmer endpoint based on the scheme type
+        if (schemeType === "PMKSY") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PMKSY");
+        } else if (schemeType === "PDMC") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PDMC");
+        } else {
+          console.error("Unknown scheme type for farmer sanction order.");
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Call the Company endpoint based on the scheme type
+        if (schemeType === "PMKSY") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PMKSY");
+        } else if (schemeType === "PDMC") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PDMC");
+        } else {
+          console.error("Unknown scheme type for company sanction order.");
+        }
+      }
+    });
+  };
+
+  const downloadSanctionOrderAcknowledgment = async (applicationId, schemeId, recipientType, schemeType) => {
+    try {
+      // Determine the appropriate endpoint based on the recipient type and scheme type
+      let endpoint;
+      if (recipientType === "farmer") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksy`
+            : baseURLReport + `getSanctionOrderPDMC`;
+      } else if (recipientType === "company") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksyCompany`
+            : baseURLReport + `getSanctionOrderPDMCCompany`;
+      } else {
+        throw new Error("Invalid recipient type.");
+      }
+  
+      const response = await api.post(
+        endpoint,
+        {
+          applicationFormId: applicationId,
+          schemeId: schemeId,
+        },
+        {
+          responseType: "blob", // Force to receive data in a Blob Format
+        }
+      );
+  
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      console.error("Error generating sanction order:", error);
+    }
+  };
   
   
 
@@ -1678,42 +1749,75 @@ const handleActionInputs = (e) => {
       name: "Action",
       cell: (row) => (
         <div className="text-start w-100">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleShowModal4()}
-            className="me-2" // Adds space between buttons
-            // disabled={data.userMasterId ? false : true}
+          <div
+            style={{
+              display: "flex",
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              gap: "0.5rem", // Adds space between buttons
+            }}
           >
-            Re-Assign
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() =>
-              // handleShowModal(row.fruitsId, row.applicationDocumentId)
-              // checkToShowModal(row.fruitsId, row.applicationDocumentId)
-              checkToShowModal(row.fruitsId,row.schemeId)
-            }
-            className="me-2" // Adds space between buttons
-          >
-            Action
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.applicationDocumentId)}
-          >
-            View
-          </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleShowModal4()}
+            >
+              Re-Assign
+            </Button>
+    
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => checkToShowModal(row.fruitsId, row.schemeId)}
+            >
+              Action
+            </Button>
+    
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleView(row.applicationDocumentId)}
+            >
+              View
+            </Button>
+    
+            {row.workOrderNumber && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() =>
+                  generateWorkOrderAcknowledgment(
+                    row.applicationDocumentId,
+                    row.schemeId
+                  )
+                }
+              >
+                Download Work Order
+              </Button>
+            )}
+    
+            {row.sanctionOrderNumber && row.applicationFormId && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() =>
+                handleDownloadSanctionOrder(
+                  row.applicationFormId,
+                  row.schemeId,
+                  row.sanctionOrderForScheme
+                )
+              }
+              >
+                Download Sanction Order
+              </Button>
+            )}
+          </div>
         </div>
       ),
       sortable: false,
       hide: "md",
       grow: 2,
-    },
+    }    
   ];
 
   const customStyles = {
@@ -2482,10 +2586,10 @@ const handleActionInputs = (e) => {
                           }}
                           className="mb-3"
                         >
-                          Work Order Details
+                          Generate Work Order
                         </Accordion.Header>
                         <Accordion.Body>
-                          <Block className="mt-3">
+                          {/* <Block className="mt-3">
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -2501,7 +2605,7 @@ const handleActionInputs = (e) => {
                                     placeholder="Enter Work Order NO."
                                   />
                                 </Form.Group>
-                              </Col>
+                              </Col> */}
 
                               {/* <Col lg="6">
                                 <Form.Group className="form-group">
@@ -2576,8 +2680,8 @@ const handleActionInputs = (e) => {
                                   </Col>
                                 </Form.Group>
                               </Col> */}
-                            </Row>
-                          </Block>
+                            {/* </Row> */}
+                          {/* </Block> */}
 
                           {/* <Col lg="12"> */}
                           {/* <div className="gap-col mt-1">
@@ -2622,7 +2726,7 @@ const handleActionInputs = (e) => {
                               />
                             </Row>
                             <Row className="mt-2">
-                              <Col lg="6">
+                              {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     <strong>Sanction Order No.</strong>
@@ -2636,7 +2740,7 @@ const handleActionInputs = (e) => {
                                     placeholder="Enter Sanction Order NO."
                                   />
                                 </Form.Group>
-                              </Col>
+                              </Col> */}
 
                               <Col lg="6">
                                 <Form.Group className="form-group">
