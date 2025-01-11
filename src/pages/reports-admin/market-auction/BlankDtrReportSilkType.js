@@ -9,6 +9,8 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next"; // Add this import
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -16,6 +18,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function BlankDtrReportSilkType() {
+    const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
@@ -330,11 +333,11 @@ function BlankDtrReportSilkType() {
     });
   };
   return (
-    <Layout title="Real Time DTR Report">
+    <Layout title={t("Real Time DTR Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Real Time DTR Report</Block.Title>
+            <Block.Title tag="h2">{t("Real Time DTR Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -372,7 +375,7 @@ function BlankDtrReportSilkType() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number
+                        {t('Reeler Number')}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -381,7 +384,7 @@ function BlankDtrReportSilkType() {
                           value={data.traderLicenseNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Trader Number"
+                          placeholder={t('Enter Trader Number')}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -389,7 +392,7 @@ function BlankDtrReportSilkType() {
                         </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
-                        From Date
+                        {t('From Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -404,7 +407,7 @@ function BlankDtrReportSilkType() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t('To Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -448,7 +451,7 @@ function BlankDtrReportSilkType() {
                           onClick={display}
                         > */}
                 <Button type="submit" variant="primary">
-                  Generate Report
+                  {t('Generate Report')}
                 </Button>
               </Col>
             </Row>
@@ -485,7 +488,7 @@ function BlankDtrReportSilkType() {
                       size="sm"
                       onClick={exportCsv}
                     >
-                      Print
+                      {t('Print')}
                     </Button>
                   </Col>
                 </Row>

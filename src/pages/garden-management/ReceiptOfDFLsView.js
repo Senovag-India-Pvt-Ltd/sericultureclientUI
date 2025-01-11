@@ -7,10 +7,12 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
+import { useTranslation } from 'react-i18next';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ReceiptOfDFLsView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -102,11 +104,11 @@ const getUploadReceipt = async (file) => {
   };
 
   return (
-    <Layout title="View Receipt of DFLs Details">
+    <Layout title={t("View Receipt of DFLs Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Receipt of DFLs Details</Block.Title>
+            <Block.Title tag="h2">{t("View Receipt of DFLs Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -116,7 +118,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -125,7 +127,7 @@ const getUploadReceipt = async (file) => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -135,11 +137,11 @@ const getUploadReceipt = async (file) => {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Receipt of DFLs Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Receipt of DFLs Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -147,43 +149,43 @@ const getUploadReceipt = async (file) => {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{receiptOfDFLs.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Race Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Race Of DFLs")}:</td>
                         <td>{receiptOfDFLs.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Grainage:</td>
+                        <td style={styles.ctstyle}>{t("Grainage")}:</td>
                         <td>{receiptOfDFLs.grainageName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Laid On Date:</td>
+                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
                         <td>{receiptOfDFLs.laidOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{receiptOfDFLs.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs Received:</td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs Received")}:</td>
                         <td>{receiptOfDFLs.numberOfDFLsReceived}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Invoice Details:</td>
+                        <td style={styles.ctstyle}>{t("Invoice Details")}:</td>
                         <td>{receiptOfDFLs.invoiceDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>DFLs Received Date:</td>
+                        <td style={styles.ctstyle}>{t("DFLs Received Date")}:</td>
                         <td>{receiptOfDFLs.dflsRecDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Generation Details:</td>
+                        <td style={styles.ctstyle}>{t("Generation Details")}:</td>
                         <td>{receiptOfDFLs.generationDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded Receipt:</td>
+                        <td style={styles.ctstyle}>{t("Uploaded Receipt")}:</td>
                         <td>
                           {" "}
                           {selectedUploadReceipt && (
@@ -194,7 +196,7 @@ const getUploadReceipt = async (file) => {
                                   width: "100px",
                                 }}
                                 src={selectedUploadReceipt}
-                                alt="Selected File"
+                                alt={t("Selected File")}
                               />
                               <Button
                                 variant="primary"
@@ -204,7 +206,7 @@ const getUploadReceipt = async (file) => {
                                   downloadFile(receiptOfDFLs.viewReceipt)
                                 }
                               >
-                                Download File
+                                {t("Download File")}
                               </Button>
                             </>
                           )}

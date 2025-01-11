@@ -9,12 +9,14 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from 'react-i18next';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function ReceiptOfDFLsEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -247,7 +249,7 @@ function ReceiptOfDFLsEdit() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       text: message,
     });
   };
@@ -260,7 +262,7 @@ function ReceiptOfDFLsEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -268,15 +270,15 @@ function ReceiptOfDFLsEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Receipt Of DFLs">
+    <Layout title={t("Edit Receipt Of DFLs")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Receipt Of DFLs</Block.Title>
+            <Block.Title tag="h2">{t("Edit Receipt Of DFLs")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -286,7 +288,7 @@ function ReceiptOfDFLsEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -295,7 +297,7 @@ function ReceiptOfDFLsEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -307,19 +309,19 @@ function ReceiptOfDFLsEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Receipt Of DFLs From The Grainage
+              {t("Edit Receipt Of DFLs From The Grainage")}
             </Card.Header>
             <Card.Body>
               {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
+                  {t("Loading...")}
                 </h1>
               ) : (
                 <Row className="g-gs">
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Name
+                          {t("Line Name")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -331,7 +333,7 @@ function ReceiptOfDFLsEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -353,7 +355,7 @@ function ReceiptOfDFLsEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -364,7 +366,7 @@ function ReceiptOfDFLsEdit() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Race</option>
+                              <option value="">{t("Select Race")}</option>
                               {raceListData && raceListData.length?(raceListData.map((list) => (
                                 <option
                                   key={list.raceMasterId}
@@ -375,7 +377,7 @@ function ReceiptOfDFLsEdit() {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Race is required
+                              {t("Race is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -385,7 +387,7 @@ function ReceiptOfDFLsEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -397,7 +399,7 @@ function ReceiptOfDFLsEdit() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -418,7 +420,7 @@ function ReceiptOfDFLsEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Laid on Date
+                                {t("Laid on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataLaidDate && ( */}
@@ -444,7 +446,7 @@ function ReceiptOfDFLsEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Hatching Date
+                                {t("Hatching Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                               {/* {isDataLaidDate && ( */}
@@ -476,12 +478,12 @@ function ReceiptOfDFLsEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Update
+                  {t("Update")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

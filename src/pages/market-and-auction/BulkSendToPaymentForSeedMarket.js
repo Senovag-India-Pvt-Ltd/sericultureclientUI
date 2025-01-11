@@ -6,6 +6,9 @@ import DatePicker from "react-datepicker";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import Swal from "sweetalert2/src/sweetalert2.js";
+import { useTranslation } from "react-i18next"; // Add this line
+
+
 
 import {
   Icon,
@@ -17,6 +20,8 @@ import api from "../../services/auth/api";
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function BulkSendToPaymentForSeedMarket() {
+
+   const { t } = useTranslation(); 
   // const [selectedDate, setSelectedDate] = useState("");
 
   const [data, setData] = useState({
@@ -105,7 +110,7 @@ function BulkSendToPaymentForSeedMarket() {
     if (data.paymentDate == null) {
       Swal.fire({
         icon: 'warning',
-        title: 'This Lot is not distributed',
+        title: t('This Lot is not distributed'),
       });
       return;
     }
@@ -129,7 +134,7 @@ function BulkSendToPaymentForSeedMarket() {
                 if (msg.label === 'NON_LABEL_MESSAGE') {
                   Swal.fire({
                     icon: 'error',
-                    title: 'Distribute the Lot',
+                    title: t('Distribute the Lot'),
                     text: msg.message,
                   });
                 }
@@ -139,8 +144,8 @@ function BulkSendToPaymentForSeedMarket() {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'An error occurred',
-            text: 'Please try again later.',
+            title: t('An error occurred'),
+            text: t('Please try again later.'),
           });
         }
       });
@@ -195,7 +200,7 @@ function BulkSendToPaymentForSeedMarket() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Bulk Send successfully Completed",
+      title: t("Bulk Send successfully Completed"),
       // text: "You clicked the button!",
     });
     
@@ -203,11 +208,11 @@ function BulkSendToPaymentForSeedMarket() {
 
   
   return (
-    <Layout title="Bulk Send To Bank" show="true">
+    <Layout title={t("Bulk Send To Bank")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bulk Send To Payment</Block.Title>
+            <Block.Title tag="h2">{t("Bulk Send To Payment")}</Block.Title>
           </Block.HeadContent>
          
         </Block.HeadBetween>
@@ -215,20 +220,20 @@ function BulkSendToPaymentForSeedMarket() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header className="text-center">Bulk Send To Payment</Card.Header>
+          <Card.Header className="text-center">{t("Bulk Send To Payment")}</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
                 
                 <Form.Group className="form-group">
-                  <Form.Label>Date</Form.Label>
+                  <Form.Label>{t("Date")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="paymentDate"
                       value={data.paymentDate}
                       onChange={handleInputs}
                     >
-                      <option value="0">Select Date</option>
+                      <option value="0">{t("Select Date")}</option>
                       {auctionDateList.map((list) => (
                         <option key={list} value={list}>
                           {list}
@@ -250,7 +255,7 @@ function BulkSendToPaymentForSeedMarket() {
                         variant="primary"
                         onClick={onSubmitBulkDate}
                       >
-                        Update
+                        {t("Update")}
                       </Button>
                     </li>
                   </ul>

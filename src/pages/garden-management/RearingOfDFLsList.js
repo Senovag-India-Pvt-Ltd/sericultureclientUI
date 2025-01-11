@@ -11,11 +11,13 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -175,7 +177,7 @@ function RearingOfDFLsList() {
   const RearingOfDFLSMoultDataColumns = [
     
     {
-      name: "Lot Number",
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -183,7 +185,7 @@ function RearingOfDFLsList() {
     },
     
     {
-      name: "Hatching Date",
+      name: t("Hatching Date"),
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
       sortable: true,
@@ -191,14 +193,14 @@ function RearingOfDFLsList() {
     },
 
     {
-      name: "First Feeding",
+      name: t("First Feeding"),
       selector: (row) => row.firstFeeding,
       cell: (row) => <span>{row.firstFeeding}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Second Feeding",
+      name: t("Second Feeding"),
       selector: (row) => row.secondFeeding,
       cell: (row) => <span>{row.secondFeeding}</span>,
       sortable: true,
@@ -206,14 +208,14 @@ function RearingOfDFLsList() {
     },
 
     {
-      name: "Third Feeding",
+      name: t("Third Feeding"),
       selector: (row) => row.thirdFeeding,
       cell: (row) => <span>{row.thirdFeeding}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Leaf Quantity",
+      name: t("Leaf Quantity"),
       selector: (row) => row.leafQuantity,
       cell: (row) => <span>{row.leafQuantity}</span>,
       sortable: true,
@@ -221,21 +223,21 @@ function RearingOfDFLsList() {
     },
 
     {
-      name: "Worm Stage",
+      name: t("Worm Stage"),
       selector: (row) => row.wormStage,
       cell: (row) => <span>{row.wormStage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Temperature",
+      name: t("Temperature"),
       selector: (row) => row.temperature,
       cell: (row) => <span>{row.temperature}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Humidity",
+      name: t("Humidity"),
       selector: (row) => row.humidity,
       cell: (row) => <span>{row.humidity}</span>,
       sortable: true,
@@ -359,7 +361,7 @@ function RearingOfDFLsList() {
 
   const RearingOfDFLsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -369,7 +371,7 @@ function RearingOfDFLsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -377,7 +379,7 @@ function RearingOfDFLsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -385,7 +387,7 @@ function RearingOfDFLsList() {
             onClick={() => handleShowModal3(row)}
             className="ms-2"
           >
-            Add Moult Table
+            {t("Add Moult Table")}
           </Button>
         </div>
       ),
@@ -394,7 +396,7 @@ function RearingOfDFLsList() {
       grow: 2,
     },
     {
-      name: " Disinfectant Usage Details",
+      name: t("Disinfectant Usage Details"),
       selector: (row) => row.disinfectantMasterName,
       cell: (row) => <span>{row.disinfectantMasterName}</span>,
       sortable: true,
@@ -402,14 +404,14 @@ function RearingOfDFLsList() {
     },
    
     {
-      name: "Crop Number",
+      name: t("Crop Number"),
       selector: (row) => row.cropNumber,
       cell: (row) => <span>{row.cropNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Lot Number",
+      name: t(" Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -417,63 +419,63 @@ function RearingOfDFLsList() {
     },
     
     {
-      name: " Number Of DFLs",
+      name: t(" Number Of DFLs"),
       selector: (row) => row.numberOfDfls,
       cell: (row) => <span>{row.numberOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race Of DFLs",
+      name: t("Race Of DFLs"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Source",
+      name: t("Source"),
       selector: (row) => row.source,
       cell: (row) => <span>{row.source}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Laid On Date",
+      name: t("Laid On Date"),
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Cold Storage Details",
+      name: t("Cold Storage Details"),
       selector: (row) => row.coldStorageDetails,
       cell: (row) => <span>{row.coldStorageDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Released On Date",
+      name: t("Released On Date"),
       selector: (row) => row.releasedOnDate,
       cell: (row) => <span>{row.releasedOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Brushing Date",
+      name: t("Brushing Date"),
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Chawki Percentage",
+      name: t("Chawki Percentage"),
       selector: (row) => row.chawkiPercentage,
       cell: (row) => <span>{row.chawkiPercentage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Spun On Date",
+      name: t("Spun On Date"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
@@ -482,11 +484,11 @@ function RearingOfDFLsList() {
   ];
 
   return (
-    <Layout title="List Of Rearing of DFLs">
+    <Layout title={t("List Of Rearing of DFLs")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Rearing of DFLs</Block.Title>
+            <Block.Title tag="h2">{t("List Of Rearing of DFLs")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -496,7 +498,7 @@ function RearingOfDFLsList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -505,7 +507,7 @@ function RearingOfDFLsList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -515,7 +517,7 @@ function RearingOfDFLsList() {
                 onClick={() => getMoultList()}
                 className="ms-2"
               >
-                Moult Table List
+                {t("Moult Table List")}
               </Button>
             </li>
             </ul>
@@ -548,7 +550,7 @@ function RearingOfDFLsList() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Feeding and Moult Test</Modal.Title>
+          <Modal.Title>{t("Feeding and Moult Test")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -562,7 +564,7 @@ function RearingOfDFLsList() {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="sordfl">
-                                Date
+                                {t("Date")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -587,7 +589,7 @@ function RearingOfDFLsList() {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
-                                Lot Number
+                                {t("Lot Number")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -598,7 +600,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Lot Number"
+                                  placeholder={t("Lot Number")}
                                   // readOnly
                                   // required
                                 />
@@ -613,7 +615,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               1st Feeding
+                               {t("1st Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -624,7 +626,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="1st Feeding"
+                                  placeholder={t("1st Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -636,7 +638,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               2nd Feeding
+                               {t("2nd Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -647,7 +649,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="2nd Feeding"
+                                  placeholder={t("2nd Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -659,7 +661,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
-                               3rd Feeding
+                               {t("3rd Feeding")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -670,7 +672,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="3rd Feeding"
+                                  placeholder={t("3rd Feeding")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -682,7 +684,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                              Leaf Quantity in Gms/Kg
+                              {t("Leaf Quantity in Gms/Kg")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -691,7 +693,7 @@ function RearingOfDFLsList() {
                                   value={feedingTableDetails.leafQuantity || ""}
                                   onChange={handleFeedingMoultInputs}
                                   type="number"
-                                  placeholder="Leaf Quantity in Gms/Kg"
+                                  placeholder={t("Leaf Quantity in Gms/Kg")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -703,7 +705,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                              Worm Stage
+                              {t("Worm Stage")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -718,16 +720,16 @@ function RearingOfDFLsList() {
                                   // }
                                 >
                                   <option value="">
-                                    Select Worm Stage
+                                    {t("Select Worm Stage")}
                                   </option>
-                                  <option value="Hatching">Hatching</option>
-                                  <option value="1st Moult">1st Moult</option>
-                                  <option value="2nd Moult">2nd Moult</option>
-                                  <option value="3rd Moult">3rd Moult</option>
-                                  <option value="4th Moult">4th Moult</option>
-                                  <option value="Spinning">Spinning</option>
-                                  <option value="Harvest">Harvest</option>
-                                  <option value="Supply/Market">Supply/Market</option>
+                                  <option value="Hatching">{t("Hatching")}</option>
+                                  <option value="1st Moult">{t("1st Moult")}</option>
+                                  <option value="2nd Moult">{t("2nd Moult")}</option>
+                                  <option value="3rd Moult">{t("3rd Moult")}</option>
+                                  <option value="4th Moult">{t("4th Moult")}</option>
+                                  <option value="Spinning">{t("Spinning")}</option>
+                                  <option value="Harvest">{t("Harvest")}</option>
+                                  <option value="Supply/Market">{t("Supply/Market")}</option>
                                 </Form.Select>
                               </div>
                             </Form.Group>
@@ -736,7 +738,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                Temperature
+                                {t("Temperature")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -747,7 +749,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Enter temperature"
+                                  placeholder={t("Enter temperature")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -760,7 +762,7 @@ function RearingOfDFLsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
-                                Humidity
+                                {t("Humidity")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -771,7 +773,7 @@ function RearingOfDFLsList() {
                                   }
                                   onChange={handleFeedingMoultInputs}
                                   type="text"
-                                  placeholder="Enter Humidity"
+                                  placeholder={t("Enter Humidity")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -786,7 +788,7 @@ function RearingOfDFLsList() {
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Update
+                              {t("Update")}
                             </Button>
                           </li>
                           <li>
@@ -809,7 +811,7 @@ function RearingOfDFLsList() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>Feeding and Moult Test</Modal.Title>
+    <Modal.Title>{t("Feeding and Moult Test")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -836,7 +838,7 @@ function RearingOfDFLsList() {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal4}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

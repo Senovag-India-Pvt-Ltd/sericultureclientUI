@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next"; // Add this line
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenEdit() {
+  const { t } = useTranslation(); // Add this line
   const { id } = useParams();
   const [data, setData] = useState({
     plotNumber: "",
@@ -173,7 +175,7 @@ function MaintenanceOfMulberryGardenEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     });
   };
@@ -192,7 +194,7 @@ function MaintenanceOfMulberryGardenEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -201,16 +203,16 @@ function MaintenanceOfMulberryGardenEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Maintenance of Mulberry Garden">
+    <Layout title={t("Edit Maintenance of Mulberry Garden")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Maintenance of Mulberry Garden
+              {t("Edit Maintenance of Mulberry Garden")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -221,7 +223,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -230,7 +232,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -244,19 +246,19 @@ function MaintenanceOfMulberryGardenEdit() {
           {/* <Row className="g-3 "> */}
             <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-                Edit Maintenance Of Mulberry Garden
+                {t("Edit Maintenance Of Mulberry Garden")}
               </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                   <Col lg="4">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="plotNumber">
-                        Plot Number<span className="text-danger">*</span>
+                        {t("Plot Number")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -265,11 +267,11 @@ function MaintenanceOfMulberryGardenEdit() {
                           value={data.plotNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Plot Number"
+                          placeholder={t("Enter Plot Number")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Plot Number is required
+                          {t("Plot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -278,7 +280,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Mulberry Variety<span className="text-danger">*</span>
+                        {t("Mulberry Variety")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -292,7 +294,7 @@ function MaintenanceOfMulberryGardenEdit() {
                             data.variety === undefined || data.variety === "0"
                           }
                         >
-                          <option value="">Select Mulberry Variety</option>
+                          <option value="">{t("Select Mulberry Variety")}</option>
                           {varietyListData.map((list) => (
                             <option
                               key={list.mulberryVarietyId}
@@ -303,7 +305,7 @@ function MaintenanceOfMulberryGardenEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Mulberry Variety is required
+                          {t("Mulberry Variety is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -312,7 +314,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="areaUnderEachVariety">
-                        Area(In Acres)
+                        {t("Area(In Acres)")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -322,7 +324,7 @@ function MaintenanceOfMulberryGardenEdit() {
                           onChange={handleInputs}
                           maxLength="4"
                           type="text"
-                          placeholder="Enter Area(In Hectares)"
+                          placeholder={t("Enter Area(In Hectares)")}
                         />
                       </div>
                     </Form.Group>
@@ -331,7 +333,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        Soil Type<span className="text-danger">*</span>
+                        {t("Soil Type")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -345,7 +347,7 @@ function MaintenanceOfMulberryGardenEdit() {
                             data.variety === undefined || data.variety === "0"
                           }
                         >
-                          <option value="">Select Soil Type</option>
+                          <option value="">{t("Select Soil Type")}</option>
                           {soilTypeListData.map((list) => (
                             <option
                               key={list.soilTypeId}
@@ -356,7 +358,7 @@ function MaintenanceOfMulberryGardenEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Soil Type is required
+                          {t("Soil Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -365,7 +367,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="mulberrySpacing">
-                        Mulberry Spacing
+                        {t("Mulberry Spacing")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -375,7 +377,7 @@ function MaintenanceOfMulberryGardenEdit() {
                           onChange={handleInputs}
                           maxLength="6"
                           type="text"
-                          placeholder="Enter Mulberry Spacing"
+                          placeholder={t("Enter Mulberry Spacing")}
                         />
                       </div>
                     </Form.Group>
@@ -384,7 +386,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Pruning Date
+                        {t("Pruning Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -412,7 +414,7 @@ function MaintenanceOfMulberryGardenEdit() {
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Plantation Date
+                        {t("Plantation Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -446,12 +448,12 @@ function MaintenanceOfMulberryGardenEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

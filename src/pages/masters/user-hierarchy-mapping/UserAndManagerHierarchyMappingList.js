@@ -403,116 +403,108 @@ const handleExportClick = () => {
 
   const UserDataColumns = [
     {
-      name: "User Name",
+      name: t("User Name"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "First Name",
+      name: t("First Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Last Name",
+      name: t("Last Name"),
       selector: (row) => row.lastName,
       cell: (row) => <span>{row.lastName}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
-    
     {
-      name: "Phone Number",
+      name: t("Phone Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
-    
-    
   ];
 
   const UserAllReporteeDataColumns = [
-    
     {
-      name: "User Name",
+      name: t("User Name"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "First Name",
+      name: t("First Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Last Name",
+      name: t("Last Name"),
       selector: (row) => row.lastName,
       cell: (row) => <span>{row.lastName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
-    
     {
-      name: "Phone Number",
+      name: t("Phone Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
+      name: t("Designation"),
       selector: (row) => row.name,
       cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
-    
     {
-      name: "Level",
+      name: t("Level"),
       selector: (row) => row.level,
       cell: (row) => <span>{row.level}</span>,
       sortable: true,
       hide: "md",
     },
-   
   ];
 
 
   return (
-    <Layout title="List Of Direct And All Reportees Details">
+    <Layout title={t("List Of Direct And All Reportees Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Direct And All Reportees Details</Block.Title>
+            <Block.Title tag="h2">{t("List Of Direct And All Reportees Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             
@@ -525,16 +517,16 @@ const handleExportClick = () => {
           className={`btn btn-primary mx-2 ${activeReportee === "direct" ? "active" : ""}`}
           onClick={() => setActiveReportee("direct")}
         >
-          Direct Reportee
+          {t("Direct Report")}
         </button>
         <button
           className={`btn btn-secondary mx-2 ${activeReportee === "all" ? "active" : ""}`}
           onClick={() => setActiveReportee("all")}
         >
-          All Reportee
+          {t("All Report")}
         </button>
         <Button type="button" variant="primary" onClick={handleExportClick}>
-           Export
+           {t("Export")}
         </Button>
         {/* <button onclick={() =>handleExportClick()}>Export</button> */}
       </div>

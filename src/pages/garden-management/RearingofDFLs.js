@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingofDFLs() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     disinfectantMasterId: "",
     cropNumber: "",
@@ -217,11 +219,11 @@ function RearingofDFLs() {
   };
 
   return (
-    <Layout title="Rearing of DFLs ">
+    <Layout title={t("Rearing of DFLs")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Rearing of DFLs </Block.Title>
+            <Block.Title tag="h2">{t("Rearing of DFLs")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -231,7 +233,7 @@ function RearingofDFLs() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -240,7 +242,7 @@ function RearingofDFLs() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -254,7 +256,7 @@ function RearingofDFLs() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Rearing Of DFLs
+              {t("Rearing Of DFLs")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
@@ -262,7 +264,7 @@ function RearingofDFLs() {
               <Col lg="4">
                     <Form.Group className="form-group ">
                       <Form.Label>
-                        Disinfactant Usage Details<span className="text-danger">*</span>
+                        {t("Disinfactant Usage Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -273,7 +275,7 @@ function RearingofDFLs() {
                             onBlur={() => handleInputs}
                             required
                           >
-                            <option value="">Select Disinfactant Usage</option>
+                            <option value="">{t("Select Disinfactant Usage")}</option>
                             {disinfactantListData.map((list) => (
                               <option
                                 key={list.disinfectantMasterId}
@@ -284,7 +286,7 @@ function RearingofDFLs() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Disinfactant Usage Details is required
+                          {t("Disinfactant Usage Details is required")}
                         </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -294,7 +296,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="plotNumber">
-                      Crop Number
+                      {t("Crop Number")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -305,7 +307,7 @@ function RearingofDFLs() {
                         onChange={handleInputs}
                         type="text"
                         maxLength="12"
-                        placeholder="Enter Crop Number"
+                        placeholder={t("Enter Crop Number")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -319,7 +321,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -330,7 +332,7 @@ function RearingofDFLs() {
                           onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotNumberListData.map((list) => (
                             <option key={list.id} value={list.id}>
                               {list.lotNumber}
@@ -338,7 +340,7 @@ function RearingofDFLs() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Lot Number is required
+                          {t("Lot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -349,7 +351,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        Race Of Dfls
+                        {t("Race Of Dfls")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -358,7 +360,7 @@ function RearingofDFLs() {
                           value={lot.raceOfDfls}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Race Of Dfls"
+                          placeholder={t("Enter Race Of Dfls")}
                           readOnly
                         />
                       </div>
@@ -369,7 +371,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        Source
+                        {t("Source")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -378,7 +380,7 @@ function RearingofDFLs() {
                           value={lot.grainage}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Source"
+                          placeholder={t("Enter Source")}
                           readOnly
                         />
                       </div>
@@ -388,7 +390,7 @@ function RearingofDFLs() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        No Of DFLs received
+                        {t("No Of DFLs received")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -397,7 +399,7 @@ function RearingofDFLs() {
                           value={lot.numberOfDFLsReceived}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Number Of DFLs"
+                          placeholder={t("Enter Number Of DFLs")}
                           readOnly
                         />
                       </div>
@@ -407,7 +409,7 @@ function RearingofDFLs() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
-                        Laid On Date
+                        {t("Laid On Date")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -416,7 +418,7 @@ function RearingofDFLs() {
                           value={lot.laidOnDate}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Laid On Date"
+                          placeholder={t("Enter Laid On Date")}
                           readOnly
                         />
                       </div>
@@ -426,7 +428,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="coldStorageDetails">
-                      Cold Storage Status
+                      {t("Cold Storage Status")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -435,7 +437,7 @@ function RearingofDFLs() {
                         value={data.coldStorageDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter  Cold Storage Status"
+                        placeholder={t("Enter Cold Storage Status")}
                       />
                     </div>
                   </Form.Group>
@@ -444,7 +446,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Chawki Percentage<span className="text-danger">*</span>
+                      {t("Chawki Percentage")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -453,11 +455,11 @@ function RearingofDFLs() {
                         value={data.chawkiPercentage}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Chawki Percentage"
+                        placeholder={t("Enter Chawki Percentage")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Chawki Percentage is required
+                      {t("Chawki Percentage is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -466,7 +468,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Weight(In Grams)<span className="text-danger">*</span>
+                      {t("Worm Weight (In Grams)")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -475,11 +477,11 @@ function RearingofDFLs() {
                         value={data.wormWeight}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter  Cold Storage Details"
+                        placeholder={t("Enter Cold Storage Details")}
                         required
                       />
                        <Form.Control.Feedback type="invalid">
-                       Worm Weight(In Grams) is required
+                       {t("Worm Weight (In Grams) is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -488,7 +490,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Test Status<span className="text-danger">*</span>
+                      {t("Worm Test Status")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -497,11 +499,11 @@ function RearingofDFLs() {
                         value={data.wormTestDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Worm Test Details"
+                        placeholder={t("Enter Worm Test Details")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Worm Test Status is required
+                      {t("Worm Test Status is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -510,7 +512,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Cocoon Produced in Nos<span className="text-danger">*</span>
+                      {t("Cocoon Produced in Nos")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -519,11 +521,11 @@ function RearingofDFLs() {
                         value={data.cocoonAssessmentDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Produced in Nos"
+                        placeholder={t("Enter Cocoon Produced in Nos")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Cocoon Produced in Nos is required
+                      {t("Cocoon Produced in Nos is required")}
                         </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -532,7 +534,7 @@ function RearingofDFLs() {
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                  Released On Date
+                  {t("Released On Date")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                   <div className="form-control-wrap">
@@ -561,7 +563,7 @@ function RearingofDFLs() {
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                  Brushing Date
+                  {t("Brushing Date")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                   <div className="form-control-wrap">
@@ -588,7 +590,7 @@ function RearingofDFLs() {
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">
-                  Spun Date
+                  {t("Spun Date")}
                   <span className="text-danger">*</span>
                 </Form.Label>
                   <div className="form-control-wrap">
@@ -619,12 +621,12 @@ function RearingofDFLs() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  {t("Save")}
                 </Button>
               </li>
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                  {t("Cancel")}
                 </Button>
               </li>
             </ul>

@@ -9,6 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
@@ -23,6 +24,7 @@ function BiddingReportReeler() {
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
+  const { t } = useTranslation();
 
   let name, value;
   const handleInputs = (e) => {
@@ -128,11 +130,11 @@ function BiddingReportReeler() {
     });
   };
   return (
-    <Layout title="Reeler Bidding Report">
+    <Layout title={t("Reeler Bidding Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Reeler Bidding Report</Block.Title>
+            <Block.Title tag="h2">{t("Reeler Bidding Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             
@@ -151,7 +153,7 @@ function BiddingReportReeler() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number
+                        {t("Reeler Number")}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -160,7 +162,7 @@ function BiddingReportReeler() {
                           value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reeler Number"
+                          placeholder={t("Enter Reeler Number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -168,7 +170,7 @@ function BiddingReportReeler() {
                         </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
-                        Date
+                        {t("Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -189,7 +191,7 @@ function BiddingReportReeler() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>

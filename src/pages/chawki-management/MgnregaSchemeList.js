@@ -12,11 +12,13 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import ChawkiManagement from "./ChawkiManagement";
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
 function MgnregaSchemeList() {
 /* get table detais */
+const { t } = useTranslation();
 
 const [listData, setListData] = useState([]);
 const [page, setPage] = useState(0);
@@ -115,7 +117,7 @@ useEffect(() => {
 
   const ChawkiDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -133,7 +135,7 @@ useEffect(() => {
             className="ms-2"
             onClick={() => handleEdit(row.mgnregaSchemeId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -150,49 +152,49 @@ useEffect(() => {
       // grow: 2,
     },
     {
-        name: "Acres Planted",
+        name: t("Acres Planted"),
         selector: (row) => row.acresPlanted,
         cell: (row) => <span>{row.acresPlanted}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Sapling Followed(In Feet)",
+        name: t("Sapling Followed(In Feet)"),
         selector: (row) => row.spacingFollwedFeet,
         cell: (row) => <span>{row.spacingFollwedFeet}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Sapling Procured(Nos)",
+      name: t("Sapling Procured(Nos)"),
       selector: (row) => row.spacingProcuredNos,
       cell: (row) => <span>{row.spacingProcuredNos}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sapling Followed",
+      name: t("Sapling Followed"),
       selector: (row) => row.spacingFollowed,
       cell: (row) => <span>{row.spacingFollowed}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sapling Procured",
+      name: t("Sapling Procured"),
       selector: (row) => row.spacingProcured,
       cell: (row) => <span>{row.spacingProcured}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of cutting Planted",
+      name: t("Number of cutting Planted"),
       selector: (row) => row.noOfCuttingPlanted,
       cell: (row) => <span>{row.noOfCuttingPlanted}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number of successful samplings distributed",
+      name: t("Number of successful samplings distributed"),
       selector: (row) => row.noOfSuccessfullSamplings,
       cell: (row) => <span>{row.noOfSuccessfullSamplings}</span>,
       sortable: true,
@@ -207,7 +209,7 @@ useEffect(() => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of MGNREGA Scheme</Block.Title>
+            <Block.Title tag="h2">{t("List Of MGNREGA Scheme")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -217,7 +219,7 @@ useEffect(() => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -226,7 +228,7 @@ useEffect(() => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>
@@ -247,6 +249,8 @@ useEffect(() => {
             paginationPerPage={countPerPage}
             paginationComponentOptions={{
                 noRowsPerPage: true,
+                rowsPerPageText: t("Rows per page"),
+                rangeSeparatorText: t("of"),
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}

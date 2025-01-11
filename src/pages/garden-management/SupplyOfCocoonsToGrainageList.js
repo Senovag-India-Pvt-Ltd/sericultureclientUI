@@ -10,6 +10,7 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -21,6 +22,7 @@ function SupplyOfCocoonsToGrainageList(){
  const [totalRows, setTotalRows] = useState(0);
  const [loading, setLoading] = useState(false);
  const _params = { params: { pageNumber: page, size: countPerPage } };
+ const { t } = useTranslation();
 
  const getList = () => {
    setLoading(true);
@@ -147,7 +149,7 @@ function SupplyOfCocoonsToGrainageList(){
    
    const GardenDataColumns = [
     {
-        name: "Action",
+        name: t("Action"),
         cell: (row) => (
             //   Button style
             <div className="text-start w-100">
@@ -157,7 +159,7 @@ function SupplyOfCocoonsToGrainageList(){
                 size="sm"
                 onClick={() => handleView(row.id)}
             >
-                View
+                {t("View")}
             </Button>
             <Button
                 variant="primary"
@@ -165,7 +167,7 @@ function SupplyOfCocoonsToGrainageList(){
                 className="ms-2"
                 onClick={() => handleEdit(row.id)}
             >
-                Edit
+                {t("Edit")}
             </Button>
             {/* <Button
                 variant="danger"
@@ -183,7 +185,7 @@ function SupplyOfCocoonsToGrainageList(){
         },
 
         {
-          name: "Grainage",
+          name: t("Grainage"),
           selector: (row) => row.grainageMasterName,
           cell: (row) => <span>{row.grainageMasterName}</span>,
           sortable: true,
@@ -204,63 +206,63 @@ function SupplyOfCocoonsToGrainageList(){
         //   hide: "md",
         // },
         {
-          name: "Screening Batch No",
+          name: t("Screening Batch No"),
           selector: (row) => row.screeningBatchNo,
           cell: (row) => <span>{row.screeningBatchNo}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Generation Number",
+          name: t("Generation Number"),
           selector: (row) => row.generationNumber,
           cell: (row) => <span>{row.generationNumber}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Spun Date",
+          name: t("Spun Date"),
           selector: (row) => row.spunOnDate,
           cell: (row) => <span>{row.spunOnDate}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Lot Number",
+          name: t("Lot Number"),
           selector: (row) => row.lotNumber,
           cell: (row) => <span>{row.lotNumber}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Cocoon Supplied in Kg",
+          name: t("Cocoon Supplied in Kg"),
           selector: (row) => row.cacoonsSuppliedInKg,
           cell: (row) => <span>{row.cacoonsSuppliedInKg}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Number Of Cocoons Dispatched",
+          name: t("Number Of Cocoons Dispatched"),
           selector: (row) => row.numberOfCocoonsDispatched,
           cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Date Of Supply",
+          name: t("Date Of Supply"),
           selector: (row) => row.dateOfSupply,
           cell: (row) => <span>{row.dateOfSupply}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Dispatch Date",
+          name: t("Dispatch Date"),
           selector: (row) => row.dispatchDate,
           cell: (row) => <span>{row.dispatchDate}</span>,
           sortable: true,
           hide: "md",
         },
         {
-          name: "Invoice No",
+          name: t("Invoice No"),
           selector: (row) => row.invoiceNo,
           cell: (row) => <span>{row.invoiceNo}</span>,
           sortable: true,
@@ -269,11 +271,11 @@ function SupplyOfCocoonsToGrainageList(){
  
  ];
 return(
- <Layout title="Supply of Cocoons to Grainage List">
+ <Layout title={t("Supply of Cocoons to Grainage List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply of Cocoons to Grainage List</Block.Title>
+            <Block.Title tag="h2">{t("Supply of Cocoons to Grainage List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -283,7 +285,7 @@ return(
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -292,7 +294,7 @@ return(
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

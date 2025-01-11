@@ -10,12 +10,14 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function FarmerRegistrationList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -436,11 +438,11 @@ function FarmerRegistrationList() {
   ];
 
   return (
-    <Layout title="Farmer Wise Report">
+    <Layout title={t("Farmer Wise Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Wise Report</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Wise Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -451,7 +453,7 @@ function FarmerRegistrationList() {
           <Row className="m-4">
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>District</Form.Label>
+                <Form.Label>{t("District")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="districtId"
@@ -462,7 +464,7 @@ function FarmerRegistrationList() {
                       data.districtId === undefined || data.districtId === "0"
                     }
                   >
-                    <option value="">Select District</option>
+                    <option value="">{t("Select District")}</option>
                     {districtListData && districtListData.length
                       ? districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -472,7 +474,7 @@ function FarmerRegistrationList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    District Name is required
+                    {t("District Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -480,7 +482,7 @@ function FarmerRegistrationList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Taluk</Form.Label>
+                <Form.Label>{t("Taluk")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="talukId"
@@ -491,7 +493,7 @@ function FarmerRegistrationList() {
                       data.talukId === undefined || data.talukId === "0"
                     }
                   >
-                    <option value="">Select Taluk</option>
+                    <option value="">{t("Select Taluk")}</option>
                     {talukListData && talukListData.length
                       ? talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
@@ -501,7 +503,7 @@ function FarmerRegistrationList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Taluk Name is required
+                    {t("Taluk Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -509,7 +511,7 @@ function FarmerRegistrationList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Hobli</Form.Label>
+                <Form.Label>{t("Hobli")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="hobliId"
@@ -521,7 +523,7 @@ function FarmerRegistrationList() {
                       hobliData.hobliId === "0"
                     }
                   >
-                    <option value="">Select Hobli</option>
+                    <option value="">{t("Select hobli")}</option>
                     {hobliListData && hobliListData.length
                       ? hobliListData.map((list) => (
                           <option key={list.hobliId} value={list.hobliId}>
@@ -531,7 +533,7 @@ function FarmerRegistrationList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Hobli Name is required
+                    {t("Hobli Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -539,7 +541,7 @@ function FarmerRegistrationList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Village</Form.Label>
+                <Form.Label>{t("Village")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="villageId"
@@ -550,7 +552,7 @@ function FarmerRegistrationList() {
                       data.villageId === undefined || data.villageId === "0"
                     }
                   >
-                    <option value="">Select Village</option>
+                    <option value="">{t("Select village")}</option>
                     {villageListData && villageListData.length
                       ? villageListData.map((list) => (
                           <option key={list.villageId} value={list.villageId}>
@@ -560,7 +562,7 @@ function FarmerRegistrationList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Village Name is required
+                    {t("Village Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -568,7 +570,7 @@ function FarmerRegistrationList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>TSC</Form.Label>
+                <Form.Label>{t("tsc")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="tscMasterId"
@@ -579,7 +581,7 @@ function FarmerRegistrationList() {
                       data.tscMasterId === undefined || data.tscMasterId === "0"
                     }
                   >
-                    <option value="">Select TSC</option>
+                    <option value="">{t("Select TSC")}</option>
                     {tscListData && tscListData.length
                       ? tscListData.map((list) => (
                           <option
@@ -592,19 +594,19 @@ function FarmerRegistrationList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    TSC is required
+                    {t("TSC is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
             </Col>
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
-                Search
+                {t("Search")}
               </Button>
             </Col>
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={exportCsv}>
-                Export
+                {t("Export")}
               </Button>
             </Col>
           </Row>

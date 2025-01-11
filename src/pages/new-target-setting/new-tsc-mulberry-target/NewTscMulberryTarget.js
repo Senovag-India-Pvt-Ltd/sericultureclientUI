@@ -10,11 +10,13 @@ import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function NewTscMulberryTarget() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -1214,14 +1216,14 @@ function NewTscMulberryTarget() {
     });
   };
   return (
-    <Layout title="TSC Mulberry Target">
+    <Layout title={t("TSC Mulberry Target")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">TSC Mulberry Target</Block.Title>
+            <Block.Title tag="h2">{t("TSC Mulberry Target")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
-            View Target
+            {t("View Target")}
           </Button>
         </Block.HeadBetween>
       </Block.Head>
@@ -1234,14 +1236,14 @@ function NewTscMulberryTarget() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>TSC Mulberry Target </Card.Header>
+                    <Card.Header>{t("TSC Mulberry Target")}</Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1256,7 +1258,7 @@ function NewTscMulberryTarget() {
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1267,248 +1269,12 @@ function NewTscMulberryTarget() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="mulberryTargetTypeId"
-                                value={data.mulberryTargetTypeId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
-                                }
-                              >
-                                <option value="">Select Year</option>
-                                {mulberryTargetTypeData.map((list) => (
-                                  <option
-                                    key={list.mulberryTargetTypeId}
-                                    value={list.mulberryTargetTypeId}
-                                  >
-                                    {list.mulberryTargetTypeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              District<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="districtId"
-                                value={data.districtId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.districtId === undefined ||
-                                  data.districtId === "0"
-                                }
-                              >
-                                <option value="">Select District</option>
-                                {districtListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={list.districtId}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                District is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Taluk<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="talukId"
-                                value={data.talukId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.talukId === undefined ||
-                                  data.talukId === "0"
-                                }
-                              >
-                                <option value="">Select Taluk</option>
-                                {talukListData.map((list) => (
-                                  <option
-                                    key={list.talukId}
-                                    value={list.talukId}
-                                  >
-                                    {list.talukName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Taluk is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              TSC<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="tscMasterId"
-                                value={data.tscMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.tscMasterId === undefined ||
-                                  data.tscMasterId === "0"
-                                }
-                              >
-                                <option value="">Select TSC</option>
-                                {chawkiListData.map((list) => (
-                                  <option
-                                    key={list.tscMasterId}
-                                    value={list.tscMasterId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                TSC is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Target Type<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="targetType"
-                                value={data.targetType}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                // isInvalid={
-                                //   data.targetType === undefined ||
-                                //   data.targetType === "0"
-                                // }
-                              >
-                                <option value="">Select Target Type</option>
-                                <option value="NAREGA">NAREGA</option>
-                                <option value="NON NAREGA">NON NAREGA</option>
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target Type is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Month<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="month"
-                                value={data.month}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
-                                // }
-                              >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Month is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="value">
-                              Target No.
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="value"
-                                name="value"
-                                value={data.value}
-                                onChange={handleInputs}
-                                type="number"
-                                placeholder="Enter Target No."
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Target No. is required.
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1544,27 +1310,252 @@ function NewTscMulberryTarget() {
                           </Form.Group>
                         </Col> */}
 
+
+
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              {t("Target")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="mulberryTargetTypeId"
+                                value={data.mulberryTargetTypeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.mulberryTargetTypeId === undefined ||
+                                  data.mulberryTargetTypeId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Target")}</option>
+                                {mulberryTargetTypeData.map((list) => (
+                                  <option
+                                    key={list.mulberryTargetTypeId}
+                                    value={list.mulberryTargetTypeId}
+                                  >
+                                    {list.mulberryTargetTypeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("District")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="districtId"
+                                value={data.districtId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.districtId === undefined ||
+                                  data.districtId === "0"
+                                }
+                              >
+                                <option value="">{t("Select District")}</option>
+                                {districtListData.map((list) => (
+                                  <option
+                                    key={list.districtId}
+                                    value={list.districtId}
+                                  >
+                                    {list.districtName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("District is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Taluk")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukId"
+                                value={data.talukId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.talukId === undefined ||
+                                  data.talukId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Taluk")}</option>
+                                {talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Taluk is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("TSC")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="tscMasterId"
+                                value={data.tscMasterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.tscMasterId === undefined ||
+                                  data.tscMasterId === "0"
+                                }
+                              >
+                                <option value="">{t("Select TSC")}</option>
+                                {chawkiListData.map((list) => (
+                                  <option
+                                    key={list.tscMasterId}
+                                    value={list.tscMasterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("TSC is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Target Type")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="targetType"
+                                value={data.targetType}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                              >
+                                <option value="">{t("Select Target Type")}</option>
+                                <option value="NAREGA">{t("NAREGA")}</option>
+                                <option value="NON NAREGA">{t("NON NAREGA")}</option>
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target Type is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Month")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="month"
+                                value={data.month}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                              >
+                                <option value="">{t("Select Month")}</option>
+                                <option value="JANUARY">{t("January")}</option>
+                                <option value="FEBRUARY">{t("February")}</option>
+                                <option value="MARCH">{t("March")}</option>
+                                <option value="APRIL">{t("April")}</option>
+                                <option value="MAY">{t("May")}</option>
+                                <option value="JUNE">{t("June")}</option>
+                                <option value="JULY">{t("July")}</option>
+                                <option value="AUGUST">{t("August")}</option>
+                                <option value="SEPTEMBER">{t("September")}</option>
+                                <option value="OCTOBER">{t("October")}</option>
+                                <option value="NOVEMBER">{t("November")}</option>
+                                <option value="DECEMBER">{t("December")}</option>
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Month is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("Target No.")}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required.")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User<span className="text-danger">*</span>
+                              {t("User")}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Button
                                 variant="primary"
                                 onClick={() => setShowModal5(true)}
                               >
-                                Select User
+                                {t("Select User")}
                               </Button>
                               <Form.Control
                                 type="hidden"
                                 name="userMasterId"
                                 value={data.userMasterId}
-                                // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                User is required
+                                {t("User is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1572,20 +1563,18 @@ function NewTscMulberryTarget() {
 
                         <Col sm={3}>
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label>User Name</Form.Label>
+                            <Form.Label>{t("User Name")}</Form.Label>
                             <Form.Control
                               id="username"
                               name="username"
                               value={userName}
-                              // onChange={handleSearchInputs}
                               type="text"
-                              placeholder="Enter User Name"
+                              placeholder={t("Enter User Name")}
                               className="form-control"
-                              // readOnly
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              User is required
+                              {t("User is required")}
                             </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
@@ -1598,12 +1587,12 @@ function NewTscMulberryTarget() {
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
                       <Button type="submit" variant="primary">
-                        Save
+                        {t("Save")}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t("Cancel")}
                       </Button>
                     </li>
                   </ul>
@@ -1615,14 +1604,13 @@ function NewTscMulberryTarget() {
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Available Budget Balance
+                  {t("Available Budget Balance")}
                 </Card.Header>
                 <Card.Body>
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Balance Amount:</td>
-                        {/* <td>{balanceAmount}</td> */}
+                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
                         <td>0</td>
                       </tr>
                     </tbody>
@@ -1657,7 +1645,7 @@ function NewTscMulberryTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>TSC Wise Monthly Mulberry</Modal.Title>
+          <Modal.Title>{t("TSC Wise Monthly Mulberry")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1670,7 +1658,7 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Financial Year
+                    {t("Financial Year")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1685,7 +1673,7 @@ function NewTscMulberryTarget() {
                         editData.financialYearMasterId === "0"
                       }
                     >
-                      <option value="">Select Year</option>
+                      <option value="">{t("Select Year")}</option>
                       {financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
@@ -1696,7 +1684,7 @@ function NewTscMulberryTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Financial Year is required
+                      {t("Financial Year is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1705,7 +1693,7 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Target
+                    {t("Target")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1720,7 +1708,7 @@ function NewTscMulberryTarget() {
                         editData.mulberryTargetTypeId === "0"
                       }
                     >
-                      <option value="">Select Year</option>
+                      <option value="">{t("Select Target")}</option>
                       {mulberryTargetTypeData.map((list) => (
                         <option
                           key={list.mulberryTargetTypeId}
@@ -1731,7 +1719,7 @@ function NewTscMulberryTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Target is required
+                      {t("Target is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1740,7 +1728,8 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    District<span className="text-danger">*</span>
+                    {t("District")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1754,7 +1743,7 @@ function NewTscMulberryTarget() {
                         editData.districtId === "0"
                       }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -1762,7 +1751,7 @@ function NewTscMulberryTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      District is required
+                      {t("District is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1771,7 +1760,8 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Taluk<span className="text-danger">*</span>
+                    {t("Taluk")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1785,7 +1775,7 @@ function NewTscMulberryTarget() {
                         editData.talukId === "0"
                       }
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
@@ -1793,7 +1783,7 @@ function NewTscMulberryTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Taluk is required
+                      {t("Taluk is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1802,7 +1792,8 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    TSC<span className="text-danger">*</span>
+                    {t("TSC")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1816,7 +1807,7 @@ function NewTscMulberryTarget() {
                         editData.tscMasterId === "0"
                       }
                     >
-                      <option value="">Select TSC</option>
+                      <option value="">{t("Select TSC")}</option>
                       {chawkiListData.map((list) => (
                         <option key={list.tscMasterId} value={list.tscMasterId}>
                           {list.name}
@@ -1824,7 +1815,7 @@ function NewTscMulberryTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      TSC is required
+                      {t("TSC is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1833,7 +1824,8 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Target Type<span className="text-danger">*</span>
+                    {t("Target Type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1842,22 +1834,13 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
-                      // isInvalid={
-                      //   editData.targetType === undefined ||
-                      //   editData.targetType === "0"
-                      // }
                     >
-                      <option value="">Select Target Type</option>
-                      <option value="NAREGA">NAREGA</option>
-                      <option value="NON NAREGA">NON NAREGA</option>
-                      {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
+                      <option value="">{t("Select Target Type")}</option>
+                      <option value="NAREGA">{t("NAREGA")}</option>
+                      <option value="NON NAREGA">{t("NON NAREGA")}</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Target Type is required
+                      {t("Target Type is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1866,7 +1849,8 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Month<span className="text-danger">*</span>
+                    {t("Month")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1875,33 +1859,23 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
-                      // isInvalid={
-                      //   editData.month === undefined ||
-                      //   editData.month === "0"
-                      // }
                     >
-                      <option value="">Select Month</option>
-                      <option value="JANUARY">January</option>
-                      <option value="FEBRUARY">February</option>
-                      <option value="MARCH">March</option>
-                      <option value="APRIL">April</option>
-                      <option value="MAY">May</option>
-                      <option value="JUNE">June</option>
-                      <option value="JULY">July</option>
-                      <option value="AUGUST">August</option>
-                      <option value="SEPTEMBER">September</option>
-                      <option value="OCTOBER">October</option>
-                      <option value="NOVEMBER">November</option>
-                      <option value="DECEMBER">December</option>
-
-                      {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
+                      <option value="">{t("Select Month")}</option>
+                      <option value="JANUARY">{t("January")}</option>
+                      <option value="FEBRUARY">{t("February")}</option>
+                      <option value="MARCH">{t("March")}</option>
+                      <option value="APRIL">{t("April")}</option>
+                      <option value="MAY">{t("May")}</option>
+                      <option value="JUNE">{t("June")}</option>
+                      <option value="JULY">{t("July")}</option>
+                      <option value="AUGUST">{t("August")}</option>
+                      <option value="SEPTEMBER">{t("September")}</option>
+                      <option value="OCTOBER">{t("October")}</option>
+                      <option value="NOVEMBER">{t("November")}</option>
+                      <option value="DECEMBER">{t("December")}</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Month is required
+                      {t("Month is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1910,8 +1884,7 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    Target No.
-                    {/* <span className="text-danger">*</span> */}
+                    {t("Target No.")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1920,11 +1893,10 @@ function NewTscMulberryTarget() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="number"
-                      placeholder="Enter Target No."
-                      // required
+                      placeholder={t("Enter Target No.")}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Target No. is required.
+                      {t("Target No. is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1933,24 +1905,24 @@ function NewTscMulberryTarget() {
               <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    User<span className="text-danger">*</span>
+                    {t("User")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Button
                       variant="primary"
                       onClick={() => setShowModal7(true)}
                     >
-                      Select User
+                      {t("Select User")}
                     </Button>
                     <Form.Control
                       type="hidden"
                       name="userMasterId"
                       value={editData.userMasterId}
-                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      User is required
+                      {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1958,20 +1930,18 @@ function NewTscMulberryTarget() {
 
               <Col sm={3}>
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label>User Name</Form.Label>
+                  <Form.Label>{t("User Name")}</Form.Label>
                   <Form.Control
                     id="username"
                     name="username"
                     value={userNameEdit}
-                    // onChange={handleSearchInputs}
                     type="text"
-                    placeholder="Enter User Name"
+                    placeholder={t("Enter User Name")}
                     className="form-control"
-                    // readOnly
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    User is required
+                    {t("User is required")}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -1979,9 +1949,8 @@ function NewTscMulberryTarget() {
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t("Update")}
                     </Button>
                   </div>
                 </div>
@@ -1993,7 +1962,7 @@ function NewTscMulberryTarget() {
 
       <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>All Reportee Details</Modal.Title>
+          <Modal.Title>{t("All Reportee Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <DataTable
@@ -2018,7 +1987,7 @@ function NewTscMulberryTarget() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>View Target Details</Modal.Title>
+          <Modal.Title>{t("View Target Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <DataTable
@@ -2043,23 +2012,22 @@ function NewTscMulberryTarget() {
 
       <Modal show={showModal5} onHide={handleCloseModal5} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Select User</Modal.Title>
+          <Modal.Title>{t("Select User")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
             <Card className="mt-3 p-4 shadow-lg rounded">
               <Row className="g-4">
-                {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t("District")}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchData.districtId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -2071,17 +2039,16 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Taluk Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
+                    <Form.Label>{t("Taluk")}</Form.Label>
                     <Form.Select
                       name="talukId"
                       value={searchData.talukId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData &&
                         talukListData.length &&
                         talukListData.map((list) => (
@@ -2093,17 +2060,16 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t("Designation")}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchData.designationId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -2118,39 +2084,36 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t("Mobile Number")}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchData.phoneNumber}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       className="form-control"
                     />
                   </Form.Group>
                 </Col>
 
-                {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t("User Name")}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchData.username}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t("Enter User Name")}
                       className="form-control"
                     />
                   </Form.Group>
                 </Col>
 
-                {/* Search Button */}
                 <Col sm={4} className="d-flex align-items-end">
                   <Button
                     type="button"
@@ -2158,22 +2121,21 @@ function NewTscMulberryTarget() {
                     onClick={searchUser}
                     className="w-100"
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Row>
 
-              {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t("User")}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchData.userMasterId}
                     onChange={(e) => handleUserSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t("Select User")}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -2184,7 +2146,7 @@ function NewTscMulberryTarget() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t("No Users Found")}</option>
                     )}
                   </Form.Select>
                 </Col>
@@ -2193,7 +2155,7 @@ function NewTscMulberryTarget() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal5()}>
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </Row>
@@ -2203,23 +2165,22 @@ function NewTscMulberryTarget() {
       </Modal>
       <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Select User In Edit</Modal.Title>
+          <Modal.Title>{t("Select User In Edit")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
             <Card className="mt-3 p-4 shadow-lg rounded">
               <Row className="g-4">
-                {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t("District")}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchDataEdit.districtId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -2231,17 +2192,16 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Taluk Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
+                    <Form.Label>{t("Taluk")}</Form.Label>
                     <Form.Select
                       name="talukId"
                       value={searchDataEdit.talukId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListDataEdit &&
                         talukListDataEdit.length &&
                         talukListDataEdit.map((list) => (
@@ -2253,17 +2213,16 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t("Designation")}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchDataEdit.designationId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -2278,38 +2237,35 @@ function NewTscMulberryTarget() {
                   </Form.Group>
                 </Col>
 
-                {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t("Mobile Number")}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchDataEdit.phoneNumber}
                       onChange={handleSearchInputsEdit}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       className="form-control"
                     />
                   </Form.Group>
                 </Col>
 
-                {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t("User Name")}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchDataEdit.username}
                       onChange={handleSearchInputsEdit}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t("Enter User Name")}
                       className="form-control"
                     />
                   </Form.Group>
                 </Col>
-                {/* Search Button */}
                 <Col sm={4} className="d-flex align-items-end">
                   <Button
                     type="button"
@@ -2317,22 +2273,21 @@ function NewTscMulberryTarget() {
                     onClick={searchUserEdit}
                     className="w-100"
                   >
-                    Search
+                    {t("Search")}
                   </Button>
                 </Col>
               </Row>
 
-              {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t("User")}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchDataEdit.userMasterId}
                     onChange={(e) => handleUserEditSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t("Select User")}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -2343,7 +2298,7 @@ function NewTscMulberryTarget() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t("No Users Found")}</option>
                     )}
                   </Form.Select>
                 </Col>
@@ -2351,7 +2306,7 @@ function NewTscMulberryTarget() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal7()}>
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </Row>

@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -19,6 +20,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function SeedCuttingBank() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     fruitsId: "",
     farmerName: "",
@@ -232,11 +234,11 @@ function SeedCuttingBank() {
   };
 
   return (
-    <Layout title="Seed cutting bank">
+    <Layout title={t("Seed cutting bank")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed cutting bank</Block.Title>
+            <Block.Title tag="h2">{t("Seed cutting bank")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -246,7 +248,7 @@ function SeedCuttingBank() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -255,7 +257,7 @@ function SeedCuttingBank() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -272,7 +274,7 @@ function SeedCuttingBank() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                      {t("FRUITS ID")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -280,17 +282,17 @@ function SeedCuttingBank() {
                         name="fruitsId"
                         value={data.fruitsId}
                         onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t("Enter FRUITS ID")}
                         maxLength="16"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
+                        {t("Fruits ID Should Contain 16 digits")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -305,7 +307,7 @@ function SeedCuttingBank() {
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Seed Cutting Bank
+                  {t("Seed Cutting Bank")}
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
@@ -313,7 +315,7 @@ function SeedCuttingBank() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="plotNumber">
-                          Farmer Name<span className="text-danger">*</span>
+                          {t("Farmer Name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -322,11 +324,11 @@ function SeedCuttingBank() {
                             value={data.farmerName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farmer Name"
+                            placeholder={t("Enter Farmer Name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name is required
+                            {t("Farmer Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -335,7 +337,7 @@ function SeedCuttingBank() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="plotNumber">
-                          Quantity Of Seed Cuttings
+                          {t("Quantity Of Seed Cuttings")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -346,11 +348,11 @@ function SeedCuttingBank() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="5"
-                            placeholder="Enter Quantity Of Seed Cuttings"
+                            placeholder={t("Enter Quantity Of Seed Cuttings")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Quantity Of Seed Cuttings is required
+                            {t("Quantity Of Seed Cuttings is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -359,7 +361,7 @@ function SeedCuttingBank() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="ratePerTonne">
-                          Rate Per Tonne<span className="text-danger">*</span>
+                          {t("Rate Per Tonne")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -369,11 +371,11 @@ function SeedCuttingBank() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="4"
-                            placeholder="Enter Rate Per Tonne"
+                            placeholder={t("Enter Rate Per Tonne")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Rate Per Tonne is required
+                            {t("Rate Per Tonne is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -382,7 +384,7 @@ function SeedCuttingBank() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="ratePerTonne">
-                          Remittance Details
+                          {t("Remittance Details")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -392,11 +394,11 @@ function SeedCuttingBank() {
                             value={data.remittanceDetails}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter  Remittance Details"
+                            placeholder={t("Enter Remittance Details")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Remittance Details is required
+                            {t("Remittance Details is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -405,7 +407,7 @@ function SeedCuttingBank() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="challanUpload">
-                          Challan Upload
+                          {t("Challan Upload")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -431,7 +433,7 @@ function SeedCuttingBank() {
                     </Col>
 
                     <Form.Label column sm={2}>
-                      Date Of Pruning
+                      {t("Date Of Pruning")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={2}>
@@ -467,12 +469,12 @@ function SeedCuttingBank() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

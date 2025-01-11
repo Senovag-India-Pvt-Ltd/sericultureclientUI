@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next"; // Add this line
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenUpdate() {
+  const { t } = useTranslation(); // Add this line
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -112,7 +114,7 @@ function MaintenanceOfMulberryGardenUpdate() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       text: message,
     });
   };
@@ -125,7 +127,7 @@ function MaintenanceOfMulberryGardenUpdate() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -133,16 +135,16 @@ function MaintenanceOfMulberryGardenUpdate() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
   return (
-  <Layout title="Update Pruning Date">
+  <Layout title={t("Update Pruning Date")}>
   <Block.Head>
     <Block.HeadBetween>
       <Block.HeadContent>
         <Block.Title tag="h2">
-        Pruning Date
+        {t("Pruning Date")}
         </Block.Title>
       </Block.HeadContent>
       <Block.HeadContent>
@@ -153,7 +155,7 @@ function MaintenanceOfMulberryGardenUpdate() {
               className="btn btn-primary btn-md d-md-none"
             >
               <Icon name="arrow-long-left" />
-              <span>Go to List</span>
+              <span>{t("Go to List")}</span>
             </Link>
           </li>
           <li>
@@ -162,7 +164,7 @@ function MaintenanceOfMulberryGardenUpdate() {
               className="btn btn-primary d-none d-md-inline-flex"
             >
               <Icon name="arrow-long-left" />
-              <span>Go to List</span>
+              <span>{t("Go to List")}</span>
             </Link>
           </li>
         </ul>
@@ -176,17 +178,17 @@ function MaintenanceOfMulberryGardenUpdate() {
           {/* <Row className="g-3 "> */}
             <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-               Update Pruning Date
+               {t("Update Pruning Date")}
               </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                     <Row className="g-gs">
                     <Form.Label column sm={2}>
-                        Pruning Date
+                        {t("Pruning Date")}
                         <span className="text-danger">*</span>
                         </Form.Label>
                         <Col sm={2}>
@@ -214,12 +216,12 @@ function MaintenanceOfMulberryGardenUpdate() {
                     <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                        Update
+                        {t("Update")}
                     </Button>
                     </li>
                     <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t("Cancel")}
                     </Button>
                     </li>
               </ul>

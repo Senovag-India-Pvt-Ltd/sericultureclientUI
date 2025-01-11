@@ -10,6 +10,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 import DataTable, { createTheme } from "react-data-table-component";
 
@@ -18,6 +19,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function MaintenanceandSaleofNurserytoFarmers() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     fruitsId: "",
     farmerName: "",
@@ -278,12 +280,12 @@ function MaintenanceandSaleofNurserytoFarmers() {
   };
 
   return (
-    <Layout title="Maintenance and Sale of Nursery to Farmers ">
+    <Layout title={t("Maintenance and Sale of Nursery to Farmers")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance and Sale of Nursery to Farmers
+              {t("Maintenance and Sale of Nursery to Farmers")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -294,7 +296,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -303,7 +305,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -320,7 +322,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                      {t("FRUITS ID")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -328,17 +330,17 @@ function MaintenanceandSaleofNurserytoFarmers() {
                         name="fruitsId"
                         value={data.fruitsId}
                         onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t("Enter FRUITS ID")}
                         required
                         maxLength="16"
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
+                        {t("Fruits ID Should Contain 16 digits")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                     {/* <Col sm={2}>
@@ -363,14 +365,14 @@ function MaintenanceandSaleofNurserytoFarmers() {
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Maintenance and Sale of Nursery to Farmers
+                  {t("Maintenance and Sale of Nursery to Farmers")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Farmer’s name<span className="text-danger">*</span>
+                          {t("Farmer’s name")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -379,11 +381,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             type="text"
                             value={data.farmerName}
                             onChange={handleInputs}
-                            placeholder="Enter Farmer’s name"
+                            placeholder={t("Enter Farmer’s name")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name is required
+                            {t("Farmer Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -392,7 +394,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Mulberry Variety<span className="text-danger">*</span>
+                          {t("Mulberry Variety")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -407,7 +409,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                               data.mulberryVarietyId === "0"
                             }
                           >
-                            <option value="">Select Mulberry Variety</option>
+                            <option value="">{t("Select Mulberry Variety")}</option>
                             {varietyListData.map((list) => (
                               <option
                                 key={list.mulberryVarietyId}
@@ -418,7 +420,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Mulberry Variety is required
+                            {t("Mulberry Variety is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -427,7 +429,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Area<span className="text-danger">*</span>
+                          {t("Area")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -437,11 +439,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="4"
-                            placeholder="Enter Area"
+                            placeholder={t("Enter Area")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Area is required
+                            {t("Area is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -459,7 +461,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                   type="text"
                                   value={data.nurserySaleDetails}
                                   onChange={handleInputs}
-                                  placeholder="Enter Nursery sale details"
+                                  placeholder={t("Enter Nursery sale details")}
                                 />
                               </div>
                             </Form.Group>
@@ -468,8 +470,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Quantity(No Of Saplings)
-                          <span className="text-danger">*</span>
+                          {t("Quantity(No Of Saplings)")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -479,11 +480,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="5"
-                            placeholder=" Enter Quantity(No Of Saplings)"
+                            placeholder={t("Enter Quantity(No Of Saplings)")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Quantity(No Of Saplings) is required
+                            {t("Quantity(No Of Saplings) is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -492,7 +493,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate<span className="text-danger">*</span>
+                          {t("Rate")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -502,11 +503,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             maxLength="3"
-                            placeholder="Enter Rate"
+                            placeholder={t("Enter Rate")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Rate is required
+                            {t("Rate is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -515,8 +516,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Sapling age in Month/Year
-                          <span className="text-danger">*</span>
+                          {t("Sapling age in Month/Year")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -525,11 +525,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             value={data.saplingAge}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Sapling age in Month/Year"
+                            placeholder={t("Enter Sapling age in Month/Year")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Sapling age in Month/Year is required
+                            {t("Sapling age in Month/Year is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -574,8 +574,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Remittance details
-                          <span className="text-danger">*</span>
+                          {t("Remittance details")}<span className="text-danger">*</span>
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -585,11 +584,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             type="text"
                             value={data.remittanceDetails}
                             onChange={handleInputs}
-                            placeholder="Enter Remittance details"
+                            placeholder={t("Enter Remittance details")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Remittance details is required
+                            {t("Remittance details is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -598,7 +597,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of planting<span className="text-danger">*</span>
+                          {t("Date of planting")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -621,7 +620,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Sale Date<span className="text-danger">*</span>
+                          {t("Sale Date")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -642,7 +641,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="challanUploadKey">
-                          Upload Challan
+                          {t("Upload Challan")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -676,12 +675,12 @@ function MaintenanceandSaleofNurserytoFarmers() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

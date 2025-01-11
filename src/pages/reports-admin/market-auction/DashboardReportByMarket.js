@@ -9,12 +9,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DashboardReportByMarket() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       fontWeight: "bold",
@@ -312,11 +314,11 @@ function DashboardReportByMarket() {
     });
   };
   return (
-    <Layout title="All Market Dashboard">
+    <Layout title={t("All Market Dashboard")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">All Market Dashboard</Block.Title>
+            <Block.Title tag="h2">{t("All Market Dashboard")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -351,8 +353,7 @@ function DashboardReportByMarket() {
                 style={{ fontSize: "1.3rem", fontWeight: "bold" }}
                 className="d-flex justify-content-center"
               >
-                Govt of Karnataka, Department of Sericulture LIVE Market
-                Transaction for {new Date().toLocaleDateString("en-GB")}
+                {t("Govt of Karnataka, Department of Sericulture LIVE Market Transaction for")} {new Date().toLocaleDateString("en-GB")}
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs pt-2">
@@ -370,7 +371,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Sl No
+                            {t("Sl No")}
                           </th>
                           <th
                             style={{
@@ -379,7 +380,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Date
+                            {t("Date")}
                           </th>
                           <th
                             style={{
@@ -388,7 +389,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Market
+                            {t("Market")}
                           </th>
                           <th
                             style={{
@@ -397,7 +398,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            No of Lots
+                            {t("No of Lots")}
                           </th>
                           <th
                             style={{
@@ -406,7 +407,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Accepted Lots
+                            {t("Accepted Lots")}
                           </th>
                           <th
                             style={{
@@ -415,7 +416,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Weighed Lots
+                            {t("Weighed Lots")}
                           </th>
                           <th
                             style={{
@@ -424,7 +425,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Total Weight
+                            {t("Total Weight")}
                           </th>
                           <th
                             style={{
@@ -433,7 +434,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Total Value
+                            {t("Total Value")}
                           </th>
                           <th
                             style={{
@@ -442,7 +443,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Max Bid
+                            {t("Max Bid")}
                           </th>
                           <th
                             style={{
@@ -451,7 +452,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Min Bid
+                            {t("Min Bid")}
                           </th>
                           <th
                             style={{
@@ -460,7 +461,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Avg Bid
+                            {t("Avg Bid")}
                           </th>
                         </tr>
                       </thead>
@@ -633,7 +634,7 @@ function DashboardReportByMarket() {
                 style={{ fontSize: "1.3rem", fontWeight: "bold" }}
                 className="d-flex justify-content-center"
               >
-                Reeler Deposit for {new Date().toLocaleDateString("en-GB")}
+                {t("Reeler Deposit for")} {new Date().toLocaleDateString("en-GB")}
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs pt-2">
@@ -651,7 +652,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Sl No
+                            {t("Sl No")}
                           </th>
                           <th
                             style={{
@@ -660,7 +661,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Market
+                            {t("Market")}
                           </th>
                           <th
                             style={{
@@ -669,7 +670,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Posting Date
+                            {t("Posting Date")}
                           </th>
                           <th
                             style={{
@@ -678,7 +679,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Deposit Count
+                            {t("Deposit Count")}
                           </th>
                           <th
                             style={{
@@ -687,7 +688,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Deposited Amount
+                            {t("Deposited Amount")}
                           </th>
                           <th
                             style={{
@@ -696,7 +697,7 @@ function DashboardReportByMarket() {
                             }}
                             // colSpan="2"
                           >
-                            Reelers Count
+                            {t("Reelers Count")}
                           </th>
                         </tr>
                       </thead>
@@ -836,8 +837,8 @@ function DashboardReportByMarket() {
                   </Col>
                   <Col lg="12" className="d-flex justify-content-center">
                     <div style={{ fontWeight: "bold",fontSize:"1.1rem" }}>
-                      Total deposit by reelers at{" "}
-                      {new Date().toLocaleDateString("en-GB")} is{" "}
+                      {t("Total deposit by reelers at")}{" "}
+                      {new Date().toLocaleDateString("en-GB")} {t("is")}{" "}
                       <span style={{color:"green"}}>{totalAmountOfAllMarket?totalAmountOfAllMarket:0}</span>
                     </div>
                   </Col>

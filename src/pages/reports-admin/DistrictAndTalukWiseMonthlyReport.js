@@ -8,11 +8,13 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DistrictAndTalukWiseMonthlyReport() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     startDate: "",
     endDate: "",
@@ -114,11 +116,11 @@ function DistrictAndTalukWiseMonthlyReport() {
   };
  
   return (
-    <Layout title="District Wise Monthly Report">
+    <Layout title={t("District Wise Monthly Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Monthly Report</Block.Title>
+            <Block.Title tag="h2">{t("District Wise Monthly Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
            
@@ -138,7 +140,7 @@ function DistrictAndTalukWiseMonthlyReport() {
                     <Form.Group as={Row} className="form-group">
                       
                       <Form.Label column sm={1}>
-                        From Date
+                        {t("From Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -153,7 +155,7 @@ function DistrictAndTalukWiseMonthlyReport() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t("To Date")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -169,7 +171,7 @@ function DistrictAndTalukWiseMonthlyReport() {
                       </Col>
                       <Col sm={2}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export
+                        {t("Export")}
                     </Button>
                       </Col>
                     </Form.Group>

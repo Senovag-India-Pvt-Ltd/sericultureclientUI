@@ -10,11 +10,13 @@ import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function DistrictWiseMontlyMulberry() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -452,7 +454,7 @@ function DistrictWiseMontlyMulberry() {
 
   const ProductionPhysicalDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -470,7 +472,7 @@ function DistrictWiseMontlyMulberry() {
             className="ms-2"
             onClick={() => handleEdit(row.mulberryTargetsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -478,7 +480,7 @@ function DistrictWiseMontlyMulberry() {
             onClick={() => deleteConfirm(row.mulberryTargetsId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -486,28 +488,28 @@ function DistrictWiseMontlyMulberry() {
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mulberry Target Type",
+      name: t("Mulberry Target Type"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -515,7 +517,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -523,21 +525,21 @@ function DistrictWiseMontlyMulberry() {
     },
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -655,7 +657,7 @@ function DistrictWiseMontlyMulberry() {
 
   const ViewTargetReporteeDataColumns = [
     {
-      name: "Serial Number",
+      name: t("Serial Number"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
@@ -664,7 +666,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
@@ -673,7 +675,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
@@ -683,7 +685,7 @@ function DistrictWiseMontlyMulberry() {
     },
 
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
@@ -692,7 +694,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -701,7 +703,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -710,7 +712,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
@@ -719,7 +721,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -728,7 +730,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
@@ -802,7 +804,7 @@ function DistrictWiseMontlyMulberry() {
 
   const ViewTargetDataColumns = [
     {
-      name: "Sl.no",
+      name: t("Sl.no"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
@@ -810,7 +812,7 @@ function DistrictWiseMontlyMulberry() {
       style: { width: "50px", textAlign: "center" },
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
@@ -820,7 +822,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
@@ -830,7 +832,7 @@ function DistrictWiseMontlyMulberry() {
     },
 
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
@@ -839,7 +841,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -848,7 +850,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -857,7 +859,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
@@ -866,7 +868,7 @@ function DistrictWiseMontlyMulberry() {
 
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -882,7 +884,7 @@ function DistrictWiseMontlyMulberry() {
     //   hide: "md",
     // },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -897,7 +899,7 @@ function DistrictWiseMontlyMulberry() {
             }
             className="ms-2"
           >
-            View Reportee Details
+            {t("View Reportee Details")}
           </Button>
         </div>
       ),
@@ -1248,14 +1250,14 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title="District Wise Monthly Mulberry">
+    <Layout title={t("District Wise Monthly Mulberry")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Monthly Mulberry</Block.Title>
+            <Block.Title tag="h2">{t('District Wise Monthly Mulberry')}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
-            View Target
+            {t('View Target')}
           </Button>
         </Block.HeadBetween>
       </Block.Head>
@@ -1268,15 +1270,14 @@ function DistrictWiseMontlyMulberry() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>District Wise Monthly Mulberry</Card.Header>
+                    <Card.Header>{t('District Wise Monthly Mulberry')}</Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
-                              <span className="text-danger">*</span>
+                              {t('Financial Year')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1290,7 +1291,7 @@ function DistrictWiseMontlyMulberry() {
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t('Select Year')}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1301,7 +1302,7 @@ function DistrictWiseMontlyMulberry() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t('Financial Year is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1310,8 +1311,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
+                              {t('Target')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1325,9 +1325,7 @@ function DistrictWiseMontlyMulberry() {
                                   data.mulberryTargetTypeId === "0"
                                 }
                               >
-                                <option value="">
-                                  Select Mulberry Target Type
-                                </option>
+                                <option value="">{t('Select Mulberry Target Type')}</option>
                                 {mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
@@ -1338,7 +1336,7 @@ function DistrictWiseMontlyMulberry() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Target is required
+                                {t('Target is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1347,7 +1345,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              District<span className="text-danger">*</span>
+                              {t('District')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1361,7 +1359,7 @@ function DistrictWiseMontlyMulberry() {
                                 //   data.districtId === "0"
                                 // }
                               >
-                                <option value="">Select District</option>
+                                <option value="">{t('Select District')}</option>
                                 {districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
@@ -1372,7 +1370,7 @@ function DistrictWiseMontlyMulberry() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                District is required
+                                {t('District is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1381,7 +1379,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Taluk<span className="text-danger">*</span>
+                              {t('Taluk')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1395,7 +1393,7 @@ function DistrictWiseMontlyMulberry() {
                                 //   data.districtId === "0"
                                 // }
                               >
-                                <option value="">Select Taluk</option>
+                                <option value="">{t('Select Taluk')}</option>
                                 {talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
@@ -1406,7 +1404,7 @@ function DistrictWiseMontlyMulberry() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Taluk is required
+                                {t('Taluk is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1415,7 +1413,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Target Type<span className="text-danger">*</span>
+                              {t('Target Type')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1429,9 +1427,9 @@ function DistrictWiseMontlyMulberry() {
                                 //   data.targetType === "0"
                                 // }
                               >
-                                <option value="">Select Target Type</option>
-                                <option value="NAREGA">NAREGA</option>
-                                <option value="NON NAREGA">NON NAREGA</option>
+                                <option value="">{t('Select Target Type')}</option>
+                                <option value="NAREGA">{t('NAREGA')}</option>
+                                <option value="NON NAREGA">{t('NON NAREGA')}</option>
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
@@ -1439,7 +1437,7 @@ function DistrictWiseMontlyMulberry() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Target Type is required
+                                {t('Target Type is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1448,7 +1446,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              Month<span className="text-danger">*</span>
+                              {t('Month')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1462,19 +1460,19 @@ function DistrictWiseMontlyMulberry() {
                                 //   data.month === "0"
                                 // }
                               >
-                                <option value="">Select Month</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+                                <option value="">{t('Select Month')}</option>
+                                <option value="JANUARY">{t('January')}</option>
+                                <option value="FEBRUARY">{t('February')}</option>
+                                <option value="MARCH">{t('March')}</option>
+                                <option value="APRIL">{t('April')}</option>
+                                <option value="MAY">{t('May')}</option>
+                                <option value="JUNE">{t('June')}</option>
+                                <option value="JULY">{t('July')}</option>
+                                <option value="AUGUST">{t('August')}</option>
+                                <option value="SEPTEMBER">{t('September')}</option>
+                                <option value="OCTOBER">{t('October')}</option>
+                                <option value="NOVEMBER">{t('November')}</option>
+                                <option value="DECEMBER">{t('December')}</option>
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1483,7 +1481,7 @@ function DistrictWiseMontlyMulberry() {
                         ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Month is required
+                                {t('Month is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1492,8 +1490,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              Target No.
-                              <span className="text-danger">*</span>
+                              {t('Target No.')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1502,11 +1499,11 @@ function DistrictWiseMontlyMulberry() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder="Enter Target No."
+                                placeholder={t('Enter Target No.')}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Target No. is required.
+                                {t('Target No. is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1548,14 +1545,14 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              User<span className="text-danger">*</span>
+                              {t('User')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Button
                                 variant="primary"
                                 onClick={() => setShowModal5(true)}
                               >
-                                Select User
+                                {t('Select User')}
                               </Button>
                               <Form.Control
                                 type="hidden"
@@ -1565,7 +1562,7 @@ function DistrictWiseMontlyMulberry() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                User is required
+                                {t('User is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1573,20 +1570,20 @@ function DistrictWiseMontlyMulberry() {
 
                         <Col sm={3}>
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label>User Name</Form.Label>
+                            <Form.Label>{t('User Name')}</Form.Label>
                             <Form.Control
                               id="username"
                               name="username"
                               value={userName}
                               // onChange={handleSearchInputs}
                               type="text"
-                              placeholder="Enter User Name"
+                              placeholder={t('Enter User Name')}
                               className="form-control"
                               // readOnly
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              User is required
+                              {t('User is required')}
                             </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
@@ -1599,12 +1596,12 @@ function DistrictWiseMontlyMulberry() {
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
                       <Button type="submit" variant="primary">
-                        Save
+                        {t('Save')}
                       </Button>
                     </li>
                     <li>
                       <Button type="button" variant="secondary" onClick={clear}>
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </li>
                   </ul>
@@ -1616,13 +1613,13 @@ function DistrictWiseMontlyMulberry() {
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Available Budget Balance
+                  {t('Available Budget Balance')}
                 </Card.Header>
                 <Card.Body>
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Balance Amount:</td>
+                        <td style={styles.ctstyle}> {t('Balance Amount')}:</td>
                         {/* <td>{balanceAmount}</td> */}
                         <td>0</td>
                       </tr>
@@ -1658,7 +1655,7 @@ function DistrictWiseMontlyMulberry() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>District Wise Monthly Mulberry</Modal.Title>
+          <Modal.Title>{t('District Wise Monthly Mulberry')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1671,8 +1668,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Financial Year
-                    <span className="text-danger">*</span>
+                    {t('Financial Year')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1686,7 +1682,7 @@ function DistrictWiseMontlyMulberry() {
                         editData.financialYearMasterId === "0"
                       }
                     >
-                      <option value="">Select Year</option>
+                      <option value="">{t('Select Year')}</option>
                       {financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
@@ -1697,7 +1693,7 @@ function DistrictWiseMontlyMulberry() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Financial Year is required
+                      {t('Financial Year is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1706,8 +1702,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    Target
-                    <span className="text-danger">*</span>
+                    {t('Target')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1721,7 +1716,7 @@ function DistrictWiseMontlyMulberry() {
                         editData.mulberryTargetTypeId === "0"
                       }
                     >
-                      <option value="">Select Mulberry Target Type</option>
+                      <option value="">{t('Select Mulberry Target Type')}</option>
                       {mulberryTargetTypeData.map((list) => (
                         <option
                           key={list.mulberryTargetTypeId}
@@ -1732,7 +1727,7 @@ function DistrictWiseMontlyMulberry() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Target is required
+                      {t('Target is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1741,7 +1736,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    District<span className="text-danger">*</span>
+                    {t('District')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1755,7 +1750,7 @@ function DistrictWiseMontlyMulberry() {
                       //   editData.districtId === "0"
                       // }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t('Select District')}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -1763,7 +1758,7 @@ function DistrictWiseMontlyMulberry() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      District is required
+                      {t('District is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1772,7 +1767,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Target Type<span className="text-danger">*</span>
+                    {t('Target Type')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1786,9 +1781,9 @@ function DistrictWiseMontlyMulberry() {
                       //   editData.targetType === "0"
                       // }
                     >
-                      <option value="">Select Target Type</option>
-                      <option value="NAREGA">NAREGA</option>
-                      <option value="NON NAREGA">NON NAREGA</option>
+                      <option value="">{t('Select Target Type')}</option>
+                      <option value="NAREGA">{t('NAREGA')}</option>
+                      <option value="NON NAREGA">{t('NON NAREGA')}</option>
                       {/* {districtListeditData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}
@@ -1796,7 +1791,7 @@ function DistrictWiseMontlyMulberry() {
                         ))} */}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Target Type is required
+                      {t('Target Type is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1805,7 +1800,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Month<span className="text-danger">*</span>
+                    {t('Month')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1819,19 +1814,19 @@ function DistrictWiseMontlyMulberry() {
                       //   editData.month === "0"
                       // }
                     >
-                      <option value="">Select Month</option>
-                      <option value="JANUARY">January</option>
-                      <option value="FEBRUARY">February</option>
-                      <option value="MARCH">March</option>
-                      <option value="APRIL">April</option>
-                      <option value="MAY">May</option>
-                      <option value="JUNE">June</option>
-                      <option value="JULY">July</option>
-                      <option value="AUGUST">August</option>
-                      <option value="SEPTEMBER">September</option>
-                      <option value="OCTOBER">October</option>
-                      <option value="NOVEMBER">November</option>
-                      <option value="DECEMBER">December</option>
+                      <option value="">{t('Select Month')}</option>
+                      <option value="JANUARY">{t('January')}</option>
+                      <option value="FEBRUARY">{t('February')}</option>
+                      <option value="MARCH">{t('March')}</option>
+                      <option value="APRIL">{t('April')}</option>
+                      <option value="MAY">{t('May')}</option>
+                      <option value="JUNE">{t('June')}</option>
+                      <option value="JULY">{t('July')}</option>
+                      <option value="AUGUST">{t('August')}</option>
+                      <option value="SEPTEMBER">{t('September')}</option>
+                      <option value="OCTOBER">{t('October')}</option>
+                      <option value="NOVEMBER">{t('November')}</option>
+                      <option value="DECEMBER">{t('December')}</option>
 
                       {/* {districtListeditData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1840,7 +1835,7 @@ function DistrictWiseMontlyMulberry() {
                         ))} */}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Month is required
+                      {t('Month is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1849,7 +1844,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    Target No.
+                    {t('Target No.')}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1859,11 +1854,11 @@ function DistrictWiseMontlyMulberry() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="text"
-                      placeholder="Enter Target No."
+                      placeholder={t('Enter Target No.')}
                       // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Target No. is required.
+                      {t('Target No. is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1906,14 +1901,14 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    User<span className="text-danger">*</span>
+                    {t('User')}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Button
                       variant="primary"
                       onClick={() => setShowModal7(true)}
                     >
-                      Select User
+                      {t('Select User')}
                     </Button>
                     <Form.Control
                       type="hidden"
@@ -1923,7 +1918,7 @@ function DistrictWiseMontlyMulberry() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      User is required
+                      {t('User is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1931,20 +1926,20 @@ function DistrictWiseMontlyMulberry() {
 
               <Col sm={3}>
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label>User Name</Form.Label>
+                  <Form.Label>{t('User Name')}</Form.Label>
                   <Form.Control
                     id="username"
                     name="username"
                     value={userNameEdit}
                     // onChange={handleSearchInputs}
                     type="text"
-                    placeholder="Enter User Name"
+                    placeholder={t('Enter User Name')}
                     className="form-control"
                     // readOnly
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    User is required
+                    {t('User is required')}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -1954,7 +1949,7 @@ function DistrictWiseMontlyMulberry() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                      Update
+                      {t('Update')}
                     </Button>
                   </div>
                 </div>
@@ -1966,7 +1961,7 @@ function DistrictWiseMontlyMulberry() {
 
       <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>All Reportee Details</Modal.Title>
+          <Modal.Title>{t('All Reportee Details')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <DataTable
@@ -1991,7 +1986,7 @@ function DistrictWiseMontlyMulberry() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>View Target Details</Modal.Title>
+          <Modal.Title>{t('View Target Details')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <DataTable
@@ -2016,7 +2011,7 @@ function DistrictWiseMontlyMulberry() {
 
       <Modal show={showModal5} onHide={handleCloseModal5} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Select User</Modal.Title>
+          <Modal.Title>{t('Select User')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
@@ -2025,14 +2020,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t('District')}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchData.districtId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t('Select District')}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -2047,14 +2042,14 @@ function DistrictWiseMontlyMulberry() {
                {/* Taluk Input */}
           <Col sm={4}>
             <Form.Group className="form-group">
-              <Form.Label>Taluk</Form.Label>
+              <Form.Label>{t('Taluk')}</Form.Label>
               <Form.Select
                 name="talukId"
                 value={searchData.talukId}
                 onChange={handleSearchInputs}
                 className="form-control"
               >
-                <option value="">Select Taluk</option>
+                <option value="">{t('Select Taluk')}</option>
                 {talukListData &&
                   talukListData.length &&
                   talukListData.map((list) => (
@@ -2069,14 +2064,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t('Designation')}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchData.designationId}
                       onChange={handleSearchInputs}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t('Select Designation')}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -2094,14 +2089,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t('Mobile Number')}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchData.phoneNumber}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t('Enter Mobile Number')}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2110,14 +2105,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t('User Name')}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchData.username}
                       onChange={handleSearchInputs}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t('Enter User Name')}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2131,7 +2126,7 @@ function DistrictWiseMontlyMulberry() {
                     onClick={searchUser}
                     className="w-100"
                   >
-                    Search
+                    {t('Search')}
                   </Button>
                 </Col>
               </Row>
@@ -2139,14 +2134,14 @@ function DistrictWiseMontlyMulberry() {
               {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t('User')}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchData.userMasterId}
                     onChange={(e) => handleUserSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t('Select User')}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -2157,7 +2152,7 @@ function DistrictWiseMontlyMulberry() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t('No Users Found')}</option> // Show a message if no users are found
                     )}
                   </Form.Select>
                 </Col>
@@ -2165,7 +2160,7 @@ function DistrictWiseMontlyMulberry() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal5()}>
-                    Submit
+                    {t('Submit')}
                   </Button>
                 </div>
               </Row>
@@ -2175,7 +2170,7 @@ function DistrictWiseMontlyMulberry() {
       </Modal>
       <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Select User In Edit</Modal.Title>
+          <Modal.Title>{t('Select User In Edit')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
@@ -2184,14 +2179,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* District Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>District</Form.Label>
+                    <Form.Label>{t('District')}</Form.Label>
                     <Form.Select
                       name="districtId"
                       value={searchDataEdit.districtId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t('Select District')}</option>
                       {districtListData &&
                         districtListData.length &&
                         districtListData.map((list) => (
@@ -2206,14 +2201,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Taluk Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Taluk</Form.Label>
+                    <Form.Label>{t('Taluk')}</Form.Label>
                     <Form.Select
                       name="talukId"
                       value={searchDataEdit.talukId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t('Select Taluk')}</option>
                       {talukListDataEdit &&
                         talukListDataEdit.length &&
                         talukListDataEdit.map((list) => (
@@ -2228,14 +2223,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Designation Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Designation</Form.Label>
+                    <Form.Label>{t('Designation')}</Form.Label>
                     <Form.Select
                       name="designationId"
                       value={searchDataEdit.designationId}
                       onChange={handleSearchInputsEdit}
                       className="form-control"
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t('Select Designation')}</option>
                       {designationListData &&
                         designationListData.length &&
                         designationListData.map((list) => (
@@ -2253,14 +2248,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Mobile Number Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Label>{t('Mobile Number')}</Form.Label>
                     <Form.Control
                       id="phoneNumber"
                       name="phoneNumber"
                       value={searchDataEdit.phoneNumber}
                       onChange={handleSearchInputsEdit}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t('Enter Mobile Number')}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2269,14 +2264,14 @@ function DistrictWiseMontlyMulberry() {
                 {/* Username Input */}
                 <Col sm={4}>
                   <Form.Group className="form-group">
-                    <Form.Label>User Name</Form.Label>
+                    <Form.Label>{t('User Name')}</Form.Label>
                     <Form.Control
                       id="username"
                       name="username"
                       value={searchDataEdit.username}
                       onChange={handleSearchInputsEdit}
                       type="text"
-                      placeholder="Enter User Name"
+                      placeholder={t('Enter User Name')}
                       className="form-control"
                     />
                   </Form.Group>
@@ -2289,7 +2284,7 @@ function DistrictWiseMontlyMulberry() {
                     onClick={searchUserEdit}
                     className="w-100"
                   >
-                    Search
+                    {t('Search')}
                   </Button>
                 </Col>
               </Row>
@@ -2297,14 +2292,14 @@ function DistrictWiseMontlyMulberry() {
               {/* User Selection */}
               <Row className="m-4">
                 <Col sm={12}>
-                  <Form.Label>User</Form.Label>
+                  <Form.Label>{t('User')}</Form.Label>
                   <Form.Select
                     name="userMasterId"
                     value={searchDataEdit.userMasterId}
                     onChange={(e) => handleUserEditSelect(e.target.value)}
                     className="form-control"
                   >
-                    <option value="">Select User</option>
+                    <option value="">{t('Select User')}</option>
                     {userListData && userListData.length > 0 ? (
                       userListData.map((list) => (
                         <option
@@ -2315,7 +2310,7 @@ function DistrictWiseMontlyMulberry() {
                         </option>
                       ))
                     ) : (
-                      <option value="">No Users Found</option> // Show a message if no users are found
+                      <option value="">{t('No Users Found')}</option> // Show a message if no users are found
                     )}
                   </Form.Select>
                 </Col>
@@ -2323,7 +2318,7 @@ function DistrictWiseMontlyMulberry() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal7()}>
-                    Submit
+                    {t('Submit')}
                   </Button>
                 </div>
               </Row>

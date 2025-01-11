@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -50,11 +52,11 @@ function RearingOfDFLsView() {
   }, [id]);
 
   return (
-    <Layout title="View Rearing of DFLs Details">
+    <Layout title={t("View Rearing of DFLs Details")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Rearing of DFLs Details </Block.Title>
+            <Block.Title tag="h2">{t("View Rearing of DFLs Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -64,7 +66,7 @@ function RearingOfDFLsView() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -73,7 +75,7 @@ function RearingOfDFLsView() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -83,11 +85,11 @@ function RearingOfDFLsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Rearing of DFLs Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>{t("Rearing of DFLs Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -95,63 +97,59 @@ function RearingOfDFLsView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{rearingOfDFLs.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Disinfectant Usage Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Disinfectant Usage Details")}:</td>
                         <td>{rearingOfDFLs.disinfectantMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Crop Number:</td>
+                        <td style={styles.ctstyle}>{t("Crop Number")}:</td>
                         <td>{rearingOfDFLs.cropNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{rearingOfDFLs.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Source:</td>
+                        <td style={styles.ctstyle}>{t("Source")}:</td>
                         <td>{rearingOfDFLs.source}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
                         <td>{rearingOfDFLs.numberOfDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Cold Storage Details:</td>
+                        <td style={styles.ctstyle}>{t("Cold Storage Details")}:</td>
                         <td>{rearingOfDFLs.coldStorageDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Released On Date:</td>
+                        <td style={styles.ctstyle}>{t("Released On Date")}:</td>
                         <td>{rearingOfDFLs.releasedOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Brushing Date:</td>
+                        <td style={styles.ctstyle}>{t("Brushing Date")}:</td>
                         <td>{rearingOfDFLs.brushingDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Chawki Percentage:</td>
+                        <td style={styles.ctstyle}>{t("Chawki Percentage")}:</td>
                         <td>{rearingOfDFLs.chawkiPercentage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Worm Weight:</td>
+                        <td style={styles.ctstyle}>{t("Worm Weight")}:</td>
                         <td>{rearingOfDFLs.wormWeight}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Spun On Date:</td>
+                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
                         <td>{rearingOfDFLs.spunOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Worm Test Details:</td>
+                        <td style={styles.ctstyle}>{t("Worm Test Details")}:</td>
                         <td>{rearingOfDFLs.wormTestDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Cocoon Assessment Details:
-                        </td>
+                        <td style={styles.ctstyle}>{t("Cocoon Assessment Details")}:</td>
                         <td>{rearingOfDFLs.cocoonAssessmentDetails}</td>
                       </tr>
                     </tbody>

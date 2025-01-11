@@ -9,12 +9,14 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DashboardReport() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       fontWeight: "bold",
@@ -300,11 +302,11 @@ function DashboardReport() {
     });
   };
   return (
-    <Layout title="Dashboard Report">
+    <Layout title={t("Dashboard Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Dashboard Report</Block.Title>
+            <Block.Title tag="h2">{t("Dashboard Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -371,7 +373,7 @@ function DashboardReport() {
             {dashboardList && dashboardList.length ? (
               <Card className="mt-2">
                 <Card.Header style={{ fontSize: "1.3rem" }}>
-                  Dashboard - {status.marketName} : {formattedDateTime}
+                  {t("Dashboard")} - {status.marketName} : {formattedDateTime}
                 </Card.Header>
                 <Card.Body
                   style={styles.color}
@@ -388,7 +390,7 @@ function DashboardReport() {
                           className="text-centre"
                           style={{ fontSize: "1.3rem", color: "black" }}
                         >
-                          Bidding Status:{" "}
+                          {t("Bidding Status")}:{" "}
                         </h4>
                         <h4
                           // style={{ fontWeight: "bold" }}
@@ -396,9 +398,9 @@ function DashboardReport() {
                         >
                           {" "}
                           {status.auctionStarted ? (
-                            <span style={styles.green}> Start </span>
+                            <span style={styles.green}>{t("Start")}</span>
                           ) : (
-                            <span style={styles.red}> Stop </span>
+                            <span style={styles.red}>{t("Stop")}</span>
                           )}
                         </h4>
                       </div>
@@ -407,7 +409,7 @@ function DashboardReport() {
                           className="text-centre"
                           style={{ fontSize: "1.3rem", color: "black" }}
                         >
-                          Acceptance Status:
+                          {t("Acceptance Status")}:
                         </h4>
                         <h4
                           // style={styles.boldFont}
@@ -415,9 +417,9 @@ function DashboardReport() {
                         >
                           {" "}
                           {status.acceptanceStarted ? (
-                            <span style={styles.green}> Start </span>
+                            <span style={styles.green}>{t("Start")}</span>
                           ) : (
-                            <span style={styles.red}> Stop </span>
+                            <span style={styles.red}>{t("Stop")}</span>
                           )}
                         </h4>
                       </div>
@@ -449,7 +451,7 @@ function DashboardReport() {
                         </h2> */}
 
                           <tr>
-                            <td style={styles.ctstyle}> Total Lots:</td>
+                            <td style={styles.ctstyle}>{t("Total Lots")}:</td>
                             {/* <td>CSR-70</td>
                           <td>CB-48</td> */}
                             {dashboardList.map((dashboard) => (
@@ -461,7 +463,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Total Lots Bid:</td>
+                            <td style={styles.ctstyle}>{t("Total Lots Bid")}:</td>
                             {/* <td>118</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -473,7 +475,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Total Lots Not Bid:</td>
+                            <td style={styles.ctstyle}>{t("Total Lots Not Bid")}:</td>
                             {/* <td>0</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -485,7 +487,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Total Bids:</td>
+                            <td style={styles.ctstyle}>{t("Total Bids")}:</td>
                             {/* <td>1897</td>
                           <td>36</td> */}
                             {dashboardList.map((dashboard) => (
@@ -498,7 +500,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Total Reelers:</td>
+                            <td style={styles.ctstyle}>{t("Total Reelers")}:</td>
                             {/* <td>107(Active)</td>
                           <td>253(Paid)</td> */}
                             {dashboardList.map((dashboard) => (
@@ -510,10 +512,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Current Auction-Max Bid:
-                            </td>
+                            <td style={styles.ctstyle}>{t("Current Auction-Max Bid")}:</td>
                             {/* <td>540</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -525,7 +524,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Accepted Lots:</td>
+                            <td style={styles.ctstyle}>{t("Accepted Lots")}:</td>
                             {/* <td>105</td>
                           <td>12:32:47</td> */}
                             {dashboardList.map((dashboard) => (
@@ -546,10 +545,7 @@ function DashboardReport() {
                           ))}
                         </tr> */}
                           <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Accepted Lots-Max Bid:
-                            </td>
+                            <td style={styles.ctstyle}>{t("Accepted Lots-Max Bid")}:</td>
                             {/* <td>557.000</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -561,10 +557,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Accepted Lots-Min Bid:
-                            </td>
+                            <td style={styles.ctstyle}>{t("Accepted Lots-Min Bid")}:</td>
                             {/* <td>290.000</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -576,7 +569,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Average Rate:</td>
+                            <td style={styles.ctstyle}>{t("Average Rate")}:</td>
                             {/* <td>0</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -588,7 +581,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Weighed Lots:</td>
+                            <td style={styles.ctstyle}>{t("Weighed Lots")}:</td>
                             {/* <td>0</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
@@ -600,10 +593,7 @@ function DashboardReport() {
                             ))}
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              Total Soldout Amount:
-                            </td>
+                            <td style={styles.ctstyle}>{t("Total Soldout Amount")}:</td>
                             {/* <td>0</td>
                           <td></td> */}
                             {dashboardList.map((dashboard) => (

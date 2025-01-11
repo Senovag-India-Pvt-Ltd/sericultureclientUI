@@ -10,6 +10,9 @@ import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
 import axios from "axios";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -17,6 +20,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDirectFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_DIRECT_FRUITS;
 
 function DirectFruitsDetails() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     farmerName: "",
     fatherName: "",
@@ -298,11 +302,11 @@ function DirectFruitsDetails() {
   };
 
   return (
-    <Layout title="Direct From Fruits">
+    <Layout title={t("Direct From Fruits")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Direct From Fruits</Block.Title>
+            <Block.Title tag="h2">{t("Direct From Fruits")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -338,7 +342,7 @@ function DirectFruitsDetails() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                      {t('FRUITS ID')}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -346,17 +350,17 @@ function DirectFruitsDetails() {
                         name="farmerId"
                         value={data.farmerId}
                         onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
+                        placeholder={t('Enter FRUITS ID')}
                         required
                         maxLength="16"
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
+                        {t('Fruits ID Should Contain 16 digits')}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t('Search')}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -369,7 +373,7 @@ function DirectFruitsDetails() {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Fruits Response</Card.Header>
+                <Card.Header>{t('Fruits Response')}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
@@ -386,12 +390,12 @@ function DirectFruitsDetails() {
                             // onChange={handleInputs}
                             as="textarea"
                             rows={20}
-                            placeholder="Data will be fetched from FRUITS"
+                            placeholder={t("Data will be fetched from FRUITS")}
                             readOnly
                             // required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Father Name is required
+                            {t("Father Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -406,12 +410,12 @@ function DirectFruitsDetails() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t('Save')}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
                 </li>
               </ul>

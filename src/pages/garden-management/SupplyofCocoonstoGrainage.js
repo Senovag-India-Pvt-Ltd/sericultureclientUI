@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import DataTable, { createTheme } from "react-data-table-component";
 
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 import api from "../../../src/services/auth/api";
 
@@ -29,6 +30,8 @@ function SupplyofCocoonstoGrainage() {
     dispatchDate: "",
     cacoonsSuppliedInKg: ""
   });
+
+  const { t } = useTranslation();
 
   const styles = {
     ctstyle: {
@@ -294,7 +297,7 @@ function SupplyofCocoonstoGrainage() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -307,7 +310,7 @@ function SupplyofCocoonstoGrainage() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -317,11 +320,11 @@ function SupplyofCocoonstoGrainage() {
   };
 
   return (
-    <Layout title="Supply of Cocoons to Grainage ">
+    <Layout title={t("Supply of Cocoons to Grainage")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply of Cocoons to Grainage</Block.Title>
+            <Block.Title tag="h2">{t("Supply of Cocoons to Grainage")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -331,7 +334,7 @@ function SupplyofCocoonstoGrainage() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -340,7 +343,7 @@ function SupplyofCocoonstoGrainage() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -353,7 +356,7 @@ function SupplyofCocoonstoGrainage() {
           <Row className="g-0">
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
-                Supply of Cocoons to Grainage
+                {t("Supply of Cocoons to Grainage")}
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
@@ -361,7 +364,7 @@ function SupplyofCocoonstoGrainage() {
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Grainage<span className="text-danger">*</span>
+                          {t("Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -372,7 +375,7 @@ function SupplyofCocoonstoGrainage() {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Grainage</option>
+                              <option value="">{t("Select Grainage")}</option>
                               {grainageListData && grainageListData.length?(grainageListData.map((list) => (
                                 <option
                                   key={list.userMasterId}
@@ -383,7 +386,7 @@ function SupplyofCocoonstoGrainage() {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Grainage is required
+                              {t("Grainage is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -393,7 +396,7 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year
+                          {t("Line Details/year")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -405,7 +408,7 @@ function SupplyofCocoonstoGrainage() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -458,7 +461,7 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Screening Batch No
+                          {t("Screening Batch No")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -467,7 +470,7 @@ function SupplyofCocoonstoGrainage() {
                             value={data.screeningBatchNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Screening Batch No"
+                            placeholder={t("Enter Screening Batch No")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -480,7 +483,7 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number
+                          {t("Generation Number")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
@@ -492,7 +495,7 @@ function SupplyofCocoonstoGrainage() {
                               onBlur={() => handleInputs}
                               // required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -532,7 +535,7 @@ function SupplyofCocoonstoGrainage() {
                     <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number<span className="text-danger">*</span>
+                      {t("Lot Number")}<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -543,7 +546,7 @@ function SupplyofCocoonstoGrainage() {
                           onBlur={() => handleInputs}
                           required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotNumberListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -551,7 +554,7 @@ function SupplyofCocoonstoGrainage() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Lot Number is required
+                          {t("Lot Number is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -561,7 +564,7 @@ function SupplyofCocoonstoGrainage() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                    Cocoon Supplied in Kg
+                    {t("Cocoon Supplied in Kg")}
                     {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -571,7 +574,7 @@ function SupplyofCocoonstoGrainage() {
                         value={data.cacoonsSuppliedInKg}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Cocoon Supplied in Kg"
+                        placeholder={t("Enter Cocoon Supplied in Kg")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">
@@ -585,7 +588,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Number of Cocoons Dispatched(kg/Nos)
+                                {t("Number of Cocoons Dispatched(kg/Nos)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -594,7 +597,7 @@ function SupplyofCocoonstoGrainage() {
                                 value={data.numberOfCocoonsDispatched}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder="Enter Number of Cocoons Dispatched"
+                                placeholder={t("Enter Number of Cocoons Dispatched")}
                                 />
                               </div>
                             </Form.Group>
@@ -603,7 +606,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Spun on Date
+                                {t("Spun on Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -626,7 +629,7 @@ function SupplyofCocoonstoGrainage() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label> Date of Supply</Form.Label>
+                              <Form.Label>{t("Date of Supply")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.dateOfSupply ? new Date(data.dateOfSupply) : null}
@@ -649,7 +652,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Dispatch Date
+                                {t("Dispatch Date")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -678,12 +681,12 @@ function SupplyofCocoonstoGrainage() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

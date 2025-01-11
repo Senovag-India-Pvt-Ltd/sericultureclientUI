@@ -8,6 +8,8 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next"; // Add this import
+
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -16,6 +18,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function DtrOnlineReportSilkType() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
@@ -272,11 +275,11 @@ function DtrOnlineReportSilkType() {
     });
   };
   return (
-    <Layout title="DTR Online">
+    <Layout title={t("DTR Online")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">DTR Online</Block.Title>
+            <Block.Title tag="h2">{t("DTR Online")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -314,7 +317,7 @@ function DtrOnlineReportSilkType() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Trader License Number
+                        {t('Trader License Number')}
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -323,7 +326,7 @@ function DtrOnlineReportSilkType() {
                           value={data.traderLicenseNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Trader License Number"
+                          placeholder={t('Enter Trader License Number')}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -331,7 +334,7 @@ function DtrOnlineReportSilkType() {
                         </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
-                        From Date
+                        {t('From Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -346,7 +349,7 @@ function DtrOnlineReportSilkType() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        To Date
+                        {t('To Date')}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -390,12 +393,12 @@ function DtrOnlineReportSilkType() {
                           onClick={display}
                         > */}
                 <Button type="submit" variant="primary">
-                  Generate Report
+                  {t('Generate Report')}
                 </Button>
               </Col>
               <Col sm={2}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export Excel
+                        {t('Export Excel')}
                     </Button>
                     </Col>
             </Row>
@@ -432,7 +435,7 @@ function DtrOnlineReportSilkType() {
                       size="sm"
                       onClick={generateDtrReport}
                     >
-                      Print
+                      {t('Print')}
                     </Button>
                   </Col>
                 </Row>

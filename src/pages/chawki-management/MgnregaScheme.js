@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon, Select } from "../../components";
+import { useTranslation } from "react-i18next";
 
 import api from "../../services/auth/api";
 
@@ -15,6 +16,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 
 function MgnregaScheme() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     acresPlanted: "",
     spacingFollwedFeet: "",
@@ -135,7 +137,7 @@ function MgnregaScheme() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">MGNREGA Scheme Details</Block.Title>
+            <Block.Title tag="h2">{t("MGNREGA Scheme Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -145,7 +147,7 @@ function MgnregaScheme() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -154,7 +156,7 @@ function MgnregaScheme() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -169,13 +171,13 @@ function MgnregaScheme() {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header  style={{ fontSize: '20', padding: '5px' }}>Area Expansion</Card.Header>
+                <Card.Header  style={{ fontSize: '20', padding: '5px' }}>{t("Area Expansion")}</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                         Acres Planted
+                         {t("Acres Planted")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -185,11 +187,11 @@ function MgnregaScheme() {
                             value={data.acresPlanted}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Acres Planted"
+                            placeholder={t("Enter Acres Planted")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Acres Planted is required
+                          {t("Acres Planted is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -198,7 +200,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Sapling Followed(In Feet)
+                        {t("Sapling Followed(In Feet)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -208,11 +210,11 @@ function MgnregaScheme() {
                             value={data.spacingFollwedFeet}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Sapling Followed(In Feet)"
+                            placeholder={t("Enter Sapling Followed(In Feet)")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Sapling Followed(In Feet) is required
+                          {t("Sapling Followed(In Feet) is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -221,7 +223,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Sapling Procured(Nos)
+                          {t("Sapling Procured(Nos)")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -231,11 +233,11 @@ function MgnregaScheme() {
                             value={data.spacingProcuredNos}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Sapling Procured(Nos)"
+                            placeholder={t("Enter Sapling Procured(Nos)")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Sapling Procured(Nos) is required
+                            {t("Sapling Procured(Nos) is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -247,14 +249,14 @@ function MgnregaScheme() {
               </Card>
 
               <Card className="mt-3">
-                <Card.Header  style={{ fontSize: '20', padding: '5px' }}>Tree Mulberry Plantation 
+                <Card.Header  style={{ fontSize: '20', padding: '5px' }}>{t("Tree Mulberry Plantation")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Sapling Followed
+                        {t("Sapling Followed")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -264,11 +266,11 @@ function MgnregaScheme() {
                             value={data.spacingFollowed}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Sapling Followed"
+                            placeholder={t("Enter Sapling Followed")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Sapling Followed is required
+                          {t("Sapling Followed is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -277,7 +279,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Sapling Procured
+                        {t("Sapling Procured")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -287,11 +289,11 @@ function MgnregaScheme() {
                             value={data.spacingProcured}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Sapling Procured"
+                            placeholder={t("Enter Sapling Procured")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Sapling Procured is required
+                          {t("Sapling Procured is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -301,14 +303,14 @@ function MgnregaScheme() {
               </Card>
 
               <Card className="mt-3">
-              <Card.Header style={{ fontSize: '20', padding: '5px' }}>Nursery</Card.Header>
+              <Card.Header style={{ fontSize: '20', padding: '5px' }}>{t("Nursery")}</Card.Header>
 
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Number of cutting Planted
+                        {t("Number of cutting Planted")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -318,11 +320,11 @@ function MgnregaScheme() {
                             value={data.noOfCuttingPlanted}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Number of cutting Planted"
+                            placeholder={t("Enter Number of cutting Planted")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of cutting Planted is required
+                          {t("Number of cutting Planted is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -331,7 +333,7 @@ function MgnregaScheme() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Number of successful samplings distributed
+                        {t("Number of successful samplings distributed")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -341,11 +343,11 @@ function MgnregaScheme() {
                             value={data.noOfSuccessfullSamplings}
                             onChange={handleInputs}
                             type="text"
-                            placeholder=" Enter Number of successful samplings distributed"
+                            placeholder={t("Enter Number of successful samplings distributed")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of successful samplings distributed is required
+                          {t("Number of successful samplings distributed is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -360,12 +362,12 @@ function MgnregaScheme() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

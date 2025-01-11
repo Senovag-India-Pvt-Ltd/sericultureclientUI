@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import SeedCuttingBank from "./SeedCuttingBank";
+import { useTranslation } from "react-i18next";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function SeedCuttingBankList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -146,7 +148,7 @@ function SeedCuttingBankList() {
 
   const SeedCuttingBankDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -156,7 +158,7 @@ function SeedCuttingBankList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -164,7 +166,7 @@ function SeedCuttingBankList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
@@ -181,42 +183,42 @@ function SeedCuttingBankList() {
       grow: 2,
     },
     {
-      name: "Fruits Id",
+      name: t("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: t("Farmer Name"),
       selector: (row) => row.farmerName,
       cell: (row) => <span>{row.farmerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Quantity Of Seed Cuttings",
+      name: t("Quantity Of Seed Cuttings"),
       selector: (row) => row.quantityOfSeedCuttings,
       cell: (row) => <span>{row.quantityOfSeedCuttings}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date Of Pruning",
+      name: t("Date Of Pruning"),
       selector: (row) => row.dateOfPruning,
       cell: (row) => <span>{row.dateOfPruning}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Rate Per Tonne",
+      name: t("Rate Per Tonne"),
       selector: (row) => row.ratePerTonne,
       cell: (row) => <span>{row.ratePerTonne}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Receipt Number",
+      name: t("Receipt Number"),
       selector: (row) => row.receiptNumber,
       cell: (row) => <span>{row.receiptNumber}</span>,
       sortable: true,
@@ -225,11 +227,11 @@ function SeedCuttingBankList() {
   ];
 
   return (
-    <Layout title="Seed Cutting Bank List">
+    <Layout title={t("Seed Cutting Bank List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed Cutting Bank List</Block.Title>
+            <Block.Title tag="h2">{t("Seed Cutting Bank List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -239,7 +241,7 @@ function SeedCuttingBankList() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
               <li>
@@ -248,7 +250,7 @@ function SeedCuttingBankList() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>Create</span>
+                  <span>{t("Create")}</span>
                 </Link>
               </li>
             </ul>

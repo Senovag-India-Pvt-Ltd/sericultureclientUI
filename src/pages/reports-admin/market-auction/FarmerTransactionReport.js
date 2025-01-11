@@ -10,12 +10,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function FarmerTransactionReport() {
+  const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -423,11 +425,11 @@ function FarmerTransactionReport() {
   ];
 
   return (
-    <Layout title="Farmer Transaction Report">
+    <Layout title={t("Farmer Transaction Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Transaction Report</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Transaction Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -437,7 +439,7 @@ function FarmerTransactionReport() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -446,7 +448,7 @@ function FarmerTransactionReport() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul> */}
@@ -463,7 +465,7 @@ function FarmerTransactionReport() {
                 {/* <Col lg="12">
                     <Form.Group as={Row} className="form-group" id="fid">
                       <Form.Label column sm={3}>
-                        FRUITS ID / FARMER NUMBER<span className="text-danger">*</span>
+                        {t("FRUITS ID / FARMER NUMBER")}<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -472,13 +474,13 @@ function FarmerTransactionReport() {
                           value={farmer.fruitsId}
                           onChange={handleFarmerIdInputs}
                           type="text"
-                          placeholder="Enter FRUITS ID / FARMER NUMBER"
+                          placeholder={t("Enter FRUITS ID / FARMER NUMBER")}
                         />
                       </Col> */}
                 <Col sm={6} lg={6}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={1} lg={4}>
-                      Search Farmer Details By
+                      {t("Search Farmer Details By")}
                     </Form.Label>
                     <Col sm={1} lg={3}>
                       <div className="form-control-wrap">
@@ -487,10 +489,10 @@ function FarmerTransactionReport() {
                           value={farmer.select}
                           onChange={handleFarmerIdInputs}
                         >
-                          {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">Mobile Number</option>
-                          <option value="fruitsId">Fruits Id</option>
-                          <option value="farmerNumber">Farmer Number</option>
+                          {/* <option value="">{t("Select")}</option> */}
+                          <option value="mobileNumber">{t("Mobile Number")}</option>
+                          <option value="fruitsId">{t("Fruits Id")}</option>
+                          <option value="farmerNumber">{t("Farmer Number")}</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -502,16 +504,16 @@ function FarmerTransactionReport() {
                         value={farmer.text}
                         onChange={handleFarmerIdInputs}
                         type="text"
-                        placeholder="Search"
+                        placeholder={t("Search")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t("Field Value is Required")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={2}>
                       <Button type="submit" variant="primary">
-                        Search
+                        {t("Search")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -519,7 +521,7 @@ function FarmerTransactionReport() {
                 <Col sm={6} lg={6}>
                   <Form.Group as={Row} className="form-group" id="fid">
                     <Form.Label column sm={2}>
-                      From Date
+                      {t("From Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={3}>
@@ -534,7 +536,7 @@ function FarmerTransactionReport() {
                       </div>
                     </Col>
                     <Form.Label column sm={2}>
-                      To Date
+                      {t("To Date")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={3}>
@@ -554,18 +556,18 @@ function FarmerTransactionReport() {
               {showFarmerDetails && (
                 // <Col lg="12" className="mt-1">
                 //   <Card>
-                //     <Card.Header>Farmer Personal Info</Card.Header>
+                //     <Card.Header>{t("Farmer Personal Info")}</Card.Header>
                 //     <Card.Body>
                 <Row className="g-gs mt-1">
                   <Col lg="12">
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td style={styles.ctstyle}> {t("Farmer Name")}:</td>
                           <td>{farmerDetails.firstName}</td>
-                          <td style={styles.ctstyle}> Father Name:</td>
+                          <td style={styles.ctstyle}> {t("Father Name")}:</td>
                           <td>{farmerDetails.fatherName}</td>
-                          <td style={styles.ctstyle}> Mobile Number :</td>
+                          <td style={styles.ctstyle}> {t("Mobile Number")} :</td>
                           <td>{farmerDetails.mobileNumber}</td>
                         </tr>
                       </tbody>
@@ -588,7 +590,7 @@ function FarmerTransactionReport() {
                           onClick={display}
                         > */}
                 <Button type="submit" variant="primary">
-                  Generate Report
+                  {t("Generate Report")}
                 </Button>
               </Col>
             </Row>
@@ -600,9 +602,9 @@ function FarmerTransactionReport() {
                   style={{ fontWeight: "bold" }}
                 >
                   <span style={{ fontSize: "x-large" }}>
-                    e-Haraju Farmer Transaction Report - 3085
+                    {t("e-Haraju Farmer Transaction Report - 3085")}
                   </span>
-                  <span>From 20/12/2021 To 20/12/2021</span>
+                  <span>{t("From 20/12/2021 To 20/12/2021")}</span>
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -633,10 +635,9 @@ function FarmerTransactionReport() {
                             sm={12}
                             style={{ fontWeight: "bold" }}
                           >
-                            Farmer Details:{" "}
+                            {t("Farmer Details")}:{" "}
                             <span>
-                              C Narayanaswamy (S/o) (W/o) Venkatappa,
-                              Channahalli, Devanahalli
+                              {t("C Narayanaswamy (S/o) (W/o) Venkatappa, Channahalli, Devanahalli")}
                             </span>
                           </Form.Label>
                         </Form.Group>
@@ -649,7 +650,7 @@ function FarmerTransactionReport() {
                             sm={4}
                             style={{ fontWeight: "bold" }}
                           >
-                            Total Sale Amount:{" "}
+                            {t("Total Sale Amount")}:{" "}
                             <span style={{ color: "green" }}>
                               {" "}
                               &#8377; {53370}
@@ -663,7 +664,7 @@ function FarmerTransactionReport() {
                             sm={4}
                             style={{ fontWeight: "bold" }}
                           >
-                            Total Market Amount:{" "}
+                            {t("Total Market Amount")}:{" "}
                             <span style={{ color: "green" }}>
                               {" "}
                               &#8377; {534}
@@ -677,7 +678,7 @@ function FarmerTransactionReport() {
                             sm={4}
                             style={{ fontWeight: "bold" }}
                           >
-                            Total Amount:{" "}
+                            {t("Total Amount")}:{" "}
                             <span style={{ color: "green" }}>
                               &#8377; {52836}
                             </span>
@@ -694,12 +695,12 @@ function FarmerTransactionReport() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
-                    Cancel
+                    {t("Cancel")}
                   </Link>
                 </li>
               </ul>
