@@ -1149,7 +1149,7 @@ function Menu() {
             {showMenu.Registration_Farmer_Registration ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Farmer Registration"
+                  text={t("Farmer Registration")}
                   to="/seriui/stake-holder-registration"
                 />
               </MenuItem>
@@ -1157,7 +1157,7 @@ function Menu() {
             {showMenu.Registration_Reeler_License ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Reeler License"
+                  text={t("Reeler License")}
                   to="/seriui/issue-new-reeler-license"
                 />
               </MenuItem>
@@ -1165,7 +1165,7 @@ function Menu() {
             {showMenu.Registration_Renewal_of_Reeler_License ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Renewal of Reeler License"
+                  text={t("Renewal of Reeler License")}
                   to="/seriui/renew-reeler-license"
                 />
               </MenuItem>
@@ -1173,7 +1173,7 @@ function Menu() {
             {showMenu.Registration_Transfer_of_Reeler_License ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Transfer of Reeler License"
+                  text={t("Transfer of Reeler License")}
                   to="/seriui/transfer-reeler-license"
                 />
               </MenuItem>
@@ -1182,7 +1182,7 @@ function Menu() {
             {showMenu.Registration_Trader_License ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Trader License"
+                  text={t("Trader License")}
                   to="/seriui/issue-new-trader-license"
                 />
               </MenuItem>
@@ -1190,7 +1190,7 @@ function Menu() {
             {showMenu.Registration_Nsso ? (
               <MenuItem>
                 <MenuItemLink
-                  text="RSP/CRC/NSSO Registration"
+                  text={t("RSP/CRC/NSSO Registration")}
                   to="/seriui/external-unit-registration"
                 />
               </MenuItem>
@@ -1198,7 +1198,7 @@ function Menu() {
             {showMenu.Registration_Farmer_Without_FruitsId ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Farmer Without FruitsId"
+                  text={t("Farmer Without FruitsId")}
                   to="/seriui/farmer-without-fruits"
                 />
               </MenuItem>
@@ -1206,7 +1206,7 @@ function Menu() {
             {showMenu.Registration_Other_State_Farmer ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Other State Farmer"
+                  text={t("Other State Farmer")}
                   to="/seriui/other-state-farmer"
                 />
               </MenuItem>
@@ -1229,7 +1229,7 @@ function Menu() {
             {showMenu.Services_Service_Application ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Service Application"
+                  text={t("Service Application")}
                   to="/seriui/service-application"
                 />
               </MenuItem>
@@ -1245,7 +1245,7 @@ function Menu() {
             {showMenu.Services_Service_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Service Dashboard"
+                  text={t("Service Dashboard")}
                   to="/seriui/application-dashboard"
                 />
               </MenuItem>
@@ -1254,7 +1254,7 @@ function Menu() {
             {showMenu.Services_Dbt_Application ? (
               <MenuItem>
                 <MenuItemLink
-                  text="DBT Application"
+                  text={t("DBT Application")}
                   to="/seriui/dbt-application"
                 />
               </MenuItem>
@@ -1343,7 +1343,7 @@ function Menu() {
             {showMenu.DBT_Subsidy_Verification ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Subsidy Verification"
+                  text={t("Subsidy Verification")}
                   to="/seriui/subsidy-approval-verification"
                 />
               </MenuItem>
@@ -1351,7 +1351,7 @@ function Menu() {
             {showMenu.DBT_Subsidy_Sanction ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Subsidy Sanction"
+                  text={t("Subsidy Sanction")}
                   to="/seriui/subsidy-sanction"
                 />
               </MenuItem>
@@ -1359,7 +1359,7 @@ function Menu() {
             {showMenu.DBT_Subsidy_Drawing ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Subsidy Drawing"
+                  text={t("Subsidy Drawing")}
                   to="/seriui/subsidy-drawing"
                 />
               </MenuItem>
@@ -1367,7 +1367,7 @@ function Menu() {
             {showMenu.DBT_Subsidy_Counter_Signing ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Subsidy Counter Signing"
+                  text={t("Subsidy Counter Signing")}
                   to="/seriui/subsidy-counter-sign"
                 />
               </MenuItem>
@@ -1375,7 +1375,7 @@ function Menu() {
             {showMenu.DBT_Reject_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Report Rejection List"
+                  text={t("Report Rejection List")}
                   to="/seriui/report-reject-list"
                 />
               </MenuItem>
@@ -1383,7 +1383,7 @@ function Menu() {
             {showMenu.DBT_Success_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Report Success List"
+                  text={t("Report Success List")}
                   to="/seriui/report-success-list"
                 />
               </MenuItem>
@@ -1391,7 +1391,7 @@ function Menu() {
             {showMenu.DBT_DBT_Pushed_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="DBT Pushed List"
+                  text={t("DBT Pushed List")}
                   to="/seriui/dbt-pushed-list"
                 />
               </MenuItem>
@@ -1399,7 +1399,7 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Drawing Officer List"
+                  text={t("Drawing Officer List")}
                   to="/seriui/drawing-officer-list"
                 />
               </MenuItem>
@@ -1407,7 +1407,7 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="All Scheme Drawing Officer List"
+                  text={t("All Scheme Drawing Officer List")}
                   to="/seriui/all-scheme-drawing-officer-list"
                 />
               </MenuItem>
@@ -1415,7 +1415,7 @@ function Menu() {
             {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="TSC Officer List"
+                  text={t("TSC Officer List")}
                   to="/seriui/tsc-officer-list"
                 />
               </MenuItem>
@@ -1423,7 +1423,7 @@ function Menu() {
             {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
-                  text="All Scheme TSC Officer List"
+                  text={t("All Scheme TSC Officer List")}
                   to="/seriui/all-scheme-tsc-officer-list"
                 />
               </MenuItem>
@@ -1565,7 +1565,7 @@ function Menu() {
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
-                    text="Commercial Market"
+                    text={t("Commercial Market")}
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -1574,7 +1574,7 @@ function Menu() {
                     {showMenu.Market_Bidding ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Inward"
+                          text={t("e-Inward")}
                           to="/seriui/bidding-slip"
                         />
                       </MenuItem>
@@ -1582,7 +1582,7 @@ function Menu() {
                     {showMenu.Market_Accept_Farmer_Auction ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Acceptance"
+                          text={t("e-Acceptance")}
                           to="/seriui/accept-former-auction"
                         />
                       </MenuItem>
@@ -1590,7 +1590,7 @@ function Menu() {
                     {showMenu.Market_Weighment ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Weighment"
+                          text={t("e-Weighment")}
                           to="/seriui/weighment"
                         />
                       </MenuItem>
@@ -1604,7 +1604,7 @@ function Menu() {
                     {showMenu.Market_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text="e-Payment"
+                          text={t("e-Payment")}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -1613,7 +1613,7 @@ function Menu() {
                           {showMenu.Market_Payment_Ready_for_Payment ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Ready for Payment"
+                                text={t("Ready for Payment")}
                                 to="/seriui/ready-for-payment"
                               />
                             </MenuItem>
@@ -1621,7 +1621,7 @@ function Menu() {
                           {showMenu.Market_Payment_Bulk_Send_To_Bank ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Bulk Send to Bank"
+                                text={t("Bulk Send to Bank")}
                                 to="/seriui/bulk-send-to-bank"
                               />
                             </MenuItem>
@@ -1629,7 +1629,7 @@ function Menu() {
                           {showMenu.Market_Payment_Bank_Statement ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Bank Statement"
+                                text={t("Bank Statement")}
                                 to="/seriui/bank-statement"
                               />
                             </MenuItem>
@@ -1640,7 +1640,7 @@ function Menu() {
                     {showMenu.Market_Reject ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Reject Lot"
+                          text={t("Reject Lot")}
                           to="/seriui/reject-lot"
                         />
                       </MenuItem>
@@ -1648,7 +1648,7 @@ function Menu() {
                     {showMenu.Market_Show_Lot ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Show Lot Details"
+                          text={t("Show Lot Details")}
                           to="/seriui/display-all-lot"
                         />
                       </MenuItem>
@@ -1662,7 +1662,7 @@ function Menu() {
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
-                    text="Seed Market"
+                    text={t("Seed Market")}
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -1671,7 +1671,7 @@ function Menu() {
                     {showMenu.Market_SeedMarket_Weighment ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Weighment"
+                          text={t("Weighment")}
                           to="/seriui/weighment-for-seed-market"
                         />
                       </MenuItem>
@@ -1679,7 +1679,7 @@ function Menu() {
                     {showMenu.Market_SeedMarket_Lot_Distribution ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Lot Distribution "
+                          text={t("Lot Distribution")}
                           to="/seriui/lot-groupage"
                         />
                       </MenuItem>
@@ -1687,7 +1687,7 @@ function Menu() {
                     {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Inward"
+                          text={t("e-Inward")}
                           to="/seriui/seed-cocoon-inward"
                         />
                       </MenuItem>
@@ -1695,7 +1695,7 @@ function Menu() {
                     {showMenu.Market_SeedCocoonMarket_Base_Price_Fixation ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Base Price Fixation"
+                          text={t("Base Price Fixation")}
                           to="/seriui/base-price-fixation"
                         />
                       </MenuItem>
@@ -1703,7 +1703,7 @@ function Menu() {
                     {showMenu.Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="Pupa Test And Cocoon Assessment Page"
+                          text={t("Pupa Test And Cocoon Assessment Page")}
                           to="/seriui/pupa-test-and-assessment-page"
                         />
                       </MenuItem>
@@ -1711,7 +1711,7 @@ function Menu() {
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text="e-Payment For Seed Market"
+                          text={t("e-Payment For Seed Market")}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -1720,7 +1720,7 @@ function Menu() {
                           {showMenu.Market_SeedMarket_Ready_For_Payment ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Ready for Payment"
+                                text={t("Ready for Payment")}
                                 to="/seriui/ready-for-payment-for-seed-market"
                               />
                             </MenuItem>
@@ -1728,7 +1728,7 @@ function Menu() {
                           {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Bulk Send to Payment"
+                                text={t("Bulk Send to Payment")}
                                 to="/seriui/bulk-send-to-payment-for-seed-market"
                               />
                             </MenuItem>
@@ -1736,7 +1736,7 @@ function Menu() {
                           {showMenu.Market_SeedMarket_Payment_Statement ? (
                             <MenuItem>
                               <MenuItemLink
-                                text="Payment Statement"
+                                text={t("Payment Statement")}
                                 to="/seriui/payment-statement-for-seed-market"
                               />
                             </MenuItem>
@@ -1752,7 +1752,7 @@ function Menu() {
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
-                    text="Silk Exchange"
+                    text={t("Silk Exchange")}
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -1761,7 +1761,7 @@ function Menu() {
                     {showMenu.Market_Bidding ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Inward (Silk Exchange)"
+                          text={t("e-Inward (Silk Exchange)")}
                           to="/seriui/silk-bidding-slip"
                         />
                       </MenuItem>
@@ -1769,7 +1769,7 @@ function Menu() {
                     {showMenu.Market_Weighment ? (
                       <MenuItem>
                         <MenuItemLink
-                          text="e-Weighment (Silk Exchange)"
+                          text={t("e-Weighment (Silk Exchange)")}
                           to="/seriui/weighment-for-silk-market"
                         />
                       </MenuItem>
@@ -1883,7 +1883,7 @@ function Menu() {
             {showMenu.SeedDFL_BSF ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="BSF Kunigal"
+                  text={t("BSF Kunigal")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -1892,7 +1892,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_Garden_Farm ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance of mulberry Garden in the Farms"
+                        text={t("Maintenance of mulberry Garden in the Farms")}
                         to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms"
                       />
                     </MenuItem>
@@ -1901,7 +1901,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_DFLs_from_P4_Grainage ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Receipt of DFLs from the P4 grainage"
+                        text={t("Receipt of DFLs from the P4 grainage")}
                         to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
                       />
                     </MenuItem>
@@ -1910,7 +1910,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_Line_Records_Each_race ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance of Line Records for Each Race"
+                        text={t("Maintenance of Line Records for Each Race")}
                         to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
                       />
                     </MenuItem>
@@ -1919,7 +1919,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_Screening_batch_record ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance of Screening Batch Records"
+                        text={t("Maintenance of Screening Batch Records")}
                         to="/seriui/Maintenance-of-Screening-Batch-Records"
                       />
                     </MenuItem>
@@ -1928,7 +1928,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_DFLs_for_the_8_lines ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Rearing of DFLs for the 8 Lines"
+                        text={t("Rearing of DFLs for the 8 Lines")}
                         to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
                       />
                     </MenuItem>
@@ -1937,7 +1937,7 @@ function Menu() {
                   {showMenu.SeedDFL_BSF_Cocoons_to_P4_Grainage ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Dispatch of Cocoons to P4 Grainage"
+                        text={t("Dispatch of Cocoons to P4 Grainage")}
                         to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
                       />
                     </MenuItem>
@@ -1949,7 +1949,7 @@ function Menu() {
             {showMenu.SeedDFL_Grainage ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="Grainage"
+                  text={t("Grainage")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -1958,7 +1958,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Seed_Cocoon_Processing ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Preservation of seed cocoon for processing"
+                        text={t("Preservation of seed cocoon for processing")}
                         to="/seriui/Preservation-of-seed-cocoon-for-processing"
                       />
                     </MenuItem>
@@ -1967,7 +1967,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Preparation_Egg_DFLs ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Preparation of eggs DFLs"
+                        text={t("Preparation of eggs DFLs")}
                         to="/seriui/Preparation-of-eggs-DFLs"
                       />
                     </MenuItem>
@@ -1976,7 +1976,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Eggs_Cold_storage ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance of eggs at cold storage"
+                        text={t("Maintenance of eggs at cold storage")}
                         to="/seriui/maintenance-of-eggs-at-cold-storage"
                       />
                     </MenuItem>
@@ -1985,7 +1985,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Cold_Storage_Schedule_BV ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Cold Storage Schedule BV"
+                        text={t("Cold Storage Schedule BV")}
                         to="/seriui/Cold-Storage-Schedule-BV"
                       />
                     </MenuItem>
@@ -1994,7 +1994,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Sale_of_DFLs_Eggs ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Sale/Disposal of DFLs (eggs)"
+                        text={t("Sale/Disposal of DFLs (eggs)")}
                         to="/seriui/Sale-Disposal-of-DFLs-eggs"
                       />
                     </MenuItem>
@@ -2003,7 +2003,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Testing_Of_Moth ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Testing Of Moth/Pupa"
+                        text={t("Testing Of Moth/Pupa")}
                         to="/seriui/testing-of-moth"
                       />
                     </MenuItem>
@@ -2011,7 +2011,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Maintenance_Of_Pierced_Cocoons ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance Of Pierced Cocoons"
+                        text={t("Maintenance Of Pierced Cocoons")}
                         to="/seriui/maintenance-of-pierced-cocoons"
                       />
                     </MenuItem>
@@ -2020,7 +2020,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Sale_Of_Pierced_Cocoons ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Sale/Disposal of Pierced Cocoons"
+                        text={t("Sale/Disposal of Pierced Cocoons")}
                         to="/seriui/sale-disposal-of-pierced-cocoons"
                       />
                     </MenuItem>
@@ -2029,7 +2029,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance Of Egg Laying Sheets"
+                        text={t("Maintenance Of Egg Laying Sheets")}
                         to="/seriui/maintenance-of-egg-laying-sheets"
                       />
                     </MenuItem>
@@ -2038,7 +2038,7 @@ function Menu() {
                   {showMenu.SeedDFL_Grainage_Remittance ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Remittance (Eggs / PC / Others)"
+                        text={t("Remittance (Eggs / PC / Others)")}
                         to="/seriui/remittance"
                       />
                     </MenuItem>
@@ -2050,7 +2050,7 @@ function Menu() {
             {showMenu.SeedDFL_External ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="External Users"
+                  text={t("External Users")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -2059,7 +2059,7 @@ function Menu() {
                   {showMenu.SeedDFL_External_Preservation_Of_Seed_Cocoon_Rsp ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Preservation Of Seed Cocoon For RSP/NSSO"
+                        text={t("Preservation Of Seed Cocoon For RSP/NSSO")}
                         to="/seriui/Preservation-of-seed-cocoon-for-processing-for-nsso"
                       />
                     </MenuItem>
@@ -2068,7 +2068,7 @@ function Menu() {
                   {showMenu.SeedDFL_External_Preparation_Egg_DFLs ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Preparation of eggs (DFLs) RSP/NSSO"
+                        text={t("Preparation of eggs (DFLs) RSP/NSSO")}
                         to="/seriui/registered-seed-producer-nsso-grainages"
                       />
                     </MenuItem>
@@ -2077,7 +2077,7 @@ function Menu() {
                   {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Sale / Dis posal of DFL’s (eggs) RSP/NSSO"
+                        text={t("Sale / Dis posal of DFL’s (eggs) RSP/NSSO")}
                         to="/seriui/sale-and-disposal-of-eggs-nsso"
                       />
                     </MenuItem>
@@ -2086,7 +2086,7 @@ function Menu() {
                   {showMenu.SeedDFL_External_Eggs_Cold_storage ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Maintenance of eggs at cold storage RSP/NSSO"
+                        text={t("Maintenance of eggs at cold storage RSP/NSSO")}
                         to="/seriui/Maintenance-of-eggs-at-cold"
                       />
                     </MenuItem>
@@ -2135,7 +2135,7 @@ function Menu() {
             {showMenu.GardenManagement_Mulberry_Garden ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Maintenance Of Mulberry Garden"
+                  text={t("Maintenance Of Mulberry Garden")}
                   to="/seriui/maintenance-of-mulberry-garden"
                 />
               </MenuItem>
@@ -2144,7 +2144,7 @@ function Menu() {
             {showMenu.GardenManagement_DFL_From_The_Grainage ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Receipt of DFLs from the grainage"
+                  text={t("Receipt of DFLs from the grainage")}
                   to="/seriui/receipt-of-dfls"
                 />
               </MenuItem>
@@ -2153,7 +2153,7 @@ function Menu() {
             {showMenu.GardenManagement_Rearing_of_DFL ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Rearing of DFLs"
+                  text={t("Rearing of DFLs")}
                   to="/seriui/rearing-of-dfls"
                 />
               </MenuItem>
@@ -2162,7 +2162,7 @@ function Menu() {
             {showMenu.GardenManagement_Cocoons_to_Grainage ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Supply of Cocoons to Grainagee"
+                  text={t("Supply of Cocoons to Grainagee")}
                   to="/seriui/Supply-of-Cocoons-to-Grainagee"
                 />
               </MenuItem>
@@ -2171,7 +2171,7 @@ function Menu() {
             {showMenu.GardenManagement_Sale_of_Nursery_to_Farmers ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Maintenance and Sale of Nursery to Farmers"
+                  text={t("Maintenance and Sale of Nursery to Farmers")}
                   to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
                 />
               </MenuItem>
@@ -2180,7 +2180,7 @@ function Menu() {
             {showMenu.GardenManagement_Seed_Cutting_Bank ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Seed cutting bank"
+                  text={t("Seed cutting bank")}
                   to="/seriui/seed-cutting-bank"
                 />
               </MenuItem>
@@ -2189,7 +2189,7 @@ function Menu() {
             {showMenu.GardenManagement_Distribution_Farmers ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Chawki distribution to Farmers"
+                  text={t("Chawki distribution to Farmers")}
                   to="/seriui/chawki-distribution"
                 />
               </MenuItem>
@@ -2212,7 +2212,7 @@ function Menu() {
             {showMenu.ChawkiManagement_ChawkiManagement ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Sale Of Chawki Worms"
+                  text={t("Sale Of Chawki Worms")}
                   to="/seriui/chawki-management"
                 />
               </MenuItem>
@@ -2409,7 +2409,7 @@ function Menu() {
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="New Target Setting"
+                  text={t("New Target Setting")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -2418,7 +2418,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="District Monthly Mulberry Target"
+                        text={t("District Monthly Mulberry Target")}
                         to="/seriui/districtwise-montly-mulberry-new"
                       />
                     </MenuItem>
@@ -2442,7 +2442,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="TSC Monthly Mulberry Target"
+                        text={t("TSC Monthly Mulberry Target")}
                         to="/seriui/tsc-mulberry-targets-new"
                       />
                     </MenuItem>
@@ -2450,7 +2450,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="SI SD Monthly Mulberry Target"
+                        text={t("SI SD Monthly Mulberry Target")}
                         to="/seriui/si-sd-mulberry-target-new"
                       />
                     </MenuItem>
@@ -2458,7 +2458,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="SI SD Daily Mulberry Target"
+                        text={t("SI SD Daily Mulberry Target")}
                         to="/seriui/si-sd-mulberry-day-target-new"
                       />
                     </MenuItem>
@@ -2466,7 +2466,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="District Wise Product Physical Target Setting"
+                        text={t("District Wise Product Physical Target Setting")}
                         to="/seriui/districtwise-product-physical-target-setting"
                       />
                     </MenuItem>
@@ -2474,7 +2474,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="TSC Wise Product Physical Target Setting"
+                        text={t("TSC Wise Product Physical Target Setting")}
                         to="/seriui/tscwise-product-physical-target-setting"
                       />
                     </MenuItem>
@@ -2482,7 +2482,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Reeling TSC Wise Scheme Target Setting"
+                        text={t("Reeling TSC Wise Scheme Target Setting")}
                         to="/seriui/reeling-tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>
@@ -2490,7 +2490,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="SI SD Wise Product Physical Target Setting"
+                        text={t("SI SD Wise Product Physical Target Setting")}
                         to="/seriui/si-sd-wise-product-physical-target-setting"
                       />
                     </MenuItem>
@@ -2498,7 +2498,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Farm Wise Target Setting"
+                        text={t("Farm Wise Target Setting")}
                         to="/seriui/farm-wise-target-setting"
                       />
                     </MenuItem>
@@ -2506,7 +2506,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Grainage Wise Target Setting"
+                        text={t("Grainage Wise Target Setting")}
                         to="/seriui/grainage-wise-target-setting"
                       />
                     </MenuItem>
@@ -2514,7 +2514,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Training Wise Target Setting"
+                        text={t("Training Wise Target Setting")}
                         to="/seriui/training-wise-target-setting"
                       />
                     </MenuItem>
@@ -2522,7 +2522,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="District Wise Scheme Target Setting"
+                        text={t("District Wise Scheme Target Setting")}
                         to="/seriui/district-wise-scheme-target-setting"
                       />
                     </MenuItem>
@@ -2530,7 +2530,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="TSC Wise Scheme Target Setting"
+                        text={t("TSC Wise Scheme Target Setting")}
                         to="/seriui/tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>
@@ -2538,7 +2538,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="SI SD Wise Daily Scheme Target Setting"
+                        text={t("SI SD Wise Daily Scheme Target Setting")}
                         to="/seriui/si-sd-wise-day-scheme-target-setting"
                       />
                     </MenuItem>
@@ -2547,7 +2547,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="User Hierarchy Mapping"
+                        text={t("User Hierarchy Mapping")}
                         to="/seriui/user-and-manager-hierarchy-mapping"
                       />
                     </MenuItem>
@@ -2556,7 +2556,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Direct And All Reportee Details"
+                        text={t("Direct And All Reportee Details")}
                         to="/seriui/user-and-manager-hierarchy-mapping-list"
                       />
                     </MenuItem>
@@ -2590,7 +2590,7 @@ function Menu() {
             {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Inspection Config"
+                  text={t("Inspection Config")}
                   to="/seriui/inspection-config"
                 />
               </MenuItem>
@@ -2598,7 +2598,7 @@ function Menu() {
             {showMenu.Inspection_Supply_of_Disinfectants_to_Farmers ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Supply of disinfectants to farmers"
+                  text={t("Supply of disinfectants to farmers")}
                   to="/seriui/supply-of-disinfectants"
                 />
               </MenuItem>
@@ -2606,7 +2606,7 @@ function Menu() {
             {showMenu.Inspection_Implementation_of_MGNREGA ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Implementation of MGNREGA"
+                  text={t("Implementation of MGNREGA")}
                   to="/seriui/mgnerga-scheme"
                 />
               </MenuItem>
@@ -2653,7 +2653,7 @@ function Menu() {
             {showMenu.Training_Schedule ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Schedule Training"
+                  text={t("Schedule Training")}
                   to="/seriui/training-schedule"
                 />
               </MenuItem>
@@ -2661,7 +2661,7 @@ function Menu() {
             {showMenu.Training_Page ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Trainer Page"
+                  text={t("Trainer Page")}
                   to="/seriui/trainer-page-list"
                 />
               </MenuItem>
@@ -2669,7 +2669,7 @@ function Menu() {
             {showMenu.Training_Deputation_Tracker ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Training Deputation Tracker"
+                  text={t("Training Deputation Tracker")}
                   to="/seriui/training-deputation-tracker"
                 />
               </MenuItem>
@@ -2696,13 +2696,13 @@ function Menu() {
           <MenuSub>
             {showMenu.Helpdesk_Raise_a_Ticket ? (
               <MenuItem>
-                <MenuItemLink text="Raise a Ticket" to="/seriui/help-desk" />
+                <MenuItemLink text={t("Raise a Ticket")} to="/seriui/help-desk" />
               </MenuItem>
             ) : null}
             {showMenu.Helpdesk_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Helpdesk Dashboard"
+                  text={t("Helpdesk Dashboard")}
                   to="/seriui/helpdesk-dashboard"
                 />
               </MenuItem>
@@ -2710,7 +2710,7 @@ function Menu() {
             {showMenu.Helpdesk_User_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text="User Dashboard"
+                  text={t("User Dashboard")}
                   to="/seriui/user-dashboard"
                 />
               </MenuItem>
@@ -2718,7 +2718,7 @@ function Menu() {
             {showMenu.Helpdesk_Escalated_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Escalate Dashboard"
+                  text={t("Escalate Dashboard")}
                   to="/seriui/escalate-dashboard"
                 />
               </MenuItem>
@@ -2730,7 +2730,7 @@ function Menu() {
           ) : null} */}
             {showMenu.Helpdesk_FAQ ? (
               <MenuItem>
-                <MenuItemLink text="KEDB" to="/seriui/help-desk-faq-view" />
+                <MenuItemLink text={t("KEDB")} to="/seriui/help-desk-faq-view" />
               </MenuItem>
             ) : null}
           </MenuSub>
@@ -2751,7 +2751,7 @@ function Menu() {
             {showMenu.Admin_Master ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="Master"
+                  text={t("Master")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -2760,7 +2760,7 @@ function Menu() {
                   {showMenu.Admin_Master_Registration ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Registration"
+                        text={t("Registration")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -2768,18 +2768,18 @@ function Menu() {
                       <MenuSub>
                         {showMenu.Admin_Master_Registration_Caste ? (
                           <MenuItem>
-                            <MenuItemLink text="Caste" to="/seriui/caste" />
+                            <MenuItemLink text={t("Caste")} to="/seriui/caste" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Roles ? (
                           <MenuItem>
-                            <MenuItemLink text="Roles" to="/seriui/roles" />
+                            <MenuItemLink text={t("Roles")} to="/seriui/roles" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Education ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Education"
+                              text={t("Education")}
                               to="/seriui/education"
                             />
                           </MenuItem>
@@ -2787,20 +2787,20 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_Relationship ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Relationship"
+                              text={t("Relationship")}
                               to="/seriui/relationship"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_State ? (
                           <MenuItem>
-                            <MenuItemLink text="State" to="/seriui/state" />
+                            <MenuItemLink text={t("State")} to="/seriui/state" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Farmer_Bank_Reason ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Farmer Bank Reason"
+                              text={t("Farmer Bank Reason")}
                               to="/seriui/farmerBankAccountReason"
                             />
                           </MenuItem>
@@ -2808,30 +2808,30 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_District ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District"
+                              text={t("District")}
                               to="/seriui/district"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Taluk ? (
                           <MenuItem>
-                            <MenuItemLink text="Taluk" to="/seriui/taluk" />
+                            <MenuItemLink text={t("Taluk")} to="/seriui/taluk" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Hobli ? (
                           <MenuItem>
-                            <MenuItemLink text="Hobli" to="/seriui/hobli" />
+                            <MenuItemLink text={t("Hobli")} to="/seriui/hobli" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Village ? (
                           <MenuItem>
-                            <MenuItemLink text="Village" to="/seriui/village" />
+                            <MenuItemLink text={t("Village")} to="/seriui/village" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Trader_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Trader Type"
+                              text={t("Trader Type")}
                               to="/seriui/trader-type"
                             />
                           </MenuItem>
@@ -2839,7 +2839,7 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_Farmer_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Farmer Type"
+                              text={t("Farmer Type")}
                               to="/seriui/farmer-type"
                             />
                           </MenuItem>
@@ -2848,20 +2848,20 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_Working_Institution ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Working Institution"
+                              text={t("Working Institution")}
                               to="/seriui/working-institution"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_User ? (
                           <MenuItem>
-                            <MenuItemLink text="User" to="/seriui/user" />
+                            <MenuItemLink text={t("User")} to="/seriui/user" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Designation ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Designation"
+                              text={t("Designation")}
                               to="/seriui/designation"
                             />
                           </MenuItem>
@@ -2869,7 +2869,7 @@ function Menu() {
                         {showMenu.Admin_Master_Registration_No_Fruits_Farmer_Counter ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Non Fruits ID Farmer Counter"
+                              text={t("Non Fruits ID Farmer Counter")}
                               to="/seriui/config-farmer-count"
                             />
                           </MenuItem>
@@ -2881,7 +2881,7 @@ function Menu() {
                   {showMenu.Admin_Master_Land ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Land"
+                        text={t("Land")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -2890,7 +2890,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Holding_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Land Holding Category"
+                              text={t("Land Holding Category")}
                               to="/seriui/land-category"
                             />
                           </MenuItem>
@@ -2898,7 +2898,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Irrigation_Source ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Irrigation Source"
+                              text={t("Irrigation Source")}
                               to="/seriui/irrigation-source"
                             />
                           </MenuItem>
@@ -2906,7 +2906,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Irrigation_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Irrigation Type"
+                              text={t("Irrigation Type")}
                               to="/seriui/irrigation-type"
                             />
                           </MenuItem>
@@ -2914,7 +2914,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Ownership ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Land Ownership"
+                              text={t("Land Ownership")}
                               to="/seriui/land-ownership"
                             />
                           </MenuItem>
@@ -2922,7 +2922,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Soil_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Soil Type"
+                              text={t("Soil Type")}
                               to="/seriui/soil-type"
                             />
                           </MenuItem>
@@ -2930,7 +2930,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Rear_House_Roof_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Rear House Roof Type"
+                              text={t("Rear House Roof Type")}
                               to="/seriui/rear-house-roof-type"
                             />
                           </MenuItem>
@@ -2938,7 +2938,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Silk_Worm_Variety ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Silk Worm Variety"
+                              text={t("Silk Worm Variety")}
                               to="/seriui/silk-worm-variety"
                             />
                           </MenuItem>
@@ -2946,7 +2946,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Source_of_Mulberry ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Source of Mulberry"
+                              text={t("Source of Mulberry")}
                               to="/seriui/source-of-mulberry"
                             />
                           </MenuItem>
@@ -2954,7 +2954,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Mulberry_Variety ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Mulberry Variety"
+                              text={t("Mulberry Variety")}
                               to="/seriui/mulberry-variety"
                             />
                           </MenuItem>
@@ -2962,7 +2962,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Subsidy_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Subsidy Details"
+                              text={t("Subsidy Details")}
                               to="/seriui/subsidy-details"
                             />
                           </MenuItem>
@@ -2970,7 +2970,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Plantation_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Plantation Type"
+                              text={t("Plantation Type")}
                               to="/seriui/plantation-type"
                             />
                           </MenuItem>
@@ -2978,7 +2978,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Machine_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Machine Type"
+                              text={t("Machine Type")}
                               to="/seriui/machine-type"
                             />
                           </MenuItem>
@@ -2990,7 +2990,7 @@ function Menu() {
                   {showMenu.Admin_Master_Service ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Service"
+                        text={t("Service")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3007,7 +3007,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Scheme_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Scheme Details"
+                              text={t("Scheme Details")}
                               to="/seriui/sc-scheme-details"
                             />
                           </MenuItem>
@@ -3015,7 +3015,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Document ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Document"
+                              text={t("Document")}
                               to="/seriui/document"
                             />
                           </MenuItem>
@@ -3023,7 +3023,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Scheme_Quota ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Scheme Quota"
+                              text={t("Scheme Quota")}
                               to="/seriui/scheme-quota"
                             />
                           </MenuItem>
@@ -3031,7 +3031,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Sub_Scheme_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Component Type"
+                              text={t("Component Type")}
                               to="/seriui/sc-sub-scheme-details"
                             />
                           </MenuItem>
@@ -3039,7 +3039,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Component ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Component"
+                              text={t("Component")}
                               to="/seriui/sc-component"
                             />
                           </MenuItem>
@@ -3047,7 +3047,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Sub Component"
+                              text={t("Sub Component")}
                               to="/seriui/sc-category"
                             />
                           </MenuItem>
@@ -3055,7 +3055,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Head_of_Account ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Head of Account"
+                              text={t("Head of Account")}
                               to="/seriui/sc-head-account"
                             />
                           </MenuItem>
@@ -3063,7 +3063,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Map Component And Head Of Account"
+                              text={t("Map Component And Head Of Account")}
                               to="/seriui/map-component"
                             />
                           </MenuItem>
@@ -3080,7 +3080,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Unit_Cost ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Unit Cost"
+                              text={t("Unit Cost")}
                               to="/seriui/sc-unit-cost"
                             />
                           </MenuItem>
@@ -3088,7 +3088,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Vendor ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Vendor"
+                              text={t("Vendor")}
                               to="/seriui/sc-vendor"
                             />
                           </MenuItem>
@@ -3112,7 +3112,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Approving_Authority ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Approving Authority"
+                              text={t("Approving Authority")}
                               to="/seriui/sc-approving-authority"
                             />
                           </MenuItem>
@@ -3120,36 +3120,36 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Approval_Stage ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Approval Stage"
+                              text={t("Approval Stage")}
                               to="/seriui/sc-approval-stage"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
-                            <MenuItemLink text="Spacing" to="/seriui/spacing" />
+                            <MenuItemLink text={t("Spacing")} to="/seriui/spacing" />
                           </MenuItem>
                         ) : null}
                        
                         {showMenu.Admin_Master_Service_Hectare ? (
                           <MenuItem>
-                            <MenuItemLink text="Hectare" to="/seriui/hectare" />
+                            <MenuItemLink text={t("Hectare")} to="/seriui/hectare" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Configure_Pmkys_Amount ? (
                           <MenuItem>
-                            <MenuItemLink text="Configure Amount" to="/seriui/configure-pmkys-amount" />
+                            <MenuItemLink text={t("Configure Amount")} to="/seriui/configure-pmkys-amount" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Configure_Bonus_Amount ? (
                           <MenuItem>
-                            <MenuItemLink text="Configure Bonus Amount" to="/seriui/configure-bivoltine-amount" />
+                            <MenuItemLink text={t("Configure Bonus Amount")} to="/seriui/configure-bivoltine-amount" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Target"
+                              text={t("Target")}
                               to="/seriui/mulberry-target-type"
                             />
                           </MenuItem>
@@ -3157,7 +3157,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_User_Hierarchy_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="User Hierarchy Mapping"
+                              text={t("User Hierarchy Mapping")}
                               to="/seriui/user-hierarchy-mapping"
                             />
                           </MenuItem>
@@ -3173,7 +3173,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Program_Approval_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Approval Stage mapping"
+                              text={t("Approval Stage mapping")}
                               to="/seriui/sc-program-approval-mapping"
                             />
                           </MenuItem>
@@ -3181,7 +3181,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reject Reason"
+                              text={t("Reject Reason")}
                               to="/seriui/reject-reason-workflow"
                             />
                           </MenuItem>
@@ -3199,7 +3199,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Activity ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Activity"
+                              text={t("Activity")}
                               to="/seriui/activity"
                             />
                           </MenuItem>
@@ -3211,7 +3211,7 @@ function Menu() {
                   {showMenu.Admin_Master_Training ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Training"
+                        text={t("Training")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3220,7 +3220,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Program ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Program"
+                              text={t("Training Program")}
                               to="/seriui/trainingProgram"
                             />
                           </MenuItem>
@@ -3228,7 +3228,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Course ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Course"
+                              text={t("Training Course")}
                               to="/seriui/trainingCourse"
                             />
                           </MenuItem>
@@ -3236,7 +3236,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Deputed_Institute ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Deputed Institute Training"
+                              text={t("Deputed Institute Training")}
                               to="/seriui/deputed-institute"
                             />
                           </MenuItem>
@@ -3244,7 +3244,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Group ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Group"
+                              text={t("Training Group")}
                               to="/seriui/training-group"
                             />
                           </MenuItem>
@@ -3252,7 +3252,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Institution ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Institution"
+                              text={t("Training Institution")}
                               to="/seriui/training-institution"
                             />
                           </MenuItem>
@@ -3260,7 +3260,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Mode ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Mode"
+                              text={t("Training Mode")}
                               to="/seriui/training-mode"
                             />
                           </MenuItem>
@@ -3268,7 +3268,7 @@ function Menu() {
                         {showMenu.Admin_Master_Training_Office ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Training Office"
+                              text={t("Training Office")}
                               to="/seriui/training-office"
                             />
                           </MenuItem>
@@ -3280,7 +3280,7 @@ function Menu() {
                   {showMenu.Admin_Master_HelpDesk ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="HelpDesk"
+                        text={t("HelpDesk")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3289,7 +3289,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Module ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Modules"
+                              text={t("Modules")}
                               to="/seriui/hd-module"
                             />
                           </MenuItem>
@@ -3297,7 +3297,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Feature ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Feature"
+                              text={t("Feature")}
                               to="/seriui/hd-feature"
                             />
                           </MenuItem>
@@ -3305,7 +3305,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Board_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Board Category"
+                              text={t("Board Category")}
                               to="/seriui/hd-board-category"
                             />
                           </MenuItem>
@@ -3313,7 +3313,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Category"
+                              text={t("Category")}
                               to="/seriui/hd-category"
                             />
                           </MenuItem>
@@ -3321,7 +3321,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Sub Category"
+                              text={t("Sub Category")}
                               to="/seriui/hd-sub-category"
                             />
                           </MenuItem>
@@ -3329,7 +3329,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Status ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Help Desk Status"
+                              text={t("Help Desk Status")}
                               to="/seriui/hd-status"
                             />
                           </MenuItem>
@@ -3337,7 +3337,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Severity ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Help Desk Severity"
+                              text={t("Help Desk Severity")}
                               to="/seriui/hd-severity"
                             />
                           </MenuItem>
@@ -3345,7 +3345,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Faq ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Help Desk FAQ"
+                              text={t("Help Desk FAQ")}
                               to="/seriui/hd-question"
                             />
                           </MenuItem>
@@ -3357,7 +3357,7 @@ function Menu() {
                   {showMenu.Admin_Master_Garden ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Garden Management"
+                        text={t("Garden Management")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3366,7 +3366,7 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Line ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Line Name"
+                              text={t("Line Name")}
                               to="/seriui/lineName"
                             />
                           </MenuItem>
@@ -3374,7 +3374,7 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Crop_Status ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Crop Status"
+                              text={t("Crop Status")}
                               to="/seriui/cropStatus"
                             />
                           </MenuItem>
@@ -3382,41 +3382,38 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Crop_Inspection_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Crop Inspection Type"
+                              text={t("Crop Inspection Type")}
                               to="/seriui/cropInspectionType"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Reason ? (
                           <MenuItem>
-                            <MenuItemLink text="Reason" to="/seriui/reason" />
+                            <MenuItemLink text={t("Reason")} to="/seriui/reason" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Mount ? (
                           <MenuItem>
-                            <MenuItemLink text="Mount" to="/seriui/mount" />
+                            <MenuItemLink text={t("Mount")} to="/seriui/mount" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Disease_Status ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Disease Status"
+                              text={t("Disease Status")}
                               to="/seriui/disease-status"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Grainage ? (
                           <MenuItem>
-                            <MenuItemLink
-                              text="Grainage"
-                              to="/seriui/grainage"
-                            />
+                            <MenuItemLink text={t("Grainage")} to="/seriui/grainage" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Disinfectant ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Disinfectant Usage Details"
+                              text={t("Disinfectant Usage Details")}
                               to="/seriui/disinfectant"
                             />
                           </MenuItem>
@@ -3424,25 +3421,25 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Generation_Number ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Generation Number"
+                              text={t("Generation Number")}
                               to="/seriui/generation-number"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Farm ? (
                           <MenuItem>
-                            <MenuItemLink text="Farm" to="/seriui/farm" />
+                            <MenuItemLink text={t("Farm")} to="/seriui/farm" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Tsc ? (
                           <MenuItem>
-                            <MenuItemLink text="Tsc" to="/seriui/tsc" />
+                            <MenuItemLink text={t("Tsc")} to="/seriui/tsc" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Worm_Stage ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Worm Stage"
+                              text={t("Worm Stage")}
                               to="/seriui/worm-stage"
                             />
                           </MenuItem>
@@ -3454,7 +3451,7 @@ function Menu() {
                   {showMenu.Admin_Master_Auction ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Market & Auction"
+                        text={t("Market & Auction")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3462,23 +3459,23 @@ function Menu() {
                       <MenuSub>
                         {showMenu.Admin_Master_Auction_Bin ? (
                           <MenuItem>
-                            <MenuItemLink text="Bin" to="/seriui/bin" />
+                            <MenuItemLink text={t("Bin")} to="/seriui/bin" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Market ? (
                           <MenuItem>
-                            <MenuItemLink text="Market" to="/seriui/market" />
+                            <MenuItemLink text={t("Market")} to="/seriui/market" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Godown ? (
                           <MenuItem>
-                            <MenuItemLink text="Godown" to="/seriui/godawn" />
+                            <MenuItemLink text={t("Godown")} to="/seriui/godawn" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Activate_Reeler ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Activate Reeler"
+                              text={t("Activate Reeler")}
                               to="/seriui/activate-reeler"
                             />
                           </MenuItem>
@@ -3486,30 +3483,30 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Activate_Trader ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Activate Trader"
+                              text={t("Activate Trader")}
                               to="/seriui/activate-trader"
                             />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Race ? (
                           <MenuItem>
-                            <MenuItemLink text="Race" to="/seriui/race" />
+                            <MenuItemLink text={t("Race")} to="/seriui/race" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Source ? (
                           <MenuItem>
-                            <MenuItemLink text="Source" to="/seriui/source" />
+                            <MenuItemLink text={t("Source")} to="/seriui/source" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Crate ? (
                           <MenuItem>
-                            <MenuItemLink text="Crate" to="/seriui/crate" />
+                            <MenuItemLink text={t("Crate")} to="/seriui/crate" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Flex_Time ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Flex Time"
+                              text={t("Flex Time")}
                               to="/seriui/flex-time"
                             />
                           </MenuItem>
@@ -3517,7 +3514,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Exception_Time ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Exception Time"
+                              text={t("Exception Time")}
                               to="/seriui/market-exception-time"
                             />
                           </MenuItem>
@@ -3525,7 +3522,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Market_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Market Type"
+                              text={t("Market Type")}
                               to="/seriui/market-type"
                             />
                           </MenuItem>
@@ -3533,7 +3530,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Reeler_Type ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Type"
+                              text={t("Reeler Type")}
                               to="/seriui/reeler-type"
                             />
                           </MenuItem>
@@ -3541,7 +3538,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Update_Bank_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Update Bank Details"
+                              text={t("Update Bank Details")}
                               to="/seriui/update-bank-details"
                             />
                           </MenuItem>
@@ -3549,7 +3546,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_External_Unit ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="External Unit"
+                              text={t("External Unit")}
                               to="/seriui/external-unit-type"
                             />
                           </MenuItem>
@@ -3557,7 +3554,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Empaneled_Vendor ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Empaneled Vendors"
+                              text={t("Empaneled Vendors")}
                               to="/seriui/empanelled-vendor"
                             />
                           </MenuItem>
@@ -3565,7 +3562,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Reeler_Device_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Device Mapping"
+                              text={t("Reeler Device Mapping")}
                               to="/seriui/reeler-device-mapping"
                             />
                           </MenuItem>
@@ -3573,7 +3570,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Race_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Race Mapping"
+                              text={t("Race Mapping")}
                               to="/seriui/race-mapping"
                             />
                           </MenuItem>
@@ -3581,7 +3578,7 @@ function Menu() {
                         {showMenu.Admin_Master_Auction_Division ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Division"
+                              text={t("Division")}
                               to="/seriui/division"
                             />
                           </MenuItem>
@@ -3589,7 +3586,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reason for lot Cancellation"
+                              text={t("Reason for lot Cancellation")}
                               to="/seriui/reason-lot-cancellation"
                             />
                           </MenuItem>
@@ -3606,7 +3603,7 @@ function Menu() {
                   {showMenu.Admin_Master_General ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="General"
+                        text={t("General")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3615,7 +3612,7 @@ function Menu() {
                         {showMenu.Admin_Master_General_Pages ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Pages"
+                              text={t("Pages")}
                               to="/seriui/role-pages"
                             />
                           </MenuItem>
@@ -3624,7 +3621,7 @@ function Menu() {
                         {showMenu.Admin_Master_General_Config_Role ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Config Role"
+                              text={t("Config Role")}
                               to="/seriui/role-config"
                             />
                           </MenuItem>
@@ -3632,7 +3629,7 @@ function Menu() {
                         {showMenu.Admin_Master_General_Activate_External ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Activate External Unit user"
+                              text={t("Activate External Unit user")}
                               to="/seriui/activate-external-unit"
                             />
                           </MenuItem>
@@ -3640,7 +3637,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Department ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Department"
+                              text={t("Department")}
                               to="/seriui/department"
                             />
                           </MenuItem>
@@ -3648,7 +3645,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Financial_Year ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Financial Year"
+                              text={t("Financial Year")}
                               to="/seriui/financial-year"
                             />
                           </MenuItem>
@@ -3663,7 +3660,7 @@ function Menu() {
             {showMenu.Admin_Report ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="Report"
+                  text={t("Report")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -3689,7 +3686,7 @@ function Menu() {
                   {showMenu.Admin_Report_Seed_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Seed Market"
+                        text={t("Seed Market")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3710,7 +3707,7 @@ function Menu() {
                   {showMenu.Admin_Report_Silk_Type_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Silk Exchange Market"
+                        text={t("Silk Exchange Market")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3719,7 +3716,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Dashboard Report"
+                              text={t("Dashboard Report")}
                               to="/seriui/dashboard-report-silk-type"
                             />
                           </MenuItem>
@@ -3727,7 +3724,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Dtr Report"
+                              text={t("Dtr Report")}
                               to="/seriui/dtr-online-silk-type"
                             />
                           </MenuItem>
@@ -3735,7 +3732,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_Blank_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Real Time Dtr Report"
+                              text={t("Real Time Dtr Report")}
                               to="/seriui/blank-dtr-online-silk-type"
                             />
                           </MenuItem>
@@ -3743,7 +3740,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_Unit_Counter_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Unit Counter Report"
+                              text={t("Unit Counter Report")}
                               to="/seriui/unit-counter-report-silk-type"
                             />
                           </MenuItem>
@@ -3751,7 +3748,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Abstract Report"
+                              text={t("Abstract Report")}
                               to="/seriui/abstract-report-silk-type"
                             />
                           </MenuItem>
@@ -3759,7 +3756,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_Form_District_Abstract_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Abstract Report"
+                              text={t("District Wise Abstract Report")}
                               to="/seriui/form-13-report-by-dist-silk-type"
                             />
                           </MenuItem>
@@ -3767,7 +3764,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_Market_District_Wise_Monthly ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Monthly Report"
+                              text={t("District Wise Monthly Report")}
                               to="/seriui/district-monthly-report-silk-type"
                             />
                           </MenuItem>
@@ -3779,7 +3776,7 @@ function Menu() {
                   {showMenu.Admin_Report_Commercial_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text="Commercial Market"
+                        text={t("Commercial Market")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -3788,7 +3785,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Dashboard"
+                              text={t("Dashboard")}
                               to="/seriui/dashboard-report"
                             />
                           </MenuItem>
@@ -3796,7 +3793,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="All Market Dashboard"
+                              text={t("All Market Dashboard")}
                               to="/seriui/dashboard-report-all-market"
                             />
                           </MenuItem>
@@ -3804,7 +3801,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Abstract Report"
+                              text={t("Abstract Report")}
                               to="/seriui/abstract-report"
                             />
                           </MenuItem>
@@ -3812,7 +3809,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_District_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Abstract Report"
+                              text={t("District Wise Abstract Report")}
                               to="/seriui/form-13-report-by-dist"
                             />
                           </MenuItem>
@@ -3820,7 +3817,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_DTR_Blank_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Real Time DTR Report"
+                              text={t("Real Time DTR Report")}
                               to="/seriui/blank-dtr-online"
                             />
                           </MenuItem>
@@ -3828,7 +3825,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_DTR ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="DTR Online"
+                              text={t("DTR Online")}
                               to="/seriui/dtr-online"
                             />
                           </MenuItem>
@@ -3836,7 +3833,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_GeneratedTriplet ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Generated Triplet"
+                              text={t("Generated Triplet")}
                               to="/seriui/print-bid-slip"
                             />
                           </MenuItem>
@@ -3844,7 +3841,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Generated Bidding Slip"
+                              text={t("Generated Bidding Slip")}
                               to="/seriui/print-farmer-copy"
                             />
                           </MenuItem>
@@ -3852,7 +3849,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Current Balance Report"
+                              text={t("Reeler Current Balance Report")}
                               to="/seriui/reeler-current-balance"
                             />
                           </MenuItem>
@@ -3860,7 +3857,7 @@ function Menu() {
                         {showMenu.Admin_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Credit Report"
+                              text={t("Reeler Credit Report")}
                               to="/seriui/reeler-credit-transaction"
                             />
                           </MenuItem>
@@ -3868,7 +3865,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Unit ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Unit Counter Report"
+                              text={t("Unit Counter Report")}
                               to="/seriui/unit-counter-report"
                             />
                           </MenuItem>
@@ -3876,7 +3873,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Reeler_MF ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler MF Report"
+                              text={t("Reeler MF Report")}
                               to="/seriui/reeler-mf-report"
                             />
                           </MenuItem>
@@ -3885,7 +3882,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Monthly Report"
+                              text={t("District Wise Monthly Report")}
                               to="/seriui/district-monthly-report"
                             />
                           </MenuItem>
@@ -3893,7 +3890,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Pending ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Pending Report"
+                              text={t("Pending Report")}
                               to="/seriui/pending-reports"
                             />
                           </MenuItem>
@@ -3901,7 +3898,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Bidding_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Lot Wise Bidding Report"
+                              text={t("Lot Wise Bidding Report")}
                               to="/seriui/bidding-report"
                             />
                           </MenuItem>
@@ -3909,7 +3906,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Bidding_Reeler_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Bidding Report"
+                              text={t("Reeler Bidding Report")}
                               to="/seriui/bidding-report-reeler"
                             />
                           </MenuItem>
@@ -3917,7 +3914,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Farmer_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Farmer Transaction Report"
+                              text={t("Farmer Transaction Report")}
                               to="/seriui/farmer-transaction-report"
                             />
                           </MenuItem>
@@ -3925,7 +3922,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_District_Wise_Farmer_Count ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Farmer Count"
+                              text={t("District Wise Farmer Count")}
                               to="/seriui/district-wise-farmer-count-list"
                             />
                           </MenuItem>
@@ -3933,7 +3930,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_District_Wise_Reeler_Count ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Wise Reeler Count"
+                              text={t("District Wise Reeler Count")}
                               to="/seriui/district-wise-reeler-count-list"
                             />
                           </MenuItem>
@@ -3941,7 +3938,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Farmer Wise Report"
+                              text={t("Farmer Wise Report")}
                               to="/seriui/farmer-wise-report"
                             />
                           </MenuItem>
@@ -3949,7 +3946,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Wise Report"
+                              text={t("Reeler Wise Report")}
                               to="/seriui/reeler-wise-report"
                             />
                           </MenuItem>
@@ -3957,7 +3954,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Farmer Details Direct From Fruits"
+                              text={t("Farmer Details Direct From Fruits")}
                               to="/seriui/direct-fruits-details"
                             />
                           </MenuItem>
@@ -3965,7 +3962,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Reeler_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Transaction Report"
+                              text={t("Reeler Transaction Report")}
                               to="/seriui/reeler-transaction-reports"
                             />
                           </MenuItem>
@@ -3973,7 +3970,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_ReelerPendingReport ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reeler Pending Report"
+                              text={t("Reeler Pending Report")}
                               to="/seriui/reeler-pending-report"
                             />
                           </MenuItem>
@@ -3981,7 +3978,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Average_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Average Report"
+                              text={t("Average Report")}
                               to="/seriui/average-report"
                             />
                           </MenuItem>
@@ -3989,7 +3986,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Audio_Visual_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Audio Visual Report"
+                              text={t("Audio Visual Report")}
                               to="/seriui/audio-visual-report"
                             />
                           </MenuItem>
@@ -3997,7 +3994,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_B_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="27 B Report"
+                              text={t("27 B Report")}
                               to="/seriui/27-b-report"
                             />
                           </MenuItem>
@@ -4005,7 +4002,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Monthly Report"
+                              text={t("Monthly Report")}
                               to="/seriui/monthly-report"
                             />
                           </MenuItem>
@@ -4013,7 +4010,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Market_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Market Report"
+                              text={t("Market Report")}
                               to="/seriui/market-report"
                             />
                           </MenuItem>
@@ -4021,7 +4018,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_District_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="District Report"
+                              text={t("District Report")}
                               to="/seriui/district-report"
                             />
                           </MenuItem>
@@ -4029,7 +4026,7 @@ function Menu() {
                         {showMenu.Admin_Report_Commercial_Market_Average_Cocoon_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Average Cocoon Report"
+                              text={t("Average Cocoon Report")}
                               to="/seriui/average-cocoon-report"
                             />
                           </MenuItem>
