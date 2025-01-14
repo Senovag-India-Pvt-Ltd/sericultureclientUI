@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+import { useTranslation } from "react-i18next";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -16,6 +17,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLsAdd() {
   const { id } = useParams();
+  const { t } = useTranslation();
   const [data, setData] = useState({
     numberOfCocoonsCB: "",
     dateOfMothEmergence: "",
@@ -351,7 +353,7 @@ useEffect(() => {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     });
   };
@@ -370,7 +372,7 @@ useEffect(() => {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -379,15 +381,15 @@ useEffect(() => {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Add Preparation of Eggs (DFLs)">
+    <Layout title={t("Add Preparation of Eggs (DFLs)")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Add Preparation of Eggs (DFLs)</Block.Title>
+            <Block.Title tag="h2">{t("Add Preparation of Eggs (DFLs)")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -397,7 +399,7 @@ useEffect(() => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
               <li>
@@ -406,7 +408,7 @@ useEffect(() => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>{t("Go to List")}</span>
                 </Link>
               </li>
             </ul>
@@ -432,7 +434,7 @@ useEffect(() => {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="farm">
-                    New Lot
+                    {t("New Lot")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -449,7 +451,7 @@ useEffect(() => {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2" id="crc">
-                    Present Lot
+                    {t("Present Lot")}
                   </Form.Label>
                 </Form.Group>
               </Col>
@@ -464,15 +466,14 @@ useEffect(() => {
                   <Block>
                     <Card>
                       <Card.Header>
-                        {" "}
-                        Add Preparation of Eggs (DFLs){" "}
+                        {t("Add Preparation of Eggs (DFLs)")}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                         {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Mulberry Variety<span className="text-danger">*</span>
+                      {t("Mulberry Variety")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -486,7 +487,7 @@ useEffect(() => {
                           data.varietyId === undefined || data.varietyId === "0"
                         }
                       >
-                        <option value="">Select Mulberry Variety</option>
+                        <option value="">{t("Select Mulberry Variety")}</option>
                         {varietyListData.map((list) => (
                           <option
                             key={list.mulberryVarietyId}
@@ -497,7 +498,7 @@ useEffect(() => {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Mulberry Variety is required
+                        {t("Mulberry Variety is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -507,7 +508,7 @@ useEffect(() => {
             {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                     Lot Number
+                     {t("Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -518,7 +519,7 @@ useEffect(() => {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {presentLotListData && presentLotListData.length?(presentLotListData.map((list) => (
                             <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
@@ -526,7 +527,7 @@ useEffect(() => {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -538,7 +539,7 @@ useEffect(() => {
                       {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                     Cocoon Lot Number
+                     {t("Cocoon Lot Number")}
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -549,7 +550,7 @@ useEffect(() => {
                           onBlur={() => handleInputs}
                           // required
                         >
-                          <option value="">Select Lot Number</option>
+                          <option value="">{t("Select Lot Number")}</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
                             <option key={list.id} value={list.parentLotNumber}>
                               {list.parentLotNumber}
@@ -557,7 +558,7 @@ useEffect(() => {
                           ))): ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Lot Number is required
+                        {t("Lot Number is required")}
                       </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -567,7 +568,7 @@ useEffect(() => {
                 {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          {t("Race")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -578,7 +579,7 @@ useEffect(() => {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Race</option>
+                              <option value="">{t("Select Race")}</option>
                               {raceListData.map((list) => (
                                 <option
                                   key={list.raceMasterId}
@@ -589,7 +590,7 @@ useEffect(() => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Race is required
+                              {t("Race is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -599,7 +600,7 @@ useEffect(() => {
                     {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Line Details/year<span className="text-danger">*</span>
+                          {t("Line Details/year")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -610,7 +611,7 @@ useEffect(() => {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Line Details</option>
+                              <option value="">{t("Select Line Details")}</option>
                               {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
                                 <option
                                   key={list.lineNameId}
@@ -621,7 +622,7 @@ useEffect(() => {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Line Details is required
+                              {t("Line Details is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -632,7 +633,7 @@ useEffect(() => {
                     {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Generation Number<span className="text-danger">*</span>
+                          {t("Generation Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -643,7 +644,7 @@ useEffect(() => {
                               onBlur={() => handleInputs}
                               required
                             >
-                              <option value="">Select Generation Number</option>
+                              <option value="">{t("Select Generation Number")}</option>
                               {generationListData && generationListData.length?(generationListData.map((list) => (
                                 <option
                                   key={list.generationNumberId}
@@ -654,7 +655,7 @@ useEffect(() => {
                               ))):""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Generation Number is required
+                              {t("Generation Number is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -663,7 +664,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                              Cocoon's Purchased (in Kg's / Nos)
+                              {t("Cocoon's Purchased (in Kg's / Nos)")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -673,11 +674,11 @@ useEffect(() => {
                                   value={data.numberOfCocoonsCB}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Cocoon's Purchased (in Kg's / Nos)"
+                                  placeholder={t("Enter Cocoon's Purchased (in Kg's / Nos)")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Cocoon's Purchased (in Kg's / Nos) is required
+                                {t("Cocoon's Purchased (in Kg's / Nos) is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -686,7 +687,7 @@ useEffect(() => {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="dateOfMothEmergence">
-                                Date of moth emergence
+                                {t("Date of moth emergence")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -713,7 +714,7 @@ useEffect(() => {
                                 {/* )} */}
 
                                 <Form.Control.Feedback type="invalid">
-                                  Date of moth emergence is required
+                                  {t("Date of moth emergence is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -722,7 +723,7 @@ useEffect(() => {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="laidOnDate">
-                                Laid On Date
+                                {t("Laid On Date")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -744,7 +745,7 @@ useEffect(() => {
                                 {/* )} */}
 
                                 <Form.Control.Feedback type="invalid">
-                                  Laid On Date is required
+                                  {t("Laid On Date is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -753,7 +754,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggSheetSerialNumber">
-                                Egg sheet serial number
+                                {t("Egg sheet serial number")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -762,7 +763,7 @@ useEffect(() => {
                                   value={data.eggSheetSerialNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Egg sheet serial number"
+                                  placeholder={t("Egg sheet serial number")}
                                 />
                               
                               </div>
@@ -772,7 +773,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedCocoon">
-                              Selected Cocoon's in Nos
+                              {t("Selected Cocoon's in Nos")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -781,7 +782,7 @@ useEffect(() => {
                                   value={data.selectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Selected Cocoon's in Nos"
+                                  placeholder={t("Selected Cocoon's in Nos")}
                                   // required
                                 />
 
@@ -792,7 +793,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="rejectedCocoon">
-                              Rejected Cocoon's in Nos
+                              {t("Rejected Cocoon's in Nos")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -810,7 +811,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Selected Cocoon's)
+                              {t("No of Pairs (%) (Selected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -819,7 +820,7 @@ useEffect(() => {
                                   value={data.pairNoSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Selected Cocoon's)"
+                                  placeholder={t("No of Pairs (%) (Selected Cocoon's)")}
                          
                                 />
                              
@@ -830,7 +831,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Rejected Cocoon's)
+                              {t("No of Pairs (%) (Rejected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -839,7 +840,7 @@ useEffect(() => {
                                   value={data.pairNoRejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Rejected Cocoon's)"
+                                  placeholder={t("No of Pairs (%) (Rejected Cocoon's)")}
                                   
                                 />
                                
@@ -850,7 +851,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                                Number of pairs
+                                {t("Number of pairs")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -860,11 +861,11 @@ useEffect(() => {
                                   value={data.numberOfPairs}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Number of pairs"
+                                  placeholder={t("Number of pairs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Number of pairs is required
+                                  {t("Number of pairs is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -873,7 +874,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfRejection">
-                                Number of Rejection
+                                {t("Number of Rejection")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -883,11 +884,11 @@ useEffect(() => {
                                   value={data.numberOfRejection}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Number of Rejection"
+                                  placeholder={t("Number of Rejection")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Number of Rejection is required
+                                  {t("Number of Rejection is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -896,7 +897,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="dflsObtained">
-                                DFLs obtained
+                                {t("DFLs obtained")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -906,12 +907,12 @@ useEffect(() => {
                                   value={data.dflsObtained}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="DFLs obtained"
+                                  placeholder={t("DFLs obtained")}
                                   readOnly
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  DFLs obtained is required
+                                  {t("DFLs obtained is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -920,7 +921,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                              Err %(Selected Cocoon's)
+                              {t("Err %(Selected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -929,7 +930,7 @@ useEffect(() => {
                                   value={data.errPerSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Err %(Selected Cocoon's)"
+                                  placeholder={t("Err %(Selected Cocoon's)")}
 
                                 />
                                
@@ -940,7 +941,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                              Err %(Rejected Cocoon's)
+                              {t("Err %(Rejected Cocoon's)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -949,7 +950,7 @@ useEffect(() => {
                                   value={data.errPerRejectedCocoonsNo }
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Err %(Rejected Cocoon's)"
+                                  placeholder={t("Err %(Rejected Cocoon's)")}
                                 />
                                
                               </div>
@@ -959,7 +960,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
-                                Egg Recovery %
+                                {t("Egg Recovery %")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -969,11 +970,11 @@ useEffect(() => {
                                   value={data.eggRecoveryPercentage}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Egg Recovery %"
+                                  placeholder={t("Egg Recovery %")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Egg Recovery % is required
+                                  {t("Egg Recovery % is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -982,7 +983,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
-                                Remaining DFLs 
+                                {t("Remaining DFLs")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -991,7 +992,7 @@ useEffect(() => {
                                   value={data.remainingDfls}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Remaining DFLs"
+                                  placeholder={t("Remaining DFLs")}
                                   // required
                                 />
                                
@@ -1002,7 +1003,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                              Test results
+                              {t("Test results")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1017,13 +1018,13 @@ useEffect(() => {
                                   }
                                 >
                                   <option value="">
-                                    Select Test Results
+                                    {t("Select Test Results")}
                                   </option>
-                                  <option value="Diseased">Diseased</option>
-                                  <option value="Disease-Free">Disease-Free</option>
+                                  <option value="Diseased">{t("Diseased")}</option>
+                                  <option value="Disease-Free">{t("Disease-Free")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                Test Results is required
+                                {t("Test Results is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1032,7 +1033,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
-                                Certification (Yes/No)
+                                {t("Certification (Yes/No)")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1047,13 +1048,13 @@ useEffect(() => {
                                   }
                                 >
                                   <option value="">
-                                    Select Certification{" "}
+                                    {t("Select Certification")}{" "}
                                   </option>
-                                  <option value="1">Yes</option>
-                                  <option value="2">No</option>
+                                  <option value="1">{t("Yes")}</option>
+                                  <option value="2">{t("No")}</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Certification is required
+                                  {t("Certification is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -1062,7 +1063,7 @@ useEffect(() => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="additionalRemarks">
-                                Additional remarks
+                                {t("Additional remarks")}
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -1072,11 +1073,11 @@ useEffect(() => {
                                   value={data.additionalRemarks}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Additional remarks"
+                                  placeholder={t("Additional remarks")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
-                                  Additional remarks is required
+                                  {t("Additional remarks is required")}
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
@@ -1090,7 +1091,7 @@ useEffect(() => {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Update
+                          {t("Update")}
                         </Button>
                       </li>
                       <li>
@@ -1099,7 +1100,7 @@ useEffect(() => {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Clear
+                          {t("Clear")}
                         </Button>
                       </li>
                 {/* <li>
@@ -1107,7 +1108,7 @@ useEffect(() => {
                     to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                     className="btn btn-secondary border-0"
                   >
-                   Cancel
+                   {t("Cancel")}
                   </Link>
                 </li> */}
                     </ul>

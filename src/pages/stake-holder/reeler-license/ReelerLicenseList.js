@@ -360,10 +360,10 @@ const { t } = useTranslation();
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="mobileNumber">Mobile Number</option>
+                      <option value="mobileNumber">{t("Mobile Number")}</option>
                       <option value="reelingLicenseNumber">
                         {" "}
-                        Reeling License Number
+                        {t("Reeling License Number")}
                       </option>
                     </Form.Select>
                   </div>
@@ -376,7 +376,7 @@ const { t } = useTranslation();
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>

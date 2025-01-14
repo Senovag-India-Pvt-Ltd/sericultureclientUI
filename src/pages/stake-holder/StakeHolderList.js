@@ -368,10 +368,10 @@ function StakeHolderList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="0">Farmer Number</option>
-                      <option value="1">Fruits ID</option>
-                      <option value="2">Mobile Number</option>
-                      <option value="3">Farmer Bank Account Number</option>
+                      <option value="0">{t("Farmer Number")}</option>
+                      <option value="1">{t("Fruits ID")}</option>
+                      <option value="2">{t("Mobile Number")}</option>
+                      <option value="3">{t("Farmer Bank Account Number")}</option>
 
                     </Form.Select>
                   </div>
@@ -384,7 +384,7 @@ function StakeHolderList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>

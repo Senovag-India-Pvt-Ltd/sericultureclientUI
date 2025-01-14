@@ -916,7 +916,7 @@ const saveError = (message = "Something went wrong!") => {
             <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">
-                  {t("No. of Cocoons per Kg.")}
+                  {t("No. of Cocoons per Kg")}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -926,7 +926,7 @@ const saveError = (message = "Something went wrong!") => {
                       value={data.noOfCocoonPerKg}
                       onChange={handleInputs}
                       type="text"
-                      placeholder={t("No. of Cocoons per Kg.")}
+                      placeholder={t("No. of Cocoons per Kg")}
                       // required
                     />
                   </div>

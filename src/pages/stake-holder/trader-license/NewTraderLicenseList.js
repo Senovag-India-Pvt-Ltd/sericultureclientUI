@@ -330,7 +330,7 @@ function NewTraderLicenseList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -340,9 +340,9 @@ function NewTraderLicenseList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="traderTypeMasterName">Trader Type</option>
-                      <option value="arnNumber">ARN Number</option>
-                      <option value="firstName"> Name</option>
+                      <option value="traderTypeMasterName">{t("Trader Type")}</option>
+                      <option value="arnNumber">{t("ARN Number")}</option>
+                      <option value="firstName"> {t("Name")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -354,7 +354,7 @@ function NewTraderLicenseList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
