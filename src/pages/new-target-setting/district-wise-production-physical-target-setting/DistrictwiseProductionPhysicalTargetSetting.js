@@ -954,6 +954,147 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     
   ];
 
+  const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
+
+  const totalTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, raceMasterId,financialYearMasterId} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!raceMasterId || raceMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `productionTargets/getTargetDetailsForProduction`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            financialYearMasterId,
+            raceMasterId
+          },
+        }
+      )
+      .then((response) => {
+        setViewTotalTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewTotalTargetsData([]);
+      });
+  };
+
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, raceMasterId,financialYearMasterId,month} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!raceMasterId || raceMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `productionTargets/getMonthlyTargetDetailsForProduction`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            financialYearMasterId,
+            month,
+            raceMasterId
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
   const [searchData, setSearchData] = useState({
     districtId: "",
     talukId: "",
@@ -1346,6 +1487,45 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                     <Card.Header>
                       {t("District Wise Production Physical Target Setting")}
                     </Card.Header>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
+                          {/* Yearly Targets Section */}
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                            <Button variant="primary" onClick={totalTarget}>
+                              {t('Yearly Targets')}
+                            </Button>
+                            <table
+                              className="table table-bordered table-striped"
+                              style={{ ...styles.table, width: '500px' }}
+                            >
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>
+                                    District Yearly Targets: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
+
+                          {/* Monthly Targets Section */}
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                            <Button variant="primary" onClick={monthlyTarget}>
+                              {t('Monthly Targets')}
+                            </Button>
+                            <table
+                              className="table table-bordered table-striped"
+                              style={{ ...styles.table, width: '500px' }}
+                            >
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>
+                                    District Monthly Targets: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
+                        </div>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1690,7 +1870,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
+          {/* {type.budgetType === "release" ? (
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -1701,7 +1881,6 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
                         <td>0</td>
                       </tr>
                     </tbody>
@@ -1711,7 +1890,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
             </Col>
           ) : (
             ""
-          )}
+          )} */}
         </Row>
 
         <Row className="mt-2">
@@ -1760,6 +1939,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 onChange={handleEditInputs}
                                 onBlur={() => handleEditInputs}
                                 required
+                                disabled
                                 isInvalid={
                                   editData.financialYearMasterId === undefined ||
                                   editData.financialYearMasterId === "0"
@@ -1795,6 +1975,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 onChange={handleEditInputs}
                                 onBlur={() => handleEditInputs}
                                 required
+                                disabled
                                 isInvalid={
                                   editData.mulberryTargetTypeId === undefined ||
                                   editData.mulberryTargetTypeId === "0"
@@ -1833,6 +2014,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 onChange={handleEditInputs}
                                 onBlur={() => handleEditInputs}
                                 required
+                                disabled
                                 // isInvalid={
                                 //   data.districtId === undefined ||
                                 //   data.districtId === "0"
@@ -1867,6 +2049,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                               onChange={handleEditInputs}
                                               onBlur={() => handleEditInputs}
                                               required
+                                              disabled
                                               isInvalid={
                                                 editData.talukId === undefined ||
                                                 editData.talukId === "0"
@@ -1899,6 +2082,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                   onChange={handleEditInputs}
                                   onBlur={() => handleEditInputs}
                                   required
+                                  disabled
                                 >
                                   <option value="">{t("Select Race")}</option>
                                   {raceListData.map((list) => (
@@ -1931,6 +2115,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 onChange={handleEditInputs}
                                 onBlur={() => handleEditInputs}
                                 required
+                                disabled
                                 // isInvalid={
                                 //   data.month === undefined ||
                                 //   data.month === "0"

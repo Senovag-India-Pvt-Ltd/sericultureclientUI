@@ -686,6 +686,75 @@ function GrainagewiseTarget() {
     });
   };
 
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { financialYearMasterId,raceMasterId,grainageMasterId,month} = data;
+
+    
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!raceMasterId || raceMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Race",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!grainageMasterId || grainageMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Grainage",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+   
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `targets/getGrainageTargetDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            raceMasterId,
+            grainageMasterId,
+            month,
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
+
   const ProductionPhysicalDataColumns = [
     {
       name: t("Action"),
@@ -836,6 +905,7 @@ function GrainagewiseTarget() {
       raceMasterId: "",
       farmId: "",
       userMasterId: "",
+      grainageMasterId: "",
     });
     setSearchData({
       districtId: "",
@@ -899,7 +969,7 @@ function GrainagewiseTarget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
@@ -907,6 +977,45 @@ function GrainagewiseTarget() {
                     <Card.Header>
                       {t("Grainage Wise Target Setting Page")}
                     </Card.Header>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '20px',
+                        alignItems: 'center', // Ensure items align horizontally
+                      }}
+                    >
+                      {/* Yearly Targets Section */}
+                      <Button variant="primary" onClick={monthlyTarget}>
+                        {t('Farm Targets')}
+                      </Button>
+
+                      <table
+                        className="table table-bordered table-striped"
+                        style={{ ...styles.table, width: '600px', margin: '0' }} // Ensure no unnecessary margin
+                      >
+                         <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>Grainage Monthly Targets</th>
+                              <th style={styles.ctstyle}>Grainage Yearly Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].yearlyGrainageValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                      </table>
+                    </div>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">

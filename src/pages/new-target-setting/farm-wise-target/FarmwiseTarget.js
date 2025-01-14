@@ -671,6 +671,84 @@ function FarmwiseTarget() {
     });
   };
 
+ 
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { financialYearMasterId,raceMasterId,farmId,target,month} = data;
+
+    
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!raceMasterId || raceMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Race",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!farmId || farmId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Farm",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!target || target === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `targets/getFarmTargetDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            raceMasterId,
+            farmId,
+            target,
+            month,
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
   const ProductionPhysicalDataColumns = [
     {
       name: "Action",
@@ -900,14 +978,53 @@ function FarmwiseTarget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
                   <Card>
                     <Card.Header>{t("Farm Wise Target Setting Page")}</Card.Header>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '20px',
+                        alignItems: 'center', // Ensure items align horizontally
+                      }}
+                    >
+                      {/* Yearly Targets Section */}
+                      <Button variant="primary" onClick={monthlyTarget}>
+                        {t('Farm Targets')}
+                      </Button>
+
+                      <table
+                        className="table table-bordered table-striped"
+                        style={{ ...styles.table, width: '600px', margin: '0' }} // Ensure no unnecessary margin
+                      >
+                         <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>Farm Monthly Targets</th>
+                              <th style={styles.ctstyle}>Farm Yearly Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].monthlyFarmValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].yearlyFarmValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                      </table>
+                    </div>
+
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -976,124 +1093,7 @@ function FarmwiseTarget() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                            <Col
-                              lg="3"
-                              className={
-                                type.budgetType === "release"
-                                  ? "ms-n3"
-                                  : "ms-n5"
-                              }
-                            >
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              District<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="districtId"
-                                value={data.districtId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                // isInvalid={
-                                //   data.districtId === undefined ||
-                                //   data.districtId === "0"
-                                // }
-                              >
-                                <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={list.districtId}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("District is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
+                       
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1379,28 +1379,7 @@ function FarmwiseTarget() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+         
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -1448,6 +1427,7 @@ function FarmwiseTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.financialYearMasterId === undefined ||
                         editData.financialYearMasterId === "0"
@@ -1483,6 +1463,7 @@ function FarmwiseTarget() {
                         onChange={handleEditInputs}
                         onBlur={() => handleEditInputs}
                         required
+                        disabled
                       >
                         <option value="">{t("Select Race")}</option>
                         {raceListData.map((list) => (
@@ -1548,6 +1529,7 @@ function FarmwiseTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.farmId === undefined || editData.farmId === "0"
                       }
@@ -1578,6 +1560,7 @@ function FarmwiseTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.target === undefined ||
                       //   editData.target === "0"
@@ -1606,6 +1589,7 @@ function FarmwiseTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.month === undefined ||
                       //   editData.month === "0"
