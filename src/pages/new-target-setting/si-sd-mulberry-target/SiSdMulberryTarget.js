@@ -938,6 +938,166 @@ function SiSdMulberryTarget() {
     },
   ];
 
+  const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
+
+  const totalTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,tscMasterId} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!tscMasterId || tscMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select TSC",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/getTargetDetailsForSISD`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            targetType,
+            financialYearMasterId,
+            tscMasterId
+          },
+        }
+      )
+      .then((response) => {
+        setViewTotalTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewTotalTargetsData([]);
+      });
+  };
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,tscMasterId,month} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!tscMasterId || tscMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select TSC",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/getMonthlyTargetDetailsForSISD`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            targetType,
+            financialYearMasterId,
+            tscMasterId,
+            month,
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
   const [searchData, setSearchData] = useState({
     districtId: "",
     talukId: "",
@@ -1261,12 +1421,81 @@ function SiSdMulberryTarget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
                   <Card>
                     <Card.Header>{t("SI-SD Mulberry Target")} </Card.Header>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
+                        {/* Yearly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          <Button variant="primary" onClick={totalTarget}>
+                            {t('Yearly Targets')}
+                          </Button>
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '800px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>SISD Yearly Targets</th>
+                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewTotalTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewTotalTargetsData[0].sisdValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {/* Monthly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          <Button variant="primary" onClick={monthlyTarget}>
+                            {t('Monthly Targets')}
+                          </Button>
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '800px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>SISD Monthly Targets</th>
+                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].sisdValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div> 
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1718,6 +1947,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.financialYearMasterId === undefined ||
                         editData.financialYearMasterId === "0"
@@ -1753,6 +1983,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.mulberryTargetTypeId === undefined ||
                         editData.mulberryTargetTypeId === "0"
@@ -1788,6 +2019,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.districtId === undefined ||
                         editData.districtId === "0"
@@ -1820,6 +2052,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.talukId === undefined ||
                         editData.talukId === "0"
@@ -1852,6 +2085,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.tscMasterId === undefined ||
                         editData.tscMasterId === "0"
@@ -1919,6 +2153,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.targetType === undefined ||
                       //   editData.targetType === "0"
@@ -1953,6 +2188,7 @@ function SiSdMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.month === undefined ||
                       //   editData.month === "0"

@@ -533,29 +533,30 @@ function NewTscMulberryTarget() {
   }, []);
 
   const styles = {
+    button: {
+      backgroundColor: "#007bff",
+      border: "none",
+      padding: "10px 20px",
+      fontSize: "16px",
+      color: "#fff",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginBottom: "20px",
+      transition: "background-color 0.3s ease",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      marginTop: "20px",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    },
     ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-    top: {
-      backgroundColor: "rgb(15, 108, 190, 1)",
-      color: "rgb(255, 255, 255)",
-      width: "50%",
       fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    bottom: {
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    sweetsize: {
-      width: "100px",
-      height: "100px",
+      padding: "10px",
+      backgroundColor: "#f8f9fa",
     },
   };
+    
 
   const customStyles = {
     rows: {
@@ -907,6 +908,147 @@ function NewTscMulberryTarget() {
     },
   ];
 
+  
+  const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
+
+  const totalTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/getTargetDetails`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            targetType,
+            financialYearMasterId,
+          },
+        }
+      )
+      .then((response) => {
+        setViewTotalTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewTotalTargetsData([]);
+      });
+  };
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,month} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/getMonthlyTargetDetails`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            targetType,
+            financialYearMasterId,
+            month,
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
   const [searchData, setSearchData] = useState({
     districtId: "",
     talukId: "",
@@ -1231,12 +1373,113 @@ function NewTscMulberryTarget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
                   <Card>
                     <Card.Header>{t("TSC Mulberry Target")}</Card.Header>
+                    {/* <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Button variant="primary" onClick={totalTarget} style={{ marginRight: '10px' }}>
+                            {t('View Yearly Targets')}
+                          </Button>
+                          <table
+                        className="table table-bordered table-striped"
+                        style={{ ...styles.table, maxWidth: "600px" }}
+                      >
+                         <thead>
+                            <tr>
+                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
+                              <th style={styles.ctstyle}>Mulberry Yearly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Targets</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {viewTotalTargetsData.length > 0 ? (
+                              <tr>
+                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
+                              </tr>
+                            ) : (
+                              <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                      </table>
+                        </div> */}
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
+                        {/* Yearly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          <Button variant="primary" onClick={totalTarget}>
+                            {t('Yearly Targets')}
+                          </Button>
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '600px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
+                              <th style={styles.ctstyle}>Mulberry Yearly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewTotalTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {/* Monthly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          <Button variant="primary" onClick={monthlyTarget}>
+                            {t('Monthly Targets')}
+                          </Button>
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '600px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
+                              <th style={styles.ctstyle}>Mulberry Monthly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].mulberryValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div> 
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1332,14 +1575,16 @@ function NewTscMulberryTarget() {
                                 }
                               >
                                 <option value="">{t("Select Target")}</option>
-                                {mulberryTargetTypeData.map((list) => (
+                                {mulberryTargetTypeData && mulberryTargetTypeData.length ?
+                                mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
                                     value={list.mulberryTargetTypeId}
                                   >
                                     {list.mulberryTargetTypeName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Target is required")}
@@ -1367,14 +1612,16 @@ function NewTscMulberryTarget() {
                                 }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length ?
+                                districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -1402,14 +1649,16 @@ function NewTscMulberryTarget() {
                                 }
                               >
                                 <option value="">{t("Select Taluk")}</option>
-                                {talukListData.map((list) => (
+                                {talukListData && talukListData ?
+                                talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
                                     {list.talukName}
                                   </option>
-                                ))}
+                                ))
+                                : "" }
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
@@ -1437,14 +1686,16 @@ function NewTscMulberryTarget() {
                                 }
                               >
                                 <option value="">{t("Select TSC")}</option>
-                                {chawkiListData.map((list) => (
+                                {chawkiListData && chawkiListData.length ?
+                                chawkiListData.map((list) => (
                                   <option
                                     key={list.tscMasterId}
                                     value={list.tscMasterId}
                                   >
                                     {list.name}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("TSC is required")}
@@ -1600,7 +1851,7 @@ function NewTscMulberryTarget() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
+          {/* {type.budgetType === "release" ? (
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -1620,7 +1871,7 @@ function NewTscMulberryTarget() {
             </Col>
           ) : (
             ""
-          )}
+          )} */}
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -1668,6 +1919,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.financialYearMasterId === undefined ||
                         editData.financialYearMasterId === "0"
@@ -1703,6 +1955,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.mulberryTargetTypeId === undefined ||
                         editData.mulberryTargetTypeId === "0"
@@ -1738,6 +1991,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.districtId === undefined ||
                         editData.districtId === "0"
@@ -1802,6 +2056,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.tscMasterId === undefined ||
                         editData.tscMasterId === "0"
@@ -1834,6 +2089,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                     >
                       <option value="">{t("Select Target Type")}</option>
                       <option value="NAREGA">{t("NAREGA")}</option>
@@ -1859,6 +2115,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                     >
                       <option value="">{t("Select Month")}</option>
                       <option value="JANUARY">{t("January")}</option>

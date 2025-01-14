@@ -868,6 +868,82 @@ function DistrictWiseMontlyMulberry() {
       });
   };
 
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,month} = data;
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/getMonthlyTargetDetails`,
+        {},
+        {
+          params: {
+            districtId,
+            mulberryTargetTypeId,
+            targetType,
+            financialYearMasterId,
+            month,
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
+
   const ViewTargetDataColumns = [
     {
       name: t("Sl.no"),
@@ -1337,41 +1413,48 @@ function DistrictWiseMontlyMulberry() {
                 <Block>
                   <Card>
                     <Card.Header>{t('District Wise Monthly Mulberry')}</Card.Header>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <Button variant="primary" onClick={totalTarget} style={{ marginRight: '10px' }}>
-                            {t('View Yearly Targets')}
-                          </Button>
-                          <table
-                        className="table table-bordered table-striped"
-                        style={{ ...styles.table, maxWidth: "300px" }}
-                      >
-                         <thead>
-                            <tr>
-                              {/* <th style={styles.ctstyle}>TSC Yearly Targets</th> */}
-                              <th style={styles.ctstyle}>Mulberry Yearly Targets</th>
-                              {/* <th style={styles.ctstyle}>Remaining Targets</th> */}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {viewTotalTargetsData.length > 0 ? (
-                              <tr>
-                                {/* <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td> */}
-                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
-                                {/* <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td> */}
-                              </tr>
-                            ) : (
-                              <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
-                                </td>
-                              </tr>
-                            )}
-                          </tbody>
-                      </table>
-                          {/* <Button variant="primary" onClick={search} style={{ marginLeft: '10px' }}>
-                            {t('View Target')}
-                          </Button> */}
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
+                          {/* Yearly Targets Section */}
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                            <Button variant="primary" onClick={totalTarget}>
+                              {t('Yearly Targets')}
+                            </Button>
+                            <table
+                              className="table table-bordered table-striped"
+                              style={{ ...styles.table, width: '500px' }}
+                            >
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>
+                                    Mulberry Yearly Targets: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
+
+                          {/* Monthly Targets Section */}
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                            <Button variant="primary" onClick={monthlyTarget}>
+                              {t('Monthly Targets')}
+                            </Button>
+                            <table
+                              className="table table-bordered table-striped"
+                              style={{ ...styles.table, width: '500px' }}
+                            >
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>
+                                    Mulberry Monthly Targets: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
                         </div>
+
+
+
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
