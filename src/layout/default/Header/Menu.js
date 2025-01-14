@@ -2482,19 +2482,13 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Reeling TSC Wise Scheme Target Setting")}
-                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
                         text={t("SI SD Wise Product Physical Target Setting")}
                         to="/seriui/si-sd-wise-product-physical-target-setting"
                       />
                     </MenuItem>
                   ) : null}
+                 
+                 
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2540,6 +2534,14 @@ function Menu() {
                       <MenuItemLink
                         text={t("SI SD Wise Daily Scheme Target Setting")}
                         to="/seriui/si-sd-wise-day-scheme-target-setting"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Reeling TSC Wise Scheme Target Setting")}
+                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
                       />
                     </MenuItem>
                   ) : null}

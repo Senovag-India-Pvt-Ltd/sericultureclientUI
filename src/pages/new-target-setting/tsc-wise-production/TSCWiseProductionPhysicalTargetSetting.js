@@ -15,19 +15,19 @@ import { useTranslation } from "react-i18next";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function SiSdMulberryDateTarget() {
+function TSCWiseProductionPhysicalTargetSetting() {
   const { t } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
     talukId: "",
-    tscMasterId: "",
-    targetDate: "",
+    month: "",
     targetType: "",
     value: "",
+    raceMasterId: "",
+    tscMasterId: "",
     userMasterId: "",
-    month: "",
   });
 
   const [type, setType] = useState({
@@ -51,7 +51,7 @@ function SiSdMulberryDateTarget() {
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
-  const getFinancialList = () => {
+  const getFinancialYearList = () => {
     const response = api
       .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
@@ -63,16 +63,17 @@ function SiSdMulberryDateTarget() {
   };
 
   useEffect(() => {
-    getFinancialList();
+    getFinancialYearList();
   }, []);
 
-  // get list
+  // get List
+
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURLTargetSetting + `mulberryTargets/list-sisd-day-join`, _params)
+      .get(baseURLTargetSetting + `productionTargets/list-tsc-join`, _params)
       .then((response) => {
-        setListData(response.data.content.body.content.mulberryTargets);
+        setListData(response.data.content.body.content.productionTarget);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })
@@ -91,26 +92,23 @@ function SiSdMulberryDateTarget() {
     financialYearMasterId: "",
     districtId: "",
     talukId: "",
-    tscMasterId: "",
-    targetDate: "",
+    month: "",
     targetType: "",
     value: "",
+    raceMasterId: "",
+    tscMasterId: "",
     userMasterId: "",
-    month: "",
   });
 
-  const handleEdit = (mulberryTargetsId) => {
+  const handleEdit = (productionTargetsId) => {
     setLoading(true);
-    api
+    const response = api
       .get(
         baseURLTargetSetting +
-          `mulberryTargets/get-by-id?id=${mulberryTargetsId}`
+          `productionTargets/get-tsc/${productionTargetsId}`
       )
       .then((response) => {
-        setEditData(response.data.content.body.content.mulberryTargets);
-        setUserNameEdit(
-          response.data.content.body.content.mulberryTargets.userMasterName
-        );
+        setEditData(response.data.content);
         setShowModal3(true);
         setLoading(false);
       })
@@ -121,40 +119,6 @@ function SiSdMulberryDateTarget() {
         setLoading(false);
       });
   };
-
-  const handleEditInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    // setData({ ...data, [name]: value });
-    let updatedData = { ...editData, [name]: value };
-    if (name === "centralBudget" || name === "stateBudget") {
-      const centralBudget = parseFloat(updatedData.centralBudget);
-      const stateBudget = parseFloat(updatedData.stateBudget);
-      const totalAmount =
-        (isNaN(centralBudget) ? 0 : centralBudget) +
-        (isNaN(stateBudget) ? 0 : stateBudget);
-      updatedData = { ...updatedData, amount: totalAmount.toString() };
-    }
-    setEditData(updatedData);
-  };
-
-  // to get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    const response = api
-      .get(baseURLMasterData + `district/get-all`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -174,22 +138,40 @@ function SiSdMulberryDateTarget() {
     getMulberryTargetTypeList();
   }, []);
 
-  // to get TSC
-  const [chawkiListData, setChawkiListData] = useState([]);
+  // to get District
+  const [districtListData, setDistrictListData] = useState([]);
 
-  const getChawkiList = () => {
-    api
-      .get(baseURLMasterData + `tscMaster/get-all`)
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURLMasterData + `district/get-all`)
       .then((response) => {
-        setChawkiListData(response.data.content.tscMaster);
+        setDistrictListData(response.data.content.district);
       })
       .catch((err) => {
-        setChawkiListData([]);
+        setDistrictListData([]);
       });
   };
 
   useEffect(() => {
-    getChawkiList();
+    getDistrictList();
+  }, []);
+
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+
+  const getRaceList = () => {
+    const response = api
+      .get(baseURLMasterData + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
   }, []);
 
   //   To get TSC by District
@@ -220,6 +202,10 @@ function SiSdMulberryDateTarget() {
     }
   }, [editData.districtId]);
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   //   To get user by TSC
   const [userListData, setUserListData] = useState([]);
   const getUserListByTsc = (tscId) => {
@@ -246,265 +232,6 @@ function SiSdMulberryDateTarget() {
     }
   }, [editData.tscMasterId]);
 
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-  const navigate = useNavigate();
-
-  const handleView = (_id) => {
-    navigate(`/seriui/taluk-view/${_id}`);
-  };
-  const postEditData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidatedAllDateEdit(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      console.log("Entered Allocate");
-      api
-        .post(
-          baseURLTargetSetting + `mulberryTargets/editSiSdDayMulberryTargets`,
-          editData
-        )
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            getList();
-            editClear();
-            handleCloseModal3();
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidatedAllDateEdit(true);
-    }
-  };
-
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
-
-  const deleteConfirm = (_id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        const response = api
-          .delete(
-            baseURLTargetSetting +
-              `mulberryTargets/delete-mulberry-targets/${_id}`
-          )
-          .then((response) => {
-            // deleteConfirm(_id);
-            getFinancialList();
-            getList();
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
-  const editClear = () => {
-    setEditData({
-      mulberryTargetTypeId: "",
-      financialYearMasterId: "",
-      districtId: "",
-      talukId: "",
-      tscMasterId: "",
-      targetDate: "",
-      targetType: "",
-      value: "",
-      userMasterId: "",
-      month: "",
-    });
-    setType({
-      budgetType: "allocate",
-    });
-    getFinancialDefaultDetails();
-    setValidatedAllDateEdit(false);
-  };
-
-  const ProductionPhysicalDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {/* <Button
-                variant="primary"
-                size="sm"
-                onClick={() => handleView(row.productionTargetsId)}
-              >
-                View
-              </Button> */}
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.mulberryTargetsId)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.mulberryTargetsId)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
-    {
-      name: "Financial Year",
-      selector: (row) => row.financialYearMaster,
-      cell: (row) => <span>{row.financialYearMaster}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Mulberry Target Type",
-      selector: (row) => row.mulberryTargetTypeName,
-      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "TSC",
-      selector: (row) => row.tscMasterName,
-      cell: (row) => <span>{row.tscMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Target Type",
-      selector: (row) => row.targetType,
-      cell: (row) => <span>{row.targetType}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Month",
-      selector: (row) => row.month,
-      cell: (row) => <span>{row.month}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Target Date",
-      selector: (row) => row.targetDate,
-      cell: (row) => <span>{row.targetDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: " User Name",
-      selector: (row) => row.userMasterName,
-      cell: (row) => <span>{row.userMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Target No.",
-      selector: (row) => row.value,
-      cell: (row) => <span>{row.value}</span>,
-      sortable: true,
-      hide: "md",
-    },
-  ];
-
-  const handleDateChange = (date, type) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
-    setData({ ...data, [type]: formattedDate });
-  };
-
-  const handleEditDateChange = (date, type) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
-    setEditData({ ...editData, [type]: formattedDate });
-  };
-
-  console.log("date", data.targetDate);
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -522,6 +249,22 @@ function SiSdMulberryDateTarget() {
       updatedData = { ...updatedData, amount: totalAmount.toString() };
     }
     setData(updatedData);
+  };
+
+  const handleEditInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    // setData({ ...data, [name]: value });
+    let updatedData = { ...editData, [name]: value };
+    if (name === "centralBudget" || name === "stateBudget") {
+      const centralBudget = parseFloat(updatedData.centralBudget);
+      const stateBudget = parseFloat(updatedData.stateBudget);
+      const totalAmount =
+        (isNaN(centralBudget) ? 0 : centralBudget) +
+        (isNaN(stateBudget) ? 0 : stateBudget);
+      updatedData = { ...updatedData, amount: totalAmount.toString() };
+    }
+    setEditData(updatedData);
   };
 
   const handleTypeInputs = (e) => {
@@ -560,9 +303,10 @@ function SiSdMulberryDateTarget() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `mulberryTargets/saveSISDDayMulberryTargets`,
+          baseURLTargetSetting + `productionTargets/saveTscProductionTargets`,
           data
         )
         .then((response) => {
@@ -588,6 +332,66 @@ function SiSdMulberryDateTarget() {
         });
       setValidated(true);
     }
+  };
+
+  const postEditData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedAllDateEdit(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      console.log("Entered Allocate");
+      api
+        .post(
+          baseURLTargetSetting + `productionTargets/editTscProductionTargets`,
+          editData
+        )
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            getList();
+            editClear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidatedAllDateEdit(true);
+    }
+  };
+
+  const editClear = () => {
+    setEditData({
+      mulberryTargetTypeId: "",
+      financialYearMasterId: "",
+      districtId: "",
+      talukId: "",
+      month: "",
+      targetType: "",
+      value: "",
+      raceMasterId: "",
+      tscMasterId: "",
+      userMasterId: "",
+    });
+    setType({
+      budgetType: "allocate",
+    });
+    getFinancialDefaultDetails();
+    setValidatedAllDateEdit(false);
   };
 
   // Get Default Financial Year
@@ -638,18 +442,181 @@ function SiSdMulberryDateTarget() {
     },
   };
 
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const navigate = useNavigate();
+
+  const handleView = (_id) => {
+    navigate(`/seriui/taluk-view/${_id}`);
+  };
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        const response = api
+          .delete(baseURLTargetSetting + `productionTargets/delete-tsc/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            // getFinancialYearList();
+            getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const ProductionPhysicalDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          {/* <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.productionTargetsId)}
+          >
+            View
+          </Button> */}
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.productionTargetsId)}
+          >
+            {t("Edit")}
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.productionTargetsId)}
+            className="ms-2"
+          >
+            {t("Delete")}
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: t("Financial Year"),
+      selector: (row) => row.financialYearMaster,
+      cell: (row) => <span>{row.financialYearMaster}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Mulberry Target Type"),
+      selector: (row) => row.mulberryTargetTypeName,
+      cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("District"),
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("TSC"),
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Race"),
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: t("Month"),
+      selector: (row) => row.month,
+      cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("User Name"),
+      selector: (row) => row.userMasterName,
+      cell: (row) => <span>{row.userMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Target No."),
+      selector: (row) => row.value,
+      cell: (row) => <span>{row.value}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
   const clear = () => {
     setData({
       mulberryTargetTypeId: "",
       financialYearMasterId: "",
       districtId: "",
       talukId: "",
-      tscMasterId: "",
-      targetDate: "",
+      month: "",
       targetType: "",
       value: "",
+      raceMasterId: "",
+      tscMasterId: "",
       userMasterId: "",
-      month: "",
     });
     setSearchData({
       districtId: "",
@@ -676,13 +643,13 @@ function SiSdMulberryDateTarget() {
     useState({});
 
   const searchReportee = (event) => {
-    const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
+    const { financialYearMasterId, mulberryTargetTypeId } = data;
 
     if (!financialYearMasterId || financialYearMasterId === "0") {
       Swal.fire({
         icon: "error",
-        title: "Validation Error",
-        text: "Financial Year is required.",
+        title: t("Validation Error"),
+        text: t("Financial Year is required."),
       });
       return;
     }
@@ -690,31 +657,31 @@ function SiSdMulberryDateTarget() {
     if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
       Swal.fire({
         icon: "error",
-        title: "Validation Error",
-        text: "Target is required.",
+        title: t("Validation Error"),
+        text: t("Target is required."),
       });
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: "Target Type is required.",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Validation Error",
+    //     text: "Target Type is required.",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
       .post(
-        baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+        baseURLTargetSetting +
+          `productionTargets/viewHierarchyProductionDetails`,
         {},
         {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -732,71 +699,72 @@ function SiSdMulberryDateTarget() {
 
   const ViewTargetReporteeDataColumns = [
     {
-      name: "Serial Number",
+      name: t("Serial Number"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
+
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
+
     {
-      name: "Tsc",
-      selector: (row) => row.tscMasterName,
-      cell: (row) => <span>{row.tscMasterName}</span>,
+      name: t("Race"),
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Target Type",
+    //   selector: (row) => row.targetType,
+    //   cell: (row) => <span>{row.targetType}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Target Type",
-      selector: (row) => row.targetType,
-      cell: (row) => <span>{row.targetType}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
@@ -812,45 +780,45 @@ function SiSdMulberryDateTarget() {
   const [listViewTargetData, setViewTargetListData] = useState({});
 
   const search = (event) => {
-    const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
+    const { financialYearMasterId, mulberryTargetTypeId } = data;
 
     if (!financialYearMasterId || financialYearMasterId === "0") {
       Swal.fire({
-        icon: "warning",
-        title: "Please select Financial Year",
-        text: "Please try again!",
+        icon: "error",
+        title: t("Validation Error"),
+        text: t("Financial Year is required."),
       });
       return;
     }
 
     if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
       Swal.fire({
-        icon: "warning",
-        title: "Please select Target",
-        text: "Please try again!",
+        icon: "error",
+        title: t("Validation Error"),
+        text: t("Target is required."),
       });
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Validation Error",
+    //     text: "Target Type is required.",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
       .post(
-        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        baseURLTargetSetting + `productionTargets/viewProductionDetails`,
         {},
         {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
+            // targetType,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -868,23 +836,23 @@ function SiSdMulberryDateTarget() {
 
   const ViewTargetDataColumns = [
     {
-      name: "Sl.no",
+      name: t("Sl.no"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
-      // style: { width: "50px", textAlign: "center" },
+      style: { width: "50px", textAlign: "center" },
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
-      // style: { minWidth: "150px", textAlign: "left" },
+      style: { minWidth: "150px", textAlign: "left" },
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
@@ -892,56 +860,49 @@ function SiSdMulberryDateTarget() {
     },
 
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc",
-      selector: (row) => row.tscMasterName,
-      cell: (row) => <span>{row.tscMasterName}</span>,
+      name: t("Race"),
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
-      selector: (row) => row.targetType,
-      cell: (row) => <span>{row.targetType}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -956,20 +917,20 @@ function SiSdMulberryDateTarget() {
             }
             className="ms-2"
           >
-            View Reportee Details
+            {t("View Reportee Details")}
           </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 3,
+      grow: 2,
     },
   ];
 
   const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
 
   const totalTarget = (event) => {
-    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,tscMasterId} = data;
+    const { districtId,mulberryTargetTypeId,financialYearMasterId,raceMasterId} = data;
 
     if (!districtId || districtId === "0") {
       Swal.fire({
@@ -998,36 +959,34 @@ function SiSdMulberryDateTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
-
-    if (!tscMasterId || tscMasterId === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select TSC",
-        text: "Please try again!",
-      });
-      return;
-    }
+    if (!raceMasterId || raceMasterId === "0") {
+          Swal.fire({
+            icon: "warning",
+            title: "Please select  Race",
+            text: "Please try again!",
+          });
+          return;
+        }
+        // if (!tscMasterId || tscMasterId === "0") {
+        //   Swal.fire({
+        //     icon: "warning",
+        //     title: "Please select Race",
+        //     text: "Please try again!",
+        //   });
+        //   return;
+        // }
 
     // Proceed with API call if validations pass
     api
       .post(
-        baseURLTargetSetting + `mulberryTargets/getTargetDetailsForSISDDay`,
+        baseURLTargetSetting + `productionTargets/getTargetDetailsForProduction`,
         {},
         {
           params: {
             districtId,
             mulberryTargetTypeId,
-            targetType,
             financialYearMasterId,
-            tscMasterId
+            raceMasterId,
           },
         }
       )
@@ -1044,7 +1003,7 @@ function SiSdMulberryDateTarget() {
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
 
   const monthlyTarget = (event) => {
-    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,tscMasterId,month} = data;
+    const { districtId,mulberryTargetTypeId, raceMasterId,financialYearMasterId,month} = data;
 
     if (!districtId || districtId === "0") {
       Swal.fire({
@@ -1073,23 +1032,24 @@ function SiSdMulberryDateTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
-
-    if (!tscMasterId || tscMasterId === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select TSC",
-        text: "Please try again!",
-      });
-      return;
-    }
+    if (!raceMasterId || raceMasterId === "0") {
+         Swal.fire({
+           icon: "warning",
+           title: "Please select Race",
+           text: "Please try again!",
+         });
+         return;
+       }
+   
+        // if (!tscMasterId || tscMasterId === "0") {
+        //      Swal.fire({
+        //        icon: "warning",
+        //        title: "Please select TSC",
+        //        text: "Please try again!",
+        //      });
+        //      return;
+        //    }
+       
 
     if (!month || month === "0") {
       Swal.fire({
@@ -1103,16 +1063,15 @@ function SiSdMulberryDateTarget() {
     // Proceed with API call if validations pass
     api
       .post(
-        baseURLTargetSetting + `mulberryTargets/getMonthlyTargetDetailsForSISDDay`,
+        baseURLTargetSetting + `productionTargets/getMonthlyTargetDetailsForProduction`,
         {},
         {
           params: {
             districtId,
             mulberryTargetTypeId,
-            targetType,
             financialYearMasterId,
-            tscMasterId,
             month,
+            raceMasterId,
           },
         }
       )
@@ -1126,6 +1085,9 @@ function SiSdMulberryDateTarget() {
       });
   };
 
+  
+
+
   const [searchData, setSearchData] = useState({
     districtId: "",
     talukId: "",
@@ -1136,49 +1098,14 @@ function SiSdMulberryDateTarget() {
     userMasterId: "",
   });
 
-  const userSearchClear = () => {
-    setSearchData({
-      districtId: "",
-      talukId: "",
-      designationId: "",
-      // villageId: "",
-      phoneNumber: "",
-      username: "",
-      userMasterId: "",
-    });
-  };
-
-  const [searchDataEdit, setSearchDataEdit] = useState({
-    districtId: "",
-    talukId: "",
-    designationId: "",
-    // villageId: "",
-    phoneNumber: "",
-    username: "",
-    userMasterId: "",
-  });
-
-  const userSearchEditClear = () => {
-    setSearchDataEdit({
-      districtId: "",
-      talukId: "",
-      designationId: "",
-      // villageId: "",
-      phoneNumber: "",
-      username: "",
-      userMasterId: "",
-    });
-  };
-
   //   to get data from api
   const [userName, setUserName] = useState("");
-  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
     api
       .get(baseURLMasterData + `userMaster/get/${id}`)
       .then((response) => {
-        //  console.log("heheheeh",response.data.content.username)
+        console.log("heheheeh", response.data.content.username);
         setUserName(response.data.content.username);
         setLoading(false);
       })
@@ -1195,56 +1122,28 @@ function SiSdMulberryDateTarget() {
     }
   }, [searchData.userMasterId]);
 
-  const getIdListEdit = (id) => {
-    setLoading(true);
-    api
-      .get(baseURLMasterData + `userMaster/get/${id}`)
-      .then((response) => {
-        console.log("heheheeh", response.data.content.username);
-        setUserNameEdit(response.data.content.username);
-        setLoading(false);
-      })
-      .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
-        setUserNameEdit("");
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (searchDataEdit.userMasterId) {
-      getIdListEdit(searchDataEdit.userMasterId);
-    }
-  }, [searchDataEdit.userMasterId]);
-
   const handleSearchInputs = (e) => {
     // debugger;
     let { name, value } = e.target;
     setSearchData({ ...searchData, [name]: value });
   };
 
-  const handleSearchInputsEdit = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setSearchDataEdit({ ...searchDataEdit, [name]: value });
-  };
-
   const [showModal5, setShowModal5] = useState(false);
-  const [showModal7, setShowModal7] = useState(false);
 
   const handleShowModal5 = () => setShowModal5(true);
+  const handleCloseModal5 = () => setShowModal5(false);
 
-  const handleCloseModal5 = () => {
-    setShowModal5(false);
-    userSearchClear();
-  };
-
-  const handleCloseModal7 = () => {
-    setShowModal7(false);
-    userSearchEditClear();
-  };
-  
-
+  // const handleUserSelect = (userId) => {
+  //   setSearchData({ ...searchData, userMasterId: userId }); // Update data with selected user ID
+  //   setShowModal5(false); // Close modal
+  // };
+  // const handleUserSelect = (userId) => {
+  //   // Update the `userMasterId` in your `data` state
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     userMasterId: userId,
+  //   }));
+  // };
   const handleUserSelect = (userId) => {
     // Update both `userMasterId` in `data` and `searchData` states
     setData((prevData) => ({
@@ -1258,13 +1157,32 @@ function SiSdMulberryDateTarget() {
     }));
   };
 
-  const handleUserEditSelect = (userId) => {
-    setSearchDataEdit((prevSearchData) => ({
-      ...prevSearchData,
-      userMasterId: userId,
-    }));
-  };
-
+  // const searchUser = (e) => {
+  //   api
+  //     .post(
+  //       baseURLMasterData + `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+  //       {},
+  //       {
+  //         params: {
+  //           districtId: searchData.districtId,
+  //           talukId: searchData.talukId,
+  //           designationId: searchData.designationId,
+  //           mobileNumber: searchData.mobileNumber,
+  //           username: searchData.username,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       if (response.data && response.data.content && response.data.content.userMaster) {
+  //         setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+  //       } else {
+  //         setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]); // Ensure userListData is reset on error
+  //     });
+  // };
   const searchUser = (e) => {
     // Build the params object dynamically
     const params = {};
@@ -1276,45 +1194,6 @@ function SiSdMulberryDateTarget() {
       params.designationId = searchData.designationId;
     if (searchData.phoneNumber) params.phoneNumber = searchData.phoneNumber;
     if (searchData.username) params.username = searchData.username;
-
-    api
-      .post(
-        baseURLMasterData +
-          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
-        {},
-        {
-          params: params, // Pass the dynamically built params
-        }
-      )
-      .then((response) => {
-        if (
-          response.data &&
-          response.data.content &&
-          response.data.content.userMaster
-        ) {
-          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
-        } else {
-          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
-        }
-      })
-      .catch((err) => {
-        setUserListData([]); // Ensure userListData is reset on error
-      });
-  };
-
-  const searchUserEdit = (e) => {
-    // Build the params object dynamically
-    const params = {};
-
-    // Only add the parameters to the params object if they are not empty or undefined
-    if (searchDataEdit.districtId)
-      params.districtId = searchDataEdit.districtId;
-    if (searchDataEdit.talukId) params.talukId = searchDataEdit.talukId;
-    if (searchDataEdit.designationId)
-      params.designationId = searchDataEdit.designationId;
-    if (searchDataEdit.phoneNumber)
-      params.phoneNumber = searchDataEdit.phoneNumber;
-    if (searchDataEdit.username) params.username = searchDataEdit.username;
 
     api
       .post(
@@ -1391,34 +1270,10 @@ function SiSdMulberryDateTarget() {
     }
   }, [searchData.districtId, data.districtId, editData.districtId]);
 
-
-   // to get taluk edit user
-   const [talukListDataEdit, setTalukListDataEdit] = useState([]);
-
-   const getTalukListEdit = (_id) => {
-     const response = api
-       .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
-       .then((response) => {
-         if (response.data.content.taluk) {
-           setTalukListDataEdit(response.data.content.taluk);
-         }
-       })
-       .catch((err) => {
-         setTalukListDataEdit([]);
-         // alert(err.response.data.errorMessages[0].message[0].message);
-       });
-   };
- 
-   useEffect(() => {
-     if (searchDataEdit.districtId) {
-       getTalukListEdit(searchDataEdit.districtId);
-     }
-   }, [searchDataEdit.districtId]);
-
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };
@@ -1431,16 +1286,18 @@ function SiSdMulberryDateTarget() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
   return (
-    <Layout title={t("SI-SD Mulberry Daily Target")}>
+    <Layout title={t("TSC wise Production Physical Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("SI-SD Mulberry Daily Target")}</Block.Title>
+            <Block.Title tag="h2">
+              {t("TSC wise Production Physical Target Setting")}
+            </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1451,12 +1308,14 @@ function SiSdMulberryDateTarget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("SI-SD Mulberry Daily Target")}</Card.Header>
+                    <Card.Header>
+                      {t("TSC wise Production Physical Target Setting")}
+                    </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
                         {/* Yearly Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
@@ -1465,20 +1324,20 @@ function SiSdMulberryDateTarget() {
                           </Button>
                           <table
                             className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '800px' }}
+                            style={{ ...styles.table, width: '600px' }}
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>SISD Yearly Targets</th>
-                              <th style={styles.ctstyle}>SISD Day Yearly Targets</th>
+                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
+                              <th style={styles.ctstyle}>District Yearly Targets</th>
                               <th style={styles.ctstyle}>Remaining Targets</th>
                               </tr>
                             </thead>
                             <tbody>
                               {viewTotalTargetsData.length > 0 ? (
                                 <tr>
-                                <td>{viewTotalTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].sisdDayValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
                                 <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
                                 </tr>
                               ) : (
@@ -1499,20 +1358,20 @@ function SiSdMulberryDateTarget() {
                           </Button>
                           <table
                             className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '800px' }}
+                            style={{ ...styles.table, width: '600px' }}
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>SISD Monthly Targets</th>
                               <th style={styles.ctstyle}>TSC Monthly Targets</th>
+                              <th style={styles.ctstyle}>District Monthly Targets</th>
                               <th style={styles.ctstyle}>Remaining Targets</th>
                               </tr>
                             </thead>
                             <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
-                                <td>{viewMonthlyTargetsData[0].sisdValue || "N/A"}</td>
                                 <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].mulberryValue || "N/A"}</td>
                                 <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
                                 </tr>
                               ) : (
@@ -1582,7 +1441,7 @@ function SiSdMulberryDateTarget() {
                                   data.mulberryTargetTypeId === "0"
                                 }
                               >
-                                <option value="">{t("Select Target")}</option>
+                                <option value="">{t("Select Target Type")}</option>
                                 {mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
@@ -1611,10 +1470,10 @@ function SiSdMulberryDateTarget() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                isInvalid={
-                                  data.districtId === undefined ||
-                                  data.districtId === "0"
-                                }
+                                // isInvalid={
+                                //   data.districtId === undefined ||
+                                //   data.districtId === "0"
+                                // }
                               >
                                 <option value="">{t("Select District")}</option>
                                 {districtListData.map((list) => (
@@ -1700,7 +1559,7 @@ function SiSdMulberryDateTarget() {
                             </div>
                           </Form.Group>
                         </Col>
-                        
+
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -1718,7 +1577,7 @@ function SiSdMulberryDateTarget() {
                                   data.userMasterId === "0"
                                 }
                               >
-                                <option value="">Select TSC</option>
+                                <option value="">Select User</option>
                                 {userListData.map((list) => (
                                   <option
                                     key={list.userMasterId}
@@ -1735,58 +1594,42 @@ function SiSdMulberryDateTarget() {
                           </Form.Group>
                         </Col> */}
 
-
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Target Type")}<span className="text-danger">*</span>
+                              {t("Race")}<span className="text-danger">*</span>
                             </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="targetType"
-                                value={data.targetType}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                              >
-                                <option value="">{t("Select Target Type")}</option>
-                                <option value="NAREGA">{t("NAREGA")}</option>
-                                <option value="NON NAREGA">{t("NON NAREGA")}</option>
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Target Type is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label htmlFor="value">
-                              {t("Target No.")}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="value"
-                                name="value"
-                                value={data.value}
-                                onChange={handleInputs}
-                                type="number"
-                                placeholder={t("Enter Target No.")}
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {t("Target No. is required.")}
-                              </Form.Control.Feedback>
-                            </div>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="raceMasterId"
+                                  value={data.raceMasterId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                >
+                                  <option value="">{t("Select Race")}</option>
+                                  {raceListData.map((list) => (
+                                    <option
+                                      key={list.raceMasterId}
+                                      value={list.raceMasterId}
+                                    >
+                                      {list.raceMasterName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Race is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
                           </Form.Group>
                         </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t('Month')}
-                              <span className="text-danger">*</span>
+                              {t("Month")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1800,19 +1643,19 @@ function SiSdMulberryDateTarget() {
                                 //   data.month === "0"
                                 // }
                               >
-                                <option value="">{t('Select Month')}</option>
-                                <option value="JANUARY">January</option>
-                                <option value="FEBRUARY">February</option>
-                                <option value="MARCH">March</option>
-                                <option value="APRIL">April</option>
-                                <option value="MAY">May</option>
-                                <option value="JUNE">June</option>
-                                <option value="JULY">July</option>
-                                <option value="AUGUST">August</option>
-                                <option value="SEPTEMBER">September</option>
-                                <option value="OCTOBER">October</option>
-                                <option value="NOVEMBER">November</option>
-                                <option value="DECEMBER">December</option>
+                                <option value="">{t("Select Month")}</option>
+                                <option value="JANUARY">{t("January")}</option>
+                                <option value="FEBRUARY">{t("February")}</option>
+                                <option value="MARCH">{t("March")}</option>
+                                <option value="APRIL">{t("April")}</option>
+                                <option value="MAY">{t("May")}</option>
+                                <option value="JUNE">{t("June")}</option>
+                                <option value="JULY">{t("July")}</option>
+                                <option value="AUGUST">{t("August")}</option>
+                                <option value="SEPTEMBER">{t("September")}</option>
+                                <option value="OCTOBER">{t("October")}</option>
+                                <option value="NOVEMBER">{t("November")}</option>
+                                <option value="DECEMBER">{t("December")}</option>
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -1829,27 +1672,27 @@ function SiSdMulberryDateTarget() {
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
-                            <Form.Label>{t("Target Date")}</Form.Label>
+                            <Form.Label htmlFor="value">
+                              {t("Target No.")} 
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
                             <div className="form-control-wrap">
-                              <DatePicker
-                                selected={
-                                  data.targetDate
-                                    ? new Date(data.targetDate)
-                                    : null
-                                }
-                                onChange={(date) =>
-                                  handleDateChange(date, "targetDate")
-                                }
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                // required
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required.")}
+                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
+
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -1866,6 +1709,7 @@ function SiSdMulberryDateTarget() {
                                 type="hidden"
                                 name="userMasterId"
                                 value={data.userMasterId}
+                                // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1882,14 +1726,13 @@ function SiSdMulberryDateTarget() {
                               id="username"
                               name="username"
                               value={userName}
+                              // onChange={handleSearchInputs}
                               type="text"
                               placeholder={t("Enter User Name")}
                               className="form-control"
+                              // readOnly
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
-                              {t("User is required")}
-                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                       </Row>
@@ -1914,27 +1757,7 @@ function SiSdMulberryDateTarget() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+          
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -1959,7 +1782,9 @@ function SiSdMulberryDateTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("SI-SD Mulberry Daily Target Edit")}</Modal.Title>
+          <Modal.Title>
+            {t("TSC wise Production Physical Target Setting")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2024,7 +1849,7 @@ function SiSdMulberryDateTarget() {
                         editData.mulberryTargetTypeId === "0"
                       }
                     >
-                      <option value="">{t("Select Year")}</option>
+                      <option value="">{t("Select Target Type")}</option>
                       {mulberryTargetTypeData.map((list) => (
                         <option
                           key={list.mulberryTargetTypeId}
@@ -2054,10 +1879,10 @@ function SiSdMulberryDateTarget() {
                       onBlur={() => handleEditInputs}
                       required
                       disabled
-                      isInvalid={
-                        editData.districtId === undefined ||
-                        editData.districtId === "0"
-                      }
+                      // isInvalid={
+                      //   data.districtId === undefined ||
+                      //   data.districtId === "0"
+                      // }
                     >
                       <option value="">{t("Select District")}</option>
                       {districtListData.map((list) => (
@@ -2086,10 +1911,10 @@ function SiSdMulberryDateTarget() {
                       onBlur={() => handleEditInputs}
                       required
                       disabled
-                      isInvalid={
-                        editData.talukId === undefined ||
-                        editData.talukId === "0"
-                      }
+                      // isInvalid={
+                      //   data.districtId === undefined ||
+                      //   data.districtId === "0"
+                      // }
                     >
                       <option value="">{t("Select Taluk")}</option>
                       {talukListData.map((list) => (
@@ -2099,7 +1924,7 @@ function SiSdMulberryDateTarget() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      {t("Taluk is required")}
+                      {t("District is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2140,90 +1965,98 @@ function SiSdMulberryDateTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    {t("Target Type")}<span className="text-danger">*</span>
+                    {t("User")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
-                      name="targetType"
-                      value={editData.targetType}
+                      name="userMasterId"
+                      value={editData.userMasterId}
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
-                      disabled
+                      isInvalid={
+                        editData.userMasterId === undefined ||
+                        editData.userMasterId === "0"
+                      }
                     >
-                      <option value="">{t("Select Target Type")}</option>
-                      <option value="NAREGA">{t("NAREGA")}</option>
-                      <option value="NON NAREGA">{t("NON NAREGA")}</option>
+                      <option value="">{t("Select User")}</option>
+                      {userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      {t("Target Type is required")}
+                      {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    {t("Race")}<span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="raceMasterId"
+                        value={editData.raceMasterId}
+                        onChange={handleEditInputs}
+                        onBlur={() => handleEditInputs}
+                        required
+                        disabled
+                      >
+                        <option value="">{t("Select Race")}</option>
+                        {raceListData.map((list) => (
+                          <option
+                            key={list.raceMasterId}
+                            value={list.raceMasterId}
+                          >
+                            {list.raceMasterName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("Race is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Col>
                 </Form.Group>
               </Col>
 
               {/* <Col lg="6">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>
-                    Month<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="month"
-                      value={editData.month}
-                      onChange={handleInputs}
-                      onBlur={() => handleInputs}
-                      required
-                    >
-                      <option value="">Select Month</option>
-                      <option value="JANUARY">January</option>
-                      <option value="FEBRUARY">February</option>
-                      <option value="MARCH">March</option>
-                      <option value="APRIL">April</option>
-                      <option value="MAY">May</option>
-                      <option value="JUNE">June</option>
-                      <option value="JULY">July</option>
-                      <option value="AUGUST">August</option>
-                      <option value="SEPTEMBER">September</option>
-                      <option value="OCTOBER">October</option>
-                      <option value="NOVEMBER">November</option>
-                      <option value="DECEMBER">December</option>
-
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      Month is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col> */}
-
-              <Col lg="6">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="value">
-                    {t("Target No.")}
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="value"
-                      name="value"
-                      value={editData.value}
-                      onChange={handleEditInputs}
-                      type="number"
-                      placeholder={t("Enter Target No.")}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {t("Target No. is required.")}
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Target Type<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="targetType"
+                                value={data.targetType}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                              >
+                                <option value="">Select Target Type</option>
+                                <option value="NAREGA">NAREGA</option>
+                                <option value="NON NAREGA">NON NAREGA</option>
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Target Type is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col> */}
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    {t('Month')}
-                    <span className="text-danger">*</span>
+                    {t("Month")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2234,23 +2067,23 @@ function SiSdMulberryDateTarget() {
                       required
                       disabled
                       // isInvalid={
-                      //   editData.month === undefined ||
-                      //   editData.month === "0"
+                      //   data.month === undefined ||
+                      //   data.month === "0"
                       // }
                     >
-                      <option value="">{t('Select Month')}</option>
-                      <option value="JANUARY">January</option>
-                      <option value="FEBRUARY">February</option>
-                      <option value="MARCH">March</option>
-                      <option value="APRIL">April</option>
-                      <option value="MAY">May</option>
-                      <option value="JUNE">June</option>
-                      <option value="JULY">July</option>
-                      <option value="AUGUST">August</option>
-                      <option value="SEPTEMBER">September</option>
-                      <option value="OCTOBER">October</option>
-                      <option value="NOVEMBER">November</option>
-                      <option value="DECEMBER">December</option>
+                      <option value="">{t("Select Month")}</option>
+                      <option value="JANUARY">{t("January")}</option>
+                      <option value="FEBRUARY">{t("February")}</option>
+                      <option value="MARCH">{t("March")}</option>
+                      <option value="APRIL">{t("April")}</option>
+                      <option value="MAY">{t("May")}</option>
+                      <option value="JUNE">{t("June")}</option>
+                      <option value="JULY">{t("July")}</option>
+                      <option value="AUGUST">{t("August")}</option>
+                      <option value="SEPTEMBER">{t("September")}</option>
+                      <option value="OCTOBER">{t("October")}</option>
+                      <option value="NOVEMBER">{t("November")}</option>
+                      <option value="DECEMBER">{t("December")}</option>
 
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -2265,72 +2098,26 @@ function SiSdMulberryDateTarget() {
                 </Form.Group>
               </Col>
 
-
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label>{t("Target Date")}</Form.Label>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={
-                        editData.targetDate
-                          ? new Date(editData.targetDate)
-                          : null
-                      }
-                      onChange={(date) =>
-                        handleEditDateChange(date, "targetDate")
-                      }
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      // maxDate={new Date()}
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>
-                    {t("User")}<span className="text-danger">*</span>
+                  <Form.Label htmlFor="value">
+                    {t("Target No.")}
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
-                    <Button
-                      variant="primary"
-                      onClick={() => setShowModal7(true)}
-                    >
-                      {t("Select User")}
-                    </Button>
                     <Form.Control
-                      type="hidden"
-                      name="userMasterId"
-                      value={editData.userMasterId}
-                      required
+                      id="value"
+                      name="value"
+                      value={editData.value}
+                      onChange={handleEditInputs}
+                      type="text"
+                      placeholder={t("Enter Target No.")}
+                      // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("User is required")}
+                      {t("Target No. is required.")}
                     </Form.Control.Feedback>
                   </div>
-                </Form.Group>
-              </Col>
-
-              <Col sm={3}>
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>{t("User Name")}</Form.Label>
-                  <Form.Control
-                    id="username"
-                    name="username"
-                    value={userNameEdit}
-                    type="text"
-                    placeholder={t("Enter User Name")}
-                    className="form-control"
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {t("User is required")}
-                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
 
@@ -2547,7 +2334,6 @@ function SiSdMulberryDateTarget() {
                   </Form.Select>
                 </Col>
               </Row>
-
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal5()}>
@@ -2559,166 +2345,8 @@ function SiSdMulberryDateTarget() {
           </Block>
         </Modal.Body>
       </Modal>
-      <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
-              <Modal.Header closeButton>
-                <Modal.Title>{t("Select User In Edit")}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Block className="mt-n4">
-                  <Card className="mt-3 p-4 shadow-lg rounded">
-                    <Row className="g-4">
-                      {/* District Input */}
-                      <Col sm={4}>
-                        <Form.Group className="form-group">
-                          <Form.Label>{t("District")}</Form.Label>
-                          <Form.Select
-                            name="districtId"
-                            value={searchDataEdit.districtId}
-                            onChange={handleSearchInputsEdit}
-                            className="form-control"
-                          >
-                            <option value="">{t("Select District")}</option>
-                            {districtListData &&
-                              districtListData.length &&
-                              districtListData.map((list) => (
-                                <option key={list.districtId} value={list.districtId}>
-                                  {list.districtName}
-                                </option>
-                              ))}
-                          </Form.Select>
-                        </Form.Group>
-                      </Col>
-      
-                      {/* Taluk Input */}
-                      <Col sm={4}>
-                        <Form.Group className="form-group">
-                          <Form.Label>{t("Taluk")}</Form.Label>
-                          <Form.Select
-                            name="talukId"
-                            value={searchDataEdit.talukId}
-                            onChange={handleSearchInputsEdit}
-                            className="form-control"
-                          >
-                            <option value="">{t("Select Taluk")}</option>
-                            {talukListDataEdit &&
-                              talukListDataEdit.length &&
-                              talukListDataEdit.map((list) => (
-                                <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
-                                </option>
-                              ))}
-                          </Form.Select>
-                        </Form.Group>
-                      </Col>
-      
-                      {/* Designation Input */}
-                      <Col sm={4}>
-                        <Form.Group className="form-group">
-                          <Form.Label>{t("Designation")}</Form.Label>
-                          <Form.Select
-                            name="designationId"
-                            value={searchDataEdit.designationId}
-                            onChange={handleSearchInputsEdit}
-                            className="form-control"
-                          >
-                            <option value="">{t("Select Designation")}</option>
-                            {designationListData &&
-                              designationListData.length &&
-                              designationListData.map((list) => (
-                                <option
-                                  key={list.designationId}
-                                  value={list.designationId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))}
-                          </Form.Select>
-                        </Form.Group>
-                      </Col>
-      
-                      {/* Mobile Number Input */}
-                      <Col sm={4}>
-                        <Form.Group className="form-group">
-                          <Form.Label>{t("Mobile Number")}</Form.Label>
-                          <Form.Control
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={searchDataEdit.phoneNumber}
-                            onChange={handleSearchInputsEdit}
-                            type="text"
-                            placeholder={t("Enter Mobile Number")}
-                            className="form-control"
-                          />
-                        </Form.Group>
-                      </Col>
-      
-                      {/* Username Input */}
-                      <Col sm={4}>
-                        <Form.Group className="form-group">
-                          <Form.Label>{t("User Name")}</Form.Label>
-                          <Form.Control
-                            id="username"
-                            name="username"
-                            value={searchDataEdit.username}
-                            onChange={handleSearchInputsEdit}
-                            type="text"
-                            placeholder={t("Enter User Name")}
-                            className="form-control"
-                          />
-                        </Form.Group>
-                      </Col>
-                      {/* Search Button */}
-                      <Col sm={4} className="d-flex align-items-end">
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={searchUserEdit}
-                          className="w-100"
-                        >
-                          {t("Search")}
-                        </Button>
-                      </Col>
-                    </Row>
-      
-                    {/* User Selection */}
-                    <Row className="m-4">
-                      <Col sm={12}>
-                        <Form.Label>{t("User")}</Form.Label>
-                        <Form.Select
-                          name="userMasterId"
-                          value={searchDataEdit.userMasterId}
-                          onChange={(e) => handleUserEditSelect(e.target.value)}
-                          className="form-control"
-                        >
-                          <option value="">{t("Select User")}</option>
-                          {userListData && userListData.length > 0 ? (
-                            userListData.map((list) => (
-                              <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
-                              >
-                                {list.username}
-                              </option>
-                            ))
-                          ) : (
-                            <option value="">{t("No Users Found")}</option> // Show a message if no users are found
-                          )}
-                        </Form.Select>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <div className="gap-col d-flex justify-content-center">
-                        <Button variant="primary" onClick={() => handleCloseModal7()}>
-                          {t("Submit")}
-                        </Button>
-                      </div>
-                    </Row>
-                  </Card>
-                </Block>
-              </Modal.Body>
-            </Modal>
     </Layout>
   );
 }
 
-export default SiSdMulberryDateTarget;
+export default TSCWiseProductionPhysicalTargetSetting;

@@ -945,6 +945,7 @@ import ConfigurePmkysAmountList from "../pages/masters/configure-pmkys-amount/Co
 import ConfigureBivoltineAmount from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmount";
 import ConfigureBivoltineAmountList from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountList";
 import ConfigureBivoltineAmountEdit from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountEdit";
+import TSCWiseProductionPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TSCWiseProductionPhysicalTargetSetting";
 
 // Admin and Reports
 
@@ -3452,7 +3453,7 @@ function Router() {
 
             <Route
               path="tscwise-product-physical-target-setting"
-              element={<TscwiseProdPhysicalTargetSetting />}
+              element={<TSCWiseProductionPhysicalTargetSetting />}
             />
 
             <Route
