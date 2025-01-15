@@ -765,7 +765,7 @@ function SaleDisposalofDFLseggs() {
   ) : (
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Sale / Disposal of DFLs 's (egg) s")}
+                  {t("Sale / Disposal of DFL's(eggs)")}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">

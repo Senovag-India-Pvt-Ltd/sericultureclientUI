@@ -324,7 +324,7 @@ function ExternalUnitRegisterList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -334,9 +334,9 @@ function ExternalUnitRegisterList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="externalUnitTypeName">External Unit Type</option>
-                      <option value="licenseNumber">License Number</option>
-                      <option value="organisationName">Organisation Name</option>
+                      <option value="externalUnitTypeName">{t("External Unit Type")}</option>
+                      <option value="licenseNumber">{t("License Number")}</option>
+                      <option value="organisationName">{t("Organisation Name")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -348,7 +348,7 @@ function ExternalUnitRegisterList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>

@@ -376,7 +376,7 @@ function PreservationofseedcocoonforprocessingList() {
             size="sm"
             onClick={() => acceptConfirm(row.id, 1,row.senderType)}
           >
-            Accept
+            {t("Accept")}
           </Button>
          
           <Button
@@ -385,7 +385,7 @@ function PreservationofseedcocoonforprocessingList() {
             onClick={() => deleteConfirm(row.id, 2,row.senderType)}
             className="ms-2"
           >
-            Reject
+            {t("Reject")}
           </Button>
         </div>
       ),
@@ -485,7 +485,7 @@ function PreservationofseedcocoonforprocessingList() {
             size="sm"
             onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
           >
-            Accept
+            {t("Accept")}
           </Button>
          
           <Button
@@ -494,7 +494,7 @@ function PreservationofseedcocoonforprocessingList() {
             onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
             className="ms-2"
           >
-            Reject
+            {t("Reject")}
           </Button>
         </div>
       ),
@@ -727,7 +727,7 @@ function PreservationofseedcocoonforprocessingList() {
     //   hide: "md",
     // },
     {
-      name: t("Race "),
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
@@ -748,7 +748,7 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
-      name: t(" Name of the Farmer"),
+      name: t("Name of the Farmer"),
       selector: (row) => row.nameOfTheGovernmentSeedFarmOrFarmer,
       cell: (row) => <span>{row.nameOfTheGovernmentSeedFarmOrFarmer}</span>,
       sortable: true,

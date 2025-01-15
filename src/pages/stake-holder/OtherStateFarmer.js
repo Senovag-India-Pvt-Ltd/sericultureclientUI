@@ -1071,7 +1071,7 @@ function OtherStateFarmer() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name is required.
+                            {t("Farmer Name is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1092,7 +1092,7 @@ function OtherStateFarmer() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Name in Kannada is required.
+                            {t("Farmer Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1113,7 +1113,7 @@ function OtherStateFarmer() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Fathers/Husband Name is required.
+                            {t("Fathers/Husband Name is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1136,7 +1136,7 @@ function OtherStateFarmer() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Fathers/Husband Name in Kannada is required.
+                            {t("Fathers/Husband Name in Kannada is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1267,8 +1267,7 @@ function OtherStateFarmer() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required or Number is greater than
-                            and less than 10 Digit
+                            {t("Mobile Number is required or Number is greater than and less than 10 Digit")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1322,7 +1321,7 @@ function OtherStateFarmer() {
                             // required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farmer Number is required
+                            {t("Farmer Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -256,7 +256,7 @@ function RearingofDFLs() {
           {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              {t("Rearing Of DFLs")}
+              {t("Rearing of DFLs")}
             </Card.Header>
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}

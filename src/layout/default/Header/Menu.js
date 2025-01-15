@@ -133,6 +133,7 @@ const _header = {
 
 function Menu() {
   const layout = useLayout();
+  const { t } = useTranslation();
 
   // set ModuleData to state
   const [moduleRows, setModuleRows] = useState([]);
@@ -1128,8 +1129,6 @@ function Menu() {
 
     // eslint-disable-next-line
   }, [null]);
-
-  const { t } = useTranslation();
 
   return (
     <MenuList>

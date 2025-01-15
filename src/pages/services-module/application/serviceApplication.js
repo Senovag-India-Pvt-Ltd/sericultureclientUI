@@ -3546,7 +3546,7 @@ function ServiceApplication() {
                             onClick={handleCalculateUnitPrice}
                             disabled={!schemeDetails.calculationBasedOn}
                           >
-                            Calculate Unit Price
+                            {t("Calculate Unit Price")}
                           </Button>
                           </li>
 
@@ -3566,7 +3566,7 @@ function ServiceApplication() {
                               variant="secondary"
                               onClick={() => setShowModal2(true)}
                             >
-                              Select Transaction Details
+                              {t("Select Transaction Details")}
                             </Button>
                           )}
                         </li>
@@ -3724,7 +3724,7 @@ function ServiceApplication() {
                                 name="description"
                                 value={equipment.description}
                                 onChange={handleEquipmentInputs}
-                                placeholder="Enter Description"
+                                placeholder={t("Enter Description")}
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">

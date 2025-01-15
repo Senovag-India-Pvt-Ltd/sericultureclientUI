@@ -4,6 +4,8 @@ import classNames from "classnames";
 import { Dropdown, Offcanvas } from "react-bootstrap";
 import SimpleBar from "simplebar-react";
 import api from "../../../services/auth/api";
+
+
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 
 import {
@@ -28,11 +30,13 @@ import TimeTicker from "../../../components/Utils/TimeTicker";
 import { useLayout, useLayoutUpdate } from "./../LayoutProvider";
 import { auto } from "@popperjs/core";
 import { useTranslation } from "react-i18next";
+
 import { logout } from "../../../services/authService";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function QuickNav({ className, ...props }) {
+  const { t } = useTranslation();
   const compClass = classNames({
     "nk-quick-nav": true,
     [className]: className,
@@ -270,7 +274,7 @@ function Header({ show, ...props }) {
                     <>
                       <span className="me-5 d-flex align-items-center">
                         <span style={{ fontWeight: "bold" }}>
-                          Market Name:{" "}
+                          {t("Market Name")}:{" "}
                         </span>
                         <span style={{ fontWeight: "bold", color: "green" }}>
                           {marketName}
@@ -278,7 +282,7 @@ function Header({ show, ...props }) {
                       </span>
                       <div className="me-5 d-flex justify-content-between align-items-center">
                         <Form.Label column sm={2}>
-                          Godown:
+                          {t("Godown")}:
                         </Form.Label>
                         <Col sm={8}>
                           <Form.Select

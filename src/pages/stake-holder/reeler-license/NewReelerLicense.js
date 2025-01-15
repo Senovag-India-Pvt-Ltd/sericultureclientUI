@@ -969,7 +969,7 @@ function NewReelerLicense() {
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits.
+                        {t("Fruits ID Should Contain 16 digits")}.
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>

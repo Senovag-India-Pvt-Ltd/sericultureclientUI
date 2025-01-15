@@ -351,7 +351,7 @@ function FarmerWithoutFruitsList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -361,9 +361,9 @@ function FarmerWithoutFruitsList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="0">Farmer Number</option>
-                      <option value="1">Fruits ID</option>
-                      <option value="2">Mobile Number</option>
+                      <option value="0">{t("Farmer Number")}</option>
+                      <option value="1">{t("Fruits ID")}</option>
+                      <option value="2">{t("Mobile Number")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -375,7 +375,7 @@ function FarmerWithoutFruitsList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>

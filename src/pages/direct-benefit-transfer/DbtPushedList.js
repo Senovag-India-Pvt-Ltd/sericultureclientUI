@@ -907,7 +907,7 @@ function DbtPushedList() {
                   </div>
                 </Col>
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={1}>
                   <div className="form-control-wrap">
@@ -1043,7 +1043,7 @@ function DbtPushedList() {
                       value={searchData.text}
                       onChange={handleInputsSearch}
                       type="text"
-                      placeholder="Search"
+                      placeholder={t("Search")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
