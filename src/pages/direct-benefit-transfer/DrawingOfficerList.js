@@ -1371,7 +1371,7 @@ const getFinancialDefaultDetails = () => {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={2}>
                   <div className="form-control-wrap">

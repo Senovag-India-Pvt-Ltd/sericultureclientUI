@@ -1005,7 +1005,7 @@ function AllApplicationList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -1042,7 +1042,7 @@ function AllApplicationList() {
                                   searchData.searchText === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}

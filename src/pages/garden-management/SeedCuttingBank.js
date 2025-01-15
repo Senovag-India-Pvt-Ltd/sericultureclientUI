@@ -234,11 +234,11 @@ function SeedCuttingBank() {
   };
 
   return (
-    <Layout title={t("Seed cutting bank")}>
+    <Layout title={t("Seed Cutting Bank")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Seed cutting bank")}</Block.Title>
+            <Block.Title tag="h2">{t("Seed Cutting Bank")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

@@ -168,7 +168,7 @@ function SaleDisposalofDFLseggsList() {
             size="sm"
             onClick={() => handleView(row.id)}
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -176,7 +176,7 @@ function SaleDisposalofDFLseggsList() {
             className="ms-2"
             onClick={() => handleEdit(row.id)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           {/* <Button
             variant="danger"
