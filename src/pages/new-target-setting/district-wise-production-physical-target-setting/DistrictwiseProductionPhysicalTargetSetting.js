@@ -470,7 +470,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1239,6 +1239,10 @@ function DistrictwiseProductionPhysicalTargetSetting() {
   };
 
   const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
