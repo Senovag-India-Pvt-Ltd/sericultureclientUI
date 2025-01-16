@@ -296,7 +296,7 @@ function DistrictWiseMontlyMulberry() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1196,6 +1196,10 @@ function DistrictWiseMontlyMulberry() {
   };
 
   const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,

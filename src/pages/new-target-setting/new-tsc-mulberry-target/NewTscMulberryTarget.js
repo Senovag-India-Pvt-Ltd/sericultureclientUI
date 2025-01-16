@@ -490,7 +490,7 @@ function NewTscMulberryTarget() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1181,6 +1181,12 @@ function NewTscMulberryTarget() {
   };
 
   const handleUserEditSelect = (userId) => {
+
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
