@@ -568,6 +568,13 @@ function TSCWiseProductionPhysicalTargetSetting() {
       hide: "md",
     },
     {
+      name: t("Taluk"),
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: t("TSC"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
