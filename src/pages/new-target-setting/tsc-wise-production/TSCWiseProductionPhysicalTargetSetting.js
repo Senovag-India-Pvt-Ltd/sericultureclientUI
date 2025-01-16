@@ -106,15 +106,34 @@ function TSCWiseProductionPhysicalTargetSetting() {
     userMasterId: "",
   });
 
+  // const handleEdit = (productionTargetsId) => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(
+  //       baseURLTargetSetting +
+  //         `productionTargets/get-tsc/${productionTargetsId}`
+  //     )
+  //     .then((response) => {
+  //       setEditData(response.data.content);
+  //       setUserNameEdit(
+  //         response.data.content.body.content.productionTargets.userMasterName
+  //       );
+  //       setShowModal3(true);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setEditData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
   const handleEdit = (productionTargetsId) => {
     setLoading(true);
     const response = api
-      .get(
-        baseURLTargetSetting +
-          `productionTargets/get-tsc/${productionTargetsId}`
-      )
+      .get(baseURLTargetSetting + `productionTargets/get-by-id?id=${productionTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.productionTargets);
         setUserNameEdit(
           response.data.content.body.content.productionTargets.userMasterName
         );
