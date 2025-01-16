@@ -1247,6 +1247,10 @@ function AllApplicationList() {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
                 </tr>
                 <tr>
+                  <td style={styles.ctstyle}>Eligible Amount:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.eligibleAmount || 'N/A'}</td>
+                </tr>
+                <tr>
                   <td style={styles.ctstyle}>Hectare:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.hectareName || 'N/A'}</td>
                 </tr>

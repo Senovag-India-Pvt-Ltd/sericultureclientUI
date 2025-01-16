@@ -190,9 +190,9 @@ function DashboardReportList() {
       hide: "md",
     },
     {
-      name: "Allocated Amount",
-      selector: (row) => row.allocatedAmount,
-      cell: (row) => <span>{row.allocatedAmount}</span>,
+      name: "Eligible Amount",
+      selector: (row) => row.eligibleAmount,
+      cell: (row) => <span>{row.eligibleAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -204,9 +204,9 @@ function DashboardReportList() {
       hide: "md",
     },
     {
-      name: "Subsidy Amount",
-      selector: (row) => row.subsidyAmount,
-      cell: (row) => <span>{row.subsidyAmount}</span>,
+      name: "Calculate Eligible Amount",
+      selector: (row) => row.calculatedEligibleAmount,
+      cell: (row) => <span>{row.calculatedEligibleAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -657,10 +657,14 @@ function DashboardReportList() {
         const categoryId = recordData?.categoryId;
         const componentId = recordData?.componentId;
 
-        // Fetch DBT List using extracted categoryId and componentId
-        if (categoryId && componentId) {
-          getPushToDBTList(categoryId, componentId);
-        }
+        // // Fetch DBT List using extracted categoryId and componentId
+        // if (categoryId && componentId) {
+        //   getPushToDBTList(categoryId, componentId);
+        // }
+        // Ensure the applicationDocumentId is passed here
+      if (categoryId && componentId && applicationDocumentId) {
+        getPushToDBTList(categoryId, componentId, applicationDocumentId);
+      }
 
         // Extract subSchemeId and approvalStageId
         const subSchemeId = recordData?.subSchemeId;
@@ -720,11 +724,11 @@ function DashboardReportList() {
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
-  const getPushToDBTList = (categoryId, componentId) => {
+  const getPushToDBTList = (categoryId, componentId,applicationFormId) => {
     api
       .post(
         baseURLDBT +
-          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}`
+          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&applicationFormId=${applicationFormId}`
       )
       .then((response) => {
         if (response.data.content) {
@@ -1318,6 +1322,7 @@ const handleActionInputs = (e) => {
     userId: "",
     stepId: "",
     rejectType: "",
+    eligibleAmount: ""
   });
 
   // const { subSchemeId, approvalStageId } = actionData;
@@ -1514,6 +1519,7 @@ const handleActionInputs = (e) => {
           sanctionOrderNumber: actionData.sanctionOrderNumber,
           userId: actionData.userId,
           stepId: actionData.stepId,
+          eligibleAmount: actionData.eligibleAmount,
           pushToDBTRequestList: sendResponse,
         };
       }
@@ -2543,9 +2549,9 @@ const handleActionInputs = (e) => {
                                   </Form.Label>
                                   <div className="form-control-wrap">
                                     <Form.Control
-                                      id="schemeAmount"
-                                      name="schemeAmount"
-                                      value={actionData.schemeAmount}
+                                      id="eligibleAmount"
+                                      name="eligibleAmount"
+                                      value={actionData.eligibleAmount}
                                       onChange={handleActionInputs}
                                       type="text"
                                       placeholder="Enter Eligible Subsidy Amount "
@@ -3469,10 +3475,31 @@ const handleActionInputs = (e) => {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Spacing:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.spacingName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Hectare:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.hectareName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Scheme Amount:</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
                             ?.schemeAmount || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Eligible Amount:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.eligibleAmount || "N/A"}
                         </td>
                       </tr>
                       <tr>

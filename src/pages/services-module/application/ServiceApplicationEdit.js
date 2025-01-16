@@ -2213,17 +2213,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="spacing">
-                            {t("Spacing")} <span className="text-danger">*</span>
+                            {t("Spacing")} 
+                            {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
                               name="spacingId"
                               value={data.spacingId}
                               onChange={handleInputs}
-                              required
-                              isInvalid={
-                                data.spacingId === undefined || data.spacingId === "0"
-                              }
+                              // required
+                              // isInvalid={
+                              //   data.spacingId === undefined || data.spacingId === "0"
+                              // }
                             >
                               <option value="">{t("Select Spacing")}</option>
                               {spacingListData && spacingListData.length > 0
@@ -2247,17 +2248,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="hectare">
-                          {t("Hectare")} <span className="text-danger">*</span>
+                          {t("Hectare")} 
+                          {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
                               name="hectareId"
                               value={data.hectareId}
                               onChange={handleInputs}
-                              required
-                              isInvalid={
-                                data.hectareId === undefined || data.hectareId === "0"
-                              }
+                              // required
+                              // isInvalid={
+                              //   data.hectareId === undefined || data.hectareId === "0"
+                              // }
                             >
                               <option value="">{t("Select Hectare")}</option>
                               {hectareListData && hectareListData.length > 0
