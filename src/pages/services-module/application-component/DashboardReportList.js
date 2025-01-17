@@ -63,7 +63,7 @@ function DashboardReportList() {
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
-  const handleShowModal = (fid,schemeId) => {
+  const handleShowModal = (fid) => {
     setShowModal(true);
     // getActionFarmerList(fid); // Call getList with userId and stepId
   };
@@ -197,6 +197,13 @@ function DashboardReportList() {
       hide: "md",
     },
     {
+      name: "Scheme Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Share Percentage",
       selector: (row) => row.shareInPercentage,
       cell: (row) => <span>{row.shareInPercentage}</span>,
@@ -204,9 +211,16 @@ function DashboardReportList() {
       hide: "md",
     },
     {
-      name: "Calculate Eligible Amount",
+      name: "Calculated Eligible Amount",
       selector: (row) => row.calculatedEligibleAmount,
       cell: (row) => <span>{row.calculatedEligibleAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Calculated Subsidy Amount",
+      selector: (row) => row.subsidyAmount,
+      cell: (row) => <span>{row.subsidyAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -617,7 +631,7 @@ function DashboardReportList() {
             )
             .then((response) => {
               if (response.data) {
-                handleShowModal(fid,schemeId);
+                handleShowModal(fid);
               } else {
                 Swal.fire({
                   icon: "error",
@@ -628,7 +642,7 @@ function DashboardReportList() {
             })
             .catch((err) => {});
         } else {
-          handleShowModal(fid,schemeId);
+          handleShowModal(fid);
         }
 
         if (recordData.pushToDbt) {
@@ -656,14 +670,15 @@ function DashboardReportList() {
         // Extract categoryId and componentId
         const categoryId = recordData?.categoryId;
         const componentId = recordData?.componentId;
+        const schemeId = recordData?.schemeId;
 
         // // Fetch DBT List using extracted categoryId and componentId
         // if (categoryId && componentId) {
         //   getPushToDBTList(categoryId, componentId);
         // }
         // Ensure the applicationDocumentId is passed here
-      if (categoryId && componentId && applicationDocumentId) {
-        getPushToDBTList(categoryId, componentId, applicationDocumentId);
+      if (categoryId && componentId && schemeId && applicationDocumentId) {
+        getPushToDBTList(categoryId, componentId, schemeId,applicationDocumentId);
       }
 
         // Extract subSchemeId and approvalStageId
@@ -724,21 +739,27 @@ function DashboardReportList() {
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
-  const getPushToDBTList = (categoryId, componentId,applicationFormId) => {
+  const getPushToDBTList = (categoryId, componentId,schemeId,applicationFormId) => {
     api
       .post(
         baseURLDBT +
-          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&applicationFormId=${applicationFormId}`
+          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}`
       )
       .then((response) => {
         if (response.data.content) {
           const dbtData = response.data.content;
 
           // Assuming subsidy amount is in dbtData, update actionData
+          // setActionData((prevData) => ({
+          //   ...prevData,
+          //   subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+          // }));
           setActionData((prevData) => ({
             ...prevData,
             subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+            calculatedEligibleAmount: dbtData.calculatedEligibleAmount || "", // assuming eligibleAmount exists in dbtData
           }));
+          
           setPushToDBTListData(response.data.content);
         }
       })
@@ -1489,7 +1510,8 @@ const handleActionInputs = (e) => {
       const sendResponse = sendApplicationFormServiceData.map((item) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
-          schemeAmount: item.schemeAmount,
+          schemeAmount: item.subsidyAmount,
+          eligibleAmount: item.calculatedEligibleAmount,
           paymentTo: item.paymentTo,
           paymentMethod: item.paymentMethod,
           dateOfPayment: item.dateOfPayment,
@@ -1503,6 +1525,7 @@ const handleActionInputs = (e) => {
           return {
             applicationFormId: item.scApplicationFormId,
             schemeAmount: item.schemeAmount,
+            eligibleAmount: item.calculatedEligibleAmount,
             paymentTo: item.paymentTo,
             paymentMethod: item.paymentMethod,
             dateOfPayment: item.dateOfPayment,
@@ -1727,6 +1750,13 @@ const handleActionInputs = (e) => {
       name: "Scheme Amount",
       selector: (row) => row.schemeAmount,
       cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Eligible Amount",
+      selector: (row) => row.eligibleAmount,
+      cell: (row) => <span>{row.eligibleAmount}</span>,
       sortable: true,
       hide: "md",
     },
