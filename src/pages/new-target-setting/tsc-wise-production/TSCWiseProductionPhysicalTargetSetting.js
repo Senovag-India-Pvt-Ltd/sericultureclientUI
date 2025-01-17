@@ -1136,6 +1136,28 @@ function TSCWiseProductionPhysicalTargetSetting() {
   //   to get data from api
   const [userName, setUserName] = useState("");
   const [userNameEdit, setUserNameEdit] = useState("");
+  const [searchDataEdit, setSearchDataEdit] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
+
+  const userSearchEditClear = () => {
+    setSearchDataEdit({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
   const getIdList = (id) => {
     setLoading(true);
     api
@@ -1157,6 +1179,29 @@ function TSCWiseProductionPhysicalTargetSetting() {
       getIdList(searchData.userMasterId);
     }
   }, [searchData.userMasterId]);
+
+  const getIdListEdit = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserNameEdit(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserNameEdit("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.userMasterId) {
+      getIdListEdit(searchDataEdit.userMasterId);
+    }
+  }, [searchDataEdit.userMasterId]);
+
 
   const handleSearchInputs = (e) => {
     // debugger;
@@ -1194,28 +1239,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
   };
 
   
-  const [searchDataEdit, setSearchDataEdit] = useState({
-    districtId: "",
-    talukId: "",
-    designationId: "",
-    // villageId: "",
-    phoneNumber: "",
-    username: "",
-    userMasterId: "",
-  });
-
-  const userSearchEditClear = () => {
-    setSearchDataEdit({
-      districtId: "",
-      talukId: "",
-      designationId: "",
-      // villageId: "",
-      phoneNumber: "",
-      username: "",
-      userMasterId: "",
-    });
-  };
-
+  
   const handleSearchInputsEdit = (e) => {
     // debugger;
     let { name, value } = e.target;
