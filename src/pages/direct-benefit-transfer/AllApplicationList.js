@@ -853,8 +853,8 @@ function AllApplicationList() {
   
     {
       name: "Subsidy Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
       hide: "md",
     },
