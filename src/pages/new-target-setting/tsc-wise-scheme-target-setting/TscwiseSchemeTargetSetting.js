@@ -148,6 +148,10 @@ function TscwiseSchemeTargetSetting() {
   };
 
   const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
@@ -370,12 +374,31 @@ function TscwiseSchemeTargetSetting() {
     }
   }, [searchDataEdit.districtId]);
 
+  // const handleEdit = (schemeTargetsId) => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLTargetSetting + `schemeTargets/get-tsc/${schemeTargetsId}`)
+  //     .then((response) => {
+  //       setEditData(response.data.content);
+  //       setShowModal3(true);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setEditData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
   const handleEdit = (schemeTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `schemeTargets/get-tsc/${schemeTargetsId}`)
+      .get(baseURLTargetSetting + `schemeTargets/get-by-id?id=${schemeTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.schemeTargets);
+        setUserNameEdit(
+          response.data.content.body.content.schemeTargets.userMasterName
+        );
         setShowModal3(true);
         setLoading(false);
       })
@@ -777,7 +800,7 @@ function TscwiseSchemeTargetSetting() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -887,6 +910,7 @@ function TscwiseSchemeTargetSetting() {
 
   //   to get data from api
   const [userName, setUserName] = useState("");
+  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
     api
@@ -908,6 +932,28 @@ function TscwiseSchemeTargetSetting() {
       getIdList(searchData.userMasterId);
     }
   }, [searchData.userMasterId]);
+
+  const getIdListEdit = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserNameEdit(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserNameEdit("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.userMasterId) {
+      getIdListEdit(searchDataEdit.userMasterId);
+    }
+  }, [searchDataEdit.userMasterId]);
 
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
 
@@ -2796,7 +2842,7 @@ function TscwiseSchemeTargetSetting() {
                   <Form.Control
                     id="username"
                     name="username"
-                    value={userName}
+                    value={userNameEdit}
                     // onChange={handleSearchInputs}
                     type="text"
                     placeholder={t("Enter User Name")}

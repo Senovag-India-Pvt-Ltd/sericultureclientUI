@@ -12,8 +12,6 @@ import { useTranslation } from "react-i18next"; // Import useTranslation
 // import axios from "axios";
 import api from "../../../services/auth/api";
 
-
-
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -95,6 +93,10 @@ const handleShowModal2 = () => setShowModal2(true);
   };
 
   const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
@@ -139,9 +141,6 @@ const handleShowModal2 = () => setShowModal2(true);
   };
 
   
-
-
-   
   const [toggleButton, setToggleButton] = useState(false);
 
   const toggle = () => {
@@ -318,12 +317,31 @@ const handleShowModal2 = () => setShowModal2(true);
     }
   }, [searchData.districtId]);
 
+  // const handleEdit = (schemeTargetsId) => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
+  //     .then((response) => {
+  //       setEditData(response.data.content);
+  //       setShowModal3(true);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setEditData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
   const handleEdit = (schemeTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
+      .get(baseURLTargetSetting + `schemeTargets/get-by-id?id=${schemeTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.schemeTargets);
+        setUserNameEdit(
+          response.data.content.body.content.schemeTargets.userMasterName
+        );
         setShowModal3(true);
         setLoading(false);
       })
@@ -334,6 +352,7 @@ const handleShowModal2 = () => setShowModal2(true);
         setLoading(false);
       });
   };
+
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -1173,7 +1192,7 @@ const handleShowModal2 = () => setShowModal2(true);
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
