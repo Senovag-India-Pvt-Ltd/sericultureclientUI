@@ -19,6 +19,7 @@ function ScProgramApprovalMapping() {
   const [designationDetails, setDesignationDetails] = useState({
     designationId: "",
     amount: "",
+    designationStep: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -45,6 +46,7 @@ function ScProgramApprovalMapping() {
       setDesignationDetails({
         designationId: "",
         amount: "",
+        designationStep: "",
       });
       setShowModal(false);
       setValidatedDesignationDetails(false);
@@ -88,6 +90,7 @@ function ScProgramApprovalMapping() {
       setDesignationDetails({
         designationId: "",
         amount: "",
+        designationStep: "",
       });
     }
   };
@@ -180,6 +183,7 @@ function ScProgramApprovalMapping() {
     setDesignationDetails({
       designationId: "",
       amount: "",
+      designationStep: "",
     });
     setDesignationList([]);
   };
@@ -532,7 +536,9 @@ function ScProgramApprovalMapping() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">{t("Orders")}</Form.Label>
+                      <Form.Label htmlFor="program">{t("Orders")}
+                      <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="stepId"
@@ -541,14 +547,20 @@ function ScProgramApprovalMapping() {
                           value={data.stepId}
                           onChange={handleInputs}
                           placeholder={t("Enter Orders")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Orders is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">{t("Version")}</Form.Label>
+                      <Form.Label htmlFor="program">{t("Version")}
+                      <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="version"
@@ -557,14 +569,20 @@ function ScProgramApprovalMapping() {
                           value={data.version}
                           onChange={handleInputs}
                           placeholder={t("Enter Version")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Version is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">{t("Action")}</Form.Label>
+                      <Form.Label htmlFor="program">{t("Action")}
+                      <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="action"
@@ -574,7 +592,11 @@ function ScProgramApprovalMapping() {
                           value={data.action}
                           onChange={handleInputs}
                           placeholder={t("Enter Action")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Action is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -639,6 +661,7 @@ function ScProgramApprovalMapping() {
                                   <th>{t("Action")}</th>
                                   <th>{t("Designation")}</th>
                                   <th>{t("Amount")}</th>
+                                  <th>{t("Designation Order")}</th>
                                   {/* <th>Share in %</th> */}
                                 </tr>
                               </thead>
@@ -666,6 +689,7 @@ function ScProgramApprovalMapping() {
                                     </td>
                                     <td>{item.name}</td>
                                     <td>{item.amount}</td>
+                                    <td>{item.designationStep}</td>
                                     {/* <td>{item.scHeadAccountName}</td>
                                   <td>{item.shareInPercentage}</td> */}
                                   </tr>
@@ -762,6 +786,23 @@ function ScProgramApprovalMapping() {
                 </Form.Group>
               </Col>
 
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Designation Order")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="designationStep"
+                      name="designationStep"
+                      type="number"
+                      value={designationDetails.designationStep}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Order")}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
@@ -844,6 +885,23 @@ function ScProgramApprovalMapping() {
                       value={designationDetails.amount}
                       onChange={handleMapInputs}
                       placeholder={t("Enter Amount")}
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Designation Order")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="designationStep"
+                      name="designationStep"
+                      type="number"
+                      value={designationDetails.designationStep}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Order")}
+                      required
                     />
                   </div>
                 </Form.Group>
