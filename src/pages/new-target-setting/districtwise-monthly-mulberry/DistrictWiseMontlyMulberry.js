@@ -1430,7 +1430,7 @@ function DistrictWiseMontlyMulberry() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    Mulberry Yearly Targets: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("Mulberry Yearly Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>
@@ -1449,7 +1449,7 @@ function DistrictWiseMontlyMulberry() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    Mulberry Monthly Targets: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("Mulberry Monthly Targets")}: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>
