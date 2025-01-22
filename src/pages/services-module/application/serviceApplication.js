@@ -1337,12 +1337,13 @@ function ServiceApplication() {
 
   console.log(amountValue);
 
-  const generateAcknowledgment = async (applicationFormId) => {
+  const generateAcknowledgment = async (applicationFormId,schemeId) => {
     try {
       const response = await api.post(
         baseURLReport + `getAcknowledementPMKSY`,
         {
           applicationFormId: applicationFormId,
+          schemeId: schemeId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -1499,11 +1500,17 @@ function ServiceApplication() {
             } else {
               // saveSuccess(response.data.receiptNo);
               setApplicationId(response.data.content.applicationDocumentId);
+              setSchemeId(response.data.content.schemeId);
               clear();
               // Call the acknowledgment API after a successful response
+              // generateAcknowledgment(
+              //   response.data.content.applicationDocumentId
+              // );
               generateAcknowledgment(
-                response.data.content.applicationDocumentId
+                response.data.content.applicationDocumentId,
+                response.data.content.schemeId // Ensure schemeId exists in the response data
               );
+              
               handleShowModal();
 
               setValidated(false);
@@ -1535,11 +1542,13 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
+              setSchemeId(response.data.content.schemeId);
               // add acknowledgement API here
 
               // Call the acknowledgment API after a successful response
               generateAcknowledgment(
-                response.data.content.applicationDocumentId
+                response.data.content.applicationDocumentId,
+                response.data.content.schemeId
               );
 
               // generateBiddingSlip(response.data.content.applicationDocumentId);
