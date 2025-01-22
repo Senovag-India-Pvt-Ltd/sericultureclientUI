@@ -2179,7 +2179,7 @@ function Menu() {
             {showMenu.GardenManagement_Seed_Cutting_Bank ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Seed cutting bank")}
+                  text={t("Seed Cutting Bank")}
                   to="/seriui/seed-cutting-bank"
                 />
               </MenuItem>
