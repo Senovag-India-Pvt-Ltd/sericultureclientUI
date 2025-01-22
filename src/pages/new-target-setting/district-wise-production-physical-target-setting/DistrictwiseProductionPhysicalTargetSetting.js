@@ -1504,7 +1504,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    District Yearly Targets: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("District Yearly Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>
@@ -1523,7 +1523,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    District Monthly Targets: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("District Monthly Targets")}: {viewMonthlyTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>

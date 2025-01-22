@@ -1169,8 +1169,8 @@ function FarmwiseTarget() {
                       >
                          <thead>
                               <tr>
-                              <th style={styles.ctstyle}>Farm Monthly Targets</th>
-                              <th style={styles.ctstyle}>Farm Yearly Targets</th>
+                              <th style={styles.ctstyle}>{t("Farm Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Farm Yearly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1182,7 +1182,7 @@ function FarmwiseTarget() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
