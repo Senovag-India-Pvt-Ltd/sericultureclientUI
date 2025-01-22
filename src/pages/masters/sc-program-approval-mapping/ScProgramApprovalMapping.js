@@ -782,6 +782,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Amount")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -799,6 +802,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Order")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -876,7 +882,7 @@ function ScProgramApprovalMapping() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="program">{t("Amount")}</Form.Label>
+                  <Form.Label htmlFor="program">{t("Amount")}<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="amount"
@@ -885,7 +891,11 @@ function ScProgramApprovalMapping() {
                       value={designationDetails.amount}
                       onChange={handleMapInputs}
                       placeholder={t("Enter Amount")}
+                      required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -903,6 +913,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Order")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
