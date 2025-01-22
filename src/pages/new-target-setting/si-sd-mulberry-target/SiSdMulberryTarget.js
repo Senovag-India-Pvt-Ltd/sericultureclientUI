@@ -544,7 +544,7 @@ function SiSdMulberryTarget() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1230,6 +1230,11 @@ function SiSdMulberryTarget() {
   };
 
   const handleUserEditSelect = (userId) => {
+    
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
     setSearchDataEdit((prevSearchData) => ({
       ...prevSearchData,
       userMasterId: userId,
@@ -2105,7 +2110,7 @@ function SiSdMulberryTarget() {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              {/* <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     {t('User')}
@@ -2138,7 +2143,7 @@ function SiSdMulberryTarget() {
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-              </Col>
+              </Col> */}
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">

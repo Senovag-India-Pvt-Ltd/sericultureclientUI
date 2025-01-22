@@ -63,7 +63,7 @@ function DashboardReportList() {
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
-  const handleShowModal = (fid,schemeId) => {
+  const handleShowModal = (fid) => {
     setShowModal(true);
     // getActionFarmerList(fid); // Call getList with userId and stepId
   };
@@ -190,9 +190,16 @@ function DashboardReportList() {
       hide: "md",
     },
     {
-      name: "Allocated Amount",
-      selector: (row) => row.allocatedAmount,
-      cell: (row) => <span>{row.allocatedAmount}</span>,
+      name: "Eligible Amount",
+      selector: (row) => row.eligibleAmount,
+      cell: (row) => <span>{row.eligibleAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -203,8 +210,15 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Calculated Eligible Amount",
+    //   selector: (row) => row.calculatedEligibleAmount,
+    //   cell: (row) => <span>{row.calculatedEligibleAmount}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Subsidy Amount",
+      name: "Final Amount",
       selector: (row) => row.subsidyAmount,
       cell: (row) => <span>{row.subsidyAmount}</span>,
       sortable: true,
@@ -325,7 +339,28 @@ function DashboardReportList() {
       });
   };
 
-   // to get approvalStageAfterNextStep
+  const [
+    approvalStageSameStepListData,
+    setApprovalStageSameStepListData,
+  ] = useState([]);
+  const getApprovalStageSameStepList = (subSchemeId, approvalStageId) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getSameStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalStageSameStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageSameStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+   // to get approvalStage Before Step
    const [
     approvalRejectStageBeforeStepListData,
     setApprovalRejectStageBeforeStepListData,
@@ -435,6 +470,21 @@ function DashboardReportList() {
   const [designationId, setDesignationId] = useState(null);
   const [userFromDistrictData, setUserFromDistrictData] = useState([]);
 
+  const [actionData, setActionData] = useState({
+    applicationFormId: "",
+    workOrderNumber: "",
+    sanctionOrderNumber: "",
+    sanctionAmount: "",
+    lat: "",
+    lon: "",
+    description: "",
+    rejectedReasonId: "",
+    userId: "",
+    stepId: "",
+    rejectType: "",
+    eligibleAmount: ""
+  });
+
   //  to get data from api
   const getIdList = () => {
     setLoading(true);
@@ -454,6 +504,7 @@ function DashboardReportList() {
         setLoading(false);
       });
   };
+
 
   const getUserFromDistrictList = (
     subSchemeId,
@@ -476,6 +527,43 @@ function DashboardReportList() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
+  
+  useEffect(()=>{
+    if(actionData.stepId)
+    getUserFromDistrictList(subSchemeId,actionData.stepId,districtId,talukId)
+  },[actionData.stepId])
+   
+
+
+  const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
+
+  const getUserOfStepsToApproveList = (
+    subSchemeId,
+    approvalStageId,
+    districtId,
+    talukId,
+    designationStep
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictIdForSameStep?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}&designationStep=${designationStep}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setUserOfStepsToApproveData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setUserOfStepsToApproveData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(()=>{
+    if(actionData.stepId)
+      getUserOfStepsToApproveList(subSchemeId,actionData.stepId,districtId,talukId,actionFarmerData[0]?.designationStep)
+  },[actionData.stepId])
 
   // const getList = () => {
   //   setLoading(true);
@@ -578,6 +666,8 @@ function DashboardReportList() {
 
   const [subSchemeId, setSubSchemeId] = useState(null); // State to hold subSchemeId
   const [approvalStageId, setApprovalStageId] = useState(null);
+  const [isSanctionOrderAllowed, setIsSanctionOrderAllowed] = useState(false);
+   
 
   const getActionFarmerList = (fid,schemeId) => {
     setLoading(true);
@@ -598,39 +688,186 @@ function DashboardReportList() {
         const data = response.data.content; // Store the response data in a variable
         const recordData = data[0];
         setActionFarmerData(data);
+         // Extract subSchemeId and approvalStageId
+         const subSchemeId = recordData?.subSchemeId;
+         const designationStep = recordData?.designationStep;
+        //  const approvalStageId = recordData?.approvalStageId;
 
         console.log("data", data);
 
-        if (recordData.financialDelegation) {
-          api
-            .post(
-              baseURLDBT + `service/checkApprovalPower`,
-              {},
-              {
-                params: {
-                  approvalStageId: recordData.approvalStageId,
-                  designationId,
-                  schemeAmount: recordData.schemeAmount,
-                  subSchemeId: recordData.subSchemeId,
-                },
-              }
-            )
-            .then((response) => {
-              if (response.data) {
-                handleShowModal(fid,schemeId);
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title:
-                    "You don't have permission to approve this application re-assign to higher authority",
-                });
-              }
-            })
-            .catch((err) => {});
-        } else {
-          handleShowModal(fid,schemeId);
-        }
+      //   if (recordData.financialDelegation) {
+      //     // Determine the correct amount to pass
+      //     const amountToPass =
+      //       !recordData.eligibleAmount || recordData.eligibleAmount === 0
+      //         ? recordData.schemeAmount
+      //         : recordData.eligibleAmount;
+  
+      //     api
+      //       .post(
+      //         baseURLDBT + `service/checkApprovalPower`,
+      //         {},
+      //         {
+      //           params: {
+      //             approvalStageId: recordData.approvalStageId,
+      //             designationId,
+      //             schemeAmount: amountToPass, // Pass the correct amount
+      //             subSchemeId: recordData.subSchemeId,
+      //             applicationFormId: recordData.applicationDocumentId,
+      //           },
+      //         }
+       
+      // )
+      // .then((response) => {
+      //   setIsSanctionOrderAllowed(response.data); // Set sanction order visibility
+      //   handleShowModal(fid); // Open the modal window regardless of the response
+      // })
+      // .catch((err) => {
+      //   setIsSanctionOrderAllowed(false); // Default to hiding sanction order on error
+      //   handleShowModal(fid); // Open the modal window regardless
+      // });
+      // } else {
+      //   handleShowModal(fid);
+      // }
+      // if (recordData.financialDelegation) {
+      //   const amountToPass =
+      //     !recordData.eligibleAmount || recordData.eligibleAmount === 0
+      //       ? recordData.schemeAmount
+      //       : recordData.eligibleAmount;
 
+      //   api
+      //     .post(
+      //       baseURLDBT + `service/checkApprovalPower`,
+      //       {},
+      //       {
+      //         params: {
+      //           approvalStageId: recordData.approvalStageId,
+      //           designationId,
+      //           schemeAmount: amountToPass,
+      //           subSchemeId: recordData.subSchemeId,
+      //           applicationFormId: recordData.applicationDocumentId,
+      //         },
+      //       }
+      //     )
+      //     .then((response) => {
+      //       const isAllowed = response.data;
+
+      //       setIsSanctionOrderAllowed(isAllowed);
+
+      //       // Adjust logic based on `checkApprovalPower` response
+      //       if (isAllowed) {
+      //         setApprovalStageSameStepListData([]); // Clear same step list
+      //         setUserOfStepsToApproveData([]); // Clear same step users
+      //       } else {
+      //         // Fetch lists for "same step"
+      //         getApprovalStageSameStepList(
+      //           recordData.subSchemeId,
+      //           recordData.approvalStageId
+      //         );
+      //         getUserOfStepsToApproveList(
+      //           recordData.subSchemeId,
+      //           recordData.approvalStageId,
+      //           districtId,
+      //           talukId
+      //         );
+      //       }
+
+      //       handleShowModal(fid);
+      //     })
+      //     .catch((err) => {
+      //       setIsSanctionOrderAllowed(false);
+      //       getApprovalStageSameStepList(
+      //         recordData.subSchemeId,
+      //         recordData.approvalStageId
+      //       );
+      //       getUserOfStepsToApproveList(
+      //         recordData.subSchemeId,
+      //         recordData.approvalStageId,
+      //         districtId,
+      //         talukId
+      //       );
+      //       handleShowModal(fid);
+      //     });
+      // } else {
+      //   handleShowModal(fid);
+      // }
+      // Check if financialDelegation is true
+      if (recordData.financialDelegation) {
+        const amountToPass =
+          !recordData.eligibleAmount || recordData.eligibleAmount === 0
+            ? recordData.schemeAmount
+            : recordData.eligibleAmount;
+
+        api
+          .post(
+            baseURLDBT + `service/checkApprovalPower`,
+            {},
+            {
+              params: {
+                approvalStageId: recordData.approvalStageId,
+                designationId,
+                schemeAmount: amountToPass,
+                subSchemeId: recordData.subSchemeId,
+                applicationFormId: recordData.applicationDocumentId,
+              },
+            }
+          )
+          .then((response) => {
+            const isAllowed = response.data;
+
+            setIsSanctionOrderAllowed(isAllowed);
+
+            if (isAllowed) {
+              // Call for "after next step" and "user from district" when isSanctionOrderAllowed is true
+              getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+              getUserFromDistrictList(
+                recordData.subSchemeId,
+                // recordData.approvalStageId,
+                approvalStageId,
+                districtId,
+                talukId
+              );
+            } else {
+              // Call for "same step" and "user of steps to approve" when isSanctionOrderAllowed is false
+              getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+              getUserOfStepsToApproveList(
+                recordData.subSchemeId,
+                // recordData.approvalStageId,
+                approvalStageId,
+                districtId,
+                talukId,
+                designationStep,
+              );
+            }
+
+            handleShowModal(fid);
+          })
+          .catch((err) => {
+            setIsSanctionOrderAllowed(false);
+            // Fallback logic when checkApprovalPower fails
+            getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+            getUserOfStepsToApproveList(
+              recordData.subSchemeId,
+              // recordData.approvalStageId,
+              approvalStageId,
+              districtId,
+              talukId,
+              designationStep,
+            );
+            handleShowModal(fid);
+          });
+      } else {
+        // When financialDelegation is false, no need to check isSanctionOrderAllowed
+        getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+        getUserFromDistrictList(
+          recordData.subSchemeId,
+          // recordData.approvalStageId,
+          approvalStageId,
+          districtId,
+          talukId
+        );
+        handleShowModal(fid);
+      }
+     
         if (recordData.pushToDbt) {
           api
             .post(
@@ -656,39 +893,42 @@ function DashboardReportList() {
         // Extract categoryId and componentId
         const categoryId = recordData?.categoryId;
         const componentId = recordData?.componentId;
+        const schemeId = recordData?.schemeId;
 
-        // Fetch DBT List using extracted categoryId and componentId
-        if (categoryId && componentId) {
-          getPushToDBTList(categoryId, componentId);
-        }
+        // // Fetch DBT List using extracted categoryId and componentId
+        // if (categoryId && componentId) {
+        //   getPushToDBTList(categoryId, componentId);
+        // }
+        // Ensure the applicationDocumentId is passed here
+      if (categoryId && componentId && schemeId && applicationDocumentId) {
+        getPushToDBTList(categoryId, componentId, schemeId,applicationDocumentId);
+      }
 
-        // Extract subSchemeId and approvalStageId
-        const subSchemeId = recordData?.subSchemeId;
-        const approvalStageId = recordData?.approvalStageId;
+       
 
         setSubSchemeId(subSchemeId); // Set subSchemeId from recordData
-          setApprovalStageId(approvalStageId);
+        // setApprovalStageId(approvalStageId);
 
         // Fetch DBT List using extracted subSchemeId and approvalStageId
-        if (subSchemeId && approvalStageId) {
-          getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
-        }
-
         // if (subSchemeId && approvalStageId) {
-        //   getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId);
+        //   getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
         // }
 
-        // if (subSchemeId && approvalStageId) {
-        //   getUserFromDistrictList(subSchemeId, approvalStageId);
+        // // if (subSchemeId && approvalStageId) {
+        // //   getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId);
+        // // }
+
+        // // if (subSchemeId && approvalStageId) {
+        // //   getUserFromDistrictList(subSchemeId, approvalStageId);
+        // // }
+        // if (subSchemeId && approvalStageId && districtId && talukId) {
+        //   getUserFromDistrictList(
+        //     subSchemeId,
+        //     approvalStageId,
+        //     districtId,
+        //     talukId
+        //   );
         // }
-        if (subSchemeId && approvalStageId && districtId && talukId) {
-          getUserFromDistrictList(
-            subSchemeId,
-            approvalStageId,
-            districtId,
-            talukId
-          );
-        }
 
         // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
         setUploadDocuments((prev) => ({
@@ -720,21 +960,27 @@ function DashboardReportList() {
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
-  const getPushToDBTList = (categoryId, componentId) => {
+  const getPushToDBTList = (categoryId, componentId,schemeId,applicationFormId) => {
     api
       .post(
         baseURLDBT +
-          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}`
+          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}`
       )
       .then((response) => {
         if (response.data.content) {
           const dbtData = response.data.content;
 
           // Assuming subsidy amount is in dbtData, update actionData
+          // setActionData((prevData) => ({
+          //   ...prevData,
+          //   subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+          // }));
           setActionData((prevData) => ({
             ...prevData,
             subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+            calculatedEligibleAmount: dbtData.calculatedEligibleAmount || "", // assuming eligibleAmount exists in dbtData
           }));
+          
           setPushToDBTListData(response.data.content);
         }
       })
@@ -1304,21 +1550,6 @@ const handleActionInputs = (e) => {
     }
   };
 
-  
-
-  const [actionData, setActionData] = useState({
-    applicationFormId: "",
-    workOrderNumber: "",
-    sanctionOrderNumber: "",
-    sanctionAmount: "",
-    lat: "",
-    lon: "",
-    description: "",
-    rejectedReasonId: "",
-    userId: "",
-    stepId: "",
-    rejectType: "",
-  });
 
   // const { subSchemeId, approvalStageId } = actionData;
 
@@ -1484,7 +1715,8 @@ const handleActionInputs = (e) => {
       const sendResponse = sendApplicationFormServiceData.map((item) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
-          schemeAmount: item.schemeAmount,
+          schemeAmount: item.subsidyAmount,
+          eligibleAmount: item.calculatedEligibleAmount,
           paymentTo: item.paymentTo,
           paymentMethod: item.paymentMethod,
           dateOfPayment: item.dateOfPayment,
@@ -1498,6 +1730,7 @@ const handleActionInputs = (e) => {
           return {
             applicationFormId: item.scApplicationFormId,
             schemeAmount: item.schemeAmount,
+            eligibleAmount: item.calculatedEligibleAmount,
             paymentTo: item.paymentTo,
             paymentMethod: item.paymentMethod,
             dateOfPayment: item.dateOfPayment,
@@ -1514,6 +1747,7 @@ const handleActionInputs = (e) => {
           sanctionOrderNumber: actionData.sanctionOrderNumber,
           userId: actionData.userId,
           stepId: actionData.stepId,
+          eligibleAmount: actionData.eligibleAmount,
           pushToDBTRequestList: sendResponse,
         };
       }
@@ -1521,12 +1755,37 @@ const handleActionInputs = (e) => {
       let apiCall;
   
       // Check if all conditions are null/false, if so, call inspection update API
+      // if (
+      //   !actionFarmerData[0].pushToDbt &&
+      //   !actionFarmerData[0].sanctionOrder &&
+      //   !actionFarmerData[0].workOrder
+      // ) {
+      //   apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+      // } else {
+      // First condition: If pushToDbt, sanctionOrder, and workOrder are not present, call inspectionUpdate
+    if (
+      !actionFarmerData[0].pushToDbt &&
+      !actionFarmerData[0].sanctionOrder &&
+      !actionFarmerData[0].workOrder
+    ) {
+      apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+    } else {
+      // Second condition: If sanctionOrder exists and approval failed, call inspectionUpdate instead of sanctionOrderUpdate
       if (
-        !actionFarmerData[0].pushToDbt &&
-        !actionFarmerData[0].sanctionOrder &&
-        !actionFarmerData[0].workOrder
+        actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
+        actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
+        !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
       ) {
-        apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+        apiCall = api
+          .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
+          .then((response) => {
+            saveSuccess("Please forward the request to the higher authority to initiate the generation of the sanction order.");
+            clear();
+            setValidated(false);
+          })
+          .catch((err) => {
+            saveError(err.response?.data?.error_description || "Inspection Update Failed");
+          });
       } else {
         if (actionFarmerData[0].workOrder) {
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
@@ -1553,6 +1812,7 @@ const handleActionInputs = (e) => {
               saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
             });
         }
+      }
         if (actionFarmerData[0].pushToDbt) {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
         }
@@ -1721,6 +1981,13 @@ const handleActionInputs = (e) => {
       name: "Scheme Amount",
       selector: (row) => row.schemeAmount,
       cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Eligible Amount",
+      selector: (row) => row.eligibleAmount,
+      cell: (row) => <span>{row.eligibleAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -2470,7 +2737,7 @@ const handleActionInputs = (e) => {
                                 </Form.Group>
                               </Col> */}
 
-                              <Col lg="6">
+                              {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
                                   <Form.Select
@@ -2529,12 +2796,193 @@ const handleActionInputs = (e) => {
                                         ))}
                                       </Form.Select>
                                       <Form.Control.Feedback type="invalid">
-                            User is required
-                          </Form.Control.Feedback>
+                                        User is required
+                                      </Form.Control.Feedback>
+                                    </div>
+                                  </Col>
+                                </Form.Group>
+                              </Col> */}
+
+                              {actionFarmerData[0]?.financialDelegation ? (
+                                isSanctionOrderAllowed ? (
+                                  // When financialDelegation is true and isSanctionOrderAllowed is true
+                                  <>
+                                  <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
+                                  <Form.Select
+                                    name="stepId"
+                                    value={actionData.stepId}
+                                    onChange={handleActionInputs}
+                                    required
+                                    // isInvalid={!actionData.stepId || actionData.stepId === "0"}
+                                    disabled={fieldsDisabled}
+                                  >
+                                    <option value="">Select Approval Stage</option>
+                                    {(actionData.rejectType === "Objection" ? approvalRejectStageBeforeStepListData : approvalStageAfterNextStepListData).map((list) => (
+                                      <option key={list.approvalStageId} value={list.approvalStageId}>
+                                        {list.approvalStageName}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    Approval Stage Name is required
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    User
+                                    <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <Col>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="userId"
+                                        value={actionData.userId}
+                                        onChange={handleActionInputs}
+                                        onBlur={() => handleActionInputs}
+                                        required
+                                        isInvalid={
+                                          actionData.userId === undefined ||
+                                          actionData.userId === "0"
+                                        }
+                                        disabled={fieldsDisabled}
+                                        // isInvalid={
+                                        //   actionData.userId === undefined ||
+                                        //   actionData.userId === "0"
+                                        // }
+                                      >
+                                        <option value="">Select User</option>
+                                        {userFromDistrictData.map((list) => (
+                                          <option
+                                            key={list.userId}
+                                            value={list.userId}
+                                          >
+                                            {list.userName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        User is required
+                                      </Form.Control.Feedback>
                                     </div>
                                   </Col>
                                 </Form.Group>
                               </Col>
+                                </>
+                              ) : (
+                                // When financialDelegation is true and isSanctionOrderAllowed is false
+                                <>
+                                  <Col lg="6">
+                                    <Form.Group className="form-group">
+                                      <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
+                                      <Form.Select
+                                        name="stepId"
+                                        value={actionData.stepId}
+                                        onChange={handleActionInputs}
+                                        required
+                                        disabled={fieldsDisabled}
+                                      >
+                                        <option value="">Select Approval Stage</option>
+                                        {(actionData.rejectType === "Objection"
+                                        ? approvalRejectStageBeforeStepListData
+                                        : approvalStageSameStepListData
+                                      ).map((list) => (
+                                          <option key={list.approvalStageId} value={list.approvalStageId}>
+                                            {list.approvalStageName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        Approval Stage Name is required
+                                      </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+
+                                  <Col lg="6">
+                                    <Form.Group className="form-group">
+                                      <Form.Label>User <span className="text-danger">*</span></Form.Label>
+                                      <Form.Select
+                                        name="userId"
+                                        value={actionData.userId}
+                                        onChange={handleActionInputs}
+                                        required
+                                        isInvalid={actionData.userId === undefined || actionData.userId === "0"}
+                                        disabled={fieldsDisabled}
+                                      >
+                                        <option value="">Select User</option>
+                                        {userOfStepsToApproveData.map((list) => (
+                                          <option key={list.userId} value={list.userId}>
+                                            {list.userName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        User is required
+                                      </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+                                </>
+                              )
+                            ) : (
+                              // When financialDelegation is false
+                              <>
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
+                                    <Form.Select
+                                      name="stepId"
+                                      value={actionData.stepId}
+                                      onChange={handleActionInputs}
+                                      required
+                                      disabled={fieldsDisabled}
+                                    >
+                                      <option value="">Select Approval Stage</option>
+                                      {(actionData.rejectType === "Objection"
+                                        ? approvalRejectStageBeforeStepListData
+                                        : approvalStageAfterNextStepListData
+                                      ).map((list) => (
+                                        <option key={list.approvalStageId} value={list.approvalStageId}>
+                                          {list.approvalStageName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      Approval Stage Name is required
+                                    </Form.Control.Feedback>
+                                  </Form.Group>
+                                </Col>
+
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>User <span className="text-danger">*</span></Form.Label>
+                                    <Form.Select
+                                      name="userId"
+                                      value={actionData.userId}
+                                      onChange={handleActionInputs}
+                                      required
+                                      isInvalid={actionData.userId === undefined || actionData.userId === "0"}
+                                      disabled={fieldsDisabled}
+                                    >
+                                      <option value="">Select User</option>
+                                      {userFromDistrictData.map((list) => (
+                                        <option key={list.userId} value={list.userId}>
+                                          {list.userName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      User is required
+                                    </Form.Control.Feedback>
+                                  </Form.Group>
+                                </Col>
+                              </>
+                            )}
+
+
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -2543,9 +2991,9 @@ const handleActionInputs = (e) => {
                                   </Form.Label>
                                   <div className="form-control-wrap">
                                     <Form.Control
-                                      id="schemeAmount"
-                                      name="schemeAmount"
-                                      value={actionData.schemeAmount}
+                                      id="eligibleAmount"
+                                      name="eligibleAmount"
+                                      value={actionData.eligibleAmount}
                                       onChange={handleActionInputs}
                                       type="text"
                                       placeholder="Enter Eligible Subsidy Amount "
@@ -2698,8 +3146,17 @@ const handleActionInputs = (e) => {
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
-                  {actionFarmerData.length > 0 &&
-                    actionFarmerData[0].sanctionOrder && (
+                  {/* {actionFarmerData.length > 0 &&
+                    actionFarmerData[0].sanctionOrder && ( */}
+                    {/* {actionFarmerData.length > 0 &&
+                      actionFarmerData[0].sanctionOrder &&
+                      isSanctionOrderAllowed && ( */}
+                      {actionFarmerData.length > 0 &&
+                      (actionFarmerData[0].financialDelegation
+                        ? // When financialDelegation is true, check isSanctionOrderAllowed
+                          (actionFarmerData[0].sanctionOrder && isSanctionOrderAllowed)
+                        : // When financialDelegation is false, check only sanctionOrder
+                          actionFarmerData[0].sanctionOrder) && (
                       <Accordion.Item eventKey="sanction">
                         <Accordion.Header
                           style={{
@@ -3469,10 +3926,31 @@ const handleActionInputs = (e) => {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Spacing:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.spacingName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Hectare:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.hectareName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Scheme Amount:</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
                             ?.schemeAmount || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Eligible Amount:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.eligibleAmount || "N/A"}
                         </td>
                       </tr>
                       <tr>

@@ -45,6 +45,13 @@ function SiSdWiseProdPhyTargetSetting() {
 
   const [showModal3, setShowModal3] = useState(false);
 
+  const [showModal7, setShowModal7] = useState(false);
+
+  const handleCloseModal7 = () => {
+    setShowModal7(false);
+    userSearchEditClear();
+  };
+
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
 
@@ -100,15 +107,37 @@ function SiSdWiseProdPhyTargetSetting() {
     userMasterId: "",
   });
 
+  // const handleEdit = (productionTargetsId) => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(
+  //       baseURLTargetSetting +
+  //         `productionTargets/get-sisd/${productionTargetsId}`
+  //     )
+  //     .then((response) => {
+  //       setEditData(response.data.content);
+  //       setUserNameEdit(
+  //         response.data.content.userMasterName
+  //       );
+  //       setShowModal3(true);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setEditData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
   const handleEdit = (productionTargetsId) => {
     setLoading(true);
     const response = api
-      .get(
-        baseURLTargetSetting +
-          `productionTargets/get-sisd/${productionTargetsId}`
-      )
+      .get(baseURLTargetSetting + `productionTargets/get-by-id?id=${productionTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.productionTargets);
+        setUserNameEdit(
+          response.data.content.body.content.productionTargets.userMasterName
+        );
         setShowModal3(true);
         setLoading(false);
       })
@@ -119,6 +148,7 @@ function SiSdWiseProdPhyTargetSetting() {
         setLoading(false);
       });
   };
+
 
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
@@ -315,7 +345,7 @@ function SiSdWiseProdPhyTargetSetting() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1102,6 +1132,7 @@ function SiSdWiseProdPhyTargetSetting() {
 
   //   to get data from api
   const [userName, setUserName] = useState("");
+  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
     api
@@ -1123,6 +1154,8 @@ function SiSdWiseProdPhyTargetSetting() {
       getIdList(searchData.userMasterId);
     }
   }, [searchData.userMasterId]);
+
+  
 
   const handleSearchInputs = (e) => {
     // debugger;
@@ -1158,6 +1191,70 @@ function SiSdWiseProdPhyTargetSetting() {
       userMasterId: userId,
     }));
   };
+
+  
+  
+  const [searchDataEdit, setSearchDataEdit] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
+
+  const getIdListEdit = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserNameEdit(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserNameEdit("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.userMasterId) {
+      getIdListEdit(searchDataEdit.userMasterId);
+    }
+  }, [searchDataEdit.userMasterId]);
+
+  const userSearchEditClear = () => {
+    setSearchDataEdit({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
+  const handleSearchInputsEdit = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setSearchDataEdit({ ...searchDataEdit, [name]: value });
+  };
+
+  const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+    setSearchDataEdit((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+
 
   // const searchUser = (e) => {
   //   api
@@ -1222,6 +1319,47 @@ function SiSdWiseProdPhyTargetSetting() {
       });
   };
 
+  
+  const searchUserEdit = (e) => {
+    // Build the params object dynamically
+    const params = {};
+
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchDataEdit.districtId)
+      params.districtId = searchDataEdit.districtId;
+    if (searchDataEdit.talukId) params.talukId = searchDataEdit.talukId;
+    if (searchDataEdit.designationId)
+      params.designationId = searchDataEdit.designationId;
+    if (searchDataEdit.phoneNumber)
+      params.phoneNumber = searchDataEdit.phoneNumber;
+    if (searchDataEdit.username) params.username = searchDataEdit.username;
+
+    api
+      .post(
+        baseURLMasterData +
+          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (
+          response.data &&
+          response.data.content &&
+          response.data.content.userMaster
+        ) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
+  
+
   // to get Designation
   const [designationListData, setDesignationListData] = useState([]);
 
@@ -1272,6 +1410,31 @@ function SiSdWiseProdPhyTargetSetting() {
     }
   }, [searchData.districtId, data.districtId, editData.districtId]);
 
+  
+
+  // to get taluk edit user
+  const [talukListDataEdit, setTalukListDataEdit] = useState([]);
+
+  const getTalukListEdit = (_id) => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListDataEdit(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListDataEdit([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.districtId) {
+      getTalukListEdit(searchDataEdit.districtId);
+    }
+  }, [searchDataEdit.districtId]);
+
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -1293,12 +1456,12 @@ function SiSdWiseProdPhyTargetSetting() {
     });
   };
   return (
-    <Layout title={t("SI-SD wise Production Physical Target Setting")}>
+    <Layout title={t("SI-SD Wise Production Physical Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("SI-SD wise Production Physical Target Setting")}
+              {t("SI-SD Wise Production Physical Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
@@ -1985,7 +2148,7 @@ function SiSdWiseProdPhyTargetSetting() {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              {/* <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     {t("User")}<span className="text-danger">*</span>
@@ -2017,7 +2180,7 @@ function SiSdWiseProdPhyTargetSetting() {
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-              </Col>
+              </Col> */}
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
@@ -2141,6 +2304,52 @@ function SiSdWiseProdPhyTargetSetting() {
                       {t("Target No. is required.")}
                     </Form.Control.Feedback>
                   </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    {t("User")}<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowModal7(true)}
+                    >
+                      {t("Select User")}
+                    </Button>
+                    <Form.Control
+                      type="hidden"
+                      name="userMasterId"
+                      value={editData.userMasterId}
+                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("User is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col sm={3}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>{t("User Name")}</Form.Label>
+                  <Form.Control
+                    id="username"
+                    name="username"
+                    value={userNameEdit}
+                    // onChange={handleSearchInputs}
+                    type="text"
+                    placeholder={t("Enter User Name")}
+                    className="form-control"
+                    // readOnly
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("User is required")}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
 
@@ -2360,6 +2569,165 @@ function SiSdWiseProdPhyTargetSetting() {
               <Row>
                 <div className="gap-col d-flex justify-content-center">
                   <Button variant="primary" onClick={() => handleCloseModal5()}>
+                    {t("Submit")}
+                  </Button>
+                </div>
+              </Row>
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("Select User In Edit")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-n4">
+            <Card className="mt-3 p-4 shadow-lg rounded">
+              <Row className="g-4">
+                {/* District Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>{t("District")}</Form.Label>
+                    <Form.Select
+                      name="districtId"
+                      value={searchDataEdit.districtId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">{t("Select District")}</option>
+                      {districtListData &&
+                        districtListData.length &&
+                        districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Taluk Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>{t("Taluk")}</Form.Label>
+                    <Form.Select
+                      name="talukId"
+                      value={searchDataEdit.talukId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">{t("Select Taluk")}</option>
+                      {talukListDataEdit &&
+                        talukListDataEdit.length &&
+                        talukListDataEdit.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Designation Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>{t("Designation")}</Form.Label>
+                    <Form.Select
+                      name="designationId"
+                      value={searchDataEdit.designationId}
+                      onChange={handleSearchInputsEdit}
+                      className="form-control"
+                    >
+                      <option value="">{t("Select Designation")}</option>
+                      {designationListData &&
+                        designationListData.length &&
+                        designationListData.map((list) => (
+                          <option
+                            key={list.designationId}
+                            value={list.designationId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+
+                {/* Mobile Number Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>{t("Mobile Number")}</Form.Label>
+                    <Form.Control
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      value={searchDataEdit.phoneNumber}
+                      onChange={handleSearchInputsEdit}
+                      type="text"
+                      placeholder={t("Enter Mobile Number")}
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Username Input */}
+                <Col sm={4}>
+                  <Form.Group className="form-group">
+                    <Form.Label>{t("User Name")}</Form.Label>
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      value={searchDataEdit.username}
+                      onChange={handleSearchInputsEdit}
+                      type="text"
+                      placeholder={t("Enter User Name")}
+                      className="form-control"
+                    />
+                  </Form.Group>
+                </Col>
+                {/* Search Button */}
+                <Col sm={4} className="d-flex align-items-end">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={searchUserEdit}
+                    className="w-100"
+                  >
+                    {t("Search")}
+                  </Button>
+                </Col>
+              </Row>
+
+              {/* User Selection */}
+              <Row className="m-4">
+                <Col sm={12}>
+                  <Form.Label>{t("User")}</Form.Label>
+                  <Form.Select
+                    name="userMasterId"
+                    value={searchDataEdit.userMasterId}
+                    onChange={(e) => handleUserEditSelect(e.target.value)}
+                    className="form-control"
+                  >
+                    <option value="">{t("Select User")}</option>
+                    {userListData && userListData.length > 0 ? (
+                      userListData.map((list) => (
+                        <option
+                          key={list.userMasterId}
+                          value={list.userMasterId}
+                        >
+                          {list.username}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">{t("No Users Found")}</option> // Show a message if no users are found
+                    )}
+                  </Form.Select>
+                </Col>
+              </Row>
+              <Row>
+                <div className="gap-col d-flex justify-content-center">
+                  <Button variant="primary" onClick={() => handleCloseModal7()}>
                     {t("Submit")}
                   </Button>
                 </div>

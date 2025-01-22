@@ -2528,14 +2528,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("SI SD Wise Daily Scheme Target Setting")}
                         to="/seriui/si-sd-wise-day-scheme-target-setting"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink

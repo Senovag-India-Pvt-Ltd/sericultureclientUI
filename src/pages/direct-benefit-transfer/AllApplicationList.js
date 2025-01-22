@@ -853,8 +853,8 @@ function AllApplicationList() {
   
     {
       name: "Subsidy Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1245,6 +1245,10 @@ function AllApplicationList() {
                 <tr>
                   <td style={styles.ctstyle}>Scheme Amount:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Eligible Amount:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.eligibleAmount || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td style={styles.ctstyle}>Hectare:</td>

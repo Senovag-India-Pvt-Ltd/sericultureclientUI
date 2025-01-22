@@ -21,6 +21,7 @@ function SiSdWiseSchemeTargetSetting() {
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
     districtId: "",
+    talukId: "",
     month: "",
     targetType: "",
     value: "",
@@ -33,6 +34,7 @@ function SiSdWiseSchemeTargetSetting() {
     centralShare: "",
     userMasterId: "",
     institution: "",
+    tscMasterId: "",
   });
 
   const [searchData, setSearchData] = useState({
@@ -67,6 +69,68 @@ function SiSdWiseSchemeTargetSetting() {
 
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
+
+  const [showModal7, setShowModal7] = useState(false);
+
+  const handleShowModal7 = () => setShowModal7(true);
+  const handleCloseModal7 = () => {
+    setShowModal7(false);
+    userSearchEditClear();
+  };
+
+  const handleSearchInputsEdit = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setSearchDataEdit({ ...searchDataEdit, [name]: value });
+  };
+
+  const handleUserEditSelect = (userId) => {
+    setEditData((prevData) => ({
+      ...prevData,
+      userMasterId: userId,
+    }));
+    setSearchDataEdit((prevSearchData) => ({
+      ...prevSearchData,
+      userMasterId: userId,
+    }));
+  };
+
+  const searchUserEdit = (e) => {
+    // Build the params object dynamically
+    const params = {};
+
+    // Only add the parameters to the params object if they are not empty or undefined
+    if (searchDataEdit.districtId) params.districtId = searchDataEdit.districtId;
+    if (searchDataEdit.talukId) params.talukId = searchDataEdit.talukId;
+    if (searchDataEdit.designationId)
+      params.designationId = searchDataEdit.designationId;
+    if (searchDataEdit.phoneNumber) params.phoneNumber = searchDataEdit.phoneNumber;
+    if (searchDataEdit.username) params.username = searchDataEdit.username;
+
+    api
+      .post(
+        baseURLMasterData +
+          `userMaster/get-by-designationId-districtId-talukId-and-mobileNumber-userName`,
+        {},
+        {
+          params: params, // Pass the dynamically built params
+        }
+      )
+      .then((response) => {
+        if (
+          response.data &&
+          response.data.content &&
+          response.data.content.userMaster
+        ) {
+          setUserListData(response.data.content.userMaster); // Ensure userMaster is an array
+        } else {
+          setUserListData([]); // Fallback to an empty array if the data is not structured as expected
+        }
+      })
+      .catch((err) => {
+        setUserListData([]); // Ensure userListData is reset on error
+      });
+  };
 
   const [toggleButton, setToggleButton] = useState(false);
 
@@ -184,6 +248,42 @@ function SiSdWiseSchemeTargetSetting() {
     getList();
   }, [page]);
 
+  const [searchDataEdit, setSearchDataEdit] = useState({
+    districtId: "",
+    talukId: "",
+    designationId: "",
+    // villageId: "",
+    phoneNumber: "",
+    username: "",
+    userMasterId: "",
+  });
+
+  const userSearchEditClear = () => {
+    setSearchDataEdit({
+      districtId: "",
+      talukId: "",
+      designationId: "",
+      // villageId: "",
+      phoneNumber: "",
+      username: "",
+      userMasterId: "",
+    });
+  };
+
+  const userSearchClear = () => {
+    setSearchData({
+      districtId: "",
+  talukId: "",
+  designationId: "",
+  // villageId: "",
+  phoneNumber: "",
+  username: "",
+  userMasterId: "",
+    });
+  };
+
+
+
   const [editData, setEditData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -200,6 +300,8 @@ function SiSdWiseSchemeTargetSetting() {
     centralShare: "",
     userMasterId: "",
     institution: "",
+    talukId: "",
+    tscMasterId: "",
   });
 
   // to get Designation
@@ -239,18 +341,79 @@ function SiSdWiseSchemeTargetSetting() {
       });
   };
 
+  // useEffect(() => {
+  //   if (searchData.districtId) {
+  //     getTalukList(searchData.districtId);
+  //   }
+  // }, [searchData.districtId]);
   useEffect(() => {
-    if (searchData.districtId) {
-      getTalukList(searchData.districtId);
+    const districtId =
+      searchData.districtId || data.districtId || editData.districtId;
+    if (districtId) {
+      getTalukList(districtId);
     }
-  }, [searchData.districtId]);
+  }, [searchData.districtId, data.districtId, editData.districtId]);
+
+  // to get taluk edit user
+  const [talukListDataEdit, setTalukListDataEdit] = useState([]);
+
+  const getTalukListEdit = (_id) => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListDataEdit(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListDataEdit([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.districtId) {
+      getTalukListEdit(searchDataEdit.districtId);
+    }
+  }, [searchDataEdit.districtId]);
+
+  //   To get TSC by District
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscListByDistrict = (distId) => {
+    api
+      .post(baseURLMasterData + `tscMaster/get-by-districtId`, {
+        districtId: distId,
+      })
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTscListByDistrict(data.districtId);
+    }
+  }, [data.districtId]);
+
+  useEffect(() => {
+    if (editData.districtId) {
+      getTscListByDistrict(editData.districtId);
+    }
+  }, [editData.districtId]);
 
   const handleEdit = (schemeTargetsId) => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `schemeTargets/get-scheme/${schemeTargetsId}`)
+      .get(baseURLTargetSetting + `schemeTargets/get-by-id?id=${schemeTargetsId}`)
       .then((response) => {
-        setEditData(response.data.content);
+        setEditData(response.data.content.body.content.schemeTargets);
+        setUserNameEdit(
+          response.data.content.body.content.schemeTargets.userMasterName
+        );
         setShowModal3(true);
         setLoading(false);
       })
@@ -297,6 +460,141 @@ function SiSdWiseSchemeTargetSetting() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+
+  const monthlyTarget = (event) => {
+    const { financialYearMasterId,scSchemeDetailsId,scSubSchemeDetailsId,scComponentId,scCategoryId,scHeadAccountId,districtId,talukId,tscMasterId,targetType,month} = data;
+
+    
+    if (!financialYearMasterId || financialYearMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Financial Year",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!scSchemeDetailsId || scSchemeDetailsId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Scheme",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!scSubSchemeDetailsId || scSubSchemeDetailsId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Component Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!scComponentId || scComponentId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Component",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!scCategoryId || scCategoryId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select Sub Component",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!scHeadAccountId || scHeadAccountId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select Head Of Account",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!districtId || districtId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select District",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!talukId || talukId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select Taluk",
+        text: "Please try again!",
+      });
+      return;
+    }
+    if (!tscMasterId || tscMasterId === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select TSC",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!targetType || targetType === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select Target Type",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    if (!month || month === "0") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select Month",
+        text: "Please try again!",
+      });
+      return;
+    }
+
+    // Proceed with API call if validations pass
+    api
+      .post(
+        baseURLTargetSetting + `schemeTargets/getMonthlyTargetDetailsForTscAndInst`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            scSchemeDetailsId,
+            scSubSchemeDetailsId,
+            scComponentId,
+            scCategoryId,
+            scHeadAccountId,
+            districtId,
+            talukId,
+            tscMasterId,
+            targetType,
+            month
+          },
+        }
+      )
+      .then((response) => {
+        setViewMonthlyTargetsData(response.data);
+        // setTotalRows(response.data.totalRecords);
+        // setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewMonthlyTargetsData([]);
+      });
+  };
 
   // Search User
   const searchUser = (e) => {
@@ -540,8 +838,11 @@ function SiSdWiseSchemeTargetSetting() {
     getUserList();
   }, []);
 
+  
+
   //   to get data from api
   const [userName, setUserName] = useState("");
+  const [userNameEdit, setUserNameEdit] = useState("");
   const getIdList = (id) => {
     setLoading(true);
     api
@@ -563,6 +864,28 @@ function SiSdWiseSchemeTargetSetting() {
       getIdList(searchData.userMasterId);
     }
   }, [searchData.userMasterId]);
+
+  const getIdListEdit = (id) => {
+    setLoading(true);
+    api
+      .get(baseURLMasterData + `userMaster/get/${id}`)
+      .then((response) => {
+        console.log("heheheeh", response.data.content.username);
+        setUserNameEdit(response.data.content.username);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setUserNameEdit("");
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (searchDataEdit.userMasterId) {
+      getIdListEdit(searchDataEdit.userMasterId);
+    }
+  }, [searchDataEdit.userMasterId]);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -674,6 +997,8 @@ function SiSdWiseSchemeTargetSetting() {
       centralShare: "",
       userMasterId: "",
       institution: "",
+      talukId: "",
+      tscMasterId: "",
     });
     setType({
       budgetType: "allocate",
@@ -1034,7 +1359,7 @@ function SiSdWiseSchemeTargetSetting() {
           } else {
             saveSuccess();
             getList();
-            clear();
+            // clear();
           }
         })
         .catch((err) => {
@@ -1118,6 +1443,8 @@ function SiSdWiseSchemeTargetSetting() {
       centralShare: "",
       userMasterId: "",
       institution: "",
+      talukId: "",
+      tscMasterId: "",
     });
     setSearchData({
       districtId: "",
@@ -1207,6 +1534,75 @@ function SiSdWiseSchemeTargetSetting() {
                     <Card.Header>
                       {t("SI SD Wise Target Setting for Subsidies")}{" "}
                     </Card.Header>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
+                        {/* Yearly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          <Button variant="primary" onClick={monthlyTarget}>
+                            {t('Total Targets')}
+                          </Button>
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '600px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
+                              <th style={styles.ctstyle}>Institution Yearly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Yearly Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].yearlyTscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].yearlyInstValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].remainingYearlyValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {/* Monthly Targets Section */}
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+                          {/* <Button variant="primary" onClick={monthlyTarget}>
+                            {t('Monthly Targets')}
+                          </Button> */}
+                          <table
+                            className="table table-bordered table-striped"
+                            style={{ ...styles.table, width: '600px' }}
+                          >
+                            <thead>
+                              <tr>
+                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
+                              <th style={styles.ctstyle}>Institution Yearly Targets</th>
+                              <th style={styles.ctstyle}>Remaining Monthly Targets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewMonthlyTargetsData.length > 0 ? (
+                                <tr>
+                                <td>{viewMonthlyTargetsData[0].monthlyTscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].monthlyInstValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].remainingMonthlyValue || "N/A"}</td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                <td colSpan={3} style={{ textAlign: "center" }}>
+                                  No Data Available
+                                </td>
+                              </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div> 
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1643,6 +2039,74 @@ function SiSdWiseSchemeTargetSetting() {
                         </Col>
 
                         <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Taluk")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukId"
+                                value={data.talukId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.talukId === undefined ||
+                                  data.talukId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Taluk")}</option>
+                                {talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Taluk is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("TSC")}<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="tscMasterId"
+                                  value={data.tscMasterId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.tscMasterId === undefined ||
+                                    data.tscMasterId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select TSC")}</option>
+                                  {tscListData.map((list) => (
+                                    <option
+                                      key={list.tscMasterId}
+                                      value={list.tscMasterId}
+                                    >
+                                      {list.name}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  {t("TSC is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Target Type")}
@@ -2003,6 +2467,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.financialYearMasterId === undefined ||
                         editData.financialYearMasterId === "0"
@@ -2039,6 +2504,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onBlur={() => handleEditInputs}
                       // multiple
                       required
+                      disabled
                       isInvalid={
                         editData.scSchemeDetailsId === undefined ||
                         editData.scSchemeDetailsId === "0"
@@ -2078,6 +2544,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onBlur={() => handleEditInputs}
                       // multiple
                       required
+                      disabled
                       isInvalid={
                         editData.scSubSchemeDetailsId === undefined ||
                         editData.scSubSchemeDetailsId === "0"
@@ -2114,6 +2581,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onBlur={() => handleEditInputs}
                       // multiple
                       // required
+                      disabled
                       isInvalid={
                         editData.scComponentId === undefined ||
                         editData.scComponentId === "0"
@@ -2153,6 +2621,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onBlur={() => handleEditInputs}
                       // multiple
                       // required
+                      disabled
                       isInvalid={
                         editData.scCategoryId === undefined ||
                         editData.scCategoryId === "0"
@@ -2192,6 +2661,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onBlur={() => handleEditInputs}
                       // multiple
                       required
+                      disabled
                       isInvalid={
                         editData.scHeadAccountId === undefined ||
                         editData.scHeadAccountId === "0"
@@ -2276,6 +2746,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.districtId === undefined ||
                       //   editData.districtId === "0"
@@ -2299,6 +2770,73 @@ function SiSdWiseSchemeTargetSetting() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Taluk")}<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="talukId"
+                          value={editData.talukId}
+                          onChange={handleEditInputs}
+                          onBlur={() => handleEditInputs}
+                          required
+                          disabled
+                          isInvalid={
+                            editData.talukId === undefined ||
+                            editData.talukId === "0"
+                          }
+                        >
+                          <option value="">{t("Select Taluk")}</option>
+                          {talukListData.map((list) => (
+                            <option
+                              key={list.talukId}
+                              value={list.talukId}
+                            >
+                              {list.talukName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("Taluk is required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+              <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("TSC")}<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="tscMasterId"
+                        value={editData.tscMasterId}
+                        onChange={handleEditInputs}
+                        onBlur={() => handleEditInputs}
+                        required
+                        disabled
+                        isInvalid={
+                          editData.tscMasterId === undefined ||
+                          editData.tscMasterId === "0"
+                        }
+                      >
+                        <option value="">{t("Select TSC")}</option>
+                        {tscListData.map((list) => (
+                          <option key={list.tscMasterId} value={list.tscMasterId}>
+                            {list.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("TSC is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     {t("Target Type")}
                     <span className="text-danger">*</span>
@@ -2310,6 +2848,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.targetType === undefined ||
                       //   editData.targetType === "0"
@@ -2346,6 +2885,7 @@ function SiSdWiseSchemeTargetSetting() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       // isInvalid={
                       //   editData.month === undefined ||
                       //   editData.month === "0"
@@ -2380,40 +2920,46 @@ function SiSdWiseSchemeTargetSetting() {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
+              <Col lg="1">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    {t("User")}
-                    <span className="text-danger">*</span>
+                    {t("User")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
-                    <Form.Select
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowModal7(true)}
+                    >
+                      {t("Select User")}
+                    </Button>
+                    <Form.Control
+                      type="hidden"
                       name="userMasterId"
                       value={editData.userMasterId}
-                      onChange={handleEditInputs}
-                      onBlur={() => handleEditInputs}
+                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
                       required
-                      isInvalid={
-                        editData.userMasterId === undefined ||
-                        editData.userMasterId === "0"
-                      }
-                    >
-                      <option value="">
-                        {t("Select User")}
-                      </option>
-                      {userListData.map((list) => (
-                        <option
-                          key={list.userMasterId}
-                          value={list.userMasterId}
-                        >
-                          {list.username}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    />
                     <Form.Control.Feedback type="invalid">
                       {t("User is required")}
                     </Form.Control.Feedback>
                   </div>
+                </Form.Group>
+              </Col>
+
+              <Col sm={3}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>{t("User Name")}</Form.Label>
+                  <Form.Control
+                    id="username"
+                    name="username"
+                    value={userNameEdit}
+                    // onChange={handleSearchInputs}
+                    type="text"
+                    placeholder={t("Enter User Name")}
+                    className="form-control"
+                    required
+                    // readOnly
+                  />
                 </Form.Group>
               </Col>
 
@@ -2724,6 +3270,164 @@ function SiSdWiseSchemeTargetSetting() {
           </Block>
         </Modal.Body>
       </Modal>
+      <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
+                <Modal.Header closeButton>
+                  <Modal.Title>{t('Select User In Edit')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Block className="mt-n4">
+                    <Card className="mt-3 p-4 shadow-lg rounded">
+                      <Row className="g-4">
+                        {/* District Input */}
+                        <Col sm={4}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t('District')}</Form.Label>
+                            <Form.Select
+                              name="districtId"
+                              value={searchDataEdit.districtId}
+                              onChange={handleSearchInputsEdit}
+                              className="form-control"
+                            >
+                              <option value="">{t('Select District')}</option>
+                              {districtListData &&
+                                districtListData.length &&
+                                districtListData.map((list) => (
+                                  <option key={list.districtId} value={list.districtId}>
+                                    {list.districtName}
+                                  </option>
+                                ))}
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+        
+                        {/* Taluk Input */}
+                        <Col sm={4}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t('Taluk')}</Form.Label>
+                            <Form.Select
+                              name="talukId"
+                              value={searchDataEdit.talukId}
+                              onChange={handleSearchInputsEdit}
+                              className="form-control"
+                            >
+                              <option value="">{t('Select Taluk')}</option>
+                              {talukListDataEdit &&
+                                talukListDataEdit.length &&
+                                talukListDataEdit.map((list) => (
+                                  <option key={list.talukId} value={list.talukId}>
+                                    {list.talukName}
+                                  </option>
+                                ))}
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+        
+                        {/* Designation Input */}
+                        <Col sm={4}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t('Designation')}</Form.Label>
+                            <Form.Select
+                              name="designationId"
+                              value={searchDataEdit.designationId}
+                              onChange={handleSearchInputsEdit}
+                              className="form-control"
+                            >
+                              <option value="">{t('Select Designation')}</option>
+                              {designationListData &&
+                                designationListData.length &&
+                                designationListData.map((list) => (
+                                  <option
+                                    key={list.designationId}
+                                    value={list.designationId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+        
+                        {/* Mobile Number Input */}
+                        <Col sm={4}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t('Mobile Number')}</Form.Label>
+                            <Form.Control
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              value={searchDataEdit.phoneNumber}
+                              onChange={handleSearchInputsEdit}
+                              type="text"
+                              placeholder={t('Enter Mobile Number')}
+                              className="form-control"
+                            />
+                          </Form.Group>
+                        </Col>
+        
+                        {/* Username Input */}
+                        <Col sm={4}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t('User Name')}</Form.Label>
+                            <Form.Control
+                              id="username"
+                              name="username"
+                              value={searchDataEdit.username}
+                              onChange={handleSearchInputsEdit}
+                              type="text"
+                              placeholder={t('Enter User Name')}
+                              className="form-control"
+                            />
+                          </Form.Group>
+                        </Col>
+                        {/* Search Button */}
+                        <Col sm={4} className="d-flex align-items-end">
+                          <Button
+                            type="button"
+                            variant="primary"
+                            onClick={searchUserEdit}
+                            className="w-100"
+                          >
+                            {t('Search')}
+                          </Button>
+                        </Col>
+                      </Row>
+        
+                      {/* User Selection */}
+                      <Row className="m-4">
+                        <Col sm={12}>
+                          <Form.Label>{t('User')}</Form.Label>
+                          <Form.Select
+                            name="userMasterId"
+                            value={searchDataEdit.userMasterId}
+                            onChange={(e) => handleUserEditSelect(e.target.value)}
+                            className="form-control"
+                          >
+                            <option value="">{t('Select User')}</option>
+                            {userListData && userListData.length > 0 ? (
+                              userListData.map((list) => (
+                                <option
+                                  key={list.userMasterId}
+                                  value={list.userMasterId}
+                                >
+                                  {list.username}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="">{t('No Users Found')}</option> // Show a message if no users are found
+                            )}
+                          </Form.Select>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <div className="gap-col d-flex justify-content-center">
+                          <Button variant="primary" onClick={() => handleCloseModal7()}>
+                            {t('Submit')}
+                          </Button>
+                        </div>
+                      </Row>
+                    </Card>
+                  </Block>
+                </Modal.Body>
+              </Modal>
     </Layout>
   );
 }
