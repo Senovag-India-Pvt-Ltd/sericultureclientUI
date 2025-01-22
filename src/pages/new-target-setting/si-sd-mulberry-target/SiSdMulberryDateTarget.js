@@ -1508,7 +1508,7 @@ function SiSdMulberryDateTarget() {
                             <thead>
                               <tr>
                               <th style={styles.ctstyle}>{t("SISD Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("SISd Day Monthly Targets")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
@@ -1516,7 +1516,7 @@ function SiSdMulberryDateTarget() {
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
                                 <td>{viewMonthlyTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].sisdDayValue || "N/A"}</td>
                                 <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
                                 </tr>
                               ) : (
