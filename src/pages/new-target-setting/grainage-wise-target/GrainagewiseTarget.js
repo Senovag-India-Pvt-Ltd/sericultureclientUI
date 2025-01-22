@@ -1157,8 +1157,8 @@ function GrainagewiseTarget() {
                       >
                          <thead>
                               <tr>
-                              <th style={styles.ctstyle}>Grainage Monthly Targets</th>
-                              <th style={styles.ctstyle}>Grainage Yearly Targets</th>
+                              <th style={styles.ctstyle}>{t("Grainage Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Grainage Yearly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1170,7 +1170,7 @@ function GrainagewiseTarget() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}

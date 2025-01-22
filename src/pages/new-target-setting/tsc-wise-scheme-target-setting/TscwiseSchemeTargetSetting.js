@@ -1544,9 +1544,9 @@ function TscwiseSchemeTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
-                              <th style={styles.ctstyle}>District Yearly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Yearly Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("District Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Yearly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1559,7 +1559,7 @@ function TscwiseSchemeTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
@@ -1578,9 +1578,9 @@ function TscwiseSchemeTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
-                              <th style={styles.ctstyle}>District Monthly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Monthly Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("District Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Monthly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1593,7 +1593,7 @@ function TscwiseSchemeTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}

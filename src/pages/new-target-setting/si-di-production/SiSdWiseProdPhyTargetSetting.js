@@ -1493,9 +1493,9 @@ function SiSdWiseProdPhyTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>SISD Yearly Targets</th>
-                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              <th style={styles.ctstyle}>{t("SISD Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1508,7 +1508,7 @@ function SiSdWiseProdPhyTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
@@ -1527,9 +1527,9 @@ function SiSdWiseProdPhyTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>SISD Monthly Targets</th>
-                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              <th style={styles.ctstyle}>{t("SISD Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1542,7 +1542,7 @@ function SiSdWiseProdPhyTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}

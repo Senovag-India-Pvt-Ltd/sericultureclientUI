@@ -11,12 +11,16 @@ import DataTable from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function SiSdWiseSchemeTargetSetting() {
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -1546,9 +1550,9 @@ function SiSdWiseSchemeTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
-                              <th style={styles.ctstyle}>Institution Yearly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Yearly Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Institution Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Yearly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1561,7 +1565,7 @@ function SiSdWiseSchemeTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
@@ -1580,9 +1584,9 @@ function SiSdWiseSchemeTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
-                              <th style={styles.ctstyle}>Institution Yearly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Monthly Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Institution Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Monthly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1595,7 +1599,7 @@ function SiSdWiseSchemeTargetSetting() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}

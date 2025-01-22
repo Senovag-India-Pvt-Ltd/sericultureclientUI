@@ -1499,8 +1499,8 @@ const handleShowModal2 = () => setShowModal2(true);
                       >
                          <thead>
                               <tr>
-                              <th style={styles.ctstyle}>Monthly Targets</th>
-                              <th style={styles.ctstyle}>Yearly Targets</th>
+                              <th style={styles.ctstyle}>{t("Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Yearly Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1512,7 +1512,7 @@ const handleShowModal2 = () => setShowModal2(true);
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
