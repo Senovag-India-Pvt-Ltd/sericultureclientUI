@@ -498,45 +498,9 @@ function ScProgramApprovalMapping() {
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Designation<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="designationId"
-                            value={data.designationId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.designationId === undefined ||
-                              data.designationId === "0"
-                            }
-                          >
-                            <option value="">Select designation</option>
-                            {designationListData.map((list) => (
-                              <option
-                                key={list.designationId}
-                                value={list.designationId}
-                              >
-                                {list.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Designation is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Col>
-                    </Form.Group>
-                  </Col> */}
-
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">{t("Orders")}
+                      <Form.Label htmlFor="program">{t("Order")}
                       <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -546,11 +510,11 @@ function ScProgramApprovalMapping() {
                           type="number"
                           value={data.stepId}
                           onChange={handleInputs}
-                          placeholder={t("Enter Orders")}
+                          placeholder={t("Enter Order")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Orders is required")}
+                          {t("Order is required")}
                           </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -782,6 +746,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Amount")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -799,6 +766,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Order")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -876,7 +846,7 @@ function ScProgramApprovalMapping() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="program">{t("Amount")}</Form.Label>
+                  <Form.Label htmlFor="program">{t("Amount")}<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="amount"
@@ -885,7 +855,11 @@ function ScProgramApprovalMapping() {
                       value={designationDetails.amount}
                       onChange={handleMapInputs}
                       placeholder={t("Enter Amount")}
+                      required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -903,6 +877,9 @@ function ScProgramApprovalMapping() {
                       placeholder={t("Enter Order")}
                       required
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>

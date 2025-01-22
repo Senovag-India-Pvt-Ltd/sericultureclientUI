@@ -20,102 +20,9 @@ function ScProgramApprovalMappingEdit() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const [designationList, setDesignationList] = useState([]);
-  const [designationDetails, setDesignationDetails] = useState({
-    designationId: "",
-    amount: "",
-  });
-
-  console.log("hello", designationList);
 
   const [validated, setValidated] = useState(false);
-  const [validatedDesignationDetails, setValidatedDesignationDetails] =
-    useState(false);
-  const [validatedDesignationDetailsEdit, setValidatedDesignationDetailsEdit] =
-    useState(false);
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = (e) => {
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-      setDesignationDetails(true);
-    } else {
-      e.preventDefault();
-      setDesignationList((prev) => [...prev, designationDetails]);
-      setDesignationDetails({
-        designationId: "",
-        amount: "",
-      });
-      setShowModal(false);
-      setValidatedDesignationDetails(false);
-    }
-  };
-
-  const handleDelete = (i) => {
-    setDesignationList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [designationDetailsId, setMapComponentId] = useState();
-  const handleGet = (i) => {
-    setDesignationDetails(designationList[i]);
-    setShowModal2(true);
-    setMapComponentId(i);
-  };
-
-  console.log(designationList);
-
-  const handleUpdate = (e, i, changes) => {
-    setDesignationList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-      setValidatedDesignationDetailsEdit(true);
-    } else {
-      e.preventDefault();
-      setShowModal2(false);
-      setValidatedDesignationDetailsEdit(false);
-      setDesignationDetails({
-        designationId: "",
-        amount: "",
-      });
-    }
-  };
-
-  const handleMapInputs = (e) => {
-    const { name, value } = e.target;
-    setDesignationDetails({ ...designationDetails, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
-  // const [data, setData] = useState({
-  //   version:"",
-  //   status: "",
-  //   subSchemeId: "",
-  //   stepId: "",
-  //   scApprovalStageId: "",
-  //   // designationId: "",
-  //   stepName: "",
-  //   subSchemeWorkFlowDetailsRequests: []
-  // });
+  
 
   let name, value;
   const handleInputs = (e) => {
@@ -141,17 +48,14 @@ function ScProgramApprovalMappingEdit() {
         scApprovalStageId: data.scApprovalStageId,
         subSchemeId: data.subSchemeId,
         action: data.action,
-        // landDetailId: landDetailsIds[0],
-        // designationId: data.designationId,
+        designationId: data.designationId,
+        designationStep: data.designationStep,
+        amount: data.amount,
         stepName: data.stepName,
-        subSchemeWorkFlowDetailsRequests: designationList,
       };
       api
         .post(baseURLDBT + `master/cost/editSubSchemeWorkFlowRequest`, sendPost)
         .then((response) => {
-          // if (response.data.content.error) {
-          //   updateError();
-          // } else {
           updateSuccess();
           clear();
           setValidated(false);
@@ -176,23 +80,18 @@ function ScProgramApprovalMappingEdit() {
     setData({
       version: "",
       status: "",
+      amount: "",
+      action: "",
       subSchemeId: "",
       stepId: "",
       scApprovalStageId: "",
-      // designationId: "",
+      designationId: "",
+      designationStep: "",
       stepName: "",
     });
-    designationClear();
   };
 
-  const designationClear = () => {
-    setDesignationDetails({
-      designationId: "",
-      amount: "",
-    });
-    setDesignationList([]);
-  };
-  //   to get data from api
+
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -208,7 +107,9 @@ function ScProgramApprovalMappingEdit() {
           subSchemeId: res.subSchemeId,
           action: res.action,
           // landDetailId: landDetailsIds[0],
-          // designationId: data.designationId,
+          designationId: res.designationId,
+          amount: res.amount,
+          designationStep: res.designationStep,
           stepName: res.stepName,
         }));
         setLoading(false);
@@ -222,24 +123,8 @@ function ScProgramApprovalMappingEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
-
-  // to get Program
-  const [programListData, setProgramListData] = useState([]);
-
-  const getProgramList = () => {
-    const response = api
-      .get(baseURL + `scProgram/get-all`)
-      .then((response) => {
-        setProgramListData(response.data.content.scProgram);
-      })
-      .catch((err) => {
-        setProgramListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getProgramList();
-  }, []);
+  
+  
 
   // to get sc-sub-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
@@ -323,42 +208,7 @@ function ScProgramApprovalMappingEdit() {
     }
   }, [data.scApprovalStageId]);
 
-  //  // to get Category
-  //  const [designationListData, setDesignationListData] = useState([]);
-
-  //  const getDesignationList = (_id) => {
-  //    const response = api
-  //      .get(baseURL + `designation/get-by-sc-approval-stage-id/${_id}`)
-  //      .then((response) => {
-  //        setDesignationListData(response.data.content.designation);
-  //        setLoading(false);
-  //        if (response.data.content.error) {
-  //            setDesignationListData([]);
-  //        }
-  //      })
-  //      .catch((err) => {
-  //        setDesignationListData([]);
-  //        setLoading(false);
-  //      });
-  //  };
-
-  //  useEffect(() => {
-  //    if (data.scApprovalStageId) {
-  //        getDesignationList(data.scApprovalStageId);
-  //    }
-  //  }, [data.scApprovalStageId]);
-
-  // Handle Options
-  // Designation
-  const handleDesignationOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setDesignationDetails({
-      ...designationDetails,
-      designationId: chooseId,
-      name: chooseName,
-    });
-  };
+  
 
   const navigate = useNavigate();
 
@@ -382,15 +232,7 @@ function ScProgramApprovalMappingEdit() {
       html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
-
-  console.log("seet", data.action);
+  
 
   return (
     <Layout title="Edit Service Program Account Mapping">
@@ -430,7 +272,11 @@ function ScProgramApprovalMappingEdit() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
+          <Block className="mt-3">
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+                {t("Scheme And Approval Stage Details")}
+              </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
@@ -505,47 +351,11 @@ function ScProgramApprovalMappingEdit() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Designation<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="designationId"
-                            value={data.designationId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.designationId === undefined ||
-                              data.designationId === "0"
-                            }
-                          >
-                            <option value="">Select designation</option>
-                            {designationListData.map((list) => (
-                              <option
-                                key={list.designationId}
-                                value={list.designationId}
-                              >
-                                {list.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Designation is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Col>
-                    </Form.Group>
-                  </Col> */}
+                  </Col>       
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="program">{t("Orders")}</Form.Label>
+                      <Form.Label htmlFor="program">{t("Order")}<span className="text-danger">*</span></Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="stepId"
@@ -553,8 +363,12 @@ function ScProgramApprovalMappingEdit() {
                           type="number"
                           value={data.stepId}
                           onChange={handleInputs}
-                          placeholder={t("Enter Orders")}
+                          placeholder={t("Enter Order")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Order is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -570,7 +384,11 @@ function ScProgramApprovalMappingEdit() {
                           value={data.version}
                           onChange={handleInputs}
                           placeholder={t("Enter Version")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Version is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -587,112 +405,100 @@ function ScProgramApprovalMappingEdit() {
                           value={data.action}
                           onChange={handleInputs}
                           placeholder={t("Enter Action")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Action is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                 </Row>
               </Card.Body>
             </Card>
+            </Block>
 
-            <Block className="mt-3">
-              <Card>
-                <Card.Header>{t("Add Designation")}</Card.Header>
-                <Card.Body>
-                  {/* <h3>Virtual Bank account</h3> */}
-                  <Row className="g-gs mb-1">
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-1">
-                        <div className="form-control-wrap"></div>
-                      </Form.Group>
-                    </Col>
+          <Block className="mt-3">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                {t("Designation Details")}
+              </Card.Header>
+              <Card.Body>
+              <Row className="g-gs">
+              <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">{t("Designation")}</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="designationId"
+                      value={data.designationId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.designationId === undefined ||
+                        data.designationId === "0"
+                      }
+                    >
+                      <option value="">{t("Select Designation")}</option>
+                      {designationListData.map((list) => (
+                        <option
+                          key={list.designationId}
+                          value={list.designationId}
+                        >
+                          {list.name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
-                        <div className="form-control-wrap">
-                          <ul className="">
-                            <li>
-                              <Button
-                                className="d-md-none"
-                                size="md"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>{t("add")}</span>
-                              </Button>
-                            </li>
-                            <li>
-                              <Button
-                                className="d-none d-md-inline-flex"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>{t("add")}</span>
-                              </Button>
-                            </li>
-                          </ul>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {designationList.length > 0 ? (
-                    <Row className="g-gs">
-                      <Block>
-                        <Card>
-                          <div
-                            className="table-responsive"
-                            // style={{ paddingBottom: "30px" }}
-                          >
-                            <table className="table small">
-                              <thead>
-                                <tr style={{ backgroundColor: "#f1f2f7" }}>
-                                  {/* <th></th> */}
-                                  <th>{t("Action")}</th>
-                                  <th>{t("Designation")}</th>
-                                  <th>{t("Amount")}</th>
-                                  {/* <th>Share in %</th> */}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {designationList.map((item, i) => (
-                                  <tr>
-                                    <td>
-                                      <div>
-                                        <Button
-                                          variant="primary"
-                                          size="sm"
-                                          onClick={() => handleGet(i)}
-                                        >
-                                           {t("Edit")}
-                                        </Button>
-                                        <Button
-                                          variant="danger"
-                                          size="sm"
-                                          onClick={() => handleDelete(i)}
-                                          className="ms-2"
-                                        >
-                                          {t("delete")}
-                                        </Button>
-                                      </div>
-                                    </td>
-                                    <td>{item.name}</td>
-                                    {/* <td>{item.scHeadAccountName}</td>
-                                  <td>{item.shareInPercentage}</td> */}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </Card>
-                      </Block>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                </Card.Body>
-              </Card>
+              <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Amount")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="amount"
+                      name="amount"
+                      type="number"
+                      value={data.amount}
+                      onChange={handleInputs}
+                      placeholder={t("Enter Amount")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Designation Order")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="designationStep"
+                      name="designationStep"
+                      type="number"
+                      value={data.designationStep}
+                      onChange={handleInputs}
+                      placeholder={t("Enter Order")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+              </Row>
+              </Card.Body>
+            </Card>
             </Block>
 
             <div className="gap-col">
@@ -713,70 +519,23 @@ function ScProgramApprovalMappingEdit() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("Add Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Form action="#"> */}
           <Form
             noValidate
             validated={validatedDesignationDetails}
             onSubmit={handleAdd}
           >
-            <Row className="g-5">
-              <Col lg="6">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">{t("Designation")}</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="designationId"
-                      value={`${designationDetails.designationId}_${designationDetails.name}`}
-                      onChange={handleDesignationOption}
-                      onBlur={() => handleDesignationOption}
-                      required
-                      isInvalid={
-                        designationDetails.designationId === undefined ||
-                        designationDetails.designationId === "0"
-                      }
-                    >
-                      <option value="">{t("Select Designation")}</option>
-                      {designationListData.map((list) => (
-                        <option
-                          key={list.designationId}
-                          value={`${list.designationId}_${list.name}`}
-                        >
-                          {list.name}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      {t("Designation is required")}
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+            <Row className="g-5"> */}
+           
 
-              <Col lg="6">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="program">{t("Amount")}</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="amount"
-                      name="amount"
-                      type="number"
-                      value={data.amount}
-                      onChange={handleMapInputs}
-                      placeholder={t("Enter Amount")}
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
 
-              <Col lg="12">
+              {/* <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
                       {t("add")}
                     </Button>
@@ -792,18 +551,17 @@ function ScProgramApprovalMappingEdit() {
                     </Button>
                   </div>
                 </div>
-              </Col>
-            </Row>
+              </Col> */}
+            {/* </Row>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+      {/* <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("Edit Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Form action="#"> */}
           <Form
             noValidate
             validated={validatedDesignationDetailsEdit}
@@ -844,6 +602,47 @@ function ScProgramApprovalMappingEdit() {
                 </Form.Group>
               </Col>
 
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Amount")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="amount"
+                      name="amount"
+                      type="number"
+                      value={designationDetails.amount}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Amount")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="program">{t("Designation Order")}<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="designationStep"
+                      name="designationStep"
+                      type="number"
+                      value={designationDetails.designationStep}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Order")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Designation Order is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
@@ -866,7 +665,7 @@ function ScProgramApprovalMappingEdit() {
             </Row>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </Layout>
   );
 }
