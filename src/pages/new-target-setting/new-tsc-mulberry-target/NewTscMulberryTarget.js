@@ -357,7 +357,7 @@ function NewTscMulberryTarget() {
 
   const ProductionPhysicalDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -375,7 +375,7 @@ function NewTscMulberryTarget() {
             className="ms-2"
             onClick={() => handleEdit(row.mulberryTargetsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -383,7 +383,7 @@ function NewTscMulberryTarget() {
             onClick={() => deleteConfirm(row.mulberryTargetsId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -391,42 +391,42 @@ function NewTscMulberryTarget() {
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mulberry Target Type",
+      name: t("Mulberry Target Type"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "TSC",
+      name: t("TSC"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
@@ -434,21 +434,21 @@ function NewTscMulberryTarget() {
     },
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -674,21 +674,21 @@ function NewTscMulberryTarget() {
 
   const ViewTargetReporteeDataColumns = [
     {
-      name: "Serial Number",
+      name: t("Serial Number"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
@@ -696,49 +696,49 @@ function NewTscMulberryTarget() {
     },
 
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc",
+      name: t("Tsc"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User",
+      name: t("User"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
@@ -810,7 +810,7 @@ function NewTscMulberryTarget() {
 
   const ViewTargetDataColumns = [
     {
-      name: "Sl.no",
+      name: t("Sl.no"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
@@ -818,7 +818,7 @@ function NewTscMulberryTarget() {
       // style: { width: "50px", textAlign: "center" },
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
@@ -826,7 +826,7 @@ function NewTscMulberryTarget() {
       // style: { minWidth: "150px", textAlign: "left" },
     },
     {
-      name: "Target",
+      name: t("Target"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
@@ -834,42 +834,42 @@ function NewTscMulberryTarget() {
     },
 
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Tsc",
+      name: t("Tsc"),
       selector: (row) => row.tscMasterName,
       cell: (row) => <span>{row.tscMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target Type",
+      name: t("Target Type"),
       selector: (row) => row.targetType,
       cell: (row) => <span>{row.targetType}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No",
+      name: t("Target No"),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -883,7 +883,7 @@ function NewTscMulberryTarget() {
     //   hide: "md",
     // },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <div className="text-start w-100">
           <Button
@@ -898,7 +898,7 @@ function NewTscMulberryTarget() {
             }
             className="ms-2"
           >
-            View Reportee Details
+            {t("View Reportee Details")}
           </Button>
         </div>
       ),
@@ -1429,9 +1429,9 @@ function NewTscMulberryTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
-                              <th style={styles.ctstyle}>Mulberry Yearly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Mulberry Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1444,7 +1444,7 @@ function NewTscMulberryTarget() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}
@@ -1463,9 +1463,9 @@ function NewTscMulberryTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>TSC Monthly Targets</th>
-                              <th style={styles.ctstyle}>Mulberry Monthly Targets</th>
-                              <th style={styles.ctstyle}>Remaining Targets</th>
+                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Mulberry Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1478,7 +1478,7 @@ function NewTscMulberryTarget() {
                               ) : (
                                 <tr>
                                 <td colSpan={3} style={{ textAlign: "center" }}>
-                                  No Data Available
+                                  {t("No Data Available")}
                                 </td>
                               </tr>
                               )}

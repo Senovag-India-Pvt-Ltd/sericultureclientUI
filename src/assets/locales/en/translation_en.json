@@ -3026,7 +3026,15 @@
     "Select Transaction Details": "Select Transaction Details",
     "Subsidy/Bonus/Incentive Amount": "Subsidy/Bonus/Incentive Amount",
     "Market Name": "Market Name",
-    "Enter Price": "Enter Price"
+    "Enter Price": "Enter Price",
+  "Yearly Targets": "Yearly Targets",
+  "TSC Yearly Targets": "TSC Yearly Targets",
+  "Mulberry Yearly Targets": "Mulberry Yearly Targets",
+  "Remaining Targets": "Remaining Targets",
+  "No Data Available": "No Data Available",
+  "Monthly Targets": "Monthly Targets",
+  "TSC Monthly Targets": "TSC Monthly Targets",
+  "Mulberry Monthly Targets": "Mulberry Monthly Targets"
     
 
 

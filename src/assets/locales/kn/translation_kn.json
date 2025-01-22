@@ -3037,7 +3037,7 @@
   "Maintenance Of Mulberry Garden": "ಮೂಲ್ಬೆರಿ ತೋಟದ ನಿರ್ವಹಣೆ",
   "Sale Of Chawki Worms": "ಚಾವ್ಕಿ ಹುಳಿಗಳ ಮಾರಾಟ",
   "Implementation of MGNREGA": "ಮಹಾತ್ಮಾ ಗಾಂಧಿ ಗ್ರಾಮೀಣ ಉದ್ಯೋಗ ಖಾತ್ರಿ ಯೋಜನೆಯ ಕಾರ್ಯಗತಗೊಳಣೆ",
-  "Supply of disinfectants to farmers": "ರೈತರಿಗೆ জীবಾಣುನಾಶಕಗಳ ಪೂರೈಕೆ",
+  "Supply of disinfectants to farmers": "ರೈತರಿಗೆ ಸ್ವಚ್ಛತೆ ತೊಟ್ಟಿಗೆಗಳ ಪೂರೈಕೆ",
   "Direct And All Reportee Details": "ಪ್ರತ್ಯಕ್ಷ ಮತ್ತು ಎಲ್ಲಾ ವರದಿಕರ ವಿವರಗಳು",
   "SI SD Wise Daily Scheme Target Setting": "SI SD ಪ್ರಕಾರ ದಿನದ ಯೋಜನೆಯ ಗುರಿ ಸ್ಥಾಪನೆ",
   "TSC Wise Scheme Target Setting": "TSC ಪ್ರಕಾರ ಯೋಜನೆಯ ಗುರಿ ಸ್ಥಾಪನೆ",
@@ -3112,7 +3112,15 @@
     "Add DFLs": "DFL ಗಳನ್ನು ಸೇರಿಸಿ",
     "View DFLs": "DFL ಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
     "Calculate Unit Price": "ಯುನಿಟ್ ಬೆಲೆಯನ್ನು ಲೆಕ್ಕಿಸಿ",
-    "Select Transaction Details": "ಲಾಭಾಂಶ ವಿವರಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+    "Select Transaction Details": "ಲಾಭಾಂಶ ವಿವರಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "Yearly Targets": "ವಾರ್ಷಿಕ ಗುರಿಗಳು",
+  "TSC Yearly Targets": "ಟಿಎಸ್‌ಸಿ ವಾರ್ಷಿಕ ಗುರಿಗಳು",
+  "Mulberry Yearly Targets": "ಮೂಲ್ಬೆರಿ ವಾರ್ಷಿಕ ಗುರಿಗಳು",
+  "Remaining Targets": "ಮಿಕ್ಕಿರುವ ಗುರಿಗಳು",
+  "No Data Available": "ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ",
+  "Monthly Targets": "ಮಾಸಿಕ ಗುರಿಗಳು",
+   "TSC Monthly Targets": "ಟಿಎಸ್‌ಸಿ ಮಾಸಿಕ ಗುರಿಗಳು",
+  "Mulberry Monthly Targets": "ಮೂಲ್ಬೆರಿ ಮಾಸಿಕ ಗುರಿಗಳು"
 
 
 
