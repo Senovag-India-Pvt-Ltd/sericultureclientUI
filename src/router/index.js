@@ -946,6 +946,7 @@ import ConfigureBivoltineAmount from "../pages/masters/configure-bivoltine-amoun
 import ConfigureBivoltineAmountList from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountList";
 import ConfigureBivoltineAmountEdit from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountEdit";
 import TSCWiseProductionPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TSCWiseProductionPhysicalTargetSetting";
+import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetailsListFromSeedAndDFL";
 
 // Admin and Reports
 
@@ -1353,6 +1354,11 @@ function Router() {
             />
 
             {/* Seed & DFL Management */}
+
+            <Route
+              path="farmer-details-list-from-seed-and-dfl"
+              element={<FarmerDetailsListFromSeedAndDFL />}
+            />
 
             <Route
               path="Maintenance-of-mulberry-Garden-in-the-Farms"
