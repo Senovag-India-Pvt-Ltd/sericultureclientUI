@@ -193,6 +193,7 @@ function Menu() {
     Registration_Nsso: false,
     Registration_Farmer_Without_FruitsId: false,
     Registration_Other_State_Farmer: false,
+    Registration_Farmer_Details: false,
 
     Services: false,
     Services_Service_Application: false,
@@ -341,6 +342,7 @@ function Menu() {
     Admin_Master_Registration_User: false,
     Admin_Master_Registration_Designation: false,
     Admin_Master_Registration_No_Fruits_Farmer_Counter: false,
+
 
     Admin_Master_Land: false,
 
@@ -1207,6 +1209,14 @@ function Menu() {
                 <MenuItemLink
                   text={t("Other State Farmer")}
                   to="/seriui/other-state-farmer"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Farmer_Details ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Farmer Details By TSC")}
+                  to="/seriui/farmer-details-list-from-seed-and-dfl"
                 />
               </MenuItem>
             ) : null}
