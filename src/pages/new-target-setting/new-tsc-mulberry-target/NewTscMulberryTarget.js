@@ -2038,6 +2038,7 @@ function NewTscMulberryTarget() {
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
                       required
+                      disabled
                       isInvalid={
                         editData.talukId === undefined ||
                         editData.talukId === "0"

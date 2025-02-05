@@ -422,7 +422,7 @@ function FarmerDetailsListFromSeedAndDFL() {
                     />
                   </Col>
                   <Form.Label column sm={9} className="mt-n2">
-                    {t("Chowki Management")}
+                    {t("Chawki Management")}
                   </Form.Label>
                 </Form.Group>
               </Col>

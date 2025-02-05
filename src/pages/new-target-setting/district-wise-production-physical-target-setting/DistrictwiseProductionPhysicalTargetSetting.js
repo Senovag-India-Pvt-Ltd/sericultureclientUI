@@ -1552,14 +1552,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1589,14 +1591,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 <option value="">
                                   {t("Select Target Type")}
                                 </option>
-                                {mulberryTargetTypeData.map((list) => (
+                                {mulberryTargetTypeData && mulberryTargetTypeData.length
+                                ? mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
                                     value={list.mulberryTargetTypeId}
                                   >
                                     {list.mulberryTargetTypeName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Target is required")}
@@ -1625,14 +1629,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 // }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length
+                                ?districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -1641,39 +1647,41 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
-                                                  <Form.Group className="form-group mt-n4">
-                                                    <Form.Label>
-                                                      {t("Taluk")}<span className="text-danger">*</span>
-                                                    </Form.Label>
-                                                    <div className="form-control-wrap">
-                                                      <Form.Select
-                                                        name="talukId"
-                                                        value={data.talukId}
-                                                        onChange={handleInputs}
-                                                        onBlur={() => handleInputs}
-                                                        required
-                                                        isInvalid={
-                                                          data.talukId === undefined ||
-                                                          data.talukId === "0"
-                                                        }
-                                                      >
-                                                        <option value="">{t("Select Taluk")}</option>
-                                                        {talukListData.map((list) => (
-                                                          <option
-                                                            key={list.talukId}
-                                                            value={list.talukId}
-                                                          >
-                                                            {list.talukName}
-                                                          </option>
-                                                        ))}
-                                                      </Form.Select>
-                                                      <Form.Control.Feedback type="invalid">
-                                                        {t("Taluk is required")}
-                                                      </Form.Control.Feedback>
-                                                    </div>
-                                                  </Form.Group>
-                                                </Col>
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("Taluk")}<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="talukId"
+                                  value={data.talukId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.talukId === undefined ||
+                                    data.talukId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select Taluk")}</option>
+                                  {talukListData && talukListData.length
+                                  ?talukListData.map((list) => (
+                                    <option
+                                      key={list.talukId}
+                                      value={list.talukId}
+                                    >
+                                      {list.talukName}
+                                    </option>
+                                  ))
+                                  : ""}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Taluk is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
                         
 
                         <Col lg="6">
@@ -1691,14 +1699,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                   required
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData.length
+                                  ? raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  :""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}
@@ -1950,14 +1960,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ? financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1988,14 +2000,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 <option value="">
                                   {t("Select Target Type")}
                                 </option>
-                                {mulberryTargetTypeData.map((list) => (
+                                {mulberryTargetTypeData && mulberryTargetTypeData.length
+                                ?mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
                                     value={list.mulberryTargetTypeId}
                                   >
                                     {list.mulberryTargetTypeName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Target is required")}
@@ -2025,14 +2039,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 // }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length
+                                ?districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -2042,36 +2058,38 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                         </Col>
 
                         <Col lg="6">
-                                        <Form.Group className="form-group mt-n4">
-                                          <Form.Label>
-                                            {t("Taluk")}<span className="text-danger">*</span>
-                                          </Form.Label>
-                                          <div className="form-control-wrap">
-                                            <Form.Select
-                                              name="talukId"
-                                              value={editData.talukId}
-                                              onChange={handleEditInputs}
-                                              onBlur={() => handleEditInputs}
-                                              required
-                                              disabled
-                                              isInvalid={
-                                                editData.talukId === undefined ||
-                                                editData.talukId === "0"
-                                              }
-                                            >
-                                              <option value="">{t("Select Taluk")}</option>
-                                              {talukListData.map((list) => (
-                                                <option key={list.talukId} value={list.talukId}>
-                                                  {list.talukName}
-                                                </option>
-                                              ))}
-                                            </Form.Select>
-                                            <Form.Control.Feedback type="invalid">
-                                              {t("Taluk is required")}
-                                            </Form.Control.Feedback>
-                                          </div>
-                                        </Form.Group>
-                                      </Col>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Taluk")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukId"
+                                value={editData.talukId}
+                                onChange={handleEditInputs}
+                                onBlur={() => handleEditInputs}
+                                required
+                                disabled
+                                isInvalid={
+                                  editData.talukId === undefined ||
+                                  editData.talukId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Taluk")}</option>
+                                {talukListData && talukListData.length
+                                ? talukListData.map((list) => (
+                                  <option key={list.talukId} value={list.talukId}>
+                                    {list.talukName}
+                                  </option>
+                                ))
+                                :""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Taluk is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -2089,14 +2107,16 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                   disabled
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData.length
+                                  ?raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}
@@ -2178,50 +2198,50 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                         </Col>
 
                         <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>
-                    {t("User")}<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Button
-                      variant="primary"
-                      onClick={() => setShowModal7(true)}
-                    >
-                      {t("Select User")}
-                    </Button>
-                    <Form.Control
-                      type="hidden"
-                      name="userMasterId"
-                      value={editData.userMasterId}
-                      // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {t("User is required")}
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("User")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Button
+                              variant="primary"
+                              onClick={() => setShowModal7(true)}
+                            >
+                              {t("Select User")}
+                            </Button>
+                            <Form.Control
+                              type="hidden"
+                              name="userMasterId"
+                              value={editData.userMasterId}
+                              // isInvalid={!data.userMasterId || data.userMasterId === "0"} // Automatically updated
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {t("User is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-              <Col sm={3}>
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>{t("User Name")}</Form.Label>
-                  <Form.Control
-                    id="username"
-                    name="username"
-                    value={userNameEdit}
-                    // onChange={handleSearchInputs}
-                    type="text"
-                    placeholder={t("Enter User Name")}
-                    className="form-control"
-                    // readOnly
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {t("User is required")}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+                      <Col sm={3}>
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>{t("User Name")}</Form.Label>
+                          <Form.Control
+                            id="username"
+                            name="username"
+                            value={userNameEdit}
+                            // onChange={handleSearchInputs}
+                            type="text"
+                            placeholder={t("Enter User Name")}
+                            className="form-control"
+                            // readOnly
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("User is required")}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
 
 
 

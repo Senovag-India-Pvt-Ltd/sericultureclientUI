@@ -1472,7 +1472,7 @@ const handleShowModal2 = () => setShowModal2(true);
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg={type.budgetType === "release" ? "8" : "12"}>
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
@@ -1541,14 +1541,16 @@ const handleShowModal2 = () => setShowModal2(true);
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1578,14 +1580,15 @@ const handleShowModal2 = () => setShowModal2(true);
                               >
                                 <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData &&
-                                  scSchemeDetailsListData.map((list) => (
+                                  scSchemeDetailsListData.length ? scSchemeDetailsListData.map((list) => (
                                     <option
                                       key={list.scSchemeDetailsId}
                                       value={list.scSchemeDetailsId}
                                     >
                                       {list.schemeName}
                                     </option>
-                                  ))}
+                                  ))
+                                  :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Scheme is required")}
@@ -1615,11 +1618,12 @@ const handleShowModal2 = () => setShowModal2(true);
                               >
                                 <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData &&
-                                  scSubSchemeDetailsListData.map((list, i) => (
+                                  scSubSchemeDetailsListData.length ? scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
                                       {list.subSchemeName}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Component Type is required")}
@@ -1649,14 +1653,15 @@ const handleShowModal2 = () => setShowModal2(true);
                               >
                                 <option value="">{t("Select Component")}</option>
                                 {scComponentListData &&
-                                  scComponentListData.map((list) => (
+                                  scComponentListData.length ? scComponentListData.map((list) => (
                                     <option
                                       key={list.scComponentId}
                                       value={list.scComponentId}
                                     >
                                       {list.scComponentName}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Component is required")}
@@ -1686,14 +1691,15 @@ const handleShowModal2 = () => setShowModal2(true);
                               >
                                 <option value="">{t("Select Sub Component")}</option>
                                 {scCategoryListData &&
-                                  scCategoryListData.map((list) => (
+                                  scCategoryListData.length ? scCategoryListData.map((list) => (
                                     <option
                                       key={list.scCategoryId}
                                       value={list.scCategoryId}
                                     >
                                       {list.codeNumber}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Sub Component is required")}
@@ -1723,6 +1729,7 @@ const handleShowModal2 = () => setShowModal2(true);
                               >
                                 <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData &&
+                                  scHeadAccountListData.length ?
                                   scHeadAccountListData.map((list) => (
                                     <option
                                       key={list.headOfAccountId}
@@ -1730,7 +1737,8 @@ const handleShowModal2 = () => setShowModal2(true);
                                     >
                                       {list.scHeadAccountName}
                                     </option>
-                                  ))}
+                                  ))
+                                  :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Head of Account is required")}
@@ -1805,14 +1813,16 @@ const handleShowModal2 = () => setShowModal2(true);
                                 // }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length ? 
+                                districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -2082,28 +2092,7 @@ const handleShowModal2 = () => setShowModal2(true);
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Balance Amount:")}</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+          
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -2158,14 +2147,16 @@ const handleShowModal2 = () => setShowModal2(true);
                       }
                     >
                       <option value="">{t("Select Year")}</option>
-                      {financialyearListData.map((list) => (
+                      {financialyearListData && financialyearListData.length
+                      ?financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
                           {list.financialYear}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Financial Year is required")}
@@ -2196,14 +2187,15 @@ const handleShowModal2 = () => setShowModal2(true);
                     >
                       <option value="">{t("Select Scheme Names")}</option>
                       {scSchemeDetailsListData &&
-                        scSchemeDetailsListData.map((list) => (
+                        scSchemeDetailsListData.length ? scSchemeDetailsListData.map((list) => (
                           <option
                             key={list.scSchemeDetailsId}
                             value={list.scSchemeDetailsId}
                           >
                             {list.schemeName}
                           </option>
-                        ))}
+                        ))
+                        : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Scheme is required")}
@@ -2234,11 +2226,12 @@ const handleShowModal2 = () => setShowModal2(true);
                     >
                       <option value="">{t("Select Component Type")}</option>
                       {scSubSchemeDetailsListData &&
-                        scSubSchemeDetailsListData.map((list, i) => (
+                        scSubSchemeDetailsListData.length ? scSubSchemeDetailsListData.map((list, i) => (
                           <option key={i} value={list.subSchemeId}>
                             {list.subSchemeName}
                           </option>
-                        ))}
+                        ))
+                        : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Component Type is required")}
@@ -2426,11 +2419,13 @@ const handleShowModal2 = () => setShowModal2(true);
                       // }
                     >
                       <option value="">{t("Select District")}</option>
-                      {districtListData.map((list) => (
+                      {districtListData && districtListData.length
+                      ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("District is required")}

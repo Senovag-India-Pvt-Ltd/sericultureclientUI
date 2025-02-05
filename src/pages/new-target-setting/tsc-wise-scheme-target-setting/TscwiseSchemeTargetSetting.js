@@ -1623,14 +1623,16 @@ function TscwiseSchemeTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length ?
+                                financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -2007,14 +2009,16 @@ function TscwiseSchemeTargetSetting() {
                                 // }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length ?
+                                districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -2041,14 +2045,16 @@ function TscwiseSchemeTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Taluk")}</option>
-                                {talukListData.map((list) => (
+                                {talukListData && talukListData.length ?
+                                talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
                                     {list.talukName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
@@ -2075,14 +2081,16 @@ function TscwiseSchemeTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select TSC")}</option>
-                                {tscListData.map((list) => (
+                                {tscListData && tscListData.length
+                                ?tscListData.map((list) => (
                                   <option
                                     key={list.tscMasterId}
                                     value={list.tscMasterId}
                                   >
                                     {list.name}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("TSC is required")}
@@ -2429,14 +2437,16 @@ function TscwiseSchemeTargetSetting() {
                       }
                     >
                       <option value="">{t("Select Year")}</option>
-                      {financialyearListData.map((list) => (
+                      {financialyearListData && financialyearListData.length ?
+                      financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
                           {list.financialYear}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Financial Year is required")}
@@ -2697,11 +2707,13 @@ function TscwiseSchemeTargetSetting() {
                       // }
                     >
                       <option value="">{t("Select District")}</option>
-                      {districtListData.map((list) => (
+                      {districtListData && districtListData.length ?
+                      districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("District is required")}
@@ -2729,14 +2741,16 @@ function TscwiseSchemeTargetSetting() {
                         }
                       >
                         <option value="">{t("Select Taluk")}</option>
-                        {talukListData.map((list) => (
+                        {talukListData && talukListData.length
+                        ?talukListData.map((list) => (
                           <option
                             key={list.talukId}
                             value={list.talukId}
                           >
                             {list.talukName}
                           </option>
-                        ))}
+                        ))
+                         : ""}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {t("Taluk is required")}
@@ -2764,11 +2778,13 @@ function TscwiseSchemeTargetSetting() {
                       }
                     >
                       <option value="">{t("Select TSC")}</option>
-                      {tscListData.map((list) => (
+                      {tscListData && tscListData.length
+                      ?tscListData.map((list) => (
                         <option key={list.tscMasterId} value={list.tscMasterId}>
                           {list.name}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("TSC is required")}

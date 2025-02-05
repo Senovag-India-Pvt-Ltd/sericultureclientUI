@@ -1241,14 +1241,16 @@ function FarmwiseTarget() {
                                   required
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData 
+                                  ?raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  :""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}
@@ -1278,11 +1280,13 @@ function FarmwiseTarget() {
                                 }
                               >
                                 <option value="">{t("Select Farm")}</option>
-                                {farmListData.map((list) => (
+                                {farmListData && farmListData 
+                                  ?farmListData.map((list) => (
                                   <option key={list.farmId} value={list.farmId}>
                                     {list.farmName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Farm name is required")}
@@ -1599,14 +1603,16 @@ function FarmwiseTarget() {
                       }
                     >
                       <option value="">{t("Select Year")}</option>
-                      {financialyearListData.map((list) => (
+                      {financialyearListData && financialyearListData.length ?
+                        financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
                           {list.financialYear}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Financial Year is required")}
@@ -1631,14 +1637,16 @@ function FarmwiseTarget() {
                         disabled
                       >
                         <option value="">{t("Select Race")}</option>
-                        {raceListData.map((list) => (
+                        {raceListData && raceListData.length ?
+                        raceListData.map((list) => (
                           <option
                             key={list.raceMasterId}
                             value={list.raceMasterId}
                           >
                             {list.raceMasterName}
                           </option>
-                        ))}
+                        ))
+                        : ""}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {t("Race is required")}
@@ -1700,11 +1708,13 @@ function FarmwiseTarget() {
                       }
                     >
                       <option value="">{t("Select Farm")}</option>
-                      {farmListData.map((list) => (
+                      {farmListData && farmListData.length ?
+                        farmListData.map((list) => (
                         <option key={list.farmId} value={list.farmId}>
                           {list.farmName}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Farm name is required")}

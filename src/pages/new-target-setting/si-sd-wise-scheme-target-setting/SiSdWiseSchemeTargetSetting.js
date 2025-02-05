@@ -1629,14 +1629,16 @@ function SiSdWiseSchemeTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ? financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1883,128 +1885,6 @@ function SiSdWiseSchemeTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="mulberryTargetTypeId"
-                                value={data.mulberryTargetTypeId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
-                                }
-                              >
-                                <option value="">
-                                  Select Mulberry Target Type
-                                </option>
-                                {mulberryTargetTypeData.map((list) => (
-                                  <option
-                                    key={list.mulberryTargetTypeId}
-                                    value={list.mulberryTargetTypeId}
-                                  >
-                                    {list.mulberryTargetTypeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                            <Col
-                              lg="3"
-                              className={
-                                type.budgetType === "release"
-                                  ? "ms-n3"
-                                  : "ms-n5"
-                              }
-                            >
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -2026,14 +1906,16 @@ function SiSdWiseSchemeTargetSetting() {
                                 <option value="">
                                   {t("Select District")}
                                 </option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length
+                                ? districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -2060,14 +1942,16 @@ function SiSdWiseSchemeTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Taluk")}</option>
-                                {talukListData.map((list) => (
+                                {talukListData && talukListData.length ?
+                                talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
                                     {list.talukName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
@@ -2094,14 +1978,16 @@ function SiSdWiseSchemeTargetSetting() {
                                   }
                                 >
                                   <option value="">{t("Select TSC")}</option>
-                                  {tscListData.map((list) => (
+                                  {tscListData && tscListData.length ?
+                                  tscListData.map((list) => (
                                     <option
                                       key={list.tscMasterId}
                                       value={list.tscMasterId}
                                     >
                                       {list.name}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("TSC is required")}
@@ -2402,28 +2288,7 @@ function SiSdWiseSchemeTargetSetting() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+          
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -2478,14 +2343,16 @@ function SiSdWiseSchemeTargetSetting() {
                       }
                     >
                       <option value="">{t("Select Year")}</option>
-                      {financialyearListData.map((list) => (
+                      {financialyearListData && financialyearListData.length
+                      ? financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
                           {list.financialYear}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Financial Year is required")}
@@ -2759,11 +2626,13 @@ function SiSdWiseSchemeTargetSetting() {
                       <option value="">
                         {t("Select District")}
                       </option>
-                      {districtListData.map((list) => (
+                      {districtListData && districtListData.length ?
+                      districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("District is required")}
@@ -2791,14 +2660,16 @@ function SiSdWiseSchemeTargetSetting() {
                           }
                         >
                           <option value="">{t("Select Taluk")}</option>
-                          {talukListData.map((list) => (
+                          {talukListData && talukListData.length ?
+                          talukListData.map((list) => (
                             <option
                               key={list.talukId}
                               value={list.talukId}
                             >
                               {list.talukName}
                             </option>
-                          ))}
+                          ))
+                          : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           {t("Taluk is required")}
@@ -2826,11 +2697,13 @@ function SiSdWiseSchemeTargetSetting() {
                         }
                       >
                         <option value="">{t("Select TSC")}</option>
-                        {tscListData.map((list) => (
+                        {tscListData && tscListData.length ?
+                        tscListData.map((list) => (
                           <option key={list.tscMasterId} value={list.tscMasterId}>
                             {list.name}
                           </option>
-                        ))}
+                        ))
+                        : ""}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {t("TSC is required")}

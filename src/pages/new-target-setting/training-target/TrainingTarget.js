@@ -1107,14 +1107,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1144,14 +1146,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Program")}</option>
-                                {trCourseListData.map((list) => (
+                                {trCourseListData && trCourseListData.length
+                                ?trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
                                     value={list.trCourseMasterId}
                                   >
                                     {list.trCourseMasterName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Training Program is required")}
@@ -1179,14 +1183,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Institution")}</option>
-                                {trInstituteListData.map((list) => (
+                                {trInstituteListData && trInstituteListData.length ?
+                                trInstituteListData.map((list) => (
                                   <option
                                     key={list.trInstitutionMasterId}
                                     value={list.trInstitutionMasterId}
                                   >
                                     {list.trInstitutionMasterName}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Training Institution is required")}
@@ -1340,28 +1346,7 @@ function TrainingTarget() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+         
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -1416,14 +1401,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1452,14 +1439,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Program")}</option>
-                                {trCourseListData.map((list) => (
+                                {trCourseListData && trCourseListData.length ?
+                                trCourseListData.map((list) => (
                                   <option
                                     key={list.trCourseMasterId}
                                     value={list.trCourseMasterId}
                                   >
                                     {list.trCourseMasterName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Training Program is required")}
@@ -1488,14 +1477,16 @@ function TrainingTarget() {
                                 }
                               >
                                 <option value="">{t("Select Institution")}</option>
-                                {trInstituteListData.map((list) => (
+                                {trInstituteListData && trInstituteListData.length ?
+                                trInstituteListData.map((list) => (
                                   <option
                                     key={list.trInstitutionMasterId}
                                     value={list.trInstitutionMasterId}
                                   >
                                     {list.trInstitutionMasterName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Training Institution is required")}

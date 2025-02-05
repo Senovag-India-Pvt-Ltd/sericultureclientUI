@@ -1199,14 +1199,16 @@ function GrainagewiseTarget() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length ?
+                                  financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                : ""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1230,14 +1232,16 @@ function GrainagewiseTarget() {
                                   required
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData.length ?
+                                  raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}
@@ -1262,14 +1266,16 @@ function GrainagewiseTarget() {
                               required
                             >
                               <option value="">{t("Select Grainage")}</option>
-                              {grainageListData && grainageListData.length?(grainageListData.map((list) => (
+                              {grainageListData && grainageListData.length ?
+                              grainageListData.map((list) => (
                                 <option
                                   key={list.grainageMasterId}
                                   value={list.grainageMasterId}
                                 >
                                   {list.grainageMasterName}
                                 </option>
-                              ))):""}
+                              ))
+                              : ""}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
                               {t("Grainage is required")}
@@ -1444,28 +1450,7 @@ function GrainagewiseTarget() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
+          
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -1520,14 +1505,16 @@ function GrainagewiseTarget() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1552,14 +1539,16 @@ function GrainagewiseTarget() {
                                   disabled
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData.length
+                                  ?raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  : ""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}

@@ -1572,14 +1572,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {financialyearListData && financialyearListData.length
+                                ?financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
                                   >
                                     {list.financialYear}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Financial Year is required")}
@@ -1607,14 +1609,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Target Type")}</option>
-                                {mulberryTargetTypeData.map((list) => (
+                                {mulberryTargetTypeData && mulberryTargetTypeData.length
+                                ?mulberryTargetTypeData.map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
                                     value={list.mulberryTargetTypeId}
                                   >
                                     {list.mulberryTargetTypeName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Target is required")}
@@ -1641,14 +1645,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                 // }
                               >
                                 <option value="">{t("Select District")}</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.length
+                                ?districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
                                     {list.districtName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
@@ -1675,14 +1681,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select Taluk")}</option>
-                                {talukListData.map((list) => (
+                                {talukListData && talukListData.length?
+                                  talukListData.map((list) => (
                                   <option
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
                                     {list.talukName}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
@@ -1709,14 +1717,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                 }
                               >
                                 <option value="">{t("Select TSC")}</option>
-                                {tscListData.map((list) => (
+                                {tscListData && talukListData.length?
+                                talukListData.map((list) => (
                                   <option
                                     key={list.tscMasterId}
                                     value={list.tscMasterId}
                                   >
                                     {list.name}
                                   </option>
-                                ))}
+                                ))
+                                :""}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("TSC is required")}
@@ -1774,14 +1784,16 @@ function SiSdWiseProdPhyTargetSetting() {
                                   required
                                 >
                                   <option value="">{t("Select Race")}</option>
-                                  {raceListData.map((list) => (
+                                  {raceListData && raceListData.length?
+                                  raceListData.map((list) => (
                                     <option
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
                                       {list.raceMasterName}
                                     </option>
-                                  ))}
+                                  ))
+                                  :""}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   {t("Race is required")}
@@ -1922,7 +1934,7 @@ function SiSdWiseProdPhyTargetSetting() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
+          {/* {type.budgetType === "release" ? (
             <Col lg="4">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -1933,7 +1945,6 @@ function SiSdWiseProdPhyTargetSetting() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
                         <td>0</td>
                       </tr>
                     </tbody>
@@ -1943,7 +1954,7 @@ function SiSdWiseProdPhyTargetSetting() {
             </Col>
           ) : (
             ""
-          )}
+          )} */}
         </Row>
         <Row className="mt-2">
           <DataTable
@@ -2000,14 +2011,16 @@ function SiSdWiseProdPhyTargetSetting() {
                       }
                     >
                       <option value="">{t("Select Year")}</option>
-                      {financialyearListData.map((list) => (
+                      {financialyearListData && financialyearListData.length?
+                        financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
                           {list.financialYear}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Financial Year is required")}
@@ -2036,14 +2049,16 @@ function SiSdWiseProdPhyTargetSetting() {
                       }
                     >
                       <option value="">{t("Select Target Type")}</option>
-                      {mulberryTargetTypeData.map((list) => (
+                      {mulberryTargetTypeData && mulberryTargetTypeData?
+                      mulberryTargetTypeData.map((list) => (
                         <option
                           key={list.mulberryTargetTypeId}
                           value={list.mulberryTargetTypeId}
                         >
                           {list.mulberryTargetTypeName}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Target is required")}
@@ -2071,11 +2086,13 @@ function SiSdWiseProdPhyTargetSetting() {
                       // }
                     >
                       <option value="">{t("Select District")}</option>
-                      {districtListData.map((list) => (
+                      {districtListData && districtListData.length
+                      ?districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
                         </option>
-                      ))}
+                      ))
+                      : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("District is required")}
@@ -2103,11 +2120,13 @@ function SiSdWiseProdPhyTargetSetting() {
                       // }
                     >
                       <option value="">{t("Select Taluk")}</option>
-                      {talukListData.map((list) => (
+                      {talukListData && talukListData.length
+                      ?talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("District is required")}
@@ -2135,11 +2154,13 @@ function SiSdWiseProdPhyTargetSetting() {
                       }
                     >
                       <option value="">{t("Select TSC")}</option>
-                      {tscListData.map((list) => (
+                      {tscListData && tscListData.length?
+                      tscListData.map((list) => (
                         <option key={list.tscMasterId} value={list.tscMasterId}>
                           {list.name}
                         </option>
-                      ))}
+                      ))
+                      :""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("TSC is required")}
@@ -2198,14 +2219,16 @@ function SiSdWiseProdPhyTargetSetting() {
                         disabled
                       >
                         <option value="">{t("Select Race")}</option>
-                        {raceListData.map((list) => (
+                        {raceListData && raceListData.length
+                        ?raceListData.map((list) => (
                           <option
                             key={list.raceMasterId}
                             value={list.raceMasterId}
                           >
                             {list.raceMasterName}
                           </option>
-                        ))}
+                        ))
+                        :""}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {t("Race is required")}
