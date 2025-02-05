@@ -997,7 +997,7 @@ function ServiceApplication() {
   // };
   const handleCalculateUnitPrice = () => {
     // Validation for PDMC
-    if (schemeDetails.calculationBasedOn === "PDMC") {
+    if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
       if (!data.spacingId) {
         Swal.fire({
           icon: "warning",
@@ -1015,7 +1015,7 @@ function ServiceApplication() {
         return;
       }
       getAmountList();
-    } 
+    }  
     // Validation for Bivoltine Bonus
     else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
       if (!data.scCategoryId) {

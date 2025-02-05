@@ -193,7 +193,6 @@ function Menu() {
     Registration_Nsso: false,
     Registration_Farmer_Without_FruitsId: false,
     Registration_Other_State_Farmer: false,
-    Registration_Farmer_Details: false,
 
     Services: false,
     Services_Service_Application: false,
@@ -494,6 +493,9 @@ function Menu() {
     Admin_Report_Silk_Type_Market_Form_District_Abstract_Report: false,
     Admin_Report_Silk_Type_Market_District_Wise_Monthly: false,
     Admin_Report_Silk_Type_Market_Unit_Counter_Report: false,
+
+    Admin_Report_Seed_And_Dfl: false,
+    Admin_Report_Seed_And_Dfl_Farmer_Details: false,
 
     // Admin_Report_Admin: false,
     // Admin_Report_Transaction: false,
@@ -1212,14 +1214,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Registration_Farmer_Details ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Farmer Details By TSC")}
-                  to="/seriui/farmer-details-list-from-seed-and-dfl"
-                />
-              </MenuItem>
-            ) : null}
+            
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -4045,9 +4040,32 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
+
+                  {showMenu.Admin_Report_Seed_And_Dfl ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Seed and DFL")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                      {showMenu.Admin_Report_Seed_And_Dfl_Farmer_Details ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Farmer Details By TSC")}
+                          to="/seriui/farmer-details-list-from-seed-and-dfl"
+                        />
+                      </MenuItem>
+                    ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}
+
+            
           </MenuSub>
         </MenuItem>
       ) : null}
