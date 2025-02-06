@@ -278,7 +278,7 @@ function ExternalUnitRegisterEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="externalUnitNumber">
                         {t("External Units ID")}
                         </Form.Label>
@@ -292,7 +292,7 @@ function ExternalUnitRegisterEdit() {
                             placeholder={t("Enter External Units ID")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       {/* <Form.Group className="form-group">
                       <Form.Label htmlFor="lotNumber">
@@ -309,10 +309,7 @@ function ExternalUnitRegisterEdit() {
                         />
                       </div>
                     </Form.Group> */}
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                         <Form.Label>{t("Select Race")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -333,6 +330,10 @@ function ExternalUnitRegisterEdit() {
                         </div>
                       </Form.Group>
 
+                    </Col>
+
+                    <Col lg="6">
+                      
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="address">{t("address")}</Form.Label>
                         <div className="form-control-wrap">

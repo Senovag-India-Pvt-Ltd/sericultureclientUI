@@ -53,7 +53,8 @@ function ExternalUnitRegister() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-          saveSuccess();
+          const externalUnitNumber = response.data.content.externalUnitNumber;
+          saveSuccess(externalUnitNumber);
           setData({
             externalUnitTypeId: "",
             name: "",
@@ -126,11 +127,11 @@ function ExternalUnitRegister() {
   }, []);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (externalUnitNumber) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: `Generated External Unique Id is ${externalUnitNumber}`,
     })
   };
   const saveError = (message) => {
@@ -254,7 +255,7 @@ function ExternalUnitRegister() {
                       </div>
                     </Form.Group>
 
-                    <Form.Group className="form-group">
+                    {/* <Form.Group className="form-group">
                       <Form.Label htmlFor="externalUnitNumber">
                         {t("External Units ID")}
                       </Form.Label>
@@ -268,10 +269,7 @@ function ExternalUnitRegister() {
                           placeholder={t("Enter External Units ID")}
                         />
                       </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
+                    </Form.Group> */}
                     <Form.Group className="form-group">
                       <Form.Label>{t("Race")}</Form.Label>
                       <div className="form-control-wrap">
@@ -292,6 +290,10 @@ function ExternalUnitRegister() {
                         </Form.Select>
                       </div>
                     </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="address">{t("address")}</Form.Label>
