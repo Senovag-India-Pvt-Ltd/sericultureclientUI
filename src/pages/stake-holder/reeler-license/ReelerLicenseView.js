@@ -343,7 +343,7 @@ function ReelerLicenseView() {
                       <td>{dateFormatter(Reeler.inspectionDate)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)")}</td>
+                      <td style={styles.ctstyle}> {t("Uploaded Mahajar Details(Pdf/jpg/png)(Max:2mb)")}</td>
                       <td>
                         {" "}
                         {selectedMahajarFile && (

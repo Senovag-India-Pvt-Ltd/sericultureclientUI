@@ -1285,6 +1285,7 @@ function ReelerLicenceEdit() {
                               name="chakbandiLng"
                               value={data.chakbandiLng}
                               onChange={handleInputs}
+                              readOnly
                               placeholder={t("Enter Longitude")}
                             />
                           </Col>
@@ -1297,6 +1298,7 @@ function ReelerLicenceEdit() {
                               onChange={handleInputs}
                               type="text"
                               placeholder={t("Enter Latitude")}
+                              readOnly
                             />
                           </Col>
                         </Row>
@@ -1461,6 +1463,7 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             // maxDate={new Date()}
                             className="form-control"
+                            readOnly
                           />
                         </div>
                       </Form.Group>
