@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScProgramApprovalMappingList() {
   // Translation
@@ -18,7 +19,7 @@ function ScProgramApprovalMappingList() {
   
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 30;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -56,6 +57,19 @@ function ScProgramApprovalMappingList() {
   //     });
   // };
 
+  const [searchData, setSearchData] = useState({
+      subSchemeId: "",
+      pageNumber: page,
+      pageSize: countPerPage,
+    });
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
   const getList = () => {
     setLoading(true);
     const response = api
@@ -74,6 +88,52 @@ function ScProgramApprovalMappingList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  const search = (e) => {
+    api.get(`${baseURLDBT}master/cost/subScheme-work-flow-list-with-join`, { 
+        params: {
+            subSchemeId: searchData.subSchemeId,
+            pageNumber: searchData.pageNumber,
+            pageSize: searchData.pageSize,
+        },
+        headers: {
+          "Content-Type": "application/json"
+      }
+    })
+    .then((response) => {
+        setListData(response.data.content.subSchemeWorkFlow);
+        setTotalRows(response.data.content.totalItems);
+    })
+    .catch((err) => {
+        console.error("Error fetching data:", err);
+        setListData([]);
+    });
+};
+
+  // to get sc-sub-scheme-details by sc-scheme-details
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+    []
+  );
+  const getSubSchemeList = () => {
+    api
+      .get(baseURL + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        if (response.data.content.scSubSchemeDetails) {
+          setScSubSchemeDetailsListData(
+            response.data.content.scSubSchemeDetails
+          );
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
+
 
   const navigate = useNavigate();
   // const handleView = (_id) => {
@@ -327,44 +387,52 @@ function ScProgramApprovalMappingList() {
 
       <Block className="mt-n4">
         <Card>
-          {/* <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  Search By Component Type
                 </Form.Label>
                 <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      <option value="scProgramName">Program</option>
-                      <option value="stageName">Approval Stage</option>
-                    </Form.Select>
-                  </div>
+                  {/* <Form.Group className="form-group mt-n4"> */}
+                    {/* <Form.Label>
+                    {t("Component Type")}
+                      <span className="text-danger">*</span>
+                    </Form.Label> */}
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="subSchemeId"
+                        value={searchData.subSchemeId}
+                        onChange={handleInputs}
+                      >
+                        <option value="">{t("Select Component Type")}</option>
+                        {scSubSchemeDetailsListData &&
+                          scSubSchemeDetailsListData.map((list) => (
+                            <option
+                              key={list.scSubSchemeDetailsId}
+                              value={list.scSubSchemeDetailsId}
+                            >
+                              {list.subSchemeName}
+                            </option>
+                          ))}
+                      </Form.Select>
+                    </div>
+                  {/* </Form.Group> */}
                 </Col>
 
                 <Col sm={3}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                    Search
+                  {t("search")}
                   </Button>
                 </Col>
               </Form.Group>
             </Col>
-          </Row> */}
+          </Row>
+          </Card>
+         </Block>
 
+      <Block className='mt-3'>
+        <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ScProgramApprovalMappingDataColumns}
