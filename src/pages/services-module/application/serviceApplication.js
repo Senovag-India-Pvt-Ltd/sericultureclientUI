@@ -937,47 +937,106 @@ function ServiceApplication() {
 
   const [saveDisabled, setSaveDisabled] = useState(false);
 
-  const getEligibleAmount = () => {
-    const { scComponentId, scCategoryId, fruitsId } = data;
+//   const getEligibleAmount = () => {
+//     const { scComponentId, scCategoryId, fruitsId } = data;
 
-    if (!fruitsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
+//     if (!fruitsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
 
-    setLoading(true);
+//     setLoading(true);
     
-    api.post(`${baseURLDBT}service/getEligibleAmount?componentId=${scComponentId}&categoryId=${scCategoryId}&fruitsId=${fruitsId}`, {}, {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then((response) => {
-        const result = response.data.content?.[0]; // Ensure correct data access
-        if (schemeDetails.calculationBasedOn === "PMKSY" && result?.eligibleAmount === 0) {
-          Swal.fire({
-              icon: "warning",
-              title: "First apply application for PDMC",
-              text: "Please apply for PDMC before proceeding.",
-          });
-            setSaveDisabled(true);
-        } else {
-            setSaveDisabled(false);
-        }
-        setData({ ...data, expectedAmount: result?.eligibleAmount || "" });
-    })
-    .catch(() => {
-        setData({ ...data, expectedAmount: "" });
-    })
-    .finally(() => {
-        setLoading(false);
-    });
+//     api.post(`${baseURLDBT}service/getEligibleAmount?componentId=${scComponentId}&categoryId=${scCategoryId}&fruitsId=${fruitsId}`, {}, {
+//         headers: {
+//             "Content-Type": "application/json"
+//         }
+//     })
+//     .then((response) => {
+//         const result = response.data.content?.[0]; // Ensure correct data access
+//         const eligibleAmount = result?.eligibleAmount;
+
+//         // Check only if schemeDetails.calculationBasedOn is "PMKSY"
+//         if (schemeDetails.calculationBasedOn === "PMKSY") {
+//             if (eligibleAmount === null || eligibleAmount === undefined || eligibleAmount === 0) {
+//                 Swal.fire({
+//                     icon: "warning",
+//                     title: "First apply application for PDMC",
+//                     text: "Please apply for PDMC before proceeding.",
+//                 });
+//                 setSaveDisabled(true);
+//             } else {
+//                 setSaveDisabled(false);
+//             }
+//         } else {
+//             // If schemeDetails.calculationBasedOn is NOT "PMKSY", enable save
+//             setSaveDisabled(false);
+//         }
+
+//         setData({ ...data, expectedAmount: eligibleAmount || "" });
+//     })
+//     .catch(() => {
+//         setData({ ...data, expectedAmount: "" });
+//     })
+//     .finally(() => {
+//         setLoading(false);
+//     });
+// };
+
+// // useEffect to trigger API call
+// useEffect(() => {
+//   if (data.scComponentId && data.scCategoryId && data.fruitsId) {
+//     getEligibleAmount();
+//   }
+// }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
+
+const getEligibleAmount = () => {
+  const { scComponentId, scCategoryId, fruitsId } = data;
+
+  if (!fruitsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
+
+  setLoading(true);
+  
+  api.post(`${baseURLDBT}service/getEligibleAmount?componentId=${scComponentId}&categoryId=${scCategoryId}&fruitsId=${fruitsId}`, {}, {
+      headers: {
+          "Content-Type": "application/json"
+      }
+  })
+  .then((response) => {
+      const result = response.data.content?.[0]; // Ensure correct data access
+      const eligibleAmount = result?.eligibleAmount;
+
+      if (schemeDetails.calculationBasedOn === "PMKSY") {
+          if (eligibleAmount === null || eligibleAmount === undefined || eligibleAmount === 0) {
+              Swal.fire({
+                  icon: "warning",
+                  title: "First apply application for PDMC",
+                  text: "Please apply for PDMC before proceeding.",
+              });
+              setSaveDisabled(true);
+              setData({ ...data, expectedAmount: "" }); // Reset expectedAmount for PMKSY if no eligible amount
+          } else {
+              setSaveDisabled(false);
+              setData({ ...data, expectedAmount: eligibleAmount || "" }); // Only set expectedAmount for PMKSY
+          }
+      } else {
+          setSaveDisabled(false);
+          // Do NOT update expectedAmount for non-PMKSY cases
+      }
+  })
+  .catch(() => {
+      setData({ ...data, expectedAmount: "" });
+  })
+  .finally(() => {
+      setLoading(false);
+  });
 };
 
-
-
+// useEffect to trigger API call
 useEffect(() => {
-  if (data.scComponentId && data.scCategoryId && data.fruitsId) {
-    getEligibleAmount(data.scComponentId,data.scCategoryId,data.fruitsId);
-  }
-}, [data.scComponentId, data.scCategoryId,data.fruitsId]);
+if (data.scComponentId && data.scCategoryId && data.fruitsId) {
+  getEligibleAmount();
+}
+}, [data.scComponentId, data.scCategoryId, data.fruitsId]);
+
+
 
 
   const calculateBonusAmount = () => {

@@ -667,7 +667,166 @@ function DashboardReportList() {
   const [isSanctionOrderAllowed, setIsSanctionOrderAllowed] = useState(false);
    
 
-  const getActionFarmerList = (fid,schemeId) => {
+  // const getActionFarmerList = (fid,schemeId) => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+  //       {},
+  //       {
+  //         params: {
+  //           userId: localStorage.getItem("userMasterId"),
+  //           stepId: id,
+  //           fid: fid,
+  //           schemeId: schemeId,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       const data = response.data.content; // Store the response data in a variable
+  //       const recordData = data[0];
+  //       setActionFarmerData(data);
+  //        const subSchemeId = recordData?.subSchemeId;
+  //        const designationStep = recordData?.designationStep;
+
+  //     if (recordData.financialDelegation) {
+  //       const amountToPass =
+  //         !recordData.eligibleAmount || recordData.eligibleAmount === 0
+  //           ? recordData.schemeAmount
+  //           : recordData.eligibleAmount;
+
+  //       api
+  //         .post(
+  //           baseURLDBT + `service/checkApprovalPower`,
+  //           {},
+  //           {
+  //             params: {
+  //               approvalStageId: recordData.approvalStageId,
+  //               designationId,
+  //               schemeAmount: amountToPass,
+  //               subSchemeId: recordData.subSchemeId,
+  //               applicationFormId: recordData.applicationDocumentId,
+  //             },
+  //           }
+  //         )
+  //         .then((response) => {
+  //           const isAllowed = response.data;
+
+  //           setIsSanctionOrderAllowed(isAllowed);
+
+  //           if (isAllowed) {
+  //             // Call for "after next step" and "user from district" when isSanctionOrderAllowed is true
+  //             getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+  //             getUserFromDistrictList(
+  //               recordData.subSchemeId,
+  //               // recordData.approvalStageId,
+  //               approvalStageId,
+  //               districtId,
+  //               talukId
+  //             );
+  //           } else {
+  //             // Call for "same step" and "user of steps to approve" when isSanctionOrderAllowed is false
+  //             getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+  //             getUserOfStepsToApproveList(
+  //               recordData.subSchemeId,
+  //               // recordData.approvalStageId,
+  //               approvalStageId,
+  //               districtId,
+  //               talukId,
+  //               designationStep,
+  //             );
+  //           }
+
+  //           handleShowModal(fid);
+  //         })
+  //         .catch((err) => {
+  //           setIsSanctionOrderAllowed(false);
+  //           // Fallback logic when checkApprovalPower fails
+  //           getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+  //           getUserOfStepsToApproveList(
+  //             recordData.subSchemeId,
+  //             // recordData.approvalStageId,
+  //             approvalStageId,
+  //             districtId,
+  //             talukId,
+  //             designationStep,
+  //           );
+  //           handleShowModal(fid);
+  //         });
+  //     } else {
+  //       // When financialDelegation is false, no need to check isSanctionOrderAllowed
+  //       getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+  //       getUserFromDistrictList(
+  //         recordData.subSchemeId,
+  //         // recordData.approvalStageId,
+  //         approvalStageId,
+  //         districtId,
+  //         talukId
+  //       );
+  //       handleShowModal(fid);
+  //     }
+     
+  //       if (recordData.pushToDbt) {
+  //         api
+  //           .post(
+  //             baseURLDBT +
+  //               `service/getApplicationDetailsFromScApplicationFormServiceId`,
+  //             { scApplicationFormServiceId: recordData.applicationDocumentId }
+  //           )
+  //           .then((response) => {
+  //             setRecordFromAppForm(
+  //               response.data.content[0].applicationDetailsResponses
+  //             );
+  //           })
+  //           .catch((err) => {
+  //             setRecordFromAppForm([]);
+  //           });
+  //       }
+
+
+  //       // Extract and set the applicationDocumentId
+  //       const applicationDocumentId = recordData?.applicationDocumentId; // Use data variable here
+  //       setApplicationFormId(applicationDocumentId); // Set applicationFormId here
+
+  //       // Extract categoryId and componentId
+  //       const categoryId = recordData?.categoryId;
+  //       const componentId = recordData?.componentId;
+  //       const schemeId = recordData?.schemeId;
+
+  //       // // Fetch DBT List using extracted categoryId and componentId
+  //       // if (categoryId && componentId) {
+  //       //   getPushToDBTList(categoryId, componentId);
+  //       // }
+  //       // Ensure the applicationDocumentId is passed here
+  //     if (categoryId && componentId && schemeId && applicationDocumentId) {
+  //       getPushToDBTList(categoryId, componentId, schemeId,applicationDocumentId);
+  //     }
+
+       
+
+  //       setSubSchemeId(subSchemeId); // Set subSchemeId from recordData
+        
+
+  //       // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
+  //       setUploadDocuments((prev) => ({
+  //         ...prev,
+  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+  //       }));
+
+  //       setSanctionOrderData((prev) => ({
+  //         ...prev,
+  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+  //       }));
+
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setActionFarmerData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getActionFarmerList = (fid, schemeId) => {
     setLoading(true);
     api
       .post(
@@ -683,283 +842,101 @@ function DashboardReportList() {
         }
       )
       .then((response) => {
-        const data = response.data.content; // Store the response data in a variable
+        const data = response.data.content;
         const recordData = data[0];
         setActionFarmerData(data);
-
-        const sanctionOrderNumber = recordData?.sanctionOrderNumber; // Get the sanction order number
-
-        // Determine if Approval Stage and User fields should be disabled
-        const fieldsShouldBeDisabled = recordData?.sanctionOrder && !sanctionOrderNumber && recordData?.financialDelegation && isSanctionOrderAllowed;
-        if (fieldsShouldBeDisabled) {
-          Swal.fire({
-            title: "Action Required!",
-            text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-        }        
-        setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled); 
-         // Extract subSchemeId and approvalStageId
-         const subSchemeId = recordData?.subSchemeId;
-         const designationStep = recordData?.designationStep;
-        //  const approvalStageId = recordData?.approvalStageId;
-
-        console.log("data", data);
-
-      //   if (recordData.financialDelegation) {
-      //     // Determine the correct amount to pass
-      //     const amountToPass =
-      //       !recordData.eligibleAmount || recordData.eligibleAmount === 0
-      //         ? recordData.schemeAmount
-      //         : recordData.eligibleAmount;
   
-      //     api
-      //       .post(
-      //         baseURLDBT + `service/checkApprovalPower`,
-      //         {},
-      //         {
-      //           params: {
-      //             approvalStageId: recordData.approvalStageId,
-      //             designationId,
-      //             schemeAmount: amountToPass, // Pass the correct amount
-      //             subSchemeId: recordData.subSchemeId,
-      //             applicationFormId: recordData.applicationDocumentId,
-      //           },
-      //         }
-       
-      // )
-      // .then((response) => {
-      //   setIsSanctionOrderAllowed(response.data); // Set sanction order visibility
-      //   handleShowModal(fid); // Open the modal window regardless of the response
-      // })
-      // .catch((err) => {
-      //   setIsSanctionOrderAllowed(false); // Default to hiding sanction order on error
-      //   handleShowModal(fid); // Open the modal window regardless
-      // });
-      // } else {
-      //   handleShowModal(fid);
-      // }
-      // if (recordData.financialDelegation) {
-      //   const amountToPass =
-      //     !recordData.eligibleAmount || recordData.eligibleAmount === 0
-      //       ? recordData.schemeAmount
-      //       : recordData.eligibleAmount;
-
-      //   api
-      //     .post(
-      //       baseURLDBT + `service/checkApprovalPower`,
-      //       {},
-      //       {
-      //         params: {
-      //           approvalStageId: recordData.approvalStageId,
-      //           designationId,
-      //           schemeAmount: amountToPass,
-      //           subSchemeId: recordData.subSchemeId,
-      //           applicationFormId: recordData.applicationDocumentId,
-      //         },
-      //       }
-      //     )
-      //     .then((response) => {
-      //       const isAllowed = response.data;
-
-      //       setIsSanctionOrderAllowed(isAllowed);
-
-      //       // Adjust logic based on `checkApprovalPower` response
-      //       if (isAllowed) {
-      //         setApprovalStageSameStepListData([]); // Clear same step list
-      //         setUserOfStepsToApproveData([]); // Clear same step users
-      //       } else {
-      //         // Fetch lists for "same step"
-      //         getApprovalStageSameStepList(
-      //           recordData.subSchemeId,
-      //           recordData.approvalStageId
-      //         );
-      //         getUserOfStepsToApproveList(
-      //           recordData.subSchemeId,
-      //           recordData.approvalStageId,
-      //           districtId,
-      //           talukId
-      //         );
-      //       }
-
-      //       handleShowModal(fid);
-      //     })
-      //     .catch((err) => {
-      //       setIsSanctionOrderAllowed(false);
-      //       getApprovalStageSameStepList(
-      //         recordData.subSchemeId,
-      //         recordData.approvalStageId
-      //       );
-      //       getUserOfStepsToApproveList(
-      //         recordData.subSchemeId,
-      //         recordData.approvalStageId,
-      //         districtId,
-      //         talukId
-      //       );
-      //       handleShowModal(fid);
-      //     });
-      // } else {
-      //   handleShowModal(fid);
-      // }
-      // Check if financialDelegation is true
-      if (recordData.financialDelegation) {
-        const amountToPass =
-          !recordData.eligibleAmount || recordData.eligibleAmount === 0
-            ? recordData.schemeAmount
-            : recordData.eligibleAmount;
-
-        api
-          .post(
-            baseURLDBT + `service/checkApprovalPower`,
-            {},
-            {
-              params: {
-                approvalStageId: recordData.approvalStageId,
-                designationId,
-                schemeAmount: amountToPass,
-                subSchemeId: recordData.subSchemeId,
-                applicationFormId: recordData.applicationDocumentId,
-              },
-            }
-          )
-          .then((response) => {
-            const isAllowed = response.data;
-
-            setIsSanctionOrderAllowed(isAllowed);
-
-            if (isAllowed) {
-              // Call for "after next step" and "user from district" when isSanctionOrderAllowed is true
-              getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
-              getUserFromDistrictList(
-                recordData.subSchemeId,
-                // recordData.approvalStageId,
-                approvalStageId,
-                districtId,
-                talukId
-              );
-            } else {
-              // Call for "same step" and "user of steps to approve" when isSanctionOrderAllowed is false
-              getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
-              getUserOfStepsToApproveList(
-                recordData.subSchemeId,
-                // recordData.approvalStageId,
-                approvalStageId,
-                districtId,
-                talukId,
-                designationStep,
-              );
-            }
-
-            handleShowModal(fid);
-          })
-          .catch((err) => {
-            setIsSanctionOrderAllowed(false);
-            // Fallback logic when checkApprovalPower fails
-            getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
-            getUserOfStepsToApproveList(
-              recordData.subSchemeId,
-              // recordData.approvalStageId,
-              approvalStageId,
-              districtId,
-              talukId,
-              designationStep,
-            );
-            handleShowModal(fid);
-          });
-      } else {
-        // When financialDelegation is false, no need to check isSanctionOrderAllowed
-        getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
-        getUserFromDistrictList(
-          recordData.subSchemeId,
-          // recordData.approvalStageId,
-          approvalStageId,
-          districtId,
-          talukId
-        );
-        handleShowModal(fid);
-      }
-     
-        if (recordData.pushToDbt) {
-          api
-            .post(
-              baseURLDBT +
-                `service/getApplicationDetailsFromScApplicationFormServiceId`,
-              { scApplicationFormServiceId: recordData.applicationDocumentId }
-            )
-            .then((response) => {
-              setRecordFromAppForm(
-                response.data.content[0].applicationDetailsResponses
-              );
-            })
-            .catch((err) => {
-              setRecordFromAppForm([]);
-            });
-        }
-
-
-        // Extract and set the applicationDocumentId
-        const applicationDocumentId = recordData?.applicationDocumentId; // Use data variable here
-        setApplicationFormId(applicationDocumentId); // Set applicationFormId here
-
-        // Extract categoryId and componentId
+        const subSchemeId = recordData?.subSchemeId;
+        const designationStep = recordData?.designationStep;
+        const applicationDocumentId = recordData?.applicationDocumentId;
         const categoryId = recordData?.categoryId;
         const componentId = recordData?.componentId;
         const schemeId = recordData?.schemeId;
-
-        // // Fetch DBT List using extracted categoryId and componentId
-        // if (categoryId && componentId) {
-        //   getPushToDBTList(categoryId, componentId);
-        // }
-        // Ensure the applicationDocumentId is passed here
-      if (categoryId && componentId && schemeId && applicationDocumentId) {
-        getPushToDBTList(categoryId, componentId, schemeId,applicationDocumentId);
-      }
-
-       
-
-        setSubSchemeId(subSchemeId); // Set subSchemeId from recordData
-        // setApprovalStageId(approvalStageId);
-
-        // Fetch DBT List using extracted subSchemeId and approvalStageId
-        // if (subSchemeId && approvalStageId) {
-        //   getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
-        // }
-
-        // // if (subSchemeId && approvalStageId) {
-        // //   getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId);
-        // // }
-
-        // // if (subSchemeId && approvalStageId) {
-        // //   getUserFromDistrictList(subSchemeId, approvalStageId);
-        // // }
-        // if (subSchemeId && approvalStageId && districtId && talukId) {
-        //   getUserFromDistrictList(
-        //     subSchemeId,
-        //     approvalStageId,
-        //     districtId,
-        //     talukId
-        //   );
-        // }
-
-        // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
+  
+        if (recordData.financialDelegation) {
+          const amountToPass =
+            !recordData.eligibleAmount || recordData.eligibleAmount === 0
+              ? recordData.schemeAmount
+              : recordData.eligibleAmount;
+  
+          api
+            .post(
+              baseURLDBT + `service/checkApprovalPower`,
+              {},
+              {
+                params: {
+                  approvalStageId: recordData.approvalStageId,
+                  designationId,
+                  schemeAmount: amountToPass,
+                  subSchemeId: recordData.subSchemeId,
+                  applicationFormId: recordData.applicationDocumentId,
+                },
+              }
+            )
+            .then((response) => {
+              const isAllowed = response.data;
+              setIsSanctionOrderAllowed(isAllowed);
+  
+              if (isAllowed) {
+                getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+                getUserFromDistrictList( recordData.subSchemeId, approvalStageId, districtId, talukId );
+              } else {
+                getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+                getUserOfStepsToApproveList( recordData.subSchemeId, approvalStageId, districtId, talukId, designationStep );
+              }
+  
+              // ✅ **Move `fieldsShouldBeDisabled` logic inside `if (isAllowed)`**
+              if (isAllowed) {
+                const sanctionOrderNumber = recordData?.sanctionOrderNumber;
+                const fieldsShouldBeDisabled = recordData?.sanctionOrder && !sanctionOrderNumber;
+  
+                if (fieldsShouldBeDisabled) {
+                  Swal.fire({
+                    title: "Action Required!",
+                    text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                }
+                setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled);
+              }
+  
+              handleShowModal(fid);
+            })
+            .catch(() => {
+              setIsSanctionOrderAllowed(false);
+              getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
+              getUserOfStepsToApproveList( recordData.subSchemeId, approvalStageId, districtId, talukId, designationStep );
+              handleShowModal(fid);
+            });
+        } else {
+          getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
+          getUserFromDistrictList( recordData.subSchemeId, approvalStageId, districtId, talukId );
+          handleShowModal(fid);
+        }
+  
+        if (categoryId && componentId && schemeId && applicationDocumentId) {
+          getPushToDBTList(categoryId, componentId, schemeId, applicationDocumentId);
+        }
+  
+        setSubSchemeId(subSchemeId);
         setUploadDocuments((prev) => ({
           ...prev,
-          applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+          applicationFormId: applicationDocumentId,
         }));
-
         setSanctionOrderData((prev) => ({
           ...prev,
-          applicationFormId: applicationDocumentId, // Set applicationDocumentId here
+          applicationFormId: applicationDocumentId,
         }));
-
+  
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setActionFarmerData({});
         setLoading(false);
       });
   };
+  
 
 
 
