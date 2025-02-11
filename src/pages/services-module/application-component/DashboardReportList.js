@@ -140,8 +140,6 @@ function DashboardReportList() {
     console.log("i", i);
     setPushToDbtData((prev) => ({ ...prev, row: i }));
     setSendApplicationFormServiceData((prev) => {
-      console.log("prevdata", prev);
-      console.log("datadata", data);
       const updatedData = [...prev];
       if (i < updatedData.length) {
         // updatedData[i] = { ...data, ...actionFarmerData[0] };
@@ -688,6 +686,20 @@ function DashboardReportList() {
         const data = response.data.content; // Store the response data in a variable
         const recordData = data[0];
         setActionFarmerData(data);
+
+        const sanctionOrderNumber = recordData?.sanctionOrderNumber; // Get the sanction order number
+
+        // Determine if Approval Stage and User fields should be disabled
+        const fieldsShouldBeDisabled = recordData?.sanctionOrder && !sanctionOrderNumber && recordData?.financialDelegation && isSanctionOrderAllowed;
+        if (fieldsShouldBeDisabled) {
+          Swal.fire({
+            title: "Action Required!",
+            text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        }        
+        setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled); 
          // Extract subSchemeId and approvalStageId
          const subSchemeId = recordData?.subSchemeId;
          const designationStep = recordData?.designationStep;
@@ -1372,6 +1384,8 @@ function DashboardReportList() {
   // Add this at the beginning of your component to manage the disabled state
 const [fieldsDisabled, setFieldsDisabled] = useState(false);
 
+const [fieldsSanctionOrderDisabled, setFieldsSanctionOrderDisabled] = useState(false);
+
 
 
 const handleActionInputs = (e) => {
@@ -1774,12 +1788,13 @@ const handleActionInputs = (e) => {
       if (
         actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
         actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
-        !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
+        // !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
+        (!isSanctionOrderAllowed || actionFarmerData[0].sanctionOrderNumber)
       ) {
         apiCall = api
           .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
           .then((response) => {
-            saveSuccess("Please forward the request to the higher authority to initiate the generation of the sanction order.");
+            saveSuccess("Please forward the request to the higher authority to initiate the generation of the sanction order and submit it to FRUITS.");
             clear();
             setValidated(false);
           })
@@ -2816,7 +2831,8 @@ const handleActionInputs = (e) => {
                                     onChange={handleActionInputs}
                                     required
                                     // isInvalid={!actionData.stepId || actionData.stepId === "0"}
-                                    disabled={fieldsDisabled}
+                                    // disabled={fieldsDisabled}
+                                    disabled={fieldsDisabled || fieldsSanctionOrderDisabled} 
                                   >
                                     <option value="">Select Approval Stage</option>
                                     {(actionData.rejectType === "Objection" ? approvalRejectStageBeforeStepListData : approvalStageAfterNextStepListData).map((list) => (
@@ -2849,7 +2865,8 @@ const handleActionInputs = (e) => {
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
-                                        disabled={fieldsDisabled}
+                                        // disabled={fieldsDisabled}
+                                        disabled={fieldsDisabled || fieldsSanctionOrderDisabled}
                                         // isInvalid={
                                         //   actionData.userId === undefined ||
                                         //   actionData.userId === "0"
@@ -3152,6 +3169,7 @@ const handleActionInputs = (e) => {
                       actionFarmerData[0].sanctionOrder &&
                       isSanctionOrderAllowed && ( */}
                       {actionFarmerData.length > 0 &&
+                        !actionFarmerData[0].sanctionOrderNumber && 
                       (actionFarmerData[0].financialDelegation
                         ? // When financialDelegation is true, check isSanctionOrderAllowed
                           (actionFarmerData[0].sanctionOrder && isSanctionOrderAllowed)

@@ -870,44 +870,54 @@ function ServiceApplication() {
 
   // const getAmountList = () => {
   //   setLoading(true);
-  //   const { spacingId, hectareId } = data;
-
-  //   // Make API call with spacingId and hectareId as parameters
-  //   api
+  //   const spacingId = data.spacingId;
+  //   const hectareId = data.hectareId;
+    
+  //   const response = api
   //     .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
   //     .then((response) => {
-  //       // Update UI with the fetched unit price
-  //       const amountDetails = response.data[0]; // Assuming first object contains the amount data
+  //       const result = response.data[0]; // Assuming the first element contains the relevant data
+  //       setAmountValue({
+  //         ...amountValue,
+  //         unitPrice: result.amount, // Set the Unit Price
+  //       });
   //       setData({
   //         ...data,
-  //         unitPrice: amountDetails.amount,
-  //         expectedAmount: amountDetails.amount, // Subsidy amount can be set similarly
+  //         expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
   //       });
   //       setLoading(false);
   //     })
   //     .catch((err) => {
-  //       console.error("Error fetching amount data:", err);
+  //       setAmountValue({
+  //         ...amountValue,
+  //         unitPrice: "", // Clear Unit Price if API call fails
+  //       });
+  //       setData({
+  //         ...data,
+  //         expectedAmount: "", // Clear expectedAmount if API call fails
+  //       });
   //       setLoading(false);
   //     });
   // };
-
   const getAmountList = () => {
     setLoading(true);
     const spacingId = data.spacingId;
     const hectareId = data.hectareId;
     
-    const response = api
-      .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
+    api.get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
       .then((response) => {
         const result = response.data[0]; // Assuming the first element contains the relevant data
         setAmountValue({
           ...amountValue,
           unitPrice: result.amount, // Set the Unit Price
         });
-        setData({
-          ...data,
-          expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
-        });
+        
+        if (schemeDetails.calculationBasedOn !== "PMKSY") { // Only update expectedAmount if not PMKSY
+            setData({
+              ...data,
+              expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
+            });
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -915,13 +925,60 @@ function ServiceApplication() {
           ...amountValue,
           unitPrice: "", // Clear Unit Price if API call fails
         });
-        setData({
-          ...data,
-          expectedAmount: "", // Clear expectedAmount if API call fails
-        });
+        if (schemeDetails.calculationBasedOn !== "PMKSY") {
+            setData({
+              ...data,
+              expectedAmount: "", // Clear expectedAmount if API call fails
+            });
+        }
         setLoading(false);
       });
-  };
+};
+
+  const [saveDisabled, setSaveDisabled] = useState(false);
+
+  const getEligibleAmount = () => {
+    const { scComponentId, scCategoryId, fruitsId } = data;
+
+    if (!fruitsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
+
+    setLoading(true);
+    
+    api.post(`${baseURLDBT}service/getEligibleAmount?componentId=${scComponentId}&categoryId=${scCategoryId}&fruitsId=${fruitsId}`, {}, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then((response) => {
+        const result = response.data.content?.[0]; // Ensure correct data access
+        if (result?.eligibleAmount === 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "First apply application for PDMC",
+                text: "Please apply for PDMC before proceeding.",
+            });
+            setSaveDisabled(true);
+        } else {
+            setSaveDisabled(false);
+        }
+        setData({ ...data, expectedAmount: result?.eligibleAmount || "" });
+    })
+    .catch(() => {
+        setData({ ...data, expectedAmount: "" });
+    })
+    .finally(() => {
+        setLoading(false);
+    });
+};
+
+
+
+useEffect(() => {
+  if (data.scComponentId && data.scCategoryId && data.fruitsId) {
+    getEligibleAmount(data.scComponentId,data.scCategoryId,data.fruitsId);
+  }
+}, [data.scComponentId, data.scCategoryId,data.fruitsId]);
+
 
   const calculateBonusAmount = () => {
     const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
@@ -995,65 +1052,91 @@ function ServiceApplication() {
   //     alert("Invalid calculation method.");
   //   }
   // };
-  const handleCalculateUnitPrice = () => {
-    // Validation for PDMC
+  // const handleCalculateUnitPrice = () => {
+  //   // Validation for PDMC
+  //   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
+  //     if (!data.spacingId) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Validation Error",
+  //         text: "Please select a Spacing.",
+  //       });
+  //       return;
+  //     }
+  //     if (!data.hectareId) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Validation Error",
+  //         text: "Please select a Hectare.",
+  //       });
+  //       return;
+  //     }
+  //     getAmountList();
+  //   }  
+  //   // Validation for Bivoltine Bonus
+  //   else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+  //     if (!data.scCategoryId) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Validation Error",
+  //         text: "Please select a Sub Component.",
+  //       });
+  //       return;
+  //     }
+  //     if (!data.scComponentId) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Validation Error",
+  //         text: "Please select a Component.",
+  //       });
+  //       return;
+  //     }
+  //     if (!data.cocoonsWeight) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Validation Error",
+  //         text: "Please enter the Cocoons Weight.",
+  //       });
+  //       return;
+  //     }
+  //     calculateBonusAmount();
+  //   } 
+  //   // Fallback for invalid calculation method
+  //   else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Invalid calculation method.",
+  //     });
+  //   }
+  // };
+  const handleCalculateUnitPrice = () => { 
     if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
-      if (!data.spacingId) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Please select a Spacing.",
-        });
-        return;
-      }
-      if (!data.hectareId) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Please select a Hectare.",
-        });
-        return;
-      }
-      getAmountList();
+        if (!data.spacingId) {
+            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Spacing." });
+            return;
+        }
+        if (!data.hectareId) {
+            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Hectare." });
+            return;
+        }
+
+        if (schemeDetails.calculationBasedOn === "PMKSY") {
+            getEligibleAmount(); // Call the API after selecting fruitsId, categoryId, and componentId
+        }
+        getAmountList(); // Call to fill unitPrice
     }  
-    // Validation for Bivoltine Bonus
     else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
-      if (!data.scCategoryId) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Please select a Sub Component.",
-        });
-        return;
-      }
-      if (!data.scComponentId) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Please select a Component.",
-        });
-        return;
-      }
-      if (!data.cocoonsWeight) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Please enter the Cocoons Weight.",
-        });
-        return;
-      }
-      calculateBonusAmount();
+        if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+            return;
+        }
+        calculateBonusAmount();
     } 
-    // Fallback for invalid calculation method
     else {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Invalid calculation method.",
-      });
+        Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
     }
-  };
-  
+};
 
   // to get bonus Amount by component and category
   const [bonusAmountData, setBonusAmountListData] = useState(
@@ -2516,7 +2599,7 @@ function ServiceApplication() {
                         </Col>
 
                         {/* Conditionally Render Spacing Field */}
-                        {schemeDetails.calculationBasedOn === "PDMC" && (
+                        {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="spacing">
@@ -2554,7 +2637,7 @@ function ServiceApplication() {
                         )}
 
                         {/* Conditionally Render Hectare Field */}
-                        {schemeDetails.calculationBasedOn === "PDMC" && (
+                        {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="hectare">
@@ -3778,9 +3861,12 @@ function ServiceApplication() {
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
-                    <Button type="submit" variant="primary">
+                    {/* <Button type="submit" variant="primary">
                     {t("save")}
-                    </Button>
+                    </Button> */}
+                    <Button type="submit" variant="primary" disabled={saveDisabled}>
+                    {t("save")}
+                </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
