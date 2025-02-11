@@ -951,12 +951,12 @@ function ServiceApplication() {
     })
     .then((response) => {
         const result = response.data.content?.[0]; // Ensure correct data access
-        if (result?.eligibleAmount === 0) {
-            Swal.fire({
-                icon: "warning",
-                title: "First apply application for PDMC",
-                text: "Please apply for PDMC before proceeding.",
-            });
+        if (schemeDetails.calculationBasedOn === "PMKSY" && result?.eligibleAmount === 0) {
+          Swal.fire({
+              icon: "warning",
+              title: "First apply application for PDMC",
+              text: "Please apply for PDMC before proceeding.",
+          });
             setSaveDisabled(true);
         } else {
             setSaveDisabled(false);
