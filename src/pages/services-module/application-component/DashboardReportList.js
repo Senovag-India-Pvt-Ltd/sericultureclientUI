@@ -95,8 +95,8 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
-  const checkToShowModal = (fid,schemeId) => {
-    getActionFarmerList(fid,schemeId);
+  const checkToShowModal = (fid,schemeId,applicationId,componentType) => {
+    getActionFarmerList(fid,schemeId,componentType);
   };
 
   const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
@@ -388,6 +388,8 @@ function DashboardReportList() {
   // }, [data.scSubSchemeDetailsId]);
 
   const [applicationFormId, setApplicationFormId] = useState(null);
+
+  const [componentType, setComponentType] = useState(null);
 
   const [schemeId, setSchemeId] = useState(null);
 
@@ -826,7 +828,7 @@ function DashboardReportList() {
   //     });
   // };
 
-  const getActionFarmerList = (fid, schemeId) => {
+  const getActionFarmerList = (fid, schemeId,componentType) => {
     setLoading(true);
     api
       .post(
@@ -838,6 +840,7 @@ function DashboardReportList() {
             stepId: id,
             fid: fid,
             schemeId: schemeId,
+            componentType: componentType,
           },
         }
       )
@@ -851,7 +854,9 @@ function DashboardReportList() {
         const applicationDocumentId = recordData?.applicationDocumentId;
         const categoryId = recordData?.categoryId;
         const componentId = recordData?.componentId;
+        const componentType = recordData?.componentType;
         const schemeId = recordData?.schemeId;
+        setApplicationFormId(recordData?.applicationDocumentId);
   
         if (recordData.financialDelegation) {
           const amountToPass =
@@ -916,7 +921,7 @@ function DashboardReportList() {
         }
   
         if (categoryId && componentId && schemeId && applicationDocumentId) {
-          getPushToDBTList(categoryId, componentId, schemeId, applicationDocumentId);
+          getPushToDBTList(categoryId, componentId, schemeId, applicationDocumentId,componentType);
         }
   
         setSubSchemeId(subSchemeId);
@@ -949,15 +954,16 @@ function DashboardReportList() {
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
-  const getPushToDBTList = (categoryId, componentId,schemeId,applicationFormId) => {
+  const getPushToDBTList = (categoryId, componentId,schemeId,applicationFormId,componentType) => {
     api
       .post(
         baseURLDBT +
-          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}`
+          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&componentType=${componentType}`
       )
       .then((response) => {
         if (response.data.content) {
           const dbtData = response.data.content;
+          setRecordFromAppForm(dbtData);
 
           // Assuming subsidy amount is in dbtData, update actionData
           // setActionData((prevData) => ({
@@ -2004,6 +2010,13 @@ const handleActionInputs = (e) => {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Component Type",
+      selector: (row) => row.componentTypeName,
+      cell: (row) => <span>{row.componentTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
       name: "Action",
@@ -2028,7 +2041,7 @@ const handleActionInputs = (e) => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => checkToShowModal(row.fruitsId, row.schemeId)}
+              onClick={() => checkToShowModal(row.fruitsId, row.schemeId, row.applicationFormId, row.componentType)}
             >
               Action
             </Button>
