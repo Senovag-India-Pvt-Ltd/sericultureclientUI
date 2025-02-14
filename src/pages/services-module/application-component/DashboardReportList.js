@@ -95,8 +95,8 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
-  const checkToShowModal = (fid,schemeId,applicationId,componentType) => {
-    getActionFarmerList(fid,schemeId,componentType);
+  const checkToShowModal = (fid, schemeId, applicationId, componentType) => {
+    getActionFarmerList(fid, schemeId, componentType);
   };
 
   const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
@@ -243,22 +243,22 @@ function DashboardReportList() {
   ];
 
   const schemeDetailsPushToDbtListColumn = [
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row, i) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={i}
-    //       checked={schemeDataListIds.includes(i)}
-    //       onChange={() => handleCheckboxChange(i, row)}
-    //     />
-    //   ),
-    //   // ignoreRowClick: true,
-    //   // allowOverflow: true,
-    //   button: true,
-    // },
+    {
+      name: "Select",
+      selector: "select",
+      cell: (row, i) => (
+        <input
+          type="checkbox"
+          name="selectedLand"
+          value={i}
+          checked={schemeDataListIds.includes(i)}
+          onChange={() => handleCheckboxChange(i, row)}
+        />
+      ),
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      button: true,
+    },
     {
       name: "Scheme Quota Name",
       selector: (row) => row.schemeQuotaName,
@@ -313,8 +313,6 @@ function DashboardReportList() {
     },
   ];
 
-
-
   // to get approvalStageAfterNextStep
   const [
     approvalStageAfterNextStepListData,
@@ -337,10 +335,8 @@ function DashboardReportList() {
       });
   };
 
-  const [
-    approvalStageSameStepListData,
-    setApprovalStageSameStepListData,
-  ] = useState([]);
+  const [approvalStageSameStepListData, setApprovalStageSameStepListData] =
+    useState([]);
   const getApprovalStageSameStepList = (subSchemeId, approvalStageId) => {
     api
       .post(
@@ -358,12 +354,15 @@ function DashboardReportList() {
       });
   };
 
-   // to get approvalStage Before Step
-   const [
+  // to get approvalStage Before Step
+  const [
     approvalRejectStageBeforeStepListData,
     setApprovalRejectStageBeforeStepListData,
   ] = useState([]);
-  const getApprovalRejectStageBeforeStepListDataList = (subSchemeId, approvalStageId) => {
+  const getApprovalRejectStageBeforeStepListDataList = (
+    subSchemeId,
+    approvalStageId
+  ) => {
     api
       .post(
         baseURLDBT +
@@ -379,7 +378,6 @@ function DashboardReportList() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
-
 
   // useEffect(() => {
   //   if (data.scSubSchemeDetailsId) {
@@ -482,7 +480,7 @@ function DashboardReportList() {
     userId: "",
     stepId: "",
     rejectType: "",
-    eligibleAmount: ""
+    eligibleAmount: "",
   });
 
   //  to get data from api
@@ -494,7 +492,10 @@ function DashboardReportList() {
         setDistrictId(response.data.content.districtId);
         setTalukId(response.data.content.talukId);
         setDesignationId(response.data.content.designationId);
-        getList(response.data.content.districtId,response.data.content.talukId);
+        getList(
+          response.data.content.districtId,
+          response.data.content.talukId
+        );
         setLoading(false);
       })
       .catch((err) => {
@@ -504,7 +505,6 @@ function DashboardReportList() {
         setLoading(false);
       });
   };
-
 
   const getUserFromDistrictList = (
     subSchemeId,
@@ -527,13 +527,16 @@ function DashboardReportList() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
-  
-  useEffect(()=>{
-    if(actionData.stepId)
-    getUserFromDistrictList(subSchemeId,actionData.stepId,districtId,talukId)
-  },[actionData.stepId])
-   
 
+  useEffect(() => {
+    if (actionData.stepId)
+      getUserFromDistrictList(
+        subSchemeId,
+        actionData.stepId,
+        districtId,
+        talukId
+      );
+  }, [actionData.stepId]);
 
   const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
 
@@ -560,10 +563,16 @@ function DashboardReportList() {
       });
   };
 
-  useEffect(()=>{
-    if(actionData.stepId)
-      getUserOfStepsToApproveList(subSchemeId,actionData.stepId,districtId,talukId,actionFarmerData[0]?.designationStep)
-  },[actionData.stepId])
+  useEffect(() => {
+    if (actionData.stepId)
+      getUserOfStepsToApproveList(
+        subSchemeId,
+        actionData.stepId,
+        districtId,
+        talukId,
+        actionFarmerData[0]?.designationStep
+      );
+  }, [actionData.stepId]);
 
   // const getList = () => {
   //   setLoading(true);
@@ -609,65 +618,64 @@ function DashboardReportList() {
   //     });
   // };
 
-  const getList = async (district,taluk) => {
+  const getList = async (district, taluk) => {
     setLoading(true);
     try {
-        const response = await api.post(
-            baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-            {},
-            { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+      const response = await api.post(
+        baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
+        {},
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
+      );
+
+      setListData(response.data.content);
+      const scApplicationFormIds = response.data.content.map(
+        (item) => item.scApplicationFormId
+      );
+
+      const data = response.data.content; // Store the response data in a variable
+      setAssignData(data);
+
+      // Extract and set the applicationDocumentId
+      const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
+      setApplicationFormId(applicationDocumentId);
+
+      const schemeId = data[0]?.schemeId; // Use data variable here
+      setSchemeId(schemeId);
+
+      // Extract subSchemeId and approvalStageId
+      const subSchemeId = data[0]?.subSchemeId;
+      const approvalStageId = data[0]?.approvalStageId;
+      // const schemeId = data[0]?.schemeId;
+
+      if (subSchemeId && approvalStageId && district && taluk) {
+        await getUserFromDistrictList(
+          subSchemeId,
+          approvalStageId,
+          district,
+          taluk
         );
+      }
 
-        setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-            (item) => item.scApplicationFormId
-        );
-
-        const data = response.data.content; // Store the response data in a variable
-        setAssignData(data);
-
-        // Extract and set the applicationDocumentId
-        const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
-        setApplicationFormId(applicationDocumentId);
-
-        const schemeId = data[0]?.schemeId; // Use data variable here
-        setSchemeId(schemeId);
-
-        // Extract subSchemeId and approvalStageId
-        const subSchemeId = data[0]?.subSchemeId;
-        const approvalStageId = data[0]?.approvalStageId;
-        // const schemeId = data[0]?.schemeId;
-
-        if (subSchemeId && approvalStageId && district && taluk) {
-            await getUserFromDistrictList(
-                subSchemeId,
-                approvalStageId,
-                district,
-                taluk
-            );
-        }
-
-        // setAllApplicationIds(scApplicationFormIds);
+      // setAllApplicationIds(scApplicationFormIds);
     } catch (err) {
-        setListData({});
+      setListData({});
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
-// useEffect(() => {
+  // useEffect(() => {
 
-// }, [userId]);
+  // }, [userId]);
 
   useEffect(() => {
-     getIdList();
+    getIdList();
     //  getList();
   }, []);
 
   const [subSchemeId, setSubSchemeId] = useState(null); // State to hold subSchemeId
   const [approvalStageId, setApprovalStageId] = useState(null);
   const [isSanctionOrderAllowed, setIsSanctionOrderAllowed] = useState(false);
-   
 
   // const getActionFarmerList = (fid,schemeId) => {
   //   setLoading(true);
@@ -767,7 +775,7 @@ function DashboardReportList() {
   //       );
   //       handleShowModal(fid);
   //     }
-     
+
   //       if (recordData.pushToDbt) {
   //         api
   //           .post(
@@ -784,7 +792,6 @@ function DashboardReportList() {
   //             setRecordFromAppForm([]);
   //           });
   //       }
-
 
   //       // Extract and set the applicationDocumentId
   //       const applicationDocumentId = recordData?.applicationDocumentId; // Use data variable here
@@ -804,10 +811,7 @@ function DashboardReportList() {
   //       getPushToDBTList(categoryId, componentId, schemeId,applicationDocumentId);
   //     }
 
-       
-
   //       setSubSchemeId(subSchemeId); // Set subSchemeId from recordData
-        
 
   //       // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
   //       setUploadDocuments((prev) => ({
@@ -828,7 +832,7 @@ function DashboardReportList() {
   //     });
   // };
 
-  const getActionFarmerList = (fid, schemeId,componentType) => {
+  const getActionFarmerList = (fid, schemeId, componentType) => {
     setLoading(true);
     api
       .post(
@@ -848,7 +852,7 @@ function DashboardReportList() {
         const data = response.data.content;
         const recordData = data[0];
         setActionFarmerData(data);
-  
+
         const subSchemeId = recordData?.subSchemeId;
         const designationStep = recordData?.designationStep;
         const applicationDocumentId = recordData?.applicationDocumentId;
@@ -857,13 +861,13 @@ function DashboardReportList() {
         const componentType = recordData?.componentType;
         const schemeId = recordData?.schemeId;
         setApplicationFormId(recordData?.applicationDocumentId);
-  
+
         if (recordData.financialDelegation) {
           const amountToPass =
             !recordData.eligibleAmount || recordData.eligibleAmount === 0
               ? recordData.schemeAmount
               : recordData.eligibleAmount;
-  
+
           api
             .post(
               baseURLDBT + `service/checkApprovalPower`,
@@ -881,20 +885,38 @@ function DashboardReportList() {
             .then((response) => {
               const isAllowed = response.data;
               setIsSanctionOrderAllowed(isAllowed);
-  
+
               if (isAllowed) {
-                getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
-                getUserFromDistrictList( recordData.subSchemeId, approvalStageId, districtId, talukId );
+                getApprovalAfterStageNextStepList(
+                  recordData.subSchemeId,
+                  recordData.approvalStageId
+                );
+                getUserFromDistrictList(
+                  recordData.subSchemeId,
+                  approvalStageId,
+                  districtId,
+                  talukId
+                );
               } else {
-                getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
-                getUserOfStepsToApproveList( recordData.subSchemeId, approvalStageId, districtId, talukId, designationStep );
+                getApprovalStageSameStepList(
+                  recordData.subSchemeId,
+                  recordData.approvalStageId
+                );
+                getUserOfStepsToApproveList(
+                  recordData.subSchemeId,
+                  approvalStageId,
+                  districtId,
+                  talukId,
+                  designationStep
+                );
               }
-  
+
               // ✅ **Move `fieldsShouldBeDisabled` logic inside `if (isAllowed)`**
               if (isAllowed) {
                 const sanctionOrderNumber = recordData?.sanctionOrderNumber;
-                const fieldsShouldBeDisabled = recordData?.sanctionOrder && !sanctionOrderNumber;
-  
+                const fieldsShouldBeDisabled =
+                  recordData?.sanctionOrder && !sanctionOrderNumber;
+
                 if (fieldsShouldBeDisabled) {
                   Swal.fire({
                     title: "Action Required!",
@@ -905,25 +927,48 @@ function DashboardReportList() {
                 }
                 setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled);
               }
-  
+
               handleShowModal(fid);
             })
             .catch(() => {
               setIsSanctionOrderAllowed(false);
-              getApprovalStageSameStepList(recordData.subSchemeId, recordData.approvalStageId);
-              getUserOfStepsToApproveList( recordData.subSchemeId, approvalStageId, districtId, talukId, designationStep );
+              getApprovalStageSameStepList(
+                recordData.subSchemeId,
+                recordData.approvalStageId
+              );
+              getUserOfStepsToApproveList(
+                recordData.subSchemeId,
+                approvalStageId,
+                districtId,
+                talukId,
+                designationStep
+              );
               handleShowModal(fid);
             });
         } else {
-          getApprovalAfterStageNextStepList(recordData.subSchemeId, recordData.approvalStageId);
-          getUserFromDistrictList( recordData.subSchemeId, approvalStageId, districtId, talukId );
+          getApprovalAfterStageNextStepList(
+            recordData.subSchemeId,
+            recordData.approvalStageId
+          );
+          getUserFromDistrictList(
+            recordData.subSchemeId,
+            approvalStageId,
+            districtId,
+            talukId
+          );
           handleShowModal(fid);
         }
-  
+
         if (categoryId && componentId && schemeId && applicationDocumentId) {
-          getPushToDBTList(categoryId, componentId, schemeId, applicationDocumentId,componentType);
+          getPushToDBTList(
+            categoryId,
+            componentId,
+            schemeId,
+            applicationDocumentId,
+            componentType
+          );
         }
-  
+
         setSubSchemeId(subSchemeId);
         setUploadDocuments((prev) => ({
           ...prev,
@@ -933,7 +978,7 @@ function DashboardReportList() {
           ...prev,
           applicationFormId: applicationDocumentId,
         }));
-  
+
         setLoading(false);
       })
       .catch(() => {
@@ -941,9 +986,6 @@ function DashboardReportList() {
         setLoading(false);
       });
   };
-  
-
-
 
   // useEffect(() => {
   //   if (districtId && talukId) {
@@ -954,7 +996,14 @@ function DashboardReportList() {
 
   // to get push to dbt details
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
-  const getPushToDBTList = (categoryId, componentId,schemeId,applicationFormId,componentType) => {
+  const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
+  const getPushToDBTList = (
+    categoryId,
+    componentId,
+    schemeId,
+    applicationFormId,
+    componentType
+  ) => {
     api
       .post(
         baseURLDBT +
@@ -963,6 +1012,7 @@ function DashboardReportList() {
       .then((response) => {
         if (response.data.content) {
           const dbtData = response.data.content;
+          setSchemeQuotaListCount(dbtData.length);
           setRecordFromAppForm(dbtData);
 
           // Assuming subsidy amount is in dbtData, update actionData
@@ -975,7 +1025,7 @@ function DashboardReportList() {
             subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
             calculatedEligibleAmount: dbtData.calculatedEligibleAmount || "", // assuming eligibleAmount exists in dbtData
           }));
-          
+
           setPushToDBTListData(response.data.content);
         }
       })
@@ -1057,6 +1107,7 @@ function DashboardReportList() {
       setSendApplicationFormServiceData((prev) => {
         const updatedData = [...prev];
         updatedData[_id] = { ...data, ...actionFarmerData[0] };
+        console.log("checkingUpdateData", updatedData);
         return updatedData;
       });
     }
@@ -1099,7 +1150,10 @@ function DashboardReportList() {
   //   }
   // }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
-  const generateWorkOrderAcknowledgment = async (applicationFormId,schemeId) => {
+  const generateWorkOrderAcknowledgment = async (
+    applicationFormId,
+    schemeId
+  ) => {
     try {
       const response = await api.post(
         baseURLReport + `pdmcWorkOrder`,
@@ -1156,7 +1210,7 @@ function DashboardReportList() {
   const handleGenerateSanctionOrder = (applicationFormId) => {
     const schemeId = actionFarmerData[0]?.schemeId;
     const schemeType = actionFarmerData[0]?.sanctionOrderForScheme; // Fetch the scheme type from the response
-  
+
     Swal.fire({
       title: "Generate Sanction Order",
       text: "Select the recipient:",
@@ -1168,18 +1222,38 @@ function DashboardReportList() {
       if (result.isConfirmed) {
         // Call the Farmer endpoint based on the scheme type
         if (schemeType === "PMKSY") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PMKSY");
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "PMKSY"
+          );
         } else if (schemeType === "PDMC") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PDMC");
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "PDMC"
+          );
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Call the Company endpoint based on the scheme type
         if (schemeType === "PMKSY") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PMKSY");
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "PMKSY"
+          );
         } else if (schemeType === "PDMC") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PDMC");
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "PDMC"
+          );
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1187,10 +1261,14 @@ function DashboardReportList() {
     });
   };
 
-  const handleDownloadSanctionOrder = (applicationFormId,schemeId,schemeType) => {
+  const handleDownloadSanctionOrder = (
+    applicationFormId,
+    schemeId,
+    schemeType
+  ) => {
     // const schemeId = schemeId;
     // const schemeType = sanctionOrderForScheme; // Fetch the scheme type from the response
-  
+
     Swal.fire({
       title: "Generate Sanction Order",
       text: "Select the recipient:",
@@ -1202,18 +1280,38 @@ function DashboardReportList() {
       if (result.isConfirmed) {
         // Call the Farmer endpoint based on the scheme type
         if (schemeType === "PMKSY") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PMKSY");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "PMKSY"
+          );
         } else if (schemeType === "PDMC") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "PDMC");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "PDMC"
+          );
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Call the Company endpoint based on the scheme type
         if (schemeType === "PMKSY") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PMKSY");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "PMKSY"
+          );
         } else if (schemeType === "PDMC") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "PDMC");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "PDMC"
+          );
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1221,7 +1319,12 @@ function DashboardReportList() {
     });
   };
 
-  const downloadSanctionOrderAcknowledgment = async (applicationId, schemeId, recipientType, schemeType) => {
+  const downloadSanctionOrderAcknowledgment = async (
+    applicationId,
+    schemeId,
+    recipientType,
+    schemeType
+  ) => {
     try {
       // Determine the appropriate endpoint based on the recipient type and scheme type
       let endpoint;
@@ -1238,7 +1341,7 @@ function DashboardReportList() {
       } else {
         throw new Error("Invalid recipient type.");
       }
-  
+
       const response = await api.post(
         endpoint,
         {
@@ -1249,7 +1352,7 @@ function DashboardReportList() {
           responseType: "blob", // Force to receive data in a Blob Format
         }
       );
-  
+
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
@@ -1257,8 +1360,6 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
-  
-  
 
   // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
   //   try {
@@ -1286,7 +1387,7 @@ function DashboardReportList() {
   //       recipientType === "farmer"
   //         ? baseURLReport + `getSanctionOrderPDMC`
   //         : baseURLReport + `getSanctionOrderPDMCCompany`;
-  
+
   //     const response = await api.post(
   //       endpoint,
   //       {
@@ -1297,7 +1398,7 @@ function DashboardReportList() {
   //         responseType: "blob", // Force to receive data in a Blob Format
   //       }
   //     );
-  
+
   //     const file = new Blob([response.data], { type: "application/pdf" });
   //     const fileURL = URL.createObjectURL(file);
   //     window.open(fileURL);
@@ -1305,7 +1406,12 @@ function DashboardReportList() {
   //     console.error("Error generating sanction order:", error);
   //   }
   // };
-  const generateSanctionOrderAcknowledgment = async (applicationId, schemeId, recipientType, schemeType) => {
+  const generateSanctionOrderAcknowledgment = async (
+    applicationId,
+    schemeId,
+    recipientType,
+    schemeType
+  ) => {
     try {
       // Determine the appropriate endpoint based on the recipient type and scheme type
       let endpoint;
@@ -1322,7 +1428,7 @@ function DashboardReportList() {
       } else {
         throw new Error("Invalid recipient type.");
       }
-  
+
       const response = await api.post(
         endpoint,
         {
@@ -1333,7 +1439,7 @@ function DashboardReportList() {
           responseType: "blob", // Force to receive data in a Blob Format
         }
       );
-  
+
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
@@ -1341,8 +1447,6 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
-  
-  
 
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
@@ -1365,48 +1469,48 @@ function DashboardReportList() {
   }, []);
 
   // Add this at the beginning of your component to manage the disabled state
-const [fieldsDisabled, setFieldsDisabled] = useState(false);
+  const [fieldsDisabled, setFieldsDisabled] = useState(false);
 
-const [fieldsSanctionOrderDisabled, setFieldsSanctionOrderDisabled] = useState(false);
+  const [fieldsSanctionOrderDisabled, setFieldsSanctionOrderDisabled] =
+    useState(false);
 
+  const handleActionInputs = (e) => {
+    let { name, value } = e.target;
+    setActionData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
 
-
-const handleActionInputs = (e) => {
-  let { name, value } = e.target;
-  setActionData((prevData) => ({
-    ...prevData,
-    [name]: value,
-  }));
-
-  // if (name === "rejectType" && value === "Permanent") {
-  //   setFieldsDisabled(true);
-  // } else if (name === "rejectType" && value !== "Permanent") {
-  //   setFieldsDisabled(false);
-  // }
-  if (name === "rejectType") {
-    if (value === "Permanent") {
-      setFieldsDisabled(true);
-      getApprovalAfterStageNextStepList(subSchemeId, approvalStageId); // Calls after-next-step function for "Permanent"
-    } else if (value === "Objection") {
-      setFieldsDisabled(false);
-      getApprovalRejectStageBeforeStepListDataList(subSchemeId, approvalStageId); // Calls before-step function for "Objection"
-    } else {
-      setFieldsDisabled(false);
+    // if (name === "rejectType" && value === "Permanent") {
+    //   setFieldsDisabled(true);
+    // } else if (name === "rejectType" && value !== "Permanent") {
+    //   setFieldsDisabled(false);
+    // }
+    if (name === "rejectType") {
+      if (value === "Permanent") {
+        setFieldsDisabled(true);
+        getApprovalAfterStageNextStepList(subSchemeId, approvalStageId); // Calls after-next-step function for "Permanent"
+      } else if (value === "Objection") {
+        setFieldsDisabled(false);
+        getApprovalRejectStageBeforeStepListDataList(
+          subSchemeId,
+          approvalStageId
+        ); // Calls before-step function for "Objection"
+      } else {
+        setFieldsDisabled(false);
+      }
     }
-  }
-
 
     // Update approvalStageId based on the selected approval stage
     if (name === "stepId") {
       setApprovalStageId(value);
-     // If rejectType is "Objection", fetch users when the approval stage is selected
-     if (actionData.rejectType === "Objection") {
-      // const districtId = 16;
-      // const talukId = 105;
-      getUserFromDistrictList(subSchemeId, value, districtId, talukId); // Call to fetch users
+      // If rejectType is "Objection", fetch users when the approval stage is selected
+      if (actionData.rejectType === "Objection") {
+        // const districtId = 16;
+        // const talukId = 105;
+        getUserFromDistrictList(subSchemeId, value, districtId, talukId); // Call to fetch users
+      }
     }
-  }
-  
   };
 
   // const rejectServiceApplication = (event) => {
@@ -1456,11 +1560,11 @@ const handleActionInputs = (e) => {
 
   const rejectServiceApplication = () => {
     const sendPost = {
-      applicationFormId:applicationFormId,
+      applicationFormId: applicationFormId,
       rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
       description: actionData.comment,
-    }; 
-  
+    };
+
     api
       .post(`${baseURLDBT}service/rejectServiceApplication`, sendPost)
       .then((response) => {
@@ -1546,7 +1650,6 @@ const handleActionInputs = (e) => {
       setValidated(true);
     }
   };
-
 
   // const { subSchemeId, approvalStageId } = actionData;
 
@@ -1703,12 +1806,11 @@ const handleActionInputs = (e) => {
       event.preventDefault();
 
       // Check if Reject Type is "Permanent", then call rejectServiceApplication
-    if (actionData.rejectType === "Permanent") {
-      rejectServiceApplication();
-      return; 
-    }
+      if (actionData.rejectType === "Permanent") {
+        rejectServiceApplication();
+        return;
+      }
 
-  
       const sendResponse = sendApplicationFormServiceData.map((item) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
@@ -1720,12 +1822,12 @@ const handleActionInputs = (e) => {
           referenceNo: item.referenceNo,
         };
       });
-  
+
       let sendPost;
       if (actionFarmerData[0].pushToDbt) {
         const sendData = sendApplicationFormServiceData.map((item) => {
           return {
-            applicationFormId: item.scApplicationFormId,
+            applicationFormId: item.applicationFormId,
             schemeAmount: item.schemeAmount,
             eligibleAmount: item.calculatedEligibleAmount,
             paymentTo: item.paymentTo,
@@ -1748,9 +1850,9 @@ const handleActionInputs = (e) => {
           pushToDBTRequestList: sendResponse,
         };
       }
-  
+
       let apiCall;
-  
+
       // Check if all conditions are null/false, if so, call inspection update API
       // if (
       //   !actionFarmerData[0].pushToDbt &&
@@ -1760,62 +1862,89 @@ const handleActionInputs = (e) => {
       //   apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
       // } else {
       // First condition: If pushToDbt, sanctionOrder, and workOrder are not present, call inspectionUpdate
-    if (
-      !actionFarmerData[0].pushToDbt &&
-      !actionFarmerData[0].sanctionOrder &&
-      !actionFarmerData[0].workOrder
-    ) {
-      apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
-    } else {
-      // Second condition: If sanctionOrder exists and approval failed, call inspectionUpdate instead of sanctionOrderUpdate
       if (
-        actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
-        actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
-        // !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
-        (!isSanctionOrderAllowed || actionFarmerData[0].sanctionOrderNumber)
+        !actionFarmerData[0].pushToDbt &&
+        !actionFarmerData[0].sanctionOrder &&
+        !actionFarmerData[0].workOrder
       ) {
-        apiCall = api
-          .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
-          .then((response) => {
-            saveSuccess("Please forward the request to the higher authority to initiate the generation of the sanction order and submit it to FRUITS.");
-            clear();
-            setValidated(false);
-          })
-          .catch((err) => {
-            saveError(err.response?.data?.error_description || "Inspection Update Failed");
-          });
+        apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
       } else {
-        if (actionFarmerData[0].workOrder) {
-          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
-        }
-        // if (actionFarmerData[0].sanctionOrder) {
-        //   apiCall = api.post(
-        //     baseURLDBT + `service/sanctionOrderUpdate`,
-        //     sendPost
-        //   );
-        // }
-        if (actionFarmerData[0].sanctionOrder) {
-          apiCall = api.post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
+        // Second condition: If sanctionOrder exists and approval failed, call inspectionUpdate instead of sanctionOrderUpdate
+        if (
+          actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
+          actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
+          // !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
+          (!isSanctionOrderAllowed || actionFarmerData[0].sanctionOrderNumber)
+        ) {
+          apiCall = api
+            .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
             .then((response) => {
-              if (response.data.applicationFormId) {
-                // Update state with the generated applicationId
-                setApplicationId(response.data.applicationFormId);
-                // Pass the applicationId to handleGenerateSanctionOrder
-                handleGenerateSanctionOrder(response.data.applicationFormId, schemeId);
-              } else {
-                saveError("Failed to generate application ID for sanction order.");
-              }
+              saveSuccess(
+                "Please forward the request to the higher authority to initiate the generation of the sanction order and submit it to FRUITS."
+              );
+              clear();
+              setValidated(false);
             })
             .catch((err) => {
-              saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
+              saveError(
+                err.response?.data?.error_description ||
+                  "Inspection Update Failed"
+              );
             });
+        } else {
+          if (actionFarmerData[0].workOrder) {
+            apiCall = api.post(
+              baseURLDBT + `service/workOrderUpdate`,
+              sendPost
+            );
+          }
+          // if (actionFarmerData[0].sanctionOrder) {
+          //   apiCall = api.post(
+          //     baseURLDBT + `service/sanctionOrderUpdate`,
+          //     sendPost
+          //   );
+          // }
+          if (actionFarmerData[0].sanctionOrder) {
+            if (sendPost.pushToDBTRequestList.length === 0) {
+              warningAlert("Please select the scheme", "Alert!!!");
+              return;
+            } else if (
+              schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
+            ) {
+              warningAlert("Select all schemes to proceed", "Alert!!!");
+              return;
+            }
+
+            apiCall = api
+              .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
+              .then((response) => {
+                if (response.data.applicationFormId) {
+                  // Update state with the generated applicationId
+                  setApplicationId(response.data.applicationFormId);
+                  // Pass the applicationId to handleGenerateSanctionOrder
+                  handleGenerateSanctionOrder(
+                    response.data.applicationFormId,
+                    schemeId
+                  );
+                } else {
+                  saveError(
+                    "Failed to generate application ID for sanction order."
+                  );
+                }
+              })
+              .catch((err) => {
+                saveError(
+                  err.response?.data?.error_description ||
+                    "Sanction Order Update Failed"
+                );
+              });
+          }
         }
-      }
         if (actionFarmerData[0].pushToDbt) {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
         }
       }
-  
+
       if (apiCall) {
         apiCall
           .then((response) => {
@@ -1828,10 +1957,13 @@ const handleActionInputs = (e) => {
               // if (actionFarmerData[0].workOrder) {
               //   generateWorkOrderAcknowledgment(applicationFormId,schemeId);
               // }
-              if (actionFarmerData[0].workOrder && actionFarmerData[0].workOrderForScheme === "PDMC") {
-                generateWorkOrderAcknowledgment(applicationFormId,schemeId); // Pass schemeId to API
+              if (
+                actionFarmerData[0].workOrder &&
+                actionFarmerData[0].workOrderForScheme === "PDMC"
+              ) {
+                generateWorkOrderAcknowledgment(applicationFormId, schemeId); // Pass schemeId to API
               }
-  
+
               saveSuccess();
               clear();
               setValidated(false);
@@ -1849,11 +1981,11 @@ const handleActionInputs = (e) => {
             }
           });
       }
-  
+
       setValidated(true);
     }
   };
-  
+
   const saveRejectSuccess = (message) => {
     Swal.fire({
       icon: "success",
@@ -1887,6 +2019,14 @@ const handleActionInputs = (e) => {
       icon: "error",
       // title: "Save attempt was not successful",
       html: errorMessage,
+    });
+  };
+
+  const warningAlert = (message, title) => {
+    Swal.fire({
+      icon: "warning",
+      title: title,
+      text: message,
     });
   };
 
@@ -2037,15 +2177,22 @@ const handleActionInputs = (e) => {
             >
               Re-Assign
             </Button>
-    
+
             <Button
               variant="primary"
               size="sm"
-              onClick={() => checkToShowModal(row.fruitsId, row.schemeId, row.applicationFormId, row.componentType)}
+              onClick={() =>
+                checkToShowModal(
+                  row.fruitsId,
+                  row.schemeId,
+                  row.applicationFormId,
+                  row.componentType
+                )
+              }
             >
               Action
             </Button>
-    
+
             <Button
               variant="primary"
               size="sm"
@@ -2053,7 +2200,7 @@ const handleActionInputs = (e) => {
             >
               View
             </Button>
-    
+
             {row.workOrderNumber && (
               <Button
                 variant="primary"
@@ -2068,18 +2215,18 @@ const handleActionInputs = (e) => {
                 Download Work Order
               </Button>
             )}
-    
+
             {row.sanctionOrderNumber && row.applicationFormId && (
               <Button
                 variant="primary"
                 size="sm"
                 onClick={() =>
-                handleDownloadSanctionOrder(
-                  row.applicationFormId,
-                  row.schemeId,
-                  row.sanctionOrderForScheme
-                )
-              }
+                  handleDownloadSanctionOrder(
+                    row.applicationFormId,
+                    row.schemeId,
+                    row.sanctionOrderForScheme
+                  )
+                }
               >
                 Download Sanction Order
               </Button>
@@ -2090,7 +2237,7 @@ const handleActionInputs = (e) => {
       sortable: false,
       hide: "md",
       grow: 2,
-    }    
+    },
   ];
 
   const customStyles = {
@@ -2633,25 +2780,23 @@ const handleActionInputs = (e) => {
                         >
                           <Card.Body>
                             <Row>
+                              <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    <strong>Reject Type</strong>
+                                  </Form.Label>
+                                  <Form.Select
+                                    name="rejectType"
+                                    value={actionData.rejectType}
+                                    onChange={handleActionInputs}
+                                  >
+                                    <option value="">Select Reject Type</option>
+                                    <option value="Permanent">Permanent</option>
+                                    <option value="Objection">Objection</option>
+                                  </Form.Select>
+                                </Form.Group>
+                              </Col>
 
-                            <Col lg="6">
-                              <Form.Group className="form-group">
-                                <Form.Label>
-                                  <strong>Reject Type</strong>
-                                </Form.Label>
-                                <Form.Select
-                                  name="rejectType"
-                                  value={actionData.rejectType}
-                                  onChange={handleActionInputs}
-                                >
-                                  <option value="">Select Reject Type</option>
-                                  <option value="Permanent">Permanent</option>
-                                  <option value="Objection">Objection</option>
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
-
-                              
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -2812,55 +2957,224 @@ const handleActionInputs = (e) => {
                                 isSanctionOrderAllowed ? (
                                   // When financialDelegation is true and isSanctionOrderAllowed is true
                                   <>
-                                  <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
-                                  <Form.Select
-                                    name="stepId"
-                                    value={actionData.stepId}
-                                    onChange={handleActionInputs}
-                                    required
-                                    // isInvalid={!actionData.stepId || actionData.stepId === "0"}
-                                    // disabled={fieldsDisabled}
-                                    disabled={fieldsDisabled || fieldsSanctionOrderDisabled} 
-                                  >
-                                    <option value="">Select Approval Stage</option>
-                                    {(actionData.rejectType === "Objection" ? approvalRejectStageBeforeStepListData : approvalStageAfterNextStepListData).map((list) => (
-                                      <option key={list.approvalStageId} value={list.approvalStageId}>
-                                        {list.approvalStageName}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Approval Stage Name is required
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label>
+                                          Approval Stage{" "}
+                                          <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <Form.Select
+                                          name="stepId"
+                                          value={actionData.stepId}
+                                          onChange={handleActionInputs}
+                                          required
+                                          // isInvalid={!actionData.stepId || actionData.stepId === "0"}
+                                          // disabled={fieldsDisabled}
+                                          disabled={
+                                            fieldsDisabled ||
+                                            fieldsSanctionOrderDisabled
+                                          }
+                                        >
+                                          <option value="">
+                                            Select Approval Stage
+                                          </option>
+                                          {(actionData.rejectType ===
+                                          "Objection"
+                                            ? approvalRejectStageBeforeStepListData
+                                            : approvalStageAfterNextStepListData
+                                          ).map((list) => (
+                                            <option
+                                              key={list.approvalStageId}
+                                              value={list.approvalStageId}
+                                            >
+                                              {list.approvalStageName}
+                                            </option>
+                                          ))}
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                          Approval Stage Name is required
+                                        </Form.Control.Feedback>
+                                      </Form.Group>
+                                    </Col>
 
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    User
-                                    <span className="text-danger">*</span>
-                                  </Form.Label>
-                                  <Col>
-                                    <div className="form-control-wrap">
+                                    <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label>
+                                          User
+                                          <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <Col>
+                                          <div className="form-control-wrap">
+                                            <Form.Select
+                                              name="userId"
+                                              value={actionData.userId}
+                                              onChange={handleActionInputs}
+                                              onBlur={() => handleActionInputs}
+                                              required
+                                              isInvalid={
+                                                actionData.userId ===
+                                                  undefined ||
+                                                actionData.userId === "0"
+                                              }
+                                              // disabled={fieldsDisabled}
+                                              disabled={
+                                                fieldsDisabled ||
+                                                fieldsSanctionOrderDisabled
+                                              }
+                                              // isInvalid={
+                                              //   actionData.userId === undefined ||
+                                              //   actionData.userId === "0"
+                                              // }
+                                            >
+                                              <option value="">
+                                                Select User
+                                              </option>
+                                              {userFromDistrictData.map(
+                                                (list) => (
+                                                  <option
+                                                    key={list.userId}
+                                                    value={list.userId}
+                                                  >
+                                                    {list.userName}
+                                                  </option>
+                                                )
+                                              )}
+                                            </Form.Select>
+                                            <Form.Control.Feedback type="invalid">
+                                              User is required
+                                            </Form.Control.Feedback>
+                                          </div>
+                                        </Col>
+                                      </Form.Group>
+                                    </Col>
+                                  </>
+                                ) : (
+                                  // When financialDelegation is true and isSanctionOrderAllowed is false
+                                  <>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label>
+                                          Approval Stage{" "}
+                                          <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <Form.Select
+                                          name="stepId"
+                                          value={actionData.stepId}
+                                          onChange={handleActionInputs}
+                                          required
+                                          disabled={fieldsDisabled}
+                                        >
+                                          <option value="">
+                                            Select Approval Stage
+                                          </option>
+                                          {(actionData.rejectType ===
+                                          "Objection"
+                                            ? approvalRejectStageBeforeStepListData
+                                            : approvalStageSameStepListData
+                                          ).map((list) => (
+                                            <option
+                                              key={list.approvalStageId}
+                                              value={list.approvalStageId}
+                                            >
+                                              {list.approvalStageName}
+                                            </option>
+                                          ))}
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                          Approval Stage Name is required
+                                        </Form.Control.Feedback>
+                                      </Form.Group>
+                                    </Col>
+
+                                    <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label>
+                                          User{" "}
+                                          <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <Form.Select
+                                          name="userId"
+                                          value={actionData.userId}
+                                          onChange={handleActionInputs}
+                                          required
+                                          isInvalid={
+                                            actionData.userId === undefined ||
+                                            actionData.userId === "0"
+                                          }
+                                          disabled={fieldsDisabled}
+                                        >
+                                          <option value="">Select User</option>
+                                          {userOfStepsToApproveData.map(
+                                            (list) => (
+                                              <option
+                                                key={list.userId}
+                                                value={list.userId}
+                                              >
+                                                {list.userName}
+                                              </option>
+                                            )
+                                          )}
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                          User is required
+                                        </Form.Control.Feedback>
+                                      </Form.Group>
+                                    </Col>
+                                  </>
+                                )
+                              ) : (
+                                // When financialDelegation is false
+                                <>
+                                  <Col lg="6">
+                                    <Form.Group className="form-group">
+                                      <Form.Label>
+                                        Approval Stage{" "}
+                                        <span className="text-danger">*</span>
+                                      </Form.Label>
+                                      <Form.Select
+                                        name="stepId"
+                                        value={actionData.stepId}
+                                        onChange={handleActionInputs}
+                                        required
+                                        disabled={fieldsDisabled}
+                                      >
+                                        <option value="">
+                                          Select Approval Stage
+                                        </option>
+                                        {(actionData.rejectType === "Objection"
+                                          ? approvalRejectStageBeforeStepListData
+                                          : approvalStageAfterNextStepListData
+                                        ).map((list) => (
+                                          <option
+                                            key={list.approvalStageId}
+                                            value={list.approvalStageId}
+                                          >
+                                            {list.approvalStageName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        Approval Stage Name is required
+                                      </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+
+                                  <Col lg="6">
+                                    <Form.Group className="form-group">
+                                      <Form.Label>
+                                        User{" "}
+                                        <span className="text-danger">*</span>
+                                      </Form.Label>
                                       <Form.Select
                                         name="userId"
                                         value={actionData.userId}
                                         onChange={handleActionInputs}
-                                        onBlur={() => handleActionInputs}
                                         required
                                         isInvalid={
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
-                                        // disabled={fieldsDisabled}
-                                        disabled={fieldsDisabled || fieldsSanctionOrderDisabled}
-                                        // isInvalid={
-                                        //   actionData.userId === undefined ||
-                                        //   actionData.userId === "0"
-                                        // }
+                                        disabled={fieldsDisabled}
                                       >
                                         <option value="">Select User</option>
                                         {userFromDistrictData.map((list) => (
@@ -2875,125 +3189,15 @@ const handleActionInputs = (e) => {
                                       <Form.Control.Feedback type="invalid">
                                         User is required
                                       </Form.Control.Feedback>
-                                    </div>
-                                  </Col>
-                                </Form.Group>
-                              </Col>
-                                </>
-                              ) : (
-                                // When financialDelegation is true and isSanctionOrderAllowed is false
-                                <>
-                                  <Col lg="6">
-                                    <Form.Group className="form-group">
-                                      <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
-                                      <Form.Select
-                                        name="stepId"
-                                        value={actionData.stepId}
-                                        onChange={handleActionInputs}
-                                        required
-                                        disabled={fieldsDisabled}
-                                      >
-                                        <option value="">Select Approval Stage</option>
-                                        {(actionData.rejectType === "Objection"
-                                        ? approvalRejectStageBeforeStepListData
-                                        : approvalStageSameStepListData
-                                      ).map((list) => (
-                                          <option key={list.approvalStageId} value={list.approvalStageId}>
-                                            {list.approvalStageName}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        Approval Stage Name is required
-                                      </Form.Control.Feedback>
-                                    </Form.Group>
-                                  </Col>
-
-                                  <Col lg="6">
-                                    <Form.Group className="form-group">
-                                      <Form.Label>User <span className="text-danger">*</span></Form.Label>
-                                      <Form.Select
-                                        name="userId"
-                                        value={actionData.userId}
-                                        onChange={handleActionInputs}
-                                        required
-                                        isInvalid={actionData.userId === undefined || actionData.userId === "0"}
-                                        disabled={fieldsDisabled}
-                                      >
-                                        <option value="">Select User</option>
-                                        {userOfStepsToApproveData.map((list) => (
-                                          <option key={list.userId} value={list.userId}>
-                                            {list.userName}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        User is required
-                                      </Form.Control.Feedback>
                                     </Form.Group>
                                   </Col>
                                 </>
-                              )
-                            ) : (
-                              // When financialDelegation is false
-                              <>
-                                <Col lg="6">
-                                  <Form.Group className="form-group">
-                                    <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
-                                    <Form.Select
-                                      name="stepId"
-                                      value={actionData.stepId}
-                                      onChange={handleActionInputs}
-                                      required
-                                      disabled={fieldsDisabled}
-                                    >
-                                      <option value="">Select Approval Stage</option>
-                                      {(actionData.rejectType === "Objection"
-                                        ? approvalRejectStageBeforeStepListData
-                                        : approvalStageAfterNextStepListData
-                                      ).map((list) => (
-                                        <option key={list.approvalStageId} value={list.approvalStageId}>
-                                          {list.approvalStageName}
-                                        </option>
-                                      ))}
-                                    </Form.Select>
-                                    <Form.Control.Feedback type="invalid">
-                                      Approval Stage Name is required
-                                    </Form.Control.Feedback>
-                                  </Form.Group>
-                                </Col>
-
-                                <Col lg="6">
-                                  <Form.Group className="form-group">
-                                    <Form.Label>User <span className="text-danger">*</span></Form.Label>
-                                    <Form.Select
-                                      name="userId"
-                                      value={actionData.userId}
-                                      onChange={handleActionInputs}
-                                      required
-                                      isInvalid={actionData.userId === undefined || actionData.userId === "0"}
-                                      disabled={fieldsDisabled}
-                                    >
-                                      <option value="">Select User</option>
-                                      {userFromDistrictData.map((list) => (
-                                        <option key={list.userId} value={list.userId}>
-                                          {list.userName}
-                                        </option>
-                                      ))}
-                                    </Form.Select>
-                                    <Form.Control.Feedback type="invalid">
-                                      User is required
-                                    </Form.Control.Feedback>
-                                  </Form.Group>
-                                </Col>
-                              </>
-                            )}
-
+                              )}
 
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
-                                  Eligible Subsidy
+                                    Eligible Subsidy
                                     {/* <span className="text-danger">*</span> */}
                                   </Form.Label>
                                   <div className="form-control-wrap">
@@ -3063,7 +3267,7 @@ const handleActionInputs = (e) => {
                                 </Form.Group>
                               </Col> */}
 
-                              {/* <Col lg="6">
+                          {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
                                     Approval Stage
@@ -3136,7 +3340,7 @@ const handleActionInputs = (e) => {
                                   </Col>
                                 </Form.Group>
                               </Col> */}
-                            {/* </Row> */}
+                          {/* </Row> */}
                           {/* </Block> */}
 
                           {/* <Col lg="12"> */}
@@ -3155,16 +3359,17 @@ const handleActionInputs = (e) => {
                     )}
                   {/* {actionFarmerData.length > 0 &&
                     actionFarmerData[0].sanctionOrder && ( */}
-                    {/* {actionFarmerData.length > 0 &&
+                  {/* {actionFarmerData.length > 0 &&
                       actionFarmerData[0].sanctionOrder &&
                       isSanctionOrderAllowed && ( */}
-                      {actionFarmerData.length > 0 &&
-                        !actionFarmerData[0].sanctionOrderNumber && 
-                      (actionFarmerData[0].financialDelegation
-                        ? // When financialDelegation is true, check isSanctionOrderAllowed
-                          (actionFarmerData[0].sanctionOrder && isSanctionOrderAllowed)
-                        : // When financialDelegation is false, check only sanctionOrder
-                          actionFarmerData[0].sanctionOrder) && (
+                  {actionFarmerData.length > 0 &&
+                    !actionFarmerData[0].sanctionOrderNumber &&
+                    (actionFarmerData[0].financialDelegation
+                      ? // When financialDelegation is true, check isSanctionOrderAllowed
+                        actionFarmerData[0].sanctionOrder &&
+                        isSanctionOrderAllowed
+                      : // When financialDelegation is false, check only sanctionOrder
+                        actionFarmerData[0].sanctionOrder) && (
                       <Accordion.Item eventKey="sanction">
                         <Accordion.Header
                           style={{
@@ -3301,14 +3506,13 @@ const handleActionInputs = (e) => {
                             )}
                           </Block>
 
-
                           <div className="gap-col mt-1">
                             <ul className="d-flex align-items-center justify-content-center gap g-3">
                               <li>
                                 <Button
                                   type="button"
                                   variant="primary"
-                                  className="me-2" 
+                                  className="me-2"
                                   onClick={() =>
                                     handleSanctionOrderUpload(
                                       sanctionOrderData.documentTypeId
@@ -3326,13 +3530,12 @@ const handleActionInputs = (e) => {
                                     ? "Uploaded"
                                     : "Upload"}
                                 </Button>
-                                
                               </li>
                             </ul>
                           </div>
 
-                           {/* Generate Sanction Order Button */}
-                        {/* <div className="d-flex justify-content-center mt-3">
+                          {/* Generate Sanction Order Button */}
+                          {/* <div className="d-flex justify-content-center mt-3">
                           <Button variant="primary" onClick={handleGenerateSanctionOrder}>
                             Generate Sanction Order
                           </Button>
@@ -3343,7 +3546,6 @@ const handleActionInputs = (e) => {
                       >
                         Generate Sanction Order
                       </Button> */}
-
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -3481,7 +3683,7 @@ const handleActionInputs = (e) => {
                       >
                         Generate Sanction Order
                       </Button> */}
-                      {/* {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
+                    {/* {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
                         <Button
                           type="button"
                           variant="primary"
@@ -3490,11 +3692,15 @@ const handleActionInputs = (e) => {
                           Generate Sanction Order
                         </Button>
                       )} */}
-                      {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && applicationId && (
+                    {actionFarmerData.length > 0 &&
+                      actionFarmerData[0].sanctionOrder &&
+                      applicationId && (
                         <Button
                           type="button"
                           variant="primary"
-                          onClick={() => handleGenerateSanctionOrder(applicationId)}
+                          onClick={() =>
+                            handleGenerateSanctionOrder(applicationId)
+                          }
                         >
                           Generate Sanction Order
                         </Button>
@@ -4013,29 +4219,29 @@ const handleActionInputs = (e) => {
                       <tr>
                         <td style={styles.ctstyle}>Work Order No:</td>
                         <td>
-                          {viewDetailsData?.applicationDetails?.[0]?.workOrderNumber ||
-                            "N/A"}
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.workOrderNumber || "N/A"}
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sanction Order No:</td>
                         <td>
-                          {viewDetailsData?.applicationDetails?.[0]?.sanctionOrderNumber ||
-                            "N/A"}
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.sanctionOrderNumber || "N/A"}
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Created Date:</td>
                         <td>
-                          {viewDetailsData?.applicationDetails?.[0]?.createdDate ||
-                            "N/A"}
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.createdDate || "N/A"}
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Modified Date:</td>
                         <td>
-                          {viewDetailsData?.applicationDetails?.[0]?.modifiedDate ||
-                            "N/A"}
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.modifiedDate || "N/A"}
                         </td>
                       </tr>
                     </tbody>
@@ -4218,77 +4424,86 @@ const handleActionInputs = (e) => {
                 </Accordion.Body>
               </Accordion.Item>
 
-             {viewDetailsData?.workflowDetails?.length > 0 ? (
-            <Accordion.Item eventKey="workflow-details">
-              <Accordion.Header
-                style={{
-                  backgroundColor: "#0F6CBE",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-                className="mb-2"
-              >
-                Work Flow Details
-              </Accordion.Header>
-              <Accordion.Body>
-                {viewDetailsData.workflowDetails.map((workFlow, index) => (
-                  <table className="table small table-bordered" key={index}>
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>Step Name:</td>
-                        <td>{workFlow.stepName || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Status:</td>
-                        <td>{workFlow.status || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Assigned By:</td>
-                        <td>{workFlow.assignedBy || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Reject Reason:</td>
-                        <td>{workFlow.rejectReason || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Rejected By:</td>
-                        <td>{workFlow.rejectReason || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={{ ...styles.ctstyle, fontWeight: 'bold', color: 'green' }}>Comment:</td>
-                        <td style={{ fontWeight: 'bold', color: 'green' }}>{workFlow.comment || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Reason:</td>
-                        <td>{workFlow.reason || "N/A"}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Assigned To:</td>
-                        <td>{workFlow.assignedTo || "N/A"}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ))}
-              </Accordion.Body>
-            </Accordion.Item>
-          ) : (
-            <Accordion.Item eventKey="land">
-              <Accordion.Header
-                style={{
-                  backgroundColor: "#0F6CBE",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-                className="mb-2"
-              >
-                Work Flow Details
-              </Accordion.Header>
-              <Accordion.Body>
-                No Work Flow Details Available
-              </Accordion.Body>
-            </Accordion.Item>
-          )}
-
+              {viewDetailsData?.workflowDetails?.length > 0 ? (
+                <Accordion.Item eventKey="workflow-details">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    className="mb-2"
+                  >
+                    Work Flow Details
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    {viewDetailsData.workflowDetails.map((workFlow, index) => (
+                      <table className="table small table-bordered" key={index}>
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}>Step Name:</td>
+                            <td>{workFlow.stepName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Status:</td>
+                            <td>{workFlow.status || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Assigned By:</td>
+                            <td>{workFlow.assignedBy || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Reject Reason:</td>
+                            <td>{workFlow.rejectReason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Rejected By:</td>
+                            <td>{workFlow.rejectReason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                ...styles.ctstyle,
+                                fontWeight: "bold",
+                                color: "green",
+                              }}
+                            >
+                              Comment:
+                            </td>
+                            <td style={{ fontWeight: "bold", color: "green" }}>
+                              {workFlow.comment || "N/A"}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Reason:</td>
+                            <td>{workFlow.reason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Assigned To:</td>
+                            <td>{workFlow.assignedTo || "N/A"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              ) : (
+                <Accordion.Item eventKey="land">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    className="mb-2"
+                  >
+                    Work Flow Details
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    No Work Flow Details Available
+                  </Accordion.Body>
+                </Accordion.Item>
+              )}
 
               <Accordion.Item eventKey="transaction">
                 <Accordion.Header
