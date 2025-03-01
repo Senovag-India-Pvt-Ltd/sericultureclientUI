@@ -947,6 +947,7 @@ import ConfigureBivoltineAmountList from "../pages/masters/configure-bivoltine-a
 import ConfigureBivoltineAmountEdit from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountEdit";
 import TSCWiseProductionPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TSCWiseProductionPhysicalTargetSetting";
 import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetailsListFromSeedAndDFL";
+import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
 
 // Admin and Reports
 
@@ -958,9 +959,10 @@ function Router() {
   useEffect(() => {
     const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
+    const applicationCheck = /^\/seriui\/application-status$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname)) {
+    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
       navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
@@ -976,6 +978,11 @@ function Router() {
           path="/seriui/display-all-lot/:marketId"
           element={<DisplayAllLot />}
         />
+        {/* Application Check */}
+         <Route
+              path="/seriui/application-status"
+              element={<DbtApplicationStatusCheck />}
+            />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (

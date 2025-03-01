@@ -26,10 +26,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <!-- <title>NioBoard Dashboard Template</title> -->
+    <style>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
     <title>Department of Sericulture</title>
   </head>
   <body
-  style="background-image: url('%PUBLIC_URL%/images/logo/Silkworm.png'); background-position: center; background-repeat: no-repeat;background-size: cover;"
+    class="hide-scrollbar"
+    style="
+      background-image: url('%PUBLIC_URL%/images/logo/Silkworm.png');
+      background-position: center;
+      background-repeat: repeat;
+      background-size: cover;
+      height: 100vh;
+      width: 100vw;
+    "
   >
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
