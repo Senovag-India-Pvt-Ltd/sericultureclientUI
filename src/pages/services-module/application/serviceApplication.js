@@ -1500,6 +1500,27 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
     }
   };
 
+  const generateAcknowledgmentRH = async (applicationFormId,schemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBlankSample`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -1622,10 +1643,103 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
   //     });
   // };
 
+  // const uploadFileConfirm = (post) => {
+  //   Swal.fire({
+  //     title: "Do you want to Upload the Documents?",
+  //     // text: "It will delete permanently!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "Later",
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       api
+  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //           } else if (response.data && response.data.error) {
+  //             saveError(response.data.error_description);
+  //           } else {
+  //             // saveSuccess(response.data.receiptNo);
+  //             setApplicationId(response.data.content.applicationDocumentId);
+  //             setSchemeId(response.data.content.schemeId);
+  //             clear();
+  //             // Call the acknowledgment API after a successful response
+  //             // generateAcknowledgment(
+  //             //   response.data.content.applicationDocumentId
+  //             // );
+  //             generateAcknowledgment(
+  //               response.data.content.applicationDocumentId,
+  //               response.data.content.schemeId // Ensure schemeId exists in the response data
+  //             );
+              
+  //             handleShowModal();
+
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+  //       setValidated(true);
+  //       // Swal.fire("Deleted", "You successfully deleted this record", "success");
+  //     } else {
+  //       console.log(result.value);
+  //       api
+  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //           } else if (response.data && response.data.error) {
+  //             saveError(response.data.error_description);
+  //           } else {
+  //             saveSuccess();
+  //             setApplicationId(response.data.content.applicationDocumentId);
+  //             setSchemeId(response.data.content.schemeId);
+  //             // add acknowledgement API here
+
+  //             // Call the acknowledgment API after a successful response
+  //             generateAcknowledgment(
+  //               response.data.content.applicationDocumentId,
+  //               response.data.content.schemeId
+  //             );
+
+  //             // generateBiddingSlip(response.data.content.applicationDocumentId);
+  //             // handleShowModal();
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+  //       setValidated(true);
+  //       // clear();
+  //       // Swal.fire("Cancelled", "Your record is not deleted", "info");
+  //     }
+  //   });
+  // };
   const uploadFileConfirm = (post) => {
     Swal.fire({
       title: "Do you want to Upload the Documents?",
-      // text: "It will delete permanently!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -1640,27 +1754,23 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
             } else if (response.data && response.data.error) {
               saveError(response.data.error_description);
             } else {
-              // saveSuccess(response.data.receiptNo);
               setApplicationId(response.data.content.applicationDocumentId);
               setSchemeId(response.data.content.schemeId);
               clear();
-              // Call the acknowledgment API after a successful response
-              // generateAcknowledgment(
-              //   response.data.content.applicationDocumentId
-              // );
-              generateAcknowledgment(
+  
+              // Call the appropriate acknowledgment function
+              callAcknowledgmentFunction(
+                schemeDetails.acknowledgementForScheme,
                 response.data.content.applicationDocumentId,
-                response.data.content.schemeId // Ensure schemeId exists in the response data
+                response.data.content.schemeId
               );
-              
+  
               handleShowModal();
-
               setValidated(false);
             }
           })
           .catch((err) => {
             if (
-              err.response &&
               err.response &&
               err.response.data &&
               err.response.data.validationErrors
@@ -1671,7 +1781,6 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
             }
           });
         setValidated(true);
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
         api
@@ -1685,22 +1794,19 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
               setSchemeId(response.data.content.schemeId);
-              // add acknowledgement API here
-
-              // Call the acknowledgment API after a successful response
-              generateAcknowledgment(
+  
+              // Call the appropriate acknowledgment function
+              callAcknowledgmentFunction(
+                schemeDetails.acknowledgementForScheme,
                 response.data.content.applicationDocumentId,
                 response.data.content.schemeId
               );
-
-              // generateBiddingSlip(response.data.content.applicationDocumentId);
-              // handleShowModal();
+  
               setValidated(false);
             }
           })
           .catch((err) => {
             if (
-              err.response &&
               err.response &&
               err.response.data &&
               err.response.data.validationErrors
@@ -1711,11 +1817,19 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
             }
           });
         setValidated(true);
-        // clear();
-        // Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
   };
+  
+  // Function to decide which acknowledgment method to call
+  const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
+    if (acknowledgementForScheme === "Silk Samagra RH") {
+      generateAcknowledgmentRH(applicationFormId, schemeId);
+    } else if (acknowledgementForScheme === "PDMC" || acknowledgementForScheme === "PMKSY") {
+      generateAcknowledgment(applicationFormId, schemeId);
+    }
+  };
+  
 
   const saveError = (message) => {
     let errorMessage;

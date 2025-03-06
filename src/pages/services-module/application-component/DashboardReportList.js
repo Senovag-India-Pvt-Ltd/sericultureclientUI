@@ -47,8 +47,6 @@ function DashboardReportList() {
   const [recordFromAppForm, setRecordFromAppForm] = useState([]);
   const [permission, setPermission] = useState(false);
 
-  console.log("schemeDataListIds", schemeDataListIds);
-
   const handleDateChange = (date, type) => {
     const formattedDate =
       date.getFullYear() +
@@ -153,8 +151,6 @@ function DashboardReportList() {
 
     handleShowModal3(i);
   };
-
-  console.log("sendApplicationFormServiceData", sendApplicationFormServiceData);
 
   const schemeDetailsListColumn = [
     {
@@ -390,6 +386,8 @@ function DashboardReportList() {
   const [componentType, setComponentType] = useState(null);
 
   const [schemeId, setSchemeId] = useState(null);
+
+  const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
 
   const [actionFarmerData, setActionFarmerData] = useState({});
 
@@ -861,6 +859,7 @@ function DashboardReportList() {
         const componentType = recordData?.componentType;
         const schemeId = recordData?.schemeId;
         setApplicationFormId(recordData?.applicationDocumentId);
+        setWorkOrderSchemeId(recordData?.schemeId);
 
         if (recordData.financialDelegation) {
           const amountToPass =
@@ -1174,6 +1173,30 @@ function DashboardReportList() {
     }
   };
 
+  const generateWorkOrderAcknowledgmentRH = async (
+    applicationFormId,
+    schemeId
+  ) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   // const handleGenerateSanctionOrder = (applicationFormId) => {
   //   Swal.fire({
   //     title: "Generate Sanction Order",
@@ -1235,7 +1258,9 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
-        } else {
+        } else if (schemeType === "Silk Samagra RH") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "Silk Samagra RH");
+        }else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1254,8 +1279,10 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
+        } else if (schemeType === "Silk Samagra RH") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "Silk Samagra RH");
         } else {
-          console.error("Unknown scheme type for company sanction order.");
+          console.error("Unknown Scheme type for company sanction order.");
         }
       }
     });
@@ -1293,6 +1320,8 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
+        } else if (schemeType === "Silk Samagra RH") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "Silk Samagra RH");
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -1312,6 +1341,8 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
+        } else if (schemeType === "Silk Samagra RH") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "Silk Samagra RH");
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1328,18 +1359,35 @@ function DashboardReportList() {
     try {
       // Determine the appropriate endpoint based on the recipient type and scheme type
       let endpoint;
-      if (recipientType === "farmer") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksy`
-            : baseURLReport + `getSanctionOrderPDMC`;
-      } else if (recipientType === "company") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksyCompany`
-            : baseURLReport + `getSanctionOrderPDMCCompany`;
+      // if (recipientType === "farmer") {
+      //   endpoint =
+      //     schemeType === "PMKSY"
+      //       ? baseURLReport + `getSanctionOrderPmksy`
+      //       : baseURLReport + `getSanctionOrderPDMC`;
+      // } else if (recipientType === "company") {
+      //   endpoint =
+      //     schemeType === "PMKSY"
+      //       ? baseURLReport + `getSanctionOrderPmksyCompany`
+      //       : baseURLReport + `getSanctionOrderPDMCCompany`;
+      // } else {
+      //   throw new Error("Invalid recipient type.");
+      // }
+      if (schemeType === "Silk Samagra RH") {
+        endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
-        throw new Error("Invalid recipient type.");
+        if (recipientType === "farmer") {
+          endpoint =
+            schemeType === "PMKSY"
+              ? baseURLReport + `getSanctionOrderPmksy`
+              : baseURLReport + `getSanctionOrderPDMC`;
+        } else if (recipientType === "company") {
+          endpoint =
+            schemeType === "PMKSY"
+              ? baseURLReport + `getSanctionOrderPmksyCompany`
+              : baseURLReport + `getSanctionOrderPDMCCompany`;
+        } else {
+          throw new Error("Invalid recipient type.");
+        }
       }
 
       const response = await api.post(
@@ -1415,18 +1463,35 @@ function DashboardReportList() {
     try {
       // Determine the appropriate endpoint based on the recipient type and scheme type
       let endpoint;
-      if (recipientType === "farmer") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksy`
-            : baseURLReport + `getSanctionOrderPDMC`;
-      } else if (recipientType === "company") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksyCompany`
-            : baseURLReport + `getSanctionOrderPDMCCompany`;
+      // if (recipientType === "farmer") {
+      //   endpoint =
+      //     schemeType === "PMKSY"
+      //       ? baseURLReport + `getSanctionOrderPmksy`
+      //       : baseURLReport + `getSanctionOrderPDMC`;
+      // } else if (recipientType === "company") {
+      //   endpoint =
+      //     schemeType === "PMKSY"
+      //       ? baseURLReport + `getSanctionOrderPmksyCompany`
+      //       : baseURLReport + `getSanctionOrderPDMCCompany`;
+      // } else {
+      //   throw new Error("Invalid recipient type.");
+      // }
+      if (schemeType === "Silk Samagra RH") {
+        endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
-        throw new Error("Invalid recipient type.");
+        if (recipientType === "farmer") {
+          endpoint =
+            schemeType === "PMKSY"
+              ? baseURLReport + `getSanctionOrderPmksy`
+              : baseURLReport + `getSanctionOrderPDMC`;
+        } else if (recipientType === "company") {
+          endpoint =
+            schemeType === "PMKSY"
+              ? baseURLReport + `getSanctionOrderPmksyCompany`
+              : baseURLReport + `getSanctionOrderPDMCCompany`;
+        } else {
+          throw new Error("Invalid recipient type.");
+        }
       }
 
       const response = await api.post(
@@ -1957,12 +2022,22 @@ function DashboardReportList() {
               // if (actionFarmerData[0].workOrder) {
               //   generateWorkOrderAcknowledgment(applicationFormId,schemeId);
               // }
-              if (
-                actionFarmerData[0].workOrder &&
-                actionFarmerData[0].workOrderForScheme === "PDMC"
-              ) {
-                generateWorkOrderAcknowledgment(applicationFormId, schemeId); // Pass schemeId to API
-              }
+              // if (
+              //   actionFarmerData[0].workOrder &&
+              //   actionFarmerData[0].workOrderForScheme === "PDMC"
+              // ) {
+              //   generateWorkOrderAcknowledgment(applicationFormId, schemeId); // Pass schemeId to API
+              // }
+              if (actionFarmerData[0].workOrder) {
+                if (
+                  actionFarmerData[0].workOrderForScheme === "PDMC" ||
+                  actionFarmerData[0].workOrderForScheme === "PMKSY"
+                ) {
+                  generateWorkOrderAcknowledgment(applicationFormId, workOrderSchemeId);
+                } else if (actionFarmerData[0].workOrderForScheme === "Silk Samagra RH") {
+                  generateWorkOrderAcknowledgmentRH(applicationFormId, workOrderSchemeId);
+                }
+              }              
 
               saveSuccess();
               clear();
@@ -2201,7 +2276,7 @@ function DashboardReportList() {
               View
             </Button>
 
-            {row.workOrderNumber && (
+            {/* {row.workOrderNumber && (
               <Button
                 variant="primary"
                 size="sm"
@@ -2214,7 +2289,22 @@ function DashboardReportList() {
               >
                 Download Work Order
               </Button>
-            )}
+            )} */}
+            {row.workOrderNumber && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => {
+                if (row.workOrderForScheme === "PDMC" || row.workOrderForScheme === "PMKSY") {
+                  generateWorkOrderAcknowledgment(row.applicationDocumentId, row.schemeId);
+                } else if (row.workOrderForScheme === "Silk Samagra RH") {
+                  generateWorkOrderAcknowledgmentRH(row.applicationDocumentId, row.schemeId);
+                }
+              }}
+            >
+              Download Work Order
+            </Button>
+          )}
 
             {row.sanctionOrderNumber && row.applicationFormId && (
               <Button

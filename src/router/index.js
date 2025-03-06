@@ -947,6 +947,9 @@ import ConfigureBivoltineAmountList from "../pages/masters/configure-bivoltine-a
 import ConfigureBivoltineAmountEdit from "../pages/masters/configure-bivoltine-amount/ConfigureBivoltineAmountEdit";
 import TSCWiseProductionPhysicalTargetSetting from "../pages/new-target-setting/tsc-wise-production/TSCWiseProductionPhysicalTargetSetting";
 import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetailsListFromSeedAndDFL";
+import ConfigureRHUnitPriceAmount from "../pages/masters/ConfigureUnitPriceRH";
+import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
+import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
 
 // Admin and Reports
 
@@ -2044,6 +2047,12 @@ function Router() {
               element={<ConfigureBivoltineAmountEdit />}
             />
             <Route path="configure-bivoltine-list" element={<ConfigureBivoltineAmountList />} />
+            <Route path="configure-rh-amount" element={<ConfigureRHUnitPriceAmount />} />
+            <Route path="configure-rh-amount-list" element={<ConfiguredRHAmountList />} />
+            <Route
+              path="configured-rh-amount-edit/:id"
+              element={<ConfiguredRHAmountEdit />}
+            />
             <Route
               path="financial-year-edit/:id"
               element={<FinancialYearEdit />}

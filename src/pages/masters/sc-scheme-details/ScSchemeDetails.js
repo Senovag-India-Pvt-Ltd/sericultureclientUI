@@ -286,6 +286,7 @@ function ScSchemeDetails() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -317,6 +318,7 @@ function ScSchemeDetails() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -348,6 +350,7 @@ function ScSchemeDetails() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -379,6 +382,7 @@ function ScSchemeDetails() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -410,6 +414,7 @@ function ScSchemeDetails() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">

@@ -300,6 +300,7 @@ function ScSchemeDetailsEdit() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -330,8 +331,9 @@ function ScSchemeDetailsEdit() {
                               Select Scheme For Work Order
                             </option>
                             <option value="PDMC">PDMC</option>
-                            <option value="PMKSY">PMKSY</option>
-                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -361,8 +363,9 @@ function ScSchemeDetailsEdit() {
                               Select Scheme For Sanction Order
                             </option>
                             <option value="PDMC">PDMC</option>
-                            <option value="PMKSY">PMKSY</option>
-                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                          <option value="PMKSY">PMKSY</option>
+                          <option value="Silk Samagra RH">Silk Samagra RH</option>
+                          <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -393,6 +396,7 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
+                            <option value="Silk Samagra RH">Silk Samagra RH</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -424,6 +428,7 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
+                            <option value="Silk Samagra RH">Silk Samagra RH</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
