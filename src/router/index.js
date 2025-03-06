@@ -950,6 +950,7 @@ import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetails
 import ConfigureRHUnitPriceAmount from "../pages/masters/ConfigureUnitPriceRH";
 import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
 import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
+import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
 
 // Admin and Reports
 
@@ -961,9 +962,10 @@ function Router() {
   useEffect(() => {
     const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
+    const applicationCheck = /^\/seriui\/application-status$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname)) {
+    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
       navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
@@ -979,6 +981,11 @@ function Router() {
           path="/seriui/display-all-lot/:marketId"
           element={<DisplayAllLot />}
         />
+        {/* Application Check */}
+         <Route
+              path="/seriui/application-status"
+              element={<DbtApplicationStatusCheck />}
+            />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
@@ -2047,12 +2054,6 @@ function Router() {
               element={<ConfigureBivoltineAmountEdit />}
             />
             <Route path="configure-bivoltine-list" element={<ConfigureBivoltineAmountList />} />
-            <Route path="configure-rh-amount" element={<ConfigureRHUnitPriceAmount />} />
-            <Route path="configure-rh-amount-list" element={<ConfiguredRHAmountList />} />
-            <Route
-              path="configured-rh-amount-edit/:id"
-              element={<ConfiguredRHAmountEdit />}
-            />
             <Route
               path="financial-year-edit/:id"
               element={<FinancialYearEdit />}
