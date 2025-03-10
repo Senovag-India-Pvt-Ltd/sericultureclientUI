@@ -2047,7 +2047,12 @@ function Router() {
               element={<ConfigurePmkysAmountEdit />}
             />
             <Route path="configure-pmkys-list" element={<ConfigurePmkysAmountList />} />
-
+            <Route path="configure-rh-amount" element={<ConfigureRHUnitPriceAmount />} />
+            <Route path="configure-rh-amount-list" element={<ConfiguredRHAmountList />} />
+            <Route
+              path="configured-rh-amount-edit/:id"
+              element={<ConfiguredRHAmountEdit />}
+            />
             <Route path="configure-bivoltine-amount" element={<ConfigureBivoltineAmount />} />
             <Route
               path="configure-bivoltine-amount-edit/:id"

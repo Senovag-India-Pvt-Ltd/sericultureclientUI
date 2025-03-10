@@ -69,7 +69,7 @@ function ConfiguredRHAmountList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `configureRHAmount/delete/${_id}`)
+          .delete(baseURLDBT + `configureRHAmount/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();

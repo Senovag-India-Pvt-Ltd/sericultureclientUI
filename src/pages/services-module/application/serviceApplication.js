@@ -1036,6 +1036,114 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
 }
 }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
 
+//   const getCalculateAmountForRH = () => {
+//   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
+
+//   if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
+
+//   setLoading(true);
+  
+//   api.get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component?scSchemeDetailsId=${scSchemeDetailsId}&componentId=${scComponentId}&categoryId=${scCategoryId}`, {}, {
+//       headers: {
+//           "Content-Type": "application/json"
+//       }
+//   })
+//   .then((response) => {
+//       const result = response.data.content.configureRHAmount?.[0]; // Ensure correct data access
+//       const sqft = result?.sqft;
+//       const amount = result?.amount;
+      
+//       if (schemeDetails.calculationBasedOn === "Sericulture Development Programme") {
+//         if (sqft && amount) {
+//             const calculatedAmount = sqft * amount;
+
+//             // Set unitPrice using setAmountValue
+//             setAmountValue({
+//               ...amountValue,
+//               unitPrice: calculatedAmount, // Set Unit Price to calculatedAmount
+//             });
+
+//             // Set expectedAmount in data
+//             setData({ 
+//               ...data, 
+//               expectedAmount: calculatedAmount 
+//             });
+//         } else {
+//             // Reset values if invalid data
+//             setAmountValue({ ...amountValue, unitPrice: "" });
+//             setData({ ...data, expectedAmount: "" });
+//         }
+//     }
+// })
+// .catch(() => {
+//     setAmountValue({ ...amountValue, unitPrice: "" });
+//     setData({ ...data, expectedAmount: "" });
+// })
+// .finally(() => {
+//     setLoading(false);
+// });
+// };
+const getCalculateAmountForRH = () => { 
+  const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
+
+  if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return;
+
+  setLoading(true);
+  
+  api.get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component?scSchemeDetailsId=${scSchemeDetailsId}&componentId=${scComponentId}&categoryId=${scCategoryId}`, {}, {
+      headers: {
+          "Content-Type": "application/json"
+      }
+  })
+  .then((response) => {
+      const result = response.data.content.configureRHAmount?.[0];
+      const sqft = result?.sqft;
+      const amount = result?.amount;
+      let calculatedAmount = "";
+
+      if (schemeDetails.calculationBasedOn === "Sericulture Development Programme") {
+          if (sqft && amount) {
+              calculatedAmount = sqft * amount;
+          }
+      } 
+      else if (
+          schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+          schemeDetails.calculationBasedOn === "Silk Samagra Central"
+      ) {
+          calculatedAmount = amount || ""; // Directly set amount from API
+      }
+
+      if (calculatedAmount) {
+          setAmountValue((prev) => ({
+              ...prev,
+              unitPrice: calculatedAmount,
+          }));
+
+          setData((prev) => ({
+              ...prev,
+              expectedAmount: calculatedAmount,
+          }));
+      } else {
+          setAmountValue((prev) => ({ ...prev, unitPrice: "" }));
+          setData((prev) => ({ ...prev, expectedAmount: "" }));
+      }
+  })
+  .catch(() => {
+      setAmountValue((prev) => ({ ...prev, unitPrice: "" }));
+      setData((prev) => ({ ...prev, expectedAmount: "" }));
+  })
+  .finally(() => {
+      setLoading(false);
+  });
+};
+
+// useEffect to trigger API call
+useEffect(() => {
+if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
+  getCalculateAmountForRH();
+}
+}, [data.scComponentId, data.scCategoryId, data.scSchemeDetailsId]);
+
 
 
 
@@ -1192,11 +1300,21 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
         }
         calculateBonusAmount();
     } 
-    else {
-        Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
-    }
+    else if (
+      schemeDetails.calculationBasedOn === "Sericulture Development Programme" || 
+      schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+      schemeDetails.calculationBasedOn === "Silk Samagra Central"
+  ) {
+      if (!data.scSchemeDetailsId || !data.scCategoryId || !data.scComponentId) {
+          Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+          return;
+      }
+      getCalculateAmountForRH();
+  }  
+  else {
+      Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
+  }
 };
-
   // to get bonus Amount by component and category
   const [bonusAmountData, setBonusAmountListData] = useState(
     []

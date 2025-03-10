@@ -300,7 +300,9 @@ function ScSchemeDetailsEdit() {
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
-                          <option value="Silk Samagra RH">Silk Samagra RH</option>
+                          <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                          <option value="Silk Samagra State">Silk Samagra State</option>
+                          <option value="Silk Samagra Central">Silk Samagra Central</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
@@ -332,7 +334,9 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
-                          <option value="Silk Samagra RH">Silk Samagra RH</option>
+                          <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                          <option value="Silk Samagra State">Silk Samagra State</option>
+                          <option value="Silk Samagra Central">Silk Samagra Central</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -364,7 +368,9 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
-                          <option value="Silk Samagra RH">Silk Samagra RH</option>
+                          <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                          <option value="Silk Samagra State">Silk Samagra State</option>
+                          <option value="Silk Samagra Central">Silk Samagra Central</option>
                           <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -396,7 +402,9 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
-                            <option value="Silk Samagra RH">Silk Samagra RH</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -428,9 +436,11 @@ function ScSchemeDetailsEdit() {
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
-                            <option value="Silk Samagra RH">Silk Samagra RH</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
-                          </Form.Select>
+                          </Form.Select>  
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
                           </Form.Control.Feedback> */}
