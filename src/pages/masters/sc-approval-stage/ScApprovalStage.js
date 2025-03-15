@@ -27,6 +27,7 @@ function ScApprovalStage() {
     inspection:"",
     pushToDbt:"",
     financialDelegation:"",
+    directlyToFruits:""
   });
 
   const [validated, setValidated] = useState(false);
@@ -64,6 +65,7 @@ function ScApprovalStage() {
               inspection:"",
               pushToDbt:"",
               financialDelegation:"",
+              directlyToFruits:""
             });
             setValidated(false);
           }
@@ -88,6 +90,7 @@ function ScApprovalStage() {
       inspection:"",
       pushToDbt:"",
       financialDelegation:"",
+      directlyToFruits:""
     });
   };
 
@@ -309,6 +312,26 @@ function ScApprovalStage() {
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
                       {t("Push to DBT")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="directlyToFruits"
+                          checked={data.directlyToFruits}
+                          id="directlyToFruits"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Directly To Fruits")}
                       </Form.Label>
                     </Form.Group>
                   </Col>

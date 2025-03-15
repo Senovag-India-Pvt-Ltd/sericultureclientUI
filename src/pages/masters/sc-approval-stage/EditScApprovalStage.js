@@ -58,6 +58,7 @@ function EditScApprovalStage() {
       inspection: data.inspection,
       pushToDbt: data.pushToDbt,
       financialDelegation: data.financialDelegation,
+      directlyToFruits:data.directlyToFruits,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -83,6 +84,7 @@ function EditScApprovalStage() {
               inspection:"",
               pushToDbt:"",
               financialDelegation:"",
+              directlyToFruits:""
             });
             setValidated(false);
           }
@@ -107,6 +109,7 @@ function EditScApprovalStage() {
       inspection:"",
       pushToDbt:"",
       financialDelegation:"",
+      directlyToFruits:""
     });
   };
 
@@ -337,6 +340,26 @@ function EditScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="directlyToFruits"
+                          checked={data.directlyToFruits}
+                          id="directlyToFruits"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Directly To Fruits")}
+                      </Form.Label>
+                    </Form.Group>
+                    </Col>
 
                   <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
