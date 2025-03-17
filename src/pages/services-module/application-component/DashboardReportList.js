@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import axios from "axios";
@@ -37,6 +37,9 @@ function DashboardReportList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const [applicationDetails, setApplicationDetails] = useState([]);
+  const [actionFarmerData, setActionFarmerData] = useState({});
+  console.log("actionFarmerData", actionFarmerData);
+  console.log("actionFarmerDatasasa", !!actionFarmerData[0]?.applicationFormId);
 
   const [data, setData] = useState({
     userMasterId: "",
@@ -46,6 +49,10 @@ function DashboardReportList() {
   const [schemeDataListIds, setSchemeDataListIds] = useState([]);
   const [recordFromAppForm, setRecordFromAppForm] = useState([]);
   const [permission, setPermission] = useState(false);
+  const [reportingOfficerDdoCode, setReportingOfficerDdoCode] = useState("");
+
+  const [pushToDbtStatus, setPushToDbtStatus] = useState(false);
+  const [directlyToFruits, setDirectlyToFruits] = useState(false);
 
   const handleDateChange = (date, type) => {
     const formattedDate =
@@ -66,7 +73,15 @@ function DashboardReportList() {
     // getActionFarmerList(fid); // Call getList with userId and stepId
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setDisplaySubmit(true);
+
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
+    }
+  };
 
   const [showModal1, setShowModal1] = useState(false);
 
@@ -254,6 +269,7 @@ function DashboardReportList() {
       // ignoreRowClick: true,
       // allowOverflow: true,
       button: true,
+      omit: directlyToFruits,
     },
     {
       name: "Scheme Quota Name",
@@ -306,6 +322,25 @@ function DashboardReportList() {
       ),
       sortable: true,
       hide: "md",
+      omit: { directlyToFruits },
+    },
+    {
+      name: "Action",
+      cell: (row, i) => (
+        <>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => saveApplicationForm(row, i)}
+            className="ms-1"
+          >
+            Save
+          </Button>
+        </>
+      ),
+      sortable: true,
+      hide: "md",
+      omit: !directlyToFruits || !!actionFarmerData[0]?.applicationFormId,
     },
   ];
 
@@ -388,10 +423,6 @@ function DashboardReportList() {
   const [schemeId, setSchemeId] = useState(null);
 
   const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
-
-  const [actionFarmerData, setActionFarmerData] = useState({});
-
-  console.log("actionFarmerData", actionFarmerData);
 
   // const getActionFarmerList = (fid) => {
   //   setLoading(true);
@@ -479,6 +510,7 @@ function DashboardReportList() {
     stepId: "",
     rejectType: "",
     eligibleAmount: "",
+    sanctionNo: "",
   });
 
   //  to get data from api
@@ -674,6 +706,15 @@ function DashboardReportList() {
   const [subSchemeId, setSubSchemeId] = useState(null); // State to hold subSchemeId
   const [approvalStageId, setApprovalStageId] = useState(null);
   const [isSanctionOrderAllowed, setIsSanctionOrderAllowed] = useState(false);
+  const [displaySubmit, setDisplaySubmit] = useState(true);
+
+  const timeoutIdRef = useRef(null);
+  const thirtyMinHold = (e) => {
+    timeoutIdRef.current = setTimeout(() => {
+      setDisplaySubmit(false);
+      setShowModal6(false);
+    }, 15000);
+  };
 
   // const getActionFarmerList = (fid,schemeId) => {
   //   setLoading(true);
@@ -830,7 +871,7 @@ function DashboardReportList() {
   //     });
   // };
 
-  const getActionFarmerList = (fid, schemeId, componentType) => {
+  const getActionFarmerList = async (fid, schemeId, componentType) => {
     setLoading(true);
     api
       .post(
@@ -851,6 +892,8 @@ function DashboardReportList() {
         const recordData = data[0];
         setActionFarmerData(data);
 
+        setPushToDbtStatus(recordData.pushToDbt);
+        setDirectlyToFruits(recordData.directlyToFruits);
         const subSchemeId = recordData?.subSchemeId;
         const designationStep = recordData?.designationStep;
         const applicationDocumentId = recordData?.applicationDocumentId;
@@ -945,17 +988,56 @@ function DashboardReportList() {
               handleShowModal(fid);
             });
         } else {
-          getApprovalAfterStageNextStepList(
-            recordData.subSchemeId,
-            recordData.approvalStageId
-          );
-          getUserFromDistrictList(
-            recordData.subSchemeId,
-            approvalStageId,
-            districtId,
-            talukId
-          );
-          handleShowModal(fid);
+          if (recordData.directlyToFruits) {
+            api
+              .get(
+                baseURLMasterData +
+                  `userHierarchyMapping/getByReporteeUserMasterId/${localStorage.getItem(
+                    "userMasterId"
+                  )}`
+              )
+              .then((response) => {
+                if (response.data.content.error) {
+                  Swal.fire({
+                    title: "Action Required!",
+                    text: "You Don't have any Reporting Officer, Please add Reporting Officer and proceed.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  getList();
+                } else {
+                  getApprovalAfterStageNextStepList(
+                    recordData.subSchemeId,
+                    recordData.approvalStageId
+                  );
+                  getUserFromDistrictList(
+                    recordData.subSchemeId,
+                    approvalStageId,
+                    districtId,
+                    talukId
+                  );
+                  if (response.data.content.reportToUserMasterId) {
+                    getUserMastersList(
+                      response.data.content.reportToUserMasterId
+                    );
+                  }
+                  handleShowModal(fid);
+                }
+              })
+              .catch(() => {});
+          } else {
+            getApprovalAfterStageNextStepList(
+              recordData.subSchemeId,
+              recordData.approvalStageId
+            );
+            getUserFromDistrictList(
+              recordData.subSchemeId,
+              approvalStageId,
+              districtId,
+              talukId
+            );
+            handleShowModal(fid);
+          }
         }
 
         if (categoryId && componentId && schemeId && applicationDocumentId) {
@@ -1259,8 +1341,13 @@ function DashboardReportList() {
             "PDMC"
           );
         } else if (schemeType === "Silk Samagra RH") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "Silk Samagra RH");
-        }else {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "Silk Samagra RH"
+          );
+        } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1280,7 +1367,12 @@ function DashboardReportList() {
             "PDMC"
           );
         } else if (schemeType === "Silk Samagra RH") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "Silk Samagra RH");
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "Silk Samagra RH"
+          );
         } else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -1321,7 +1413,12 @@ function DashboardReportList() {
             "PDMC"
           );
         } else if (schemeType === "Silk Samagra RH") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", "Silk Samagra RH");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            "Silk Samagra RH"
+          );
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -1342,7 +1439,12 @@ function DashboardReportList() {
             "PDMC"
           );
         } else if (schemeType === "Silk Samagra RH") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", "Silk Samagra RH");
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            "Silk Samagra RH"
+          );
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1861,6 +1963,55 @@ function DashboardReportList() {
   //   }
   // };
   const [applicationId, setApplicationId] = useState(null);
+  const [showModal6, setShowModal6] = useState(false);
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+
+  const saveApplicationForm = (data, i) => {
+    const updatedData = [...sendApplicationFormServiceData];
+    if (i < updatedData.length) {
+      updatedData[i] = { ...data };
+    } else {
+      updatedData.push({ ...data });
+    }
+    const sendResponse = updatedData.map((item) => {
+      return {
+        schemeQuotaId: item.schemeQuotaId,
+        // schemeAmount: item.subsidyAmount,
+        schemeAmount: item.schemeAmount,
+        eligibleAmount: item.calculatedEligibleAmount,
+        paymentTo: item.paymentTo,
+        paymentMethod: item.paymentMethod,
+        dateOfPayment: item.dateOfPayment,
+        referenceNo: item.referenceNo,
+      };
+    });
+
+    const sendData = {
+      description: actionData.comment,
+      rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+      applicationFormId: applicationFormId,
+      workOrderNumber: actionData.workOrderNumber,
+      sanctionOrderNumber: actionData.sanctionOrderNumber,
+      userId: actionData.userId,
+      stepId: actionData.stepId,
+      eligibleAmount: actionData.eligibleAmount,
+      pushToDBTRequestList: sendResponse,
+    };
+
+    api
+      .post(baseURLDBT + `service/pushToDBTDirectlyToFruits`, sendData)
+      .then((response) => {
+        getActionFarmerList();
+      })
+      .catch((err) => {
+        saveError(
+          err.response?.data?.error_description ||
+            "Sanction Order Update Failed"
+        );
+      });
+  };
+
   const postActionData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -1902,7 +2053,16 @@ function DashboardReportList() {
           };
         });
         sendPost = sendData;
-      } else {
+      } else if(actionFarmerData[0].directlyToFruits){
+        sendPost = {
+          applicationList: [actionFarmerData[0]?.applicationFormId],
+          userMasterId: localStorage.getItem("userMasterId"),
+          paymentMode: "P",
+          pushType:"P",
+          ddoCode:reportingOfficerDdoCode,
+          sanctionNo:actionData.sanctionNo
+        }
+      }else {
         sendPost = {
           description: actionData.comment,
           rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
@@ -1930,7 +2090,8 @@ function DashboardReportList() {
       if (
         !actionFarmerData[0].pushToDbt &&
         !actionFarmerData[0].sanctionOrder &&
-        !actionFarmerData[0].workOrder
+        !actionFarmerData[0].workOrder &&
+        !actionFarmerData[0].directlyToFruits
       ) {
         apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
       } else {
@@ -2004,6 +2165,28 @@ function DashboardReportList() {
                 );
               });
           }
+
+          if (actionFarmerData[0].directlyToFruits) {
+            // if (sendPost.sanctionNo == 0 || !sendPost.sanctionNo) {
+            //   warningAlert("Please Enter The Sanction Number", "Alert!!!");
+            //   return;
+            // }
+            apiCall = api
+              .post(baseURLDBT + `applicationTransaction/saveApplicationTransaction`, sendPost)
+              .then((response) => {
+                if (response.data.content.errorCode) {
+                  saveError(response.data.content.error_description);
+                } else {
+                  pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
+                }
+              })
+              .catch((err) => {
+                saveError(
+                  err.response?.data?.error_description ||
+                    "Sanction Order Update Failed"
+                );
+              });
+          }
         }
         if (actionFarmerData[0].pushToDbt) {
           apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
@@ -2033,11 +2216,19 @@ function DashboardReportList() {
                   actionFarmerData[0].workOrderForScheme === "PDMC" ||
                   actionFarmerData[0].workOrderForScheme === "PMKSY"
                 ) {
-                  generateWorkOrderAcknowledgment(applicationFormId, workOrderSchemeId);
-                } else if (actionFarmerData[0].workOrderForScheme === "Silk Samagra RH") {
-                  generateWorkOrderAcknowledgmentRH(applicationFormId, workOrderSchemeId);
+                  generateWorkOrderAcknowledgment(
+                    applicationFormId,
+                    workOrderSchemeId
+                  );
+                } else if (
+                  actionFarmerData[0].workOrderForScheme === "Silk Samagra RH"
+                ) {
+                  generateWorkOrderAcknowledgmentRH(
+                    applicationFormId,
+                    workOrderSchemeId
+                  );
                 }
-              }              
+              }
 
               saveSuccess();
               clear();
@@ -2061,6 +2252,66 @@ function DashboardReportList() {
     }
   };
 
+  const viewModal = async (e) => {
+    if (!!actionFarmerData[0]?.applicationFormId) {
+      await getCheckFileDetails(
+        actionFarmerData[0]?.applicationFormId,
+        reportingOfficerDdoCode
+      );
+    } else {
+      Swal.fire({
+        title: "Action Required!",
+        text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  const getUserMastersList = (_id) => {
+    api
+      .get(baseURL + `userMaster/get-join/${_id}`)
+      .then((response) => {
+        if (response.data) {
+          setReportingOfficerDdoCode(response.data.content.ddoCode);
+          // setData(prev=>({...prev,
+          //   reportFirstName:response.data.content.firstName
+          // }));
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        setValidated(false);
+      });
+  };
+
+  const [checkFileDetails, setCheckFileDetails] = useState({});
+  const getCheckFileDetails = (appId, ddoCode) => {
+    if (!actionData.sanctionNo || actionData.sanctionNo === "0" || actionData.sanctionNo === 0) {
+      warningAlert("Please Enter The Sanction Number", "Alert!!!");
+      return;
+  }
+    api
+      .post(baseURLDBT + `service/checkXmlFileDetails`, {
+        applicationFormId: appId,
+        userMasterId: localStorage.getItem("userMasterId"),
+        paymentMode: "P",
+        pushType: "P",
+        ddoCode,
+      })
+      .then((response) => {
+        if (response.data) {
+          setCheckFileDetails(response.data);
+        }
+        setShowModal6(true);
+        thirtyMinHold();
+      })
+      .catch((err) => {
+        // setApprovalStageAfterNextStepListData([]);
+        setCheckFileDetails([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
   const saveRejectSuccess = (message) => {
     Swal.fire({
       icon: "success",
@@ -2096,6 +2347,14 @@ function DashboardReportList() {
       html: errorMessage,
     });
   };
+
+  const pushedSuccess = (b,f) => {
+      Swal.fire({
+        icon: "success",
+        title: "Pushed successfully",
+        text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+      });
+    };
 
   const warningAlert = (message, title) => {
     Swal.fire({
@@ -2291,20 +2550,29 @@ function DashboardReportList() {
               </Button>
             )} */}
             {row.workOrderNumber && (
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                if (row.workOrderForScheme === "PDMC" || row.workOrderForScheme === "PMKSY") {
-                  generateWorkOrderAcknowledgment(row.applicationDocumentId, row.schemeId);
-                } else if (row.workOrderForScheme === "Silk Samagra RH") {
-                  generateWorkOrderAcknowledgmentRH(row.applicationDocumentId, row.schemeId);
-                }
-              }}
-            >
-              Download Work Order
-            </Button>
-          )}
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  if (
+                    row.workOrderForScheme === "PDMC" ||
+                    row.workOrderForScheme === "PMKSY"
+                  ) {
+                    generateWorkOrderAcknowledgment(
+                      row.applicationDocumentId,
+                      row.schemeId
+                    );
+                  } else if (row.workOrderForScheme === "Silk Samagra RH") {
+                    generateWorkOrderAcknowledgmentRH(
+                      row.applicationDocumentId,
+                      row.schemeId
+                    );
+                  }
+                }}
+              >
+                Download Work Order
+              </Button>
+            )}
 
             {row.sanctionOrderNumber && row.applicationFormId && (
               <Button
@@ -2931,6 +3199,24 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
+                              {actionFarmerData[0]?.directlyToFruits && (<Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label>
+                                    <strong>Sanction Number</strong>
+                                    <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <Form.Control
+                                    id="sanctionNo"
+                                    type="text"
+                                    name="sanctionNo"
+                                    value={actionData.sanctionNo}
+                                    onChange={handleActionInputs}
+                                    placeholder="Enter Sanction Number"
+                                    required
+                                  />
+                                </Form.Group>
+                              </Col>)}
+
                               {/* <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -3062,7 +3348,8 @@ function DashboardReportList() {
                                           // disabled={fieldsDisabled}
                                           disabled={
                                             fieldsDisabled ||
-                                            fieldsSanctionOrderDisabled
+                                            fieldsSanctionOrderDisabled ||
+                                            pushToDbtStatus
                                           }
                                         >
                                           <option value="">
@@ -3109,7 +3396,8 @@ function DashboardReportList() {
                                               // disabled={fieldsDisabled}
                                               disabled={
                                                 fieldsDisabled ||
-                                                fieldsSanctionOrderDisabled
+                                                fieldsSanctionOrderDisabled ||
+                                                pushToDbtStatus
                                               }
                                               // isInvalid={
                                               //   actionData.userId === undefined ||
@@ -3226,7 +3514,11 @@ function DashboardReportList() {
                                         value={actionData.stepId}
                                         onChange={handleActionInputs}
                                         required
-                                        disabled={fieldsDisabled}
+                                        disabled={
+                                          fieldsDisabled ||
+                                          pushToDbtStatus ||
+                                          directlyToFruits
+                                        }
                                       >
                                         <option value="">
                                           Select Approval Stage
@@ -3264,7 +3556,11 @@ function DashboardReportList() {
                                           actionData.userId === undefined ||
                                           actionData.userId === "0"
                                         }
-                                        disabled={fieldsDisabled}
+                                        disabled={
+                                          fieldsDisabled ||
+                                          pushToDbtStatus ||
+                                          directlyToFruits
+                                        }
                                       >
                                         <option value="">Select User</option>
                                         {userFromDistrictData.map((list) => (
@@ -3759,13 +4055,152 @@ function DashboardReportList() {
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
+
+                  {actionFarmerData.length > 0 &&
+                    actionFarmerData[0].directlyToFruits && (
+                      <Accordion.Item eventKey="transaction">
+                        <Accordion.Header
+                          style={{
+                            backgroundColor: "#0F6CBE",
+                            color: "white",
+                            fontWeight: "bold",
+                            padding: "3px",
+                            borderRadius: "5px",
+                          }}
+                          className="mb-3"
+                        >
+                          Push To DBT
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          <Block className="mt-n5">
+                            <Card
+                              className="mt-4"
+                              style={{
+                                border: "none",
+                                boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                              }}
+                            >
+                              <Card.Body>
+                                {/* <div style={{ overflowX: "auto" }}>
+                                  <table
+                                    className="table small table-bordered table-hover"
+                                    style={{ tableLayout: "fixed" }}
+                                  >
+                                    <thead
+                                      style={{ backgroundColor: "#27488A" }}
+                                    >
+                                      <tr>
+                                        {[
+                                          "Scheme Quota Name",
+                                          "Component Name",
+                                          "Allocated Amount",
+                                          "Share Percentage",
+                                          "Subsidy Amount",
+                                          "Action",
+                                        ].map((header) => (
+                                          <th
+                                            key={header}
+                                            style={{
+                                              width: "10%",
+                                              color: "white",
+                                            }}
+                                          >
+                                            {header}
+                                          </th>
+                                        ))}
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {pushToDBTListData?.length > 0 ? (
+                                        pushToDBTListData.map(
+                                          (pushDBTList, index) => (
+                                            <tr key={index}>
+                                              {[
+                                                "schemeQuotaName",
+                                                "schemeComponentName",
+                                                "allocatedAmount",
+                                                "shareInPercentage",
+                                                "subsidyAmount",
+                                              ].map((key) => (
+                                                <td
+                                                  key={key}
+                                                  style={{
+                                                    wordBreak: "break-word",
+                                                  }}
+                                                >
+                                                  {pushDBTList[key] || "N/A"}
+                                                </td>
+                                              ))}
+                                              <td>
+                                                {" "}
+                                                <Button
+                                                  variant="primary"
+                                                  onClick={() =>
+                                                    handleShowModal3(index)
+                                                  }
+                                                >
+                                                  Add
+                                                </Button>
+                                              </td>
+                                            </tr>
+                                          )
+                                        )
+                                      ) : (
+                                        <tr>
+                                          <td
+                                            colSpan="10"
+                                            className="text-center"
+                                          >
+                                            No Details Available
+                                          </td>
+                                        </tr>
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div> */}
+                                <Row>
+                                  <DataTable
+                                    tableClassName="data-table-head-light table-responsive"
+                                    columns={schemeDetailsPushToDbtListColumn}
+                                    data={recordFromAppForm}
+                                    highlightOnHover
+                                    progressPending={loading}
+                                    theme="solarized"
+                                    customStyles={customStyles}
+                                  />
+                                </Row>
+                              </Card.Body>
+                            </Card>
+                          </Block>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    )}
                 </Accordion>
 
                 <Col lg="12">
                   <div className="d-flex justify-content-center gap-2 mt-3">
-                    <Button type="submit" variant="success">
-                      Submit
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => viewModal()}
+                      hidden={!directlyToFruits}
+                    >
+                      View
                     </Button>
+                    {directlyToFruits ? (
+                      <Button
+                        type="submit"
+                        variant="success"
+                        disabled={displaySubmit}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button type="submit" variant="success">
+                        Submit
+                      </Button>
+                    )}
+
                     {/* <Button
                       type="button"
                         variant="primary"
@@ -4682,6 +5117,166 @@ function DashboardReportList() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal2}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Check Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table className="table small table-bordered">
+            <tbody>
+              <tr>
+                <td style={styles.ctstyle}>DeptCode:</td>
+                <td>{checkFileDetails.deptCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>SchemeID:</td>
+                <td>{checkFileDetails.schemeId }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>ComponentTypeID:</td>
+                <td>{checkFileDetails.componentTypeId }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>ComponentID:</td>
+                <td>{checkFileDetails.componentId }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>SubComponentID:</td>
+                <td>{checkFileDetails.subComponentId }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>PaymentMode:</td>
+                <td>{checkFileDetails.paymentMode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>PaymentType:</td>
+                <td>{checkFileDetails.paymentType }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>BenRecordCount:</td>
+                <td>{checkFileDetails.benRecordCount }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>BeneficiaryID:</td>
+                <td>{checkFileDetails.beneficiaryId }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>FarmerRegNo:</td>
+                <td>{checkFileDetails.farmerRegNo }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>PeriodFrom:</td>
+                <td>{checkFileDetails.periodFrom }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>PeriodTo:</td>
+                <td>{checkFileDetails.periodTo }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>MobileNo:</td>
+                <td>{checkFileDetails.mobileNumber }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>SanctionAmount:</td>
+                <td>{checkFileDetails.sanctionAmount }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>LGDistrict:</td>
+                <td>{checkFileDetails.lgDistrict }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>LGTaluk:</td>
+                <td>{checkFileDetails.lgTaluk }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>SanctionNo:</td>
+                <td>{actionData.sanctionNo }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>Finyear:</td>
+                <td>{checkFileDetails.finYear }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>DDOCode:</td>
+                <td>{checkFileDetails.ddoCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>DistrictCode:</td>
+                <td>{checkFileDetails.districtCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>TalukCode:</td>
+                <td>{checkFileDetails.talukCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>HobliCode:</td>
+                <td>{checkFileDetails.hobliCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>VillageCode:</td>
+                <td>{checkFileDetails.villageCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>SurveyNo:</td>
+                <td>{checkFileDetails.surveyNumber }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>Surnoc:</td>
+                <td>{checkFileDetails.surNoc }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>Hissano:</td>
+                <td>{checkFileDetails.hissaNumber }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>LandCode:</td>
+                <td>{checkFileDetails.landCode }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>OwnerNo:</td>
+                <td>{checkFileDetails.ownerNumber }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>MainOwnerNo:</td>
+                <td>{checkFileDetails.mainOwnerNumber }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>OwnerName:</td>
+                <td>{checkFileDetails.ownerName }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>ExtAcre:</td>
+                <td>{checkFileDetails.extAcre }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>ExtGunta:</td>
+                <td>{checkFileDetails.extGunta }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>ExtfGunta:</td>
+                <td>{checkFileDetails.extFGunta }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>DevAcre:</td>
+                <td>{checkFileDetails.devAcre }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>DevGunta:</td>
+                <td>{checkFileDetails.devGunta }</td>
+              </tr>
+              <tr>
+                <td style={styles.ctstyle}>DevfGunta:</td>
+                <td>{checkFileDetails.devFGunta }</td>
+              </tr>
+            </tbody>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal6}>
             Close
           </Button>
         </Modal.Footer>
