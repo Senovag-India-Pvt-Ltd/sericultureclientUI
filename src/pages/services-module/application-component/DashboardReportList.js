@@ -1340,14 +1340,9 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra RH") {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            "Silk Samagra RH"
-          );
-        } else {
+        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
+        }else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1366,19 +1361,15 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra RH") {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "company",
-            "Silk Samagra RH"
-          );
+        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
         } else {
           console.error("Unknown Scheme type for company sanction order.");
         }
       }
     });
   };
+
 
   const handleDownloadSanctionOrder = (
     applicationFormId,
@@ -1412,13 +1403,8 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra RH") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            "Silk Samagra RH"
-          );
+        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -1438,13 +1424,8 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra RH") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "company",
-            "Silk Samagra RH"
-          );
+        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1474,7 +1455,7 @@ function DashboardReportList() {
       // } else {
       //   throw new Error("Invalid recipient type.");
       // }
-      if (schemeType === "Silk Samagra RH") {
+      if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
         endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
         if (recipientType === "farmer") {
@@ -1510,6 +1491,7 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
+
 
   // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
   //   try {
@@ -1578,7 +1560,7 @@ function DashboardReportList() {
       // } else {
       //   throw new Error("Invalid recipient type.");
       // }
-      if (schemeType === "Silk Samagra RH") {
+      if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
         endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
         if (recipientType === "farmer") {
@@ -1614,6 +1596,7 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
+
 
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
@@ -2220,9 +2203,9 @@ function DashboardReportList() {
                     applicationFormId,
                     workOrderSchemeId
                   );
-                } else if (
-                  actionFarmerData[0].workOrderForScheme === "Silk Samagra RH"
-                ) {
+                } else if (actionFarmerData[0].workOrderForScheme === "Silk Samagra State" || 
+                  actionFarmerData[0].workOrderForScheme === "Silk Samagra Cental")
+                   {
                   generateWorkOrderAcknowledgmentRH(
                     applicationFormId,
                     workOrderSchemeId
@@ -2562,11 +2545,8 @@ function DashboardReportList() {
                       row.applicationDocumentId,
                       row.schemeId
                     );
-                  } else if (row.workOrderForScheme === "Silk Samagra RH") {
-                    generateWorkOrderAcknowledgmentRH(
-                      row.applicationDocumentId,
-                      row.schemeId
-                    );
+                  } else if (row.workOrderForScheme === "Silk Samagra State" || row.workOrderForScheme === "Silk Samagra Central") {
+                    generateWorkOrderAcknowledgmentRH(row.applicationDocumentId, row.schemeId);
                   }
                 }}
               >

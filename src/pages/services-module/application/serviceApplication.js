@@ -1939,14 +1939,15 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     });
   };
   
-  // Function to decide which acknowledgment method to call
-  const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
-    if (acknowledgementForScheme === "Silk Samagra RH") {
-      generateAcknowledgmentRH(applicationFormId, schemeId);
-    } else if (acknowledgementForScheme === "PDMC" || acknowledgementForScheme === "PMKSY") {
-      generateAcknowledgment(applicationFormId, schemeId);
-    }
-  };
+ // Function to decide which acknowledgment method to call
+ const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
+  if (acknowledgementForScheme === "Silk Samagra State" || acknowledgementForScheme === "Silk Samagra Central") {
+    generateAcknowledgmentRH(applicationFormId, schemeId);
+  } else if (acknowledgementForScheme === "PDMC" || acknowledgementForScheme === "PMKSY") {
+    generateAcknowledgment(applicationFormId, schemeId);
+  }
+};
+
   
 
   const saveError = (message) => {
