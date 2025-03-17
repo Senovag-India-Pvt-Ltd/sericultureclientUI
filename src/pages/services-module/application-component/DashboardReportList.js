@@ -2337,6 +2337,8 @@ function DashboardReportList() {
         title: "Pushed successfully",
         text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
       });
+      handleCloseModal();
+      getList();
     };
 
   const warningAlert = (message, title) => {
