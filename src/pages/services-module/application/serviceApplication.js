@@ -27,7 +27,8 @@ function ServiceApplication() {
   const [data, setData] = useState({
     with: "withLand",
     subinc: "subsidy",
-    equordev: ["land","equipment"],
+    // equordev: ["land","equipment"],enable this for other scheme later
+    equordev: ["land"],
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
@@ -1668,7 +1669,8 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     setData({
       with: "withLand",
       subinc: "subsidy",
-      equordev: "land,equipment",
+      // equordev: ["land","equipment"],enable this for other scheme later
+      equordev: ["land"],
       scSchemeDetailsId: "",
       fruitsId: "",
       scSubSchemeDetailsId: "",
@@ -3136,7 +3138,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                       key={list.scCategoryId}
                                       value={list.scCategoryId}
                                     >
-                                      {list.codeNumber}
+                                      {list.categoryName}
                                     </option>
                                   ))}
                               </Form.Select>

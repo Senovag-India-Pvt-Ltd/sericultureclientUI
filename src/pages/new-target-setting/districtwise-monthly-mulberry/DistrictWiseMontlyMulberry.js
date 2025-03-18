@@ -1481,7 +1481,8 @@ function DistrictWiseMontlyMulberry() {
                               >
                                 <option value="">{t('Select Year')}</option>
                                 {financialyearListData && financialyearListData.length 
-                                ? financialyearListData.map((list) => (
+                        
+                        ? financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
@@ -1639,7 +1640,7 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t('Month')}<span className="text-danger">*</span>
@@ -1669,19 +1670,13 @@ function DistrictWiseMontlyMulberry() {
                                 <option value="OCTOBER">{t('October')}</option>
                                 <option value="NOVEMBER">{t('November')}</option>
                                 <option value="DECEMBER">{t('December')}</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t('Month is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1788,6 +1783,281 @@ function DistrictWiseMontlyMulberry() {
                   </Card>
                 </Block>
 
+                <Block >
+                  <Card>
+                    <Card.Header>{t('Months')}</Card.Header>
+                    <Card.Body>
+                      {/* <h3>Farmers Details</h3> */}
+                      <Row className="g-gs">
+                      <Col lg="6">
+                      <Form.Group className="form-group mt-n2">
+                            <Form.Label htmlFor="value">
+                              {t('April')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('May')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('June')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('July')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('August')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('September')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                          </Col>
+
+                      <Col lg="6">
+                          <Form.Group className="form-group mt-n2">
+                            <Form.Label htmlFor="value">
+                              {t('October')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('November')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('December')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('January')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('Febrauary')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label htmlFor="value">
+                              {t('March')}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="value"
+                                name="value"
+                                value={data.value}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t('Enter Target No.')}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t('Target No. is required')}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        {/* </Col> */}
+
+                        {/* <Col lg="6"> */}
+                          
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+
+                
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
