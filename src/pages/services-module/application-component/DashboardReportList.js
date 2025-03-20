@@ -108,7 +108,14 @@ function DashboardReportList() {
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
+  const [changeable, setChangeable] = useState({
+    fid: "",
+    schemeId: "",
+    componentType: "",
+  });
+
   const checkToShowModal = (fid, schemeId, applicationId, componentType) => {
+    setChangeable((prev) => ({ ...prev, fid, schemeId, componentType }));
     getActionFarmerList(fid, schemeId, componentType);
   };
 
@@ -333,6 +340,7 @@ function DashboardReportList() {
             size="sm"
             onClick={() => saveApplicationForm(row, i)}
             className="ms-1"
+            disabled={actionData.rejectType === "Permanent"}
           >
             Save
           </Button>
@@ -511,6 +519,8 @@ function DashboardReportList() {
     rejectType: "",
     eligibleAmount: "",
     sanctionNo: "",
+    rejectReasonWorkflowMasterId:"",
+    comment: "",
   });
 
   //  to get data from api
@@ -891,6 +901,18 @@ function DashboardReportList() {
         const data = response.data.content;
         const recordData = data[0];
         setActionFarmerData(data);
+        if (recordData.pushToDbt) {
+          setFieldsDisabled(recordData.pushToDbt);
+        }
+        if (recordData.directlyToFruits) {
+          setFieldsDisabled(recordData.directlyToFruits);
+        }
+
+        if(recordData.directlyToFruits){
+          setDisplaySubmit(true);
+        }else{
+          setDisplaySubmit(false);
+        }
 
         setPushToDbtStatus(recordData.pushToDbt);
         setDirectlyToFruits(recordData.directlyToFruits);
@@ -1340,9 +1362,17 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
-        }else {
+        } else if (
+          schemeType === "Silk Samagra State" ||
+          schemeType === "Silk Samagra Central"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType
+          );
+        } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1361,15 +1391,22 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
-          generateSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
+        } else if (
+          schemeType === "Silk Samagra State" ||
+          schemeType === "Silk Samagra Central"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType
+          );
         } else {
           console.error("Unknown Scheme type for company sanction order.");
         }
       }
     });
   };
-
 
   const handleDownloadSanctionOrder = (
     applicationFormId,
@@ -1403,8 +1440,16 @@ function DashboardReportList() {
             "farmer",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
+        } else if (
+          schemeType === "Silk Samagra State" ||
+          schemeType === "Silk Samagra Central"
+        ) {
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType
+          );
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -1424,8 +1469,16 @@ function DashboardReportList() {
             "company",
             "PDMC"
           );
-        } else if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
-          downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
+        } else if (
+          schemeType === "Silk Samagra State" ||
+          schemeType === "Silk Samagra Central"
+        ) {
+          downloadSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType
+          );
         } else {
           console.error("Unknown scheme type for company sanction order.");
         }
@@ -1455,7 +1508,10 @@ function DashboardReportList() {
       // } else {
       //   throw new Error("Invalid recipient type.");
       // }
-      if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+      if (
+        schemeType === "Silk Samagra State" ||
+        schemeType === "Silk Samagra Central"
+      ) {
         endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
         if (recipientType === "farmer") {
@@ -1491,7 +1547,6 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
-
 
   // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
   //   try {
@@ -1560,7 +1615,10 @@ function DashboardReportList() {
       // } else {
       //   throw new Error("Invalid recipient type.");
       // }
-      if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+      if (
+        schemeType === "Silk Samagra State" ||
+        schemeType === "Silk Samagra Central"
+      ) {
         endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
       } else {
         if (recipientType === "farmer") {
@@ -1596,7 +1654,6 @@ function DashboardReportList() {
       console.error("Error generating sanction order:", error);
     }
   };
-
 
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
@@ -1639,6 +1696,7 @@ function DashboardReportList() {
     if (name === "rejectType") {
       if (value === "Permanent") {
         setFieldsDisabled(true);
+        setDisplaySubmit(false);
         getApprovalAfterStageNextStepList(subSchemeId, approvalStageId); // Calls after-next-step function for "Permanent"
       } else if (value === "Objection") {
         setFieldsDisabled(false);
@@ -1646,6 +1704,14 @@ function DashboardReportList() {
           subSchemeId,
           approvalStageId
         ); // Calls before-step function for "Objection"
+      } else if (value === "") {
+        setFieldsDisabled(true);
+        setDisplaySubmit(true);
+        setActionData((prevData) => ({
+          ...prevData,
+          comment: "",
+          rejectReasonWorkflowMasterId: "",
+        }));
       } else {
         setFieldsDisabled(false);
       }
@@ -1715,28 +1781,44 @@ function DashboardReportList() {
       description: actionData.comment,
     };
 
-    api
-      .post(`${baseURLDBT}service/rejectServiceApplication`, sendPost)
-      .then((response) => {
-        if (response.data.errorCode === -1) {
-          saveError(response.data.errorMessages[0]);
-        } else if (response.data && response.data.error) {
-          saveError(response.data.error_description);
-        } else {
-          saveRejectSuccess();
-          clear();
-          setValidated(false);
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          saveError(err.response.data.validationErrors);
-        }
-      });
+    Swal.fire({
+      title: "Do you want to Reject the Application?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.value) {
+        api
+          .post(`${baseURLDBT}service/rejectServiceApplication`, sendPost)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.errorMessages[0]);
+              setDisplaySubmit(false);
+            } else if (response.data && response.data.error) {
+              saveError(response.data.error_description);
+              setDisplaySubmit(false);
+            } else {
+              saveRejectSuccess();
+              clear();
+              setDisplaySubmit(false);
+              handleCloseModal();
+              getList();
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              saveError(err.response.data.validationErrors);
+            }
+            setDisplaySubmit(false);
+          });
+      }
+    });
   };
 
   const handlePushToDbtInputs = (e) => {
@@ -1985,7 +2067,11 @@ function DashboardReportList() {
     api
       .post(baseURLDBT + `service/pushToDBTDirectlyToFruits`, sendData)
       .then((response) => {
-        getActionFarmerList();
+        getActionFarmerList(
+          changeable.fid,
+          changeable.schemeId,
+          changeable.componentType
+        );
       })
       .catch((err) => {
         saveError(
@@ -2003,7 +2089,7 @@ function DashboardReportList() {
       setValidated(true);
     } else {
       event.preventDefault();
-
+      setDisplaySubmit(true);
       // Check if Reject Type is "Permanent", then call rejectServiceApplication
       if (actionData.rejectType === "Permanent") {
         rejectServiceApplication();
@@ -2036,16 +2122,16 @@ function DashboardReportList() {
           };
         });
         sendPost = sendData;
-      } else if(actionFarmerData[0].directlyToFruits){
+      } else if (actionFarmerData[0].directlyToFruits) {
         sendPost = {
           applicationList: [actionFarmerData[0]?.applicationFormId],
           userMasterId: localStorage.getItem("userMasterId"),
           paymentMode: "P",
-          pushType:"P",
-          ddoCode:reportingOfficerDdoCode,
-          sanctionNo:actionData.sanctionNo
-        }
-      }else {
+          pushType: "P",
+          ddoCode: reportingOfficerDdoCode,
+          sanctionNo: actionData.sanctionNo,
+        };
+      } else {
         sendPost = {
           description: actionData.comment,
           rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
@@ -2135,10 +2221,12 @@ function DashboardReportList() {
                     response.data.applicationFormId,
                     schemeId
                   );
+                  setDisplaySubmit(false);
                 } else {
                   saveError(
                     "Failed to generate application ID for sanction order."
                   );
+                  setDisplaySubmit(false);
                 }
               })
               .catch((err) => {
@@ -2146,6 +2234,7 @@ function DashboardReportList() {
                   err.response?.data?.error_description ||
                     "Sanction Order Update Failed"
                 );
+                setDisplaySubmit(false);
               });
           }
 
@@ -2155,12 +2244,21 @@ function DashboardReportList() {
             //   return;
             // }
             apiCall = api
-              .post(baseURLDBT + `applicationTransaction/saveApplicationTransaction`, sendPost)
+              .post(
+                baseURLDBT +
+                  `applicationTransaction/saveApplicationTransaction`,
+                sendPost
+              )
               .then((response) => {
                 if (response.data.content.errorCode) {
                   saveError(response.data.content.error_description);
+                  setDisplaySubmit(false);
                 } else {
-                  pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
+                  pushedSuccess(
+                    checkFileDetails.beneficiaryId,
+                    checkFileDetails.farmerRegNo
+                  );
+                  setDisplaySubmit(false);
                 }
               })
               .catch((err) => {
@@ -2169,6 +2267,7 @@ function DashboardReportList() {
                   err.response?.data?.error_description ||
                     "Sanction Order Update Failed"
                 );
+                setDisplaySubmit(false);
                 // pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
               });
           }
@@ -2205,9 +2304,12 @@ function DashboardReportList() {
                     applicationFormId,
                     workOrderSchemeId
                   );
-                } else if (actionFarmerData[0].workOrderForScheme === "Silk Samagra State" || 
-                  actionFarmerData[0].workOrderForScheme === "Silk Samagra Cental")
-                   {
+                } else if (
+                  actionFarmerData[0].workOrderForScheme ===
+                    "Silk Samagra State" ||
+                  actionFarmerData[0].workOrderForScheme ===
+                    "Silk Samagra Cental"
+                ) {
                   generateWorkOrderAcknowledgmentRH(
                     applicationFormId,
                     workOrderSchemeId
@@ -2272,10 +2374,14 @@ function DashboardReportList() {
 
   const [checkFileDetails, setCheckFileDetails] = useState({});
   const getCheckFileDetails = (appId, ddoCode) => {
-    if (!actionData.sanctionNo || actionData.sanctionNo === "0" || actionData.sanctionNo === 0) {
+    if (
+      !actionData.sanctionNo ||
+      actionData.sanctionNo === "0" ||
+      actionData.sanctionNo === 0
+    ) {
       warningAlert("Please Enter The Sanction Number", "Alert!!!");
       return;
-  }
+    }
     api
       .post(baseURLDBT + `service/checkXmlFileDetails`, {
         applicationFormId: appId,
@@ -2333,15 +2439,15 @@ function DashboardReportList() {
     });
   };
 
-  const pushedSuccess = (b,f) => {
-      Swal.fire({
-        icon: "success",
-        title: "Pushed successfully",
-        text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
-      });
-      handleCloseModal();
-      getList();
-    };
+  const pushedSuccess = (b, f) => {
+    Swal.fire({
+      icon: "success",
+      title: "Pushed successfully",
+      text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    });
+    handleCloseModal();
+    getList();
+  };
 
   const warningAlert = (message, title) => {
     Swal.fire({
@@ -2549,8 +2655,14 @@ function DashboardReportList() {
                       row.applicationDocumentId,
                       row.schemeId
                     );
-                  } else if (row.workOrderForScheme === "Silk Samagra State" || row.workOrderForScheme === "Silk Samagra Central") {
-                    generateWorkOrderAcknowledgmentRH(row.applicationDocumentId, row.schemeId);
+                  } else if (
+                    row.workOrderForScheme === "Silk Samagra State" ||
+                    row.workOrderForScheme === "Silk Samagra Central"
+                  ) {
+                    generateWorkOrderAcknowledgmentRH(
+                      row.applicationDocumentId,
+                      row.schemeId
+                    );
                   }
                 }}
               >
@@ -3134,7 +3246,11 @@ function DashboardReportList() {
                                   >
                                     <option value="">Select Reject Type</option>
                                     <option value="Permanent">Permanent</option>
-                                    <option value="Objection">Objection</option>
+                                    {!directlyToFruits && (
+                                      <option value="Objection">
+                                        Objection
+                                      </option>
+                                    )}
                                   </Form.Select>
                                 </Form.Group>
                               </Col>
@@ -3183,23 +3299,28 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              {actionFarmerData[0]?.directlyToFruits && (<Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Sanction Number</strong>
-                                    <span className="text-danger">*</span>
-                                  </Form.Label>
-                                  <Form.Control
-                                    id="sanctionNo"
-                                    type="text"
-                                    name="sanctionNo"
-                                    value={actionData.sanctionNo}
-                                    onChange={handleActionInputs}
-                                    placeholder="Enter Sanction Number"
-                                    required
-                                  />
-                                </Form.Group>
-                              </Col>)}
+                              {actionFarmerData[0]?.directlyToFruits && (
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Sanction Number</strong>
+                                      <span className="text-danger">*</span>
+                                    </Form.Label>
+                                    <Form.Control
+                                      id="sanctionNo"
+                                      type="text"
+                                      name="sanctionNo"
+                                      value={actionData.sanctionNo}
+                                      onChange={handleActionInputs}
+                                      placeholder="Enter Sanction Number"
+                                      required
+                                      disabled={
+                                        actionData.rejectType === "Permanent"
+                                      }
+                                    />
+                                  </Form.Group>
+                                </Col>
+                              )}
 
                               {/* <Col lg="6">
                                 <Form.Group className="form-group">
@@ -3499,9 +3620,8 @@ function DashboardReportList() {
                                         onChange={handleActionInputs}
                                         required
                                         disabled={
-                                          fieldsDisabled ||
-                                          pushToDbtStatus ||
-                                          directlyToFruits
+                                          fieldsDisabled || pushToDbtStatus
+                                          // ||directlyToFruits
                                         }
                                       >
                                         <option value="">
@@ -3541,9 +3661,8 @@ function DashboardReportList() {
                                           actionData.userId === "0"
                                         }
                                         disabled={
-                                          fieldsDisabled ||
-                                          pushToDbtStatus ||
-                                          directlyToFruits
+                                          fieldsDisabled || pushToDbtStatus
+                                          // ||directlyToFruits
                                         }
                                       >
                                         <option value="">Select User</option>
@@ -4168,6 +4287,7 @@ function DashboardReportList() {
                       size="sm"
                       onClick={() => viewModal()}
                       hidden={!directlyToFruits}
+                      disabled={actionData.rejectType === "Permanent"}
                     >
                       View
                     </Button>
@@ -4180,7 +4300,7 @@ function DashboardReportList() {
                         Submit
                       </Button>
                     ) : (
-                      <Button type="submit" variant="success">
+                      <Button type="submit" variant="success" disabled={displaySubmit}>
                         Submit
                       </Button>
                     )}
@@ -5114,147 +5234,147 @@ function DashboardReportList() {
             <tbody>
               <tr>
                 <td style={styles.ctstyle}>DeptCode:</td>
-                <td>{checkFileDetails.deptCode }</td>
+                <td>{checkFileDetails.deptCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>SchemeID:</td>
-                <td>{checkFileDetails.schemeId }</td>
+                <td>{checkFileDetails.schemeId}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>ComponentTypeID:</td>
-                <td>{checkFileDetails.componentTypeId }</td>
+                <td>{checkFileDetails.componentTypeId}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>ComponentID:</td>
-                <td>{checkFileDetails.componentId }</td>
+                <td>{checkFileDetails.componentId}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>SubComponentID:</td>
-                <td>{checkFileDetails.subComponentId }</td>
+                <td>{checkFileDetails.subComponentId}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>PaymentMode:</td>
-                <td>{checkFileDetails.paymentMode }</td>
+                <td>{checkFileDetails.paymentMode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>PaymentType:</td>
-                <td>{checkFileDetails.paymentType }</td>
+                <td>{checkFileDetails.paymentType}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>BenRecordCount:</td>
-                <td>{checkFileDetails.benRecordCount }</td>
+                <td>{checkFileDetails.benRecordCount}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>BeneficiaryID:</td>
-                <td>{checkFileDetails.beneficiaryId }</td>
+                <td>{checkFileDetails.beneficiaryId}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>FarmerRegNo:</td>
-                <td>{checkFileDetails.farmerRegNo }</td>
+                <td>{checkFileDetails.farmerRegNo}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>PeriodFrom:</td>
-                <td>{checkFileDetails.periodFrom }</td>
+                <td>{checkFileDetails.periodFrom}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>PeriodTo:</td>
-                <td>{checkFileDetails.periodTo }</td>
+                <td>{checkFileDetails.periodTo}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>MobileNo:</td>
-                <td>{checkFileDetails.mobileNumber }</td>
+                <td>{checkFileDetails.mobileNumber}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>SanctionAmount:</td>
-                <td>{checkFileDetails.sanctionAmount }</td>
+                <td>{checkFileDetails.sanctionAmount}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>LGDistrict:</td>
-                <td>{checkFileDetails.lgDistrict }</td>
+                <td>{checkFileDetails.lgDistrict}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>LGTaluk:</td>
-                <td>{checkFileDetails.lgTaluk }</td>
+                <td>{checkFileDetails.lgTaluk}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>SanctionNo:</td>
-                <td>{actionData.sanctionNo }</td>
+                <td>{actionData.sanctionNo}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>Finyear:</td>
-                <td>{checkFileDetails.finYear }</td>
+                <td>{checkFileDetails.finYear}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>DDOCode:</td>
-                <td>{checkFileDetails.ddoCode }</td>
+                <td>{checkFileDetails.ddoCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>DistrictCode:</td>
-                <td>{checkFileDetails.districtCode }</td>
+                <td>{checkFileDetails.districtCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>TalukCode:</td>
-                <td>{checkFileDetails.talukCode }</td>
+                <td>{checkFileDetails.talukCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>HobliCode:</td>
-                <td>{checkFileDetails.hobliCode }</td>
+                <td>{checkFileDetails.hobliCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>VillageCode:</td>
-                <td>{checkFileDetails.villageCode }</td>
+                <td>{checkFileDetails.villageCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>SurveyNo:</td>
-                <td>{checkFileDetails.surveyNumber }</td>
+                <td>{checkFileDetails.surveyNumber}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>Surnoc:</td>
-                <td>{checkFileDetails.surNoc }</td>
+                <td>{checkFileDetails.surNoc}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>Hissano:</td>
-                <td>{checkFileDetails.hissaNumber }</td>
+                <td>{checkFileDetails.hissaNumber}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>LandCode:</td>
-                <td>{checkFileDetails.landCode }</td>
+                <td>{checkFileDetails.landCode}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>OwnerNo:</td>
-                <td>{checkFileDetails.ownerNumber }</td>
+                <td>{checkFileDetails.ownerNumber}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>MainOwnerNo:</td>
-                <td>{checkFileDetails.mainOwnerNumber }</td>
+                <td>{checkFileDetails.mainOwnerNumber}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>OwnerName:</td>
-                <td>{checkFileDetails.ownerName }</td>
+                <td>{checkFileDetails.ownerName}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>ExtAcre:</td>
-                <td>{checkFileDetails.extAcre }</td>
+                <td>{checkFileDetails.extAcre}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>ExtGunta:</td>
-                <td>{checkFileDetails.extGunta }</td>
+                <td>{checkFileDetails.extGunta}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>ExtfGunta:</td>
-                <td>{checkFileDetails.extFGunta }</td>
+                <td>{checkFileDetails.extFGunta}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>DevAcre:</td>
-                <td>{checkFileDetails.devAcre }</td>
+                <td>{checkFileDetails.devAcre}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>DevGunta:</td>
-                <td>{checkFileDetails.devGunta }</td>
+                <td>{checkFileDetails.devGunta}</td>
               </tr>
               <tr>
                 <td style={styles.ctstyle}>DevfGunta:</td>
-                <td>{checkFileDetails.devFGunta }</td>
+                <td>{checkFileDetails.devFGunta}</td>
               </tr>
             </tbody>
           </table>

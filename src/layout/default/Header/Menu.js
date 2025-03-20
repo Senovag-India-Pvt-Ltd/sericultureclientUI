@@ -1345,7 +1345,7 @@ function Menu() {
           ) : null}
 
           <MenuSub>
-            {showMenu.DBT_Subsidy_Verification ? (
+            {/* {showMenu.DBT_Subsidy_Verification ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Subsidy Verification")}
@@ -1376,7 +1376,7 @@ function Menu() {
                   to="/seriui/subsidy-counter-sign"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.DBT_Reject_List ? (
               <MenuItem>
                 <MenuItemLink

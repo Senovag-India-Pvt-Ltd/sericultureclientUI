@@ -1510,6 +1510,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       return;
     }
 
+    setSaveDisabled(true);
     uploadFileConfirm(sendPost);
   };
 
@@ -1705,6 +1706,12 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       vendorId: "",
       payToVendor: false,
     });
+    setAmountValue({
+      maxAmount: "",
+      minAmount: "",
+      unitPrice: "",
+      fullPrice: false,
+    })
     setDocumentAttachments({});
     setValidated(false);
     setLandDetailsList([]);
@@ -1871,12 +1878,15 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.errorMessages[0]);
+              setSaveDisabled(false);
             } else if (response.data && response.data.error) {
               saveError(response.data.error_description);
+              setSaveDisabled(false);
             } else {
               setApplicationId(response.data.content.applicationDocumentId);
               setSchemeId(response.data.content.schemeId);
               clear();
+              setSaveDisabled(false);
   
               // Call the appropriate acknowledgment function
               callAcknowledgmentFunction(
@@ -1899,6 +1909,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                 saveError(err.response.data.validationErrors);
               }
             }
+            setSaveDisabled(false);
           });
         setValidated(true);
       } else {
@@ -1908,12 +1919,16 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.errorMessages[0]);
+              setSaveDisabled(false);
             } else if (response.data && response.data.error) {
               saveError(response.data.error_description);
+              setSaveDisabled(false);
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
               setSchemeId(response.data.content.schemeId);
+              clear();
+              setSaveDisabled(false);
   
               // Call the appropriate acknowledgment function
               callAcknowledgmentFunction(
@@ -1935,6 +1950,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                 saveError(err.response.data.validationErrors);
               }
             }
+            setSaveDisabled(false);
           });
         setValidated(true);
       }
