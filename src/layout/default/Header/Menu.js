@@ -1256,14 +1256,14 @@ function Menu() {
               </MenuItem>
             ) : null}
 
-            {showMenu.Services_Dbt_Application ? (
+            {/* {showMenu.Services_Dbt_Application ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("DBT Application")}
                   to="/seriui/dbt-application"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
             {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
