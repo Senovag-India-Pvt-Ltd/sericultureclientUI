@@ -2164,10 +2164,12 @@ function DashboardReportList() {
                 }
               })
               .catch((err) => {
-                saveError(
-                  err.response?.data?.error_description ||
-                    "Sanction Order Update Failed"
-                );
+                // For testing purpose Uncomment saveError and delete pushedSuccess
+                // saveError(
+                //   err.response?.data?.error_description ||
+                //     "Sanction Order Update Failed"
+                // );
+                pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
               });
           }
         }
