@@ -46,8 +46,8 @@ function ServiceApplication() {
     userId: "",
     spacingId: "",
     hectareId: "",
-    periodFrom: new Date(),
-    periodTo: new Date(),
+    periodFrom: new Date("2024-04-01"),
+    periodTo: new Date("2025-03-31"),
     cocoonsWeight:"",
     availBonus:"",
     // availBonus: true,
@@ -1685,8 +1685,8 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
-      periodFrom: new Date(),
-      periodTo: new Date(),
+      periodFrom: new Date("2024-04-01"),
+      periodTo: new Date("2025-03-31"),
       cocoonsWeight:"",
       availBonus:"",
       // availBonus: true,
@@ -3312,7 +3312,9 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 maxDate={new Date()}
-                                // readOnly
+                                readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                  schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                  !schemeDetails.calculationBasedOn}
                                 required
                               />
                             </div>
@@ -3340,7 +3342,9 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                 className="form-control"
                                 maxDate={new Date()}
                                 required
-                                // readOnly
+                                readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                  schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                  !schemeDetails.calculationBasedOn}
                               />
                             </div>
                           </Form.Group>
