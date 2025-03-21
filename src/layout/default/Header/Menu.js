@@ -1409,14 +1409,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.DBT_Drawing_Officer_List ? (
+            {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("All Scheme Drawing Officer List")}
                   to="/seriui/all-scheme-drawing-officer-list"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
@@ -1425,14 +1425,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.DBT_Tsc_Officer_List ? (
+            {/* {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("All Scheme TSC Officer List")}
                   to="/seriui/all-scheme-tsc-officer-list"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
