@@ -951,6 +951,10 @@ import ConfigureRHUnitPriceAmount from "../pages/masters/ConfigureUnitPriceRH";
 import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
 import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
 import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
+import DbtStatusCheckList from "../pages/masters/dbt-status-check/DbtStatusCheckList";
+import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheckView";
+import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
+import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
 
 // Admin and Reports
 
@@ -2772,6 +2776,21 @@ function Router() {
             <Route
               path="sc-scheme-details-edit/:id"
               element={<ScSchemeDetailsEdit />}
+            />
+
+
+<Route path="dbtStatusCheck" element={<DbtStatusCheck />} />
+            <Route
+              path="dbtStatusCheck-list"
+              element={<DbtStatusCheckList />}
+            />
+            <Route
+              path="dbtStatusCheck-view/:id"
+              element={<DbtStatusCheckView/>}
+            />
+            <Route
+              path="dbtStatusCheck-edit/:id"
+              element={<DbtStatusCheckEdit />}
             />
 
             <Route path="division" element={<DivisionMaster />} />
