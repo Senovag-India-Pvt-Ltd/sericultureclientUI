@@ -1390,8 +1390,9 @@ const getFinancialDefaultDetails = () => {
                       {/* <option value="1">Sanction No.</option> */}
                       <option value="2">{t("FRUITS ID")}</option>
                       {/* <option value="3">Rejected Reason</option> */}
-                      <option value="4">{t("Rejected Reason")}</option>
-                      <option value="5">{t("Beneficiary ID")}</option>
+                      {/* <option value="3">{t("Rejected Reason")}</option> */}
+                      <option value="4">{t("Beneficiary ID")}</option>
+                      <option value="5">{t("Financial Year")}</option>
                       <option value="6">{t("Component")}</option>
                       <option value="7">{t("Component Type")}</option>
                     </Form.Select>

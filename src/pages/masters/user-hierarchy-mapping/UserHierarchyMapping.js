@@ -44,7 +44,54 @@ function UserHierarchyMapping() {
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (event) => {
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     const sendPost = {
+  //       reporteeUserMasterId: data.actualUserId,
+  //       reportToUserMasterId: data.reportUserMasterId,
+  //   };
+  //     api
+  //       .post(baseURL + `userHierarchyMapping/add`, sendPost)
+  //       .then((response) => {
+  //         if (response.data.content.error) {
+  //           saveError(response.data.content.error_description);
+  //         } else {
+  //           saveSuccess();
+  //           setData({
+  //             actualDesignationId: "",
+  //             actualUserId: "",
+  //             actualDistrictId: "",
+  //             actualFirstName: "",
+  //             reportUserMasterId: "",
+  //             reportDesignationId: "",
+  //             reportDistrictId: "",
+  //             reportFirstName: "",
+  //           });
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //           if (
+  //               err.response &&
+  //               err.response &&
+  //               err.response.data &&
+  //               err.response.data.validationErrors
+  //             ) {
+  //               if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //                 saveError(err.response.data.validationErrors);
+  //               }
+  //             }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+  const postData = async (event) => { 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -52,45 +99,113 @@ function UserHierarchyMapping() {
       setValidated(true);
     } else {
       event.preventDefault();
-      const sendPost = {
-        reporteeUserMasterId: data.actualUserId,
-        reportToUserMasterId: data.reportUserMasterId,
-    };
-      api
-        .post(baseURL + `userHierarchyMapping/add`, sendPost)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            setData({
-              actualDesignationId: "",
-              actualUserId: "",
-              actualDistrictId: "",
-              actualFirstName: "",
-              reportUserMasterId: "",
-              reportDesignationId: "",
-              reportDistrictId: "",
-              reportFirstName: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-            if (
-                err.response &&
-                err.response &&
-                err.response.data &&
-                err.response.data.validationErrors
-              ) {
-                if (Object.keys(err.response.data.validationErrors).length > 0) {
-                  saveError(err.response.data.validationErrors);
-                }
-              }
-        });
-      setValidated(true);
+      
+      // Check the response from getIdList
+      getIdList(data.actualUserId);
+  
+      // If there is a response, show confirmation
+      // if (userIdList.length > 0) {
+      //   Swal.fire({
+      //     title: 'Are you sure?',
+      //     text: 'You are updating your Report to user. Is it okay?',
+      //     icon: 'warning',
+      //     showCancelButton: true,
+      //     confirmButtonText: 'Yes, save it!',
+      //     cancelButtonText: 'No, cancel!',
+      //     reverseButtons: true,
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       submitForm();
+      //     }
+      //   });
+      // } else {
+      //   submitForm(); // Directly submit if no confirmation is needed
+      // }
     }
   };
+  
+  const submitForm = () => {
+    const sendPost = {
+      reporteeUserMasterId: data.actualUserId,
+      reportToUserMasterId: data.reportUserMasterId,
+    };
+  
+    api.post(baseURL + `userHierarchyMapping/add`, sendPost)
+      .then((response) => {
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+        } else {
+          saveSuccess();
+          setData({
+            actualDesignationId: "",
+            actualUserId: "",
+            actualDistrictId: "",
+            actualFirstName: "",
+            reportUserMasterId: "",
+            reportDesignationId: "",
+            reportDistrictId: "",
+            reportFirstName: "",
+          });
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors &&
+          Object.keys(err.response.data.validationErrors).length > 0
+        ) {
+          saveError(err.response.data.validationErrors);
+        }
+      });
+  };
+
+   const getIdList = (userId) => {
+    api
+      .get(baseURL + `userHierarchyMapping/getByReporteeUserMasterId/${userId}`)
+      .then((response) => {
+        if (response.data.content) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You are updating your senior officer. Is that okay?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              submitForm();
+            }
+          });
+        } else {
+          submitForm(); // Directly submit if no confirmation is needed
+        }
+        // setData(response.data.content);
+        // if (response.data.content) {
+        //   Swal.fire({
+        //     title: 'Are you sure?',
+        //     text: 'You are updating your Report to user. Is it okay?',
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonText: 'Yes, save it!',
+        //     cancelButtonText: 'No, cancel!',
+        //     reverseButtons: true,
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+        //       postData(); // Call postData if confirmed
+        //     }
+        //   });
+        // }
+      })
+      .catch(() => {
+        setData({});
+      });
+  };
+    // useEffect(() => {
+    //   getIdList();
+    // }, [reporteeUserMasterId]);
 
   const clear = () => {
     setData({
