@@ -364,6 +364,7 @@ function Menu() {
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Program: false,
     Admin_Master_Service_Scheme_Details: false,
+    Admin_Master_Service_DbtStatusCheck: false,
     Admin_Master_Service_Sub_Scheme_Details: false,
     Admin_Master_Service_Component: false,
     Admin_Master_Service_Scheme_Quota: false,
@@ -3016,6 +3017,14 @@ function Menu() {
                             <MenuItemLink
                               text={t("Scheme Details")}
                               to="/seriui/sc-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_DbtStatusCheck ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Dbt Status Check")}
+                              to="/seriui/dbtStatusCheck"
                             />
                           </MenuItem>
                         ) : null}
