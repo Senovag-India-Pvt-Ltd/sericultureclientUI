@@ -1417,14 +1417,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
-            {showMenu.DBT_Tsc_Officer_List ? (
+            {/* {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("TSC Officer List")}
                   to="/seriui/tsc-officer-list"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {/* {showMenu.DBT_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
