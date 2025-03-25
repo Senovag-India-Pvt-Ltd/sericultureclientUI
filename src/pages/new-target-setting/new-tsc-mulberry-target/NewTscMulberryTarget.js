@@ -1364,11 +1364,11 @@ function NewTscMulberryTarget() {
     });
   };
   return (
-    <Layout title={t("TSC Mulberry Target")}>
+    <Layout title={t("TSC Wise Area Under Mulberry Monthly Target")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("TSC Mulberry Target")}</Block.Title>
+            <Block.Title tag="h2">{t("TSC Wise Area Under Mulberry Monthly Target")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1384,10 +1384,10 @@ function NewTscMulberryTarget() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("TSC Mulberry Target")}</Card.Header>
+                    <Card.Header>{t("TSC Wise Area Under Mulberry Monthly Target")}</Card.Header>
                     {/* <div style={{ display: 'flex', alignItems: 'center' }}>
                           <Button variant="primary" onClick={totalTarget} style={{ marginRight: '10px' }}>
-                            {t('View Yearly Targets')}
+                            {t('View Annual Targets')}
                           </Button>
                           <table
                         className="table table-bordered table-striped"
@@ -1395,8 +1395,8 @@ function NewTscMulberryTarget() {
                       >
                          <thead>
                             <tr>
-                              <th style={styles.ctstyle}>TSC Yearly Targets</th>
-                              <th style={styles.ctstyle}>Mulberry Yearly Targets</th>
+                              <th style={styles.ctstyle}>Area Under Mulberry Monthly Target</th>
+                              <th style={styles.ctstyle}>Area Under Mulberry Annual Target</th>
                               <th style={styles.ctstyle}>Remaining Targets</th>
                             </tr>
                           </thead>
@@ -1418,10 +1418,10 @@ function NewTscMulberryTarget() {
                       </table>
                         </div> */}
                         <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Yearly Targets Section */}
+                        {/* Annual Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                           <Button variant="primary" onClick={totalTarget}>
-                            {t('Yearly Targets')}
+                            {t('Annual Targets')}
                           </Button>
                           <table
                             className="table table-bordered table-striped"
@@ -1429,8 +1429,8 @@ function NewTscMulberryTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Mulberry Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Area Under Mulberry Annual Target")}</th>
+                              <th style={styles.ctstyle}>{t("Area Under Mulberry Annual Target")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
@@ -1463,8 +1463,8 @@ function NewTscMulberryTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Mulberry Monthly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Area Under Mulberry Monthly Target")}</th>
+                              <th style={styles.ctstyle}>{t("Area Under Mulberry Monthly Target")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
@@ -1775,7 +1775,7 @@ function NewTscMulberryTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t("Target No.")}
+                              {t("Target(Area in Hectare)")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1784,11 +1784,11 @@ function NewTscMulberryTarget() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target(Area in Hectare)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Target No. is required.")}
+                                {t("Target(Area in Hectare) is required.")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2160,7 +2160,7 @@ function NewTscMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    {t("Target No.")}
+                    {t("Target(Area in Hectare)")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2169,10 +2169,10 @@ function NewTscMulberryTarget() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="number"
-                      placeholder={t("Enter Target No.")}
+                      placeholder={t("Enter Target(Area in Hectare)")}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("Target No. is required.")}
+                      {t("Target(Area in Hectare) is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

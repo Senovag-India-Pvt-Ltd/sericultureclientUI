@@ -1411,11 +1411,11 @@ function SiSdMulberryTarget() {
     });
   };
   return (
-    <Layout title={t("SI-SD Mulberry Target")}>
+    <Layout title={t("SI/SD Area Under Mulberry Target")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("SI-SD Mulberry Target")}</Block.Title>
+            <Block.Title tag="h2">{t("SI/SD Area Under Mulberry Target")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1431,12 +1431,12 @@ function SiSdMulberryTarget() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("SI-SD Mulberry Target")} </Card.Header>
+                    <Card.Header>{t("SI/SD Area Under Mulberry Target")} </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Yearly Targets Section */}
+                        {/* Annual Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                           <Button variant="primary" onClick={totalTarget}>
-                            {t('Yearly Targets')}
+                            {t('Annual Targets')}
                           </Button>
                           <table
                             className="table table-bordered table-striped"
@@ -1444,8 +1444,8 @@ function SiSdMulberryTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("SISD Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("SISD Annual Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
@@ -1805,7 +1805,7 @@ function SiSdMulberryTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t('Target No.')}
+                              {t('Target(Area in Hectare)')}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1815,11 +1815,11 @@ function SiSdMulberryTarget() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target(Area in Hectare)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Target No. is required")}.
+                                {t("Target(Area in Hectare) is required")}.
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -2228,7 +2228,7 @@ function SiSdMulberryTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    {t('Target No.')}
+                    {t('Target(Area in Hectare)')}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2238,11 +2238,11 @@ function SiSdMulberryTarget() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="number"
-                      placeholder={t("Enter Target No.")}
+                      placeholder={t("Enter Target(Area in Hectare)")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("Target No. is required")}.
+                      {t("Target(Area in Hectare) is required")}.
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

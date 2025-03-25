@@ -1492,10 +1492,10 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                       {t("District Wise Production Physical Target Setting")}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                          {/* Yearly Targets Section */}
+                          {/* Annual Targets Section */}
                           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                             <Button variant="primary" onClick={totalTarget}>
-                              {t('Yearly Targets')}
+                              {t('Annual Targets')}
                             </Button>
                             <table
                               className="table table-bordered table-striped"
@@ -1504,7 +1504,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    {t("District Yearly Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("District Annual Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>

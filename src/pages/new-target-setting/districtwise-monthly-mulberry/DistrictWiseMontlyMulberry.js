@@ -1396,11 +1396,11 @@ function DistrictWiseMontlyMulberry() {
     });
   };
   return (
-    <Layout title={t("District Wise Monthly Mulberry")}>
+    <Layout title={t("District Wise Area Under Mulberry Monthly Target")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t('District Wise Monthly Mulberry')}</Block.Title>
+            <Block.Title tag="h2">{t('District Wise Area Under Mulberry Monthly Target')}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t('View Target')}
@@ -1416,12 +1416,12 @@ function DistrictWiseMontlyMulberry() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t('District Wise Monthly Mulberry')}</Card.Header>
+                    <Card.Header>{t('District Wise Area Under Mulberry Monthly Target')}</Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                          {/* Yearly Targets Section */}
+                          {/* Annual Targets Section */}
                           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                             <Button variant="primary" onClick={totalTarget}>
-                              {t('Yearly Targets')}
+                              {t('Annual Targets')}
                             </Button>
                             <table
                               className="table table-bordered table-striped"
@@ -1430,7 +1430,7 @@ function DistrictWiseMontlyMulberry() {
                               <thead>
                                 <tr>
                                   <th style={styles.ctstyle}>
-                                    {t("Mulberry Yearly Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
+                                    {t("Mulberry Annual Targets")}: {viewTotalTargetsData[0]?.mulberryValue || 'N/A'}
                                   </th>
                                 </tr>
                               </thead>
@@ -1573,7 +1573,8 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t('Taluk')}<span className="text-danger">*</span>
+                              {t('Taluk')}
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1581,7 +1582,7 @@ function DistrictWiseMontlyMulberry() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
+                                // required
                                 // isInvalid={
                                 //   data.districtId === undefined ||
                                 //   data.districtId === "0"
@@ -1686,7 +1687,7 @@ function DistrictWiseMontlyMulberry() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t('Target No.')}<span className="text-danger">*</span>
+                              {t('Target(Area in Hectare)')}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1695,11 +1696,11 @@ function DistrictWiseMontlyMulberry() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder={t('Enter Target No.')}
+                                placeholder={t('Enter Target(Area in Hectare)')}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t('Target No. is required')}
+                                {t('Target(Area in Hectare) is required')}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1850,7 +1851,7 @@ function DistrictWiseMontlyMulberry() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t('District Wise Monthly Mulberry')}</Modal.Title>
+          <Modal.Title>{t('District Wise Area Under Mulberry Monthly Target')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2050,7 +2051,7 @@ function DistrictWiseMontlyMulberry() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    {t('Target No.')}
+                    {t('Target(Area in Hectare)')}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -2060,11 +2061,11 @@ function DistrictWiseMontlyMulberry() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="text"
-                      placeholder={t('Enter Target No.')}
+                      placeholder={t('Enter Target(Area in Hectare)')}
                       // required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t('Target No. is required')}
+                      {t('Target(Area in Hectare) is required')}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

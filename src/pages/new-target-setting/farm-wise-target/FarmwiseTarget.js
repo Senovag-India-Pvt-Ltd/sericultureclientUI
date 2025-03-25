@@ -1158,7 +1158,7 @@ function FarmwiseTarget() {
                         alignItems: 'center', // Ensure items align horizontally
                       }}
                     >
-                      {/* Yearly Targets Section */}
+                      {/* Annual Targets Section */}
                       <Button variant="primary" onClick={monthlyTarget}>
                         {t('Farm Targets')}
                       </Button>
@@ -1170,14 +1170,14 @@ function FarmwiseTarget() {
                          <thead>
                               <tr>
                               <th style={styles.ctstyle}>{t("Farm Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Farm Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Farm Annual Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
                                 <td>{viewMonthlyTargetsData[0].monthlyFarmValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].yearlyFarmValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].AnnualFarmValue || "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>

@@ -1488,7 +1488,7 @@ const handleShowModal2 = () => setShowModal2(true);
                         alignItems: 'center', // Ensure items align horizontally
                       }}
                     >
-                      {/* Yearly Targets Section */}
+                      {/* Annual Targets Section */}
                       <Button variant="primary" onClick={monthlyTarget}>
                         {t('District Wise Targets')}
                       </Button>
@@ -1500,14 +1500,14 @@ const handleShowModal2 = () => setShowModal2(true);
                          <thead>
                               <tr>
                               <th style={styles.ctstyle}>{t("Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Annual Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
                                 <td>{viewMonthlyTargetsData[0].monthlySchemeValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].yearlySchemeValue || "N/A"}</td>
+                                <td>{viewMonthlyTargetsData[0].AnnualSchemeValue || "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>

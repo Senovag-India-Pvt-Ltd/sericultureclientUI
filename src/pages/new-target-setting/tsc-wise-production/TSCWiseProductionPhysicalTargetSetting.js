@@ -1484,10 +1484,10 @@ function TSCWiseProductionPhysicalTargetSetting() {
                       {t("TSC Wise Production Physical Target Setting")}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Yearly Targets Section */}
+                        {/* Annual Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                           <Button variant="primary" onClick={totalTarget}>
-                            {t('Yearly Targets')}
+                            {t('Annual Targets')}
                           </Button>
                           <table
                             className="table table-bordered table-striped"
@@ -1495,8 +1495,8 @@ function TSCWiseProductionPhysicalTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("District Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
+                              <th style={styles.ctstyle}>{t("District Annual Targets")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
