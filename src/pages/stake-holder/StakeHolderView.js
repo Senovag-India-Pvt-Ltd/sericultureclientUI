@@ -319,6 +319,11 @@ function StakeHolderViewPage() {
                       <td style={styles.ctstyle}> {t("ration_number")}:</td>
                       <td>{StakeHolder.rationCardNumber}</td>
                     </tr>
+
+                    <tr>
+                      <td style={styles.ctstyle}> {t("Aadhaar Number")}:</td>
+                      <td>{StakeHolder.aadhaarNumber}</td>
+                    </tr>
                     <tr>
                       <td style={styles.ctstyle}>
                         {" "}

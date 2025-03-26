@@ -2485,6 +2485,22 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="rcard">
+                          {t("Aadhaar Number")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="aadhaarNumber"
+                            name="aadhaarNumber"
+                            value={data.aadhaarNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Aadhaar Number")}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="totalLandHolding">
                           {t("extent_of_total_land_holding_in_acres")}
                           <span className="text-danger">*</span>

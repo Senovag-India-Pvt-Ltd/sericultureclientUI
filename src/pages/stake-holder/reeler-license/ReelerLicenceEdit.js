@@ -943,6 +943,20 @@ function ReelerLicenceEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                                              <Form.Label htmlFor="aadhaarNumber">{t("Aadhaar Number")}</Form.Label>
+                                              <div className="form-control-wrap">
+                                                <Form.Control
+                                                  id="aadhaarNumber"
+                                                  name="aadhaarNumber"
+                                                  value={data.aadhaarNumber}
+                                                  onChange={handleInputs}
+                                                  type="aadhaarNumber"
+                                                  placeholder={t("Enter Aadhaar Number")}
+                                                />
+                                              </div>
+                                            </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>
                         {t("tsc")}<span className="text-danger">*</span>
                         </Form.Label>

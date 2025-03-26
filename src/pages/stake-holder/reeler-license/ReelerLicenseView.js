@@ -226,6 +226,10 @@ function ReelerLicenseView() {
                       <td>{Reeler.emailId}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> {t("Aadhaar Number")}</td>
+                      <td>{Reeler.aadhaarNumber}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Assign To Inspect")}</td>
                       <td>{Reeler.assignToInspectId}</td>
                     </tr>
