@@ -2424,7 +2424,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("District Monthly Mulberry Target")}
+                        text={t("District Wise Area Under Mulberry Monthly Target")}
                         to="/seriui/districtwise-montly-mulberry-new"
                       />
                     </MenuItem>
@@ -2448,7 +2448,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("TSC Monthly Mulberry Target")}
+                        text={t("TSC Wise Area Under Mulberry Monthly Target")}
                         to="/seriui/tsc-mulberry-targets-new"
                       />
                     </MenuItem>
@@ -2456,7 +2456,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("SI SD Monthly Mulberry Target")}
+                        text={t("SI/SD Area Under Mulberry Monthly Target")}
                         to="/seriui/si-sd-mulberry-target-new"
                       />
                     </MenuItem>
@@ -2464,7 +2464,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("SI SD Daily Mulberry Target")}
+                        text={t("SI/SD Area Under Mulberry Daily Target")}
                         to="/seriui/si-sd-mulberry-day-target-new"
                       />
                     </MenuItem>

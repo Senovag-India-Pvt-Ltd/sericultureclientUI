@@ -1539,7 +1539,7 @@ function SiSdWiseSchemeTargetSetting() {
                       {t("SI SD Wise Target Setting for Subsidies")}{" "}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Yearly Targets Section */}
+                        {/* Annual Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                           <Button variant="primary" onClick={monthlyTarget}>
                             {t('Total Targets')}
@@ -1550,9 +1550,9 @@ function SiSdWiseSchemeTargetSetting() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("TSC Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Institution Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Institution Annual Targets")}</th>
+                              <th style={styles.ctstyle}>{t("Remaining Annual Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>

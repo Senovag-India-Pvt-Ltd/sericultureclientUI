@@ -1440,11 +1440,11 @@ function SiSdMulberryDateTarget() {
     });
   };
   return (
-    <Layout title={t("SI-SD Mulberry Daily Target")}>
+    <Layout title={t("SI/SD Area Under Mulberry Target Daily")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("SI-SD Mulberry Daily Target")}</Block.Title>
+            <Block.Title tag="h2">{t("SI/SD Area Under Mulberry Target Daily")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1460,12 +1460,12 @@ function SiSdMulberryDateTarget() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("SI-SD Mulberry Daily Target")}</Card.Header>
+                    <Card.Header>{t("SI/SD Area Under Mulberry Target Daily")}</Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Yearly Targets Section */}
+                        {/* Annual Targets Section */}
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
                           <Button variant="primary" onClick={totalTarget}>
-                            {t('Yearly Targets')}
+                            {t('Annual Targets')}
                           </Button>
                           <table
                             className="table table-bordered table-striped"
@@ -1473,8 +1473,8 @@ function SiSdMulberryDateTarget() {
                           >
                             <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("SISD Yearly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("SISD Day Yearly Targets")}</th>
+                              <th style={styles.ctstyle}>{t("SISD Annual Targets")}</th>
+                              <th style={styles.ctstyle}>{t("SISD Day Annual Targets")}</th>
                               <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
                               </tr>
                             </thead>
@@ -1777,7 +1777,7 @@ function SiSdMulberryDateTarget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t("Target No.")}
+                              {t("Target(Area in Hectare)")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1786,11 +1786,11 @@ function SiSdMulberryDateTarget() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target(Area in Hectare)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Target No. is required.")}
+                                {t("Target(Area in Hectare) is required.")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1973,7 +1973,7 @@ function SiSdMulberryDateTarget() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("SI-SD Mulberry Daily Target Edit")}</Modal.Title>
+          <Modal.Title>{t("SI/SD Area Under Mulberry Target Daily Edit")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2224,7 +2224,7 @@ function SiSdMulberryDateTarget() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
-                    {t("Target No.")}
+                    {t("Target(Area in Hectare)")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2233,11 +2233,11 @@ function SiSdMulberryDateTarget() {
                       value={editData.value}
                       onChange={handleEditInputs}
                       type="number"
-                      placeholder={t("Enter Target No.")}
+                      placeholder={t("Enter Target(Area in Hectare)")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("Target No. is required.")}
+                      {t("Target(Area in Hectare) is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

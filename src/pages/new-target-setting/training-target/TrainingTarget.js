@@ -1323,6 +1323,23 @@ function TrainingTarget() {
                           </Form.Group>
                         </Col>
 
+                        <Col sm={3}>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>{t("Target (No. of Trainings)")}</Form.Label>
+                            <Form.Control
+                              id="value"
+                              name="value"
+                              value={data.value}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder={t("Enter Target (No. of Trainings)")}
+                              className="form-control"
+                              // readOnly
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+
                        
                       </Row>
                     </Card.Body>
@@ -1616,6 +1633,26 @@ function TrainingTarget() {
                   />
                   <Form.Control.Feedback type="invalid">
                     {t("User is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col sm={3}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>{t("Target (No. of Trainings)")}</Form.Label>
+                  <Form.Control
+                    id="value"
+                    name="value"
+                    value={editData.value}
+                    onChange={handleEditInputs}
+                    type="text"
+                    placeholder={t("Enter Target (No. of Trainings)")}
+                    className="form-control"
+                    // readOnly
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Target (No. of Trainings) is required")}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
