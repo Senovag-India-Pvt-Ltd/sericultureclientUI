@@ -2493,7 +2493,7 @@ function StakeHolderRegister() {
                             id="aadhaarNumber"
                             name="aadhaarNumber"
                             value={data.aadhaarNumber}
-                            onChange={handleInputs}
+                            // onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Aadhaar Number")}
                           />

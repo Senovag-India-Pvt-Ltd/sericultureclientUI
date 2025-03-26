@@ -2341,7 +2341,7 @@ function StakeHolderEdit() {
                                                   id="aadhaarNumber"
                                                   name="aadhaarNumber"
                                                   value={data.aadhaarNumber}
-                                                  onChange={handleInputs}
+                                                  // onChange={handleInputs}
                                                   type="aadhaarNumber"
                                                   placeholder={t("Enter Aadhaar Number")}
                                                 />
