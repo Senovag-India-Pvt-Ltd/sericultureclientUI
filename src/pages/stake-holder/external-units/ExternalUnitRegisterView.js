@@ -133,6 +133,27 @@ function ExternalUnitRegisterView() {
                         <td style={styles.ctstyle}>{t("Capacity Of Production/Annum")}</td>
                         <td>{ExternalUnitRegister.capacity}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Virtual Account Number")}</td>
+                        <td>{ExternalUnitRegister.virtualAccountNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Branch Name")}</td>
+                        <td>{ExternalUnitRegister.branchName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("IFSC Code")}</td>
+                        <td>{ExternalUnitRegister.ifscCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Market")}</td>
+                        <td>{ExternalUnitRegister.marketMasterName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Lot Number Nomenclature")}</td>
+                        <td>{ExternalUnitRegister.lotNumberNomenclature}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

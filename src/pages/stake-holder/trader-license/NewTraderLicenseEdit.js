@@ -776,6 +776,7 @@ function NewTraderLicenseEdit() {
                             value={data.ifscCode}
                             onChange={handleInputs}
                             type="text"
+                            maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
                           />

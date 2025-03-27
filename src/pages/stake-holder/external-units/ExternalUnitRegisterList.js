@@ -284,6 +284,35 @@ function ExternalUnitRegisterList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Virtual Account Number"),
+      selector: (row) => row.virtualAccountNumber,
+      cell: (row) => <span>{row.virtualAccountNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Branch Name"),
+      selector: (row) => row.branchName,
+      cell: (row) => <span>{row.branchName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("IFSC Code"),
+      selector: (row) => row.ifscCode,
+      cell: (row) => <span>{row.ifscCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Market"),
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
