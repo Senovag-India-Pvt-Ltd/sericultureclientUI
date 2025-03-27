@@ -179,6 +179,18 @@ function NewTraderLicenseView() {
                         <td style={styles.ctstyle}>{t("mobile_number")}</td>
                         <td>{NewTraderLicense.mobileNumber}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Virtual Account Number")}</td>
+                        <td>{NewTraderLicense.virtualAccountNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Branch Name")}</td>
+                        <td>{NewTraderLicense.branchName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("IFSC Code")}</td>
+                        <td>{NewTraderLicense.ifscCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DatePicker from "../../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -24,12 +24,31 @@ function NewTraderLicenseEdit() {
 
   const [validated, setValidated] = useState(false);
 
-  let name, value;
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+    const { name, value } = e.target;
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+        e.target.classList.add("is-invalid");
+        e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+        e.target.classList.remove("is-invalid");
+        e.target.classList.add("is-valid");
+    }
+
+    if (name === "branchName") {
+        setData({ ...data, [name]: value.toUpperCase() });
+    } else if (name === "ifscCode") {
+        setData({ ...data, [name]: value.toUpperCase() });
+    } else {
+        setData({ ...data, [name]: value });
+    }
+};
 
   const handleDateChange = (newDate) => {
     setData({ ...data, applicationDate: newDate });
@@ -76,6 +95,9 @@ function NewTraderLicenseEdit() {
             silkType: "", 
             marketMasterId: "",
             mobileNumber:"",
+            branchName: "",
+            virtualAccountNumber: "",
+            ifscCode: "", 
           });
           setValidated(false);
         }
@@ -120,6 +142,9 @@ function NewTraderLicenseEdit() {
       silkType: "", 
       marketMasterId: "",
       mobileNumber:"",
+      branchName: "",
+      virtualAccountNumber: "",
+      ifscCode: "", 
     });
   };
 
@@ -330,6 +355,31 @@ function NewTraderLicenseEdit() {
 
                       <Col lg="6">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Application Date")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.applicationDate ? new Date(data.applicationDate) : null}
+                            onChange={(date) =>
+                              handleDateChange(date, "applicationDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                      <Col lg="6">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="firstName">
                         {t("Name of the Applicant")}
                           <span className="text-danger">*</span>
@@ -389,9 +439,9 @@ function NewTraderLicenseEdit() {
                             Mobile Number is required
                           </Form.Control.Feedback>
                       </div>
-                      
                     </Form.Group>
                     </Col>
+ 
 
                     <Col lg="6">
                       <Form.Group className="form-group">
@@ -454,7 +504,7 @@ function NewTraderLicenseEdit() {
                       </Form.Group>
                       </Col>
 
-                      <Col lg="6">
+                      {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                       {t("Market")}<span className="text-danger">*</span>
@@ -488,7 +538,7 @@ function NewTraderLicenseEdit() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                       <Col lg="6">
                       <Form.Group className="form-group">
@@ -616,7 +666,11 @@ function NewTraderLicenseEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Challan Number")}
-                          />
+                            required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        {t("License Challan Number is required")}
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       </Col>
@@ -660,6 +714,116 @@ function NewTraderLicenseEdit() {
                 )}
               </Card.Body>
             </Card>
+
+             <Block className="mt-3">
+                        <Card>
+                          <Card.Header style={{ fontWeight: "bold" }}>
+                            {t("Virtual Bank Account Details")}
+                          </Card.Header>
+                          <Card.Body>
+                          <Row className="g-gs">
+                          <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="virtualAccountNumber">
+                          {t("Virtual Account Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="virtualAccountNumber"
+                            name="virtualAccountNumber"
+                            value={data.virtualAccountNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Virtual Account Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                           {t("Virtual Account Number is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="branchNamevb">
+                        {t("branch_name")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="branchNamevb"
+                            name="branchName"
+                            value={data.branchName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("enter_branch_name")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Branch Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+      
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="ifscCodevb">
+                        {t("ifsc_code")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="ifscCodevb"
+                            name="ifscCode"
+                            value={data.ifscCode}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("enter_ifsc_code")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            IFSC Code is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          {t("Market")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            // value={data.marketMasterId}
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">{t("Select Market")}</option>
+                            {marketListData.length
+                              ? marketListData.map((list) => (
+                                  <option
+                                    key={list.marketMasterId}
+                                    value={list.marketMasterId}
+                                  >
+                                    {list.marketMasterName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Market is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                          </Row>
+                          </Card.Body>
+                        </Card>
+                        </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

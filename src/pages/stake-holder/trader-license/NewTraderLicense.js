@@ -1,9 +1,9 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon, Select } from "../../../components";
-import DatePicker from "../../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 // import axios from "axios";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
@@ -17,6 +17,117 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 function NewTraderLicense() {
   // Translation
   const { t } = useTranslation();
+
+  const [vbAccountList, setVbAccountList] = useState([]);
+  const [vbAccount, setVbAccount] = useState({
+    virtualAccountNumber: "",
+    branchName: "",
+    ifscCode: "",
+    marketMasterId: "",
+  });
+
+  const [validatedVbAccount, setValidatedVbAccount] = useState(false);
+  const [validatedVbAccountEdit, setValidatedVbAccountEdit] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
+  
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
+    const handleAdd = (e) => {
+      const form = e.currentTarget;
+      if (form.checkValidity() === false) {
+        e.preventDefault();
+        e.stopPropagation();
+        setValidatedVbAccount(true);
+      } else {
+        e.preventDefault();
+        if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+          return;
+        }
+        setVbAccountList((prev) => [...prev, vbAccount]);
+        setVbAccount({
+          virtualAccountNumber: "",
+          branchName: "",
+          ifscCode: "",
+          marketMasterId: "",
+        });
+        setShowModal(false);
+        setValidatedVbAccount(false);
+      }
+    };
+
+    const handleDelete = (i) => {
+        setVbAccountList((prev) => {
+          const newArray = prev.filter((item, place) => place !== i);
+          return newArray;
+        });
+      };
+    
+      const [vbId, setVbId] = useState();
+      const handleGet = (i) => {
+        setVbAccount(vbAccountList[i]);
+        setShowModal2(true);
+        setVbId(i);
+      };
+
+      const handleUpdate = (e, i, changes) => {
+        setVbAccountList((prev) =>
+          prev.map((item, ix) => {
+            if (ix === i) {
+              return { ...item, ...changes };
+            }
+            return item;
+          })
+        );
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+          e.preventDefault();
+          e.stopPropagation();
+          setValidatedVbAccountEdit(true);
+        } else {
+          e.preventDefault();
+          if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+            return;
+          }
+          setShowModal2(false);
+          setValidatedVbAccountEdit(false);
+          setVbAccount({
+            virtualAccountNumber: "",
+            branchName: "",
+            ifscCode: "",
+            marketMasterId: "",
+          });
+        }
+      };
+
+      const handleVbInputs = (e) => {
+        const { name, value } = e.target;
+        // setVbAccount({ ...vbAccount, [name]: value });
+    
+        if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+          e.target.classList.add("is-invalid");
+          e.target.classList.remove("is-valid");
+        } else if (name === "ifscCode" && value.length === 11) {
+          e.target.classList.remove("is-invalid");
+          e.target.classList.add("is-valid");
+        }
+        if(name === "branchName"){
+          setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+        }
+        else if(name === "ifscCode"){
+          setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+        }
+        else{
+          setVbAccount({ ...vbAccount, [name]: value });
+        } 
+      
+      };
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
   const [data, setData] = useState({
     arnNumber: "",
     traderTypeMasterId: "",
@@ -30,7 +141,7 @@ function NewTraderLicense() {
     marketMasterId: "",
     mobileNumber:"",
     premisesDescription: "",
-    applicationDate: "2023-11-09T12:59:58.303+00:00",
+    applicationDate: "",
     applicationNumber: "",
     traderLicenseNumber: "",
     representativeDetails: "",
@@ -40,6 +151,7 @@ function NewTraderLicense() {
     silkExchangeMahajar: "",
     licenseNumberSequence: "",
     silkType: "",
+    traderLicenseDetailsRequests: [],
   });
 
   const [validated, setValidated] = useState(false);
@@ -52,8 +164,8 @@ function NewTraderLicense() {
     setData({ ...data, [name]: value });
   };
 
-  const handleDateChange = (newDate) => {
-    setData({ ...data, applicationDate: newDate });
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -66,41 +178,30 @@ function NewTraderLicense() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      const { applicationDate } = data;
+      const formattedDate =
+      applicationDate.getFullYear() +
+        "-" +
+        (applicationDate.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        applicationDate.getDate().toString().padStart(2, "0");
+
+    const updatedData = {
+      ...data,
+      traderLicenseDetailsRequests: vbAccountList,
+      applicationDate: formattedDate,
+    };
       api
-        .post(baseURL2 + `trader-license/add`, data)
+        .post(baseURL2 + `trader-license/add`, updatedData)
         .then((response) => {
-          const arnNumber = response.data.content.arnNumber;
-          saveSuccess(arnNumber);
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-          setData({
-            arnNumber: "",
-            traderTypeMasterId: "",
-            firstName: "",
-            middleName: "",
-            lastName: "",
-            fatherName: "",
-            districtId: "",
-            marketMasterId: "",
-            mobileNumber:"",
-            stateId: "",
-            address: "",
-            premisesDescription: "",
-            applicationDate: "2023-11-09T12:59:58.303+00:00",
-            applicationNumber: "",
-            traderLicenseNumber: "",
-            representativeDetails: "",
-            licenseFee: "",
-            licenseChallanNumber: "",
-            godownDetails: "",
-            silkExchangeMahajar: "",
-            licenseNumberSequence: "",
-            silkType: "",
-          });
+            const arnNumber = response.data.content.arnNumber;
+            saveSuccess(arnNumber);
+            clear();
+          }
           setValidated(false);
-        }
         })
         .catch((err) => {
           if (
@@ -132,7 +233,7 @@ function NewTraderLicense() {
       marketMasterId: "",
       mobileNumber:"",
       premisesDescription: "",
-      applicationDate: "2023-11-09T12:59:58.303+00:00",
+      applicationDate: "",
       applicationNumber: "",
       traderLicenseNumber: "",
       representativeDetails: "",
@@ -142,6 +243,30 @@ function NewTraderLicense() {
       silkExchangeMahajar: "",
       licenseNumberSequence: "",
       silkType: "",
+    });
+    virtualAccountClear();
+  };
+
+  const virtualAccountClear = () => {
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    });
+    setVbAccountList([]);
+  };
+
+
+   // Handle Options
+  // Market
+  const handleMarketOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setVbAccount({
+      ...vbAccount,
+      marketMasterId: chooseId,
+      marketMasterName: chooseName,
     });
   };
 
@@ -332,6 +457,31 @@ function NewTraderLicense() {
                     </Col>
 
                     <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Application Date")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.applicationDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "applicationDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="firstName">
                         {t("Name of the Applicant")}
@@ -395,6 +545,7 @@ function NewTraderLicense() {
                     </Form.Group>
                     </Col>
 
+
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>{t("state")}</Form.Label>
@@ -456,7 +607,7 @@ function NewTraderLicense() {
                     </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                       {t("Market")}<span className="text-danger">*</span>
@@ -490,7 +641,7 @@ function NewTraderLicense() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                   <Col lg="6">
                     <Form.Group className="form-group">
@@ -598,7 +749,7 @@ function NewTraderLicense() {
                           name="licenseFee"
                           value={data.licenseFee}
                           onChange={handleInputs}
-                          type="text"
+                          type="number"
                           placeholder={t("Enter License Fee")}
                         />
                       </div>
@@ -618,7 +769,11 @@ function NewTraderLicense() {
                           onChange={handleInputs}
                           type="text"
                           placeholder={t("Enter Challan Number")}
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                        {t("License Challan Number is required")}
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     </Col>
@@ -661,6 +816,109 @@ function NewTraderLicense() {
                 </Row>
               </Card.Body>
             </Card>
+            {/* </Block> */}
+
+             <Block className="mt-3">
+                          <Card>
+                            <Card.Header>{t("Virtual Bank Account")}</Card.Header>
+                            <Card.Body>
+                              {/* <h3>Virtual Bank account</h3> */}
+                              <Row className="g-gs mb-1">
+                                <Col lg="6">
+                                  <Form.Group className="form-group mt-1">
+                                    <div className="form-control-wrap"></div>
+                                  </Form.Group>
+                                </Col>
+            
+                                <Col lg="6">
+                                  <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-3">
+                                    <div className="form-control-wrap">
+                                      <ul className="">
+                                        <li>
+                                          <Button
+                                            className="d-md-none"
+                                            size="md"
+                                            variant="primary"
+                                            onClick={handleShowModal}
+                                          >
+                                            <Icon name="plus" />
+                                            <span> {t("add")}</span>
+                                          </Button>
+                                        </li>
+                                        <li>
+                                          <Button
+                                            className="d-none d-md-inline-flex"
+                                            variant="primary"
+                                            onClick={handleShowModal}
+                                          >
+                                            <Icon name="plus" />
+                                            <span> {t("add")}</span>
+                                          </Button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </Form.Group>
+                                </Col>
+                              </Row>
+                              {vbAccountList.length > 0 ? (
+                                <Row className="g-gs">
+                                  <Block>
+                                    <Card>
+                                      <div
+                                        className="table-responsive"
+                                        // style={{ paddingBottom: "30px" }}
+                                      >
+                                        <table className="table small">
+                                          <thead>
+                                            <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                              {/* <th></th> */}
+                                              <th>{t("Action")}</th>
+                                              <th>{t("Virtual Account Number")}</th>
+                                              <th>{t("branch_name")}</th>
+                                              <th>{t("ifsc_code")}</th>
+                                              <th>{t("Market")}</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {vbAccountList.map((item, i) => (
+                                              <tr>
+                                                <td>
+                                                  <div>
+                                                    <Button
+                                                      variant="primary"
+                                                      size="sm"
+                                                      onClick={() => handleGet(i)}
+                                                    >
+                                                      {t("edit")}
+                                                    </Button>
+                                                    <Button
+                                                      variant="danger"
+                                                      size="sm"
+                                                      onClick={() => handleDelete(i)}
+                                                      className="ms-2"
+                                                    >
+                                                      {t("delete")}
+                                                    </Button>
+                                                  </div>
+                                                </td>
+                                                <td>{item.virtualAccountNumber}</td>
+                                                <td>{item.branchName}</td>
+                                                <td>{item.ifscCode}</td>
+                                                <td>{item.marketMasterName}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </Card>
+                                  </Block>
+                                </Row>
+                              ) : (
+                                ""
+                              )}
+                            </Card.Body>
+                          </Card>
+                        </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -680,6 +938,278 @@ function NewTraderLicense() {
           </Row>
         </Form>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>Add Virtual Bank Account Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* <Form action="#"> */}
+                <Form noValidate validated={validatedVbAccount} onSubmit={handleAdd}>
+                  <Row className="g-5 px-5">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="virtualAccountNumber">
+                        {t("Virtual Account Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="virtualAccountNumber"
+                            name="virtualAccountNumber"
+                            value={vbAccount.virtualAccountNumber}
+                            onChange={handleVbInputs}
+                            type="text"
+                            placeholder={t("Enter Virtual Account Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          {t("Virtual Account Number is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="branchNamevb">
+                        {t("branch_name")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="branchNamevb"
+                            name="branchName"
+                            value={vbAccount.branchName}
+                            onChange={handleVbInputs}
+                            type="text"
+                            placeholder={t("enter_branch_name")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Branch Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+      
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="ifscCodevb">
+                        {t("ifsc_code")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="ifscCodevb"
+                            name="ifscCode"
+                            value={vbAccount.ifscCode}
+                            onChange={handleVbInputs}
+                            type="text"
+                            maxLength="11"
+                            placeholder={t("enter_ifsc_code")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            IFSC Code is required and equals to 11 digit
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          {t("Market")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            // value={vbAccount.marketMasterId}
+                            value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
+                            onChange={handleMarketOption}
+                            onBlur={() => handleMarketOption}
+                            required
+                            isInvalid={
+                              vbAccount.marketMasterId === undefined ||
+                              vbAccount.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">{t("Select Market")}</option>
+                            {marketListData.length
+                              ? marketListData.map((list) => (
+                                  <option
+                                    key={list.marketMasterId}
+                                    value={`${list.marketMasterId}_${list.marketMasterName}`}
+                                  >
+                                    {list.marketMasterName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Market is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+      
+                    <Col lg="12">
+                      <div className="d-flex justify-content-center gap g-2">
+                        <div className="gap-col">
+                          {/* <Button variant="success" onClick={handleAdd}> */}
+                          <Button type="submit" variant="success">
+                          {t("add")}
+                          </Button>
+                        </div>
+                        {/* <div className="gap-col">
+                          <Button variant="danger" onClick={handleCloseModal1}>
+                            Reject
+                          </Button>
+                        </div> */}
+                        <div className="gap-col">
+                          <Button variant="secondary" onClick={handleCloseModal}>
+                          {t("cancel")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+            </Modal>
+      
+            <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+              <Modal.Header closeButton>
+                <Modal.Title>{t("Edit Virtual Bank Account")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* <Form action="#"> */}
+                <Form
+                  noValidate
+                  validated={validatedVbAccountEdit}
+                  onSubmit={(e) => handleUpdate(e, vbId, vbAccount)}
+                >
+                  <Row className="g-5 px-5">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="virtualAccountNumber">
+                          {t("Virtual Account Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="virtualAccountNumber"
+                            name="virtualAccountNumber"
+                            value={vbAccount.virtualAccountNumber}
+                            onChange={handleVbInputs}
+                            type="text"
+                            placeholder={t("Enter Virtual Account Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                           {t("Virtual Account Number is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="branchNamevb">
+                        {t("branch_name")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="branchNamevb"
+                            name="branchName"
+                            value={vbAccount.branchName}
+                            onChange={handleVbInputs}
+                            type="text"
+                            placeholder={t("enter_branch_name")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Branch Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+      
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="ifscCodevb">
+                        {t("ifsc_code")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="ifscCodevb"
+                            name="ifscCode"
+                            value={vbAccount.ifscCode}
+                            onChange={handleVbInputs}
+                            type="text"
+                            placeholder={t("enter_ifsc_code")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            IFSC Code is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+      
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          {t("Market")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            // value={vbAccount.marketMasterId}
+                            value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
+                            onChange={handleMarketOption}
+                            onBlur={() => handleMarketOption}
+                            required
+                            isInvalid={
+                              vbAccount.marketMasterId === undefined ||
+                              vbAccount.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">{t("Select Market")}</option>
+                            {marketListData.length
+                              ? marketListData.map((list) => (
+                                  <option
+                                    key={list.marketMasterId}
+                                    value={`${list.marketMasterId}_${list.marketMasterName}`}
+                                  >
+                                    {list.marketMasterName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Market is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+      
+                    <Col lg="12">
+                      <div className="d-flex justify-content-center gap g-2">
+                        <div className="gap-col">
+                          {/* <Button
+                            variant="success"
+                            onClick={() => handleUpdate(vbId, vbAccount)}
+                          > */}
+                          <Button type="submit" variant="success">
+                          {t("update")}
+                          </Button>
+                        </div>
+                        {/* <div className="gap-col">
+                          <Button variant="danger" onClick={handleCloseModal1}>
+                            Reject
+                          </Button>
+                        </div> */}
+                        <div className="gap-col">
+                          <Button variant="secondary" onClick={handleCloseModal2}>
+                          {t("cancel")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+            </Modal>
     </Layout>
   );
 }
