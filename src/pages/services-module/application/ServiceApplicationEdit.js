@@ -42,6 +42,8 @@ function ServiceApplicationEdit() {
     sanctionNumber: "",
     spacingId: "",
     hectareId: "",
+    periodFrom: "",
+    periodTo: "",
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -227,8 +229,8 @@ useEffect(() => {
           description: datas.description,
           hectareId: datas.hectareId,
           spacingId: datas.spacingId,
-          periodFrom: new Date("2023-04-01"),
-          periodTo: new Date("2024-03-31"),
+          periodFrom: new Date("2024-04-01"),
+          periodTo: new Date("2025-03-31"),
         }));
 
         setFarmerId(datas.farmerId);
@@ -1021,6 +1023,17 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     setEquipment({ ...equipment, [name]: value });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
+  };
+
   const postData = (event) => {
     const transformedData = Object.keys(developedArea).map((id) => ({
       // landDeveloped: developedLand.landDeveloped,
@@ -1034,6 +1047,10 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       setValidated(true);
     } else {
       event.preventDefault();
+      const formattedDates = {
+        periodFrom: formatDate(data.periodFrom),
+        periodTo: formatDate(data.periodTo),
+      };
       const sendPost = {
         id: id,
         farmerId: farmerId,
@@ -1055,8 +1072,6 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         newFarmer: true,
         expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
-        periodFrom: data.periodFrom,
-        periodTo: data.periodTo,
         vendorId: equipment.vendorId,
         spacingId: data.spacingId,
         hectareId: data.hectareId,
@@ -1064,6 +1079,8 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         devAcre: 0,
         devGunta: 0,
         devFGunta: 0,
+        periodFrom: formattedDates.periodFrom,
+        periodTo: formattedDates.periodTo,
       };
 
       if (data.equordev === "land") {
@@ -2210,73 +2227,81 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
                               {/* Conditionally Render Spacing Field */}
                     {/* {schemeDetails.spacing && ( */}
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="spacing">
-                            {t("Spacing")} 
-                            {/* <span className="text-danger">*</span> */}
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="spacingId"
-                              value={data.spacingId}
-                              onChange={handleInputs}
-                              // required
-                              // isInvalid={
-                              //   data.spacingId === undefined || data.spacingId === "0"
-                              // }
-                            >
-                              <option value="">{t("Select Spacing")}</option>
-                              {spacingListData && spacingListData.length > 0
-                                ? spacingListData.map((list) => (
-                                    <option key={list.spacingId} value={list.spacingId}>
-                                      {list.spacingName}
-                                    </option>
-                                  ))
-                                : ""}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                    {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="spacing">
+                                {t("Spacing")} <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="spacingId"
+                                  value={data.spacingId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.spacingId === undefined ||
+                                    data.spacingId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select Spacing")}</option>
+                                  {spacingListData && spacingListData.length > 0
+                                    ? spacingListData.map((list) => (
+                                        <option
+                                          key={list.spacingId}
+                                          value={list.spacingId}
+                                        >
+                                          {list.spacingName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
                               Spacing is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    {/* )} */}
+                            </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
-                    {/* Conditionally Render Hectare Field */}
-                    {/* {schemeDetails.hectare && ( */}
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="hectare">
-                          {t("Hectare")} 
-                          {/* <span className="text-danger">*</span> */}
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="hectareId"
-                              value={data.hectareId}
-                              onChange={handleInputs}
-                              // required
-                              // isInvalid={
-                              //   data.hectareId === undefined || data.hectareId === "0"
-                              // }
-                            >
-                              <option value="">{t("Select Hectare")}</option>
-                              {hectareListData && hectareListData.length > 0
-                                ? hectareListData.map((list) => (
-                                    <option key={list.hectareId} value={list.hectareId}>
-                                      {list.hectareName}
-                                    </option>
-                                  ))
-                                : ""}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                        {/* Conditionally Render Hectare Field */}
+                        {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="hectare">
+                                {t("Hectare")} <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="hectareId"
+                                  value={data.hectareId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.hectareId === undefined ||
+                                    data.hectareId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select Hectare")}</option>
+                                  {hectareListData && hectareListData.length > 0
+                                    ? hectareListData.map((list) => (
+                                        <option
+                                          key={list.hectareId}
+                                          value={list.hectareId}
+                                        >
+                                          {list.hectareName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
                               Hectare is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    {/* )} */}
+                            </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
 
 
                         <Col lg="6">
@@ -2547,7 +2572,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
-                                // readOnly
+                                readOnly
                               />
                             </div>
                           </Form.Group>
@@ -2571,7 +2596,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
-                                // readOnly
+                                readOnly
                               />
                             </div>
                           </Form.Group>
