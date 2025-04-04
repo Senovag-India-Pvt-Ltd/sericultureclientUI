@@ -515,12 +515,14 @@ function ServiceApplication() {
 
   const getHeadAccountbyschemeIdAndSubSchemeIdList = (
     schemeId,
-    subSchemeId
+    subSchemeId,
+    categoryId
   ) => {
     api
-      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId-and-categoryId`, {
         schemeId: schemeId,
         subSchemeId: subSchemeId,
+        categoryId: categoryId,
       })
       .then((response) => {
         if (response.data.content.unitCost) {
@@ -538,10 +540,11 @@ function ServiceApplication() {
       getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
       getHeadAccountbyschemeIdAndSubSchemeIdList(
         data.scSchemeDetailsId,
-        data.scSubSchemeDetailsId
+        data.scSubSchemeDetailsId,
+        data.scCategoryId
       );
     }
-  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId,data.scCategoryId]);
 
   console.log(data);
 
