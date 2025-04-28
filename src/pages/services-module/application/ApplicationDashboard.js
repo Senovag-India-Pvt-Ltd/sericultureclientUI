@@ -304,7 +304,7 @@ const { t } = useTranslation();
   };
 
   return (
-    <Layout title="Help desk Dashboard">
+    <Layout title="User Dashboard">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
