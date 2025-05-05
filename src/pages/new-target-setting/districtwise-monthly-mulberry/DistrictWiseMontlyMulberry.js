@@ -110,6 +110,90 @@ function DistrictWiseMontlyMulberry() {
     getFinancialList();
   }, []);
 
+// to get all month target
+  const getAllMonthTarget = () => {
+     api
+      .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecords?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}` + (data.talukId?(`&talukId=${data.talukId}`):('')))
+      .then((response) => {
+        const naregaMonthList = response.data.naregaMonths;
+        const nonNaregaMonthList = response.data.nonNaregaMonths;
+        if (
+          naregaMonthList && naregaMonthList.length > 0 &&
+          nonNaregaMonthList && nonNaregaMonthList.length > 0
+        ){
+          const naregaMonth = naregaMonthList[0];
+          const nonNaregaMonth = nonNaregaMonthList[0];
+          setNaregaMonth({
+            april:naregaMonth.april,
+            may:naregaMonth.may,
+            june:naregaMonth.june,
+            july:naregaMonth.july,
+            august:naregaMonth.august,
+            september:naregaMonth.september,
+            october:naregaMonth.october,
+            november:naregaMonth.november,
+            december:naregaMonth.december,
+            january:naregaMonth.january,
+            february:naregaMonth.february,
+            march:naregaMonth.march,
+          });
+          setNonNargearegaMonth({
+            april:nonNaregaMonth.april,
+            may:nonNaregaMonth.may,
+            june:nonNaregaMonth.june,
+            july:nonNaregaMonth.july,
+            august:nonNaregaMonth.august,
+            september:nonNaregaMonth.september,
+            october:nonNaregaMonth.october,
+            november:nonNaregaMonth.november,
+            december:nonNaregaMonth.december,
+            january:nonNaregaMonth.january,
+            february:nonNaregaMonth.february,
+            march:nonNaregaMonth.march,
+          });
+        }else{
+          setNaregaMonth({
+            april:"",
+            may:"",
+            june:"",
+            july:"",
+            august:"",
+            september:"",
+            october:"",
+            november:"",
+            december:"",
+            january:"",
+            february:"",
+            march:"",
+          });
+          setNonNargearegaMonth({
+            april:"",
+            may:"",
+            june:"",
+            july:"",
+            august:"",
+            september:"",
+            october:"",
+            november:"",
+            december:"",
+            january:"",
+            february:"",
+            march:"",
+          });
+        }
+        // setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        // setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId){
+      getAllMonthTarget();
+    }
+  }, [data.districtId,data.financialYearMasterId,data.mulberryTargetTypeId,data.talukId]);
+
   // get list
   const getList = () => {
     setLoading(true);
@@ -842,14 +926,15 @@ function DistrictWiseMontlyMulberry() {
       });
   };
 
-  const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
+  const [viewTotalTargetsDataNarega, setViewTotalTargetsDataNarega] = useState({});
+  const [viewTotalTargetsDataNonNarega, setViewTotalTargetsDataNonNarega] = useState({});
 
   const totalTarget = (event) => {
     const {
       districtId,
       mulberryTargetTypeId,
-      targetType,
       financialYearMasterId,
+      talukId,
     } = data;
 
     if (!districtId || districtId === "0") {
@@ -879,17 +964,19 @@ function DistrictWiseMontlyMulberry() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
-    api
+    const targets = ["NAREGA","NON NAREGA"];
+    targets.forEach((target) => {
+      api
       .post(
         baseURLTargetSetting + `mulberryTargets/getTargetDetails`,
         {},
@@ -897,19 +984,33 @@ function DistrictWiseMontlyMulberry() {
           params: {
             districtId,
             mulberryTargetTypeId,
-            targetType,
+            targetType:target,
             financialYearMasterId,
+            ...(talukId && {talukId})
           },
         }
       )
       .then((response) => {
-        setViewTotalTargetsData(response.data);
+        if(target === "NAREGA"){
+          setViewTotalTargetsDataNarega(response.data);
+        }
+        else{
+          setViewTotalTargetsDataNonNarega(response.data);
+        }
+          
         // setTotalRows(response.data.totalRecords);
         // setShowModal4(true);
       })
       .catch((err) => {
-        setViewTotalTargetsData([]);
+        if(target === "NAREGA"){
+        setViewTotalTargetsDataNarega([]);
+        }else{
+          setViewTotalTargetsDataNonNarega([]);
+        }
       });
+    });
+
+    
   };
 
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
@@ -1487,8 +1588,36 @@ function DistrictWiseMontlyMulberry() {
                           <thead>
                             <tr>
                               <th style={styles.ctstyle}>
-                                {t("Mulberry Yearly Targets")}:{" "}
-                                {viewTotalTargetsData[0]?.mulberryValue ||
+                                {t("Mulberry Yearly Targets (NAREGA)")}:{" "}
+                                {viewTotalTargetsDataNarega[0]?.mulberryValue ||
+                                  "N/A"}
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                        <table
+                          className="table table-bordered table-striped"
+                          style={{ ...styles.table, width: "500px" }}
+                        >
+                          <thead>
+                            <tr>
+                              <th style={styles.ctstyle}>
+                                {t("Mulberry Yearly Targets (NON NAREGA)")}:{" "}
+                                {viewTotalTargetsDataNonNarega[0]?.mulberryValue ||
+                                  "N/A"}
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                        <table
+                          className="table table-bordered table-striped"
+                          style={{ ...styles.table, width: "500px" }}
+                        >
+                          <thead>
+                            <tr>
+                              <th style={styles.ctstyle}>
+                                {t("Total Mulberry Yearly Targets")}:{" "}
+                                {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) && !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)) ? ((parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue))+(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))).toFixed(2):"N/A" ||
                                   "N/A"}
                               </th>
                             </tr>
@@ -1497,7 +1626,7 @@ function DistrictWiseMontlyMulberry() {
                       </div>
 
                       {/* Monthly Targets Section */}
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           flexDirection: "row",
@@ -1522,7 +1651,7 @@ function DistrictWiseMontlyMulberry() {
                             </tr>
                           </thead>
                         </table>
-                      </div>
+                      </div> */}
                     </div>
 
                     <Card.Body>
@@ -2486,7 +2615,7 @@ function DistrictWiseMontlyMulberry() {
             ""
           )} */}
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -2504,7 +2633,7 @@ function DistrictWiseMontlyMulberry() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
