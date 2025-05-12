@@ -612,10 +612,11 @@ function NewTscMulberryTarget() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const {talukId,...rest} = data;
       api
         .post(
           baseURLTargetSetting + `mulberryTargets/saveTscMulberryTargets`,
-        {...data,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
+        {...rest,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
         )
         .then((response) => {
           if (response.data.content.error) {
