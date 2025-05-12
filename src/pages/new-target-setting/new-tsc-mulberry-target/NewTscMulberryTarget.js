@@ -1608,6 +1608,18 @@ function NewTscMulberryTarget() {
                       </table>
                       <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
                         <thead>
+                        <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Mulberry Yearly Targets(NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.remainingValue || "N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Mulberry Yearly Targets (NON NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || "N/A"}
+                            </th>
+                          </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Mulberry Yearly Targets")}:{" "}
