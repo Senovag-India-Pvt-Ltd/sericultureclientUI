@@ -892,14 +892,14 @@ function DistrictWiseMontlyMulberry() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
@@ -910,7 +910,7 @@ function DistrictWiseMontlyMulberry() {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
+            targetType :"NAREGA",
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -1772,11 +1772,11 @@ function DistrictWiseMontlyMulberry() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Taluk")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1784,11 +1784,11 @@ function DistrictWiseMontlyMulberry() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                // required
-                                // isInvalid={
-                                //   data.districtId === undefined ||
-                                //   data.districtId === "0"
-                                // }
+                                required
+                                isInvalid={
+                                  data.districtId === undefined ||
+                                  data.districtId === "0"
+                                }
                               >
                                 <option value="">{t("Select Taluk")}</option>
                                 {talukListData && talukListData.length
@@ -1807,7 +1807,7 @@ function DistrictWiseMontlyMulberry() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">

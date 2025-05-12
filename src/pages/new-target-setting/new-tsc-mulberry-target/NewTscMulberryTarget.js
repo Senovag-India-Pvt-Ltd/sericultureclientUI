@@ -115,7 +115,8 @@ function NewTscMulberryTarget() {
   // to get all month target
   const getAllMonthTarget = () => {
     api
-     .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}` + (data.talukId?(`&talukId=${data.talukId}`):('')))
+    //  .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}` + (data.talukId?(`&talukId=${data.talukId}`):('')))
+     .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}`)
      .then((response) => {
        const naregaMonthList = response.data.naregaMonths;
        const nonNaregaMonthList = response.data.nonNaregaMonths;
@@ -191,10 +192,10 @@ function NewTscMulberryTarget() {
  };
 
  useEffect(() => {
-   if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId){
+   if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId && data.tscMasterId){
      getAllMonthTarget();
    }
- }, [data.districtId,data.financialYearMasterId,data.mulberryTargetTypeId,data.talukId]);
+ }, [data.districtId,data.financialYearMasterId,data.mulberryTargetTypeId,data.tscMasterId]);
 
 
   // to get District
@@ -635,6 +636,8 @@ function NewTscMulberryTarget() {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
             }
+          }else{
+            saveError("The target value exceeds the remaining target");
           }
         });
       setValidated(true);
@@ -1102,7 +1105,7 @@ function NewTscMulberryTarget() {
             mulberryTargetTypeId,
             targetType:target,
             financialYearMasterId,
-            ...(talukId && {talukId})
+            // ...(talukId && {talukId})
           },
         }
       )
@@ -1579,6 +1582,18 @@ function NewTscMulberryTarget() {
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
+                              {t("Total Mulberry Yearly Targets (NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.mulberryValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total Mulberry Yearly Targets (NON NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNonNarega[0]?.mulberryValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
                               {t("Total Mulberry Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))
@@ -1595,7 +1610,7 @@ function NewTscMulberryTarget() {
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Reamaining Mulberry Yearly Targets")}:{" "}
+                              {t("Remaining Mulberry Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue))
                                 ? (
