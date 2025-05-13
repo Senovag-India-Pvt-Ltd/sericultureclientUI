@@ -34,6 +34,53 @@ function SiSdMulberryTarget() {
     budgetType: "allocate",
   });
 
+  const [naregaMonth,setNaregaMonth] = useState({
+    april:"",
+    may:"",
+    june:"",
+    july:"",
+    august:"",
+    september:"",
+    october:"",
+    november:"",
+    december:"",
+    january:"",
+    february:"",
+    march:"",
+  });
+
+  const handleNarega = (e) => {
+    const { name, value } = e.target;
+    setNaregaMonth(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const [nonNaregaMonth,setNonNargearegaMonth] = useState({
+    april:"",
+    may:"",
+    june:"",
+    july:"",
+    august:"",
+    september:"",
+    october:"",
+    november:"",
+    december:"",
+    january:"",
+    february:"",
+    march:"",
+  });
+
+  const handleNonNarega = (e) => {
+    const { name, value } = e.target;
+    setNonNargearegaMonth(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -65,6 +112,92 @@ function SiSdMulberryTarget() {
   useEffect(() => {
     getFinancialList();
   }, []);
+
+  
+  // to get all month target
+  const getAllMonthTarget = () => {
+    api
+    //  .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}` + (data.talukId?(`&talukId=${data.talukId}`):('')))
+     .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}`)
+     .then((response) => {
+       const naregaMonthList = response.data.naregaMonths;
+       const nonNaregaMonthList = response.data.nonNaregaMonths;
+       if (
+         naregaMonthList && naregaMonthList.length > 0 &&
+         nonNaregaMonthList && nonNaregaMonthList.length > 0
+       ){
+         const naregaMonth = naregaMonthList[0];
+         const nonNaregaMonth = nonNaregaMonthList[0];
+         setNaregaMonth({
+           april:naregaMonth.april,
+           may:naregaMonth.may,
+           june:naregaMonth.june,
+           july:naregaMonth.july,
+           august:naregaMonth.august,
+           september:naregaMonth.september,
+           october:naregaMonth.october,
+           november:naregaMonth.november,
+           december:naregaMonth.december,
+           january:naregaMonth.january,
+           february:naregaMonth.february,
+           march:naregaMonth.march,
+         });
+         setNonNargearegaMonth({
+           april:nonNaregaMonth.april,
+           may:nonNaregaMonth.may,
+           june:nonNaregaMonth.june,
+           july:nonNaregaMonth.july,
+           august:nonNaregaMonth.august,
+           september:nonNaregaMonth.september,
+           october:nonNaregaMonth.october,
+           november:nonNaregaMonth.november,
+           december:nonNaregaMonth.december,
+           january:nonNaregaMonth.january,
+           february:nonNaregaMonth.february,
+           march:nonNaregaMonth.march,
+         });
+       }else{
+         setNaregaMonth({
+           april:"",
+           may:"",
+           june:"",
+           july:"",
+           august:"",
+           september:"",
+           october:"",
+           november:"",
+           december:"",
+           january:"",
+           february:"",
+           march:"",
+         });
+         setNonNargearegaMonth({
+           april:"",
+           may:"",
+           june:"",
+           july:"",
+           august:"",
+           september:"",
+           october:"",
+           november:"",
+           december:"",
+           january:"",
+           february:"",
+           march:"",
+         });
+       }
+       // setFinancialyearListData(response.data.content.financialYearMaster);
+     })
+     .catch((err) => {
+       // setFinancialyearListData([]);
+     });
+ };
+
+ useEffect(() => {
+  if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId && data.tscMasterId){
+    getAllMonthTarget();
+  }
+}, [data.districtId,data.financialYearMasterId,data.mulberryTargetTypeId,data.tscMasterId]);
 
   // get list
   const getList = () => {
@@ -536,7 +669,8 @@ function SiSdMulberryTarget() {
       api
         .post(
           baseURLTargetSetting + `mulberryTargets/saveSISDMulberryTargets`,
-          data
+          // data
+          {...data,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
         )
         .then((response) => {
           if (response.data.content.error) {
@@ -557,6 +691,8 @@ function SiSdMulberryTarget() {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
             }
+          }else{
+            saveError("The target value exceeds the remaining target");
           }
         });
       setValidated(true);
@@ -938,10 +1074,19 @@ function SiSdMulberryTarget() {
     },
   ];
 
-  const [viewTotalTargetsData, setViewTotalTargetsData] = useState({});
+  
+  
+  const [viewTotalTargetsDataNarega, setViewTotalTargetsDataNarega] = useState({});
+  const [viewTotalTargetsDataNonNarega, setViewTotalTargetsDataNonNarega] = useState({});
 
   const totalTarget = (event) => {
-    const { districtId,mulberryTargetTypeId, targetType,financialYearMasterId,tscMasterId} = data;
+    const {
+      districtId,
+      mulberryTargetTypeId,
+      financialYearMasterId,
+      tscMasterId,
+    } = data;
+
 
     if (!districtId || districtId === "0") {
       Swal.fire({
@@ -970,14 +1115,6 @@ function SiSdMulberryTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
 
     if (!tscMasterId || tscMasterId === "0") {
       Swal.fire({
@@ -989,7 +1126,11 @@ function SiSdMulberryTarget() {
     }
 
     // Proceed with API call if validations pass
-    api
+    // api
+    
+    const targets = ["NAREGA","NON NAREGA"];
+    targets.forEach((target) => {
+      api
       .post(
         baseURLTargetSetting + `mulberryTargets/getTargetDetailsForSISD`,
         {},
@@ -997,20 +1138,33 @@ function SiSdMulberryTarget() {
           params: {
             districtId,
             mulberryTargetTypeId,
-            targetType,
+            targetType:target,
             financialYearMasterId,
             tscMasterId
           },
         }
       )
       .then((response) => {
-        setViewTotalTargetsData(response.data);
+        if(target === "NAREGA"){
+          setViewTotalTargetsDataNarega(response.data);
+        }
+        else{
+          setViewTotalTargetsDataNonNarega(response.data);
+        }
+          
         // setTotalRows(response.data.totalRecords);
         // setShowModal4(true);
       })
       .catch((err) => {
-        setViewTotalTargetsData([]);
+        if(target === "NAREGA"){
+        setViewTotalTargetsDataNarega([]);
+        }else{
+          setViewTotalTargetsDataNonNarega([]);
+        }
       });
+    });
+
+    
   };
 
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
@@ -1432,75 +1586,130 @@ function SiSdMulberryTarget() {
                 <Block>
                   <Card>
                     <Card.Header>{t("SI/SD Area Under Mulberry Target")} </Card.Header>
-                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Annual Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={totalTarget}>
-                            {t('Annual Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '800px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("SISD Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewTotalTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewTotalTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t("TSC Targets")}
+                      </Button>
+                     
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total TSC Yearly Targets (NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.tscValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total TSC Yearly Targets (NON NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNonNarega[0]?.tscValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total TSC Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.tscValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.tscValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataNonNarega[0]?.tscValue) +
+                                    parseFloat(viewTotalTargetsDataNarega[0]?.tscValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                        <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining TSC Yearly Targets(NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.remainingValue || "N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining TSC Yearly Targets (NON NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || "N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining TSC Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue) +
+                                    parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
 
-                        {/* Monthly Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={monthlyTarget}>
-                            {t('Monthly Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '800px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("SISD Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewMonthlyTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div> 
+                    {/* TSC under Mulberry */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t("SISD Yearly Targets")}
+                      </Button>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("SISD Yearly Targets (NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.sisdValue || "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("SISD Yearly Targets (NON NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNonNarega[0]?.sisdValue || "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total SISD Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.sisdValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdValue) +
+                                    parseFloat(viewTotalTargetsDataNarega[0]?.sisdValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      
+                    </div>
+                  </div>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1619,7 +1828,7 @@ function SiSdMulberryTarget() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t('Taluk')}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1627,11 +1836,11 @@ function SiSdMulberryTarget() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.talukId === undefined ||
-                                  data.talukId === "0"
-                                }
+                                // required
+                                // isInvalid={
+                                //   data.talukId === undefined ||
+                                //   data.talukId === "0"
+                                // }
                               >
                                 <option value="">{t('Select Taluk')}</option>
                                 {talukListData && talukListData.length
@@ -1645,9 +1854,9 @@ function SiSdMulberryTarget() {
                                 ))
                                 : ""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -1723,7 +1932,7 @@ function SiSdMulberryTarget() {
                           </Form.Group>
                         </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t('Target Type')}
@@ -1744,20 +1953,15 @@ function SiSdMulberryTarget() {
                                 <option value="">{t('Select Target Type')}</option>
                                 <option value="NAREGA">NAREGA</option>
                                 <option value="NON NAREGA">NON NAREGA</option>
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Target Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t('Month')}
@@ -1770,10 +1974,6 @@ function SiSdMulberryTarget() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
-                                // }
                               >
                                 <option value="">{t('Select Month')}</option>
                                 <option value="JANUARY">January</option>
@@ -1788,25 +1988,18 @@ function SiSdMulberryTarget() {
                                 <option value="OCTOBER">October</option>
                                 <option value="NOVEMBER">November</option>
                                 <option value="DECEMBER">December</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               {t('Target(Area in Hectare)')}
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1823,7 +2016,7 @@ function SiSdMulberryTarget() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
@@ -1875,6 +2068,598 @@ function SiSdMulberryTarget() {
                     </Card.Body>
                   </Card>
                 </Block>
+ <Block>
+                  <Card>
+                    <Card.Header>{t("Months")}</Card.Header>
+                    <Card.Body>
+                      {/* <h3>Farmers Details</h3> */}
+                      <Row className="g-gs">
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("April")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="april"
+                                    name="april"
+                                    value={naregaMonth.april}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="april"
+                                    name="april"
+                                    value={nonNaregaMonth.april}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("May")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="may"
+                                    name="may"
+                                    value={naregaMonth.may}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="may"
+                                    name="may"
+                                    value={nonNaregaMonth.may}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                          {/* </Col> */}
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("June")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="june"
+                                    name="june"
+                                    value={naregaMonth.june}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="june"
+                                    name="june"
+                                    value={nonNaregaMonth.june}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("July")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="july"
+                                    name="july"
+                                    value={naregaMonth.july}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="july"
+                                    name="july"
+                                    value={nonNaregaMonth.july}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("August")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="august"
+                                    name="august"
+                                    value={naregaMonth.august}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="august"
+                                    name="august"
+                                    value={nonNaregaMonth.august}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("September")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="september"
+                                    name="september"
+                                    value={naregaMonth.september}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="september"
+                                    name="september"
+                                    value={nonNaregaMonth.september}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("October")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="october"
+                                    name="october"
+                                    value={naregaMonth.october}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="october"
+                                    name="october"
+                                    value={nonNaregaMonth.october}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                          
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("November")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="november"
+                                    name="november"
+                                    value={naregaMonth.november}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="november"
+                                    name="november"
+                                    value={nonNaregaMonth.november}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("December")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="december"
+                                    name="december"
+                                    value={naregaMonth.december}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="december"
+                                    name="december"
+                                    value={nonNaregaMonth.december}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("January")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="january"
+                                    name="january"
+                                    value={naregaMonth.january}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="january"
+                                    name="january"
+                                    value={nonNaregaMonth.january}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("February")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="february"
+                                    name="february"
+                                    value={naregaMonth.february}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="february"
+                                    name="february"
+                                    value={nonNaregaMonth.february}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("March")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="march"
+                                    name="march"
+                                    value={naregaMonth.march}
+                                    onChange={handleNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("NON NAREGA")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="march"
+                                    name="march"
+                                    value={nonNaregaMonth.march}
+                                    onChange={handleNonNarega}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+
 
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -1895,7 +2680,7 @@ function SiSdMulberryTarget() {
           </Col>
           
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -1913,7 +2698,7 @@ function SiSdMulberryTarget() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
@@ -2043,7 +2828,7 @@ function SiSdMulberryTarget() {
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
                     {t('Taluk')}
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2051,12 +2836,12 @@ function SiSdMulberryTarget() {
                       value={editData.talukId}
                       onChange={handleEditInputs}
                       onBlur={() => handleEditInputs}
-                      required
+                      // required
                       disabled
-                      isInvalid={
-                        editData.talukId === undefined ||
-                        editData.talukId === "0"
-                      }
+                      // isInvalid={
+                      //   editData.talukId === undefined ||
+                      //   editData.talukId === "0"
+                      // }
                     >
                       <option value="">{t('Select Taluk')}</option>
                       {talukListData && talukListData.length
@@ -2067,9 +2852,9 @@ function SiSdMulberryTarget() {
                       ))
                       : ""}
                     </Form.Select>
-                    <Form.Control.Feedback type="invalid">
+                    {/* <Form.Control.Feedback type="invalid">
                       {t("Taluk is required")}
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
               </Col>
@@ -2229,7 +3014,6 @@ function SiSdMulberryTarget() {
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="value">
                     {t('Target(Area in Hectare)')}
-                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
