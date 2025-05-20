@@ -118,7 +118,7 @@ function SiSdMulberryTarget() {
   const getAllMonthTarget = () => {
     api
     //  .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}` + (data.talukId?(`&talukId=${data.talukId}`):('')))
-     .post(baseURLTargetSetting + `mulberryTargets/getMulberryRecordsForTsc?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}`)
+     .post(baseURLTargetSetting + `mulberryTargets/getTSCRecordsForSISD?districtId=${data.districtId}&financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&tscId=${data.tscMasterId}`)
      .then((response) => {
        const naregaMonthList = response.data.naregaMonths;
        const nonNaregaMonthList = response.data.nonNaregaMonths;
@@ -666,11 +666,12 @@ function SiSdMulberryTarget() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      const {talukId,...rest} = data;
       api
         .post(
           baseURLTargetSetting + `mulberryTargets/saveSISDMulberryTargets`,
           // data
-          {...data,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
+          {...rest,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
         )
         .then((response) => {
           if (response.data.content.error) {
