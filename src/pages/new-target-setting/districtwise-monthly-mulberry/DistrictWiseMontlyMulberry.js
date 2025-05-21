@@ -1624,34 +1624,6 @@ function DistrictWiseMontlyMulberry() {
                           </thead>
                         </table>
                       </div>
-
-                      {/* Monthly Targets Section */}
-                      {/* <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <Button variant="primary" onClick={monthlyTarget}>
-                          {t("Monthly Targets")}
-                        </Button>
-                        <table
-                          className="table table-bordered table-striped"
-                          style={{ ...styles.table, width: "500px" }}
-                        >
-                          <thead>
-                            <tr>
-                              <th style={styles.ctstyle}>
-                                {t("Mulberry Monthly Targets")}:{" "}
-                                {viewMonthlyTargetsData[0]?.mulberryValue ||
-                                  "N/A"}
-                              </th>
-                            </tr>
-                          </thead>
-                        </table>
-                      </div> */}
                     </div>
 
                     <Card.Body>
