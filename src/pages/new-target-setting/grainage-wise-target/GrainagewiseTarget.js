@@ -39,12 +39,95 @@ function GrainagewiseTarget() {
     userMasterId: "",
   });
 
+  const [grainageMonth,setGrainageMonth] = useState({
+      april:"",
+      may:"",
+      june:"",
+      july:"",
+      august:"",
+      september:"",
+      october:"",
+      november:"",
+      december:"",
+      january:"",
+      february:"",
+      march:"",
+    });
   
+    const handleGrainage = (e) => {
+      const { name, value } = e.target;
+      setGrainageMonth(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    };
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
+    // To get all month targets for Grainage
+const getAllMonthTarget = () => {
+  api
+    .post(
+      baseURLTargetSetting +
+        `targets/getGrainageTargetRecords?raceMasterId=${data.raceMasterId}&financialYearId=${data.financialYearMasterId}&grainageMasterId=${data.grainageMasterId}`,
+      {}
+    )
+    .then((response) => {
+      const monthDataList = response.data.grainageMonth; // assuming backend sends grainageMonth like grainageMonth
 
+      if (monthDataList && monthDataList.length > 0) {
+        const monthData = monthDataList[0]; // assuming 1 record per call
+        setGrainageMonth({
+          april: monthData.april,
+          may: monthData.may,
+          june: monthData.june,
+          july: monthData.july,
+          august: monthData.august,
+          september: monthData.september,
+          october: monthData.october,
+          november: monthData.november,
+          december: monthData.december,
+          january: monthData.january,
+          february: monthData.february,
+          march: monthData.march,
+        });
+      } else {
+        // Initialize empty values
+        setGrainageMonth({
+          april: "",
+          may: "",
+          june: "",
+          july: "",
+          august: "",
+          september: "",
+          october: "",
+          november: "",
+          december: "",
+          january: "",
+          february: "",
+          march: "",
+        });
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch grainage month targets", err);
+    });
+};
+
+useEffect(() => {
+  if (
+    data.raceMasterId &&
+    data.financialYearMasterId &&
+    data.grainageMasterId
+  ) {
+    getAllMonthTarget();
+  }
+}, [
+  data.raceMasterId,
+  data.financialYearMasterId,
+  data.grainageMasterId
+]);
+
+
+  
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -548,32 +631,14 @@ function GrainagewiseTarget() {
   };
 
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
-  // const _header = { "Content-Type": "application/json", accept: "*/*" };
-  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -583,10 +648,11 @@ function GrainagewiseTarget() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      console.log("Entered Allocate");
+
       api
-        .post(baseURLTargetSetting + `targets/saveGrainageTargets`, data)
+        .post(baseURLTargetSetting + `targets/saveGrainageTargets`,
+          {...data,grainageMonth:[grainageMonth]}
+        )
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -793,9 +859,6 @@ function GrainagewiseTarget() {
     grainageMasterId: "",
     userMasterId: "",
     });
-    setType({
-      budgetType: "allocate",
-    });
     getFinancialDefaultDetails();
     setValidatedAllDateEdit(false);
   };
@@ -849,8 +912,8 @@ function GrainagewiseTarget() {
 
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
 
-  const monthlyTarget = (event) => {
-    const { financialYearMasterId,raceMasterId,grainageMasterId,month} = data;
+  const totalTarget = (event) => {
+    const { financialYearMasterId,raceMasterId,grainageMasterId} = data;
 
     
     if (!financialYearMasterId || financialYearMasterId === "0") {
@@ -882,14 +945,14 @@ function GrainagewiseTarget() {
 
    
 
-    if (!month || month === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Month",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!month || month === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Month",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
@@ -901,7 +964,7 @@ function GrainagewiseTarget() {
             financialYearMasterId,
             raceMasterId,
             grainageMasterId,
-            month,
+            // month,
           },
         }
       )
@@ -1077,9 +1140,9 @@ function GrainagewiseTarget() {
       userMasterId: "",
     });
     setUserName("");
-    setType({
-      budgetType: "allocate",
-    });
+    // setType({
+    //   budgetType: "allocate",
+    // });
     getFinancialDefaultDetails();
     setValidated(false);
   };
@@ -1138,6 +1201,7 @@ function GrainagewiseTarget() {
                     <Card.Header>
                       {t("Grainage Wise Target Setting Page")}
                     </Card.Header>
+                    <Card.Body>
                     <div
                       style={{
                         display: 'flex',
@@ -1147,8 +1211,8 @@ function GrainagewiseTarget() {
                       }}
                     >
                       {/* Annual Targets Section */}
-                      <Button variant="primary" onClick={monthlyTarget}>
-                        {t('Farm Targets')}
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t('Yearly Targets')}
                       </Button>
 
                       <table
@@ -1157,15 +1221,15 @@ function GrainagewiseTarget() {
                       >
                          <thead>
                               <tr>
-                              <th style={styles.ctstyle}>{t("Grainage Monthly Targets")}</th>
+                              {/* <th style={styles.ctstyle}>{t("Grainage Monthly Targets")}</th> */}
                               <th style={styles.ctstyle}>{t("Grainage Annual Targets")}</th>
                               </tr>
                             </thead>
                             <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
-                                <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].AnnualGrainageValue || "N/A"}</td>
+                                {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
+                                <td>{viewMonthlyTargetsData[0].yearlyGrainageValue || "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>
@@ -1177,7 +1241,7 @@ function GrainagewiseTarget() {
                             </tbody>
                       </table>
                     </div>
-                    <Card.Body>
+                    {/* <Card.Body> */}
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
@@ -1285,7 +1349,7 @@ function GrainagewiseTarget() {
                       </Form.Group>
                     </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Month")}<span className="text-danger">*</span>
@@ -1315,19 +1379,13 @@ function GrainagewiseTarget() {
                                 <option value="OCTOBER">{t("October")}</option>
                                 <option value="NOVEMBER">{t("November")}</option>
                                 <option value="DECEMBER">{t("December")}</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -1363,11 +1421,10 @@ function GrainagewiseTarget() {
                           </Form.Group>
                         </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               {t("Target No.")}
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1384,7 +1441,7 @@ function GrainagewiseTarget() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
@@ -1433,6 +1490,288 @@ function GrainagewiseTarget() {
                   </Card>
                 </Block>
 
+
+                <Block>
+                  <Card>
+                    <Card.Header>{t("Months")}</Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("April")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="april"
+                                name="april"
+                                value={grainageMonth.april}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("May")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="may"
+                                name="may"
+                                value={grainageMonth.may}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("June")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="june"
+                                name="june"
+                                value={grainageMonth.june}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("July")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="july"
+                                name="july"
+                                value={grainageMonth.july}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("August")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="august"
+                                name="august"
+                                value={grainageMonth.august}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("September")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="september"
+                                name="september"
+                                value={grainageMonth.september}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("October")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="october"
+                                name="october"
+                                value={grainageMonth.october}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("November")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="november"
+                                name="november"
+                                value={grainageMonth.november}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("December")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="december"
+                                name="december"
+                                value={grainageMonth.december}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("January")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="january"
+                                name="january"
+                                value={grainageMonth.january}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("Febrauary")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="february"
+                                name="february"
+                                value={grainageMonth.february}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("March")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="march"
+                                name="march"
+                                value={grainageMonth.march}
+                                onChange={handleGrainage}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+
+              
+
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
@@ -1452,7 +1791,7 @@ function GrainagewiseTarget() {
           </Col>
           
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -1470,7 +1809,7 @@ function GrainagewiseTarget() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
