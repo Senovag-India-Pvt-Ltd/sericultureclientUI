@@ -2472,7 +2472,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("District Wise Product Physical Target Setting")}
+                        text={t("District Wise Physical Target Setting")}
                         to="/seriui/districtwise-product-physical-target-setting"
                       />
                     </MenuItem>
@@ -2480,7 +2480,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("TSC Wise Product Physical Target Setting")}
+                        text={t("TSC Wise Physical Target Setting")}
                         to="/seriui/tscwise-product-physical-target-setting"
                       />
                     </MenuItem>
