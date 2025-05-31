@@ -110,9 +110,9 @@ function DistrictwiseProductionPhysicalTargetSetting() {
      getAllMonthTarget();
    }
  }, [
-   data.financialYearMasterId &&
-     data.mulberryTargetTypeId &&
-     data.districtId && 
+   data.financialYearMasterId,
+     data.mulberryTargetTypeId,
+     data.districtId,
      data.raceMasterId
  ]);
 

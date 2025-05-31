@@ -30,9 +30,94 @@ function TSCWiseProductionPhysicalTargetSetting() {
     userMasterId: "",
   });
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
+  const [districtWiseProductionMonth,setDistrictWiseProductionMonth] = useState({
+       april:"",
+       may:"",
+       june:"",
+       july:"",
+       august:"",
+       september:"",
+       october:"",
+       november:"",
+       december:"",
+       january:"",
+       february:"",
+       march:"",
+     });
+   
+     const handleDistrictWiseProductionMonth = (e) => {
+       const { name, value } = e.target;
+       setDistrictWiseProductionMonth(prev => ({
+         ...prev,
+         [name]: value
+       }));
+     };
+ 
+     // To get all month targets for Grainage
+ const getAllMonthTarget = () => {
+   api
+     .post(
+       baseURLTargetSetting +
+         `productionTargets/getDistrictWiseProductionTSCRecords?financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&districtId=${data.districtId}&raceMasterId=${data.raceMasterId}&tscMasterId=${data.tscMasterId}`)
+     .then((response) => {
+       const monthDataList = response.data.districtWiseProductionMonth; // assuming backend sends districtWiseProductionMonth like districtWiseProductionMonth
+ 
+       if (monthDataList && monthDataList.length > 0) {
+         const monthData = monthDataList[0]; // assuming 1 record per call
+         setDistrictWiseProductionMonth({
+           april: monthData.april,
+           may: monthData.may,
+           june: monthData.june,
+           july: monthData.july,
+           august: monthData.august,
+           september: monthData.september,
+           october: monthData.october,
+           november: monthData.november,
+           december: monthData.december,
+           january: monthData.january,
+           february: monthData.february,
+           march: monthData.march,
+         });
+       } else {
+         // Initialize empty values
+         setDistrictWiseProductionMonth({
+           april: "",
+           may: "",
+           june: "",
+           july: "",
+           august: "",
+           september: "",
+           october: "",
+           november: "",
+           december: "",
+           january: "",
+           february: "",
+           march: "",
+         });
+       }
+     })
+     .catch((err) => {
+       console.error("Failed to fetch grainage month targets", err);
+     });
+ };
+ 
+ useEffect(() => {
+  if (
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId &&
+    data.districtId &&
+    data.raceMasterId &&
+    data.tscMasterId
+  ) {
+    getAllMonthTarget();
+  }
+}, [
+  data.financialYearMasterId,
+  data.mulberryTargetTypeId,
+  data.districtId,
+  data.raceMasterId,
+  data.tscMasterId,
+]);
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -295,11 +380,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
     setEditData(updatedData);
   };
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
+ 
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -335,7 +416,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
       api
         .post(
           baseURLTargetSetting + `productionTargets/saveTscProductionTargets`,
-          data
+          {...data,districtWiseProductionMonth:[districtWiseProductionMonth]}
         )
         .then((response) => {
           if (response.data.content.error) {
@@ -414,9 +495,6 @@ function TSCWiseProductionPhysicalTargetSetting() {
       raceMasterId: "",
       tscMasterId: "",
       userMasterId: "",
-    });
-    setType({
-      budgetType: "allocate",
     });
     getFinancialDefaultDetails();
     setValidatedAllDateEdit(false);
@@ -662,9 +740,6 @@ function TSCWiseProductionPhysicalTargetSetting() {
       userMasterId: "",
     });
     setUserName("");
-    setType({
-      budgetType: "allocate",
-    });
     getFinancialDefaultDetails();
     setValidated(false);
   };
@@ -1034,6 +1109,84 @@ function TSCWiseProductionPhysicalTargetSetting() {
         setViewTotalTargetsData([]);
       });
   };
+
+ 
+  
+    const [viewTotalTargetsForTSCData, setViewTotalTargetsForTSCData] = useState({});
+  
+    const totalTargetForTSC = (event) => {
+      const { districtId,mulberryTargetTypeId,financialYearMasterId, raceMasterId,tscMasterId} = data;
+  
+      if (!districtId || districtId === "0") {
+        Swal.fire({
+          icon: "warning",
+          title: "Please select District",
+          text: "Please try again!",
+        });
+        return;
+      }
+  
+      if (!financialYearMasterId || financialYearMasterId === "0") {
+        Swal.fire({
+          icon: "warning",
+          title: "Please select Financial Year",
+          text: "Please try again!",
+        });
+        return;
+      }
+  
+      if (!mulberryTargetTypeId || mulberryTargetTypeId === "0") {
+        Swal.fire({
+          icon: "warning",
+          title: "Please select Target",
+          text: "Please try again!",
+        });
+        return;
+      }
+  
+      if (!raceMasterId || raceMasterId === "0") {
+        Swal.fire({
+          icon: "warning",
+          title: "Please select Target Type",
+          text: "Please try again!",
+        });
+        return;
+      }
+  
+      if (!tscMasterId || tscMasterId === "0") {
+        Swal.fire({
+          icon: "warning",
+          title: "Please select Target Type",
+          text: "Please try again!",
+        });
+        return;
+      }
+  
+      // Proceed with API call if validations pass
+      api
+        .post(
+          baseURLTargetSetting + `productionTargets/getTargetDetailsForTSC`,
+          {},
+          {
+            params: {
+              districtId,
+              mulberryTargetTypeId,
+              financialYearMasterId,
+              raceMasterId,
+              tscMasterId
+            },
+          }
+        )
+        .then((response) => {
+          setViewTotalTargetsForTSCData(response.data);
+          // setTotalRows(response.data.totalRecords);
+          // setShowModal4(true);
+        })
+        .catch((err) => {
+          setViewTotalTargetsForTSCData([]);
+        });
+    };
+  
 
   const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
 
@@ -1483,75 +1636,70 @@ function TSCWiseProductionPhysicalTargetSetting() {
                     <Card.Header>
                       {t("TSC Wise Production Physical Target Setting")}
                     </Card.Header>
-                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Annual Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={totalTarget}>
-                            {t('Annual Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '600px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("District Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewTotalTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t("Mulberry Targets")}
+                      </Button>
+                     
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total Mulberry Yearly Targets")}:{" "}
+                              {viewTotalTargetsData[0]?.mulberryValue ||"N/A"}
+                            </th>
+                          </tr>
+                         
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                        <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Mulberry Yearly Targets")}:{" "}
+                              {viewTotalTargetsData[0]?.remainingValue || "N/A"}
+                            </th>
+                          </tr> 
+                        </thead>
+                      </table>
+                    </div>
 
-                        {/* Monthly Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={monthlyTarget}>
-                            {t('Monthly Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '600px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("District Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].mulberryValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div> 
+                    {/* TSC under Mulberry */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTargetForTSC}>
+                        {t("TSC Yearly Targets")}
+                      </Button>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("TSC Yearly Targets")}:{" "}
+                              {viewTotalTargetsForTSCData[0]?.tscValue || "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table> 
+                    </div>
+                  </div>
+
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1668,7 +1816,8 @@ function TSCWiseProductionPhysicalTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Taluk")}<span className="text-danger">*</span>
+                              {t("Taluk")}
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1676,11 +1825,11 @@ function TSCWiseProductionPhysicalTargetSetting() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.talukId === undefined ||
-                                  data.talukId === "0"
-                                }
+                                // required
+                                // isInvalid={
+                                //   data.talukId === undefined ||
+                                //   data.talukId === "0"
+                                // }
                               >
                                 <option value="">{t("Select Taluk")}</option>
                                 {talukListData && talukListData.length
@@ -1694,9 +1843,9 @@ function TSCWiseProductionPhysicalTargetSetting() {
                                 ))
                                 : ""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -1805,7 +1954,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Month")}<span className="text-danger">*</span>
@@ -1835,25 +1984,18 @@ function TSCWiseProductionPhysicalTargetSetting() {
                                 <option value="OCTOBER">{t("October")}</option>
                                 <option value="NOVEMBER">{t("November")}</option>
                                 <option value="DECEMBER">{t("December")}</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               {t("Target No.")} 
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1870,7 +2012,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
@@ -1919,6 +2061,285 @@ function TSCWiseProductionPhysicalTargetSetting() {
                   </Card>
                 </Block>
 
+                <Block>
+                  <Card>
+                    <Card.Header>{t("Months")}</Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("April")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="april"
+                                name="april"
+                                value={districtWiseProductionMonth.april}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("May")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="may"
+                                name="may"
+                                value={districtWiseProductionMonth.may}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("June")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="june"
+                                name="june"
+                                value={districtWiseProductionMonth.june}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("July")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="july"
+                                name="july"
+                                value={districtWiseProductionMonth.july}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("August")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="august"
+                                name="august"
+                                value={districtWiseProductionMonth.august}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("September")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="september"
+                                name="september"
+                                value={districtWiseProductionMonth.september}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("October")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="october"
+                                name="october"
+                                value={districtWiseProductionMonth.october}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("November")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="november"
+                                name="november"
+                                value={districtWiseProductionMonth.november}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("December")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="december"
+                                name="december"
+                                value={districtWiseProductionMonth.december}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("January")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="january"
+                                name="january"
+                                value={districtWiseProductionMonth.january}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("Febrauary")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="february"
+                                name="february"
+                                value={districtWiseProductionMonth.february}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="value">
+                              {t("March")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="march"
+                                name="march"
+                                value={districtWiseProductionMonth.march}
+                                onChange={handleDistrictWiseProductionMonth}
+                                type="text"
+                                placeholder={t("Enter Target No.")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Target No. is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
@@ -1938,7 +2359,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
           </Col>
           
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -1956,7 +2377,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
