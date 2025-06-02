@@ -37,6 +37,138 @@ function TscwiseSchemeTargetSetting() {
     talukId: "",
   });
 
+
+  const [physicalTargetMonths,setPhysicalTargetMonths] = useState({
+      april:"",
+      may:"",
+      june:"",
+      july:"",
+      august:"",
+      september:"",
+      october:"",
+      november:"",
+      december:"",
+      january:"",
+      february:"",
+      march:"",
+    });
+  
+    const handlePhysical = (e) => {
+      const { name, value } = e.target;
+      setPhysicalTargetMonths(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    };
+  
+    const [financialTargetMonths,setFinancialTargetMonths] = useState({
+      april:"",
+      may:"",
+      june:"",
+      july:"",
+      august:"",
+      september:"",
+      october:"",
+      november:"",
+      december:"",
+      january:"",
+      february:"",
+      march:"",
+    });
+  
+    const handleFinancial = (e) => {
+      const { name, value } = e.target;
+      setFinancialTargetMonths(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    };
+  
+  
+  // to get all month target
+  const getAllMonthTarget = () => {
+    api
+     .post(baseURLTargetSetting + `schemeTargets/getSchemeRecordsForTSC?financialYearId=${data.financialYearMasterId}&scSchemeDetailsId=${data.scSchemeDetailsId}&scSubSchemeDetailsId=${data.scSubSchemeDetailsId}&scComponentId=${data.scComponentId}&scCategoryId=${data.scCategoryId}&scHeadAccountId=${data.scHeadAccountId}&districtId=${data.districtId}&tscMasterId=${data.tscMasterId}`)
+     .then((response) => {
+       const physicalMonthList = response.data.physicalTargetMonths;
+       const financialMonthList = response.data.financialTargetMonths;
+       if (
+        physicalMonthList && physicalMonthList.length > 0 &&
+        financialMonthList && financialMonthList.length > 0
+       ){
+         const physicalTargetMonths = physicalMonthList[0];
+         const financialTargetMonths = financialMonthList[0];
+         setPhysicalTargetMonths({
+           april:physicalTargetMonths.april,
+           may:physicalTargetMonths.may,
+           june:physicalTargetMonths.june,
+           july:physicalTargetMonths.july,
+           august:physicalTargetMonths.august,
+           september:physicalTargetMonths.september,
+           october:physicalTargetMonths.october,
+           november:physicalTargetMonths.november,
+           december:physicalTargetMonths.december,
+           january:physicalTargetMonths.january,
+           february:physicalTargetMonths.february,
+           march:physicalTargetMonths.march,
+         });
+         setFinancialTargetMonths({
+           april:financialTargetMonths.april,
+           may:financialTargetMonths.may,
+           june:financialTargetMonths.june,
+           july:financialTargetMonths.july,
+           august:financialTargetMonths.august,
+           september:financialTargetMonths.september,
+           october:financialTargetMonths.october,
+           november:financialTargetMonths.november,
+           december:financialTargetMonths.december,
+           january:financialTargetMonths.january,
+           february:financialTargetMonths.february,
+           march:financialTargetMonths.march,
+         });
+       }else{
+         setPhysicalTargetMonths({
+           april:"",
+           may:"",
+           june:"",
+           july:"",
+           august:"",
+           september:"",
+           october:"",
+           november:"",
+           december:"",
+           january:"",
+           february:"",
+           march:"",
+         });
+         setFinancialTargetMonths({
+           april:"",
+           may:"",
+           june:"",
+           july:"",
+           august:"",
+           september:"",
+           october:"",
+           november:"",
+           december:"",
+           january:"",
+           february:"",
+           march:"",
+         });
+       }
+       // setFinancialyearListData(response.data.content.financialYearMaster);
+     })
+     .catch((err) => {
+       // setFinancialyearListData([]);
+     });
+  };
+  
+  useEffect(() => {
+   if(data.financialYearMasterId && data.scSchemeDetailsId && data.scSubSchemeDetailsId && data.scComponentId && data.scCategoryId && data.scHeadAccountId && data.districtId && data.tscMasterId){
+     getAllMonthTarget();
+   }
+  }, [data.financialYearMasterId && data.scSchemeDetailsId && data.scSubSchemeDetailsId && data.scComponentId && data.scCategoryId && data.scHeadAccountId && data.districtId && data.tscMasterId]);
+
   const [searchData, setSearchData] = useState({
     districtId: "",
     talukId: "",
@@ -791,9 +923,11 @@ function TscwiseSchemeTargetSetting() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      console.log("Entered Allocate");
+      const {talukId,...rest} = data;
       api
-        .post(baseURLTargetSetting + `schemeTargets/saveTscSchemeTargets`, data)
+        .post(baseURLTargetSetting + `schemeTargets/saveTscSchemeTargets`, 
+          {...rest,physicalTargetMonths:[physicalTargetMonths],financialTargetMonths:[financialTargetMonths]}
+        )
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -955,10 +1089,11 @@ function TscwiseSchemeTargetSetting() {
     }
   }, [searchDataEdit.userMasterId]);
 
-  const [viewMonthlyTargetsData, setViewMonthlyTargetsData] = useState({});
+  const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState({});
+  const [viewTotalTargetsDataFinancial, setViewTotalTargetsDataFinancial] = useState({});
 
-  const monthlyTarget = (event) => {
-    const { financialYearMasterId,scSchemeDetailsId,scSubSchemeDetailsId,scComponentId,scCategoryId,scHeadAccountId,districtId,targetType,month} = data;
+  const totalTarget = (event) => {
+    const { financialYearMasterId,scSchemeDetailsId,scSubSchemeDetailsId,scComponentId,scCategoryId,scHeadAccountId,districtId} = data;
 
     
     if (!financialYearMasterId || financialYearMasterId === "0") {
@@ -1024,28 +1159,30 @@ function TscwiseSchemeTargetSetting() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please Select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please Select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
-    if (!month || month === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Month",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!month || month === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Month",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
+    const targets = ["PHYSICAL TARGET","FINANCIAL TARGET"];
+    targets.forEach((target) => {
     api
       .post(
-        baseURLTargetSetting + `schemeTargets/getMonthlyTargetDetailsForSchemeAndTSC`,
+        baseURLTargetSetting + `schemeTargets/getOnlyYearlyTargetDetailsForSchemeAndTSC`,
         {},
         {
           params: {
@@ -1056,19 +1193,31 @@ function TscwiseSchemeTargetSetting() {
             scCategoryId,
             scHeadAccountId,
             districtId,
-            targetType,
-            month
+            targetType:target
+            // month
           },
         }
       )
       .then((response) => {
-        setViewMonthlyTargetsData(response.data);
+        if(target === "PHYSICAL TARGET"){
+          setViewTotalTargetsDataPhysical(response.data);
+        }
+        else{
+          setViewTotalTargetsDataFinancial(response.data);
+        }
+          
         // setTotalRows(response.data.totalRecords);
         // setShowModal4(true);
       })
       .catch((err) => {
-        setViewMonthlyTargetsData([]);
+        if(target === "PHYSICAL TARGET"){
+          setViewTotalTargetsDataPhysical([]);
+        }else{
+          setViewTotalTargetsDataFinancial([]);
+        }
       });
+    });
+    
   };
 
   const styles = {
@@ -1532,75 +1681,130 @@ function TscwiseSchemeTargetSetting() {
                     <Card.Header>
                       {t("TSC Wise Target Setting for Subsidies")}
                     </Card.Header>
-                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
-                        {/* Annual Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={monthlyTarget}>
-                            {t('Total Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '600px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("TSC Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("District Annual Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Annual Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewMonthlyTargetsData[0].yearlyTscValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].yearlySchemeValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].remainingYearlyValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t("Scheme Targets")}
+                      </Button>
+                      
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataPhysical[0]?.yearlySchemeValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataFinancial[0]?.yearlySchemeValue ||"N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total Scheme Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) +
+                                    parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                        <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Scheme Yearly Targets(PHYSICAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || "N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || "N/A"}
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Remaining Scheme Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) +
+                                    parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
 
-                        {/* Monthly Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          {/* <Button variant="primary" onClick={monthlyTarget}>
-                            {t('Monthly Targets')}
-                          </Button> */}
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '600px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("District Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Monthly Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewMonthlyTargetsData[0].monthlyTscValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].monthlySchemeValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].remainingMonthlyValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div> 
+                    {/* TSC under Mulberry */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button variant="primary" onClick={totalTarget}>
+                        {t("TSC Yearly Targets")}
+                      </Button>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                        <thead>
+                          <tr>
+                            <th style={styles.ctstyle}>
+                              {t("Total TSC Yearly Targets")}:{" "}
+                              {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue)) &&
+                              !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue))
+                                ? (
+                                    parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) +
+                                    parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue)
+                                  ).toFixed(2)
+                                : "N/A"}
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                      
+                    </div>
+                  </div> 
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -1869,127 +2073,7 @@ function TscwiseSchemeTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Target
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="mulberryTargetTypeId"
-                                value={data.mulberryTargetTypeId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
-                                }
-                              >
-                                <option value="">
-                                  Select Mulberry Target Type
-                                </option>
-                                {mulberryTargetTypeData.map((list) => (
-                                  <option
-                                    key={list.mulberryTargetTypeId}
-                                    value={list.mulberryTargetTypeId}
-                                  >
-                                    {list.mulberryTargetTypeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Target is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                            <Col
-                              lg="3"
-                              className={
-                                type.budgetType === "release"
-                                  ? "ms-n3"
-                                  : "ms-n5"
-                              }
-                            >
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                        
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -2030,7 +2114,8 @@ function TscwiseSchemeTargetSetting() {
 <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Taluk")}<span className="text-danger">*</span>
+                              {t("Taluk")}
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -2038,7 +2123,7 @@ function TscwiseSchemeTargetSetting() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
+                                // required
                                 isInvalid={
                                   data.talukId === undefined ||
                                   data.talukId === "0"
@@ -2056,9 +2141,9 @@ function TscwiseSchemeTargetSetting() {
                                 ))
                                 : ""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -2133,7 +2218,7 @@ function TscwiseSchemeTargetSetting() {
                           </Form.Group>
                         </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Target Type")}<span className="text-danger">*</span>
@@ -2157,20 +2242,15 @@ function TscwiseSchemeTargetSetting() {
                                 <option value="Financial Target">
                                   {t("Financial Target")}
                                 </option>
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Target Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Month")}<span className="text-danger">*</span>
@@ -2200,25 +2280,18 @@ function TscwiseSchemeTargetSetting() {
                                 <option value="OCTOBER">{t("October")}</option>
                                 <option value="NOVEMBER">{t("November")}</option>
                                 <option value="DECEMBER">{t("December")}</option>
-
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               {t("Target No.")}
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -2235,7 +2308,7 @@ function TscwiseSchemeTargetSetting() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
@@ -2344,6 +2417,598 @@ function TscwiseSchemeTargetSetting() {
                   </Card>
                 </Block>
 
+                <Block>
+                  <Card>
+                    <Card.Header>{t("Months")}</Card.Header>
+                    <Card.Body>
+                      {/* <h3>Farmers Details</h3> */}
+                      <Row className="g-gs">
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("April")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="april"
+                                    name="april"
+                                    value={physicalTargetMonths.april}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="april"
+                                    name="april"
+                                    value={financialTargetMonths.april}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("May")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="may"
+                                    name="may"
+                                    value={physicalTargetMonths.may}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="may"
+                                    name="may"
+                                    value={financialTargetMonths.may}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                          {/* </Col> */}
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("June")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="june"
+                                    name="june"
+                                    value={physicalTargetMonths.june}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="june"
+                                    name="june"
+                                    value={financialTargetMonths.june}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("July")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="july"
+                                    name="july"
+                                    value={physicalTargetMonths.july}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="july"
+                                    name="july"
+                                    value={financialTargetMonths.july}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("August")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="august"
+                                    name="august"
+                                    value={physicalTargetMonths.august}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="august"
+                                    name="august"
+                                    value={financialTargetMonths.august}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("September")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="september"
+                                    name="september"
+                                    value={physicalTargetMonths.september}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="september"
+                                    name="september"
+                                    value={financialTargetMonths.september}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("October")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="october"
+                                    name="october"
+                                    value={physicalTargetMonths.october}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="october"
+                                    name="october"
+                                    value={financialTargetMonths.october}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                          
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("November")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="november"
+                                    name="november"
+                                    value={physicalTargetMonths.november}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="november"
+                                    name="november"
+                                    value={financialTargetMonths.november}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("December")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="december"
+                                    name="december"
+                                    value={physicalTargetMonths.december}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="december"
+                                    name="december"
+                                    value={financialTargetMonths.december}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("January")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="january"
+                                    name="january"
+                                    value={physicalTargetMonths.january}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="january"
+                                    name="january"
+                                    value={financialTargetMonths.january}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("February")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="february"
+                                    name="february"
+                                    value={physicalTargetMonths.february}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="february"
+                                    name="february"
+                                    value={financialTargetMonths.february}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+
+                          <Form.Group className="form-group mt-2">
+                            <Form.Label htmlFor="value" className="bold fs-5">
+                              {t("March")}
+                            </Form.Label>
+                            <Row className="g-gs">
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("PHYSICAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="march"
+                                    name="march"
+                                    value={physicalTargetMonths.march}
+                                    onChange={handlePhysical}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                              <Col lg="6">
+                                <Form.Label htmlFor="value">
+                                  {t("FINANCIAL TARGET")}
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="march"
+                                    name="march"
+                                    value={financialTargetMonths.march}
+                                    onChange={handleFinancial}
+                                    type="number"
+                                    placeholder={t("Enter Target No.")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Target No. is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block>
+
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
@@ -2361,30 +3026,9 @@ function TscwiseSchemeTargetSetting() {
               </Row>
             </Form>
           </Col>
-          {type.budgetType === "release" ? (
-            <Col lg="4">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                  {t("Available Budget Balance")}
-                </Card.Header>
-                <Card.Body>
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> {t("Balance Amount")}:</td>
-                        {/* <td>{balanceAmount}</td> */}
-                        <td>0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Col>
-          ) : (
-            ""
-          )}
         </Row>
-        <Row className="mt-2">
+
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -2402,7 +3046,7 @@ function TscwiseSchemeTargetSetting() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
