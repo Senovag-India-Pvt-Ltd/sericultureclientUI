@@ -1531,12 +1531,12 @@ function SiSdWiseProdPhyTargetSetting() {
     });
   };
   return (
-    <Layout title={t("SI-SD Wise Production Physical Target Setting")}>
+    <Layout title={t("Range Wise Physical Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("SI-SD Wise Production Physical Target Setting")}
+              {t("Range Wise Physical Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
@@ -1554,7 +1554,7 @@ function SiSdWiseProdPhyTargetSetting() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      {t("SI-SD wise Production Physical Target Setting")}
+                      {t("Range wise Physical Target Setting")}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'flex-start' }}>
                         {/* Annual Targets Section */}
@@ -2298,7 +2298,7 @@ function SiSdWiseProdPhyTargetSetting() {
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            {t("SI-SD wise Production Physical Target Setting")}
+            {t("Range wise Physical Target Setting")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

@@ -1611,12 +1611,12 @@ function TSCWiseProductionPhysicalTargetSetting() {
     });
   };
   return (
-    <Layout title={t("TSC Wise Production Physical Target Setting")}>
+    <Layout title={t("TSC Wise Physical Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("TSC Wise Production Physical Target Setting")}
+              {t("TSC Wise Physical Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
@@ -1634,7 +1634,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      {t("TSC Wise Production Physical Target Setting")}
+                      {t("TSC Wise Physical Target Setting")}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
@@ -2383,7 +2383,7 @@ function TSCWiseProductionPhysicalTargetSetting() {
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            {t("TSC wise Production Physical Target Setting")}
+            {t("TSC wise Physical Target Setting")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

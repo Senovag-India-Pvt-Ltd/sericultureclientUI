@@ -2488,7 +2488,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("SI SD Wise Product Physical Target Setting")}
+                        text={t("Range Wise Physical Target Setting")}
                         to="/seriui/si-sd-wise-product-physical-target-setting"
                       />
                     </MenuItem>

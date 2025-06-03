@@ -1548,12 +1548,12 @@ function DistrictwiseProductionPhysicalTargetSetting() {
     });
   };
   return (
-    <Layout title={t("District Wise Production Physical Target Setting")}>
+    <Layout title={t("District Wise Physical Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("District Wise Production Physical Target Setting")}
+              {t("District Wise Physical Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
@@ -1571,7 +1571,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      {t("District Wise Production Physical Target Setting")}
+                      {t("District Wise Physical Target Setting")}
                     </Card.Header>
                     <div
                       style={{
@@ -1887,7 +1887,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1961,7 +1961,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.april}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1984,7 +1984,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.may}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2007,7 +2007,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.june}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2030,7 +2030,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.july}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2053,7 +2053,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.august}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2075,7 +2075,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.september}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2097,7 +2097,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.october}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2119,7 +2119,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.november}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2141,7 +2141,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.december}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2163,7 +2163,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.january}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2185,7 +2185,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.february}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2208,7 +2208,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={districtWiseProductionMonth.march}
                                 onChange={handleDistrictWiseProductionMonth}
                                 type="text"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2285,7 +2285,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("District Wise Production Physical Target Setting")}</Modal.Title>
+          <Modal.Title>{t("District Wise Physical Target Setting")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2542,7 +2542,7 @@ function DistrictwiseProductionPhysicalTargetSetting() {
                                 value={editData.value}
                                 onChange={handleEditInputs}
                                 type="number"
-                                placeholder={t("Enter Target No.")}
+                                placeholder={t("Enter Target")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">

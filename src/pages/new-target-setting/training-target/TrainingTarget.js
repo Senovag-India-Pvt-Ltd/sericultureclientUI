@@ -1296,6 +1296,42 @@ data.trainingInstitutionId
                         </Col>
 
                         
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Training Institution")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="trainingInstitutionId"
+                                value={data.trainingInstitutionId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.trainingInstitutionId === undefined ||
+                                  data.trainingInstitutionId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Institution")}</option>
+                                {trInstituteListData && trInstituteListData.length ?
+                                trInstituteListData.map((list) => (
+                                  <option
+                                    key={list.trInstitutionMasterId}
+                                    value={list.trInstitutionMasterId}
+                                  >
+                                    {list.trInstitutionMasterName}
+                                  </option>
+                                ))
+                                : ""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Training Institution is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -1329,43 +1365,6 @@ data.trainingInstitutionId
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Training Program is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              {t("Training Institution")}
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="trainingInstitutionId"
-                                value={data.trainingInstitutionId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.trainingInstitutionId === undefined ||
-                                  data.trainingInstitutionId === "0"
-                                }
-                              >
-                                <option value="">{t("Select Institution")}</option>
-                                {trInstituteListData && trInstituteListData.length ?
-                                trInstituteListData.map((list) => (
-                                  <option
-                                    key={list.trInstitutionMasterId}
-                                    value={list.trInstitutionMasterId}
-                                  >
-                                    {list.trInstitutionMasterName}
-                                  </option>
-                                ))
-                                : ""}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Training Institution is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1496,7 +1495,7 @@ data.trainingInstitutionId
                               value={data.value}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter Target (No. of Trainings)")}
+                              placeholder={t("Enter Physical (No. of Trainings)")}
                               className="form-control"
                               // readOnly
                               required
@@ -1528,7 +1527,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.april}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1551,7 +1550,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.may}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1574,7 +1573,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.june}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1597,7 +1596,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.july}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1620,7 +1619,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.august}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1642,7 +1641,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.september}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1664,7 +1663,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.october}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1686,7 +1685,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.november}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1708,7 +1707,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.december}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1730,7 +1729,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.january}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1752,7 +1751,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.february}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -1775,7 +1774,7 @@ data.trainingInstitutionId
                                 value={trainingMonth.march}
                                 onChange={handleTraining}
                                 type="text"
-                                placeholder={t("Enter Target (No. of Trainings)")}
+                                placeholder={t("Enter Physical (No. of Trainings)")}
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
@@ -2089,7 +2088,7 @@ data.trainingInstitutionId
                     value={editData.value}
                     onChange={handleEditInputs}
                     type="text"
-                    placeholder={t("Enter Target (No. of Trainings)")}
+                    placeholder={t("Enter Physical (No. of Trainings)")}
                     className="form-control"
                     // readOnly
                     required
