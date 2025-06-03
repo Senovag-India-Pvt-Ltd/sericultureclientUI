@@ -733,7 +733,7 @@ function DistrictWiseMontlyMulberry() {
   const [listViewReporteesTargetData, setViewReporteesTargetListData] =
     useState({});
 
-  const searchReportee = (event) => {
+  const searchReportee = (fyId,mulbTrgtTyId,trType) => {
     const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
 
     if (!financialYearMasterId || financialYearMasterId === "0") {
@@ -754,14 +754,14 @@ function DistrictWiseMontlyMulberry() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: "Target Type is required.",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Validation Error",
+    //     text: "Target Type is required.",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
@@ -772,7 +772,7 @@ function DistrictWiseMontlyMulberry() {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
+            targetType:trType,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -870,6 +870,7 @@ function DistrictWiseMontlyMulberry() {
   const handleCloseModal4 = () => setShowModal4(false);
 
   const [listViewTargetData, setViewTargetListData] = useState({});
+  const [listViewNnTargetData, setViewNnTargetListData] = useState({});
 
   const search = (event) => {
     const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
@@ -923,6 +924,29 @@ function DistrictWiseMontlyMulberry() {
       })
       .catch((err) => {
         setViewTargetListData([]);
+      });
+
+      api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            mulberryTargetTypeId,
+            targetType :"NON NAREGA",
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewNnTargetListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
+        setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewNnTargetListData([]);
       });
   };
 
@@ -2970,6 +2994,24 @@ function DistrictWiseMontlyMulberry() {
             tableClassName="data-table-head-light table-responsive"
             columns={ViewTargetDataColumns}
             data={listViewTargetData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ViewTargetDataColumns}
+            data={listViewNnTargetData}
             highlightOnHover
             pagination
             paginationServer
