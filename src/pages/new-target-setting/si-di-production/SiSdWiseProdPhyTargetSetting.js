@@ -30,9 +30,94 @@ function SiSdWiseProdPhyTargetSetting() {
     userMasterId: "",
   });
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
+  const [districtWiseProductionMonth,setDistrictWiseProductionMonth] = useState({
+       april:"",
+       may:"",
+       june:"",
+       july:"",
+       august:"",
+       september:"",
+       october:"",
+       november:"",
+       december:"",
+       january:"",
+       february:"",
+       march:"",
+     });
+   
+     const handleDistrictWiseProductionMonth = (e) => {
+       const { name, value } = e.target;
+       setDistrictWiseProductionMonth(prev => ({
+         ...prev,
+         [name]: value
+       }));
+     };
+ 
+     // To get all month targets for Grainage
+ const getAllMonthTarget = () => {
+   api
+     .post(
+       baseURLTargetSetting +
+         `productionTargets/getDistrictWiseProductionSISDRecords?financialYearId=${data.financialYearMasterId}&mulberryTargetTypeId=${data.mulberryTargetTypeId}&districtId=${data.districtId}&raceMasterId=${data.raceMasterId}&tscMasterId=${data.tscMasterId}`)
+     .then((response) => {
+       const monthDataList = response.data.districtWiseProductionMonth; // assuming backend sends districtWiseProductionMonth like districtWiseProductionMonth
+ 
+       if (monthDataList && monthDataList.length > 0) {
+         const monthData = monthDataList[0]; // assuming 1 record per call
+         setDistrictWiseProductionMonth({
+           april: monthData.april,
+           may: monthData.may,
+           june: monthData.june,
+           july: monthData.july,
+           august: monthData.august,
+           september: monthData.september,
+           october: monthData.october,
+           november: monthData.november,
+           december: monthData.december,
+           january: monthData.january,
+           february: monthData.february,
+           march: monthData.march,
+         });
+       } else {
+         // Initialize empty values
+         setDistrictWiseProductionMonth({
+           april: "",
+           may: "",
+           june: "",
+           july: "",
+           august: "",
+           september: "",
+           october: "",
+           november: "",
+           december: "",
+           january: "",
+           february: "",
+           march: "",
+         });
+       }
+     })
+     .catch((err) => {
+       console.error("Failed to fetch grainage month targets", err);
+     });
+ };
+ 
+ useEffect(() => {
+  if (
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId &&
+    data.districtId &&
+    data.raceMasterId &&
+    data.tscMasterId
+  ) {
+    getAllMonthTarget();
+  }
+}, [
+  data.financialYearMasterId,
+  data.mulberryTargetTypeId,
+  data.districtId,
+  data.raceMasterId,
+  data.tscMasterId,
+]);
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -297,11 +382,7 @@ function SiSdWiseProdPhyTargetSetting() {
     setEditData(updatedData);
   };
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
+
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -332,12 +413,11 @@ function SiSdWiseProdPhyTargetSetting() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      console.log("Entered Allocate");
+      const {talukId,...rest} = data;
       api
         .post(
           baseURLTargetSetting + `productionTargets/saveSISDProductionTargets`,
-          data
+          {...rest,districtWiseProductionMonth:[districtWiseProductionMonth]}
         )
         .then((response) => {
           if (response.data.content.error) {
@@ -417,9 +497,7 @@ function SiSdWiseProdPhyTargetSetting() {
       tscMasterId: "",
       userMasterId: "",
     });
-    setType({
-      budgetType: "allocate",
-    });
+    
     getFinancialDefaultDetails();
     setValidatedAllDateEdit(false);
   };
@@ -657,9 +735,6 @@ function SiSdWiseProdPhyTargetSetting() {
       userMasterId: "",
     });
     setUserName("");
-    setType({
-      budgetType: "allocate",
-    });
     getFinancialDefaultDetails();
     setValidated(false);
   };
@@ -1516,39 +1591,7 @@ function SiSdWiseProdPhyTargetSetting() {
                           </table>
                         </div>
 
-                        {/* Monthly Targets Section */}
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
-                          <Button variant="primary" onClick={monthlyTarget}>
-                            {t('Monthly Targets')}
-                          </Button>
-                          <table
-                            className="table table-bordered table-striped"
-                            style={{ ...styles.table, width: '600px' }}
-                          >
-                            <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("SISD Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("TSC Monthly Targets")}</th>
-                              <th style={styles.ctstyle}>{t("Remaining Targets")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
-                                <tr>
-                                <td>{viewMonthlyTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewMonthlyTargetsData[0].remainingValue || "N/A"}</td>
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
+                      
                       </div> 
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
@@ -1666,7 +1709,8 @@ function SiSdWiseProdPhyTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Taluk")}<span className="text-danger">*</span>
+                              {t("Taluk")}
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1674,11 +1718,11 @@ function SiSdWiseProdPhyTargetSetting() {
                                 value={data.talukId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.talukId === undefined ||
-                                  data.talukId === "0"
-                                }
+                                // required
+                                // isInvalid={
+                                //   data.talukId === undefined ||
+                                //   data.talukId === "0"
+                                // }
                               >
                                 <option value="">{t("Select Taluk")}</option>
                                 {talukListData && talukListData.length?
@@ -1692,9 +1736,9 @@ function SiSdWiseProdPhyTargetSetting() {
                                 ))
                                 :""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Taluk is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -1702,7 +1746,8 @@ function SiSdWiseProdPhyTargetSetting() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("TSC")}<span className="text-danger">*</span>
+                              {t("TSC")}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1718,7 +1763,7 @@ function SiSdWiseProdPhyTargetSetting() {
                               >
                                 <option value="">{t("Select TSC")}</option>
                                 {tscListData && talukListData.length?
-                                talukListData.map((list) => (
+                                tscListData.map((list) => (
                                   <option
                                     key={list.tscMasterId}
                                     value={list.tscMasterId}
@@ -1803,7 +1848,7 @@ function SiSdWiseProdPhyTargetSetting() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Month")}<span className="text-danger">*</span>
@@ -1834,24 +1879,18 @@ function SiSdWiseProdPhyTargetSetting() {
                                 <option value="NOVEMBER">{t("November")}</option>
                                 <option value="DECEMBER">{t("December")}</option>
 
-                                {/* {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))} */}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
                               {t("Target No.")} 
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -1868,7 +1907,7 @@ function SiSdWiseProdPhyTargetSetting() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
@@ -1917,6 +1956,285 @@ function SiSdWiseProdPhyTargetSetting() {
                   </Card>
                 </Block>
 
+                 <Block>
+                    <Card>
+                      <Card.Header>{t("Months")}</Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("April")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="april"
+                                  name="april"
+                                  value={districtWiseProductionMonth.april}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+  
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("May")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="may"
+                                  name="may"
+                                  value={districtWiseProductionMonth.may}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+  
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("June")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="june"
+                                  name="june"
+                                  value={districtWiseProductionMonth.june}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+  
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("July")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="july"
+                                  name="july"
+                                  value={districtWiseProductionMonth.july}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+  
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("August")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="august"
+                                  name="august"
+                                  value={districtWiseProductionMonth.august}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("September")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="september"
+                                  name="september"
+                                  value={districtWiseProductionMonth.september}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("October")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="october"
+                                  name="october"
+                                  value={districtWiseProductionMonth.october}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("November")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="november"
+                                  name="november"
+                                  value={districtWiseProductionMonth.november}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("December")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="december"
+                                  name="december"
+                                  value={districtWiseProductionMonth.december}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("January")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="january"
+                                  name="january"
+                                  value={districtWiseProductionMonth.january}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("Febrauary")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="february"
+                                  name="february"
+                                  value={districtWiseProductionMonth.february}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+  
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="value">
+                                {t("March")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="march"
+                                  name="march"
+                                  value={districtWiseProductionMonth.march}
+                                  onChange={handleDistrictWiseProductionMonth}
+                                  type="text"
+                                  placeholder={t("Enter Target No.")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Target No. is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Block>
+
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
@@ -1956,7 +2274,7 @@ function SiSdWiseProdPhyTargetSetting() {
             ""
           )} */}
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ProductionPhysicalDataColumns}
@@ -1974,7 +2292,7 @@ function SiSdWiseProdPhyTargetSetting() {
             theme="solarized"
             customStyles={customStyles}
           />
-        </Row>
+        </Row> */}
       </Block>
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
