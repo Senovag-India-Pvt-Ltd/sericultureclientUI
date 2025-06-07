@@ -203,7 +203,7 @@ function MaintenanceOfEggLayingSheets() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder={t("Enter Lot Number")}
                         required
