@@ -133,6 +133,10 @@ data.trainingInstitutionId
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
+   const [page1,setPage1] = useState(0);
+    const [page2,setPage2] = useState(0);
+    const [page3,setPage3] = useState(0);
+    const [page4,setPage4] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -167,6 +171,12 @@ data.trainingInstitutionId
     setToggleButton(!toggleButton);
   };
 
+  useEffect(()=>{
+      if (data.financialYearMasterId && data.trainingInstitutionId) {
+        handleShowModal();
+      } 
+    },[page1,page2,page3,page4])
+  
   const [displayList, setDisplayList] = useState([]);
   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
   const [totalRowsView, setTotalRowsView] = useState(0);
@@ -229,49 +239,107 @@ data.trainingInstitutionId
     }));
   };
 
-  const handleShowModal = () => {
-    if (data.financialYearMasterId && data.farmId) {
-      let parameters = {
-        params: {
-          financialYearId: data.financialYearMasterId,
-          raceId: data.scSchemeDetailsId,
-          targetType: data.scHeadAccountId,
-          farmId: data.scSubSchemeDetailsId,
-          grainageId: data.scComponentId,
-          courseId: data.targetType,
-          institutionId: data.targetType,
-          pageNumber: page,
-          size: countPerPage,
-        },
-      };
-      api
-        .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
-        .then((response) => {
-          setShowModal(true);
-          setDisplayList(response.data.content.schemeTargets);
-          setTotalRowsView(response.data.content.totalItems);
-        })
-        .catch((err) => {
-          setDisplayList([]);
-        });
+  const [pageView, setPageView] = useState(0); 
+const [pageHierarchy, setPageHierarchy] = useState(0);
 
-      api
-        .get(
-          baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
-          parameters
-        )
-        .then((response) => {
-          // setShowModal(true);
-          setDisplayListHierarchy(response.data.content.schemeTargets);
-          setTotalRowsViewHierarchy(response.data.content.totalItems);
-        })
-        .catch((err) => {
-          setDisplayListHierarchy([]);
-        });
-    } else {
-      warning();
-    }
-  };
+const handleShowModal = () => {
+  if (data.financialYearMasterId && data.trainingInstitutionId) {
+    let parametersView = {
+      params: {
+        financialYearId: data.financialYearMasterId,
+        raceId: data.raceMasterId,
+        courseId: data.courseId,
+        institutionId: data.institutionId,
+        pageNumber: pageView, 
+        size: countPerPage,
+      },
+    };
+
+    let parametersHierarchy = {
+      params: {
+        financialYearId: data.financialYearMasterId,
+        raceId: data.raceMasterId,
+        courseId: data.courseId,
+        institutionId: data.institutionId,
+        pageNumber: pageHierarchy, 
+        size: countPerPage,
+      },
+    };
+
+    api
+      .get(baseURLTargetSetting + `targets/get-by-target-details`, parametersView) 
+      .then((response) => {
+        setShowModal(true);
+        setDisplayList(response.data.content.target);
+        setTotalRowsView(response.data.content.totalItems);
+      })
+      .catch((err) => {
+        setDisplayList([]);
+      });
+
+    api
+      .get(baseURLTargetSetting + `targets/get-by-target-details-hierarchy`, parametersHierarchy)
+      .then((response) => {
+        setDisplayListHierarchy(response.data.content.target);
+        setTotalRowsViewHierarchy(response.data.content.totalItems);
+      })
+      .catch((err) => {
+        setDisplayListHierarchy([]);
+      });
+  } else {
+    warning();
+  }
+};
+
+useEffect(() => {
+  if (showModal) handleShowModal(); 
+}, [pageView, pageHierarchy]); 
+
+
+
+  // const handleShowModal = () => {
+  //   if (data.financialYearMasterId && data.trainingInstitutionId) {
+  //     let parameters = {
+  //       params: {
+  //         financialYearId: data.financialYearMasterId,
+  //         raceId: data.raceMasterId,
+  //         // targetType: data.scHeadAccountId,
+  //         // farmId: data.scSubSchemeDetailsId,
+  //         // grainageId: data.scComponentId,
+  //         courseId: data.courseId,
+  //         institutionId: data.institutionId,
+  //         pageNumber: page,
+  //         size: countPerPage,
+  //       },
+  //     };
+  //     api
+  //       .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
+  //       .then((response) => {
+  //         setShowModal(true);
+  //         setDisplayList(response.data.content.target);
+  //         setTotalRowsView(response.data.content.totalItems);
+  //       })
+  //       .catch((err) => {
+  //         setDisplayList([]);
+  //       });
+
+  //     api
+  //       .get(
+  //         baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
+  //         parameters
+  //       )
+  //       .then((response) => {
+  //         // setShowModal(true);
+  //         setDisplayListHierarchy(response.data.content.target);
+  //         setTotalRowsViewHierarchy(response.data.content.totalItems);
+  //       })
+  //       .catch((err) => {
+  //         setDisplayListHierarchy([]);
+  //       });
+  //   } else {
+  //     warning();
+  //   }
+  // };
   const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
@@ -897,7 +965,7 @@ data.trainingInstitutionId
   const warning = () => {
     Swal.fire({
       icon: "warning",
-      title: "Please select financial year and farm",
+      title: "Please select financial year and Training Institution",
       text: "Please try again!",
     });
   };
@@ -1039,19 +1107,19 @@ data.trainingInstitutionId
       hide: "md",
     },
     {
-      name: t("Farm"),
-      selector: (row) => row.farmName,
-      cell: (row) => <span>{row.farmName}</span>,
+      name: t("Training Institution"),
+      selector: (row) => row.trInstitutionMasterName,
+      cell: (row) => <span>{row.trInstitutionMasterName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Race"),
-      selector: (row) => row.raceMasterName,
-      cell: (row) => <span>{row.raceMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Race"),
+    //   selector: (row) => row.raceMasterName,
+    //   cell: (row) => <span>{row.raceMasterName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Month"),
       selector: (row) => row.month,
@@ -1205,6 +1273,7 @@ data.trainingInstitutionId
         </Block.HeadBetween>
       </Block.Head>
 
+  
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
@@ -2140,7 +2209,7 @@ data.trainingInstitutionId
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => setPageView(page - 1)}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
@@ -2182,7 +2251,7 @@ data.trainingInstitutionId
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage(page - 1)}
+                  onChangePage={(page) => setPageHierarchy(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}

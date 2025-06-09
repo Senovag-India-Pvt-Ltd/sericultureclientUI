@@ -126,6 +126,13 @@ function SiSdWiseProdPhyTargetSetting() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [showModal4, setShowModal4] = useState(false);
+const [showModal6, setShowModal6] = useState(false);
+const [pageReportee, setPageReportee] = useState(0);
+const [pageNormal, setPageNormal] = useState(0);
+const [listViewReporteesTargetData, setViewReporteesTargetListData] = useState([]);
+const [listViewTargetData, setViewTargetListData] = useState([]);
+
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
   const [showModal3, setShowModal3] = useState(false);
@@ -739,13 +746,13 @@ function SiSdWiseProdPhyTargetSetting() {
     setValidated(false);
   };
 
-  const [showModal6, setShowModal6] = useState(false);
+  // const [showModal6, setShowModal6] = useState(false);
 
-  const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
+  // const handleShowModal6 = () => setShowModal6(true);
+  // const handleCloseModal6 = () => setShowModal6(false);
 
-  const [listViewReporteesTargetData, setViewReporteesTargetListData] =
-    useState({});
+  // const [listViewReporteesTargetData, setViewReporteesTargetListData] =
+  //   useState({});
 
   const searchReportee = (event) => {
     const { financialYearMasterId, mulberryTargetTypeId } = data;
@@ -877,12 +884,12 @@ function SiSdWiseProdPhyTargetSetting() {
     },
   ];
 
-  const [showModal4, setShowModal4] = useState(false);
+  // const [showModal4, setShowModal4] = useState(false);
 
-  const handleShowModal4 = () => setShowModal4(true);
-  const handleCloseModal4 = () => setShowModal4(false);
+  // const handleShowModal4 = () => setShowModal4(true);
+  // const handleCloseModal4 = () => setShowModal4(false);
 
-  const [listViewTargetData, setViewTargetListData] = useState({});
+  // const [listViewTargetData, setViewTargetListData] = useState({});
 
   const search = (event) => {
     const { financialYearMasterId, mulberryTargetTypeId } = data;
@@ -938,6 +945,110 @@ function SiSdWiseProdPhyTargetSetting() {
         setViewTargetListData([]);
       });
   };
+
+  // 🔄 For Reportee Modal
+useEffect(() => {
+  if (showModal6) {
+    setLoading(true);
+    api
+      .post(
+        baseURLTargetSetting + `productionTargets/viewHierarchyProductionDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+            pageNumber: pageReportee,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewReporteesTargetListData(response.data.content || []);
+        setTotalRows(response.data.totalRecords || 0);
+        setLoading(false);
+      })
+      .catch(() => {
+        setViewReporteesTargetListData([]);
+        setLoading(false);
+      });
+  }
+}, [pageReportee, showModal6, data.financialYearMasterId, data.mulberryTargetTypeId]);
+
+// 🔄 For Normal Modal
+useEffect(() => {
+  if (showModal4) {
+    setLoading(true);
+    api
+      .post(
+        baseURLTargetSetting + `productionTargets/viewProductionDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+            pageNumber: pageNormal,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewTargetListData(response.data.content || []);
+        setTotalRows(response.data.totalRecords || 0);
+        setLoading(false);
+      })
+      .catch(() => {
+        setViewTargetListData([]);
+        setLoading(false);
+      });
+  }
+}, [pageNormal, showModal4, data.financialYearMasterId, data.mulberryTargetTypeId]);
+
+
+// const [showModal4, setShowModal4] = useState(false);
+// const [showModal6, setShowModal6] = useState(false);
+
+// ✅ Use this: Resets page number before showing modal
+const handleShowModal4 = () => {
+  setPageNormal(0);      // reset normal pagination to page 0
+  setShowModal4(true);   // open modal
+};
+
+const handleCloseModal4 = () => {
+  setShowModal4(false);
+};
+
+const handleShowModal6 = () => {
+  setPageReportee(0);    // reset reportee pagination to page 0
+  setShowModal6(true);   // open modal
+};
+
+const handleCloseModal6 = () => {
+  setShowModal6(false);
+};
+
+useEffect(() => {
+  if (showModal6) {
+    // your logic
+  }
+}, [pageReportee, showModal6, data.financialYearMasterId, data.mulberryTargetTypeId]);
+
+// const [showModal4, setShowModal4] = useState(false);
+// const [showModal6, setShowModal6] = useState(false);
+
+// ✅ Now it's safe to use these in useEffect
+useEffect(() => {
+  if (showModal6) {
+    // logic here
+  }
+}, [showModal6]);
+
+useEffect(() => {
+  if (showModal4) {
+    // logic here
+  }
+}, [showModal4]);
+
 
   const ViewTargetDataColumns = [
     {
@@ -2715,22 +2826,20 @@ function SiSdWiseProdPhyTargetSetting() {
         </Modal.Header>
         <Modal.Body>
           <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ViewTargetReporteeDataColumns}
-            data={listViewReporteesTargetData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+  tableClassName="data-table-head-light table-responsive"
+  columns={ViewTargetReporteeDataColumns}
+  data={listViewReporteesTargetData}
+  highlightOnHover
+  pagination
+  paginationServer
+  paginationTotalRows={totalRows}
+  paginationPerPage={countPerPage}
+  paginationComponentOptions={{ noRowsPerPage: true }}
+  onChangePage={(page) => setPageReportee(page - 1)} // ⬅️ updated
+  progressPending={loading}
+  theme="solarized"
+  customStyles={customStyles}
+/>
         </Modal.Body>
       </Modal>
 
@@ -2740,22 +2849,20 @@ function SiSdWiseProdPhyTargetSetting() {
         </Modal.Header>
         <Modal.Body>
           <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ViewTargetDataColumns}
-            data={listViewTargetData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+  tableClassName="data-table-head-light table-responsive"
+  columns={ViewTargetDataColumns}
+  data={listViewTargetData}
+  highlightOnHover
+  pagination
+  paginationServer
+  paginationTotalRows={totalRows}
+  paginationPerPage={countPerPage}
+  paginationComponentOptions={{ noRowsPerPage: true }}
+  onChangePage={(page) => setPageNormal(page - 1)} // ⬅️ updated
+  progressPending={loading}
+  theme="solarized"
+  customStyles={customStyles}
+/>
         </Modal.Body>
       </Modal>
 

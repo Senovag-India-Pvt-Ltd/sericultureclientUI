@@ -130,6 +130,10 @@ useEffect(() => {
   
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
+  const [page1,setPage1] = useState(0);
+  const [page2,setPage2] = useState(0);
+  const [page3,setPage3] = useState(0);
+  const [page4,setPage4] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -161,10 +165,21 @@ useEffect(() => {
     setToggleButton(!toggleButton);
   };
 
-  const [displayList, setDisplayList] = useState([]);
+  useEffect(()=>{
+    if (data.financialYearMasterId && data.grainageMasterId) {
+      handleShowModal();
+    } 
+  },[page1,page2,page3,page4])
+
+ const [displayList, setDisplayList] = useState([]);
+  // const [displayListCocoon,setDisplayListCocoon] = useState([]);
   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  // const [displayListHierarchyCocoon, setDisplayListHierarchyCocoon] = useState([]);
   const [totalRowsView, setTotalRowsView] = useState(0);
+  // const [totalRowsViewCocoon, setTotalRowsViewCocoon] = useState(0);
   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+  // const [totalRowsViewHierarchyCocoon, setTotalRowsViewHierarchyCocoon] = useState(0);
+
 
   const handleSearchInputs = (e) => {
     let { name, value } = e.target;
@@ -227,50 +242,109 @@ useEffect(() => {
 
 
 
-  const handleShowModal = () => {
-    if (data.financialYearMasterId && data.farmId) {
-      let parameters = {
-        params: {
-          financialYearId: data.financialYearMasterId,
-          raceId: data.scSchemeDetailsId,
-          targetType: data.scHeadAccountId,
-          farmId: data.scSubSchemeDetailsId,
-          grainageId: data.scComponentId,
-          courseId: data.targetType,
-          institutionId: data.targetType,
-          pageNumber: page,
-          size: countPerPage,
-        },
-      };
-      api
-        .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
-        .then((response) => {
-          setShowModal(true);
-          setDisplayList(response.data.content.schemeTargets);
-          setTotalRowsView(response.data.content.totalItems);
-        })
-        .catch((err) => {
-          setDisplayList([]);
-        });
+  // const handleShowModal = () => {
+  //   if (data.financialYearMasterId && data.grainageMasterId) {
+  //     //  targets.forEach((target)=>{
+  //     let parameters = {
+  //       params: {
+  //         financialYearId: data.financialYearMasterId,
+  //         raceId: data.raceMasterId,
+  //         // targetType: target,
+  //         grainageId: data.grainageId,
+  //         // farmId: data.scSubSchemeDetailsId,
+  //         // courseId: data.targetType,
+  //         // institutionId: data.targetType,
+  //         pageNumber: page,
+  //         size: countPerPage,
+  //       },
+  //     };
+  //     api
+  //       .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
+  //       .then((response) => {
+  //         setShowModal(true);
+  //         setDisplayList(response.data.content.target);
+  //         setTotalRowsView(response.data.content.totalItems);
+  //       })
+  //       .catch((err) => {
+  //         setDisplayList([]);
+  //       });
 
-      api
-        .get(
-          baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
-          parameters
-        )
-        .then((response) => {
-          // setShowModal(true);
-          setDisplayListHierarchy(response.data.content.schemeTargets);
-          setTotalRowsViewHierarchy(response.data.content.totalItems);
-        })
-        .catch((err) => {
-          setDisplayListHierarchy([]);
-        });
-    } else {
-      warning();
-    }
-  };
+  //     api
+  //       .get(
+  //         baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
+  //         parameters
+  //       )
+  //       .then((response) => {
+  //         // setShowModal(true);
+  //         setDisplayListHierarchy(response.data.content.target);
+  //         setTotalRowsViewHierarchy(response.data.content.totalItems);
+  //       })
+  //       .catch((err) => {
+  //         setDisplayListHierarchy([]);
+  //       });
+  //     // })
+  //   } else {
+  //     warning();
+  //   }
+  // };
+
+  const handleShowModal = () => {
+  if (data.financialYearMasterId && data.grainageMasterId) {
+    let parametersView = {
+      params: {
+        financialYearId: data.financialYearMasterId,
+        raceId: data.raceMasterId,
+        grainageId: data.grainageId,
+        pageNumber: pageView, 
+        size: countPerPage,
+      },
+    };
+
+    let parametersHierarchy = {
+      params: {
+        financialYearId: data.financialYearMasterId,
+        raceId: data.raceMasterId,
+        grainageId: data.grainageId,
+        pageNumber: pageHierarchy, 
+        size: countPerPage,
+      },
+    };
+
+    api
+      .get(baseURLTargetSetting + `targets/get-by-target-details`, parametersView) 
+      .then((response) => {
+        setShowModal(true);
+        setDisplayList(response.data.content.target);
+        setTotalRowsView(response.data.content.totalItems);
+      })
+      .catch((err) => {
+        setDisplayList([]);
+      });
+
+    api
+      .get(baseURLTargetSetting + `targets/get-by-target-details-hierarchy`, parametersHierarchy) 
+      .then((response) => {
+        setDisplayListHierarchy(response.data.content.target);
+        setTotalRowsViewHierarchy(response.data.content.totalItems);
+      })
+      .catch((err) => {
+        setDisplayListHierarchy([]);
+      });
+  } else {
+    warning();
+  }
+};
+
+
+
   const handleCloseModal = () => setShowModal(false);
+
+  const [pageView, setPageView] = useState(0); 
+const [pageHierarchy, setPageHierarchy] = useState(0); 
+  useEffect(() => {
+  if (showModal) handleShowModal(); 
+}, [pageView, pageHierarchy]); // 
+
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -905,7 +979,7 @@ useEffect(() => {
   const warning = () => {
     Swal.fire({
       icon: "warning",
-      title: "Please select financial year and farm",
+      title: "Please select financial year and Grainage",
       text: "Please try again!",
     });
   };
@@ -1082,9 +1156,9 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: t("Farn"),
-      selector: (row) => row.farmName,
-      cell: (row) => <span>{row.farmName}</span>,
+      name: t("Grainage"),
+      selector: (row) => row.grainageMasterName,
+      cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -2121,7 +2195,8 @@ useEffect(() => {
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => setPageView(page - 1)}
+                // onChangePage={(page) => setPage(page - 1)}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
@@ -2163,7 +2238,8 @@ useEffect(() => {
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage(page - 1)}
+                  // onChangePage={(page) => setPage(page - 1)}
+                  onChangePage={(page) => setPageHierarchy(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}

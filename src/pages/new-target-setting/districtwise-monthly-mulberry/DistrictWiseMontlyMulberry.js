@@ -78,6 +78,18 @@ function DistrictWiseMontlyMulberry() {
     budgetType: "allocate",
   });
 
+  const [pageNarega, setPageNarega] = useState(0); // UPDATED: zero-based page index
+  const [listViewTargetData, setViewTargetListData] = useState([]);
+  const [totalRowsNarega, setTotalRowsNarega] = useState(0);
+  const [loadingNarega, setLoadingNarega] = useState(false);
+
+  // Pagination and Data states for NON NAREGA
+  const [pageNonNarega, setPageNonNarega] = useState(0); // UPDATED: zero-based page index
+  const [listViewNnTargetData, setViewNnTargetListData] = useState([]);
+  const [totalRowsNonNarega, setTotalRowsNonNarega] = useState(0);
+  const [loadingNonNarega, setLoadingNonNarega] = useState(false);
+
+  const [showModal4, setShowModal4] = useState(false);
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -188,6 +200,133 @@ function DistrictWiseMontlyMulberry() {
       });
   };
 
+
+  const fetchNaregaData = (page) => {
+    setLoadingNarega(true);
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+            targetType: "NAREGA",
+            pageNumber: page, // UPDATED: send zero-based page index to API
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewTargetListData(response.data.content);
+        setTotalRowsNarega(response.data.totalRecords);
+        setShowModal4(true);
+      })
+      .catch(() => {
+        setViewTargetListData([]);
+        setTotalRowsNarega(0);
+      })
+      .finally(() => setLoadingNarega(false));
+  };
+
+
+
+  // Fetch function for NON NAREGA targets - includes page param
+  const fetchNonNaregaData = (page) => {
+    setLoadingNonNarega(true);
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+            targetType: "NON NAREGA",
+            pageNumber: page, // UPDATED: zero-based page index
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewNnTargetListData(response.data.content);
+        setTotalRowsNonNarega(response.data.totalRecords);
+        setShowModal4(true);
+      })
+      .catch(() => {
+        setViewNnTargetListData([]);
+        setTotalRowsNonNarega(0);
+      })
+      .finally(() => setLoadingNonNarega(false));
+  };
+
+
+
+  useEffect(() => {
+    if (data.financialYearMasterId && data.mulberryTargetTypeId) {
+      fetchNaregaData(pageNarega); // UPDATED: fetch with current page state
+      fetchNonNaregaData(pageNonNarega);
+    }
+  }, [pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]);
+
+  // UPDATED: Handler for NAREGA page change from DataTable (1-based to 0-based)
+  const handlePageChangeNarega = (page) => {
+    setPageNarega(page - 1); // UPDATED: convert 1-based page to zero-based
+  };
+
+  // UPDATED: Handler for NON NAREGA page change
+  const handlePageChangeNonNarega = (page) => {
+    setPageNonNarega(page - 1); // UPDATED: convert 1-based page to zero-based
+  };
+
+  const handleOpenModal = () => {
+    if (!data.financialYearMasterId || data.financialYearMasterId === "0") {
+      Swal.fire({ icon: "warning", title: "Please select Financial Year", text: "Please try again!" });
+      return;
+    }
+    if (!data.mulberryTargetTypeId || data.mulberryTargetTypeId === "0") {
+      Swal.fire({ icon: "warning", title: "Please select Target", text: "Please try again!" });
+      return;
+    }
+    setShowModal4(true);
+    // Data fetch triggered by useEffect because pageNarega/pageNonNarega are set/reset
+  };
+
+  
+
+  // 🔄 Updated API call to support pagination based on 'page' and 'countPerPage'
+const fetchViewReporteesTargetData = (page) => {
+  setLoading(true); // 🔄 Show loading while fetching data
+
+  api
+    .post(
+      baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+      {},
+      {
+        params: {
+          financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+          // targetType:trType,
+          pageNumber: page,        // 🔄 Send current page (0-indexed)
+          pageSize: countPerPage,  // 🔄 Number of records per page
+        },
+      }
+    )
+    .then((response) => {
+      setViewReporteesTargetListData(response.data.content); 
+      setTotalRows(response.data.totalRecords);              // 🔄 Set total records for DataTable pagination
+      setShowModal6(true);
+    })
+    .catch((err) => {
+      setViewReporteesTargetListData([]);                    // 🔄 Reset list on error
+    })
+    .finally(() => setLoading(false));                       // 🔄 Turn off loading state
+};
+
+useEffect(() => {
+  fetchViewReporteesTargetData(page); // 🔄 Trigger API on page change
+}, [page]);
+  
   useEffect(() => {
     if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId){
       getAllMonthTarget();
@@ -864,13 +1003,13 @@ function DistrictWiseMontlyMulberry() {
     },
   ];
 
-  const [showModal4, setShowModal4] = useState(false);
+  // const [showModal4, setShowModal4] = useState(false);
 
   const handleShowModal4 = () => setShowModal4(true);
   const handleCloseModal4 = () => setShowModal4(false);
 
-  const [listViewTargetData, setViewTargetListData] = useState({});
-  const [listViewNnTargetData, setViewNnTargetListData] = useState({});
+  // const [listViewTargetData, setViewTargetListData] = useState({});
+  // const [listViewNnTargetData, setViewNnTargetListData] = useState({});
 
   const search = (event) => {
     const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
@@ -2966,22 +3105,18 @@ function DistrictWiseMontlyMulberry() {
         </Modal.Header>
         <Modal.Body>
           <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ViewTargetReporteeDataColumns}
-            data={listViewReporteesTargetData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+  columns={ViewTargetReporteeDataColumns}
+  data={listViewReporteesTargetData}
+  highlightOnHover
+  pagination
+  paginationServer                       // 🔄 Enable server-side pagination
+  paginationTotalRows={totalRows}       // 🔄 Total number of records from API
+  paginationPerPage={countPerPage}      // 🔄 Records per page
+  onChangePage={(page) => setPage(page - 1)} // 🔄 Update current page (convert 1-based to 0-based)
+  progressPending={loading}             // 🔄 Show loader while fetching
+  customStyles={customStyles}
+/>
+
         </Modal.Body>
       </Modal>
 
@@ -2997,13 +3132,11 @@ function DistrictWiseMontlyMulberry() {
             highlightOnHover
             pagination
             paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
+            paginationTotalRows={totalRowsNarega}
+            paginationPerPage={countPerPage} // UPDATED: rows per page
+            paginationComponentOptions={{ noRowsPerPage: true }}
+            onChangePage={handlePageChangeNarega} // UPDATED: fetch next page on arrow click
+            progressPending={loadingNarega} // UPDATED: show loading spinner while fetching
             theme="solarized"
             customStyles={customStyles}
           />
@@ -3014,14 +3147,12 @@ function DistrictWiseMontlyMulberry() {
             data={listViewNnTargetData}
             highlightOnHover
             pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
+            paginationServer // UPDATED: server-side pagination enabled
+            paginationTotalRows={totalRowsNonNarega} // UPDATED: total rows from API
+            paginationPerPage={countPerPage} // UPDATED: rows per page
+            paginationComponentOptions={{ noRowsPerPage: true }}
+            onChangePage={handlePageChangeNonNarega} // UPDATED: fetch next page on arrow click
+            progressPending={loadingNonNarega} // UPDATED: show loading spinner while fetching
             theme="solarized"
             customStyles={customStyles}
           />

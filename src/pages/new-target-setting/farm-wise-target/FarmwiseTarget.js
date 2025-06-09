@@ -178,6 +178,10 @@ function FarmwiseTarget() {
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
+  const [page1,setPage1] = useState(0);
+  const [page2,setPage2] = useState(0);
+  const [page3,setPage3] = useState(0);
+  const [page4,setPage4] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -208,10 +212,20 @@ function FarmwiseTarget() {
     setToggleButton(!toggleButton);
   };
 
+  useEffect(()=>{
+    if (data.financialYearMasterId && data.farmId) {
+      handleShowModal();
+    } 
+  }, [data.financialYearMasterId, data.farmId, page1, page2, page3, page4]);
+
   const [displayList, setDisplayList] = useState([]);
+  const [displayListCocoon,setDisplayListCocoon] = useState([]);
   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  const [displayListHierarchyCocoon, setDisplayListHierarchyCocoon] = useState([]);
   const [totalRowsView, setTotalRowsView] = useState(0);
+  const [totalRowsViewCocoon, setTotalRowsViewCocoon] = useState(0);
   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+  const [totalRowsViewHierarchyCocoon, setTotalRowsViewHierarchyCocoon] = useState(0);
 
   const handleSearchInputs = (e) => {
     let { name, value } = e.target;
@@ -273,50 +287,161 @@ function FarmwiseTarget() {
   };
 
 
+  // const targets = ["Cocoon Production","Brushing"];
+  // const handleShowModal = () => {
+  //   if (data.financialYearMasterId && data.farmId) {
+  //     targets.forEach((target)=>{
+  //       let parameters = {
+  //       params: {
+  //         financialYearId: data.financialYearMasterId,
+  //         raceId: data.raceMasterId,
+  //         targetType: target,
+  //         farmId: data.farmId,
+  //         // grainageId: data.scComponentId,
+  //         // courseId: data.targetType,
+  //         // institutionId: data.targetType,
+  //         pageNumber: target === 'Cocoon Production'? page1:page2,
+  //         size: countPerPage,
+  //       },
+  //     };
+  //     let parameters2 = {
+  //       params: {
+  //         financialYearId: data.financialYearMasterId,
+  //         raceId: data.raceMasterId,
+  //         targetType: target,
+  //         farmId: data.farmId,
+  //         pageNumber: target === "Cocoon Production" ? page3 : page4, 
+  //         size: countPerPage,
+  //       },
+  //     };
+  //     api
+  //       .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
+  //       .then((response) => {
+  //         setShowModal(true);
+  //         const res = response.data.content.target[0].target;
+  //         if( "Cocoon Production" === res ){
+  //           setDisplayListCocoon(response.data.content.target);
+  //           setTotalRowsViewCocoon(response.data.content.totalItems);
+  //         }else{
+  //           setDisplayList(response.data.content.target);
+  //           setTotalRowsView(response.data.content.totalItems);
+  //         }
+  
+          
+  //       })
+  //       .catch((err) => {
+  //         setDisplayList([]);
+  //       });
 
-  const handleShowModal = () => {
-    if (data.financialYearMasterId && data.farmId) {
+  //     api
+  //       .get(
+  //         baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
+  //         parameters2
+  //       )
+  //       .then((response) => {
+  //         // setShowModal(true);
+  //         const res = response.data.content.target[0].target;
+  //         if( "Cocoon Production" === res ){
+  //           setDisplayListHierarchyCocoon(response.data.content.target);
+  //           setTotalRowsViewHierarchyCocoon(response.data.content.totalItems);
+  //         }else{
+  //           setDisplayListHierarchy(response.data.content.target);
+  //           setTotalRowsViewHierarchy(response.data.content.totalItems);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         setDisplayListHierarchy([]);
+  //       });
+  //     })
+  //   } else {
+  //     warning();
+  //   }
+  // };
+
+
+  
+const targets = ["Cocoon Production", "Brushing"];
+
+const handleShowModal = () => {
+  if (data.financialYearMasterId && data.farmId) {
+    targets.forEach((target) => {
       let parameters = {
         params: {
           financialYearId: data.financialYearMasterId,
-          raceId: data.scSchemeDetailsId,
-          targetType: data.scHeadAccountId,
-          farmId: data.scSubSchemeDetailsId,
-          grainageId: data.scComponentId,
-          courseId: data.targetType,
-          institutionId: data.targetType,
-          pageNumber: page,
+          raceId: data.raceMasterId,
+          targetType: target,
+          farmId: data.farmId,
+
+          pageNumber: target === 'Cocoon Production' ? page1 : page2,
           size: countPerPage,
         },
       };
+
+      let parameters2 = {
+        params: {
+          financialYearId: data.financialYearMasterId,
+          raceId: data.raceMasterId,
+          targetType: target,
+          farmId: data.farmId,
+
+          pageNumber: target === "Cocoon Production" ? page3 : page4,
+          size: countPerPage,
+        },
+      };
+
       api
         .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
         .then((response) => {
           setShowModal(true);
-          setDisplayList(response.data.content.schemeTargets);
-          setTotalRowsView(response.data.content.totalItems);
+
+          const res = response.data.content.target[0]?.target;
+
+          // ✅ Correct: Update only corresponding state
+          if (res === "Cocoon Production") {
+            setDisplayListCocoon(response.data.content.target);
+            setTotalRowsViewCocoon(response.data.content.totalItems);
+          } else {
+            setDisplayList(response.data.content.target);
+            setTotalRowsView(response.data.content.totalItems);
+          }
         })
-        .catch((err) => {
-          setDisplayList([]);
+        .catch(() => {
+          // ✅ Clear only the relevant list
+          if (target === "Cocoon Production") {
+            setDisplayListCocoon([]);
+          } else {
+            setDisplayList([]);
+          }
         });
 
       api
-        .get(
-          baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
-          parameters
-        )
+        .get(baseURLTargetSetting + `targets/get-by-target-details-hierarchy`, parameters2)
         .then((response) => {
-          // setShowModal(true);
-          setDisplayListHierarchy(response.data.content.schemeTargets);
-          setTotalRowsViewHierarchy(response.data.content.totalItems);
+          const res = response.data.content.target[0]?.target;
+
+          // ✅ Correct: Update only corresponding hierarchy state
+          if (res === "Cocoon Production") {
+            setDisplayListHierarchyCocoon(response.data.content.target);
+            setTotalRowsViewHierarchyCocoon(response.data.content.totalItems);
+          } else {
+            setDisplayListHierarchy(response.data.content.target);
+            setTotalRowsViewHierarchy(response.data.content.totalItems);
+          }
         })
-        .catch((err) => {
-          setDisplayListHierarchy([]);
+        .catch(() => {
+          // ✅ Clear only the relevant hierarchy list
+          if (target === "Cocoon Production") {
+            setDisplayListHierarchyCocoon([]);
+          } else {
+            setDisplayListHierarchy([]);
+          }
         });
-    } else {
-      warning();
-    }
-  };
+    });
+  } else {
+    warning();
+  }
+};
+
   const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
@@ -1181,6 +1306,13 @@ function FarmwiseTarget() {
       name: "Month",
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Target Type",
+      selector: (row) => row.target,
+      cell: (row) => <span>{row.target}</span>,
       sortable: true,
       hide: "md",
     },
@@ -2617,7 +2749,25 @@ function FarmwiseTarget() {
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => setPage2(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={ProductionPhysicalDataColumnsView}
+                data={displayListCocoon}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsViewCocoon}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
@@ -2659,7 +2809,24 @@ function FarmwiseTarget() {
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage(page - 1)}
+                  onChangePage={(page) => setPage4(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ProductionPhysicalDataColumnsView}
+                  data={displayListHierarchyCocoon}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRowsViewHierarchyCocoon}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}
