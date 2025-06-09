@@ -417,6 +417,93 @@ function TscwiseSchemeTargetSetting() {
        warning();
      }
    };
+
+   useEffect(() => {
+     if (showModal) {
+       fetchHierarchyData("PHYSICAL TARGET", page3); 
+     }
+   }, [page3]); 
+   
+   useEffect(() => {
+     if (showModal) {
+       fetchHierarchyData("FINANCIAL TARGET", page4); 
+     }
+   }, [page4]); 
+   
+   useEffect(() => {
+     if (showModal) {
+       fetchViewData("FINANCIAL TARGET", page1); 
+     }
+   }, [page1]);
+   
+   useEffect(() => {
+     if (showModal) {
+       fetchViewData("PHYSICAL TARGET", page2); 
+     }
+   }, [page2]); 
+   
+   const fetchViewData = (targetType, page) => { 
+     const parameters = {
+       params: {
+         financialYearId: data.financialYearMasterId,
+         schemeId: data.scSchemeDetailsId,
+         hoaId: data.scHeadAccountId,
+         componentTypeId: data.scSubSchemeDetailsId,
+         componentId: data.scComponentId,
+         targetType: targetType, 
+         pageNumber: page,      
+         size: countPerPage,
+       },
+     };
+   
+     api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details`, parameters)
+       .then((response) => {
+         if (targetType === "PHYSICAL TARGET") {
+           setDisplayList(response.data.content.schemeTargets); 
+           setTotalRowsView(response.data.content.totalItems);   
+         } else {
+           setDisplayListFinancial(response.data.content.schemeTargets); 
+           setTotalRowsViewFinancial(response.data.content.totalItems);  
+         }
+       })
+       .catch(() => {
+         if (targetType === "PHYSICAL TARGET") setDisplayList([]);
+         else setDisplayListFinancial([]);
+       });
+   };
+   
+   
+   const fetchHierarchyData = (targetType, page) => { 
+     const parameters = {
+       params: {
+         financialYearId: data.financialYearMasterId,
+         schemeId: data.scSchemeDetailsId,
+         hoaId: data.scHeadAccountId,
+         componentTypeId: data.scSubSchemeDetailsId,
+         componentId: data.scComponentId,
+         targetType: targetType, 
+         pageNumber: page,       
+         size: countPerPage,
+       },
+     };
+   
+     api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details-hierarchy`, parameters)
+       .then((response) => {
+         if (targetType === "PHYSICAL TARGET") {
+           setDisplayListHierarchy(response.data.content.schemeTargets); 
+           setTotalRowsViewHierarchy(response.data.content.totalItems);  
+         } else {
+           setDisplayListHierarchyFinancial(response.data.content.schemeTargets); 
+           setTotalRowsViewHierarchyFinancial(response.data.content.totalItems);  
+         }
+       })
+       .catch(() => {
+         if (targetType === "PHYSICAL TARGET") setDisplayListHierarchy([]);
+         else setDisplayListHierarchyFinancial([]);
+       });
+   };
+
+   
   const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
@@ -1523,13 +1610,13 @@ function TscwiseSchemeTargetSetting() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Component Type"),
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,

@@ -310,6 +310,93 @@ function SiSdWiseSchemeTargetSetting() {
     }));
   };
 
+useEffect(() => {
+  if (showModal) {
+    fetchHierarchyData("PHYSICAL TARGET", page3); 
+  }
+}, [page3]); 
+
+useEffect(() => {
+  if (showModal) {
+    fetchHierarchyData("FINANCIAL TARGET", page4); 
+  }
+}, [page4]); 
+
+useEffect(() => {
+  if (showModal) {
+    fetchViewData("FINANCIAL TARGET", page1); 
+  }
+}, [page1]);
+
+useEffect(() => {
+  if (showModal) {
+    fetchViewData("PHYSICAL TARGET", page2); 
+  }
+}, [page2]); 
+
+const fetchViewData = (targetType, page) => { 
+  const parameters = {
+    params: {
+      financialYearId: data.financialYearMasterId,
+      schemeId: data.scSchemeDetailsId,
+      hoaId: data.scHeadAccountId,
+      componentTypeId: data.scSubSchemeDetailsId,
+      componentId: data.scComponentId,
+      targetType: targetType, 
+      pageNumber: page,      
+      size: countPerPage,
+    },
+  };
+
+  api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details`, parameters)
+    .then((response) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setDisplayList(response.data.content.schemeTargets); 
+        setTotalRowsView(response.data.content.totalItems);   
+      } else {
+        setDisplayListFinancial(response.data.content.schemeTargets); 
+        setTotalRowsViewFinancial(response.data.content.totalItems);  
+      }
+    })
+    .catch(() => {
+      if (targetType === "PHYSICAL TARGET") setDisplayList([]);
+      else setDisplayListFinancial([]);
+    });
+};
+
+
+const fetchHierarchyData = (targetType, page) => { 
+  const parameters = {
+    params: {
+      financialYearId: data.financialYearMasterId,
+      schemeId: data.scSchemeDetailsId,
+      hoaId: data.scHeadAccountId,
+      componentTypeId: data.scSubSchemeDetailsId,
+      componentId: data.scComponentId,
+      targetType: targetType, 
+      pageNumber: page,       
+      size: countPerPage,
+    },
+  };
+
+  api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details-hierarchy`, parameters)
+    .then((response) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setDisplayListHierarchy(response.data.content.schemeTargets); 
+        setTotalRowsViewHierarchy(response.data.content.totalItems);  
+      } else {
+        setDisplayListHierarchyFinancial(response.data.content.schemeTargets); 
+        setTotalRowsViewHierarchyFinancial(response.data.content.totalItems);  
+      }
+    })
+    .catch(() => {
+      if (targetType === "PHYSICAL TARGET") setDisplayListHierarchy([]);
+      else setDisplayListHierarchyFinancial([]);
+    });
+};
+
+
+
   const schemeTargets = ["PHYSICAL TARGET","FINANCIAL TARGET"];
 
   const handleShowModal = () => {
@@ -387,18 +474,18 @@ function SiSdWiseSchemeTargetSetting() {
   const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
-  const [financialyearListData, setFinancialyearListData] = useState([]);
-
-  const getFinancialYearList = () => {
-    const response = api
-      .get(baseURLMasterData + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialyearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialyearListData([]);
-      });
-  };
+    const [financialyearListData, setFinancialyearListData] = useState([]);
+  
+    const getFinancialYearList = () => {
+      const response = api
+        .get(baseURLMasterData + `financialYearMaster/get-all`)
+        .then((response) => {
+          setFinancialyearListData(response.data.content.financialYearMaster);
+        })
+        .catch((err) => {
+          setFinancialyearListData([]);
+        });
+    };
 
   useEffect(() => {
     getFinancialYearList();
@@ -1442,13 +1529,13 @@ function SiSdWiseSchemeTargetSetting() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Component Type"),
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,
@@ -1573,21 +1660,21 @@ function SiSdWiseSchemeTargetSetting() {
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-      });
-  };
+      api
+        .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+        .then((response) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: response.data.content.financialYearMasterId,
+          }));
+        })
+        .catch((err) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: "",
+          }));
+        });
+    };
 
   useEffect(() => {
     getFinancialDefaultDetails();
@@ -1855,40 +1942,40 @@ function SiSdWiseSchemeTargetSetting() {
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              {t("Financial Year")}
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="financialYearMasterId"
-                                value={data.financialYearMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.financialYearMasterId === undefined ||
-                                  data.financialYearMasterId === "0"
-                                }
-                              >
-                                <option value="">{t("Select Year")}</option>
-                                {financialyearListData && financialyearListData.length
-                                ? financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYearMaster}
-                                  </option>
-                                ))
-                                : ""}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Financial Year is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                                                      <Form.Label>
+                                                        {t("Financial Year")}
+                                                        <span className="text-danger">*</span>
+                                                      </Form.Label>
+                                                      <div className="form-control-wrap">
+                                                        <Form.Select
+                                                          name="financialYearMasterId"
+                                                          value={data.financialYearMasterId}
+                                                          onChange={handleInputs}
+                                                          onBlur={() => handleInputs}
+                                                          required
+                                                          isInvalid={
+                                                            data.financialYearMasterId === undefined ||
+                                                            data.financialYearMasterId === "0"
+                                                          }
+                                                        >
+                                                          <option value="">{t("Select Year")}</option>
+                                                          {financialyearListData && financialyearListData.length
+                                                          ?financialyearListData.map((list) => (
+                                                            <option
+                                                              key={list.financialYearMasterId}
+                                                              value={list.financialYearMasterId}
+                                                            >
+                                                              {list.financialYear}
+                                                            </option>
+                                                          ))
+                                                          :""}
+                                                        </Form.Select>
+                                                        <Form.Control.Feedback type="invalid">
+                                                          {t("Financial Year is required")}
+                                                        </Form.Control.Feedback>
+                                                      </div>
+                                                    </Form.Group>
+                                                  </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -3151,40 +3238,40 @@ function SiSdWiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    {t("Financial Year")}
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="financialYearMasterId"
-                      value={editData.financialYearMasterId}
-                      onChange={handleEditInputs}
-                      onBlur={() => handleEditInputs}
-                      required
-                      disabled
-                      isInvalid={
-                        editData.financialYearMasterId === undefined ||
-                        editData.financialYearMasterId === "0"
-                      }
-                    >
-                      <option value="">{t("Select Year")}</option>
-                      {financialyearListData && financialyearListData.length
-                      ? financialyearListData.map((list) => (
-                        <option
-                          key={list.financialYearMasterId}
-                          value={list.financialYearMasterId}
-                        >
-                          {list.financialYear}
-                        </option>
-                      ))
-                      :""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      {t("Financial Year is required")}
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+                                      {t("Financial Year")}
+                                      <span className="text-danger">*</span>
+                                    </Form.Label>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="financialYearMasterId"
+                                        value={editData.financialYearMasterId}
+                                        onChange={handleEditInputs}
+                                        onBlur={() => handleEditInputs}
+                                        required
+                                        disabled
+                                        isInvalid={
+                                          editData.financialYearMasterId === undefined ||
+                                          editData.financialYearMasterId === "0"
+                                        }
+                                      >
+                                        <option value="">{t("Select Year")}</option>
+                                        {financialyearListData && financialyearListData.length
+                                        ?financialyearListData.map((list) => (
+                                          <option
+                                            key={list.financialYearMasterId}
+                                            value={list.financialYearMasterId}
+                                          >
+                                            {list.financialYearMaster}
+                                          </option>
+                                        ))
+                                        : ""}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        {t("Financial Year is required")}
+                                      </Form.Control.Feedback>
+                                    </div>
+                                  </Form.Group>
+                                </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
