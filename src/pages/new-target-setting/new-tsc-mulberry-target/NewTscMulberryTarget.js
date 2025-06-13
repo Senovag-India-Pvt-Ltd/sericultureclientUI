@@ -99,6 +99,18 @@ const [loadingReportee, setLoadingReportee] = useState(false);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [showModal6, setShowModal6] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
+
+
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+const [triggerNaregaFetch, setTriggerNaregaFetch] = useState(false); 
+const [triggerReporteeFetch, setTriggerReporteeFetch] = useState(false); 
+
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
   const [showModal3, setShowModal3] = useState(false);
@@ -222,7 +234,7 @@ const [loadingReportee, setLoadingReportee] = useState(false);
       .then((response) => {
         setViewTargetListData(response.data.content);
         setTotalRowsNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewTargetListData([]);
@@ -253,7 +265,7 @@ const [loadingReportee, setLoadingReportee] = useState(false);
       .then((response) => {
         setViewNnTargetListData(response.data.content);
         setTotalRowsNonNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewNnTargetListData([]);
@@ -290,9 +302,27 @@ const [loadingReportee, setLoadingReportee] = useState(false);
       Swal.fire({ icon: "warning", title: "Please select Target", text: "Please try again!" });
       return;
     }
-    setShowModal4(true);
+   fetchNaregaData(0);
+  fetchNonNaregaData(0);
+  setPageNarega(0); // updated line
+  setPageNonNarega(0); // updated line
+  setShowModal4(true);
     
   };
+
+  // ✅ NEW useEffect
+useEffect(() => {
+  if (
+    triggerNaregaFetch &&
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId
+  ) {
+    fetchNaregaData(pageNarega);              
+    fetchNonNaregaData(pageNonNarega);        
+    setShowModal4(true);                      
+    setTriggerNaregaFetch(false);             
+  }
+}, [triggerNaregaFetch, pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]);  // ✅ NEW LINE
 
 
 const fetchViewReporteesTargetData = (page) => {
@@ -314,7 +344,7 @@ const fetchViewReporteesTargetData = (page) => {
     .then((response) => {
       setViewReporteesTargetListData(response.data.content);
       setTotalRowsReportee(response.data.totalRecords);
-      setShowModal6(true);
+      // setShowModal6(true);
     })
     .catch(() => {
       setViewReporteesTargetListData([]);
@@ -438,6 +468,12 @@ useEffect(() => {
   useEffect(() => {
     getList();
   }, [page]);
+
+  useEffect(() => {
+  if (showModal6) {
+    fetchViewReporteesTargetData(page);
+  }
+}, [page, showModal6]);
 
   const [editData, setEditData] = useState({
     mulberryTargetTypeId: "",
@@ -889,10 +925,6 @@ useEffect(() => {
     setValidated(false);
   };
 
-  const [showModal6, setShowModal6] = useState(false);
-
-  const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
 
   const [listViewReporteesTargetData, setViewReporteesTargetListData] =
     useState({});
@@ -945,12 +977,22 @@ useEffect(() => {
       .then((response) => {
         setViewReporteesTargetListData(response.data.content);
         setTotalRows(response.data.totalRecords);
-        setShowModal6(true);
+        setPageReportee(0); // updated line
+      setShowModal6(true);
       })
       .catch((err) => {
         setViewReporteesTargetListData([]);
       });
   };
+
+
+  useEffect(() => {
+  if (triggerReporteeFetch) {
+    fetchViewReporteesTargetData(page); 
+    setShowModal6(true);                 
+    setTriggerReporteeFetch(false);      
+  }
+}, [triggerReporteeFetch, page]);
 
   const ViewTargetReporteeDataColumns = [
     {
@@ -1026,10 +1068,6 @@ useEffect(() => {
     },
   ];
 
-  const [showModal4, setShowModal4] = useState(false);
-
-  const handleShowModal4 = () => setShowModal4(true);
-  const handleCloseModal4 = () => setShowModal4(false);
 
   const [listViewTargetData, setViewTargetListData] = useState({});
   const [listViewNnTargetData, setViewNnTargetListData] = useState({});

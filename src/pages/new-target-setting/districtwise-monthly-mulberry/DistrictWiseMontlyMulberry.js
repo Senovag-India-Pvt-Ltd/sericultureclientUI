@@ -89,7 +89,6 @@ function DistrictWiseMontlyMulberry() {
   const [totalRowsNonNarega, setTotalRowsNonNarega] = useState(0);
   const [loadingNonNarega, setLoadingNonNarega] = useState(false);
 
-  const [showModal4, setShowModal4] = useState(false);
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -100,9 +99,22 @@ function DistrictWiseMontlyMulberry() {
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal6, setShowModal6] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+
 
   const handleShowModal3 = () => setShowModal3(true);
   const handleCloseModal3 = () => setShowModal3(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
+
+
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+const [triggerNaregaFetch, setTriggerNaregaFetch] = useState(false); 
+const [triggerReporteeFetch, setTriggerReporteeFetch] = useState(false); 
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -220,7 +232,7 @@ function DistrictWiseMontlyMulberry() {
       .then((response) => {
         setViewTargetListData(response.data.content);
         setTotalRowsNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewTargetListData([]);
@@ -251,7 +263,7 @@ function DistrictWiseMontlyMulberry() {
       .then((response) => {
         setViewNnTargetListData(response.data.content);
         setTotalRowsNonNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewNnTargetListData([]);
@@ -288,9 +300,25 @@ function DistrictWiseMontlyMulberry() {
       Swal.fire({ icon: "warning", title: "Please select Target", text: "Please try again!" });
       return;
     }
-    setShowModal4(true);
-    // Data fetch triggered by useEffect because pageNarega/pageNonNarega are set/reset
+    setPageNarega(0); // ✅ Reset to page 0 before opening
+setPageNonNarega(0); // ✅ Reset to page 0 before opening
+setShowModal4(true); // ✅ Open modal after resetting page
   };
+
+  // ✅ NEW useEffect
+useEffect(() => {
+  if (
+    triggerNaregaFetch &&
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId
+  ) {
+    fetchNaregaData(pageNarega);              
+    fetchNonNaregaData(pageNonNarega);        
+    setShowModal4(true);                      
+    setTriggerNaregaFetch(false);             
+  }
+}, [triggerNaregaFetch, pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]);  // ✅ NEW LINE
+
 
   
 
@@ -323,9 +351,13 @@ const fetchViewReporteesTargetData = (page) => {
     .finally(() => setLoading(false));                       // 🔄 Turn off loading state
 };
 
+// ✅ Only fetch reportee data when modal is explicitly opened
 useEffect(() => {
-  fetchViewReporteesTargetData(page); // 🔄 Trigger API on page change
-}, [page]);
+  if (showModal6) {
+    fetchViewReporteesTargetData(page);
+  }
+}, [page, showModal6]); // ✅ watch both `page` and `showModal6`
+
   
   useEffect(() => {
     if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId){
@@ -864,10 +896,7 @@ useEffect(() => {
     setValidatedAllDateEdit(false);
   };
 
-  const [showModal6, setShowModal6] = useState(false);
-
-  const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
+  
 
   const [listViewReporteesTargetData, setViewReporteesTargetListData] =
     useState({});
@@ -920,12 +949,22 @@ useEffect(() => {
       .then((response) => {
         setViewReporteesTargetListData(response.data.content);
         setTotalRows(response.data.totalRecords);
-        setShowModal6(true);
+        // setShowModal6(true);
+        setTriggerReporteeFetch(true); 
+
       })
       .catch((err) => {
         setViewReporteesTargetListData([]);
       });
   };
+
+  useEffect(() => {
+  if (triggerReporteeFetch) {
+    fetchViewReporteesTargetData(page); 
+    setShowModal6(true);                 
+    setTriggerReporteeFetch(false);      
+  }
+}, [triggerReporteeFetch, page]);
 
   const ViewTargetReporteeDataColumns = [
     {
@@ -1005,8 +1044,6 @@ useEffect(() => {
 
   // const [showModal4, setShowModal4] = useState(false);
 
-  const handleShowModal4 = () => setShowModal4(true);
-  const handleCloseModal4 = () => setShowModal4(false);
 
   // const [listViewTargetData, setViewTargetListData] = useState({});
   // const [listViewNnTargetData, setViewNnTargetListData] = useState({});
@@ -3109,11 +3146,11 @@ useEffect(() => {
   data={listViewReporteesTargetData}
   highlightOnHover
   pagination
-  paginationServer                       // 🔄 Enable server-side pagination
-  paginationTotalRows={totalRows}       // 🔄 Total number of records from API
-  paginationPerPage={countPerPage}      // 🔄 Records per page
-  onChangePage={(page) => setPage(page - 1)} // 🔄 Update current page (convert 1-based to 0-based)
-  progressPending={loading}             // 🔄 Show loader while fetching
+  paginationServer                       
+  paginationTotalRows={totalRows}       
+  paginationPerPage={countPerPage}      
+  onChangePage={(page) => setPage(page - 1)} 
+  progressPending={loading}             
   customStyles={customStyles}
 />
 
