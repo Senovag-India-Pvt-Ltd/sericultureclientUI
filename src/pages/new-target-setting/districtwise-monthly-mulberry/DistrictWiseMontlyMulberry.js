@@ -88,6 +88,10 @@ function DistrictWiseMontlyMulberry() {
   const [listViewNnTargetData, setViewNnTargetListData] = useState([]);
   const [totalRowsNonNarega, setTotalRowsNonNarega] = useState(0);
   const [loadingNonNarega, setLoadingNonNarega] = useState(false);
+  const [totalRowsReportee, setTotalRowsReportee] = useState(0);
+  const [loadingReportee, setLoadingReportee] = useState(false);
+    const [pageReportee, setPageReportee] = useState(0); // zero-based
+  
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -322,41 +326,40 @@ useEffect(() => {
 
   
 
-  // 🔄 Updated API call to support pagination based on 'page' and 'countPerPage'
-const fetchViewReporteesTargetData = (page) => {
-  setLoading(true); // 🔄 Show loading while fetching data
+// const fetchViewReporteesTargetData = (page) => {
+//   setLoading(true); // 🔄 Show loading while fetching data
 
-  api
-    .post(
-      baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
-      {},
-      {
-        params: {
-          financialYearMasterId: data.financialYearMasterId,
-            mulberryTargetTypeId: data.mulberryTargetTypeId,
-          // targetType:trType,
-          pageNumber: page,        // 🔄 Send current page (0-indexed)
-          pageSize: countPerPage,  // 🔄 Number of records per page
-        },
-      }
-    )
-    .then((response) => {
-      setViewReporteesTargetListData(response.data.content); 
-      setTotalRows(response.data.totalRecords);              // 🔄 Set total records for DataTable pagination
-      setShowModal6(true);
-    })
-    .catch((err) => {
-      setViewReporteesTargetListData([]);                    // 🔄 Reset list on error
-    })
-    .finally(() => setLoading(false));                       // 🔄 Turn off loading state
-};
+//   api
+//     .post(
+//       baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+//       {},
+//       {
+//         params: {
+//           financialYearMasterId: data.financialYearMasterId,
+//             mulberryTargetTypeId: data.mulberryTargetTypeId,
+//           // targetType:trType,
+//           pageNumber: page,        // 🔄 Send current page (0-indexed)
+//           pageSize: countPerPage,  // 🔄 Number of records per page
+//         },
+//       }
+//     )
+//     .then((response) => {
+//       setViewReporteesTargetListData(response.data.content); 
+//       setTotalRows(response.data.totalRecords);              // 🔄 Set total records for DataTable pagination
+//       setShowModal6(true);
+//     })
+//     .catch((err) => {
+//       setViewReporteesTargetListData([]);                    // 🔄 Reset list on error
+//     })
+//     .finally(() => setLoading(false));                       // 🔄 Turn off loading state
+// };
 
-// ✅ Only fetch reportee data when modal is explicitly opened
-useEffect(() => {
-  if (showModal6) {
-    fetchViewReporteesTargetData(page);
-  }
-}, [page, showModal6]); // ✅ watch both `page` and `showModal6`
+// // ✅ Only fetch reportee data when modal is explicitly opened
+// useEffect(() => {
+//   if (showModal6) {
+//     fetchViewReporteesTargetData(page);
+//   }
+// }, [page, showModal6]); // ✅ watch both `page` and `showModal6`
 
   
   useEffect(() => {
@@ -463,6 +466,54 @@ useEffect(() => {
       getTalukList(data.districtId);
     }
   }, [data.districtId]);
+
+  const fetchViewReporteesTargetData = (page) => {
+    setLoadingReportee(true);
+  
+    api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId: data.financialYearMasterId,
+            mulberryTargetTypeId: data.mulberryTargetTypeId,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewReporteesTargetListData(response.data.content);
+        setTotalRowsReportee(response.data.totalRecords);
+        // setShowModal6(true);
+      })
+      .catch(() => {
+        setViewReporteesTargetListData([]);
+        setTotalRowsReportee(0);
+      })
+      .finally(() => setLoadingReportee(false));
+  };
+  
+  const handlePageChangeReportee = (page) => {
+    setPageReportee(page - 1); // convert to 0-based
+  };
+  
+  
+  useEffect(() => {
+    if (data.financialYearMasterId && data.mulberryTargetTypeId) {
+      fetchViewReporteesTargetData(pageReportee);
+    }
+  }, [pageReportee, data.financialYearMasterId, data.mulberryTargetTypeId]);
+  
+  
+   useEffect(() => {
+     if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId && data.tscMasterId){
+       getAllMonthTarget();
+     }
+   }, [data.districtId,data.financialYearMasterId,data.mulberryTargetTypeId,data.tscMasterId]);
+  
+  
 
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
@@ -3136,12 +3187,12 @@ useEffect(() => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
-        <Modal.Header closeButton>
+      {/* <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+        <Modal.Header closeButton> 
           <Modal.Title>{t("All Reportee Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DataTable
+           <DataTable
   columns={ViewTargetReporteeDataColumns}
   data={listViewReporteesTargetData}
   highlightOnHover
@@ -3152,8 +3203,26 @@ useEffect(() => {
   onChangePage={(page) => setPage(page - 1)} 
   progressPending={loading}             
   customStyles={customStyles}
-/>
+/> */}
 
+ <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("All Reportee Details")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <DataTable
+      columns={ViewTargetReporteeDataColumns}
+      data={listViewReporteesTargetData}
+      highlightOnHover
+      pagination
+      paginationServer
+      paginationTotalRows={totalRowsReportee}
+      paginationPerPage={countPerPage}
+      onChangePage={handlePageChangeReportee}
+      progressPending={loadingReportee}
+      paginationComponentOptions={{ noRowsPerPage: true }}
+      customStyles={customStyles}
+    />
         </Modal.Body>
       </Modal>
 
@@ -3170,10 +3239,10 @@ useEffect(() => {
             pagination
             paginationServer
             paginationTotalRows={totalRowsNarega}
-            paginationPerPage={countPerPage} // UPDATED: rows per page
+            paginationPerPage={countPerPage} 
             paginationComponentOptions={{ noRowsPerPage: true }}
-            onChangePage={handlePageChangeNarega} // UPDATED: fetch next page on arrow click
-            progressPending={loadingNarega} // UPDATED: show loading spinner while fetching
+            onChangePage={handlePageChangeNarega} 
+            progressPending={loadingNarega} 
             theme="solarized"
             customStyles={customStyles}
           />
@@ -3184,12 +3253,12 @@ useEffect(() => {
             data={listViewNnTargetData}
             highlightOnHover
             pagination
-            paginationServer // UPDATED: server-side pagination enabled
-            paginationTotalRows={totalRowsNonNarega} // UPDATED: total rows from API
-            paginationPerPage={countPerPage} // UPDATED: rows per page
+            paginationServer 
+            paginationTotalRows={totalRowsNonNarega} 
+            paginationPerPage={countPerPage} 
             paginationComponentOptions={{ noRowsPerPage: true }}
-            onChangePage={handlePageChangeNonNarega} // UPDATED: fetch next page on arrow click
-            progressPending={loadingNonNarega} // UPDATED: show loading spinner while fetching
+            onChangePage={handlePageChangeNonNarega} 
+            progressPending={loadingNonNarega} 
             theme="solarized"
             customStyles={customStyles}
           />
