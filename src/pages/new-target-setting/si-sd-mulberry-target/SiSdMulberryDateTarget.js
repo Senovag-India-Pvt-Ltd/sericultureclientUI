@@ -93,8 +93,19 @@ function SiSdMulberryDateTarget() {
     const [totalRowsReportee, setTotalRowsReportee] = useState(0);
     const [loadingReportee, setLoadingReportee] = useState(false);
     
+
+    const [showModal6, setShowModal6] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
+
+
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+const [triggerNaregaFetch, setTriggerNaregaFetch] = useState(false); 
+const [triggerReporteeFetch, setTriggerReporteeFetch] = useState(false);
   
-    // const [showModal4, setShowModal4] = useState(false);
     
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -226,7 +237,7 @@ const fetchNaregaData = (page) => {
       .then((response) => {
         setViewTargetListData(response.data.content);
         setTotalRowsNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewTargetListData([]);
@@ -257,7 +268,7 @@ const fetchNaregaData = (page) => {
       .then((response) => {
         setViewNnTargetListData(response.data.content);
         setTotalRowsNonNarega(response.data.totalRecords);
-        setShowModal4(true);
+        // setShowModal4(true);
       })
       .catch(() => {
         setViewNnTargetListData([]);
@@ -294,9 +305,26 @@ const fetchNaregaData = (page) => {
       Swal.fire({ icon: "warning", title: "Please select Target", text: "Please try again!" });
       return;
     }
-    setShowModal4(true);
+     fetchNaregaData(0);
+  fetchNonNaregaData(0);
+  setPageNarega(0); 
+  setPageNonNarega(0); 
+  setShowModal4(true);
     
   };
+
+  useEffect(() => {
+  if (
+    triggerNaregaFetch &&
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId
+  ) {
+    fetchNaregaData(pageNarega);              
+    fetchNonNaregaData(pageNonNarega);        
+    setShowModal4(true);                      
+    setTriggerNaregaFetch(false);             
+  }
+}, [triggerNaregaFetch, pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]); 
 
  const fetchViewReporteesTargetData = (page) => {
    setLoadingReportee(true);
@@ -317,7 +345,7 @@ const fetchNaregaData = (page) => {
      .then((response) => {
        setViewReporteesTargetListData(response.data.content);
        setTotalRowsReportee(response.data.totalRecords);
-       setShowModal6(true);
+      //  setShowModal6(true);
      })
      .catch(() => {
        setViewReporteesTargetListData([]);
@@ -364,6 +392,12 @@ const fetchNaregaData = (page) => {
   useEffect(() => {
     getList();
   }, [page]);
+
+  useEffect(() => {
+  if (showModal6) {
+    fetchViewReporteesTargetData(page);
+  }
+}, [page, showModal6]);
 
   const [editData, setEditData] = useState({
     mulberryTargetTypeId: "",
@@ -950,10 +984,10 @@ const fetchNaregaData = (page) => {
     setValidated(false);
   };
 
-  const [showModal6, setShowModal6] = useState(false);
+  // const [showModal6, setShowModal6] = useState(false);
 
-  const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
+  // const handleShowModal6 = () => setShowModal6(true);
+  // const handleCloseModal6 = () => setShowModal6(false);
 
   const [listViewReporteesTargetData, setViewReporteesTargetListData] =
     useState({});
@@ -1006,12 +1040,22 @@ const fetchNaregaData = (page) => {
       .then((response) => {
         setViewReporteesTargetListData(response.data.content);
         setTotalRows(response.data.totalRecords);
+        setPageReportee(0);
         setShowModal6(true);
       })
       .catch((err) => {
         setViewReporteesTargetListData([]);
       });
   };
+
+  useEffect(() => {
+  if (triggerReporteeFetch) {
+    fetchViewReporteesTargetData(page); 
+    setShowModal6(true);                 
+    setTriggerReporteeFetch(false);      
+  }
+}, [triggerReporteeFetch, page]);
+
 
   const ViewTargetReporteeDataColumns = [
     {
@@ -1086,11 +1130,6 @@ const fetchNaregaData = (page) => {
       hide: "md",
     },
   ];
-
-  const [showModal4, setShowModal4] = useState(false);
-
-  const handleShowModal4 = () => setShowModal4(true);
-  const handleCloseModal4 = () => setShowModal4(false);
 
   const [listViewTargetData, setViewTargetListData] = useState({});
   const [listViewNnTargetData, setViewNnTargetListData] = useState({});
