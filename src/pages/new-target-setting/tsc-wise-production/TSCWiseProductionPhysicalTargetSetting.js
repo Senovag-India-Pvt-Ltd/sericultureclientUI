@@ -837,6 +837,13 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
       hide: "md",
     },
     {
+      name: t("TSC"),
+      selector: (row) => row.tscMasterName,
+      cell: (row) => <span>{row.tscMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
