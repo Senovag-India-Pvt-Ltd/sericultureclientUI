@@ -212,11 +212,18 @@ function FarmwiseTarget() {
     setToggleButton(!toggleButton);
   };
 
-  useEffect(()=>{
-    if (data.financialYearMasterId && data.farmId) {
-      handleShowModal();
-    } 
-  }, [data.financialYearMasterId, data.farmId, page1, page2, page3, page4]);
+  // useEffect(()=>{
+  //   if (data.financialYearMasterId && data.farmId) {
+  //     handleShowModal();
+  //   } 
+  // }, [data.financialYearMasterId, data.farmId, page1, page2, page3, page4]);
+
+useEffect(() => {
+  if (showModal && data.financialYearMasterId && data.farmId) {
+    handleShowModal();
+  }
+}, [page1, page2, page3, page4]);
+
 
   const [displayList, setDisplayList] = useState([]);
   const [displayListCocoon,setDisplayListCocoon] = useState([]);
