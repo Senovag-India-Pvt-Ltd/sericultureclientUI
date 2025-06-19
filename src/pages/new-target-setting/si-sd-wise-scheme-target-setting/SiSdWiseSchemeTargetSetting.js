@@ -281,7 +281,7 @@ function SiSdWiseSchemeTargetSetting() {
   if (data.financialYearMasterId && data.scSchemeDetailsId) {
     handleShowModal();
   }
-}, [data.financialYearMasterId, data.scSchemeDetailsId, page1, page2, page3, page4]);
+}, [page1, page2, page3, page4]);
 
   const [displayList, setDisplayList] = useState([]);
   const [displayListFinancial,setDisplayListFinancial] = useState([]);

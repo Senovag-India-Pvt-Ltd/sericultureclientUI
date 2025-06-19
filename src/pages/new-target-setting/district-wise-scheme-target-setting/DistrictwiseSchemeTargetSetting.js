@@ -184,7 +184,7 @@ useEffect(() => {
   const [page2,setPage2] = useState(0);
   const [page3,setPage3] = useState(0);
   const [page4,setPage4] = useState(0);
-  const countPerPage = 50;
+  const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -284,7 +284,7 @@ const handleShowModal2 = () => setShowModal2(true);
   if (data.financialYearMasterId && data.scSchemeDetailsId) {
     handleShowModal();
   }
-}, [data.financialYearMasterId, data.scSchemeDetailsId, page1, page2, page3, page4]);
+}, [page1, page2, page3, page4]);
 
   const [displayList, setDisplayList] = useState([]);
   const [displayListFinancial,setDisplayListFinancial] = useState([]);
@@ -366,7 +366,7 @@ const handleShowModal2 = () => setShowModal2(true);
         .get(
           baseURLTargetSetting +
             `schemeTargets/get-by-scheme-target-details-hierarchy`,
-          parameters
+          parameters2
         )
         .then((response) => {
           // setShowModal(true);
@@ -3498,7 +3498,7 @@ const handleShowModal2 = () => setShowModal2(true);
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage3(page - 1)}
+                  onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}
@@ -3516,7 +3516,7 @@ const handleShowModal2 = () => setShowModal2(true);
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage4(page - 1)}
+                  onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}
