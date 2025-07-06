@@ -955,6 +955,7 @@ import DbtStatusCheckList from "../pages/masters/dbt-status-check/DbtStatusCheck
 import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheckView";
 import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
 import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
+import MultipleSanctionOrder from "../pages/services-module/application-component/MultipleSanctionOrder";
 
 // Admin and Reports
 
@@ -1293,6 +1294,10 @@ function Router() {
             <Route
               path="dashboard-report-list/:id"
               element={<DashboardReportList />}
+            />
+            <Route
+              path="multiple-sanction-order-list"
+              element={<MultipleSanctionOrder />}
             />
             <Route path="pull-back" element={<PullBack />} />
             <Route
