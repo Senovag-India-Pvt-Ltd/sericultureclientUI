@@ -180,7 +180,11 @@ useEffect(() => {
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 50;
+  const [page1,setPage1] = useState(0);
+  const [page2,setPage2] = useState(0);
+  const [page3,setPage3] = useState(0);
+  const [page4,setPage4] = useState(0);
+  const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -276,10 +280,20 @@ const handleShowModal2 = () => setShowModal2(true);
     setToggleButton(!toggleButton);
   };
 
+  useEffect(() => {
+  if (data.financialYearMasterId && data.scSchemeDetailsId) {
+    handleShowModal();
+  }
+}, [page1, page2, page3, page4]);
+
   const [displayList, setDisplayList] = useState([]);
+  const [displayListFinancial,setDisplayListFinancial] = useState([]);
   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  const [displayListHierarchyFinancial, setDisplayListHierarchyFinancial] = useState([]);
   const [totalRowsView, setTotalRowsView] = useState(0);
+  const [totalRowsViewFinancial, setTotalRowsViewFinancial] = useState(0);
   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+  const [totalRowsViewHierarchyFinancial, setTotalRowsViewHierarchyFinancial] = useState(0);
 
   const handleSearchInputs = (e) => {
     let { name, value } = e.target;
@@ -299,8 +313,11 @@ const handleShowModal2 = () => setShowModal2(true);
     }));
   };
 
+  const schemeTargets = ["PHYSICAL TARGET","FINANCIAL TARGET"];
+  
   const handleShowModal = () => {
     if (data.financialYearMasterId && data.scSchemeDetailsId) {
+      schemeTargets.forEach((target)=>{
       let parameters = {
         params: {
           financialYearId: data.financialYearMasterId,
@@ -308,11 +325,23 @@ const handleShowModal2 = () => setShowModal2(true);
           hoaId: data.scHeadAccountId,
           componentTypeId: data.scSubSchemeDetailsId,
           componentId: data.scComponentId,
-          targetType: data.targetType,
-          pageNumber: page,
+          targetType: target,
+          pageNumber: target === 'PHYSICAL TARGET'? page1:page2,
           size: countPerPage,
         },
       };
+       let parameters2 = {
+  params: {
+    financialYearId: data.financialYearMasterId,
+    schemeId: data.scSchemeDetailsId,
+    hoaId: data.scHeadAccountId,
+    componentTypeId: data.scSubSchemeDetailsId,
+    componentId: data.scComponentId,
+    targetType: target,
+    pageNumber: target === 'PHYSICAL TARGET'? page3:page4,
+    size: countPerPage,
+  },
+};
       api
         .get(
           baseURLTargetSetting + `schemeTargets/get-by-scheme-target-details`,
@@ -320,8 +349,14 @@ const handleShowModal2 = () => setShowModal2(true);
         )
         .then((response) => {
           setShowModal(true);
-          setDisplayList(response.data.content.schemeTargets);
-          setTotalRowsView(response.data.content.totalItems);
+          const res = target;
+          if( "PHYSICAL TARGET" === res ){
+            setDisplayListFinancial(response.data.content.schemeTargets);
+            setTotalRowsViewFinancial(response.data.content.totalItems);
+          }else{
+            setDisplayList(response.data.content.schemeTargets);
+            setTotalRowsView(response.data.content.totalItems);
+          }
         })
         .catch((err) => {
           setDisplayList([]);
@@ -331,16 +366,23 @@ const handleShowModal2 = () => setShowModal2(true);
         .get(
           baseURLTargetSetting +
             `schemeTargets/get-by-scheme-target-details-hierarchy`,
-          parameters
+          parameters2
         )
         .then((response) => {
           // setShowModal(true);
-          setDisplayListHierarchy(response.data.content.schemeTargets);
-          setTotalRowsViewHierarchy(response.data.content.totalItems);
+          const res = target;
+          if( "PHYSICAL TARGET" === res ){
+            setDisplayListHierarchyFinancial(response.data.content.schemeTargets);
+            setTotalRowsViewHierarchyFinancial(response.data.content.totalItems);
+          }else{
+            setDisplayListHierarchy(response.data.content.schemeTargets);
+            setTotalRowsViewHierarchy(response.data.content.totalItems);
+          }
         })
         .catch((err) => {
           setDisplayListHierarchy([]);
         });
+      })
     } else {
       warning();
     }
@@ -372,7 +414,7 @@ const handleShowModal2 = () => setShowModal2(true);
     api
       .get(baseURLTargetSetting + `schemeTargets/list-scheme-join`, _params)
       .then((response) => {
-        setListData(response.data.content.body.content.schemeTarget);
+        setListData(response.data.content.body.content.schemeTargets);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })
@@ -1113,13 +1155,13 @@ const handleShowModal2 = () => setShowModal2(true);
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Component Type"),
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,
@@ -1163,13 +1205,13 @@ const handleShowModal2 = () => setShowModal2(true);
       hide: "md",
     },
 
-    {
-      name: t("Target Type"),
-      selector: (row) => row.targetType,
-      cell: (row) => <span>{row.targetType}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Target Type"),
+    //   selector: (row) => row.targetType,
+    //   cell: (row) => <span>{row.targetType}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
     {
       name: t("Month"),
@@ -1209,13 +1251,13 @@ const handleShowModal2 = () => setShowModal2(true);
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Component Type"),
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,
@@ -2892,7 +2934,7 @@ const handleShowModal2 = () => setShowModal2(true);
                           key={list.financialYearMasterId}
                           value={list.financialYearMasterId}
                         >
-                          {list.financialYear}
+                          {list.financialYearMaster}
                         </option>
                       ))
                       : ""}
@@ -3397,7 +3439,24 @@ const handleShowModal2 = () => setShowModal2(true);
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => setPage2(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={ProductionPhysicalDataColumnsView}
+                data={displayListFinancial}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsViewFinancial}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
@@ -3439,7 +3498,25 @@ const handleShowModal2 = () => setShowModal2(true);
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage(page - 1)}
+                  onChangePage={(page) => setPage4(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ProductionPhysicalDataColumnsView}
+                  data={displayListHierarchyFinancial}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRowsViewHierarchyFinancial}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}

@@ -80,6 +80,17 @@ function SiSdMulberryTarget() {
     }));
   };
 
+   const [pageNarega, setPageNarega] = useState(0); // UPDATED: zero-based page index
+  const [totalRowsNarega, setTotalRowsNarega] = useState(0);
+  const [loadingNarega, setLoadingNarega] = useState(false);
+  const [pageNonNarega, setPageNonNarega] = useState(0); // UPDATED: zero-based page index
+  const [totalRowsNonNarega, setTotalRowsNonNarega] = useState(0);
+  const [loadingNonNarega, setLoadingNonNarega] = useState(false);
+   const [pageReportee, setPageReportee] = useState(0); // zero-based
+  const [totalRowsReportee, setTotalRowsReportee] = useState(0);
+  const [loadingReportee, setLoadingReportee] = useState(false);
+
+  // const [showModal4, setShowModal4] = useState(false);
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -87,6 +98,18 @@ function SiSdMulberryTarget() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+
+  const [showModal6, setShowModal6] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleShowModal4 = () => setShowModal4(true);
+  const handleCloseModal4 = () => setShowModal4(false);
+
+
+  const handleShowModal6 = () => setShowModal6(true);
+  const handleCloseModal6 = () => setShowModal6(false);
+const [triggerNaregaFetch, setTriggerNaregaFetch] = useState(false); 
+const [triggerReporteeFetch, setTriggerReporteeFetch] = useState(false);
 
   const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
@@ -193,6 +216,156 @@ function SiSdMulberryTarget() {
      });
  };
 
+ const fetchNaregaData = (page) => {
+     setLoadingNarega(true);
+     api
+       .post(
+         baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+         {},
+         {
+           params: {
+             financialYearMasterId: data.financialYearMasterId,
+             mulberryTargetTypeId: data.mulberryTargetTypeId,
+             targetType: "NAREGA",
+             pageNumber: page, 
+             pageSize: countPerPage,
+           },
+         }
+       )
+       .then((response) => {
+         setViewTargetListData(response.data.content);
+         setTotalRowsNarega(response.data.totalRecords);
+        //  setShowModal4(true);
+       })
+       .catch(() => {
+         setViewTargetListData([]);
+         setTotalRowsNarega(0);
+       })
+       .finally(() => setLoadingNarega(false));
+   };
+ 
+ 
+ 
+   // Fetch function for NON NAREGA targets - includes page param
+   const fetchNonNaregaData = (page) => {
+     setLoadingNonNarega(true);
+     api
+       .post(
+         baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+         {},
+         {
+           params: {
+             financialYearMasterId: data.financialYearMasterId,
+             mulberryTargetTypeId: data.mulberryTargetTypeId,
+             targetType: "NON NAREGA",
+             pageNumber: page, // UPDATED: zero-based page index
+             pageSize: countPerPage,
+           },
+         }
+       )
+       .then((response) => {
+         setViewNnTargetListData(response.data.content);
+         setTotalRowsNonNarega(response.data.totalRecords);
+        //  setShowModal4(true);
+       })
+       .catch(() => {
+         setViewNnTargetListData([]);
+         setTotalRowsNonNarega(0);
+       })
+       .finally(() => setLoadingNonNarega(false));
+   };
+ 
+ 
+ 
+   useEffect(() => {
+     if (data.financialYearMasterId && data.mulberryTargetTypeId) {
+       fetchNaregaData(pageNarega); 
+       fetchNonNaregaData(pageNonNarega);
+     }
+   }, [pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]);
+ 
+   
+   const handlePageChangeNarega = (page) => {
+     setPageNarega(page - 1); 
+   };
+ 
+   
+   const handlePageChangeNonNarega = (page) => {
+     setPageNonNarega(page - 1); 
+   };
+ 
+   const handleOpenModal = () => {
+     if (!data.financialYearMasterId || data.financialYearMasterId === "0") {
+       Swal.fire({ icon: "warning", title: "Please select Financial Year", text: "Please try again!" });
+       return;
+     }
+     if (!data.mulberryTargetTypeId || data.mulberryTargetTypeId === "0") {
+       Swal.fire({ icon: "warning", title: "Please select Target", text: "Please try again!" });
+       return;
+     }
+     fetchNaregaData(0);
+  fetchNonNaregaData(0);
+  setPageNarega(0); // updated line
+  setPageNonNarega(0); // updated line
+  setShowModal4(true);
+     
+   }
+
+   useEffect(() => {
+  if (
+    triggerNaregaFetch &&
+    data.financialYearMasterId &&
+    data.mulberryTargetTypeId
+  ) {
+    fetchNaregaData(pageNarega);              
+    fetchNonNaregaData(pageNonNarega);        
+    setShowModal4(true);                      
+    setTriggerNaregaFetch(false);             
+  }
+}, [triggerNaregaFetch, pageNarega, pageNonNarega, data.financialYearMasterId, data.mulberryTargetTypeId]);  // ✅ NEW LINE
+
+   
+ const fetchViewReporteesTargetData = (page) => {
+  setLoadingReportee(true);
+
+  api
+    .post(
+      baseURLTargetSetting + `mulberryTargets/viewHierarchyMulberryDetails`,
+      {},
+      {
+        params: {
+          financialYearMasterId: data.financialYearMasterId,
+          mulberryTargetTypeId: data.mulberryTargetTypeId,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+      }
+    )
+    .then((response) => {
+      setViewReporteesTargetListData(response.data.content);
+      setTotalRowsReportee(response.data.totalRecords);
+      // setShowModal6(true);
+    })
+    .catch(() => {
+      setViewReporteesTargetListData([]);
+      setTotalRowsReportee(0);
+    })
+    .finally(() => setLoadingReportee(false));
+};
+
+const handlePageChangeReportee = (page) => {
+  setPageReportee(page - 1); // convert to 0-based
+};
+
+
+useEffect(() => {
+  if (data.financialYearMasterId && data.mulberryTargetTypeId) {
+    fetchViewReporteesTargetData(pageReportee);
+  }
+}, [pageReportee, data.financialYearMasterId, data.mulberryTargetTypeId]);
+
+
+
  useEffect(() => {
   if(data.districtId && data.financialYearMasterId && data.mulberryTargetTypeId && data.tscMasterId){
     getAllMonthTarget();
@@ -218,6 +391,12 @@ function SiSdMulberryTarget() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  useEffect(() => {
+  if (showModal6) {
+    fetchViewReporteesTargetData(page);
+  }
+}, [page, showModal6]);
 
   const [editData, setEditData] = useState({
     mulberryTargetTypeId: "",
@@ -776,15 +955,15 @@ function SiSdMulberryTarget() {
     setValidated(false);
   };
 
-  const [showModal6, setShowModal6] = useState(false);
+  // const [showModal6, setShowModal6] = useState(false);
 
-  const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
+  // const handleShowModal6 = () => setShowModal6(true);
+  // const handleCloseModal6 = () => setShowModal6(false);
 
   const [listViewReporteesTargetData, setViewReporteesTargetListData] =
     useState({});
 
-  const searchReportee = (event) => {
+  const searchReportee = (fyId,mulbTrgtTyId,trType) => {
     const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
 
     if (!financialYearMasterId || financialYearMasterId === "0") {
@@ -805,14 +984,14 @@ function SiSdMulberryTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
@@ -823,7 +1002,7 @@ function SiSdMulberryTarget() {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
+            targetType:trType,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -832,12 +1011,21 @@ function SiSdMulberryTarget() {
       .then((response) => {
         setViewReporteesTargetListData(response.data.content);
         setTotalRows(response.data.totalRecords);
-        setShowModal6(true);
+        setPageReportee(0); // updated line
+      setShowModal6(true);
       })
       .catch((err) => {
         setViewReporteesTargetListData([]);
       });
   };
+
+  useEffect(() => {
+  if (triggerReporteeFetch) {
+    fetchViewReporteesTargetData(page); 
+    setShowModal6(true);                 
+    setTriggerReporteeFetch(false);      
+  }
+}, [triggerReporteeFetch, page]);
 
   const ViewTargetReporteeDataColumns = [
     {
@@ -913,12 +1101,13 @@ function SiSdMulberryTarget() {
     },
   ];
 
-  const [showModal4, setShowModal4] = useState(false);
+  // const [showModal4, setShowModal4] = useState(false);
 
-  const handleShowModal4 = () => setShowModal4(true);
-  const handleCloseModal4 = () => setShowModal4(false);
+  // const handleShowModal4 = () => setShowModal4(true);
+  // const handleCloseModal4 = () => setShowModal4(false);
 
   const [listViewTargetData, setViewTargetListData] = useState({});
+  const [listViewNnTargetData, setViewNnTargetListData] = useState({});
 
   const search = (event) => {
     const { financialYearMasterId, mulberryTargetTypeId, targetType } = data;
@@ -941,14 +1130,14 @@ function SiSdMulberryTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     // Proceed with API call if validations pass
     api
@@ -959,7 +1148,7 @@ function SiSdMulberryTarget() {
           params: {
             financialYearMasterId,
             mulberryTargetTypeId,
-            targetType,
+            targetType:"NAREGA",
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -972,6 +1161,29 @@ function SiSdMulberryTarget() {
       })
       .catch((err) => {
         setViewTargetListData([]);
+      });
+
+      api
+      .post(
+        baseURLTargetSetting + `mulberryTargets/viewMulberryDetails`,
+        {},
+        {
+          params: {
+            financialYearMasterId,
+            mulberryTargetTypeId,
+            targetType :"NON NAREGA",
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setViewNnTargetListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
+        setShowModal4(true);
+      })
+      .catch((err) => {
+        setViewNnTargetListData([]);
       });
   };
 
@@ -1200,14 +1412,14 @@ function SiSdMulberryTarget() {
       return;
     }
 
-    if (!targetType || targetType === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Target Type",
-        text: "Please try again!",
-      });
-      return;
-    }
+    // if (!targetType || targetType === "0") {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Please select Target Type",
+    //     text: "Please try again!",
+    //   });
+    //   return;
+    // }
 
     if (!tscMasterId || tscMasterId === "0") {
       Swal.fire({
@@ -3101,22 +3313,18 @@ function SiSdMulberryTarget() {
         </Modal.Header>
         <Modal.Body>
           <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ViewTargetReporteeDataColumns}
-            data={listViewReporteesTargetData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+                columns={ViewTargetReporteeDataColumns}
+                data={listViewReporteesTargetData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsReportee}
+                paginationPerPage={countPerPage}
+                onChangePage={handlePageChangeReportee}
+                progressPending={loadingReportee}
+                paginationComponentOptions={{ noRowsPerPage: true }}
+                customStyles={customStyles}
+              />
         </Modal.Body>
       </Modal>
 
@@ -3132,13 +3340,26 @@ function SiSdMulberryTarget() {
             highlightOnHover
             pagination
             paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
+            paginationTotalRows={totalRowsNarega}
+            paginationPerPage={countPerPage} 
+            paginationComponentOptions={{ noRowsPerPage: true }}
+            onChangePage={handlePageChangeNarega} 
+            progressPending={loadingNarega} 
+            theme="solarized"
+            customStyles={customStyles}
+          />
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ViewTargetDataColumns}
+            data={listViewNnTargetData}
+            highlightOnHover
+            pagination
+            paginationServer 
+            paginationTotalRows={totalRowsNonNarega} 
+            paginationPerPage={countPerPage} 
+            paginationComponentOptions={{ noRowsPerPage: true }}
+            onChangePage={handlePageChangeNonNarega} 
+            progressPending={loadingNonNarega} 
             theme="solarized"
             customStyles={customStyles}
           />

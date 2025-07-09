@@ -188,6 +188,10 @@ function SiSdWiseSchemeTargetSetting() {
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
+  const [page1,setPage1] = useState(0);
+  const [page2,setPage2] = useState(0);
+  const [page3,setPage3] = useState(0);
+  const [page4,setPage4] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -273,10 +277,20 @@ function SiSdWiseSchemeTargetSetting() {
     setToggleButton(!toggleButton);
   };
 
+   useEffect(() => {
+  if (data.financialYearMasterId && data.scSchemeDetailsId) {
+    handleShowModal();
+  }
+}, [page1, page2, page3, page4]);
+
   const [displayList, setDisplayList] = useState([]);
+  const [displayListFinancial,setDisplayListFinancial] = useState([]);
   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
+  const [displayListHierarchyFinancial, setDisplayListHierarchyFinancial] = useState([]);
   const [totalRowsView, setTotalRowsView] = useState(0);
+  const [totalRowsViewFinancial, setTotalRowsViewFinancial] = useState(0);
   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
+  const [totalRowsViewHierarchyFinancial, setTotalRowsViewHierarchyFinancial] = useState(0);
 
   const handleSearchInputs = (e) => {
     let { name, value } = e.target;
@@ -296,8 +310,98 @@ function SiSdWiseSchemeTargetSetting() {
     }));
   };
 
+useEffect(() => {
+  if (showModal) {
+    fetchHierarchyData("PHYSICAL TARGET", page3); 
+  }
+}, [page3]); 
+
+useEffect(() => {
+  if (showModal) {
+    fetchHierarchyData("FINANCIAL TARGET", page4); 
+  }
+}, [page4]); 
+
+useEffect(() => {
+  if (showModal) {
+    fetchViewData("FINANCIAL TARGET", page1); 
+  }
+}, [page1]);
+
+useEffect(() => {
+  if (showModal) {
+    fetchViewData("PHYSICAL TARGET", page2); 
+  }
+}, [page2]); 
+
+const fetchViewData = (targetType, page) => { 
+  const parameters = {
+    params: {
+      financialYearId: data.financialYearMasterId,
+      schemeId: data.scSchemeDetailsId,
+      hoaId: data.scHeadAccountId,
+      componentTypeId: data.scSubSchemeDetailsId,
+      componentId: data.scComponentId,
+      targetType: targetType, 
+      pageNumber: page,      
+      size: countPerPage,
+    },
+  };
+
+  api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details`, parameters)
+    .then((response) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setDisplayList(response.data.content.schemeTargets); 
+        setTotalRowsView(response.data.content.totalItems);   
+      } else {
+        setDisplayListFinancial(response.data.content.schemeTargets); 
+        setTotalRowsViewFinancial(response.data.content.totalItems);  
+      }
+    })
+    .catch(() => {
+      if (targetType === "PHYSICAL TARGET") setDisplayList([]);
+      else setDisplayListFinancial([]);
+    });
+};
+
+
+const fetchHierarchyData = (targetType, page) => { 
+  const parameters = {
+    params: {
+      financialYearId: data.financialYearMasterId,
+      schemeId: data.scSchemeDetailsId,
+      hoaId: data.scHeadAccountId,
+      componentTypeId: data.scSubSchemeDetailsId,
+      componentId: data.scComponentId,
+      targetType: targetType, 
+      pageNumber: page,       
+      size: countPerPage,
+    },
+  };
+
+  api.get(`${baseURLTargetSetting}schemeTargets/get-by-scheme-target-details-hierarchy`, parameters)
+    .then((response) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setDisplayListHierarchy(response.data.content.schemeTargets); 
+        setTotalRowsViewHierarchy(response.data.content.totalItems);  
+      } else {
+        setDisplayListHierarchyFinancial(response.data.content.schemeTargets); 
+        setTotalRowsViewHierarchyFinancial(response.data.content.totalItems);  
+      }
+    })
+    .catch(() => {
+      if (targetType === "PHYSICAL TARGET") setDisplayListHierarchy([]);
+      else setDisplayListHierarchyFinancial([]);
+    });
+};
+
+
+
+  const schemeTargets = ["PHYSICAL TARGET","FINANCIAL TARGET"];
+
   const handleShowModal = () => {
     if (data.financialYearMasterId && data.scSchemeDetailsId) {
+      schemeTargets.forEach((target)=>{
       let parameters = {
         params: {
           financialYearId: data.financialYearMasterId,
@@ -305,11 +409,23 @@ function SiSdWiseSchemeTargetSetting() {
           hoaId: data.scHeadAccountId,
           componentTypeId: data.scSubSchemeDetailsId,
           componentId: data.scComponentId,
-          targetType: data.targetType,
-          pageNumber: page,
+          targetType: target,
+          pageNumber: target === 'PHYSICAL TARGET'? page1:page2,
           size: countPerPage,
         },
       };
+      let parameters2 = {
+  params: {
+    financialYearId: data.financialYearMasterId,
+    schemeId: data.scSchemeDetailsId,
+    hoaId: data.scHeadAccountId,
+    componentTypeId: data.scSubSchemeDetailsId,
+    componentId: data.scComponentId,
+    targetType: target,
+    pageNumber: target === 'PHYSICAL TARGET'? page3:page4,
+    size: countPerPage,
+  },
+};
       api
         .get(
           baseURLTargetSetting + `schemeTargets/get-by-scheme-target-details`,
@@ -317,8 +433,14 @@ function SiSdWiseSchemeTargetSetting() {
         )
         .then((response) => {
           setShowModal(true);
-          setDisplayList(response.data.content.schemeTargets);
-          setTotalRowsView(response.data.content.totalItems);
+          const res = target;
+          if( "PHYSICAL TARGET" === res ){
+            setDisplayListFinancial(response.data.content.schemeTargets);
+            setTotalRowsViewFinancial(response.data.content.totalItems);
+          }else{
+            setDisplayList(response.data.content.schemeTargets);
+            setTotalRowsView(response.data.content.totalItems);
+          }
         })
         .catch((err) => {
           setDisplayList([]);
@@ -332,12 +454,19 @@ function SiSdWiseSchemeTargetSetting() {
         )
         .then((response) => {
           // setShowModal(true);
-          setDisplayListHierarchy(response.data.content.schemeTargets);
-          setTotalRowsViewHierarchy(response.data.content.totalItems);
+          const res = target;
+          if( "PHYSICAL TARGET" === res ){
+            setDisplayListHierarchyFinancial(response.data.content.schemeTargets);
+            setTotalRowsViewHierarchyFinancial(response.data.content.totalItems);
+          }else{
+            setDisplayListHierarchy(response.data.content.schemeTargets);
+            setTotalRowsViewHierarchy(response.data.content.totalItems);
+          }
         })
         .catch((err) => {
           setDisplayListHierarchy([]);
         });
+      })
     } else {
       warning();
     }
@@ -345,18 +474,18 @@ function SiSdWiseSchemeTargetSetting() {
   const handleCloseModal = () => setShowModal(false);
 
   // to get Financial Year
-  const [financialyearListData, setFinancialyearListData] = useState([]);
-
-  const getFinancialYearList = () => {
-    const response = api
-      .get(baseURLMasterData + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialyearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialyearListData([]);
-      });
-  };
+    const [financialyearListData, setFinancialyearListData] = useState([]);
+  
+    const getFinancialYearList = () => {
+      const response = api
+        .get(baseURLMasterData + `financialYearMaster/get-all`)
+        .then((response) => {
+          setFinancialyearListData(response.data.content.financialYearMaster);
+        })
+        .catch((err) => {
+          setFinancialyearListData([]);
+        });
+    };
 
   useEffect(() => {
     getFinancialYearList();
@@ -369,7 +498,7 @@ function SiSdWiseSchemeTargetSetting() {
     api
       .get(baseURLTargetSetting + `schemeTargets/list-sisd-join`, _params)
       .then((response) => {
-        setListData(response.data.content.body.content.schemeTarget);
+        setListData(response.data.content.body.content.schemeTargets);
         setTotalRows(response.data.content.body.content.totalItems);
         setLoading(false);
       })
@@ -1400,13 +1529,13 @@ function SiSdWiseSchemeTargetSetting() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Component Type"),
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,
@@ -1531,21 +1660,21 @@ function SiSdWiseSchemeTargetSetting() {
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-      });
-  };
+      api
+        .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+        .then((response) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: response.data.content.financialYearMasterId,
+          }));
+        })
+        .catch((err) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: "",
+          }));
+        });
+    };
 
   useEffect(() => {
     getFinancialDefaultDetails();
@@ -1813,40 +1942,40 @@ function SiSdWiseSchemeTargetSetting() {
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              {t("Financial Year")}
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="financialYearMasterId"
-                                value={data.financialYearMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.financialYearMasterId === undefined ||
-                                  data.financialYearMasterId === "0"
-                                }
-                              >
-                                <option value="">{t("Select Year")}</option>
-                                {financialyearListData && financialyearListData.length
-                                ? financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))
-                                : ""}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Financial Year is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                                                      <Form.Label>
+                                                        {t("Financial Year")}
+                                                        <span className="text-danger">*</span>
+                                                      </Form.Label>
+                                                      <div className="form-control-wrap">
+                                                        <Form.Select
+                                                          name="financialYearMasterId"
+                                                          value={data.financialYearMasterId}
+                                                          onChange={handleInputs}
+                                                          onBlur={() => handleInputs}
+                                                          required
+                                                          isInvalid={
+                                                            data.financialYearMasterId === undefined ||
+                                                            data.financialYearMasterId === "0"
+                                                          }
+                                                        >
+                                                          <option value="">{t("Select Year")}</option>
+                                                          {financialyearListData && financialyearListData.length
+                                                          ?financialyearListData.map((list) => (
+                                                            <option
+                                                              key={list.financialYearMasterId}
+                                                              value={list.financialYearMasterId}
+                                                            >
+                                                              {list.financialYear}
+                                                            </option>
+                                                          ))
+                                                          :""}
+                                                        </Form.Select>
+                                                        <Form.Control.Feedback type="invalid">
+                                                          {t("Financial Year is required")}
+                                                        </Form.Control.Feedback>
+                                                      </div>
+                                                    </Form.Group>
+                                                  </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -3109,40 +3238,40 @@ function SiSdWiseSchemeTargetSetting() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
                   <Form.Label>
-                    {t("Financial Year")}
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="financialYearMasterId"
-                      value={editData.financialYearMasterId}
-                      onChange={handleEditInputs}
-                      onBlur={() => handleEditInputs}
-                      required
-                      disabled
-                      isInvalid={
-                        editData.financialYearMasterId === undefined ||
-                        editData.financialYearMasterId === "0"
-                      }
-                    >
-                      <option value="">{t("Select Year")}</option>
-                      {financialyearListData && financialyearListData.length
-                      ? financialyearListData.map((list) => (
-                        <option
-                          key={list.financialYearMasterId}
-                          value={list.financialYearMasterId}
-                        >
-                          {list.financialYear}
-                        </option>
-                      ))
-                      :""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      {t("Financial Year is required")}
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+                                      {t("Financial Year")}
+                                      <span className="text-danger">*</span>
+                                    </Form.Label>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="financialYearMasterId"
+                                        value={editData.financialYearMasterId}
+                                        onChange={handleEditInputs}
+                                        onBlur={() => handleEditInputs}
+                                        required
+                                        disabled
+                                        isInvalid={
+                                          editData.financialYearMasterId === undefined ||
+                                          editData.financialYearMasterId === "0"
+                                        }
+                                      >
+                                        <option value="">{t("Select Year")}</option>
+                                        {financialyearListData && financialyearListData.length
+                                        ?financialyearListData.map((list) => (
+                                          <option
+                                            key={list.financialYearMasterId}
+                                            value={list.financialYearMasterId}
+                                          >
+                                            {list.financialYearMaster}
+                                          </option>
+                                        ))
+                                        : ""}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        {t("Financial Year is required")}
+                                      </Form.Control.Feedback>
+                                    </div>
+                                  </Form.Group>
+                                </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n3">
@@ -3698,7 +3827,24 @@ function SiSdWiseSchemeTargetSetting() {
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => setPage2(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={ProductionPhysicalDataColumnsView}
+                data={displayListFinancial}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRowsViewFinancial}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
@@ -3740,7 +3886,24 @@ function SiSdWiseSchemeTargetSetting() {
                   paginationComponentOptions={{
                     noRowsPerPage: true,
                   }}
-                  onChangePage={(page) => setPage(page - 1)}
+                  onChangePage={(page) => setPage3(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+                <DataTable
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ProductionPhysicalDataColumnsView}
+                  data={displayListHierarchyFinancial}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRowsViewHierarchyFinancial}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
                   theme="solarized"
                   customStyles={customStyles}

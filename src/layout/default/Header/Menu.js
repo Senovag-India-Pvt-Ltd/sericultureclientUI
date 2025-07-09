@@ -2619,6 +2619,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+             {showMenu.Inspection_Implementation_of_MGNREGA ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Download Inspection Mobile App")}
+                  to="http://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
+                />
+              </MenuItem>
+            ) : null}
             {/* {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
