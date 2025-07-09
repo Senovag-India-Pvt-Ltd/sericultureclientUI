@@ -316,6 +316,7 @@ function ScSubSchemeDetailsEdit() {
                           <option value="1">Subsidy</option>
                           <option value="2">Incentives</option>
                           <option value="3">Bonus</option>
+                          <option value="4">Seed Cocoon</option>
                          
                         </Form.Select>
                       </div>

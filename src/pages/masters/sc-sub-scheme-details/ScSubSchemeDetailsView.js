@@ -128,6 +128,8 @@ function ScSubSchemeDetailsView() {
                                 ? "Incentives"
                                 : ScSubSchemeDetails.subSchemeType === 3
                                 ? "Bonus"
+                                : ScSubSchemeDetails.subSchemeType === 4
+                                ? "Seed Cocoon"
                                 : "Other"}
                             </td>
                           </tr>
