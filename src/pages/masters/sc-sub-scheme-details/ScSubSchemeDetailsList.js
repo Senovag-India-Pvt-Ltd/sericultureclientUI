@@ -269,6 +269,8 @@ function ScSubSchemeDetailsList() {
             ? "Incentives"
             : row.subSchemeType === 3
             ? "Bonus"
+            : row.subSchemeType === 3
+            ? "Seed Cocoon"
             : "Other"}
         </td>
       ),

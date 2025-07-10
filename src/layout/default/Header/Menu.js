@@ -197,6 +197,7 @@ function Menu() {
     Services: false,
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
+    Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon: false,
     Services_Dbt_Application: false,
 
     // Services_Track_Mulberry_Status: false,
@@ -1253,6 +1254,15 @@ function Menu() {
                 <MenuItemLink
                   text={t("Service Dashboard")}
                   to="/seriui/application-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Applications For Incentive,Bonus,Seed Cocoon")}
+                  to="/seriui/multiple-sanction-order-list"
                 />
               </MenuItem>
             ) : null}

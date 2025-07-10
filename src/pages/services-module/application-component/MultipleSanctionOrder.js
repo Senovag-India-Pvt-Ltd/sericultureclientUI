@@ -31,7 +31,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function MultipleSanctionOrder() {
   const { id } = useParams();
-   const { t } = useTranslation();
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 35;
@@ -47,7 +47,7 @@ function MultipleSanctionOrder() {
     userMasterId: "",
     stepId: "",
     schemeId: "",
-    subSchemeId: ""
+    subSchemeId: "",
   });
 
   let name, value;
@@ -60,63 +60,89 @@ function MultipleSanctionOrder() {
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [isRowSelectable, setIsRowSelectable] = useState(false);
- // initially disabled
+  // initially disabled
 
   // Search
-    const search = (e) => {
-        e.preventDefault();
-        setSelectedRows([]);
-        setIsSubmitEnabled(false);
-        setIsRowSelectable(false); // disallow selection first
-        setListData([]); // reset table
+  const search = (e) => {
+    e.preventDefault();
+    setSelectedRows([]);
+    setIsSubmitEnabled(false);
+    setIsRowSelectable(false); // disallow selection first
+    setListData([]); // reset table
 
-      api
-        .post(
-          baseURLDBT + `service/multipleSanctionList`,
-          {},
-          {
-            params: {
-              userId: localStorage.getItem("userMasterId"),
-              schemeId: data.schemeId,
-              subSchemeId: data.subSchemeId,
-            },
-          }
-        )
-       .then((response) => {
-      const result = response.data.content;
-      setListData(result);
-//       setIsSubmitEnabled(true);
-//     //   setIsSubmitEnabled(result && result.length > 0); // Enable if rows exist
-//     })
-//     .catch((err) => {
-//       setListData([]);
-//       setIsSubmitEnabled(false); // Disable on error
-//     });
-// };
+    api
+      .post(
+        baseURLDBT + `service/multipleSanctionList`,
+        {},
+        {
+          params: {
+            userId: localStorage.getItem("userMasterId"),
+            schemeId: data.schemeId,
+            subSchemeId: data.subSchemeId,
+          },
+        }
+      )
+      .then((response) => {
+        const result = response.data.content;
+        setListData(result);
+        //       setIsSubmitEnabled(true);
+        //     //   setIsSubmitEnabled(result && result.length > 0); // Enable if rows exist
+        //     })
+        //     .catch((err) => {
+        //       setListData([]);
+        //       setIsSubmitEnabled(false); // Disable on error
+        //     });
+        // };
 
-// ✅ Update totalSchemeAmount
-      const total = result?.[0]?.totalSchemeAmount ?? 0;
-      setTotalSchemeAmount(total);
+        // ✅ Update totalSchemeAmount
+        const total = result?.[0]?.totalSchemeAmount ?? 0;
+        setTotalSchemeAmount(total);
 
- if (result && result.length > 0) {
-        setIsRowSelectable(true); // allow selection
-      } else {
+        if (result && result.length > 0) {
+          setIsRowSelectable(true); // allow selection
+        } else {
+          setIsRowSelectable(false);
+        }
+      })
+      .catch((err) => {
+        setListData([]);
         setIsRowSelectable(false);
-      }
-    })
-    .catch((err) => {
-      setListData([]);
-      setIsRowSelectable(false);
-      setIsSubmitEnabled(false);
-      setTotalSchemeAmount(0);
-    });
-};
+        setIsSubmitEnabled(false);
+        setTotalSchemeAmount(0);
+      });
+  };
 
-const handleRowSelection = ({ selectedRows }) => {
+  // const handleRowSelection = ({ selectedRows }) => {
+  //   setSelectedRows(selectedRows);
+  //   setIsSubmitEnabled(selectedRows.length > 0 && listData.length > 0);
+
+  //   if (selectedRows.length > 0) {
+  //   const firstRow = selectedRows[0];
+  //   setSchemeId(firstRow.schemeId);
+  //   setSubSchemeId(firstRow.subSchemeId);
+  //   setSubSchemeType(firstRow.subSchemeType); // <- Make sure you have this state
+  // }
+  // };
+  const [selectedTotalSchemeAmount, setSelectedTotalSchemeAmount] = useState(0);
+
+  const handleRowSelection = ({ selectedRows }) => {
   setSelectedRows(selectedRows);
   setIsSubmitEnabled(selectedRows.length > 0 && listData.length > 0);
-};
 
+  if (selectedRows.length > 0) {
+    const firstRow = selectedRows[0];
+    setSchemeId(firstRow.schemeId);
+    setSubSchemeId(firstRow.subSchemeId);
+    setSubSchemeType(firstRow.subSchemeType);
+
+    // ✅ Calculate total from selected rows
+    const selectedTotal = selectedRows.reduce((acc, row) => acc + (row.schemeAmount || 0), 0);
+    setSelectedTotalSchemeAmount(selectedTotal);
+  } else {
+    // No rows selected: show default
+    setSelectedTotalSchemeAmount(0);
+  }
+};
 
 
   const [schemeDataListIds, setSchemeDataListIds] = useState([]);
@@ -127,8 +153,6 @@ const handleRowSelection = ({ selectedRows }) => {
   const [pushToDbtStatus, setPushToDbtStatus] = useState(false);
   const [directlyToFruits, setDirectlyToFruits] = useState(false);
 
-  
-
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
@@ -136,8 +160,6 @@ const handleRowSelection = ({ selectedRows }) => {
     setShowModal(true);
     // getActionFarmerList(fid); // Call getList with userId and stepId
   };
-
-  
 
   const [showModal1, setShowModal1] = useState(false);
 
@@ -151,8 +173,6 @@ const handleRowSelection = ({ selectedRows }) => {
 
   const [showModal3, setShowModal3] = useState(false);
 
-  
-
   const [applicationFormId, setApplicationFormId] = useState(null);
 
   const [componentType, setComponentType] = useState(null);
@@ -163,7 +183,6 @@ const handleRowSelection = ({ selectedRows }) => {
 
   const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
 
-  
   const [userId, setId] = useState(localStorage.getItem("userMasterId"));
 
   const [districtId, setDistrictId] = useState(null);
@@ -185,7 +204,7 @@ const handleRowSelection = ({ selectedRows }) => {
     rejectType: "",
     eligibleAmount: "",
     sanctionNo: "",
-    rejectReasonWorkflowMasterId:"",
+    rejectReasonWorkflowMasterId: "",
     comment: "",
   });
 
@@ -212,37 +231,34 @@ const handleRowSelection = ({ selectedRows }) => {
       });
   };
 
-  
+  //   const getList = async (district, taluk) => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await api.post(
+  //       baseURLDBT + `service/multipleSanctionList`,
+  //       {},
+  //       { params: { userId: localStorage.getItem("userMasterId") } }
+  //     );
 
-//   const getList = async (district, taluk) => {
-//   setLoading(true);
-//   try {
-//     const response = await api.post(
-//       baseURLDBT + `service/multipleSanctionList`,
-//       {},
-//       { params: { userId: localStorage.getItem("userMasterId") } }
-//     );
+  //     const data = response.data.content;
 
-//     const data = response.data.content;
+  //     const applicationDocumentId = data[0]?.applicationDocumentId;
+  //     const schemeId = data[0]?.schemeId;
+  //     const subSchemeId = data[0]?.subSchemeId;
 
-//     const applicationDocumentId = data[0]?.applicationDocumentId;
-//     const schemeId = data[0]?.schemeId;
-//     const subSchemeId = data[0]?.subSchemeId;
+  //     // Set state
+  //     setApplicationFormId(applicationDocumentId);
+  // setSchemeId(schemeId);
+  // setSubSchemeId(subSchemeId);
 
-//     // Set state
-//     setApplicationFormId(applicationDocumentId);
-//     setSchemeId(schemeId);
-//     setSubSchemeId(subSchemeId);
-
-//     // Call second API with the newly set values
-//     getMultipleSanctionOrderList(schemeId, subSchemeId);
-//   } catch (err) {
-//     setListData({});
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
+  //     // Call second API with the newly set values
+  //     getMultipleSanctionOrderList(schemeId, subSchemeId);
+  //   } catch (err) {
+  //     setListData({});
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // useEffect(() => {
 
@@ -254,72 +270,142 @@ const handleRowSelection = ({ selectedRows }) => {
   }, []);
 
   const [totalSchemeAmount, setTotalSchemeAmount] = useState(0);
+  const [subSchemeType, setSubSchemeType] = useState(null);
 
-const getMultipleSanctionOrderList = async () => {
-  setLoading(true);
-  try {
-    const response = await api.post(
-      baseURLDBT + `service/multipleSanctionList`,
-      {},
-      {
-        params: {
-          userId: localStorage.getItem("userMasterId"),
-        //   schemeId: schemeId,
-        //   subSchemeId: subSchemeId,
-        },
-      }
-    );
-
-    const data = response.data.content;
-
-    setListData(data);
-
-    const total = data?.[0]?.totalSchemeAmount ?? 0;
-    setTotalSchemeAmount(total);
-
-
-    const applicationDocumentId = data[0]?.applicationDocumentId;
-    setApplicationFormId(applicationDocumentId);
-  } catch (err) {
-    setListData({});
-    setTotalSchemeAmount(0);
-  } finally {
-    setLoading(false);
-  }
-};
-
-const generateWorkOrderAcknowledgmentRH = async (
-    applicationFormId,
-    schemeId
-  ) => {
+  const getMultipleSanctionOrderList = async () => {
+    setLoading(true);
     try {
       const response = await api.post(
-        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        baseURLDBT + `service/multipleSanctionList`,
+        {},
         {
-          applicationFormId: applicationFormId,
-          schemeId: schemeId,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+          params: {
+            userId: localStorage.getItem("userMasterId"),
+            //   schemeId: schemeId,
+            //   subSchemeId: subSchemeId,
+          },
         }
       );
 
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      // console.log("error", error);
+      const data = response.data.content;
+
+      setListData(data);
+
+      const total = data?.[0]?.totalSchemeAmount ?? 0;
+      setTotalSchemeAmount(total);
+
+      const schemeId = data[0]?.schemeId;
+      const subSchemeId = data[0]?.subSchemeId;
+      const applicationDocumentId = data[0]?.applicationDocumentId;
+      const subSchemeType = data[0]?.subSchemeType;
+      setApplicationFormId(applicationDocumentId);
+      setSchemeId(schemeId);
+      setSubSchemeId(subSchemeId);
+      setSubSchemeType(subSchemeType);
+    } catch (err) {
+      setListData({});
+      setTotalSchemeAmount(0);
+    } finally {
+      setLoading(false);
     }
   };
 
-const [displaySubmit, setDisplaySubmit] = useState(true);
-const [validated, setValidated] = useState(false);
-const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
-    useState([]);
-const [applicationId, setApplicationId] = useState(null);
-const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
+  
 
-const receiveData = (data, i) => {
+  const generateReportForIncentive = async () => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationFormId);
+
+    const response = await api.post(
+      baseURLReport + `get-incentive`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating incentive report", error);
+  }
+};
+
+const generateReportForBonus = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-Bonus`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+const generateReportForSeedCocoon = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-seed-cocoon`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating seed cocoon report", error);
+  }
+};
+
+
+    const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
+  if (subSchemeType === 2) {
+    generateReportForIncentive(selectedRows);
+  } else if (subSchemeType === 3) {
+    generateReportForBonus(selectedRows);
+  } else if (subSchemeType === 4) {
+    generateReportForSeedCocoon(selectedRows);
+  }
+};
+
+  const [displaySubmit, setDisplaySubmit] = useState(true);
+  const [validated, setValidated] = useState(false);
+  const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
+    useState([]);
+  const [applicationId, setApplicationId] = useState(null);
+  const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
+
+  const receiveData = (data, i) => {
     console.log("i", i);
     // setPushToDbtData((prev) => ({ ...prev, row: i }));
     setSendApplicationFormServiceData((prev) => {
@@ -394,194 +480,194 @@ const receiveData = (data, i) => {
     }
   }, [data.schemeId]);
 
+  // const postActionData = async (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //     return;
+  //   }
 
-// const postActionData = async (event) => {
-//   const form = event.currentTarget;
-//   if (form.checkValidity() === false) {
-//     event.preventDefault();
-//     event.stopPropagation();
-//     setValidated(true);
-//     return;
-//   }
+  //   event.preventDefault();
+  //   setDisplaySubmit(true);
 
-//   event.preventDefault();
-//   setDisplaySubmit(true);
+  //   // Validate selection
+  //   if (selectedRows.length === 0) {
+  //     warningAlert("Please select at least one row", "Alert!!!");
+  //     setDisplaySubmit(false);
+  //     return;
+  //   }
 
-//   // Validate selection
-//   if (selectedRows.length === 0) {
-//     warningAlert("Please select at least one row", "Alert!!!");
-//     setDisplaySubmit(false);
-//     return;
-//   }
+  //   // Build payload directly from selected rows
+  //   const pushToDBTRequestList = selectedRows.map((item) => ({
+  //     applicationFormId: item.applicationDocumentId,
+  //     schemeAmount: item.schemeAmount,
+  //     eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount, // use either field based on available data
+  //     schemeId: item.schemeId,
+  //     subSchemeId: item.subSchemeId,
+  //     approvalStageId: item.approvalStageId,
+  //     categoryId: item.categoryId,
+  //     componentId: item.componentId,
+  //     khazaneRecipientId: item.khazaneRecipientId,
+  //     biddingSlipLotNo: item.biddingSlipLotNo,
+  //     farmerId: item.farmerId,
+  //     // Add other fields as needed
+  //   }));
 
-//   // Build payload directly from selected rows
-//   const pushToDBTRequestList = selectedRows.map((item) => ({
-//     applicationFormId: item.applicationDocumentId,
-//     schemeAmount: item.schemeAmount,
-//     eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount, // use either field based on available data
-//     schemeId: item.schemeId,
-//     subSchemeId: item.subSchemeId,
-//     approvalStageId: item.approvalStageId,
-//     categoryId: item.categoryId,
-//     componentId: item.componentId,
-//     khazaneRecipientId: item.khazaneRecipientId,
-//     biddingSlipLotNo: item.biddingSlipLotNo,
-//     farmerId: item.farmerId,
-//     // Add other fields as needed
-//   }));
+  //   try {
+  //     const response = await api.post(
+  //       baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder `,
+  //       { pushToDBTRequestList }
+  //     );
 
-//   try {
-//     const response = await api.post(
-//       baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder `,
-//       { pushToDBTRequestList }
-//     );
+  //     // if (response.data?.applicationFormId) {
+  //     //   setApplicationId(response.data.applicationFormId);
+  //     // //   generateWorkOrderAcknowledgmentRH(response.data.applicationFormId, schemeId);
+  //     // } else {
+  //     //   saveError("Failed to generate application ID for sanction order.");
+  //     // }
+  //    if (response?.data?.applicationFormId) {
+  //       saveSuccess("Sanction Order updated successfully.");
+  //       // Optional: clear selection or refresh data
+  //       // setSelectedRows([]);
+  //     } else {
+  //       saveError("Sanction Order update response was invalid.");
+  //     }
+  //   } catch (err) {
+  //     saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
+  //   } finally {
+  //     setDisplaySubmit(false);
+  //     setValidated(true);
+  //   }
+  // };
 
-//     // if (response.data?.applicationFormId) {
-//     //   setApplicationId(response.data.applicationFormId);
-//     // //   generateWorkOrderAcknowledgmentRH(response.data.applicationFormId, schemeId);
-//     // } else {
-//     //   saveError("Failed to generate application ID for sanction order.");
-//     // }
-//    if (response?.data?.applicationFormId) {
-//       saveSuccess("Sanction Order updated successfully.");
-//       // Optional: clear selection or refresh data
-//       // setSelectedRows([]);
-//     } else {
-//       saveError("Sanction Order update response was invalid.");
-//     }
-//   } catch (err) {
-//     saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
-//   } finally {
-//     setDisplaySubmit(false);
-//     setValidated(true);
-//   }
-// };
+  // const postActionData = async (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //     return;
+  //   }
 
-// const postActionData = async (event) => {
-//   const form = event.currentTarget;
-//   if (form.checkValidity() === false) {
-//     event.preventDefault();
-//     event.stopPropagation();
-//     setValidated(true);
-//     return;
-//   }
+  //   event.preventDefault();
+  //   setDisplaySubmit(true);
 
-//   event.preventDefault();
-//   setDisplaySubmit(true);
+  //   // Validate selection
+  //   if (selectedRows.length === 0) {
+  //     warningAlert("Please select at least one row", "Alert!!!");
+  //     setDisplaySubmit(false);
+  //     return;
+  //   }
 
-//   // Validate selection
-//   if (selectedRows.length === 0) {
-//     warningAlert("Please select at least one row", "Alert!!!");
-//     setDisplaySubmit(false);
-//     return;
-//   }
+  //   const sendResponse = selectedRows.map((item) => ({
+  //     applicationFormId: item.applicationDocumentId,
+  //     schemeAmount: item.schemeAmount,
+  //     eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount, // use either field based on available data
+  //     schemeId: item.schemeId,
+  //     subSchemeId: item.subSchemeId,
+  //     approvalStageId: item.approvalStageId,
+  //     categoryId: item.categoryId,
+  //     componentId: item.componentId,
+  //     khazaneRecipientId: item.khazaneRecipientId,
+  //     biddingSlipLotNo: item.biddingSlipLotNo,
+  //     farmerId: item.farmerId,
+  //   }));
 
-//   const sendResponse = selectedRows.map((item) => ({
-//     applicationFormId: item.applicationDocumentId,
-//     schemeAmount: item.schemeAmount,
-//     eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount, // use either field based on available data
-//     schemeId: item.schemeId,
-//     subSchemeId: item.subSchemeId,
-//     approvalStageId: item.approvalStageId,
-//     categoryId: item.categoryId,
-//     componentId: item.componentId,
-//     khazaneRecipientId: item.khazaneRecipientId,
-//     biddingSlipLotNo: item.biddingSlipLotNo,
-//     farmerId: item.farmerId,
-//   }));
+  //   const sendPost = {
+  //     applicationFormId: sendResponse.map((item) => item.applicationFormId),
+  //     // applicationFormId: sendResponse[0].applicationFormId, // Assuming you want to use the first item's applicationFormId
+  //     sanctionOrderNumber: actionData.sanctionOrderNumber,
+  //     userId: actionData.userId,
+  //     stepId: actionData.stepId,
+  //     eligibleAmount: actionData.eligibleAmount,
+  //     pushToDBTRequestList: sendResponse,
+  //   };
 
-//   const sendPost = {
-//     applicationFormId: sendResponse.map((item) => item.applicationFormId),
-//     // applicationFormId: sendResponse[0].applicationFormId, // Assuming you want to use the first item's applicationFormId
-//     sanctionOrderNumber: actionData.sanctionOrderNumber,
-//     userId: actionData.userId,
-//     stepId: actionData.stepId,
-//     eligibleAmount: actionData.eligibleAmount,
-//     pushToDBTRequestList: sendResponse,
-//   };
+  //   try {
+  //     const response = await api.post(baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder`, sendPost);
+  //     if (response.data.applicationFormId) {
+  //       setApplicationId(response.data.applicationFormId);
+  //       generateWorkOrderAcknowledgmentRH(response.data.applicationFormId, schemeId);
+  //       saveSuccess("Sanction Order Updated Successfully");
+  //     } else {
+  //       saveError("Failed to generate application ID for sanction order.");
+  //     }
+  //   } catch (err) {
+  //     saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
+  //   } finally {
+  //     setDisplaySubmit(false);
+  //   }
 
-//   try {
-//     const response = await api.post(baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder`, sendPost);
-//     if (response.data.applicationFormId) {
-//       setApplicationId(response.data.applicationFormId);
-//       generateWorkOrderAcknowledgmentRH(response.data.applicationFormId, schemeId);
-//       saveSuccess("Sanction Order Updated Successfully");
-//     } else {
-//       saveError("Failed to generate application ID for sanction order.");
-//     }
-//   } catch (err) {
-//     saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
-//   } finally {
-//     setDisplaySubmit(false);
-//   }
+  //   setValidated(true);
+  // };
 
-//   setValidated(true);
-// };
-
-
-const postActionData = async (event) => {
-  const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-    return;
-  }
-
-  event.preventDefault();
-  setDisplaySubmit(true);
-
-  // Validate selection
-  if (selectedRows.length === 0) {
-    warningAlert("Please select at least one row", "Alert!!!");
-    setDisplaySubmit(false);
-    return;
-  }
-
-  const sendResponse = selectedRows.map((item) => ({
-    applicationFormId: item.applicationDocumentId,
-    schemeAmount: item.schemeAmount,
-    eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount,
-    schemeId: item.schemeId,
-    subSchemeId: item.subSchemeId,
-    approvalStageId: item.approvalStageId,
-    categoryId: item.categoryId,
-    componentId: item.componentId,
-    khazaneRecipientId: item.khazaneRecipientId,
-    biddingSlipLotNo: item.biddingSlipLotNo,
-    farmerId: item.farmerId,
-  }));
-
-  const sendPost = {
-    sanctionOrderNumber: actionData.sanctionOrderNumber,
-    userId: actionData.userId,
-    stepId: actionData.stepId,
-    eligibleAmount: actionData.eligibleAmount,
-    pushToDBTRequestList: sendResponse, // ✅ all applicationFormIds are inside this list
-  };
-
-  try {
-    const response = await api.post(
-      baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder`,
-      sendPost
-    );
-    if (response.data?.applicationFormId) {
-      setApplicationId(response.data.applicationFormId);
-      generateWorkOrderAcknowledgmentRH(response.data.applicationFormId, schemeId);
-      saveSuccess("Sanction Order Updated Successfully");
-      await getMultipleSanctionOrderList();
-    } else {
-      saveError("Failed to generate application ID for sanction order.");
+  const postActionData = async (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+      return;
     }
-  } catch (err) {
-    saveError(err.response?.data?.error_description || "Sanction Order Update Failed");
-  } finally {
-    setDisplaySubmit(false);
-  }
 
-  setValidated(true);
-};
+    event.preventDefault();
+    setDisplaySubmit(true);
 
+    // Validate selection
+    if (selectedRows.length === 0) {
+      warningAlert("Please select at least one row", "Alert!!!");
+      setDisplaySubmit(false);
+      return;
+    }
+
+    const sendResponse = selectedRows.map((item) => ({
+      applicationFormId: item.applicationDocumentId,
+      schemeAmount: item.schemeAmount,
+      eligibleAmount: item.eligibleAmount ?? item.calculatedEligibleAmount,
+      schemeId: item.schemeId,
+      subSchemeId: item.subSchemeId,
+      approvalStageId: item.approvalStageId,
+      categoryId: item.categoryId,
+      componentId: item.componentId,
+      khazaneRecipientId: item.khazaneRecipientId,
+      biddingSlipLotNo: item.biddingSlipLotNo,
+      farmerId: item.farmerId,
+    }));
+    const applicationIDs = selectedRows.map(m=>m.applicationDocumentId);
+    const sendPost = {
+      sanctionOrderNumber: actionData.sanctionOrderNumber,
+      userId: actionData.userId,
+      stepId: actionData.stepId,
+      eligibleAmount: actionData.eligibleAmount,
+      pushToDBTRequestList: sendResponse, // ✅ all applicationFormIds are inside this list
+    };
+
+    try {
+      const response = await api.post(
+        baseURLDBT + `service/sanctionOrderUpdateForMultipleSanctionOrder`,
+        sendPost
+      );
+      if (response.data?.applicationFormId) {
+        setApplicationId(response.data.applicationFormId);
+        // generateReportForBonusIncentiveSeedCocoon(response.data.applicationFormId, schemeId);
+        saveSuccess("Sanction Order Updated Successfully");
+        generateReportForBonusIncentiveSeedCocoon(selectedRows);
+        await getMultipleSanctionOrderList();
+      } else {
+        saveError("Failed to generate application ID for sanction order.");
+      }
+    } catch (err) {
+      saveError(
+        err.response?.data?.error_description || "Sanction Order Update Failed"
+      );
+    } finally {
+      setDisplaySubmit(false);
+    }
+
+    setValidated(true);
+  };
 
   const saveRejectSuccess = (message) => {
     Swal.fire({
@@ -662,6 +748,7 @@ const postActionData = async (event) => {
 
   const [selectedRows, setSelectedRows] = useState([]);
 
+  console.log("selected row", selectedRows);
 
   const ApplicationDataColumns = [
     {
@@ -678,7 +765,7 @@ const postActionData = async (event) => {
       sortable: true,
       hide: "md",
     },
-     {
+    {
       name: "Scheme Amount",
       selector: (row) => row.schemeAmount,
       cell: (row) => <span>{row.schemeAmount}</span>,
@@ -706,7 +793,7 @@ const postActionData = async (event) => {
       sortable: true,
       hide: "md",
     },
-   
+
     {
       name: "Eligible Amount",
       selector: (row) => row.eligibleAmount,
@@ -714,8 +801,7 @@ const postActionData = async (event) => {
       sortable: true,
       hide: "md",
     },
-    
-    
+
     {
       name: "Scheme Name",
       selector: (row) => row.schemeName,
@@ -736,7 +822,7 @@ const postActionData = async (event) => {
       cell: (row) => <span>{row.khazaneRecipientId}</span>,
       sortable: true,
       hide: "md",
-    },  
+    },
   ];
 
   const customStyles = {
@@ -892,7 +978,6 @@ const postActionData = async (event) => {
     }
   };
 
-
   return (
     <Layout title="List Of Application">
       <Block.Head>
@@ -902,17 +987,36 @@ const postActionData = async (event) => {
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
-            <li>
-           {/* <span className="btn btn-light">
+              <li>
+                {/* <span className="btn btn-light">
             Total Amount: ₹{(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
             </span> */}
-            <span
-                className="btn btn-light"
-                style={{ fontWeight: 'bold', color: 'green', fontSize: '1.6rem' }}
+                {/* <span
+                  className="btn btn-light"
+                  style={{
+                    fontWeight: "bold",
+                    color: "green",
+                    fontSize: "1.6rem",
+                  }}
                 >
-                Total Amount: ₹{(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
-                </span>
-            </li>
+                  Total Amount: ₹
+                  {(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
+                </span> */}
+                 <span
+                    className="btn btn-light"
+                    style={{
+                      fontWeight: "bold",
+                      color: "green",
+                      fontSize: "1.6rem",
+                    }}
+                  >
+                    Total Amount: ₹
+                    {(selectedRows.length > 0
+                      ? selectedTotalSchemeAmount
+                      : totalSchemeAmount
+                    ).toLocaleString("en-IN")}
+                  </span>
+              </li>
               <li>
                 <Link
                   to="/seriui/application-dashboard"
@@ -936,11 +1040,9 @@ const postActionData = async (event) => {
         </Block.HeadBetween>
       </Block.Head>
 
-     
-     <Block className="mt-n4">
-           
-             <Card className="mt-1">
-               {/* <Row className="m-2">
+      <Block className="mt-n4">
+        <Card className="mt-1">
+          {/* <Row className="m-2">
                  <Col>
                    <Form.Group as={Row} className="form-group" id="fid">
                      <Form.Label column sm={1}>
@@ -978,68 +1080,72 @@ const postActionData = async (event) => {
                    </Form.Group>
                  </Col>
                </Row> */}
-     
-               <Row className="m-2">
-                 <Col>
-                   <Form.Group as={Row} className="form-group" id="fid">
-                     <Form.Label column sm={1}>
-                       {t("Search By")}
-                     </Form.Label>
-                    
-     
-                     <Form.Label column sm={1}>
-                     {t("Scheme")}
-                     </Form.Label>
-                     <Col sm={4}>
-                       <div className="form-control-wrap">
-                         <Form.Select
-                           name="schemeId"
-                           value={data.schemeId}
-                           onChange={handleInputs}
-                           style={{ marginLeft: "-14%" }}
-                         >
-                           <option value="0">{t("select scheme")}</option>
-                           {scSchemeDetailsListData.map((list) => (
-                             <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                               {list.schemeName}
-                             </option>
-                           ))}
-                         </Form.Select>
-                       </div>
-                     </Col>
-     
-                     <Form.Label column sm={2}>
-                     {t("Component")}
-                     </Form.Label>
-                     <Col sm={4}>
-                       <div className="form-control-wrap">
-                         <Form.Select
-                           name="subSchemeId"
-                           value={data.subSchemeId}
-                           onChange={handleInputs}
-                           style={{ marginLeft: "-14%" }}
-                         >
-                           <option value="0">{t("select component")}</option>
-                           {scSubSchemeDetailsListData.map((list) => (
-                             <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
-                               {list.subSchemeName}
-                             </option>
-                           ))}
-                         </Form.Select>
-                       </div>
-                     </Col>
-     
-                     <Col sm={1}>
-                       <Button type="button" variant="primary" onClick={search}>
-                       {t("search")}
-                       </Button>
-                     </Col>
-                     
-                   </Form.Group>
-                 </Col>
-               </Row>
-             </Card>
-           </Block>
+
+          <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  {t("Search By")}
+                </Form.Label>
+
+                <Form.Label column sm={1}>
+                  {t("Scheme")}
+                </Form.Label>
+                <Col sm={4}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="schemeId"
+                      value={data.schemeId}
+                      onChange={handleInputs}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">{t("select scheme")}</option>
+                      {scSchemeDetailsListData.map((list) => (
+                        <option
+                          key={list.scSchemeDetailsId}
+                          value={list.scSchemeDetailsId}
+                        >
+                          {list.schemeName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Form.Label column sm={2}>
+                  {t("Component")}
+                </Form.Label>
+                <Col sm={4}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="subSchemeId"
+                      value={data.subSchemeId}
+                      onChange={handleInputs}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">{t("select component")}</option>
+                      {scSubSchemeDetailsListData.map((list) => (
+                        <option
+                          key={list.scSubSchemeDetailsId}
+                          value={list.subSchemeId}
+                        >
+                          {list.subSchemeName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    {t("search")}
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Card>
+      </Block>
 
       <Block className="mt-3">
         <Card>
@@ -1066,33 +1172,32 @@ const postActionData = async (event) => {
           />
         </Card>
 
-         <Form
-                  noValidate
-                  validated={validated}
-                //   disabled={!isSubmitEnabled || selectedRows.length === 0}
-                  onSubmit={postActionData}
-                  className="mt-1"
-                >
-                  <div className="gap-col mt-1">
-                    <ul className="d-flex align-items-center justify-content-center gap g-3">
-                      <li>
-                        {/* <Button type="submit" variant="secondary" onClick={clear}>
+        <Form
+          noValidate
+          validated={validated}
+          //   disabled={!isSubmitEnabled || selectedRows.length === 0}
+          onSubmit={postActionData}
+          className="mt-1"
+        >
+          <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="submit" variant="secondary" onClick={clear}>
                         {t("Submit Application")}
                         </Button> */}
-                        <Button
-                        type="submit"
-                        variant="secondary"
-                        onClick={clear}
-                        disabled={!isSubmitEnabled}
-                        >
-                        {t("Submit Application")}
-                        </Button>
-
-                      </li>
-                    </ul>
-                  </div>
-                </Form>
-      </Block>  
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  onClick={clear}
+                  disabled={!isSubmitEnabled}
+                >
+                  {t("Submit Application")}
+                </Button>
+              </li>
+            </ul>
+          </div>
+        </Form>
+      </Block>
     </Layout>
   );
 }
