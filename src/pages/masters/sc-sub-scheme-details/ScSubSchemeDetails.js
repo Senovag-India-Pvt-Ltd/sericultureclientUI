@@ -30,6 +30,7 @@ function ScSubSchemeDetails() {
     dbtCode: "",
     withLand: "",
     beneficiaryType: "",
+    allowMultipleSanction: "",
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -76,6 +77,7 @@ function ScSubSchemeDetails() {
                 dbtCode: "",
                 withLand: "",
                 beneficiaryType: "",
+                allowMultipleSanction: "",
             });
             setValidated(false);
           }
@@ -107,6 +109,7 @@ function ScSubSchemeDetails() {
         dbtCode: "",
         withLand: "",
         beneficiaryType: "",
+        allowMultipleSanction: "",
     });
   };
 
@@ -115,6 +118,14 @@ function ScSubSchemeDetails() {
     setData((prev) => ({
       ...prev,
       withLand: e.target.checked,
+    }));
+  };
+
+   const handleMultipleSanctionCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      allowMultipleSanction: e.target.checked,
     }));
   };
 
@@ -421,6 +432,22 @@ function ScSubSchemeDetails() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         {t("With Land")}
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="allowMultipleSanction"
+                          checked={data.allowMultipleSanction}
+                          onChange={handleMultipleSanctionCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        {t("Allow Multiple Sanction Order")}
                       </Form.Label>
                     </Form.Group>
                 </Row>
