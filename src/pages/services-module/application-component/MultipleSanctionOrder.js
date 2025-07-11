@@ -315,7 +315,7 @@ function MultipleSanctionOrder() {
 
   
 
-  const generateReportForIncentive = async () => {
+  const generateReportForIncentive = async (selectedRows) => {
   try {
     const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
 
@@ -336,7 +336,7 @@ function MultipleSanctionOrder() {
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL);
   } catch (error) {
-    // console.error("Error generating incentive report", error);
+    // console.error("Error generating bonus report", error);
   }
 };
 
