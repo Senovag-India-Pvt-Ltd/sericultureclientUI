@@ -320,7 +320,7 @@ function MultipleSanctionOrder() {
     const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
 
     const response = await api.post(
-      baseURLReport + `get-incentive`,
+      baseURLReport + `get-Incentive`,
       {
         userMasterId: localStorage.getItem("userMasterId"),
         schemeId,
