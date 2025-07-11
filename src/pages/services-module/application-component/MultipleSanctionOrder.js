@@ -317,7 +317,7 @@ function MultipleSanctionOrder() {
 
   const generateReportForIncentive = async () => {
   try {
-    const applicationFormIds = selectedRows.map(row => row.applicationFormId);
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
 
     const response = await api.post(
       baseURLReport + `get-incentive`,
