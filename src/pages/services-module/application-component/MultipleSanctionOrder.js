@@ -135,8 +135,11 @@ function MultipleSanctionOrder() {
     setSubSchemeId(firstRow.subSchemeId);
     setSubSchemeType(firstRow.subSchemeType);
 
-    // ✅ Calculate total from selected rows
-    const selectedTotal = selectedRows.reduce((acc, row) => acc + (row.schemeAmount || 0), 0);
+    // ✅ Convert to number safely and sum
+    const selectedTotal = selectedRows.reduce((acc, row) => {
+      const amount = parseFloat(row.schemeAmount) || 0;
+      return acc + amount;
+    }, 0);
     setSelectedTotalSchemeAmount(selectedTotal);
   } else {
     // No rows selected: show default
@@ -655,6 +658,8 @@ const generateReportForSeedCocoon = async (selectedRows) => {
         saveSuccess("Sanction Order Updated Successfully");
         generateReportForBonusIncentiveSeedCocoon(selectedRows);
         await getMultipleSanctionOrderList();
+        setIsSubmitEnabled(false);
+        setIsRowSelectable(false);
       } else {
         saveError("Failed to generate application ID for sanction order.");
       }
