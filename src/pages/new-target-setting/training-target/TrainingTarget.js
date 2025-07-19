@@ -1250,12 +1250,12 @@ useEffect(() => {
     });
   };
   return (
-    <Layout title={t("Training Wise Target Setting")}>
+    <Layout title={t("Sericulture Training Institute  Wise Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("Training Wise Target Setting")}
+              {t("Sericulture Training Institute  Wise Target Setting")}
             </Block.Title>
           </Block.HeadContent>
           <ul className="d-flex">
@@ -1283,7 +1283,7 @@ useEffect(() => {
                 <Block>
                   <Card>
                     <Card.Header>
-                      {t("Training Wise Target Setting")}
+                      {t("Sericulture Training Institute  Wise Target Setting")}
                     </Card.Header>
                     <Card.Body>
                     <div
@@ -1899,7 +1899,7 @@ useEffect(() => {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Training Wise Target Setting")}</Modal.Title>
+          <Modal.Title>{t("Sericulture Training Institute  Wise Target Setting")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
