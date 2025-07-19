@@ -38,8 +38,8 @@ function DashboardReportList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const [applicationDetails, setApplicationDetails] = useState([]);
   const [actionFarmerData, setActionFarmerData] = useState({});
-  console.log("actionFarmerData", actionFarmerData);
-  console.log("actionFarmerDatasasa", !!actionFarmerData[0]?.applicationFormId);
+  // console.log("actionFarmerData", actionFarmerData);
+  // console.log("actionFarmerDatasasa", !!actionFarmerData[0]?.applicationFormId);
 
   const [data, setData] = useState({
     userMasterId: "",
@@ -2308,7 +2308,7 @@ function DashboardReportList() {
                   actionFarmerData[0].workOrderForScheme ===
                     "Silk Samagra State" ||
                   actionFarmerData[0].workOrderForScheme ===
-                    "Silk Samagra Cental"
+                    "Silk Samagra Central"
                 ) {
                   generateWorkOrderAcknowledgmentRH(
                     applicationFormId,
@@ -3210,7 +3210,7 @@ function DashboardReportList() {
                             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                           }}
                         >
-                          <Card.Body>
+                          {/* <Card.Body>
                             <Button
                               variant="secondary"
                               size="sm"
@@ -3220,6 +3220,71 @@ function DashboardReportList() {
                             >
                               Upload Documents
                             </Button>
+                          </Card.Body> */}
+                          <Card.Body>
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={handleShowModal1}
+                                style={{ padding: "10px 20px", fontSize: "16px" }}
+                              >
+                                Upload Documents
+                              </Button>
+                            </div>
+
+                            {viewDetailsData?.documents?.length > 0 ? (
+                              <table className="table small table-bordered">
+                                <thead style={{ backgroundColor: "#27488A" }}>
+                                  <tr>
+                                    <th style={{ color: "white" }}>Document Name</th>
+                                    <th style={{ color: "white" }}>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {viewDetailsData.documents.map((fileDocuments, index) => (
+                                    <tr key={index}>
+                                      <td>{fileDocuments.documentName || "N/A"}</td>
+                                      <td>
+                                        <Button
+                                          variant="primary"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleDocumentClick(fileDocuments.documentPath)
+                                          }
+                                        >
+                                          View Document
+                                        </Button>
+                                        {currentDocumentPath === fileDocuments.documentPath &&
+                                          selectedDocumentFile && (
+                                            <>
+                                              <img
+                                                style={{
+                                                  height: "100px",
+                                                  width: "100px",
+                                                  marginLeft: "10px",
+                                                }}
+                                                src={selectedDocumentFile}
+                                                alt="Selected File"
+                                              />
+                                              <Button
+                                                variant="primary"
+                                                size="sm"
+                                                className="ms-2"
+                                                onClick={() => downloadFile(fileDocuments.documentPath)}
+                                              >
+                                                Download Selected File
+                                              </Button>
+                                            </>
+                                          )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <p>No Documents Available</p>
+                            )}
                           </Card.Body>
                         </Card>
                       </Block>
