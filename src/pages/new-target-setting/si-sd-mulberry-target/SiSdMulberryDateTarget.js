@@ -1802,11 +1802,11 @@ const fetchNaregaData = (page) => {
     });
   };
   return (
-    <Layout title={t("SI/SD Area Under Mulberry Target Daily")}>
+    <Layout title={t("Range Wise Area Under Mulberry Target Daily")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("SI/SD Area Under Mulberry Target Daily")}</Block.Title>
+            <Block.Title tag="h2">{t("Range Wise Area Under Mulberry Target Daily")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1822,7 +1822,7 @@ const fetchNaregaData = (page) => {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("SI/SD Area Under Mulberry Target Daily")}</Card.Header>
+                    <Card.Header>{t("Range Wise Area Under Mulberry Target Daily")}</Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
                       style={{
@@ -2957,7 +2957,7 @@ const fetchNaregaData = (page) => {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("SI/SD Area Under Mulberry Target Daily Edit")}</Modal.Title>
+          <Modal.Title>{t("Range Wise Area Under Mulberry Target Daily Edit")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}

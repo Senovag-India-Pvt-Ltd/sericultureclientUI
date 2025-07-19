@@ -1778,11 +1778,11 @@ useEffect(() => {
     });
   };
   return (
-    <Layout title={t("SI/SD Area Under Mulberry Target")}>
+    <Layout title={t("Range Wise Area Under Mulberry Target")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("SI/SD Area Under Mulberry Target")}</Block.Title>
+            <Block.Title tag="h2">{t("Range Wise Area Under Mulberry Target")}</Block.Title>
           </Block.HeadContent>
           <Button variant="primary" onClick={search}>
             {t("View Target")}
@@ -1798,7 +1798,7 @@ useEffect(() => {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>{t("SI/SD Area Under Mulberry Target")} </Card.Header>
+                    <Card.Header>{t("Range Wise Area Under Mulberry Target")} </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
                       style={{

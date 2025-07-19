@@ -1762,12 +1762,12 @@ const fetchHierarchyData = (targetType, page) => {
     });
   };
   return (
-    <Layout title={t("SI SD Wise Target Setting for Subsidies")}>
+    <Layout title={t("Reeling Tsc  Wise Target Setting for Subsidies")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("SI SD Wise Target Setting for Subsidies")}
+              {t("Reeling Tsc Target Setting for Subsidies")}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -1811,7 +1811,7 @@ const fetchHierarchyData = (targetType, page) => {
                 <Block>
                   <Card>
                     <Card.Header>
-                      {t("SI SD Wise Target Setting for Subsidies")}{" "}
+                      {t("Reeling Tsc Wise Target Setting for Subsidies")}{" "}
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
