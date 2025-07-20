@@ -2096,9 +2096,24 @@ function DashboardReportList() {
         return;
       }
 
-      const sendResponse = sendApplicationFormServiceData.map((item) => {
+      // const sendResponse = sendApplicationFormServiceData.map((item) => {
+      //   return {
+      //     schemeQuotaId: item.schemeQuotaId,
+      //     componentType: item.schemeQuotaId,
+      //     schemeAmount: item.subsidyAmount,
+      //     eligibleAmount: item.calculatedEligibleAmount,
+      //     paymentTo: item.paymentTo,
+      //     paymentMethod: item.paymentMethod,
+      //     dateOfPayment: item.dateOfPayment,
+      //     referenceNo: item.referenceNo,
+      //   };
+      // });
+      const sendResponse = sendApplicationFormServiceData
+      .filter(item => item) // ensures no nulls
+      .map((item) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
+          componentType: item.schemeQuotaId,
           schemeAmount: item.subsidyAmount,
           eligibleAmount: item.calculatedEligibleAmount,
           paymentTo: item.paymentTo,
@@ -2113,12 +2128,16 @@ function DashboardReportList() {
         const sendData = sendApplicationFormServiceData.map((item) => {
           return {
             applicationFormId: item.applicationFormId,
+            componentType: item.schemeQuotaId,
             schemeAmount: item.schemeAmount,
             eligibleAmount: item.calculatedEligibleAmount,
             paymentTo: item.paymentTo,
             paymentMethod: item.paymentMethod,
             dateOfPayment: item.dateOfPayment,
             referenceNo: item.referenceNo,
+            categoryId: item.categoryId,
+            componentId: item.componentId,
+            schemeId: item.schemeId,
           };
         });
         sendPost = sendData;
@@ -2130,6 +2149,10 @@ function DashboardReportList() {
           pushType: "P",
           ddoCode: reportingOfficerDdoCode,
           sanctionNo: actionData.sanctionNo,
+          categoryId: actionFarmerData[0]?.categoryId,
+          componentId: actionFarmerData[0]?.componentId,
+          schemeId: actionFarmerData[0]?.schemeId,
+          componentType: actionFarmerData[0]?.componentType,
         };
       } else {
         sendPost = {
@@ -2179,6 +2202,7 @@ function DashboardReportList() {
               );
               clear();
               setValidated(false);
+              getList();
             })
             .catch((err) => {
               saveError(
@@ -2222,6 +2246,7 @@ function DashboardReportList() {
                     schemeId
                   );
                   setDisplaySubmit(false);
+                  getList();
                 } else {
                   saveError(
                     "Failed to generate application ID for sanction order."
@@ -2259,6 +2284,7 @@ function DashboardReportList() {
                     checkFileDetails.farmerRegNo
                   );
                   setDisplaySubmit(false);
+                  getList();
                 }
               })
               .catch((err) => {
@@ -2318,6 +2344,7 @@ function DashboardReportList() {
               }
 
               saveSuccess();
+              getList();
               clear();
               setValidated(false);
             }
@@ -2382,6 +2409,9 @@ function DashboardReportList() {
       warningAlert("Please Enter The Sanction Number", "Alert!!!");
       return;
     }
+
+    const recordData = actionFarmerData[0];
+
     api
       .post(baseURLDBT + `service/checkXmlFileDetails`, {
         applicationFormId: appId,
@@ -2389,6 +2419,10 @@ function DashboardReportList() {
         paymentMode: "P",
         pushType: "P",
         ddoCode,
+        categoryId: recordData.categoryId,
+        componentId: recordData.componentId,
+        schemeId: recordData.schemeId,
+        componentType: recordData.componentType,
       })
       .then((response) => {
         if (response.data) {
@@ -2403,6 +2437,7 @@ function DashboardReportList() {
         // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
+
   const saveRejectSuccess = (message) => {
     Swal.fire({
       icon: "success",
@@ -2574,6 +2609,13 @@ function DashboardReportList() {
       name: "Sub Scheme Name",
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Name",
+      selector: (row) => row.componentName,
+      cell: (row) => <span>{row.componentName}</span>,
       sortable: true,
       hide: "md",
     },
