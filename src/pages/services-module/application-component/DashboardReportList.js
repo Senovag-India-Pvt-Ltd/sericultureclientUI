@@ -50,6 +50,7 @@ function DashboardReportList() {
   const [recordFromAppForm, setRecordFromAppForm] = useState([]);
   const [permission, setPermission] = useState(false);
   const [reportingOfficerDdoCode, setReportingOfficerDdoCode] = useState("");
+  const [reportingOfficerKhazaneRecipientId, setReportingOfficerKhazaneRecipientId] = useState("");
 
   const [pushToDbtStatus, setPushToDbtStatus] = useState(false);
   const [directlyToFruits, setDirectlyToFruits] = useState(false);
@@ -287,12 +288,12 @@ function DashboardReportList() {
     },
     {
       name: "Component Name",
-      selector: (row) => row.scComponentName,
-      cell: (row) => <span>{row.scComponentName}</span>,
+      selector: (row) => row.schemeComponentName,
+      cell: (row) => <span>{row.schemeComponentName}</span>,
       sortable: true,
       hide: "md",
     },
-    // {
+    // { 
     //   name: "Allocated Amount",
     //   selector: (row) => row.allocatedAmount,
     //   cell: (row) => <span>{row.allocatedAmount}</span>,
@@ -1101,42 +1102,81 @@ function DashboardReportList() {
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
   const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
   const getPushToDBTList = (
-    categoryId,
-    componentId,
-    schemeId,
-    applicationFormId,
-    componentType
-  ) => {
-    api
-      .post(
-        baseURLDBT +
-          `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&componentType=${componentType}`
-      )
-      .then((response) => {
-        if (response.data.content) {
-          const dbtData = response.data.content;
-          setSchemeQuotaListCount(dbtData.length);
-          setRecordFromAppForm(dbtData);
+  categoryId,
+  componentId,
+  schemeId,
+  applicationFormId,
+  componentType
+) => {
+  api
+    .post(
+      baseURLDBT +
+        `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&componentType=${componentType}`
+    )
+    .then((response) => {
+      if (response.data.content) {
+        const dbtData = response.data.content;
 
-          // Assuming subsidy amount is in dbtData, update actionData
-          // setActionData((prevData) => ({
-          //   ...prevData,
-          //   subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
-          // }));
-          setActionData((prevData) => ({
-            ...prevData,
-            subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
-            calculatedEligibleAmount: dbtData.calculatedEligibleAmount || "", // assuming eligibleAmount exists in dbtData
-          }));
+        setSchemeQuotaListCount(dbtData.length);
+        setRecordFromAppForm(dbtData);
+        setPushToDBTListData(dbtData); // Save full list
 
-          setPushToDBTListData(response.data.content);
-        }
-      })
-      .catch((err) => {
-        setPushToDBTListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
+        // Optional: if dbtData is an array, handle accordingly
+        const firstRecord = Array.isArray(dbtData) ? dbtData[0] : dbtData;
+        const { subsidyAmount, calculatedEligibleAmount, schemeQuotaPaymentType } = firstRecord;
+
+        // Set subsidy and eligible amount in actionData
+        setActionData((prevData) => ({
+          ...prevData,
+          subsidyAmount: subsidyAmount || "",
+          calculatedEligibleAmount: calculatedEligibleAmount || "",
+          schemeQuotaPaymentType: schemeQuotaPaymentType || "", // Save for later use
+        }));
+      }
+    })
+    .catch((err) => {
+      setPushToDBTListData([]);
+    });
+};
+
+  // const getPushToDBTList = (
+  //   categoryId,
+  //   componentId,
+  //   schemeId,
+  //   applicationFormId,
+  //   componentType
+  // ) => {
+  //   api
+  //     .post(
+  //       baseURLDBT +
+  //         `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&componentType=${componentType}`
+  //     )
+  //     .then((response) => {
+  //       if (response.data.content) {
+  //         const dbtData = response.data.content;
+  //         setSchemeQuotaListCount(dbtData.length);
+  //         setRecordFromAppForm(dbtData);
+
+  //         // Assuming subsidy amount is in dbtData, update actionData
+  //         // setActionData((prevData) => ({
+  //         //   ...prevData,
+  //         //   subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+  //         // }));
+  //         setActionData((prevData) => ({
+  //           ...prevData,
+  //           subsidyAmount: dbtData.subsidyAmount || "", // adjust according to your actual data structure
+  //           calculatedEligibleAmount: dbtData.calculatedEligibleAmount || "",
+  //           schemeQuotaPaymentType: dbtData.schemeQuotaPaymentType || "", // assuming eligibleAmount exists in dbtData
+  //         }));
+
+  //         setPushToDBTListData(response.data.content);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setPushToDBTListData([]);
+  //       // alert(err.response.data.errorMessages[0].message[0].message);
+  //     });
+  // };
 
   // to get push to dbt details
   const [checkApprovalListData, setCheckApprovalListData] = useState([]);
@@ -2142,12 +2182,26 @@ function DashboardReportList() {
         });
         sendPost = sendData;
       } else if (actionFarmerData[0].directlyToFruits) {
+        const paymentType = actionData.schemeQuotaPaymentType;
+        const ddoCodeToSend =
+        paymentType === "B"
+          ? reportingOfficerDdoCode
+          : paymentType === "K"
+          ? reportingOfficerKhazaneRecipientId
+          : null;
+
+           if (!ddoCodeToSend) {
+            warningAlert("Unable to determine DDO Code from payment type", "Alert!!!");
+            return;
+          }
+
         sendPost = {
           applicationList: [actionFarmerData[0]?.applicationFormId],
           userMasterId: localStorage.getItem("userMasterId"),
           paymentMode: "P",
           pushType: "P",
-          ddoCode: reportingOfficerDdoCode,
+          // ddoCode: reportingOfficerDdoCode,
+          ddoCode: ddoCodeToSend,
           sanctionNo: actionData.sanctionNo,
           categoryId: actionFarmerData[0]?.categoryId,
           componentId: actionFarmerData[0]?.componentId,
@@ -2366,21 +2420,57 @@ function DashboardReportList() {
     }
   };
 
+  // const viewModal = async (e) => {
+  //   if (!!actionFarmerData[0]?.applicationFormId) {
+  //     await getCheckFileDetails(
+  //       actionFarmerData[0]?.applicationFormId,
+  //       reportingOfficerDdoCode
+  //     );
+  //   } else {
+  //     Swal.fire({
+  //       title: "Action Required!",
+  //       text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
+  //       icon: "warning",
+  //       confirmButtonText: "OK",
+  //     });
+  //   }
+  // };
   const viewModal = async (e) => {
-    if (!!actionFarmerData[0]?.applicationFormId) {
-      await getCheckFileDetails(
-        actionFarmerData[0]?.applicationFormId,
-        reportingOfficerDdoCode
-      );
-    } else {
+  if (!!actionFarmerData[0]?.applicationFormId) {
+    // Determine ddoCode based on schemeQuotaPaymentType
+    const paymentType = actionData.schemeQuotaPaymentType;
+
+    const ddoCodeToSend =
+      paymentType === "B"
+        ? reportingOfficerDdoCode
+        : paymentType === "K"
+        ? reportingOfficerKhazaneRecipientId
+        : null;
+
+    if (!ddoCodeToSend) {
       Swal.fire({
-        title: "Action Required!",
-        text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
+        title: "Missing DDO Code",
+        text: "Unable to determine the DDO Code based on Scheme Quota Payment Type.",
         icon: "warning",
         confirmButtonText: "OK",
       });
+      return;
     }
-  };
+
+    await getCheckFileDetails(
+      actionFarmerData[0]?.applicationFormId,
+      ddoCodeToSend
+    );
+  } else {
+    Swal.fire({
+      title: "Action Required!",
+      text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
+      icon: "warning",
+      confirmButtonText: "OK",
+    });
+  }
+};
+
 
   const getUserMastersList = (_id) => {
     api
@@ -2388,6 +2478,7 @@ function DashboardReportList() {
       .then((response) => {
         if (response.data) {
           setReportingOfficerDdoCode(response.data.content.ddoCode);
+          setReportingOfficerKhazaneRecipientId(response.data.content.khazaneRecipientId);
           // setData(prev=>({...prev,
           //   reportFirstName:response.data.content.firstName
           // }));

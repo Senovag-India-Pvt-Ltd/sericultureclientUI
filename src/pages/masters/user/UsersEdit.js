@@ -61,6 +61,7 @@ function UsersEdit() {
               workingInstitutionId: "",
               ddoCode: "",
               tscMasterId:"",
+              khazaneRecipientId: "",
             });
             setValidated(false);
           }
@@ -99,6 +100,7 @@ function UsersEdit() {
       workingInstitutionId: "",
       ddoCode: "",
       tscMasterId:"",
+      khazaneRecipientId: "",
     });
   };
 
@@ -795,6 +797,23 @@ function UsersEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="password">{t("Khazane ID")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="khazaneRecipientId"
+                              name="khazaneRecipientId"
+                              value={data.khazaneRecipientId}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder={t("Enter Khazane ID")}
+                              // required
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
                   
                 </Row>
               </Card.Body>
