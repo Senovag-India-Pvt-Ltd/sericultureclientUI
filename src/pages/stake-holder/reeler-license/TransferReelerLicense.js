@@ -77,7 +77,8 @@ function TransferReelerLicense() {
     licenseRenewalDate: "",
     transferReelerId: "",
     reelerNumber: "",
-    username:"",
+    username: "",
+    tscMasterId: "",
   });
 
   const isExpiryDate = !!data.licenseExpiryDate;
@@ -109,7 +110,7 @@ function TransferReelerLicense() {
     if (["bankName", "branchName", "ifscCode"].includes(name)) {
       value = value.toUpperCase();
     }
-  
+
     setData({ ...data, [name]: value });
   };
 
@@ -220,13 +221,14 @@ function TransferReelerLicense() {
       licenseRenewalDate: "",
       transferReelerId: "",
       reelerNumber: "",
-      username:"",
-    })
+      username: "",
+      tscMasterId: "",
+    });
     setExistingReelerName("");
     setLicenseTransfer({
       reelingLicenseNumber: "",
     });
-  }
+  };
 
   const [isActive, setIsActive] = useState(false);
   const display = () => {
@@ -308,23 +310,23 @@ function TransferReelerLicense() {
     }
   }, [data.tscMasterId]);
 
-// to get tsc
-const [tscListData, setTscListData] = useState([]);
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
 
-const getTscList = () => {
-  const response = api
-    .get(baseURL + `tscMaster/get-all`)
-    .then((response) => {
-      setTscListData(response.data.content.tscMaster);
-    })
-    .catch((err) => {
-      setTscListData([]);
-    });
-};
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
 
-useEffect(() => {
-  getTscList();
-}, []);
+  useEffect(() => {
+    getTscList();
+  }, []);
   // to get Caste
   const [casteListData, setCasteListData] = useState([]);
 
@@ -520,7 +522,9 @@ useEffect(() => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Transfer of Reeler License")}</Block.Title>
+            <Block.Title tag="h2">
+              {t("Transfer of Reeler License")}
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -554,7 +558,8 @@ useEffect(() => {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2}>
-                        {t("License Transfer")}<span className="text-danger">*</span>
+                        {t("License Transfer")}
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -607,7 +612,7 @@ useEffect(() => {
                             readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                          {t("Reeler Name is required.")}
+                            {t("Reeler Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -625,7 +630,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="fatherName">
-                        {t("Father's/Husband's Name")}
+                          {t("Father's/Husband's Name")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -639,7 +644,7 @@ useEffect(() => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          {t("Fathers/Husband Name is required.")}
+                            {t("Fathers/Husband Name is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -690,7 +695,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="mobileNumber">
-                        {t("mobile_number")}<span className="text-danger">*</span>
+                          {t("mobile_number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -709,7 +715,9 @@ useEffect(() => {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="emailId">{t("email_id")}</Form.Label>
+                        <Form.Label htmlFor="emailId">
+                          {t("email_id")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="emailId"
@@ -724,7 +732,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("tsc")}<span className="text-danger">*</span>
+                          {t("tsc")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -734,21 +743,23 @@ useEffect(() => {
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                              data.tscMasterId === undefined ||
+                              data.tscMasterId === "0"
                             }
                           >
                             <option value="">{t("select_tsc")}</option>
-                            {tscListData && tscListData.map((list) => (
-                              <option
-                                key={list.tscMasterId}
-                                value={list.tscMasterId}
-                              >
-                                {list.name}
-                              </option>
-                            ))}
+                            {tscListData &&
+                              tscListData.map((list) => (
+                                <option
+                                  key={list.tscMasterId}
+                                  value={list.tscMasterId}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("tsc_is_required")}
+                            {t("tsc_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -771,7 +782,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("Assign To Inspect")}<span className="text-danger">*</span>
+                          {t("Assign To Inspect")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -781,21 +793,25 @@ useEffect(() => {
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                              data.assignToInspectId === undefined ||
+                              data.assignToInspectId === "0"
                             }
                           >
-                            <option value="">{t("Select Assign To Inspect")}</option>
-                            {userListData && userListData.map((list) => (
-                              <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
-                              >
-                                {list.username}
-                              </option>
-                            ))}
+                            <option value="">
+                              {t("Select Assign To Inspect")}
+                            </option>
+                            {userListData &&
+                              userListData.map((list) => (
+                                <option
+                                  key={list.userMasterId}
+                                  value={list.userMasterId}
+                                >
+                                  {list.username}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("Assign To Inspect is required")}
+                            {t("Assign To Inspect is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -820,7 +836,9 @@ useEffect(() => {
                       </Form.Group> */}
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="wnumber">{t("Ward Number")}</Form.Label>
+                        <Form.Label htmlFor="wnumber">
+                          {t("Ward Number")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="wardNumber"
@@ -876,7 +894,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rationCard">
-                        {t("ration_number")}
+                          {t("ration_number")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -892,7 +910,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rrno">
-                        {t("Electricity RR Numbers")}
+                          {t("Electricity RR Numbers")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -908,7 +926,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="revenueDocument">
-                        {t("Revenue Document (e-Khata / Reeling Unit)")}
+                          {t("Revenue Document (e-Khata / Reeling Unit)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -924,7 +942,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="recipientId">
-                        {t("Recipient ID(From Khazane)")}
+                          {t("Recipient ID(From Khazane)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -940,7 +958,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="representativeNameAddress">
-                        {t("Representative/Agent name and Address")}
+                          {t("Representative/Agent name and Address")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -949,7 +967,9 @@ useEffect(() => {
                             value={data.representativeNameAddress}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Enter Representative/Agent name and Address")}
+                            placeholder={t(
+                              "Enter Representative/Agent name and Address"
+                            )}
                           />
                         </div>
                       </Form.Group>
@@ -1007,7 +1027,8 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("relationship")}<span className="text-danger">*</span>
+                          {t("relationship")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1032,14 +1053,15 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("relationship_is_required")}
+                            {t("relationship_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="passbook">
-                        {t("passbook_number")}<span className="text-danger">*</span>
+                          {t("passbook_number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1058,7 +1080,7 @@ useEffect(() => {
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelunt">
-                        {t("Reeling Unit Boundary(In Sqft)")}
+                          {t("Reeling Unit Boundary(In Sqft)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1074,7 +1096,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("Machine Type")}<span className="text-danger">*</span>
+                          {t("Machine Type")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1099,7 +1122,7 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("Machine Type is required")}
+                            {t("Machine Type is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1121,7 +1144,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="numberOfBasins">
-                        {t("Number of Basins/Charaka")}
+                          {t("Number of Basins/Charaka")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1153,7 +1176,7 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="loanDetails">
-                        {t("loan_details")}
+                          {t("loan_details")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1169,7 +1192,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerNumber">
-                        {t("Reeler Number")}<span className="text-danger">*</span>
+                          {t("Reeler Number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1212,7 +1236,8 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("state")}<span className="text-danger">*</span>
+                          {t("state")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1233,14 +1258,15 @@ useEffect(() => {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("state_is_required")}
+                            {t("state_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("district")}<span className="text-danger">*</span>
+                          {t("district")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1267,13 +1293,14 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("district_is_required")}
+                            {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("taluk")}<span className="text-danger">*</span>
+                          {t("taluk")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1299,7 +1326,7 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("taluk_is_required")}
+                            {t("taluk_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1307,7 +1334,8 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("hobli")}<span className="text-danger">*</span>
+                          {t("hobli")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1333,13 +1361,14 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("hobli_is_required")}
+                            {t("hobli_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("village")}<span className="text-danger">*</span>
+                          {t("village")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1366,14 +1395,15 @@ useEffect(() => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("village_is_required")}
+                            {t("village_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="address">
-                        {t("address")}<span className="text-danger">*</span>
+                          {t("address")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1397,7 +1427,8 @@ useEffect(() => {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="pincode">
-                        {t("pin_code")}<span className="text-danger">*</span>
+                          {t("pin_code")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1428,7 +1459,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
-                        {t("Receipt number")}<span className="text-danger">*</span>
+                          {t("Receipt number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1449,7 +1481,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
-                        {t("Reeling License Number")}
+                          {t("Reeling License Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1463,7 +1495,7 @@ useEffect(() => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          {t("Reeling License Number is required")}
+                            {t("Reeling License Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1471,7 +1503,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
-                        {t("Member of RCS/FPO/Others")}
+                          {t("Member of RCS/FPO/Others")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1504,7 +1536,9 @@ useEffect(() => {
                     .
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="feeAmount">{t("Fee Amount")}</Form.Label>
+                        <Form.Label htmlFor="feeAmount">
+                          {t("Fee Amount")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="feeAmount"
@@ -1575,7 +1609,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
-                        {t("East")}<span className="text-danger">*</span>
+                          {t("East")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1597,7 +1632,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
-                        {t("West")}<span className="text-danger">*</span>
+                          {t("West")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1619,7 +1655,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
-                        {t("North")}<span className="text-danger">*</span>
+                          {t("North")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1641,7 +1678,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
-                        {t("South")}<span className="text-danger">*</span>
+                          {t("South")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1672,7 +1710,8 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="bankName">
-                        {t("bank_name")}<span className="text-danger">*</span>
+                          {t("bank_name")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1692,7 +1731,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="branchName">
-                        {t("branch_name")}<span className="text-danger">*</span>
+                          {t("branch_name")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1714,7 +1754,7 @@ useEffect(() => {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="accno">
-                        {t("bank_account_number")}
+                          {t("bank_account_number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -1735,7 +1775,8 @@ useEffect(() => {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="ifsc">
-                        {t("ifsc_code")}<span className="text-danger">*</span>
+                          {t("ifsc_code")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1764,12 +1805,12 @@ useEffect(() => {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                  {t("save")}
+                    {t("save")}
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                {t( "Clear")}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    {t("Clear")}
                   </Button>
                 </li>
               </ul>
