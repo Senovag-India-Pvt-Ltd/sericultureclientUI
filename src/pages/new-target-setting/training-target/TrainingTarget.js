@@ -1642,10 +1642,14 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                               </tr>
                             </thead>
                             <tbody>
-                              {viewMonthlyTargetsData.length > 0 ? (
+                              {/* {viewMonthlyTargetsData.length > 0 ? ( */}
+                              {viewTotalTargetsDataFinancial.length > 0 ? (
+
                                 <tr>
                                 {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
-                                <td>{viewMonthlyTargetsData[0].yearlyTrainingValue || "N/A"}</td>
+                                {/* <td>{viewMonthlyTargetsData[0].yearlyTrainingValue || "N/A"}</td> */}
+                                <td>{viewTotalTargetsDataFinancial[0].yearlyTrainingValue || "N/A"}</td>
+
                                 </tr>
                               ) : (
                                 <tr>

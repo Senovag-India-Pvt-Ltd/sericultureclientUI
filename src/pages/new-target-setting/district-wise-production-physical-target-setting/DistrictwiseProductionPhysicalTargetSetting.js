@@ -252,14 +252,33 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
     getFinancialYearList();
   }, []);
 
+  const [message, setMessage] = useState("");
+  const getMulberryTargetTypeLists = (mulberryId) => {
+    const response = api
+      .get(baseURLMasterData + `mulberryTargetType/get/${mulberryId}`)
+      .then((response) => {
+        // setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+        setMessage(response.data.content.unit)
+      })
+      .catch((err) => {
+        // setMulberryTargetTypeData([]);
+      });
+  };
+
+  useEffect(() => {
+    if(data.mulberryTargetTypeId){
+      getMulberryTargetTypeLists(data.mulberryTargetTypeId)
+    }
+  }, [data.mulberryTargetTypeId]);
+
   // to get mulberry target type
   const [mulberryTargetTypeData, setMulberryTargetTypeData] = useState([]);
 
   const getMulberryTargetTypeList = () => {
     api
-      .get(baseURLMasterData + `mulberryTargetType/get-all`)
+      .get(baseURLMasterData + `mulberryTargetType/get-by-required-false`)
       .then((response) => {
-        setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+         setMulberryTargetTypeData(response.data.mulberryTargetType);
       })
       .catch((err) => {
         setMulberryTargetTypeData([]);
@@ -1183,7 +1202,7 @@ useEffect(() => {
     if (!raceMasterId || raceMasterId === "0") {
       Swal.fire({
         icon: "warning",
-        title: "Please select Target Type",
+        title: "Please select Race",
         text: "Please try again!",
       });
       return;
@@ -1252,7 +1271,7 @@ useEffect(() => {
     if (!raceMasterId || raceMasterId === "0") {
       Swal.fire({
         icon: "warning",
-        title: "Please select Target Type",
+        title: "Please select Race",
         text: "Please try again!",
       });
       return;
@@ -2062,6 +2081,7 @@ useEffect(() => {
                   <Card>
                     <Card.Header>{t("Months")}</Card.Header>
                     <Card.Body>
+                      {message?(<p className="mt-n2 mb-4 bold">Please enter the below field {message}</p>):""}
                       <Row className="g-gs">
                         <Col lg="4">
                           <Form.Group className="form-group mt-n4">

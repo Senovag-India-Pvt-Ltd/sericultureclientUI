@@ -28,7 +28,7 @@ function SiSdMulberryDateTarget() {
     value: "",
     userMasterId: "",
     month: "",
-    hectare: "",
+     
   });
 
   const [type, setType] = useState({
@@ -411,7 +411,7 @@ const fetchNaregaData = (page) => {
     value: "",
     userMasterId: "",
     month: "",
-    hectare: "",
+     
   });
 
   const handleEdit = (mulberryTargetsId) => {
@@ -687,7 +687,7 @@ const fetchNaregaData = (page) => {
       value: "",
       userMasterId: "",
       month: "",
-      hectare: "",
+       
     });
     setType({
       budgetType: "allocate",
@@ -971,7 +971,7 @@ const fetchNaregaData = (page) => {
       value: "",
       userMasterId: "",
       month: "",
-      hectare: "",
+       
     });
     setSearchData({
       districtId: "",
@@ -2282,26 +2282,7 @@ const fetchNaregaData = (page) => {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>
-                    {t("Physical In Hectares")}
-                    {/* Removed mandatory asterisk */}
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      type="text"
-                      name="hectare"
-                      value={data.hectare}
-                      onChange={handleInputs}
-                      placeholder={t("Enter No.")}
-                      // Removed 'required' and 'isInvalid'
-                    />
-                    {/* Removed Form.Control.Feedback since it's not mandatory */}
-                  </div>
-                </Form.Group>
-              </Col>
-              
+
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -2353,6 +2334,10 @@ const fetchNaregaData = (page) => {
                   <Card>
                     <Card.Header>{t("Months")}</Card.Header>
                     <Card.Body>
+
+                       <div className="w-100 mb-3" style={{ backgroundColor: "#fff", paddingLeft: "0.10rem" }}>
+  <h5 className="mb-0 fw-bold text-start">{t("Physical in Hectares")}</h5>
+</div>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">

@@ -188,6 +188,14 @@ function MulberryTargetTypeList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "unit",
+      selector: (row) => row.unit,
+      cell: (row) => <span>{row.unit}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

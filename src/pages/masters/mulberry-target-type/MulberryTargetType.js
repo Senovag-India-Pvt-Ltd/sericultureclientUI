@@ -12,20 +12,27 @@ import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MulberryTargetType() {
-  const [data, setData] = useState({
-    mulberryTargetTypeName: "",
-    mulberryTargetTypeNameInKannada: "",
-  });
+ const [data, setData] = useState({
+  mulberryTargetTypeName: "",
+  mulberryTargetTypeNameInKannada: "",
+  unit:"",
+  mulberryRequired: false, 
+});
 
   const [validated, setValidated] = useState(false);
 
   let name, value;
 
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
+
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+  const { name, type, checked, value } = e.target;
+  setData({ ...data, [name]: type === "checkbox" ? checked : value });
+};
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -46,9 +53,11 @@ function MulberryTargetType() {
           } else {
             saveSuccess();
             setData({
-                mulberryTargetTypeName: "",
-                mulberryTargetTypeNameInKannada: "",
-            });
+  mulberryTargetTypeName: "",
+  mulberryTargetTypeNameInKannada: "",
+  unit:"",
+  mulberryRequired: false, 
+});
             setValidated(false);
           }
         })
@@ -72,6 +81,8 @@ function MulberryTargetType() {
     setData({
         mulberryTargetTypeName: "",
         mulberryTargetTypeNameInKannada: "",
+        unit:"",
+        mulberryRequired: false,
     });
   };
 
@@ -182,6 +193,41 @@ function MulberryTargetType() {
                       </div>
                     </Form.Group>
                   </Col>
+                  <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Label htmlFor="variety">
+      Unit
+      {/* Removed mandatory asterisk */}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="unit"
+        name="unit"
+        type="text"
+        value={data.unit}
+        onChange={handleInputs}
+        placeholder="Enter Unit"
+        // Removed 'required'
+      />
+      {/* Removed validation feedback since field is not mandatory */}
+    </div>
+  </Form.Group>
+</Col>
+
+
+                  <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Check
+      type="checkbox"
+      name="mulberryRequired"
+      id="mulberryRequired"
+      label="True"
+      checked={data.mulberryRequired}
+      onChange={handleInputs}
+    />
+  </Form.Group>
+</Col>
+
                 </Row>
               </Card.Body>
             </Card>

@@ -102,6 +102,10 @@ function MulberryTargetTypeView() {
                         </td>
                         <td>{mulberryTargetType.mulberryTargetTypeNameInKannada}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Unit:</td>
+                        <td>{mulberryTargetType.unit}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

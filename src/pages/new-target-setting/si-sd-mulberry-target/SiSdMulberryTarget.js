@@ -28,7 +28,7 @@ function SiSdMulberryTarget() {
     targetType: "",
     value: "",
     userMasterId: "",
-    hectare: "",
+     
   });
 
   const [type, setType] = useState({
@@ -409,7 +409,7 @@ useEffect(() => {
     targetType: "",
     value: "",
     userMasterId: "",
-    hectare: "",
+     
   });
 
   const handleEdit = (mulberryTargetsId) => {
@@ -680,7 +680,7 @@ useEffect(() => {
       targetType: "",
       value: "",
       userMasterId: "",
-      hectare: "",
+       
     });
     setType({
       budgetType: "allocate",
@@ -942,7 +942,7 @@ useEffect(() => {
       targetType: "",
       value: "",
       userMasterId: "",
-      hectare: "",
+       
     });
     setSearchData({
       districtId: "",
@@ -2236,26 +2236,7 @@ useEffect(() => {
                           </Form.Group>
                         </Col> */}
 
-                         <Col lg="6">
-                                                  <Form.Group className="form-group mt-n4">
-                                                    <Form.Label>
-                                                      {t("Physical In Hectares")}
-                                                      {/* Removed mandatory asterisk */}
-                                                    </Form.Label>
-                                                    <div className="form-control-wrap">
-                                                      <Form.Control
-                                                        type="text"
-                                                        name="hectare"
-                                                        value={data.hectare}
-                                                        onChange={handleInputs}
-                                                        placeholder={t("Enter No.")}
-                                                        // Removed 'required' and 'isInvalid'
-                                                      />
-                                                      {/* Removed Form.Control.Feedback since it's not mandatory */}
-                                                    </div>
-                                                  </Form.Group>
-                                                </Col>
-
+                         
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -2310,6 +2291,9 @@ useEffect(() => {
                   <Card>
                     <Card.Header>{t("Months")}</Card.Header>
                     <Card.Body>
+                      <div className="w-100 mb-3" style={{ backgroundColor: "#fff", paddingLeft: "0.10rem" }}>
+  <h5 className="mb-0 fw-bold text-start">{t("Physical in Hectares")}</h5>
+</div>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">

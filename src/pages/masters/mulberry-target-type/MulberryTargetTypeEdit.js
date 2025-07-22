@@ -19,11 +19,23 @@ function MulberryTargetTypeEdit() {
   const [validated, setValidated] = useState(false);
 
   let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
+
+//   const handleInputs = (e) => {
+//   const { name, type, checked, value } = e.target;
+//   setData({ ...data, [name]: type === "checkbox" ? checked : value });
+// };
+
+const handleInputs = (e) => {
+  const { name, type, checked, value } = e.target;
+  setData({ ...data, [name]: type === "checkbox" ? checked : value });
+};
+
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -45,6 +57,8 @@ function MulberryTargetTypeEdit() {
             setData({
               mulberryTargetTypeName: "",
               mulberryTargetTypeNameInKannada: "",
+              unit:"",
+              mulberryRequired: false, 
             });
             setValidated(false);
           }
@@ -62,6 +76,8 @@ function MulberryTargetTypeEdit() {
     setData({
       mulberryTargetTypeName: "",
       mulberryTargetTypeNameInKannada: "",
+      unit:"",
+      mulberryRequired: false,
     });
   };
 
@@ -116,6 +132,61 @@ function MulberryTargetTypeEdit() {
     })
     // .then(() => navigate("/seriui/mulberry-target-type-list"));
   };
+const [datas, setDatas] = useState({ unit: "", id: 123 });
+const [isSaved, setIsSaved] = useState(false);
+
+// const handleInputss = (e) => {
+//   const { name, value } = e.target;
+//   setData({ ...data, [name]: value });
+// };
+
+useEffect(() => {
+  if (id) {
+    setLoading(true);
+    fetch(`/api/mulberryTargetType/${id}`)
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const text = await res.text(); // read as text
+        if (!text) {
+          throw new Error("Empty response");
+        }
+
+        const result = JSON.parse(text); // manually parse
+        setData(result);
+
+        if (result.unit && result.unit.trim() !== "") {
+          setIsSaved(true); // mark read-only only if already saved
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      })
+      .finally(() => setLoading(false));
+  }
+}, [id]);
+
+
+const handleSave = () => {
+  if (data.unit.trim() === "") {
+    alert("Please enter unit.");
+    return;
+  }
+
+  fetch(`/api/mulberryTargetType/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .then(() => {
+      setIsSaved(true); // Read-only after save
+      alert("Saved successfully");
+    });
+};
+
 
   return (
     <Layout title="Edit Mulberry Target Type">
@@ -128,7 +199,7 @@ function MulberryTargetTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/mulberry-variety-list"
+                  to="/seriui/mulberry-target-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -137,7 +208,7 @@ function MulberryTargetTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/mulberry-variety-list"
+                  to="/seriui/mulberry-target-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -203,6 +274,65 @@ function MulberryTargetTypeEdit() {
                             Mulberry Target Type Name in Kannada is required.
                           </Form.Control.Feedback>
                         </div>
+                      </Form.Group>
+                    </Col>
+                  
+  <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Label htmlFor="unit">
+      Unit
+      {/* Removed mandatory asterisk */}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="unit"
+        name="unit"
+        value={data.unit}
+        onChange={handleInputs}
+        type="text"
+        placeholder="Enter Unit"
+        // removed required attribute
+      />
+      {/* Optional: remove or uncomment the feedback below if validation is needed */}
+      {/* <Form.Control.Feedback type="invalid">
+        Unit is required.
+      </Form.Control.Feedback> */}
+    </div>
+  </Form.Group>
+</Col>
+
+
+{/* <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Label htmlFor="unit">Unit</Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="unit"
+        name="unit"
+        type="text"
+        value={data.unit || ""}
+        onChange={handleInputs}
+        placeholder="Enter Unit"
+        readOnly={isSaved} // read-only if value already saved
+      />
+    </div>
+  </Form.Group>
+</Col> */}
+
+
+
+
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Check
+                          type="checkbox"
+                          name="mulberryRequired"
+                          id="mulberryRequired"
+                          label="True"
+                          checked={data.mulberryRequired}
+                          onChange={handleInputs}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
