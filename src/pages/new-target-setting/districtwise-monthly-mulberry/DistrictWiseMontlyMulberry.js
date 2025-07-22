@@ -26,6 +26,7 @@ function DistrictWiseMontlyMulberry() {
     targetType: "",
     value: "",
     userMasterId: "",
+    hectare: "",
   });
 
   const [naregaMonth,setNaregaMonth] = useState({
@@ -398,6 +399,7 @@ useEffect(() => {
     value: "",
     raceMasterId: "",
     userMasterId: "",
+    hectare: "",
   });
 
   const handleEdit = (mulberryTargetsId) => {
@@ -432,9 +434,10 @@ useEffect(() => {
 
   const getMulberryTargetTypeList = () => {
     api
-      .get(baseURLMasterData + `mulberryTargetType/get-all`)
+      .get(baseURLMasterData + `mulberryTargetType/get-by-required-true`)
       .then((response) => {
-        setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+        // setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+        setMulberryTargetTypeData(response.data.mulberryTargetType);
       })
       .catch((err) => {
         setMulberryTargetTypeData([]);
@@ -912,6 +915,7 @@ useEffect(() => {
       targetType: "",
       value: "",
       userMasterId: "",
+      hectare: "",
     });
     setSearchData({
       districtId: "",
@@ -939,6 +943,7 @@ useEffect(() => {
       targetType: "",
       value: "",
       userMasterId: "",
+      hectare: "",
     });
     setType({
       budgetType: "allocate",
@@ -1994,6 +1999,27 @@ useEffect(() => {
                             </div>
                           </Form.Group>
                         </Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>
+      {t("Physical In Hectares")}
+      {/* Removed mandatory asterisk */}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        type="text"
+        name="hectare"
+        value={data.hectare}
+        onChange={handleInputs}
+        placeholder={t("Enter No.")}
+        // Removed 'required' and 'isInvalid'
+      />
+      {/* Removed Form.Control.Feedback since it's not mandatory */}
+    </div>
+  </Form.Group>
+</Col>
+
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">

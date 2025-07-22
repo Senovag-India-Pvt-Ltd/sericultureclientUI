@@ -28,6 +28,7 @@ function SiSdMulberryDateTarget() {
     value: "",
     userMasterId: "",
     month: "",
+    hectare: "",
   });
 
   const [type, setType] = useState({
@@ -410,6 +411,7 @@ const fetchNaregaData = (page) => {
     value: "",
     userMasterId: "",
     month: "",
+    hectare: "",
   });
 
   const handleEdit = (mulberryTargetsId) => {
@@ -474,9 +476,10 @@ const fetchNaregaData = (page) => {
 
   const getMulberryTargetTypeList = () => {
     api
-      .get(baseURLMasterData + `mulberryTargetType/get-all`)
+      .get(baseURLMasterData + `mulberryTargetType/get-by-required-true`)
       .then((response) => {
-        setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+        // setMulberryTargetTypeData(response.data.content.mulberryTargetType);
+          setMulberryTargetTypeData(response.data.mulberryTargetType);
       })
       .catch((err) => {
         setMulberryTargetTypeData([]);
@@ -684,6 +687,7 @@ const fetchNaregaData = (page) => {
       value: "",
       userMasterId: "",
       month: "",
+      hectare: "",
     });
     setType({
       budgetType: "allocate",
@@ -967,6 +971,7 @@ const fetchNaregaData = (page) => {
       value: "",
       userMasterId: "",
       month: "",
+      hectare: "",
     });
     setSearchData({
       districtId: "",
@@ -1834,26 +1839,26 @@ const fetchNaregaData = (page) => {
                       }}
                     >
                       <Button variant="primary" onClick={totalTarget}>
-                        {t("SISD Targets")}
+                        {t("Range Targets")}
                       </Button>
                      
                       <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Total SISD Yearly Targets (NAREGA)")}:{" "}
+                              {t("Total Range Yearly Targets (NAREGA)")}:{" "}
                               {viewTotalTargetsDataNarega[0]?.sisdValue ||"N/A"}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Total SISD Yearly Targets (NON NAREGA)")}:{" "}
+                              {t("Total Range Yearly Targets (NON NAREGA)")}:{" "}
                               {viewTotalTargetsDataNonNarega[0]?.sisdValue ||"N/A"}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Total SISD Yearly Targets")}:{" "}
+                              {t("Total Range Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.sisdValue))
                                 ? (
@@ -1869,19 +1874,19 @@ const fetchNaregaData = (page) => {
                         <thead>
                         <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining SISD Yearly Targets(NAREGA)")}:{" "}
+                              {t("Remaining Range Yearly Targets(NAREGA)")}:{" "}
                               {viewTotalTargetsDataNarega[0]?.remainingValue || "N/A"}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining SISD Yearly Targets (NON NAREGA)")}:{" "}
+                              {t("Remaining Range Yearly Targets (NON NAREGA)")}:{" "}
                               {viewTotalTargetsDataNonNarega[0]?.remainingValue || "N/A"}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining SISD Yearly Targets")}:{" "}
+                              {t("Remaining Range Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue))
                                 ? (
@@ -1906,13 +1911,13 @@ const fetchNaregaData = (page) => {
                       }}
                     >
                       <Button variant="primary" onClick={totalTarget}>
-                        {t("SISD Daily Yearly Targets")}
+                        {t("Range Daily Yearly Targets")}
                       </Button>
                       <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("SISD Daily Yearly Targets (NAREGA)")}:{" "}
+                              {t("Range Daily Yearly Targets (NAREGA)")}:{" "}
                               {viewTotalTargetsDataNarega[0]?.sisdDayValue || "N/A"}
                             </th>
                           </tr>
@@ -1922,7 +1927,7 @@ const fetchNaregaData = (page) => {
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("SISD Daily Yearly Targets (NON NAREGA)")}:{" "}
+                              {t("Range Daily Yearly Targets (NON NAREGA)")}:{" "}
                               {viewTotalTargetsDataNonNarega[0]?.sisdDayValue || "N/A"}
                             </th>
                           </tr>
@@ -1932,7 +1937,7 @@ const fetchNaregaData = (page) => {
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
-                              {t("Total SISD Daily Yearly Targets")}:{" "}
+                              {t("Total Range Daily Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdDayValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.sisdDayValue))
                                 ? (
@@ -2276,6 +2281,27 @@ const fetchNaregaData = (page) => {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    {t("Physical In Hectares")}
+                    {/* Removed mandatory asterisk */}
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      type="text"
+                      name="hectare"
+                      value={data.hectare}
+                      onChange={handleInputs}
+                      placeholder={t("Enter No.")}
+                      // Removed 'required' and 'isInvalid'
+                    />
+                    {/* Removed Form.Control.Feedback since it's not mandatory */}
+                  </div>
+                </Form.Group>
+              </Col>
+              
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
