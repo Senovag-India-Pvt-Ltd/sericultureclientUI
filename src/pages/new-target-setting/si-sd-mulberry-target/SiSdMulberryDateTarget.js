@@ -2336,7 +2336,7 @@ const fetchNaregaData = (page) => {
                     <Card.Body>
 
                        <div className="w-100 mb-3" style={{ backgroundColor: "#fff", paddingLeft: "0.10rem" }}>
-  <h5 className="mb-0 fw-bold text-start">{t("Physical in Hectares")}</h5>
+  <h5 className="mb-0 fw-bold text-start">{t("Please enter the below field Physical in Hectares")}</h5>
 </div>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
