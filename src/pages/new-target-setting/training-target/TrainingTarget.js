@@ -1027,8 +1027,8 @@ useEffect(() => {
       console.log("Entered Allocate");
       api
         .post(
-          baseURLTargetSetting + `targets/saveTrainingTargets`,
-          {...data,physicalTargetMonths:[physicalTargetMonths],financialTargetMonths:[financialTargetMonths]}
+          baseURLTargetSetting + `targets/saveGrainageTargets`,
+          {...data,targetTypetraining: "training",physicalTargetMonths:[physicalTargetMonths],financialTargetMonths:[financialTargetMonths]}
         )
         .then((response) => {
           if (response.data.content.error) {
