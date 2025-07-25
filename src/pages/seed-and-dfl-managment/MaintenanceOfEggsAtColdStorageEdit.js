@@ -72,6 +72,8 @@ function MaintenanceOfEggsAtColdStorageEdit() {
   //   );
   // };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -98,14 +100,16 @@ function MaintenanceOfEggsAtColdStorageEdit() {
             updateError(response.data.message);
           } else {
             updateSuccess();
-            setData({
-              lotNumber: "",
-              numberOfDFLs: "",
-              dateOfColdStore: "",
-              laidOnDate: "",
-              dateOfRelease: "",
-              incubationDetails: "",
-            });
+            // setData({
+            //   lotNumber: "",
+            //   numberOfDFLs: "",
+            //   dateOfColdStore: "",
+            //   laidOnDate: "",
+            //   dateOfRelease: "",
+            //   incubationDetails: "",
+            // });
+             clear();
+            setIsSubmitting(true); 
             setValidated(false);
           }
         })
