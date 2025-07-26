@@ -956,6 +956,10 @@ import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheck
 import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
 import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
 import MultipleSanctionOrder from "../pages/services-module/application-component/MultipleSanctionOrder";
+import MaintenanceofLineRecordsforEachRaceForGrainage from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceForGrainage";
+import MaintenanceOfLineRecordsForEachRaceForGrainageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageEdit";
+import MaintenanceofLineRecordsforEachRaceForGrainageList from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageList";
+import MaintenanceOfLineRecordForEachRaceForGrainageView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceForGrainageView";
 
 // Admin and Reports
 
@@ -1467,6 +1471,26 @@ function Router() {
               path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
               element={<MaintenanceOfLineRecordForEachRaceView />}
             />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+              element={<MaintenanceofLineRecordsforEachRaceForGrainage />}
+            />
+
+             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-List"
+              element={<MaintenanceofLineRecordsforEachRaceForGrainageList />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceForGrainageEdit />}
+            />
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceForGrainageView />}
+            />
+
 
             <Route
               path="Maintenance-of-Screening-Batch-Records"

@@ -261,6 +261,7 @@ function Menu() {
     SeedDFL_BSF_Cocoons_to_P4_Grainage: false,
     SeedDFL_BSF_DFLs_for_the_8_lines: false,
     SeedDFL_Grainage: false,
+    SeedDFL_Grainage_Line_Records_Each_race: false,
     SeedDFL_Grainage_Seed_Cocoon_Processing: false,
     SeedDFL_Grainage_Preparation_Egg_DFLs: false,
     SeedDFL_Grainage_Eggs_Cold_storage: false,
@@ -1971,6 +1972,14 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
+                {showMenu.SeedDFL_Grainage_Line_Records_Each_race ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Maintenance of Line Records for Each Race")}
+                        to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
                   {showMenu.SeedDFL_Grainage_Seed_Cocoon_Processing ? (
                     <MenuItem>
                       <MenuItemLink
