@@ -956,6 +956,7 @@ import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheck
 import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
 import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
 import MultipleSanctionOrder from "../pages/services-module/application-component/MultipleSanctionOrder";
+import TargetSettingDashboard from "../pages/new-target-setting/target-dashboard/TargetSettingDashboard";
 
 // Admin and Reports
 
@@ -1903,6 +1904,10 @@ function Router() {
             <Route
               path="attribute-foundation-courses"
               element={<AttributeFoundationCourses />}
+            />
+            <Route
+              path="target-setting-dashboard"
+              element={<TargetSettingDashboard />}
             />
 
             {/* Helpdesk */}

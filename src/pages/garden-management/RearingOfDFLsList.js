@@ -134,6 +134,7 @@ function RearingOfDFLsList() {
             saveError(response.data.message);
           } else {
             saveSuccess(response.data.message);
+            handleCloseModal3();
             // clear();
             // handleCloseModal();
           }

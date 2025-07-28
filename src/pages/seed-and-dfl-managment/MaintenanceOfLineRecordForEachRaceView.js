@@ -127,7 +127,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
-                        <td>{lineRecord.noOfDfls}</td>
+                        <td>{lineRecord.numberOfDfls}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>

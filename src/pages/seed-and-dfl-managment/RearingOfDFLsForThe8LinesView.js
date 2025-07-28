@@ -160,10 +160,10 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>{t("Crop Failure Details")}:</td>
                         <td>{rearing8Lines.cropFailureDetails}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
                         <td>{rearing8Lines.cocoonAssessmentDetails}</td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </Col>
