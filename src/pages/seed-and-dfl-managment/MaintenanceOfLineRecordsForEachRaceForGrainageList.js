@@ -1,0 +1,360 @@
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import DataTable from "react-data-table-component";
+import { useState, useEffect } from "react";
+// import axios from "axios";
+import Swal from "sweetalert2";
+import { createTheme } from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
+import { Icon, Select } from "../../components";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
+
+
+// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+
+function MaintenanceofLineRecordsforEachRaceForGrainageList() {
+   // Translation
+   const { t } = useTranslation();
+  const [listData, setListData] = useState({});
+  const [listLogsData, setListLogsData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  const getList = () => {
+    setLoading(true);
+
+    const response = api
+      .get(baseURLSeedDfl + `LineRecordForGrainage/get-info`)
+      .then((response) => {
+        // console.log(response.data)
+        setListData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+ 
+  const navigate = useNavigate();
+  const handleView = (_id) => {
+    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-view/${_id}`);
+  };
+
+  const handleEdit = (_id) => {
+    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-edit/${_id}`);
+    // navigate("/seriui/training Schedule");
+  };
+
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `LineRecordForGrainage/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#004b8e",
+        secondary: "#2aa198",
+      },
+      background: {
+        default: "#fff",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#d3d3d3",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.02)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "light"
+  );
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const LineRecordDataColumns = [
+    {
+      name: t("Action"),
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.id)}
+          >
+            {t("View")}
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.id)}
+          >
+            {t("Edit")}
+          </Button>
+         
+          {/* <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            className="ms-2"
+          >
+            Delete
+          </Button> */}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      grow: 2,
+    },
+
+    {
+      name: t("Line Name"),
+      selector: (row) => row.lineName,
+      cell: (row) => <span>{row.lineName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Race"),
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Number Of DFLs"),
+      selector: (row) => row.numberOfDfls,
+      cell: (row) => <span>{row.numberOfDfls}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Farmer Name"),
+      selector: (row) => row.farmerName,
+      cell: (row) => <span>{row.farmerName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Lot Number"),
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Date Of Selection Cocoon"),
+      selector: (row) => row.dateOfSelectionCocoon,
+      cell: (row) => <span>{row.dateOfSelectionCocoon}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Pupa Test Details"),
+      selector: (row) => row.pupaTestDetails,
+      cell: (row) => <span>{row.pupaTestDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Market"),
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("No Of Cocoons Selected"),
+      selector: (row) => row.noOfCocoonsSelected,
+      cell: (row) => <span>{row.noOfCocoonsSelected}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Single Cocoon Weight in Grams"),
+      selector: (row) => row.averageWeight,
+      cell: (row) => <span>{row.averageWeight}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Farmer Name (Male Cocoon)"),
+      selector: (row) => row.farmerNameMale,
+      cell: (row) => <span>{row.farmerNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Lot Number (Male Cocoon)"),
+      selector: (row) => row.lotNumberMale,
+      cell: (row) => <span>{row.lotNumberMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: t("Market (Male Cocoon)"),
+      selector: (row) => row.marketMasterNameMale,
+      cell: (row) => <span>{row.marketMasterNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("No Of Cocoons Selected (Male Cocoon)"),
+      selector: (row) => row.noOfCocoonsSelectedMale,
+      cell: (row) => <span>{row.noOfCocoonsSelectedMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Single Cocoon Weight in Grams (Male Cocoon)"),
+      selector: (row) => row.averageWeightMale,
+      cell: (row) => <span>{row.averageWeightMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+  return (
+    <Layout title={t("List Of Maintenance of Line records for each race")}>
+      <Block.Head>
+        <Block.HeadBetween>
+          <Block.HeadContent>
+            <Block.Title tag="h2">
+            {t("List Of Maintenance of Line records for each race")}
+            </Block.Title>
+          </Block.HeadContent>
+          <Block.HeadContent>
+            <ul className="d-flex">
+              <li>
+                <Link
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+                  className="btn btn-primary btn-md d-md-none"
+                >
+                  <Icon name="plus" />
+                  <span>{t("Create")}</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+                  className="btn btn-primary d-none d-md-inline-flex"
+                >
+                  <Icon name="plus" />
+                  <span>{t("Create")}</span>
+                </Link>
+              </li>
+            </ul>
+          </Block.HeadContent>
+        </Block.HeadBetween>
+      </Block.Head>
+
+      <Block className="mt-n4">
+        <Card>
+          <DataTable
+            // title="New Trader License List"
+            tableClassName="data-table-head-light table-responsive"
+            columns={LineRecordDataColumns}
+            data={listData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </Card>
+      </Block>
+    </Layout>
+  );
+}
+
+export default MaintenanceofLineRecordsforEachRaceForGrainageList;

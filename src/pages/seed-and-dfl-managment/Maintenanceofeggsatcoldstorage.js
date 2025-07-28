@@ -71,6 +71,8 @@ function Maintenanceofeggsatcoldstorage() {
     );
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -98,14 +100,16 @@ function Maintenanceofeggsatcoldstorage() {
             saveError(response.data.message);
           } else {
             saveSuccess();
-            setData({
-              lotNumber: "",
-              numberOfDFLs: "",
-              dateOfColdStore: "",
-              laidOnDate: "",
-              dateOfRelease: "",
-              incubationDetails: "",
-            });
+            // setData({
+            //   lotNumber: "",
+            //   numberOfDFLs: "",
+            //   dateOfColdStore: "",
+            //   laidOnDate: "",
+            //   dateOfRelease: "",
+            //   incubationDetails: "",
+            // });
+            clear();
+            setIsSubmitting(true); 
             setValidated(false);
           }
         })
@@ -443,7 +447,7 @@ function Maintenanceofeggsatcoldstorage() {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" disabled={isSubmitting}>
                   {t("Save")}
                 </Button>
               </li>

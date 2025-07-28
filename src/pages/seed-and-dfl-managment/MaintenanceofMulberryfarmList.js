@@ -1243,7 +1243,7 @@ const handleUpdateAllDates = (row) => {
                 <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       {t("Brushing Date")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1258,7 +1258,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
@@ -1268,7 +1268,7 @@ const handleUpdateAllDates = (row) => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       {t("Irrigation Date")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1283,7 +1283,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
@@ -1293,7 +1293,7 @@ const handleUpdateAllDates = (row) => {
                 <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       {t("FYM Application Date")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1308,7 +1308,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
@@ -1318,7 +1318,7 @@ const handleUpdateAllDates = (row) => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       {t("Fertilizer Application Date")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1333,7 +1333,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
@@ -1343,7 +1343,7 @@ const handleUpdateAllDates = (row) => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       {t("Foilar Spray 1")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1358,7 +1358,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
@@ -1367,7 +1367,7 @@ const handleUpdateAllDates = (row) => {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                     {t("Foilar Spray 2")}
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
@@ -1382,7 +1382,7 @@ const handleUpdateAllDates = (row) => {
                         dateFormat="dd/MM/yyyy"
                         // maxDate={new Date()}
                         className="form-control"
-                        required
+                        // required
                       />
                     </div>
                   </Form.Group>
