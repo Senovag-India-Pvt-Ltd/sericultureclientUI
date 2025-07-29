@@ -277,21 +277,40 @@ function SeedCocoonInward() {
       .get(
         `${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`
       )
+      // .then((response) => {
+      //   if (response.data.length > 0) {
+      //     const dataResponse = response.data;
+      //     setPrepareEggs(response.data); // Set to the entire array
+      //     dataResponse.forEach((data) => {
+      //       if (data.fitnessCertificatePath) {
+      //         setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+      //       }
+      //     });
+      //   } else {
+      //     setPrepareEggs([]); // Handle empty response
+      //   }
+      //   // setLoading(false);
+      //   // handleShowModal1();
+      // })
       .then((response) => {
         if (response.data.length > 0) {
           const dataResponse = response.data;
-          setPrepareEggs(response.data); // Set to the entire array
+          setPrepareEggs(dataResponse);
+          setPathList([]); // clear previous paths
+          setSelectedDocumentFile([]); // clear previous file previews
           dataResponse.forEach((data) => {
             if (data.fitnessCertificatePath) {
               setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+              getDocumentFile(data.fitnessCertificatePath); // <-- fetch image preview
             }
           });
         } else {
-          setPrepareEggs([]); // Handle empty response
+          setPrepareEggs([]);
+          setPathList([]);
+          setSelectedDocumentFile([]);
         }
-        // setLoading(false);
-        // handleShowModal1();
       })
+
       .catch((err) => {
         console.error(err);
         setPrepareEggs([]);
@@ -905,12 +924,6 @@ function SeedCocoonInward() {
     }
   };
 
-  // console.log(getIdList());
-
-  //  useEffect(() => {
-
-  //  }, [id]);
-
   return (
     <Layout title={t("Seed Cocoon E-Inward")} show="true">
       <Block.Head>
@@ -1244,7 +1257,7 @@ function SeedCocoonInward() {
           </div>
         </Modal.Body>
       </Modal> */}
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+      {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{t("FC Details")}</Modal.Title>
         </Modal.Header>
@@ -1275,9 +1288,44 @@ function SeedCocoonInward() {
             </tr>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+  <Modal.Header closeButton>
+    <Modal.Title>{t("FC Details")}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <div className="d-flex flex-column justify-content-center">
+      <table>
+        <tbody>
+          {prepareEggs?.length > 0 &&
+            prepareEggs.map((data, index) => (
+              <tr key={index}>
+                <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
+                <td>
+                  <img
+                    style={{ height: "100px", width: "100px" }}
+                    src={selectedDocumentFile[index]}
+                    alt={`Fitness Certificate ${index + 1}`}
+                  />
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="ms-2"
+                    onClick={() => downloadFile(data.fitnessCertificatePath)}
+                  >
+                    {t("Download File")}
+                  </Button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  </Modal.Body>
+</Modal>
 
-      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
+
+      {/* <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
         <Modal.Header closeButton style={styles.modalHeader}>
           <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
         </Modal.Header>
@@ -1289,17 +1337,11 @@ function SeedCocoonInward() {
             >
               <Col lg="12">
                 {" "}
-                {/* Use full width for the table */}
                 <table
                   className="table small table-bordered"
                   style={styles.table}
                 >
-                  {/* <thead>
-                  <tr>
-                    <th style={{ width: '40%', textAlign: 'left' }}>Field</th>
-                    <th style={{ width: '60%', textAlign: 'left' }}>Details</th>
-                  </tr>
-                </thead> */}
+                
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
@@ -1323,7 +1365,64 @@ function SeedCocoonInward() {
             </Row>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
+
+      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
+  <Modal.Header closeButton style={styles.modalHeader}>
+    <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body style={styles.modalBody}>
+    <div className="d-flex justify-content-center">
+      <Row className="g-5 d-flex justify-content-center" style={{ width: "100%" }}>
+        <Col lg="12">
+          {prepareEggs && prepareEggs.length > 0 ? (
+            prepareEggs.map((item, index) => (
+              <div key={index} className="mb-4">
+                <h6 className="fw-bold">{t("Crop Details")} #{index + 1}</h6>
+                <table className="table small table-bordered" style={styles.table}>
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
+                      <td>{item.numbersOfDfls || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Lot No")}:</td>
+                      <td>{item.lotNumberRsp || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Rate Per 100 Dfls")}:</td>
+                      <td>{item.dflsSource || "N/A"}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Variety")}:</td>
+                      <td>{item.raceOfDfls || "N/A"}</td>
+                    </tr>
+                    {/* <tr>
+                      <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
+                      <td>
+                        {item.fitnessCertificatePath ? (
+                          <a href={item.fitnessCertificatePath} target="_blank" rel="noopener noreferrer">
+                            {t("View Certificate")}
+                          </a>
+                        ) : (
+                          "N/A"
+                        )}
+                      </td>
+                    </tr> */}
+                  </tbody>
+                </table>
+              </div>
+            ))
+          ) : (
+            <div className="text-center">{t("No crop details available")}</div>
+          )}
+        </Col>
+      </Row>
+    </div>
+  </Modal.Body>
+</Modal>
+
+
       <Modal
         show={showModalWeighment}
         onHide={handleCloseModalWeighment}
