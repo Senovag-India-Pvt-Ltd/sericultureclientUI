@@ -38,6 +38,7 @@ function SaleDisposalofDFLseggs() {
     reason: "",
     remainingDfls: "",
     dflsType: "",
+    tsc:  "",
   });
 
   const styles = {
@@ -221,6 +222,7 @@ function SaleDisposalofDFLseggs() {
               reason: "",
               remainingDfls: "",
               dflsType: "",
+              tsc:  "",
             });
             setValidated(false);
           }
@@ -261,6 +263,7 @@ function SaleDisposalofDFLseggs() {
               reason: "",
               remainingDfls: "",
               dflsType: "",
+              tsc:  "",
             });
             setValidated(false);
           }
@@ -298,6 +301,7 @@ function SaleDisposalofDFLseggs() {
       reason: "",
       remainingDfls: "",
       dflsType: "",
+      tsc:  "",
     });
     setValidated(false);
   };
@@ -368,6 +372,25 @@ function SaleDisposalofDFLseggs() {
   useEffect(() => {
     getRaceList();
   }, []);
+
+  // to get User
+    const [chawkiListData, setChawkiListData] = useState([]);
+  
+    const getChawkiList = () => {
+      const response = api
+        .get(baseURL2 + `tscMaster/get-all`)
+        .then((response) => {
+          setChawkiListData(response.data.content.tscMaster);
+        })
+        .catch((err) => {
+          setChawkiListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getChawkiList();
+    }, []);
+  
 
   // to get farm
   const [farmListData, setFarmListData] = useState([]);
@@ -972,6 +995,7 @@ function SaleDisposalofDFLseggs() {
                         </Form.Group>
                       </Col>
                     ) : data.userType === "farmer" ? (
+                      <>
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -995,7 +1019,42 @@ function SaleDisposalofDFLseggs() {
                           </div>
                         </Form.Group>
                       </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                          {t("tsc")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="tsc"
+                              value={data.tsc}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                              isInvalid={
+                                data.tsc === undefined || data.tsc === "0"
+                              }
+                            >
+                              <option value="">{t("select_tsc")}</option>
+                              {chawkiListData.map((list) => (
+                                <option
+                                  key={list.tscMasterId}
+                                  value={list.tscMasterId}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                            {t("tsc_is_required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      </>
                     ) : (
+                      
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -1043,6 +1102,9 @@ function SaleDisposalofDFLseggs() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                     
+
                     {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
