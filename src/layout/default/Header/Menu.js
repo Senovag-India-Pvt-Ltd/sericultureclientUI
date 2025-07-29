@@ -4205,6 +4205,7 @@ function Menu() {
                 <MenuItemLink
                   text={t("Reports")}
                   to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                  blank={true}
                 />
               </MenuItem>
             ) : null}
@@ -4213,6 +4214,7 @@ function Menu() {
                 <MenuItemLink
                   text={t("Dashboard")}
                   to="https://app.powerbi.com/view?r=eyJrIjoiM2E5OGNjYWMtYTc5MC00NDZiLWJhZTUtNDI5ZmJmMjA3M2ZjIiwidCI6ImNiYTJlNTNiLWZiNTktNDI4Ni1hMjk1LTBmYzFiYTNlMTQzOSJ9"
+                  blank={true}
                 />
               </MenuItem>
             ) : null}
