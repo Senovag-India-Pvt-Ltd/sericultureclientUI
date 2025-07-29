@@ -31,6 +31,7 @@ const [dataLotList, setDataLotList] = useState([]);
     averageYield: "",
     lotParentLevel: "",
     externalUnitId: "",
+    fruitsId: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -50,6 +51,7 @@ const [dataLotList, setDataLotList] = useState([]);
     averageYield: "",
     lotParentLevel: "",
     externalUnitId: "",
+     fruitsId: "",
   })
  }
 
@@ -125,6 +127,7 @@ const handleDateChange = (date) => {
       averageYield: "",
       lotParentLevel: "",
       externalUnitId: "",
+       fruitsId: "",
       // Keep the amount (price) if it's already set
       amount: prevData.amount,
     }));
@@ -142,6 +145,7 @@ const handleDateChange = (date) => {
     netWeight:"",
     farmerFruitsId:"",
     initialWeighment:""
+
   })
 
   // const handleDeleteLotDetails = (i) => {
@@ -236,6 +240,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
       auctionDate: "",
       lotParentLevel: "",
       externalUnitId: "",
+       fruitsId: "",
     });
   }
 };
@@ -415,6 +420,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
   // };
 
   const [lotParentLevel, setLotParentLevel] = useState(null);
+  const [fruitsId, setFruitsId] = useState(null);
   const [calculatedAverageYield, setCalculatedAverageYield] = useState(null);
   const [noOfDFLs, setNoOfDFLs] = useState(null);
   const [price, setPrice] = useState(0);
@@ -458,7 +464,9 @@ const handleUpdateLotDetails = (e, i, changes) => {
           const fetchedAverageYield = response.data.content[0].calculatedAverageYield;
           // Extract lotParentLevel from the response
         const newLotParentLevel = response.data.content[0].lotParentLevel;
+        const saledFruitsId = response.data.content[0].farmerFruitsId;
         setLotParentLevel(newLotParentLevel);
+        setFruitsId(saledFruitsId);
         setCalculatedAverageYield(fetchedAverageYield);
         setNoOfDFLs(fetchedNoOfDFLs);
         setPrice(fetchedPrice); // Set the new lotParentLeve
@@ -672,6 +680,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
             remainingCocoonWeight: remainingCocoonWeight,
+            fruitsId : fruitsId
           }))
         };
   
@@ -710,6 +719,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
           lotGroupageRequests: dataLotList.map(item => ({
             ...item,
             lotParentLevel: lotParentLevel,
+            fruitsId: fruitsId,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs, 
             remainingCocoonWeight: remainingCocoonWeight,  // Include lotParentLevel
@@ -736,6 +746,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
                 dflLotNumber: "",
                 averageYield: "",
                 externalUnitId: "",
+                fruitsId: "",
               });
               clear();
               setValidated(false);
@@ -840,10 +851,11 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
         marketFee: "",
         soldAmount: "",
         allottedLotId: "",
-        auctionDate: "",
+        // auctionDate: "",
         dflLotNumber: "",
         averageYield: "",
         externalUnitId: "",
+        fruitsId: "",
     });
   setFarmerDetails({
     farmerFirstName:"",
@@ -1159,7 +1171,8 @@ setAllottedLotId("");
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
                                 <td style={styles.ctstyle}>{t("No OF DFLs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
-                                <td style={styles.ctstyle}>{t("Price:")}</td>
+                                {/* <td style={styles.ctstyle}>{t("Price:")}</td> */}
+                                <td style={styles.ctstyle}>Price:</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
                               </tr>
                               <tr style={styles.tableRow}>
