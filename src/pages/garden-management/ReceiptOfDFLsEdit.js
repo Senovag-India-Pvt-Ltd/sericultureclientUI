@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
@@ -47,26 +47,29 @@ function ReceiptOfDFLsEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `Receipt/update-info`, data)
+        .post(baseURL2 + `Receipt/update-info`, {
+          ...data,
+          raceId: data.raceOfDfls,
+        })
         .then((response) => {
-            // const receiptOfDflsId = response.data.receiptOfDflsId;
-            // if (receiptOfDflsId) {
-            //   handleReceiptUpload(receiptOfDflsId);
-            // }
+          // const receiptOfDflsId = response.data.receiptOfDflsId;
+          // if (receiptOfDflsId) {
+          //   handleReceiptUpload(receiptOfDflsId);
+          // }
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-                id: "",
-                raceId:"",
-                laidOnDate: "",
-                generationNumberId: "",
-                lineNameId: "",
-                hatchingDate: "",
+              id: "",
+              raceOfDfls: "",
+              laidOnDate: "",
+              generationNumberId: "",
+              lineNameId: "",
+              hatchingDate: "",
             });
-    //         setReceiptUpload("")
-    // document.getElementById("viewReceipt").value = "";
+            //         setReceiptUpload("")
+            // document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -88,32 +91,31 @@ function ReceiptOfDFLsEdit() {
 
   const clear = () => {
     setData({
-      raceId:"",
+      raceOfDfls: "",
       laidOnDate: "",
       generationNumberId: "",
       lineNameId: "",
       hatchingDate: "",
     });
-    
   };
 
-   // to get Line Year
-   const [lineYearListData, setLineYearListData] = useState([]);
+  // to get Line Year
+  const [lineYearListData, setLineYearListData] = useState([]);
 
-   const getLineYearList = () => {
-     const response = api
-       .get(baseURL + `lineNameMaster/get-all`)
-       .then((response) => {
-         setLineYearListData(response.data.content.lineNameMaster);
-       })
-       .catch((err) => {
+  const getLineYearList = () => {
+    const response = api
+      .get(baseURL + `lineNameMaster/get-all`)
+      .then((response) => {
+        setLineYearListData(response.data.content.lineNameMaster);
+      })
+      .catch((err) => {
         setLineYearListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getLineYearList();
-   }, []);
+      });
+  };
+
+  useEffect(() => {
+    getLineYearList();
+  }, []);
 
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
@@ -193,56 +195,56 @@ function ReceiptOfDFLsEdit() {
     getIdList();
   }, [id]);
 
-   // Display Image
-//    const [receiptUpload, setReceiptUpload] = useState("");
- 
-//    const handleUploadChange = (e) => {
-//      const file = e.target.files[0];
-//      setReceiptUpload(file);
-//      setData((prev) => ({ ...prev, viewReceipt: file.name }));
-//    };
- 
-//    // Upload Image to S3 Bucket
-//    const handleReceiptUpload = async (receiptid) => {
-//      const parameters = `receiptOfDflsId=${receiptid}`;
-//      try {
-//        const formData = new FormData();
-//        formData.append("multipartFile", receiptUpload);
- 
-//        const response = await api.post(
-//          baseURL2 + `Receipt/upload-reciept?${parameters}`,
-//          formData,
-//          {
-//            headers: {
-//              "Content-Type": "multipart/form-data",
-//            },
-//          }
-//        );
-//        console.log("File upload response:", response.data);
-//      } catch (error) {
-//        console.error("Error uploading file:", error);
-//      }
-//    };
- 
-// // To get Photo from S3 Bucket
-// const [selectedUploadReceipt, setSelectedUploadReceipt] = useState(null);
+  // Display Image
+  //    const [receiptUpload, setReceiptUpload] = useState("");
 
-// const getUploadReceipt = async (file) => {
-//   const parameters = `fileName=${file}`;
-//   try {
-//     const response = await api.get(
-//       baseURL2 + `v1/api/s3/download?${parameters}`,
-//       {
-//         responseType: "arraybuffer",
-//       }
-//     );
-//     const blob = new Blob([response.data]);
-//     const url = URL.createObjectURL(blob);
-//     setSelectedUploadReceipt(url);
-//   } catch (error) {
-//     console.error("Error fetching file:", error);
-//   }
-// };
+  //    const handleUploadChange = (e) => {
+  //      const file = e.target.files[0];
+  //      setReceiptUpload(file);
+  //      setData((prev) => ({ ...prev, viewReceipt: file.name }));
+  //    };
+
+  //    // Upload Image to S3 Bucket
+  //    const handleReceiptUpload = async (receiptid) => {
+  //      const parameters = `receiptOfDflsId=${receiptid}`;
+  //      try {
+  //        const formData = new FormData();
+  //        formData.append("multipartFile", receiptUpload);
+
+  //        const response = await api.post(
+  //          baseURL2 + `Receipt/upload-reciept?${parameters}`,
+  //          formData,
+  //          {
+  //            headers: {
+  //              "Content-Type": "multipart/form-data",
+  //            },
+  //          }
+  //        );
+  //        console.log("File upload response:", response.data);
+  //      } catch (error) {
+  //        console.error("Error uploading file:", error);
+  //      }
+  //    };
+
+  // // To get Photo from S3 Bucket
+  // const [selectedUploadReceipt, setSelectedUploadReceipt] = useState(null);
+
+  // const getUploadReceipt = async (file) => {
+  //   const parameters = `fileName=${file}`;
+  //   try {
+  //     const response = await api.get(
+  //       baseURL2 + `v1/api/s3/download?${parameters}`,
+  //       {
+  //         responseType: "arraybuffer",
+  //       }
+  //     );
+  //     const blob = new Blob([response.data]);
+  //     const url = URL.createObjectURL(blob);
+  //     setSelectedUploadReceipt(url);
+  //   } catch (error) {
+  //     console.error("Error fetching file:", error);
+  //   }
+  // };
 
   const navigate = useNavigate();
 
@@ -318,156 +320,170 @@ function ReceiptOfDFLsEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("Line Name")}
-                          {/* <span className="text-danger">*</span> */}
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="lineNameId"
-                              value={data.lineNameId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // required
-                            >
-                              <option value="">{t("Select Line Details")}</option>
-                              {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
-                                <option
-                                  key={list.lineNameId}
-                                  value={list.lineNameId}
-                                >
-                                  {list.lineName}
-                                </option>
-                              ))):""}
-                            </Form.Select>
-                            {/* <Form.Control.Feedback type="invalid">
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Line Name")}
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="lineNameId"
+                            value={data.lineNameId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                          >
+                            <option value="">{t("Select Line Details")}</option>
+                            {lineYearListData && lineYearListData.length
+                              ? lineYearListData.map((list) => (
+                                  <option
+                                    key={list.lineNameId}
+                                    value={list.lineNameId}
+                                  >
+                                    {list.lineName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
                               Line Details is required
                             </Form.Control.Feedback> */}
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Race")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceOfDfls"
+                            value={data.raceOfDfls}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                          >
+                            <option value="">{t("Select Race")}</option>
+                            {raceListData && raceListData.length
+                              ? raceListData.map((list) => (
+                                  <option
+                                    key={list.raceMasterId}
+                                    value={list.raceMasterId}
+                                  >
+                                    {list.raceMasterName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Race is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("Race")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="raceId"
-                              value={data.raceId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              required
-                            >
-                              <option value="">{t("Select Race")}</option>
-                              {raceListData && raceListData.length?(raceListData.map((list) => (
-                                <option
-                                  key={list.raceMasterId}
-                                  value={list.raceMasterId}
-                                >
-                                  {list.raceMasterName}
-                                </option>
-                              ))):""}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                              {t("Race is required")}
-                            </Form.Control.Feedback>
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("Generation Number")}
-                          {/* <span className="text-danger">*</span> */}
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="generationNumberId"
-                              value={data.generationNumberId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // required
-                            >
-                              <option value="">{t("Select Generation Number")}</option>
-                              {generationListData && generationListData.length?(generationListData.map((list) => (
-                                <option
-                                  key={list.generationNumberId}
-                                  value={list.generationNumberId}
-                                >
-                                  {list.generationNumber}
-                                </option>
-                              ))):""}
-                            </Form.Select>
-                            {/* <Form.Control.Feedback type="invalid">
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Generation Number")}
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="generationNumberId"
+                            value={data.generationNumberId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                          >
+                            <option value="">
+                              {t("Select Generation Number")}
+                            </option>
+                            {generationListData && generationListData.length
+                              ? generationListData.map((list) => (
+                                  <option
+                                    key={list.generationNumberId}
+                                    value={list.generationNumberId}
+                                  >
+                                    {list.generationNumber}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
                               Generation Number is required
                             </Form.Control.Feedback> */}
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                {t("Laid on Date")}
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {/* {isDataLaidDate && ( */}
-                                <DatePicker
-                                  selected={data.laidOnDate ? new Date(data.laidOnDate) : null}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "laidOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                //   maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                {/* )} */}
-                              </div>
-                            </Form.Group>
-                          </Col> 
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        {t("Laid on Date")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {/* {isDataLaidDate && ( */}
+                        <DatePicker
+                          selected={
+                            data.laidOnDate ? new Date(data.laidOnDate) : null
+                          }
+                          onChange={(date) =>
+                            handleDateChange(date, "laidOnDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          //   maxDate={new Date()}
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          required
+                        />
+                        {/* )} */}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                {t("Hatching Date")}
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {/* {isDataLaidDate && ( */}
-                                <DatePicker
-                                  selected={data.hatchingDate ? new Date(data.hatchingDate) : null}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "hatchingDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                //   maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                {/* )} */}
-                              </div>
-                            </Form.Group>
-                          </Col>     
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        {t("Hatching Date")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {/* {isDataLaidDate && ( */}
+                        <DatePicker
+                          selected={
+                            data.hatchingDate
+                              ? new Date(data.hatchingDate)
+                              : null
+                          }
+                          onChange={(date) =>
+                            handleDateChange(date, "hatchingDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          //   maxDate={new Date()}
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          required
+                        />
+                        {/* )} */}
+                      </div>
+                    </Form.Group>
+                  </Col>
                 </Row>
               )}
             </Card.Body>

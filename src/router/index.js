@@ -956,12 +956,20 @@ import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheck
 import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
 import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
 import MultipleSanctionOrder from "../pages/services-module/application-component/MultipleSanctionOrder";
+<<<<<<< HEAD
 import MulberryAchievement from "../pages/new-target-setting/achievement/MulberryAchievement";
 import FarmwiseAchievement from "../pages/new-target-setting/achievement/FarmAchievement";
 import TrainingAchievement from "../pages/new-target-setting/achievement/TrainingAchievement";
 import SchemeAchievement from "../pages/new-target-setting/achievement/SchemeAchievement";
 import PhysicalAchievement from "../pages/new-target-setting/achievement/PhysicalAchivement";
 import GrainageAchievement from "../pages/new-target-setting/achievement/GrainageAchievement";
+=======
+import TargetSettingDashboard from "../pages/new-target-setting/target-dashboard/TargetSettingDashboard";
+import MaintenanceofLineRecordsforEachRaceForGrainage from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceForGrainage";
+import MaintenanceOfLineRecordsForEachRaceForGrainageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageEdit";
+import MaintenanceofLineRecordsforEachRaceForGrainageList from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageList";
+import MaintenanceOfLineRecordForEachRaceForGrainageView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceForGrainageView";
+>>>>>>> origin/production_11_07_2024
 
 // Admin and Reports
 
@@ -1475,6 +1483,26 @@ function Router() {
             />
 
             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+              element={<MaintenanceofLineRecordsforEachRaceForGrainage />}
+            />
+
+             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-List"
+              element={<MaintenanceofLineRecordsforEachRaceForGrainageList />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceForGrainageEdit />}
+            />
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-For-Grainage-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceForGrainageView />}
+            />
+
+
+            <Route
               path="Maintenance-of-Screening-Batch-Records"
               element={<MaintenanceofScreeningBatchRecords />}
             />
@@ -1909,6 +1937,10 @@ function Router() {
             <Route
               path="attribute-foundation-courses"
               element={<AttributeFoundationCourses />}
+            />
+            <Route
+              path="target-setting-dashboard"
+              element={<TargetSettingDashboard />}
             />
 
             {/* Helpdesk */}

@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -9,16 +9,19 @@ import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
-import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function ReceiptOfDFLsList() {
-  const { t } = useTranslation();
+function MaintenanceofLineRecordsforEachRaceForGrainageList() {
+   // Translation
+   const { t } = useTranslation();
   const [listData, setListData] = useState({});
+  const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -30,7 +33,7 @@ function ReceiptOfDFLsList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `Receipt/get-info`)
+      .get(baseURLSeedDfl + `LineRecordForGrainage/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -47,15 +50,17 @@ function ReceiptOfDFLsList() {
     getList();
   }, []);
 
+ 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/receipt-of-dfls-view/${_id}`);
+    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/receipt-of-dfls-edit/${_id}`);
+    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
+
 
   const deleteError = () => {
     Swal.fire({
@@ -76,7 +81,7 @@ function ReceiptOfDFLsList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Receipt/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `LineRecordForGrainage/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -146,11 +151,13 @@ function ReceiptOfDFLsList() {
     },
   };
 
-  const ReceiptOfDFLsDataColumns = [
+  const LineRecordDataColumns = [
     {
       name: t("Action"),
       cell: (row) => (
+        //   Button style
         <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
@@ -166,37 +173,47 @@ function ReceiptOfDFLsList() {
           >
             {t("Edit")}
           </Button>
+         
+          {/* <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            className="ms-2"
+          >
+            Delete
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
-      // grow: 2,
+      grow: 2,
+    },
+
+    {
+      name: t("Line Name"),
+      selector: (row) => row.lineName,
+      cell: (row) => <span>{row.lineName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-      name: t("Race Of DFLs"),
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Grainage"),
-      selector: (row) => row.grainageMasterName,
-      cell: (row) => <span>{row.grainageMasterName}</span>,
+      name: t("Number Of DFLs"),
+      selector: (row) => row.numberOfDfls,
+      cell: (row) => <span>{row.numberOfDfls}</span>,
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("DFLs Received Date"),
-    //   selector: (row) => row.dflsRecDate,
-    //   cell: (row) => <span>{row.dflsRecDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-      name: t("Laid On Date"),
-      selector: (row) => row.laidOnDate,
-      cell: (row) => <span>{row.laidOnDate}</span>,
+      name: t("Farmer Name"),
+      selector: (row) => row.farmerName,
+      cell: (row) => <span>{row.farmerName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -207,48 +224,93 @@ function ReceiptOfDFLsList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("Number Of DFLs Received"),
-    //   selector: (row) => row.numberOfDFLsReceived,
-    //   cell: (row) => <span>{row.numberOfDFLsReceived}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-      name: t("Number Of DFLs Released"),
-      selector: (row) => row.numberOfDflsReleased,
-      cell: (row) => <span>{row.numberOfDflsReleased}</span>,
+      name: t("Date Of Selection Cocoon"),
+      selector: (row) => row.dateOfSelectionCocoon,
+      cell: (row) => <span>{row.dateOfSelectionCocoon}</span>,
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("Generation Details"),
-    //   selector: (row) => row.generationDetails,
-    //   cell: (row) => <span>{row.generationDetails}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: t("Invoice Details"),
-    //   selector: (row) => row.invoiceDetails,
-    //   cell: (row) => <span>{row.invoiceDetails}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: t("Pupa Test Details"),
+      selector: (row) => row.pupaTestDetails,
+      cell: (row) => <span>{row.pupaTestDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Market"),
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("No Of Cocoons Selected"),
+      selector: (row) => row.noOfCocoonsSelected,
+      cell: (row) => <span>{row.noOfCocoonsSelected}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Single Cocoon Weight in Grams"),
+      selector: (row) => row.averageWeight,
+      cell: (row) => <span>{row.averageWeight}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Farmer Name (Male Cocoon)"),
+      selector: (row) => row.farmerNameMale,
+      cell: (row) => <span>{row.farmerNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Lot Number (Male Cocoon)"),
+      selector: (row) => row.lotNumberMale,
+      cell: (row) => <span>{row.lotNumberMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: t("Market (Male Cocoon)"),
+      selector: (row) => row.marketMasterNameMale,
+      cell: (row) => <span>{row.marketMasterNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("No Of Cocoons Selected (Male Cocoon)"),
+      selector: (row) => row.noOfCocoonsSelectedMale,
+      cell: (row) => <span>{row.noOfCocoonsSelectedMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Single Cocoon Weight in Grams (Male Cocoon)"),
+      selector: (row) => row.averageWeightMale,
+      cell: (row) => <span>{row.averageWeightMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
-    <Layout title={t("Receipt of DFLs List")}>
+    <Layout title={t("List Of Maintenance of Line records for each race")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Receipt of DFLs List")}</Block.Title>
+            <Block.Title tag="h2">
+            {t("List Of Maintenance of Line records for each race")}
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/receipt-of-dfls"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -257,7 +319,7 @@ function ReceiptOfDFLsList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/receipt-of-dfls"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -274,7 +336,7 @@ function ReceiptOfDFLsList() {
           <DataTable
             // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ReceiptOfDFLsDataColumns}
+            columns={LineRecordDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -295,4 +357,4 @@ function ReceiptOfDFLsList() {
   );
 }
 
-export default ReceiptOfDFLsList;
+export default MaintenanceofLineRecordsforEachRaceForGrainageList;

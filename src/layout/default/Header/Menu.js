@@ -261,6 +261,7 @@ function Menu() {
     SeedDFL_BSF_Cocoons_to_P4_Grainage: false,
     SeedDFL_BSF_DFLs_for_the_8_lines: false,
     SeedDFL_Grainage: false,
+    SeedDFL_Grainage_Line_Records_Each_race: false,
     SeedDFL_Grainage_Seed_Cocoon_Processing: false,
     SeedDFL_Grainage_Preparation_Egg_DFLs: false,
     SeedDFL_Grainage_Eggs_Cold_storage: false,
@@ -343,7 +344,6 @@ function Menu() {
     Admin_Master_Registration_Designation: false,
     Admin_Master_Registration_No_Fruits_Farmer_Counter: false,
 
-
     Admin_Master_Land: false,
 
     Admin_Master_Land_Holding_Category: false,
@@ -391,7 +391,6 @@ function Menu() {
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
     Admin_Master_Service_Financial_Year: false,
     Admin_Master_Service_Activity: false,
-    
 
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
@@ -499,6 +498,10 @@ function Menu() {
 
     Admin_Report_Seed_And_Dfl: false,
     Admin_Report_Seed_And_Dfl_Farmer_Details: false,
+
+    Reports: false,
+    Reports_Dashboard: false,
+    Reports_Reports: false,
 
     // Admin_Report_Admin: false,
     // Admin_Report_Transaction: false,
@@ -753,6 +756,13 @@ function Menu() {
     if (data.includes("Admin_Report")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Admin_Report_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -1013,6 +1023,16 @@ function Menu() {
         Admin_Master_Report: true,
       }));
     }
+
+    const hasReportsAndDashboard = data.some((item) =>
+      item.startsWith("Reports_")
+    );
+    if (hasReportsAndDashboard) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+      }));
+    }
   }, [data]);
 
   // variables for Sidebar
@@ -1217,7 +1237,6 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -1971,6 +1990,14 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
+                  {showMenu.SeedDFL_Grainage_Line_Records_Each_race ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Maintenance of Line Records for Each Race")}
+                        to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
                   {showMenu.SeedDFL_Grainage_Seed_Cocoon_Processing ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2434,7 +2461,9 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("District Wise Area Under Mulberry Monthly Target")}
+                        text={t(
+                          "District Wise Area Under Mulberry Monthly Target"
+                        )}
                         to="/seriui/districtwise-montly-mulberry-new"
                       />
                     </MenuItem>
@@ -2466,7 +2495,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Range Wise Area Under Mulberry Monthly Target")}
+                        text={t("SI/SD Area Under Mulberry Monthly Target")}
                         to="/seriui/si-sd-mulberry-target-new"
                       />
                     </MenuItem>
@@ -2474,7 +2503,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Range Wise Area Under Mulberry Daily Target")}
+                        text={t("SI/SD Area Under Mulberry Daily Target")}
                         to="/seriui/si-sd-mulberry-day-target-new"
                       />
                     </MenuItem>
@@ -2503,8 +2532,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                 
-                 
+
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
@@ -2524,7 +2552,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Sericulture Training Institute  Wise Target Setting")}
+                        text={t("Training Wise Target Setting")}
                         to="/seriui/training-wise-target-setting"
                       />
                     </MenuItem>
@@ -2629,7 +2657,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-             {showMenu.Inspection_Implementation_of_MGNREGA ? (
+            {showMenu.Inspection_Implementation_of_MGNREGA ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Download Inspection Mobile App")}
@@ -2722,7 +2750,10 @@ function Menu() {
           <MenuSub>
             {showMenu.Helpdesk_Raise_a_Ticket ? (
               <MenuItem>
-                <MenuItemLink text={t("Raise a Ticket")} to="/seriui/help-desk" />
+                <MenuItemLink
+                  text={t("Raise a Ticket")}
+                  to="/seriui/help-desk"
+                />
               </MenuItem>
             ) : null}
             {showMenu.Helpdesk_Dashboard ? (
@@ -2756,7 +2787,10 @@ function Menu() {
           ) : null} */}
             {showMenu.Helpdesk_FAQ ? (
               <MenuItem>
-                <MenuItemLink text={t("KEDB")} to="/seriui/help-desk-faq-view" />
+                <MenuItemLink
+                  text={t("KEDB")}
+                  to="/seriui/help-desk-faq-view"
+                />
               </MenuItem>
             ) : null}
           </MenuSub>
@@ -2794,12 +2828,18 @@ function Menu() {
                       <MenuSub>
                         {showMenu.Admin_Master_Registration_Caste ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Caste")} to="/seriui/caste" />
+                            <MenuItemLink
+                              text={t("Caste")}
+                              to="/seriui/caste"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Roles ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Roles")} to="/seriui/roles" />
+                            <MenuItemLink
+                              text={t("Roles")}
+                              to="/seriui/roles"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Education ? (
@@ -2820,7 +2860,10 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Registration_State ? (
                           <MenuItem>
-                            <MenuItemLink text={t("State")} to="/seriui/state" />
+                            <MenuItemLink
+                              text={t("State")}
+                              to="/seriui/state"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Farmer_Bank_Reason ? (
@@ -2841,17 +2884,26 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Registration_Taluk ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Taluk")} to="/seriui/taluk" />
+                            <MenuItemLink
+                              text={t("Taluk")}
+                              to="/seriui/taluk"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Hobli ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Hobli")} to="/seriui/hobli" />
+                            <MenuItemLink
+                              text={t("Hobli")}
+                              to="/seriui/hobli"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Village ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Village")} to="/seriui/village" />
+                            <MenuItemLink
+                              text={t("Village")}
+                              to="/seriui/village"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Registration_Trader_Type ? (
@@ -3161,28 +3213,43 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Spacing")} to="/seriui/spacing" />
+                            <MenuItemLink
+                              text={t("Spacing")}
+                              to="/seriui/spacing"
+                            />
                           </MenuItem>
                         ) : null}
-                       
+
                         {showMenu.Admin_Master_Service_Hectare ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Hectare")} to="/seriui/hectare" />
+                            <MenuItemLink
+                              text={t("Hectare")}
+                              to="/seriui/hectare"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Configure_Pmkys_Amount ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Configure Amount")} to="/seriui/configure-pmkys-amount" />
+                            <MenuItemLink
+                              text={t("Configure Amount")}
+                              to="/seriui/configure-pmkys-amount"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Configure_Bonus_Amount ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Configure Bonus Amount")} to="/seriui/configure-bivoltine-amount" />
+                            <MenuItemLink
+                              text={t("Configure Bonus Amount")}
+                              to="/seriui/configure-bivoltine-amount"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Configure_RH_Amount ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Configure RH Amount")} to="/seriui/configure-rh-amount" />
+                            <MenuItemLink
+                              text={t("Configure RH Amount")}
+                              to="/seriui/configure-rh-amount"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Service_Spacing ? (
@@ -3428,12 +3495,18 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Garden_Reason ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Reason")} to="/seriui/reason" />
+                            <MenuItemLink
+                              text={t("Reason")}
+                              to="/seriui/reason"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Mount ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Mount")} to="/seriui/mount" />
+                            <MenuItemLink
+                              text={t("Mount")}
+                              to="/seriui/mount"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Disease_Status ? (
@@ -3446,7 +3519,10 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Garden_Grainage ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Grainage")} to="/seriui/grainage" />
+                            <MenuItemLink
+                              text={t("Grainage")}
+                              to="/seriui/grainage"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Disinfectant ? (
@@ -3503,12 +3579,18 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Auction_Market ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Market")} to="/seriui/market" />
+                            <MenuItemLink
+                              text={t("Market")}
+                              to="/seriui/market"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Godown ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Godown")} to="/seriui/godawn" />
+                            <MenuItemLink
+                              text={t("Godown")}
+                              to="/seriui/godawn"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Activate_Reeler ? (
@@ -3534,12 +3616,18 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Auction_Source ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Source")} to="/seriui/source" />
+                            <MenuItemLink
+                              text={t("Source")}
+                              to="/seriui/source"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Crate ? (
                           <MenuItem>
-                            <MenuItemLink text={t("Crate")} to="/seriui/crate" />
+                            <MenuItemLink
+                              text={t("Crate")}
+                              to="/seriui/crate"
+                            />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Auction_Flex_Time ? (
@@ -4083,22 +4171,51 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                      {showMenu.Admin_Report_Seed_And_Dfl_Farmer_Details ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Farmer Details By TSC")}
-                          to="/seriui/farmer-details-list-from-seed-and-dfl"
-                        />
-                      </MenuItem>
-                    ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Farmer_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farmer Details By TSC")}
+                              to="/seriui/farmer-details-list-from-seed-and-dfl"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-            
+      {showMenu.Reports ? (
+        <MenuItem sub>
+          {showMenu.Reports ? (
+            <MenuItemLink
+              text={t("Reports & Dashboards")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
+          ) : null}
+          <MenuSub>
+            {showMenu.Reports_Reports ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Reports")}
+                  to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboard")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiM2E5OGNjYWMtYTc5MC00NDZiLWJhZTUtNDI5ZmJmMjA3M2ZjIiwidCI6ImNiYTJlNTNiLWZiNTktNDI4Ni1hMjk1LTBmYzFiYTNlMTQzOSJ9"
+                />
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}

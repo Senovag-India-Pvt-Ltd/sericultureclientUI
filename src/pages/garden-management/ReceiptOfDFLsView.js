@@ -158,32 +158,40 @@ const getUploadReceipt = async (file) => {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Grainage")}:</td>
-                        <td>{receiptOfDFLs.grainageName}</td>
+                        <td>{receiptOfDFLs.grainageMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
                         <td>{receiptOfDFLs.laidOnDate}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>{t("Hatching Date")}:</td>
+                        <td>{receiptOfDFLs.hatchingDate}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>{t("Lot Number")}:</td>
                         <td>{receiptOfDFLs.lotNumber}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>{t("Number Of DFLs Received")}:</td>
                         <td>{receiptOfDFLs.numberOfDFLsReceived}</td>
+                      </tr> */}
+                       <tr>
+                        <td style={styles.ctstyle}>{t("Number Of DFLs Released")}:</td>
+                        <td>{receiptOfDFLs.numberOfDflsReleased}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Invoice Details")}:</td>
-                        <td>{receiptOfDFLs.invoiceDetails}</td>
+                        <td style={styles.ctstyle}>{t("Invoice Number")}:</td>
+                        <td>{receiptOfDFLs.invoiceNumber}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>{t("DFLs Received Date")}:</td>
                         <td>{receiptOfDFLs.dflsRecDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Generation Details")}:</td>
                         <td>{receiptOfDFLs.generationDetails}</td>
-                      </tr>
+                      </tr>  */}
                       <tr>
                         <td style={styles.ctstyle}>{t("Uploaded Receipt")}:</td>
                         <td>

@@ -4,7 +4,7 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { useState, useEffect } from "react";
 // import axios from "axios";
-import api from "../../../src/services/auth/api";
+import api from "../../services/auth/api";
 import { Icon, Select } from "../../components";
 import { format } from 'date-fns';
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function MaintenanceOfLineRecordForEachRaceView() {
+function MaintenanceOfLineRecordForEachRaceForGrainageView() {
   // Translation
   const { t } = useTranslation();
   const styles = {
@@ -37,7 +37,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `LineRecord/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `LineRecordForGrainage/get-info-by-id/${id}`)
       .then((response) => {
         setLineRecord(response.data);
         setLoading(false);
@@ -71,7 +71,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,7 +80,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-For-Grainage-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +127,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
-                        <td>{lineRecord.numberOfDfls}</td>
+                        <td>{lineRecord.noOfDfls}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
@@ -207,4 +207,4 @@ function MaintenanceOfLineRecordForEachRaceView() {
   );
 }
 
-export default MaintenanceOfLineRecordForEachRaceView;
+export default MaintenanceOfLineRecordForEachRaceForGrainageView;
