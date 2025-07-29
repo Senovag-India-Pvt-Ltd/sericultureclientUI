@@ -956,6 +956,12 @@ import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheck
 import DbtStatusCheckEdit from "../pages/masters/dbt-status-check/DbtStatusCheckEdit";
 import DbtStatusCheck from "../pages/masters/dbt-status-check/DbtStatusCheck";
 import MultipleSanctionOrder from "../pages/services-module/application-component/MultipleSanctionOrder";
+import MulberryAchievement from "../pages/new-target-setting/achievement/MulberryAchievement";
+import FarmwiseAchievement from "../pages/new-target-setting/achievement/FarmAchievement";
+import TrainingAchievement from "../pages/new-target-setting/achievement/TrainingAchievement";
+import SchemeAchievement from "../pages/new-target-setting/achievement/SchemeAchievement";
+import PhysicalAchievement from "../pages/new-target-setting/achievement/PhysicalAchivement";
+import GrainageAchievement from "../pages/new-target-setting/achievement/GrainageAchievement";
 
 // Admin and Reports
 
@@ -3490,6 +3496,37 @@ function Router() {
               path="si-sd-mulberry-day-target-new"
               element={<SiSdMulberryDateTarget />}
             />
+
+            <Route
+              path="mulberry-achievement"
+              element={<MulberryAchievement />}
+            />
+
+             <Route
+              path="scheme-achievement"
+              element={<SchemeAchievement />}
+            />
+
+              <Route
+              path="physical-achievement"
+              element={<PhysicalAchievement />}
+            />
+
+              <Route
+              path="grainage-achievement"
+              element={<GrainageAchievement />}
+            />
+
+             <Route
+              path="farm-achievement"
+              element={<FarmwiseAchievement />}
+            />
+
+          <Route
+              path="training-achievement"
+              element={<TrainingAchievement/>}
+            />
+
 
             <Route
               path="districtwise-product-physical-target-setting"
