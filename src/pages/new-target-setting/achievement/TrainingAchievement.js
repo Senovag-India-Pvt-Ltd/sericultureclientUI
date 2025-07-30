@@ -1072,30 +1072,18 @@ useEffect(() => {
                 saveError(response.data.content.error_description);
               } else {
                 saveSuccess();
-                setData({
-  
-                  //  targetsAchievementId: "",
-                  //  financialYearMasterId: "",
-                  // //  districtId: "",
-                  //  target: "",
-                  // //  value: "",
-                  //  raceMasterId: "",
-                  //  farmId: "",
-                  //  month: "",
-                  //  target:"",
-                  //  userMasterId: "",
-                  //  pageType: "FARM",
-                   
+                setData({   
     targetsAchievementId: "",
     financialYearMasterId: "",
     trainingInstitution: "",
     courseId: "",
     target: "", 
-    month: "",           
+    month: "",
+    value: "",           
     userMasterId: "",
     pageType: "TRAINING",
   
-  
+
                 });
                 setValidated(false);
               }
@@ -1836,20 +1824,20 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                                 required
                                 // disabled
                               >
-                                <option value="">{t("Select Month")}</option>
-                                <option value="JANUARY">{t("January")}</option>
-                                <option value="FEBRUARY">{t("February")}</option>
-                                <option value="MARCH">{t("March")}</option>
-                                <option value="APRIL">{t("April")}</option>
-                                <option value="MAY">{t("May")}</option>
-                                <option value="JUNE">{t("June")}</option>
-                                <option value="JULY">{t("July")}</option>
-                                <option value="AUGUST">{t("August")}</option>
-                                <option value="SEPTEMBER">{t("September")}</option>
-                                 <option value="OCTOBER">{t("October")}</option>
-                                <option value="NOVEMBER">{t("November")}</option>
-                                <option value="DECEMBER">{t("December")}</option>
-                              </Form.Select>
+                                <option value="">{t("SELECT MONTH")}</option>
+                                  <option value="JANUARY">{t("JANUARY")}</option>
+                                  <option value="FEBRUARY">{t("FEBRUARY")}</option>
+                                  <option value="MARCH">{t("MARCH")}</option>
+                                  <option value="APRIL">{t("APRIL")}</option>
+                                  <option value="MAY">{t("MAY")}</option>
+                                  <option value="JUNE">{t("JUNE")}</option>
+                                  <option value="JULY">{t("JULY")}</option>
+                                  <option value="AUGUST">{t("AUGUST")}</option>
+                                  <option value="SEPTEMBER">{t("SEPTEMBER")}</option>
+                                  <option value="OCTOBER">{t("OCTOBER")}</option>
+                                  <option value="NOVEMBER">{t("NOVEMBER")}</option>
+                                  <option value="DECEMBER">{t("DECEMBER")}</option>
+                                </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("Month is required")}
                               </Form.Control.Feedback>
@@ -1871,12 +1859,36 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                                 
                               >
                                 <option value="">{t("Select Target Type")}</option>
-                                <option value="Physical">{t("Financial")}</option>
-                                <option value="Financial">{t("Physical")}</option>
-                              </Form.Select>
+                                <option value="PHYSICAL TARGET">{t("PHYSICAL TARGET")}</option>
+                                <option value="FINANCIAL TARGET">{t("FINANCIAL TARGET")}</option>
+                               </Form.Select>
                             </div>
                           </Form.Group>
                         </Col>
+
+                       <Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="Target Value">
+      {t("Target Value")}<span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="value"
+        name="value"
+        value={data.value}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter Value")}
+        required
+        // isInvalid={!data.value} 
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Target Value is required")}.
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+
               
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
