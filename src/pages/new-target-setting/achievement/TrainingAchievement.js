@@ -1083,7 +1083,7 @@ useEffect(() => {
     userMasterId: "",
     pageType: "TRAINING",
   
-  
+
                 });
                 setValidated(false);
               }
@@ -1859,9 +1859,9 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                                 
                               >
                                 <option value="">{t("Select Target Type")}</option>
-                                <option value="Physical">{t("Financial")}</option>
-                                <option value="Financial">{t("Physical")}</option>
-                              </Form.Select>
+                                <option value="PHYSICAL TARGET">{t("PHYSICAL TARGET")}</option>
+                                <option value="FINANCIAL TARGET">{t("FINANCIAL TARGET")}</option>
+                               </Form.Select>
                             </div>
                           </Form.Group>
                         </Col>

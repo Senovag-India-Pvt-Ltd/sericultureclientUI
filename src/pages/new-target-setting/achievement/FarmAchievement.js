@@ -1694,7 +1694,7 @@ const handleShowModal = () => {
         type="text"
         placeholder={t("Enter Value")}
         required
-        isInvalid={!data.value} 
+        // isInvalid={!data.value} 
       />
       <Form.Control.Feedback type="invalid">
         {t("Target Value is required")}.

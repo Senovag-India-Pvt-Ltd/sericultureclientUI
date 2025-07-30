@@ -2284,8 +2284,8 @@ const fetchHierarchyData = (targetType, page) => {
                                                         
                                                       >
                                                         <option value="">{t("Select Target Type")}</option>
-                                                        <option value="Physical Target">{t("Financial Target")}</option>
-                                                        <option value="Financial Target">{t("Physical Target")}</option>
+                                                        <option value="PHYSICAL TARGET">{t("PHYSICAL TARGET")}</option>
+                                                        <option value="FINANCIAL TARGET">{t("FINANCIAL TARGET")}</option>
                                                       </Form.Select>
                                                     </div>
                                                   </Form.Group>

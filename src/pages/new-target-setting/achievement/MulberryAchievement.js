@@ -2091,8 +2091,8 @@ useEffect(() => {
         
       >
         <option value="">{t("Select Target Type")}</option>
-        <option value="Narega">{t("Narega")}</option>
-        <option value="Non Narega">{t("Non Narega")}</option>
+        <option value="NAREGA">{t("NAREGA")}</option>
+        <option value="NON NAREGA">{t("NON NAREGA")}</option>
       </Form.Select>
     </div>
   </Form.Group>
