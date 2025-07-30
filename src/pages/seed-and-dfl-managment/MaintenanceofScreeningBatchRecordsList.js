@@ -116,6 +116,8 @@ const styles = {
       err: "",
       cacoonsFormed: "",
       wormsBrushed: "",
+      maleRatio: "",
+      femaleRatio:""
     }));
     setValidated1(false);
     handleCloseModal1();
@@ -146,6 +148,8 @@ const styles = {
     bed1SingleWeightCacoons: "",
     bed1SingleWeightPupa: "",
     bed1SingleWeightShells: "",
+    bed1MaleRatio: "",
+    bed1FemaleRatio: "",
     bed2Id: "",
     bed2Name: "",
     bed2WeightCacoons: "",
@@ -158,6 +162,8 @@ const styles = {
     bed2Err:"",
     bed2CacoonsFormed: "",
     bed2WormsBrushed: "",
+    bed2MaleRatio: "",
+    bed2FemaleRatio: "",
     bed3Id: "",
     bed3Name: "",
     bed3WeightCacoons: "",
@@ -170,6 +176,8 @@ const styles = {
     bed3SingleWeightCacoons: "",
     bed3SingleWeightPupa: "",
     bed3SingleWeightShells: "",
+    bed3MaleRatio: "",
+    bed3FemaleRatio: "",
     bed4Id: "",
     bed4Name: "",
     bed4WeightCacoons: "",
@@ -182,6 +190,8 @@ const styles = {
     bed4SingleWeightCacoons: "",
     bed4SingleWeightPupa: "",
     bed4SingleWeightShells: "",
+    bed4MaleRatio: "",
+    bed4FemaleRatio: "",
     bed5Id: "",
     bed5Name: "",
     bed5WeightCacoons: "",
@@ -194,6 +204,8 @@ const styles = {
     bed5SingleWeightCacoons: "",
     bed5SingleWeightPupa: "",
     bed5SingleWeightShells: "",
+    bed5MaleRatio: "",
+    bed5FemaleRatio: "",
   });
 
   const postData = (event) => {
@@ -254,6 +266,8 @@ const styles = {
         err: cocoonAssesmentDetailsBedWise.bed1Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed1CacoonsFormed,
         wormsBrushed: cocoonAssesmentDetailsBedWise.bed1WormsBrushed, 
+        maleRatio: cocoonAssesmentDetailsBedWise.bed1MaleRatio,
+        femaleRatio: cocoonAssesmentDetailsBedWise.bed1FemaleRatio, 
       };
       api
         .post(
@@ -304,7 +318,9 @@ const styles = {
         singleWeightShells: cocoonAssesmentDetailsBedWise.bed2SingleWeightShells,
         err: cocoonAssesmentDetailsBedWise.bed2Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed2CacoonsFormed,
-        wormsBrushed: cocoonAssesmentDetailsBedWise.bed2WormsBrushed, 
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed2WormsBrushed,
+        maleRatio: cocoonAssesmentDetailsBedWise.bed2MaleRatio,
+        femaleRatio: cocoonAssesmentDetailsBedWise.bed2FemaleRatio,
       };
       api
         .post(
@@ -356,6 +372,8 @@ const styles = {
         err: cocoonAssesmentDetailsBedWise.bed3Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed3CacoonsFormed,
         wormsBrushed: cocoonAssesmentDetailsBedWise.bed3WormsBrushed,
+        maleRatio: cocoonAssesmentDetailsBedWise.bed3MaleRatio,
+        femaleRatio: cocoonAssesmentDetailsBedWise.bed3FemaleRatio,
       };
       api
         .post(
@@ -406,7 +424,9 @@ const styles = {
         shellPercentage:cocoonAssesmentDetailsBedWise.bed4ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed4Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed4CacoonsFormed,
-        wormsBrushed: cocoonAssesmentDetailsBedWise.bed4WormsBrushed,  
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed4WormsBrushed,
+        maleRatio: cocoonAssesmentDetailsBedWise.bed4MaleRatio,
+        femaleRatio: cocoonAssesmentDetailsBedWise.bed4FemaleRatio,  
       };
       api
         .post(
@@ -457,7 +477,9 @@ const styles = {
         shellPercentage:cocoonAssesmentDetailsBedWise.bed5ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed5Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed5CacoonsFormed,
-        wormsBrushed: cocoonAssesmentDetailsBedWise.bed5WormsBrushed,  
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed5WormsBrushed,
+        maleRatio: cocoonAssesmentDetailsBedWise.bed5MaleRatio,
+        femaleRatio: cocoonAssesmentDetailsBedWise.bed5FemaleRatio,  
       };
       api
         .post(
@@ -501,6 +523,8 @@ const styles = {
     bed1SingleWeightCacoons: "",
     bed1SingleWeightPupa: "",
     bed1SingleWeightShells: "",
+    bed1MaleRatio: "",
+    bed1FemaleRatio: "",
     bed2Id: "",
     bed2Name: "",
     bed2WeightCacoons: "",
@@ -513,6 +537,8 @@ const styles = {
     bed2Err:"",
     bed2CacoonsFormed: "",
     bed2WormsBrushed: "",
+    bed2MaleRatio: "",
+    bed2FemaleRatio: "",
     bed3Id: "",
     bed3Name: "",
     bed3WeightCacoons: "",
@@ -525,6 +551,8 @@ const styles = {
     bed3SingleWeightCacoons: "",
     bed3SingleWeightPupa: "",
     bed3SingleWeightShells: "",
+    bed3MaleRatio: "",
+    bed3FemaleRatio: "",
     bed4Id: "",
     bed4Name: "",
     bed4WeightCacoons: "",
@@ -537,6 +565,8 @@ const styles = {
     bed4SingleWeightCacoons: "",
     bed4SingleWeightPupa: "",
     bed4SingleWeightShells: "",
+    bed4MaleRatio: "",
+    bed4FemaleRatio: "",
     bed5Id: "",
     bed5Name: "",
     bed5WeightCacoons: "",
@@ -549,6 +579,8 @@ const styles = {
     bed5SingleWeightCacoons: "",
     bed5SingleWeightPupa: "",
     bed5SingleWeightShells: "",
+    bed5MaleRatio: "",
+    bed5FemaleRatio: "",
   });
 
   const viewDetails = (_id) => {
@@ -570,6 +602,8 @@ const styles = {
           bed1Err: data[0]?.err || "",
           bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
           bed1WormsBrushed: data[0]?.wormsBrushed || "",
+          bed1MaleRatio: data[0]?.maleRatio || "",
+          bed1FemaleRatio: data[0]?.femaleRatio || "",
           bed2Id: data[1]?.id || "",
           bed2Name: data[1]?.bedName || "",
           bed2WeightCacoons: data[1]?.weightCacoons || "",
@@ -582,6 +616,8 @@ const styles = {
           bed2Err: data[1]?.err || "",
           bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
           bed2WormsBrushed: data[1]?.wormsBrushed || "",
+          bed2MaleRatio: data[1]?.maleRatio || "",
+          bed2FemaleRatio: data[1]?.femaleRatio || "",
           bed3Id: data[2]?.id || "",
           bed3Name: data[2]?.bedName || "",
           bed3WeightCacoons: data[2]?.weightCacoons || "",
@@ -594,6 +630,8 @@ const styles = {
           bed3Err: data[2]?.err || "",
           bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
           bed3WormsBrushed: data[2]?.wormsBrushed || "",
+          bed3MaleRatio: data[2]?.maleRatio || "",
+          bed3FemaleRatio: data[2]?.femaleRatio || "",
           bed4Id: data[3]?.id || "",
           bed4Name: data[3]?.bedName || "",
           bed4WeightCacoons: data[3]?.weightCacoons || "",
@@ -606,6 +644,8 @@ const styles = {
           bed4Err: data[3]?.err || "",
           bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
           bed4WormsBrushed: data[3]?.wormsBrushed || "",
+          bed4MaleRatio: data[3]?.maleRatio || "",
+          bed4FemaleRatio: data[3]?.femaleRatio || "",
           bed5Id: data[4]?.id || "",
           bed5Name: data[4]?.bedName || "",
           bed5WeightCacoons: data[4]?.weightCacoons || "",
@@ -618,6 +658,8 @@ const styles = {
           bed5Err: data[4]?.err || "",
           bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
           bed5WormsBrushed: data[4]?.wormsBrushed || "",
+          bed5MaleRatio: data[4]?.maleRatio || "",
+          bed5FemaleRatio: data[4]?.femaleRatio || "",
         });
   
         // setViewDetailsData(response.data);
@@ -747,6 +789,8 @@ const styles = {
           bed1Err: data[0]?.err || "",
           bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
           bed1WormsBrushed: data[0]?.wormsBrushed || "",
+          bed1MaleRatio: data[0]?.maleRatio || "",
+          bed1FemaleRatio: data[0]?.femaleRatio || "",
           bed2Id: data[1]?.id || "",
           bed2Name: data[1]?.bedName || "",
           bed2WeightCacoons: data[1]?.weightCacoons || "",
@@ -759,6 +803,8 @@ const styles = {
           bed2Err: data[1]?.err || "",
           bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
           bed2WormsBrushed: data[1]?.wormsBrushed || "",
+          bed2MaleRatio: data[1]?.maleRatio || "",
+          bed2FemaleRatio: data[1]?.femaleRatio || "",
           bed3Id: data[2]?.id || "",
           bed3Name: data[2]?.bedName || "",
           bed3WeightCacoons: data[2]?.weightCacoons || "",
@@ -771,6 +817,8 @@ const styles = {
           bed3Err: data[2]?.err || "",
           bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
           bed3WormsBrushed: data[2]?.wormsBrushed || "",
+          bed3MaleRatio: data[2]?.maleRatio || "",
+          bed3FemaleRatio: data[2]?.femaleRatio || "",
           bed4Id: data[3]?.id || "",
           bed4Name: data[3]?.bedName || "",
           bed4WeightCacoons: data[3]?.weightCacoons || "",
@@ -783,6 +831,8 @@ const styles = {
           bed4Err: data[3]?.err || "",
           bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
           bed4WormsBrushed: data[3]?.wormsBrushed || "",
+          bed4MaleRatio: data[3]?.maleRatio || "",
+          bed4FemaleRatio: data[3]?.femaleRatio || "",
           bed5Id: data[4]?.id || "",
           bed5Name: data[4]?.bedName || "",
           bed5WeightCacoons: data[4]?.weightCacoons || "",
@@ -795,6 +845,8 @@ const styles = {
           bed5Err: data[4]?.err || "",
           bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
           bed5WormsBrushed: data[4]?.wormsBrushed || "",
+          bed5MaleRatio: data[4]?.maleRatio || "",
+          bed5FemaleRatio: data[4]?.femaleRatio || "",
         });
   
         setLoading(false);
@@ -1730,6 +1782,49 @@ const styles = {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Male Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1MaleRatio"
+                                  name="bed1MaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed1MaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Male Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Female Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1FemaleRatio"
+                                  name="bed1FemaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed1FemaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Female Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                         </Row>
                         <div className="gap-col mt-2">
                         <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -2042,6 +2137,49 @@ const styles = {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Male Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2MaleRatio"
+                                  name="bed2MaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed2MaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Male Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Female Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2FemaleRatio"
+                                  name="bed2FemaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed2FemaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Female Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                         </Row>
                         <div className="gap-col mt-2">
                         <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -2343,6 +2481,49 @@ const styles = {
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
                                   No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Male Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3MaleRatio"
+                                  name="bed3MaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed3MaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Male Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Female Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3FemaleRatio"
+                                  name="bed3FemaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed3FemaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Female Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
@@ -2650,6 +2831,49 @@ const styles = {
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
                                   No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Male Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4MaleRatio"
+                                  name="bed4MaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed4MaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Male Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Female Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4FemaleRatio"
+                                  name="bed4FemaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed4FemaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Female Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
@@ -2965,6 +3189,49 @@ const styles = {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Male Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5MaleRatio"
+                                  name="bed5MaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed5MaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Male Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Female Ratio")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5FemaleRatio"
+                                  name="bed5FemaleRatio"
+                                  value={cocoonAssesmentDetailsBedWise.bed5FemaleRatio || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Female Ratio")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                         </Row>
 
                         <div className="gap-col mt-2">
@@ -3063,6 +3330,14 @@ const styles = {
                       <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed1WormsBrushed}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                      <td>{viewDetailsData.bed1MaleRatio}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                      <td>{viewDetailsData.bed1FemaleRatio}</td>
+                    </tr>
                     
                   </tbody>
                 </table>
@@ -3123,6 +3398,14 @@ const styles = {
                     <tr>
                       <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed2CacoonsFormed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                      <td>{viewDetailsData.bed2MaleRatio}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                      <td>{viewDetailsData.bed2FemaleRatio}</td>
                     </tr>
                     
                   </tbody>
@@ -3185,6 +3468,14 @@ const styles = {
                       <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed3CacoonsFormed}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                      <td>{viewDetailsData.bed3MaleRatio}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                      <td>{viewDetailsData.bed3FemaleRatio}</td>
+                    </tr>
                     
                   </tbody>
                 </table>
@@ -3246,7 +3537,14 @@ const styles = {
                       <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed4CacoonsFormed}</td>
                     </tr>
-                    
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                      <td>{viewDetailsData.bed4MaleRatio}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                      <td>{viewDetailsData.bed4FemaleRatio}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>
@@ -3307,7 +3605,14 @@ const styles = {
                       <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
                       <td>{viewDetailsData.bed5CacoonsFormed}</td>
                     </tr>
-                    
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                      <td>{viewDetailsData.bed5MaleRatio}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                      <td>{viewDetailsData.bed5FemaleRatio}</td>
+                    </tr> 
                   </tbody>
                 </table>
               </Col>
