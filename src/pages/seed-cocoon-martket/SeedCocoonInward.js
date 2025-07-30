@@ -228,9 +228,9 @@ function SeedCocoonInward() {
             setData((prev) => ({
               ...prev,
               farmerId: farmerResponse.farmerId,
-              dflLotNumber: farmerResponse.numbersOfDfls, // Set dflLotNumber from response
-              lotVariety: farmerResponse.raceOfDfls, // Set lotVariety from response
-              lotParentalLevel: farmerResponse.lotNumberRsp, // Set lotParentLevel from response
+              // dflLotNumber: farmerResponse.numbersOfDfls, // Set dflLotNumber from response
+              // lotVariety: farmerResponse.raceOfDfls, // Set lotVariety from response
+              // lotParentalLevel: farmerResponse.lotNumberRsp, // Set lotParentLevel from response
             }));
 
             // setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
@@ -267,56 +267,120 @@ function SeedCocoonInward() {
         });
     }
   };
+  const [fitnessLotOptions, setFitnessLotOptions] = useState([]);
+const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
+
 
   const [prepareEggs, setPrepareEggs] = useState([]);
   const [pathList, setPathList] = useState([]);
-
   const getIdList = (farmerId) => {
-    setLoading(true);
-    api
-      .get(
-        `${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`
-      )
-      // .then((response) => {
-      //   if (response.data.length > 0) {
-      //     const dataResponse = response.data;
-      //     setPrepareEggs(response.data); // Set to the entire array
-      //     dataResponse.forEach((data) => {
-      //       if (data.fitnessCertificatePath) {
-      //         setPathList((prev) => [...prev, data.fitnessCertificatePath]);
-      //       }
-      //     });
-      //   } else {
-      //     setPrepareEggs([]); // Handle empty response
-      //   }
-      //   // setLoading(false);
-      //   // handleShowModal1();
-      // })
-      .then((response) => {
-        if (response.data.length > 0) {
-          const dataResponse = response.data;
-          setPrepareEggs(dataResponse);
-          setPathList([]); // clear previous paths
-          setSelectedDocumentFile([]); // clear previous file previews
-          dataResponse.forEach((data) => {
-            if (data.fitnessCertificatePath) {
-              setPathList((prev) => [...prev, data.fitnessCertificatePath]);
-              getDocumentFile(data.fitnessCertificatePath); // <-- fetch image preview
-            }
-          });
-        } else {
-          setPrepareEggs([]);
-          setPathList([]);
-          setSelectedDocumentFile([]);
-        }
-      })
+  setLoading(true);
+  api
+    .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
+    .then((response) => {
+      const dataResponse = response.data || [];
 
-      .catch((err) => {
-        console.error(err);
+      setPrepareEggs(dataResponse);
+      setFitnessLotOptions(dataResponse);
+      setPathList([]);
+      setSelectedDocumentFile([]);
+
+      if (dataResponse.length > 0) {
+        dataResponse.forEach((data) => {
+          if (data.fitnessCertificatePath) {
+            setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+            getDocumentFile(data.fitnessCertificatePath);
+          }
+        });
+
+        if (dataResponse.length === 1) {
+          const singleLot = dataResponse[0];
+
+          // Automatically assign values from the only available entry
+          setSelectedParentalLotNumber(singleLot.lotNumberRsp);
+          setData((prev) => ({
+            ...prev,
+            lotParentalLevel: singleLot.lotNumberRsp,
+            dflLotNumber: singleLot.numbersOfDfls,
+            lotVariety: singleLot.raceOfDfls,
+          }));
+        } else {
+          // Multiple entries - wait for user to input
+          setSelectedParentalLotNumber("");
+          setData((prev) => ({
+            ...prev,
+            lotParentalLevel: "",
+            dflLotNumber: "",
+            lotVariety: "",
+          }));
+        }
+      } else {
         setPrepareEggs([]);
-        setLoading(false);
-      });
-  };
+        setFitnessLotOptions([]);
+        setPathList([]);
+        setSelectedDocumentFile([]);
+      }
+
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setPrepareEggs([]);
+      setFitnessLotOptions([]);
+      setLoading(false);
+    });
+};
+
+
+  // const getIdList = (farmerId) => {
+  //   setLoading(true);
+  //   api
+  //     .get(
+  //       `${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`
+  //     )
+  //     // .then((response) => {
+  //     //   if (response.data.length > 0) {
+  //     //     const dataResponse = response.data;
+  //     //     setPrepareEggs(response.data); // Set to the entire array
+  //     //     dataResponse.forEach((data) => {
+  //     //       if (data.fitnessCertificatePath) {
+  //     //         setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+  //     //       }
+  //     //     });
+  //     //   } else {
+  //     //     setPrepareEggs([]); // Handle empty response
+  //     //   }
+  //     //   // setLoading(false);
+  //     //   // handleShowModal1();
+  //     // })
+  //     .then((response) => {
+  //       if (response.data.length > 0) {
+  //         const dataResponse = response.data|| [];
+  //         setPrepareEggs(dataResponse);
+  //         setFitnessLotOptions(dataResponse);
+  //         setPathList([]); // clear previous paths
+  //         setSelectedDocumentFile([]); // clear previous file previews
+  //         dataResponse.forEach((data) => {
+  //           if (data.fitnessCertificatePath) {
+  //             setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+  //             getDocumentFile(data.fitnessCertificatePath); // <-- fetch image preview
+  //           }
+  //         });
+  //       } else {
+  //         setPrepareEggs([]);
+  //         setFitnessLotOptions([]);
+  //         setPathList([]);
+  //         setSelectedDocumentFile([]);
+  //       }
+  //     })
+
+  //     .catch((err) => {
+  //       console.error(err);
+  //       setPrepareEggs([]);
+  //       setFitnessLotOptions([]);
+  //       setLoading(false);
+  //     });
+  // };
 
   const handleFarmerIdInputs = (e) => {
     // debugger;
@@ -339,7 +403,7 @@ function SeedCocoonInward() {
     numberOfBigBin: 1,
     dflLotNumber: "",
     lotVariety: "",
-    lotParentLevel: "",
+    lotParentalLevel: "",
     dob: new Date(),
   });
   console.log(data);
@@ -1395,7 +1459,7 @@ function SeedCocoonInward() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Variety")}:</td>
-                      <td>{item.raceOfDfls || "N/A"}</td>
+                      <td>{item.raceName || "N/A"}</td>
                     </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
@@ -1438,6 +1502,54 @@ function SeedCocoonInward() {
             onSubmit={handleinitialWeighment}
           >
             <Row className="g-3">
+            {fitnessLotOptions.length > 1 && (
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="lotParentLevel">
+                    {t("Parental Lot Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="lotParentalLevel"
+                      name="lotParentalLevel"
+                      type="text"
+                      placeholder={t("Enter Parental Lot Number")}
+                      value={selectedParentalLotNumber}
+                      onChange={(e) => {
+                        const enteredValue = e.target.value;
+                        setSelectedParentalLotNumber(enteredValue);
+
+                        const matchedLot = fitnessLotOptions.find(
+                          (item) => item.lotNumberRsp  === enteredValue
+                        );
+
+                        if (matchedLot) {
+                          setData((prev) => ({
+                            ...prev,
+                            lotParentalLevel: matchedLot.lotNumberRsp,
+                            dflLotNumber: matchedLot.numbersOfDfls,
+                            lotVariety: matchedLot.raceOfDfls,
+                          }));
+                        } else {
+                          setData((prev) => ({
+                            ...prev,
+                            lotParentalLevel: enteredValue,
+                            dflLotNumber: "",
+                            lotVariety: "",
+                          }));
+                        }
+                      }}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Parental Lot Number is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+            )}
+
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="farmerFamilyName">

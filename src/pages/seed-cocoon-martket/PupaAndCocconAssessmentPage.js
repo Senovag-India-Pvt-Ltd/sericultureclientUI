@@ -113,18 +113,19 @@ useEffect(() => {
                 if (nestedErrorCode === 0) {
                     // Success condition based on nested errorCode
                     saveSuccess();
-                    setData({
-                        marketAuctionId: "",
-                        testDate: "",
-                        noOfCocoonTakenForExamination: "",
-                        noOfDflFromFc: "",
-                        diseaseFree: "",
-                        diseaseType: "",
-                        noOfCocoonPerKg: "",
-                        meltPercentage: "",
-                        pupaTestResult: "",
-                        cocoonAssessmentResult: "",
-                    }); // Optionally reset the form
+                    getList();
+                    // setData({
+                    //     marketAuctionId: "",
+                    //     testDate: "",
+                    //     noOfCocoonTakenForExamination: "",
+                    //     noOfDflFromFc: "",
+                    //     diseaseFree: "",
+                    //     diseaseType: "",
+                    //     noOfCocoonPerKg: "",
+                    //     meltPercentage: "",
+                    //     pupaTestResult: "",
+                    //     cocoonAssessmentResult: "",
+                    // }); // Optionally reset the form
                 } else if (nestedErrorCode === -1) {
                     // Handle the case when an assessment has already been done
                     if (nestedContent) {

@@ -417,6 +417,13 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
+      name: t("Spun On To Date"),
+      selector: (row) => row.spunOnToDate,
+      cell: (row) => <span>{row.spunOnToDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: t("Date of supply"),
       selector: (row) => row.dateOfSupply,
       cell: (row) => <span>{row.dateOfSupply}</span>,
@@ -697,14 +704,14 @@ function PreservationofseedcocoonforprocessingList() {
           >
             {t("Edit")}
           </Button>
-          {/* <Button
+          <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button> */}
+          </Button>
         </div>
       ),
       sortable: false,

@@ -464,6 +464,14 @@ function PreparationofeggsDFLsList() {
           >
             {t("View DFLs")}
           </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
         </div>
       ),
       sortable: false,

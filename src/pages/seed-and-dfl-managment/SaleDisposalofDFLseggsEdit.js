@@ -175,6 +175,7 @@ function SaleDisposalofDFLseggsEdit() {
               userType: "farm",
               userTypeId: "",
               dflsType: "",
+              tsc:  "",
             });
             setValidated(false);
           }
@@ -212,6 +213,7 @@ function SaleDisposalofDFLseggsEdit() {
       reason: "",
       remainingDfls: "",
       dflsType: "",
+      tsc:  "",
     });
   };
 
@@ -289,6 +291,26 @@ function SaleDisposalofDFLseggsEdit() {
   useEffect(() => {
     getLotList();
   }, []);
+
+   // to get User
+    const [chawkiListData, setChawkiListData] = useState([]);
+  
+    const getChawkiList = () => {
+      const response = api
+        .get(baseURL + `tscMaster/get-all`)
+        .then((response) => {
+          setChawkiListData(response.data.content.tscMaster);
+        })
+        .catch((err) => {
+          setChawkiListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getChawkiList();
+    }, []);
+  
+
 
   const navigate = useNavigate();
 
@@ -805,6 +827,7 @@ function SaleDisposalofDFLseggsEdit() {
                         </Form.Group>
                       </Col>
                     ) : data.userType === "farmer" ? (
+                      <>
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -828,7 +851,41 @@ function SaleDisposalofDFLseggsEdit() {
                           </div>
                         </Form.Group>
                       </Col>
+                     <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                          {t("tsc")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="tsc"
+                              value={data.tsc}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                              isInvalid={
+                                data.tsc === undefined || data.tsc === "0"
+                              }
+                            >
+                              <option value="">{t("select_tsc")}</option>
+                              {chawkiListData.map((list) => (
+                                <option
+                                  key={list.tscMasterId}
+                                  value={list.tscMasterId}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                            {t("tsc_is_required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      </>
                     ) : (
+                      
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">

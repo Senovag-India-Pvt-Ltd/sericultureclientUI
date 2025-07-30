@@ -139,6 +139,12 @@ function PreservationOfSeedCocoonForProcessingView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
+                          {t("Spun On To Date")}:
+                        </td>
+                        <td>{seedCocoon.spunOnToDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
                           {t("Crop Number")}:
                         </td>
                         <td>{seedCocoon.cropNumber}</td>
