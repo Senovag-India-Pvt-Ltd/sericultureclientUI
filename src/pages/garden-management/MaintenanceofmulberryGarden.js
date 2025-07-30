@@ -30,12 +30,49 @@ function MaintenanceofmulberryGarden() {
   });
 
   const [validated, setValidated] = useState(false);
+ const [listData, setListData] = useState({});
+
+  const getLogsList = (plotNumber) => {
+  api
+    .get(baseURL2 + `Mulberry-garden/get-logs/${plotNumber}`)
+    .then((response) => {
+      const dataList = response.data;
+
+      if (dataList.length > 0) {
+        const { mulberryVarietyName, areaUnderEachVariety, soilTypeName } = dataList[0];
+
+        // Find IDs by name for dropdowns
+        const selectedVariety = varietyListData.find(
+          (item) => item.mulberryVarietyName === mulberryVarietyName
+        );
+        const selectedSoil = soilTypeListData.find(
+          (item) => item.soilTypeName === soilTypeName
+        );
+
+        setData((prevData) => ({
+          ...prevData,
+          variety: selectedVariety?.mulberryVarietyId || "",
+          areaUnderEachVariety: areaUnderEachVariety || "",
+          soilTypeId: selectedSoil?.soilTypeId || "",
+        }));
+      }
+    })
+    .catch((err) => {
+      console.error("Error fetching plot details:", err);
+    });
+};
 
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    
+    // Fetch plot details after entering plot number
+  if (name === "plotNumber" && value.trim() !== "") {
+    getLogsList(value.trim());
+  }
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
