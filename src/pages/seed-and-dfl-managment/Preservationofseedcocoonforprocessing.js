@@ -37,7 +37,8 @@ function Preservationofseedcocoonforprocessing() {
     farmId: "",
     marketMasterId: "",
     parentLotNumber: "",
-    cacoonSuppliedNumbers: ""
+    cacoonSuppliedNumbers: "",
+    spunOnToDate: "",
   });
 
   let name, value;
@@ -112,7 +113,8 @@ function Preservationofseedcocoonforprocessing() {
               farmId: "",
               marketMasterId: "", 
               parentLotNumber: "",
-              cacoonSuppliedNumbers: ""         
+              cacoonSuppliedNumbers: "",
+              spunOnToDate: "",         
             });
             // setReceiptUpload("")
             // document.getElementById("viewReceipt").value = "";
@@ -146,7 +148,8 @@ function Preservationofseedcocoonforprocessing() {
       farmId: "",
       marketMasterId: "",
       parentLotNumber: "",  
-      cacoonSuppliedNumbers: ""
+      cacoonSuppliedNumbers: "",
+      spunOnToDate: "",
     })
   }
 
@@ -693,6 +696,28 @@ useEffect(() => {
                         selected={data.spunOnDate}
                         onChange={(date) =>
                           handleDateChange(date, "spunOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      {t("Spun On To Date")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.spunOnToDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "spunOnToDate")
                         }
                         peekNextMonth
                         showMonthDropdown
