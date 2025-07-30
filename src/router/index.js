@@ -967,6 +967,10 @@ import MaintenanceofLineRecordsforEachRaceForGrainage from "../pages/seed-and-df
 import MaintenanceOfLineRecordsForEachRaceForGrainageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageEdit";
 import MaintenanceofLineRecordsforEachRaceForGrainageList from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceForGrainageList";
 import MaintenanceOfLineRecordForEachRaceForGrainageView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceForGrainageView";
+import RemittanceForFarm from "../pages/seed-and-dfl-managment/RemittanceForFarm";
+import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceForFarmList";
+import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
+import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 
 // Admin and Reports
 
@@ -1667,6 +1671,12 @@ function Router() {
 
             <Route path="remittance-edit/:id" element={<RemittanceEdit />} />
             <Route path="remittance-view/:id" element={<RemittanceView />} />
+
+            <Route path="remittance-for-farm" element={<RemittanceForFarm />} />
+            <Route path="remittance-for-farm-list" element={<RemittanceForFarmList />} />
+
+            <Route path="remittance-for-farm-edit/:id" element={<RemittanceForFarmEdit />} />
+            <Route path="remittance-for-farm-view/:id" element={<RemittanceForFarmView />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route

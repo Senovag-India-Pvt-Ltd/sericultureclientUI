@@ -260,6 +260,7 @@ function Menu() {
     SeedDFL_BSF_Screening_batch_record: false,
     SeedDFL_BSF_Cocoons_to_P4_Grainage: false,
     SeedDFL_BSF_DFLs_for_the_8_lines: false,
+    SeedDFL_BSF_Remittance: false,
     SeedDFL_Grainage: false,
     SeedDFL_Grainage_Line_Records_Each_race: false,
     SeedDFL_Grainage_Seed_Cocoon_Processing: false,
@@ -1974,6 +1975,14 @@ function Menu() {
                       <MenuItemLink
                         text={t("Dispatch of Cocoons to P4 Grainage")}
                         to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
+                   {showMenu.SeedDFL_BSF_Remittance ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Remittance (Eggs / PC / Others)")}
+                        to="/seriui/remittance-for-farm"
                       />
                     </MenuItem>
                   ) : null}

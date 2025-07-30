@@ -575,7 +575,8 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Market")}<span className="text-danger">*</span>
+                          {t("Market")}
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
@@ -584,7 +585,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               value={data.marketMasterId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
-                              required
+                              // required
                             >
                               <option value="">{t("Select Market")}</option>
                               {marketListData && marketListData.length?(marketListData.map((list) => (
@@ -596,9 +597,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                 </option>
                               ))):""}
                             </Form.Select>
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               {t("Market is required")}
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>

@@ -87,11 +87,17 @@ function RearingofDFLsforthe8LinesList() {
     bed1Err:"",
     bed1CacoonsFormed: "",
     bed1WormsBrushed: "",
+    bed1SingleWeightCacoons: "",
+    bed1SingleWeightPupa: "",
+    bed1SingleWeightShells: "",
     bed2Id: "",
     bed2Name: "",
     bed2WeightCacoons: "",
     bed2WeightPupa: "",
     bed2WeightShells: "",
+    bed2SingleWeightCacoons: "",
+    bed2SingleWeightPupa: "",
+    bed2SingleWeightShells: "",
     bed2ShellPercentage: "",
     bed2Err:"",
     bed2CacoonsFormed: "",
@@ -105,6 +111,9 @@ function RearingofDFLsforthe8LinesList() {
     bed3Err:"",
     bed3CacoonsFormed: "",
     bed3WormsBrushed: "",
+    bed3SingleWeightCacoons: "",
+    bed3SingleWeightPupa: "",
+    bed3SingleWeightShells: "",
     bed4Id: "",
     bed4Name: "",
     bed4WeightCacoons: "",
@@ -114,6 +123,9 @@ function RearingofDFLsforthe8LinesList() {
     bed4Err:"",
     bed4CacoonsFormed: "",
     bed4WormsBrushed: "",
+    bed4SingleWeightCacoons: "",
+    bed4SingleWeightPupa: "",
+    bed4SingleWeightShells: "",
     bed5Id: "",
     bed5Name: "",
     bed5WeightCacoons: "",
@@ -123,6 +135,9 @@ function RearingofDFLsforthe8LinesList() {
     bed5Err:"",
     bed5CacoonsFormed: "",
     bed5WormsBrushed: "",
+    bed5SingleWeightCacoons: "",
+    bed5SingleWeightPupa: "",
+    bed5SingleWeightShells: "",
   });
 
   const clear = () => {
@@ -131,6 +146,9 @@ function RearingofDFLsforthe8LinesList() {
       weightCacoons: "",
       weightPupa: "",
       weightShells: "",
+      singleWeightCacoons: "",
+      singleWeightPupa: "",
+      singleWeightShells: "",
       shellPercentage: "",
       err: "",
       cacoonsFormed: "",
@@ -160,6 +178,9 @@ function RearingofDFLsforthe8LinesList() {
         weightCacoons: cocoonAssesmentDetailsBedWise.bed1WeightCacoons,
         weightPupa: cocoonAssesmentDetailsBedWise.bed1WeightPupa,
         weightShells: cocoonAssesmentDetailsBedWise.bed1WeightShells,
+        singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed1SingleWeightCacoons,
+        singleWeightPupa: cocoonAssesmentDetailsBedWise.bed1SingleWeightPupa,
+        singleWeightShells: cocoonAssesmentDetailsBedWise.bed1SingleWeightShells,
         shellPercentage:cocoonAssesmentDetailsBedWise.bed1ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed1Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed1CacoonsFormed,
@@ -209,6 +230,9 @@ function RearingofDFLsforthe8LinesList() {
         weightPupa: cocoonAssesmentDetailsBedWise.bed2WeightPupa,
         weightShells: cocoonAssesmentDetailsBedWise.bed2WeightShells,
         shellPercentage:cocoonAssesmentDetailsBedWise.bed2ShellPercentage,
+        singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed2SingleWeightCacoons,
+        singleWeightPupa: cocoonAssesmentDetailsBedWise.bed2SingleWeightPupa,
+        singleWeightShells: cocoonAssesmentDetailsBedWise.bed2SingleWeightShells,
         err: cocoonAssesmentDetailsBedWise.bed2Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed2CacoonsFormed,
         wormsBrushed: cocoonAssesmentDetailsBedWise.bed2WormsBrushed, 
@@ -256,6 +280,9 @@ function RearingofDFLsforthe8LinesList() {
         weightCacoons: cocoonAssesmentDetailsBedWise.bed3WeightCacoons,
         weightPupa: cocoonAssesmentDetailsBedWise.bed3WeightPupa,
         weightShells: cocoonAssesmentDetailsBedWise.bed3WeightShells,
+        singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed3SingleWeightCacoons,
+        singleWeightPupa: cocoonAssesmentDetailsBedWise.bed3SingleWeightPupa,
+        singleWeightShells: cocoonAssesmentDetailsBedWise.bed3SingleWeightShells,
         shellPercentage:cocoonAssesmentDetailsBedWise.bed3ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed3Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed3CacoonsFormed,
@@ -304,6 +331,9 @@ function RearingofDFLsforthe8LinesList() {
         weightCacoons: cocoonAssesmentDetailsBedWise.bed4WeightCacoons,
         weightPupa: cocoonAssesmentDetailsBedWise.bed4WeightPupa,
         weightShells: cocoonAssesmentDetailsBedWise.bed4WeightShells,
+        singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed4SingleWeightCacoons,
+        singleWeightPupa: cocoonAssesmentDetailsBedWise.bed4SingleWeightPupa,
+        singleWeightShells: cocoonAssesmentDetailsBedWise.bed4SingleWeightShells,
         shellPercentage:cocoonAssesmentDetailsBedWise.bed4ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed4Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed4CacoonsFormed,
@@ -352,6 +382,9 @@ function RearingofDFLsforthe8LinesList() {
         weightCacoons: cocoonAssesmentDetailsBedWise.bed5WeightCacoons,
         weightPupa: cocoonAssesmentDetailsBedWise.bed5WeightPupa,
         weightShells: cocoonAssesmentDetailsBedWise.bed5WeightShells,
+        singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed5SingleWeightCacoons,
+        singleWeightPupa: cocoonAssesmentDetailsBedWise.bed5SingleWeightPupa,
+        singleWeightShells: cocoonAssesmentDetailsBedWise.bed5SingleWeightShells,
         shellPercentage:cocoonAssesmentDetailsBedWise.bed5ShellPercentage,
         err: cocoonAssesmentDetailsBedWise.bed5Err,
         cacoonsFormed: cocoonAssesmentDetailsBedWise.bed5CacoonsFormed,
@@ -396,11 +429,17 @@ function RearingofDFLsforthe8LinesList() {
     bed1Err:"",
     bed1CacoonsFormed: "",
     bed1WormsBrushed: "",
+    bed1SingleWeightCacoons: "",
+    bed1SingleWeightPupa: "",
+    bed1SingleWeightShells: "",
     bed2Id: "",
     bed2Name: "",
     bed2WeightCacoons: "",
     bed2WeightPupa: "",
     bed2WeightShells: "",
+    bed2SingleWeightCacoons: "",
+    bed2SingleWeightPupa: "",
+    bed2SingleWeightShells: "",
     bed2ShellPercentage: "",
     bed2Err:"",
     bed2CacoonsFormed: "",
@@ -414,6 +453,9 @@ function RearingofDFLsforthe8LinesList() {
     bed3Err:"",
     bed3CacoonsFormed: "",
     bed3WormsBrushed: "",
+    bed3SingleWeightCacoons: "",
+    bed3SingleWeightPupa: "",
+    bed3SingleWeightShells: "",
     bed4Id: "",
     bed4Name: "",
     bed4WeightCacoons: "",
@@ -423,6 +465,9 @@ function RearingofDFLsforthe8LinesList() {
     bed4Err:"",
     bed4CacoonsFormed: "",
     bed4WormsBrushed: "",
+    bed4SingleWeightCacoons: "",
+    bed4SingleWeightPupa: "",
+    bed4SingleWeightShells: "",
     bed5Id: "",
     bed5Name: "",
     bed5WeightCacoons: "",
@@ -432,6 +477,9 @@ function RearingofDFLsforthe8LinesList() {
     bed5Err:"",
     bed5CacoonsFormed: "",
     bed5WormsBrushed: "",
+    bed5SingleWeightCacoons: "",
+    bed5SingleWeightPupa: "",
+    bed5SingleWeightShells: "",
   });
 
   const viewDetails = (_id) => {
@@ -446,6 +494,9 @@ function RearingofDFLsforthe8LinesList() {
           bed1WeightCacoons: data[0]?.weightCacoons || "",
           bed1WeightPupa: data[0]?.weightPupa || "",
           bed1WeightShells: data[0]?.weightShells || "",
+          bed1SingleWeightCacoons: data[0]?.singleWeightCacoons || "",
+          bed1SingleWeightPupa: data[0]?.singleWeightPupa || "",
+          bed1SingleWeightShells: data[0]?.singleWeightShells || "",
           bed1ShellPercentage: data[0]?.shellPercentage || "",
           bed1Err: data[0]?.err || "",
           bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
@@ -455,6 +506,9 @@ function RearingofDFLsforthe8LinesList() {
           bed2WeightCacoons: data[1]?.weightCacoons || "",
           bed2WeightPupa: data[1]?.weightPupa || "",
           bed2WeightShells: data[1]?.weightShells || "",
+          bed2SingleWeightCacoons: data[1]?.singleWeightCacoons || "",
+          bed2SingleWeightPupa: data[1]?.singleWeightPupa || "",
+          bed2SingleWeightShells: data[1]?.singleWeightShells || "",
           bed2ShellPercentage: data[1]?.shellPercentage || "",
           bed2Err: data[1]?.err || "",
           bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
@@ -464,6 +518,9 @@ function RearingofDFLsforthe8LinesList() {
           bed3WeightCacoons: data[2]?.weightCacoons || "",
           bed3WeightPupa: data[2]?.weightPupa || "",
           bed3WeightShells: data[2]?.weightShells || "",
+          bed3SingleWeightCacoons: data[2]?.singleWeightCacoons || "",
+          bed3SingleWeightPupa: data[2]?.singleWeightPupa || "",
+          bed3SingleWeightShells: data[2]?.singleWeightShells || "",
           bed3ShellPercentage: data[2]?.shellPercentage || "",
           bed3Err: data[2]?.err || "",
           bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
@@ -473,6 +530,9 @@ function RearingofDFLsforthe8LinesList() {
           bed4WeightCacoons: data[3]?.weightCacoons || "",
           bed4WeightPupa: data[3]?.weightPupa || "",
           bed4WeightShells: data[3]?.weightShells || "",
+          bed4SingleWeightCacoons: data[3]?.singleWeightCacoons || "",
+          bed4SingleWeightPupa: data[3]?.singleWeightPupa || "",
+          bed4SingleWeightShells: data[3]?.singleWeightShells || "",
           bed4ShellPercentage: data[3]?.shellPercentage || "",
           bed4Err: data[3]?.err || "",
           bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
@@ -482,6 +542,9 @@ function RearingofDFLsforthe8LinesList() {
           bed5WeightCacoons: data[4]?.weightCacoons || "",
           bed5WeightPupa: data[4]?.weightPupa || "",
           bed5WeightShells: data[4]?.weightShells || "",
+          bed5SingleWeightCacoons: data[4]?.singleWeightCacoons || "",
+          bed5SingleWeightPupa: data[4]?.singleWeightPupa || "",
+          bed5SingleWeightShells: data[4]?.singleWeightShells || "",
           bed5ShellPercentage: data[4]?.shellPercentage || "",
           bed5Err: data[4]?.err || "",
           bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
@@ -881,6 +944,9 @@ function RearingofDFLsforthe8LinesList() {
           bed1WeightCacoons: data[0]?.weightCacoons || "",
           bed1WeightPupa: data[0]?.weightPupa || "",
           bed1WeightShells: data[0]?.weightShells || "",
+          bed1SingleWeightCacoons: data[0]?.singleWeightCacoons || "",
+          bed1SingleWeightPupa: data[0]?.singleWeightPupa || "",
+          bed1SingleWeightShells: data[0]?.singleWeightShells || "",
           bed1ShellPercentage: data[0]?.shellPercentage || "",
           bed1Err: data[0]?.err || "",
           bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
@@ -890,6 +956,9 @@ function RearingofDFLsforthe8LinesList() {
           bed2WeightCacoons: data[1]?.weightCacoons || "",
           bed2WeightPupa: data[1]?.weightPupa || "",
           bed2WeightShells: data[1]?.weightShells || "",
+          bed2SingleWeightCacoons: data[1]?.singleWeightCacoons || "",
+          bed2SingleWeightPupa: data[1]?.singleWeightPupa || "",
+          bed2SingleWeightShells: data[1]?.singleWeightShells || "",
           bed2ShellPercentage: data[1]?.shellPercentage || "",
           bed2Err: data[1]?.err || "",
           bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
@@ -899,6 +968,9 @@ function RearingofDFLsforthe8LinesList() {
           bed3WeightCacoons: data[2]?.weightCacoons || "",
           bed3WeightPupa: data[2]?.weightPupa || "",
           bed3WeightShells: data[2]?.weightShells || "",
+          bed3SingleWeightCacoons: data[2]?.singleWeightCacoons || "",
+          bed3SingleWeightPupa: data[2]?.singleWeightPupa || "",
+          bed3SingleWeightShells: data[2]?.singleWeightShells || "",
           bed3ShellPercentage: data[2]?.shellPercentage || "",
           bed3Err: data[2]?.err || "",
           bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
@@ -908,6 +980,9 @@ function RearingofDFLsforthe8LinesList() {
           bed4WeightCacoons: data[3]?.weightCacoons || "",
           bed4WeightPupa: data[3]?.weightPupa || "",
           bed4WeightShells: data[3]?.weightShells || "",
+          bed4SingleWeightCacoons: data[3]?.singleWeightCacoons || "",
+          bed4SingleWeightPupa: data[3]?.singleWeightPupa || "",
+          bed4SingleWeightShells: data[3]?.singleWeightShells || "",
           bed4ShellPercentage: data[3]?.shellPercentage || "",
           bed4Err: data[3]?.err || "",
           bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
@@ -917,6 +992,9 @@ function RearingofDFLsforthe8LinesList() {
           bed5WeightCacoons: data[4]?.weightCacoons || "",
           bed5WeightPupa: data[4]?.weightPupa || "",
           bed5WeightShells: data[4]?.weightShells || "",
+          bed5SingleWeightCacoons: data[4]?.singleWeightCacoons || "",
+          bed5SingleWeightPupa: data[4]?.singleWeightPupa || "",
+          bed5SingleWeightShells: data[4]?.singleWeightShells || "",
           bed5ShellPercentage: data[4]?.shellPercentage || "",
           bed5Err: data[4]?.err || "",
           bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
@@ -1272,6 +1350,31 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Weight of Single Cocoons")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1SingleWeightCacoons"
+                                  name="bed1SingleWeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed1SingleWeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Cocoons")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
@@ -1296,6 +1399,31 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                {t("Weight of Single Pupa")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1SingleWeightPupa"
+                                  name="bed1SingleWeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed1SingleWeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Pupa")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
@@ -1312,6 +1440,31 @@ function RearingofDFLsforthe8LinesList() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder={t("Average Weight of 25 Shells")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                {t("Weight of Single Shells")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1SingleWeightShells"
+                                  name="bed1SingleWeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed1SingleWeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1504,6 +1657,30 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Weight of Single Cocoons")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2SingleWeightCacoons"
+                                  name="bed2SingleWeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2SingleWeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Cocoons")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
@@ -1528,6 +1705,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                {t(" Weight of Single Pupa")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2SingleWeightPupa"
+                                  name="bed2SingleWeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2SingleWeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Pupa")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
@@ -1544,6 +1747,31 @@ function RearingofDFLsforthe8LinesList() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder={t("Average Weight of 25 Shells")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                {t("Weight of Single Shells")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2SingleWeightShells"
+                                  name="bed2SingleWeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2SingleWeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Shells")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -1738,6 +1966,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Weight of Single Cocoons")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3SingleWeightCacoons"
+                                  name="bed3SingleWeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3SingleWeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Cocoons")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
@@ -1761,6 +2015,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                {t("Weight of Single Pupa")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3SingleWeightPupa"
+                                  name="bed3SingleWeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3SingleWeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Pupa")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
@@ -1784,6 +2064,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                {t("Weight of Single Shells")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3SingleWeightShells"
+                                  name="bed3SingleWeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3SingleWeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Shells")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
@@ -1969,6 +2275,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Weight of Single Cocoons")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4SingleWeightCacoons"
+                                  name="bed4SingleWeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4SingleWeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Cocoons")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
@@ -1993,6 +2325,34 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                {t("Weight of Single Pupa")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4SingleWeightPupa"
+                                  name="bed4SingleWeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4SingleWeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Pupa")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
@@ -2017,6 +2377,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                {t("Weight of Single Shells")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4SingleWeightShells"
+                                  name="bed4SingleWeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4SingleWeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Shells")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
@@ -2202,6 +2588,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Weight of Single Cocoons")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5SingleWeightCacoons"
+                                  name="bed5SingleWeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5SingleWeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Cocoons")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
@@ -2226,6 +2638,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                {t("Weight of Single Pupa")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5SingleWeightPupa"
+                                  name="bed5SingleWeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5SingleWeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Pupa")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
@@ -2250,6 +2688,32 @@ function RearingofDFLsforthe8LinesList() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                {t("Weight of Single Shells")}
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5SingleWeightShells"
+                                  name="bed5SingleWeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5SingleWeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Weight of Single Shells")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="bed5ShellPercentage">
@@ -2407,12 +2871,24 @@ function RearingofDFLsforthe8LinesList() {
                       <td>{viewDetailsData.bed1WeightCacoons}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                      <td>{viewDetailsData.bed1SingleWeightCacoons}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed1WeightPupa}</td>
+                    </tr>
+                     <tr>
+                      <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                      <td>{viewDetailsData.bed1SingleWeightPupa}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed1WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                      <td>{viewDetailsData.bed1SingleWeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
@@ -2456,12 +2932,24 @@ function RearingofDFLsforthe8LinesList() {
                       <td>{viewDetailsData.bed2WeightCacoons}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                      <td>{viewDetailsData.bed2SingleWeightCacoons}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed2WeightPupa}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                      <td>{viewDetailsData.bed2SingleWeightPupa}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed2WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                      <td>{viewDetailsData.bed2SingleWeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
@@ -2505,12 +2993,24 @@ function RearingofDFLsforthe8LinesList() {
                       <td>{viewDetailsData.bed3WeightCacoons}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                      <td>{viewDetailsData.bed3SingleWeightCacoons}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed3WeightPupa}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                      <td>{viewDetailsData.bed3SingleWeightPupa}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed3WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                      <td>{viewDetailsData.bed3SingleWeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
@@ -2554,12 +3054,24 @@ function RearingofDFLsforthe8LinesList() {
                       <td>{viewDetailsData.bed4WeightCacoons}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                      <td>{viewDetailsData.bed4SingleWeightCacoons}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed4WeightPupa}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                      <td>{viewDetailsData.bed4SingleWeightPupa}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed4WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                      <td>{viewDetailsData.bed4SingleWeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
@@ -2603,12 +3115,24 @@ function RearingofDFLsforthe8LinesList() {
                       <td>{viewDetailsData.bed5WeightCacoons}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                      <td>{viewDetailsData.bed5SingleWeightCacoons}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
                       <td>{viewDetailsData.bed5WeightPupa}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                      <td>{viewDetailsData.bed5SingleWeightPupa}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
                       <td>{viewDetailsData.bed5WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                      <td>{viewDetailsData.bed5SingleWeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
