@@ -502,6 +502,28 @@ function RearingOfDFLsEdit() {
                     </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      {t("Spun On To Date")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.spunOnToDate ? new Date(data.spunOnToDate) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "spunOnToDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
                 </Row>
               )}
             </Card.Body>

@@ -148,13 +148,6 @@ const handleDateChange = (date) => {
 
   })
 
-  // const handleDeleteLotDetails = (i) => {
-  //   setDataLotList((prev) => {
-  //     const newArray = prev.filter((item, place) => place !== i);
-  //     return newArray;
-  //   });
-  // };
-  // Handle deleting a lot
 const handleDeleteLotDetails = (i) => {
   setDataLotList((prev) => {
     const deletedLotWeight = parseFloat(prev[i].lotWeight || 0);
@@ -174,36 +167,7 @@ const handleDeleteLotDetails = (i) => {
     setLotId(i);
   };
 
-  // const handleUpdateLotDetails = (e, i, changes) => {
-  //     setDataLotList((prev) =>
-  //       prev.map((item, ix) => {
-  //         if (ix === i) {
-  //           return { ...item, ...changes };
-  //         }
-  //         return item;
-  //       })
-  //     ); const form = e.currentTarget;
-  //     if (form.checkValidity() === false) {
-  //       e.preventDefault();
-  //       e.stopPropagation();
-  //       setValidatedEdit(true);
-  //     } else {
-  //       e.preventDefault();
-  //     setShowModal1(false);
-  //     setValidatedEdit(false);
-  //     setData({
-  //       buyerType: "RSP",
-  //       buyerId: "",
-  //       lotWeight: "",
-  //       amount: "",
-  //       marketFee: "",
-  //       soldAmount: "",
-  //       allottedLotId: "",
-  //       auctionDate: "",
-  //       lotParentLevel: "",
-  //     });
-  //   }
-  // };
+  
 
   // Handle editing a lot
 const handleUpdateLotDetails = (e, i, changes) => {
@@ -244,54 +208,11 @@ const handleUpdateLotDetails = (e, i, changes) => {
     });
   }
 };
-  let name, value;
-  // const handleInputs = (e) => {
-  //   name = e.target.name;
-  //   value = e.target.value;
-  //   // setData({ ...data, [name]: value });
-  //   if(name ==='allottedLotId'){
-  //     setAllottedLotId(value);
-  //   }else{
-  //     setData({ ...data, [name]: value });
-  //   }
-  // };
-  // const handleInputs = (e) => {
-  //   const { name, value } = e.target;
   
-  //   // Update state for lotWeight and amount
-  //   const newData = { ...data, [name]: value };
-  
-  //   // Calculate total amount if both lotWeight and amount are present
-  //   if (newData.lotWeight && newData.amount) {
-  //     // Calculate total and fix to 2 decimal points, then convert to an integer
-  //     newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount)); 
-  //   } else {
-  //     newData.soldAmount = ''; // Clear soldAmount if inputs are missing
-  //   }
-  
-
-  //   // Prevent editing 'amount' if it's already fetched
-  // if (name === 'amount' && data.amount) {
-  //   return; // Prevent updates to the price field
-  // }
-  
-  //   // Set the new state
-  //   if (name === 'allottedLotId') {
-  //     setAllottedLotId(value);
-  //   } else {
-  //     setData(newData);
-  //   }
-  // };
 
   const handleInputs = (e) => {
     const { name, value } = e.target;
 
-    // Prevent calculating amount and soldAmount if buyerType is 'Reeling'
-  // if (data.buyerType === "Reeling") {
-  //   return; // Exit early to prevent further calculations
-  // }
-  
-    // Update state for lotWeight and amount
     setData((prevData) => {
       const newData = { ...prevData, [name]: value };
   
@@ -308,13 +229,6 @@ const handleUpdateLotDetails = (e, i, changes) => {
         return prevData; // Return the previous state to prevent updates to the price field
       }
   
-      // Optionally, you can include the averageYield calculation here if needed
-      // if (newData.lotWeight && newData.dflLotNumber) {
-      //   newData.averageYield = (parseFloat(newData.lotWeight) / parseFloat(newData.dflLotNumber)).toFixed(2);
-      // } else {
-      //   newData.averageYield = ''; // Clear averageYield if inputs are missing
-      // }
-  
       return newData; // Return the new data state
     });
   
@@ -324,100 +238,10 @@ const handleUpdateLotDetails = (e, i, changes) => {
     }
   };
    
-  
-//   const handleInputs = (e) => {
-//   const { name, value } = e.target;
 
-//   if (name === 'allottedLotId') {
-//     setAllottedLotId(value);
-//   } else {
-//     const updatedData = { ...data, [name]: value };
-
-//     // If lotWeight or amount is updated, calculate soldAmount
-//     if (name === 'lotWeight' || name === 'amount') {
-//       const lotWeight = parseFloat(updatedData.lotWeight) || 0;
-//       const amount = parseFloat(updatedData.amount) || 0;
-//       updatedData.soldAmount = (lotWeight * amount).toFixed(3);
-//     }
-
-//     setData(updatedData);
-//   }
-// };
-
-
-
-   //  console.log("data",data.photoPath);
    const [searchValidated, setSearchValidated] = useState(false);
 
-  //  const search = (event) => {
-  //   setDataLotList([]);
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setSearchValidated(true);
-  //   } else {
-  //     event.preventDefault();
-     
-  //           api
-  //             .post(
-  //               baseURLMarket +
-  //                 `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
-  //               { allottedLotId:allottedLotId,auctionDate: auctionDate, marketId: localStorage.getItem("marketId"),
-  //                godownId: localStorage.getItem("godownId"),}
-  //               // {
-  //               //   headers: _header,
-  //               // }
-  //             )
-  //             .then((response) => {
-  //               const lotGroupageId = response.data.content[0].lotGroupageId;
-        
-  //               if (lotGroupageId) {
-  //                 // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
-  //                 setFarmerDetails((prev) => ({
-  //                   ...prev,
-  //                   farmerFirstName: response.data.content[0].farmerFirstName,
-  //                   farmerMiddleName: response.data.content[0].farmerMiddleName,
-  //                   farmerFruitsId: response.data.content[0].farmerFruitsId
-  //                 }));
-  //                 setDataLotList(response.data.content);
-  //                 setShowFarmerDetails(true);
-  //               } else {
-  //               //  const farmerDetails = response.data.content;
-  //               setFarmerDetails((prev) => ({
-  //                 ...prev,
-  //                 farmerFirstName: response.data.content[0].farmerFirstName,
-  //                 farmerMiddleName: response.data.content[0].farmerMiddleName,
-  //                 farmerFruitsId: response.data.content[0].farmerFruitsId
-  //               }));
-  //               setShowFarmerDetails(true);
-  //                }
-                 
-  //                 // console.log(modified);
-
-                 
-  //             })
-  //             .catch((err) => {
-  //               console.error("Error fetching farmer details:", err);
-  //               if (
-  //                 err.response &&
-  //                 err.response.data &&
-  //                 err.response.data.validationErrors
-  //               ) {
-  //                 if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //                   searchError(err.response.data.validationErrors);
-  //                 }
-  //               } else {
-  //                 Swal.fire({
-  //                   icon: "warning",
-  //                   title: "Details Not Found for This Lot and Auction Date",
-  //                 });
-  //               }
-  //               setFarmerDetails({});
-  //               setLoading(false);
-  //             });
-  //         }
-  // };
+  
 
   const [lotParentLevel, setLotParentLevel] = useState(null);
   const [fruitsId, setFruitsId] = useState(null);
@@ -541,77 +365,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
     }
   };
 
-  // const search = (event) => {
-  //   setDataLotList([]);
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setSearchValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     const formattedAuctionDate = formatAuctionDate(auctionDate);
-  //     api
-  //       .post(
-  //         baseURLMarket +
-  //           `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
-  //         {
-  //           allottedLotId: allottedLotId,
-  //           auctionDate: formattedAuctionDate,
-  //           marketId: localStorage.getItem("marketId"),
-  //           godownId: localStorage.getItem("godownId"),
-  //         }
-  //       )
-  //       .then((response) => {
-  //         // const lotGroupageId = response.data.content[0].lotGroupageId;
   
-  //         // // Store lotParentLevel in state
-  //         // const currentFarmerDetails = {
-  //         //   farmerFirstName: response.data.content[0].farmerFirstName,
-  //         //   lotParentLevel: response.data.content[0].lotParentLevel,
-  //         //   farmerFruitsId: response.data.content[0].farmerFruitsId,
-  //         //   price: response.data.content.price,
-  //         //   netWeight: response.data.content.netWeight,
-  //         //   noOfDFLs: response.data.content.noOfDFLs,
-  //         //   initialWeighment: response.data.content.initialWeighment,
-  //         // };
-  //         const currentContent = response.data.content[0];
-  //         const lotGroupageId = currentContent.lotGroupageId;
-    
-  //         // Prepare farmer details while checking for undefined values
-  //         const currentFarmerDetails = {
-  //           farmerFirstName: currentContent.farmerFirstName,
-  //           lotParentLevel: currentContent.lotParentLevel,
-  //           farmerFruitsId: currentContent.farmerFruitsId,
-  //           price: currentContent.price,
-  //           netWeight: currentContent.netWeight,
-  //           noOfDFLs: currentContent.noOfDFLs,
-  //           initialWeighment: currentContent.initialWeighment,
-  //         };
-          
-  //         setLotParentLevel(currentFarmerDetails.lotParentLevel); // Save lotParentLevel
-  //         setFarmerDetails((prev) => ({ ...prev, ...currentFarmerDetails }));
-  //         setDataLotList(response.data.content);
-  //         setShowFarmerDetails(true);
-  //       })
-  //       .catch((err) => {
-  //         console.error("Error fetching farmer details:", err);
-  //         if (err.response && err.response.data && err.response.data.validationErrors) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             searchError(err.response.data.validationErrors);
-  //           }
-  //         } else {
-  //           Swal.fire({
-  //             icon: "warning",
-  //             title: "Details Not Found for This Lot and Auction Date",
-  //           });
-  //         }
-  //         setFarmerDetails({});
-  //         setLoading(false);
-  //       });
-  //   }
-  // };
-
   const [totalLotWeight, setTotalLotWeight] = useState(0);
   // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
   // const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
@@ -851,7 +605,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
         marketFee: "",
         soldAmount: "",
         allottedLotId: "",
-        // auctionDate: "",
+        auctionDate: new Date(), // Set to today's dat
         dflLotNumber: "",
         averageYield: "",
         externalUnitId: "",
@@ -862,7 +616,7 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
     farmerMiddleName:"",
     farmerFruitsId:""
   });
-  setAuctionDate("");
+  setAuctionDate(new Date());
 setAllottedLotId("");
     setDataLotList([]);
   };

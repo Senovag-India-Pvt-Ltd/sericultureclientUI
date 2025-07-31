@@ -1168,6 +1168,14 @@ function RearingofDFLsforthe8LinesList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Spun On To Date"),
+      selector: (row) => row.spunOnToDate,
+      cell: (row) => <span>{formatDate(row.spunOnToDate)}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: t("Worm Test results"),
       selector: (row) => row.wormTestDatesAndResults,

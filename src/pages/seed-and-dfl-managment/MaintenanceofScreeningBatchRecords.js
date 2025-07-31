@@ -36,6 +36,7 @@ function MaintenanceofScreeningBatchRecords() {
     chawkiPercentage: "",
     selectedBedAsPerTheMeanPerformance: "",
     cropFailureDetails: "",
+    spunOnToDate: "",
   });
 
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ function MaintenanceofScreeningBatchRecords() {
       chawkiPercentage: "",
       selectedBedAsPerTheMeanPerformance: "",
       cropFailureDetails: "",
+      spunOnToDate: "",
     });
     setValidated(false);
   };
@@ -118,12 +120,14 @@ function MaintenanceofScreeningBatchRecords() {
       const formattedBoxingDate = formatDate(data.blackBoxingDate);
       const formattedDateOfDisposal = formatDate(data.brushedOnDate);
       const formattedExpectedDateOfHatching = formatDate(data.spunOnDate);
+      const formattedSpunOnToDate = formatDate(data.spunOnToDate);
       const payload = {
         ...data,
         incubationDate: formattedReleaseDate,
         blackBoxingDate: formattedBoxingDate,
         brushedOnDate: formattedDateOfDisposal,
         spunOnDate: formattedExpectedDateOfHatching,
+        spunOnToDate: formattedSpunOnToDate,
       };
       api
         .post(baseURLSeedDfl + `MaintenanceOfScreen/add-info`, payload)
@@ -681,6 +685,28 @@ function MaintenanceofScreeningBatchRecords() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                           <Col lg="2">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="sordfl">
+                                  {t("Spun On To Date")}
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.spunOnToDate}
+                                    onChange={(date) =>
+                                      handleDateChange(date, "spunOnToDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
                         </Row>
                       </Card.Body>
                     </Card>

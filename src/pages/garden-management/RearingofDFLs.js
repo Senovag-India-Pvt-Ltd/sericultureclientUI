@@ -31,6 +31,7 @@ function RearingofDFLs() {
     spunOnDate: "",
     wormTestDetails: "",
     cocoonAssessmentDetails: "",
+    spunOnToDate: "",
   });
 
 
@@ -71,12 +72,14 @@ function RearingofDFLs() {
       const formattedReleaseDate = formatDate(data.releasedOnDate);
       const formattedBoxingDate = formatDate(data.brushingDate);
       const formattedDateOfDisposal = formatDate(data.spunOnDate);
+      const formattedSpunOnToDate = formatDate(data.spunOnToDate);
       // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
       const payload = {
         ...data,
         releasedOnDate: formattedReleaseDate,
         brushingDate: formattedBoxingDate,
         spunOnDate: formattedDateOfDisposal,
+        spunOnToDate: formattedSpunOnToDate,
         // hatchingDate: formattedExpectedDateOfHatching,
       };
       api
@@ -124,6 +127,7 @@ function RearingofDFLs() {
       spunOnDate: "",
       wormTestDetails: "",
       cocoonAssessmentDetails: "",
+      spunOnToDate: "",
     });
     setLot({
     raceOfDfls: "",
@@ -612,6 +616,28 @@ function RearingofDFLs() {
                   </div>
                   </Form.Group>
                 </Col>
+
+                 <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        {t("Spun On To Date")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.spunOnToDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "spunOnToDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
               </Row>
             </Card.Body>
           </Card>

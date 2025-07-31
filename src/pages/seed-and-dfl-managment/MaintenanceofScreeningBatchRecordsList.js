@@ -1043,6 +1043,13 @@ const styles = {
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Spun on To date"),
+      selector: (row) => row.spunOnToDate,
+      cell: (row) => <span>{row.spunOnToDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "Worm Test details  and result",
     //   selector: (row) => row.spunOnDate,

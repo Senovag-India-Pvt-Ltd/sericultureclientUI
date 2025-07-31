@@ -79,11 +79,13 @@ function Preservationofseedcocoonforprocessing() {
        const formattedReleaseDate = formatDate(data.dateOfSeedCocoonSupply);
     const formattedDateOfDisposal = formatDate(data.spunOnDate);
     const formattedExpectedDateOfHatching = formatDate(data.invoiceDate);
+    const formattedSpunOnToDate = formatDate(data.spunOnToDate);
     const payload = {
       ...data,
       dateOfSeedCocoonSupply: formattedReleaseDate,
       spunOnDate: formattedDateOfDisposal,
       invoiceDate: formattedExpectedDateOfHatching,
+      spunOnToDate: formattedSpunOnToDate,
     };
       api
         .post(baseURLSeedDfl + `PreservationOfSeed/add-info`, payload)

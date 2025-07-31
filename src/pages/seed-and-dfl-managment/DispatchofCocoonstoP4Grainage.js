@@ -30,6 +30,7 @@ function DispatchofCocoonstoP4Grainage() {
     numberOfCocoonsDispatched: "",
     dateOfSupply: "",
     dispatchDate: "",
+    spunOnToDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -70,13 +71,13 @@ function DispatchofCocoonstoP4Grainage() {
       const formattedReleaseDate = formatDate(data.dateOfSupply);
       const formattedBoxingDate = formatDate(data.dispatchDate);
       const formattedDateOfDisposal = formatDate(data.spunOnDate);
-      // const formattedExpectedDateOfHatching = formatDate(data.hatchingDate);
+      const formattedSpunOnToDate = formatDate(data.spunOnToDate);
       const payload = {
         ...data,
         dateOfSupply: formattedReleaseDate,
         dispatchDate: formattedBoxingDate,
         spunOnDate: formattedDateOfDisposal,
-        // hatchingDate: formattedExpectedDateOfHatching,
+        spunOnToDate: formattedSpunOnToDate,
       };
 
       api
@@ -86,18 +87,19 @@ function DispatchofCocoonstoP4Grainage() {
             saveError(response.data.message);
           } else {
             saveSuccess(response.data.invoice_no);
-            setData({
-              grainageUserMasterId: "",
-              lineYear: "",
-              sourceMasterId: "",
-              screeningBatchNo: "",
-              generationNumberId: "",
-              spunOnDate: "",
-              lotNumber: "",
-              numberOfCocoonsDispatched: "",
-              dateOfSupply: "",
-              dispatchDate: "",
-            });
+            // setData({
+            //   grainageUserMasterId: "",
+            //   lineYear: "",
+            //   sourceMasterId: "",
+            //   screeningBatchNo: "",
+            //   generationNumberId: "",
+            //   spunOnDate: "",
+            //   lotNumber: "",
+            //   numberOfCocoonsDispatched: "",
+            //   dateOfSupply: "",
+            //   dispatchDate: "",
+            // });
+            clear();
             setValidated(false);
           }
         })
@@ -123,6 +125,7 @@ function DispatchofCocoonstoP4Grainage() {
       numberOfCocoonsDispatched: "",
       dateOfSupply: "",
       dispatchDate: "",
+      spunOnToDate: "",
     });
   };
 
@@ -547,6 +550,28 @@ function DispatchofCocoonstoP4Grainage() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="2">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="sordfl">
+                                  {t("Spun On To Date")}
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.spunOnToDate}
+                                    onChange={(date) =>
+                                      handleDateChange(date, "spunOnToDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">

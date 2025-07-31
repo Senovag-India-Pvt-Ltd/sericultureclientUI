@@ -231,6 +231,14 @@ function DispatchofCocoonstoP4GrainageList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Spun On To Date"),
+      selector: (row) => row.spunOnToDate,
+      cell: (row) => <span>{row.spunOnToDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: t("Lot Number"),
       selector: (row) => row.lotNumber,
