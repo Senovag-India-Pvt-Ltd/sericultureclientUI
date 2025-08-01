@@ -61,104 +61,10 @@ function BlankDtrReport() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `caste/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
-  // const postData = (event) => {
-  //   const { marketId, godownId, allottedLotId, auctionDate } = data;
-  //   const newDate = new Date(auctionDate);
-  //   const formattedDate =
-  //     newDate.getFullYear() +
-  //     "-" +
-  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
-  //     "-" +
-  //     newDate.getDate().toString().padStart(2, "0");
-
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     // event.stopPropagation();
-  //     axios
-  //       .post(
-  //         `https://api.senovagseri.com/reports/gettripletpdf`,
-  //         {
-  //           marketId: marketId,
-  //           godownId: godownId,
-  //           allottedLotId: allottedLotId,
-  //           auctionDate: formattedDate,
-  //         },
-  //         {
-  //           responseType: "blob", //Force to receive data in a Blob Format
-  //         }
-  //       )
-  //       .then((response) => {
-  //         //console.log("hello world", response.data);
-  //         //Create a Blob from the PDF Stream
-  //         const file = new Blob([response.data], { type: "application/pdf" });
-  //         //Build a URL from the file
-  //         const fileURL = URL.createObjectURL(file);
-  //         //Open the URL on new Window
-  //         window.open(fileURL);
-  //       })
-  //       .catch((error) => {
-  //         // console.log("error", error);
-  //       });
-  //   }
-  // };
+  
   const [listData, setListData] = useState([]);
   const [listDetails, setListDetails] = useState([]);
 
-  // const generateDtrReport = async () => {
-  //   const { fromDate, toDate } = data;
-  //   const formattedFromDate =
-  //     fromDate.getFullYear() +
-  //     "-" +
-  //     (fromDate.getMonth() + 1).toString().padStart(2, "0") +
-  //     "-" +
-  //     fromDate.getDate().toString().padStart(2, "0");
-  //   const formattedToDate =
-  //     toDate.getFullYear() +
-  //     "-" +
-  //     (toDate.getMonth() + 1).toString().padStart(2, "0") +
-  //     "-" +
-  //     toDate.getDate().toString().padStart(2, "0");
-
-  //   try {
-  //     const response = await api.post(
-  //       baseURLReport + `blank-dtr-report`,
-  //       {
-  //         marketId: data.marketId,
-  //         reelerId: realReelerId,
-  //         fromDate: formattedFromDate,
-  //         toDate: formattedToDate,
-  //       },
-  //       {
-  //         responseType: "blob", //Force to receive data in a Blob Format
-  //       }
-  //     );
-
-  //     const file = new Blob([response.data], { type: "application/pdf" });
-  //     const fileURL = URL.createObjectURL(file);
-  //     window.open(fileURL);
-  //   } catch (error) {
-  //     // console.log("error", error);
-  //   }
-  // };
   const exportCsv = (e) => {
     const { marketId, godownId,reelerId,fromDate,toDate } = data;
     const formattedFromDate =
