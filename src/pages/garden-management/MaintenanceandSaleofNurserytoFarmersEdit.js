@@ -420,7 +420,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   value={data.area}
                                   onChange={handleInputs}
                                   type="text"
-                                  maxLength="4"
+                                  // maxLength="4"
                                   placeholder={t("Enter Area")}
                                   required
                                 />
@@ -481,7 +481,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   value={data.rate}
                                   onChange={handleInputs}
                                   type="text"
-                                  maxLength="3"
+                                  // maxLength="3"
                                   placeholder={t("Enter Rate")}
                                   required
                                 />
@@ -503,7 +503,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   name="saplingAge"
                                   value={data.saplingAge}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder={t("Enter Sapling age in Month/Year")}
                                   required
                                 />
