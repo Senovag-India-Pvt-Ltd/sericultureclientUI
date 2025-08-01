@@ -574,7 +574,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Remittance details")}<span className="text-danger">*</span>
+                          {t("Remittance details")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
