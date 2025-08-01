@@ -44,6 +44,7 @@ function RearingofDFLsforthe8LinesList() {
   const handleCloseModal1 = () => setShowModal1(false);
 
   const [validated, setValidated] = useState(false);
+  const [validatedEdit, setValidatedEdit] = useState(false);
 
   const getList = () => {
     setLoading(true);
@@ -594,6 +595,9 @@ function RearingofDFLsforthe8LinesList() {
   };
 
   const [showModal3, setShowModal3] = useState(false);
+const [showModal5, setShowModal5] = useState(false);
+  // const handleShowModal5 = () => setShowModal5(true); 
+  // const handleCloseModal5 = () => setShowModal5(false);
 
   // const handleShowModal3 = () => setShowModal3(true);
   const handleShowModal3 = (row) => {
@@ -609,7 +613,8 @@ function RearingofDFLsforthe8LinesList() {
   const [feedingTableDetails, setFeedingMoultTable] = useState({
     rearingOfDFLsForThe8linesId: "",
     lotNumber: "",
-    hatchingDate: "",
+    plotNumber: "",
+    hatchingDate: new Date(),
     firstFeeding: "",
     secondFeeding: "",
     thirdFeeding: "",
@@ -642,6 +647,7 @@ function RearingofDFLsforthe8LinesList() {
       const sendPost = {
         rearingOfDFLsForThe8linesId: feedingTableDetails.rearingOfDFLsForThe8linesId,
         lotNumber: feedingTableDetails.lotNumber,
+        plotNumber: feedingTableDetails.plotNumber,
         hatchingDate: formattedReleaseDate,
         firstFeeding: feedingTableDetails.firstFeeding,
         secondFeeding: feedingTableDetails.secondFeeding,
@@ -679,6 +685,143 @@ function RearingofDFLsforthe8LinesList() {
       setValidated(true);
     }
   };
+
+  const [id, setId] = useState(null); // <-- Add this
+const [updateAllDate, setUpdateAllDate] = useState({}); // <-- Add this// optional loading spinner
+
+  const getIdList = () => {
+  setLoading(true);
+  api
+    .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info-by-id/${id}`)
+    .then((response) => {
+      const data = response.data;
+
+      // Update form fields with fetched data
+      setEditFeedingMoultTable({
+        rearingOfDFLsForThe8linesId: data.rearingOfDFLsForThe8linesId || "",
+        id: data.id || "",
+        lotNumber: data.lotNumber || "",
+        plotNumber: data.plotNumber || "",
+        hatchingDate: new Date(data.hatchingDate), // Ensure it's a Date object
+        firstFeeding: data.firstFeeding || "",
+        secondFeeding: data.secondFeeding || "",
+        thirdFeeding: data.thirdFeeding || "",
+        leafQuantity: data.leafQuantity || "",
+        wormStage: data.wormStage || "",
+        temperature: data.temperature || "",
+        humidity: data.humidity || "",
+      });
+
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Failed to fetch edit data", err);
+      setEditFeedingMoultTable({});
+      setLoading(false);
+    });
+};
+useEffect(() => {
+  if (id) {
+    getIdList();
+  }
+}, [id]);
+
+    
+
+//    const handleShowModal5 = (rowId) => {
+//   setId(rowId); // <-- this triggers the useEffect
+//   setShowModal5(true);
+// };
+const handleShowModal5 = (row) => {
+  setId(row.id); // this is used for fetching via API
+  setEditFeedingMoultTable((prev) => ({
+    ...prev,
+    rearingOfDFLsForThe8linesId: row.rearingOfDFLsForThe8linesId || "",
+  }));
+  setShowModal5(true);
+};
+
+
+  
+  const handleCloseModal5 = () => setShowModal5(false);
+
+
+  const [editFeedingTableDetails, setEditFeedingMoultTable] = useState({
+    rearingOfDFLsForThe8linesId: "",
+    id: "",
+    lotNumber: "",
+    plotNumber: "",
+    hatchingDate: new Date(),
+    firstFeeding: "",
+    secondFeeding: "",
+    thirdFeeding: "",
+    leafQuantity:"",
+    wormStage: "",
+    temperature: "",
+    humidity: "",
+  });
+
+  const handleDateChangeForEditFeedit = (date, type) => {
+    setEditFeedingMoultTable({ ...editFeedingTableDetails, [type]: date });
+  };
+
+
+  const handleFeedingMoultForEditInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setEditFeedingMoultTable({ ...editFeedingTableDetails, [name]: value });
+  };
+
+  const postFeedingTableForEditData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const formattedReleaseDate = formattedDate(editFeedingTableDetails.hatchingDate);
+      const sendPost = {
+        id: editFeedingTableDetails.id,
+        rearingOfDFLsForThe8linesId: editFeedingTableDetails.rearingOfDFLsForThe8linesId,
+        lotNumber: editFeedingTableDetails.lotNumber,
+        plotNumber: editFeedingTableDetails.plotNumber,
+        hatchingDate: formattedReleaseDate,
+        firstFeeding: editFeedingTableDetails.firstFeeding,
+        secondFeeding: editFeedingTableDetails.secondFeeding,
+        thirdFeeding:editFeedingTableDetails.thirdFeeding,
+        leafQuantity: editFeedingTableDetails.leafQuantity,
+      };
+      api
+        .post(
+          baseURLSeedDfl + `FeedingAndMoultTest/update-info`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            getMoultList(); // Refresh the list after editing
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidatedEdit(true);
+    }
+  };
+
 
   const [showModal4, setShowModal4] = useState(false);
   const handleShowModal4 = () => setShowModal4(true); 
@@ -773,28 +916,66 @@ function RearingofDFLsforthe8LinesList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Plot Number"),
+      selector: (row) => row.plotNumber,
+      cell: (row) => <span>{row.plotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
-      name: t("Worm Stage"),
-      selector: (row) => row.wormStage,
-      cell: (row) => <span>{row.wormStage}</span>,
-      sortable: true,
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirmForFeedingandMoult(row.id)}
+          >
+            Delete
+          </Button>
+
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleShowModal5(row)} // <-- correct
+          >
+            {t("Edit")}
+          </Button>
+
+         
+        </div>
+      ),
+      sortable: false,
       hide: "md",
+      // grow: 2,
     },
-    {
-      name: t("Temperature"),
-      selector: (row) => row.temperature,
-      cell: (row) => <span>{row.temperature}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Humidity"),
-      selector: (row) => row.humidity,
-      cell: (row) => <span>{row.humidity}</span>,
-      sortable: true,
-      hide: "md",
-    },
+
+    // {
+    //   name: t("Worm Stage"),
+    //   selector: (row) => row.wormStage,
+    //   cell: (row) => <span>{row.wormStage}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: t("Temperature"),
+    //   selector: (row) => row.temperature,
+    //   cell: (row) => <span>{row.temperature}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: t("Humidity"),
+    //   selector: (row) => row.humidity,
+    //   cell: (row) => <span>{row.humidity}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
   ];
 
@@ -854,6 +1035,38 @@ function RearingofDFLsforthe8LinesList() {
           .then((response) => {
             // deleteConfirm(_id);
             getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const deleteConfirmForFeedingandMoult = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `FeedingAndMoultTest/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getMoultList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -1079,7 +1292,7 @@ function RearingofDFLsforthe8LinesList() {
             onClick={() => handleShowModal3(row)}
             className="ms-2"
           >
-            {t("Add Moult Table")}
+            {t("Add Feeding Table")}
           </Button>
         </div>
       ),
@@ -1265,7 +1478,7 @@ function RearingofDFLsforthe8LinesList() {
                 onClick={() => getMoultList()}
                 className="ms-2"
               >
-                {t("Moult Table List")}
+                {t("Feeding Table")}
               </Button>
             </li>
           </ul>
@@ -1299,7 +1512,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
-    <Modal.Title>{t("Moult Table")}</Modal.Title>
+    <Modal.Title>{t("Feeding Table")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     <Block className="mt-3">
@@ -3464,7 +3677,7 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Moult Table")}</Modal.Title>
+          <Modal.Title>{t("Feeding Table")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -3610,13 +3823,35 @@ function RearingofDFLsforthe8LinesList() {
                                   placeholder={t("Leaf Quantity in Gms/Kg")}
                                   // required
                                 />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Plot Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="plotNumber"
+                                  name="plotNumber"
+                                  value={
+                                    feedingTableDetails.plotNumber || ""
+                                  }
+                                  onChange={handleFeedingMoultInputs}
+                                  type="text"
+                                  placeholder={t("Plot Number")}
+                                  // readOnly
+                                  // required
+                                />
                                 {/* <Form.Control.Feedback type="invalid">
-                                  ERR is required
+                                Bed Name is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                               {t("Worm Stage")}
@@ -3666,9 +3901,6 @@ function RearingofDFLsforthe8LinesList() {
                                   placeholder={t("Enter temperature")}
                                   // required
                                 />
-                                {/* <Form.Control.Feedback type="invalid">
-                                  No of Worms Brushed is required
-                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -3690,12 +3922,213 @@ function RearingofDFLsforthe8LinesList() {
                                   placeholder={t("Enter Humidity")}
                                   // required
                                 />
+                              </div>
+                            </Form.Group>
+                          </Col> */}
+                        </Row>
+                        <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              {t("Update")}
+                            </Button>
+                          </li>
+                          <li>
+                            
+                          </li>
+                        </ul>
+                      </div>
+                        {/* </Card.Body>
+                    </Card> */}
+                      </Block>
+                     
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+          </Modal.Body>
+      </Modal>
+
+       <Modal show={showModal5} onHide={handleCloseModal5} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("Edit Feeding Table")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-4">
+            <Form noValidate validated={validatedEdit} onSubmit={postFeedingTableForEditData}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                {t("Date")}
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={editFeedingTableDetails.hatchingDate}
+                                  onChange={(date) =>
+                                    handleDateChangeForEditFeedit(date, "hatchingDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  // required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Lot Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="lotNumber"
+                                  name="lotNumber"
+                                  value={
+                                    editFeedingTableDetails.lotNumber || ""
+                                  }
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="text"
+                                  placeholder={t("Lot Number")}
+                                  // readOnly
+                                  // required
+                                />
                                 {/* <Form.Control.Feedback type="invalid">
-                                  No of Worms Brushed is required
+                                Bed Name is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
+                        
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               {t("1st Feeding")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="firstFeeding"
+                                  name="firstFeeding"
+                                  value={
+                                    editFeedingTableDetails.firstFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="text"
+                                  placeholder={t("1st Feeding")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               {t("2nd Feeding")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="secondFeeding"
+                                  name="secondFeeding"
+                                  value={
+                                    editFeedingTableDetails.secondFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="text"
+                                  placeholder={t("2nd Feeding")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                               {t("3rd Feeding")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="thirdFeeding"
+                                  name="thirdFeeding"
+                                  value={
+                                    editFeedingTableDetails.thirdFeeding || ""
+                                  }
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="text"
+                                  placeholder={t("3rd Feeding")}
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              {t("Leaf Quantity in Gms/Kg")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="leafQuantity"
+                                  name="leafQuantity"
+                                  value={editFeedingTableDetails.leafQuantity || ""}
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="number"
+                                  placeholder={t("Leaf Quantity in Gms/Kg")}
+                                  // required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                {t("Plot Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="plotNumber"
+                                  name="plotNumber"
+                                  value={
+                                    editFeedingTableDetails.plotNumber || ""
+                                  }
+                                  onChange={handleFeedingMoultForEditInputs}
+                                  type="text"
+                                  placeholder={t("Plot Number")}
+                                  // readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          
                         </Row>
                         <div className="gap-col mt-2">
                         <ul className="d-flex align-items-center justify-content-center gap g-3">
