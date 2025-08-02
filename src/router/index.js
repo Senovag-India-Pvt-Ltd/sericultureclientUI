@@ -971,6 +971,7 @@ import RemittanceForFarm from "../pages/seed-and-dfl-managment/RemittanceForFarm
 import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceForFarmList";
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
+import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 
 // Admin and Reports
 
@@ -3382,6 +3383,7 @@ function Router() {
               element={<WeighmentForSilkMarket />}
             />
             <Route path="lot-groupage" element={<LotGroupage />} />
+            <Route path="invoice-permit-market-receipt" element={<InvoicePermitAndMarketReceipt />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
 
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
