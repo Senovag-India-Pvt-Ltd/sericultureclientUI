@@ -110,6 +110,7 @@ const handleDateChange = (date) => {
       const buyerName = 
       data.buyerType === "RSP" ? data.licenseNumber :
       data.buyerType === "NSSO" ? data.address :
+      data.buyerType === "Reeling" ? data.reelerName :
       data.buyerType === "Govt Grainage" ? data.grainageMasterName : '';
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
@@ -570,6 +571,18 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
     });
   };
 
+   const handleManualReelerOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName,chooseUnit] = value.split("_");
+    setData({
+      ...data,
+      buyerId: chooseId,
+      reelerName: chooseName,
+      buyerName: chooseName,
+      externalUnitId:chooseUnit
+    });
+  };
+
   const handleGrainageOption = (e) => {
     const value = e.target.value;
     const [chooseId, chooseName,chooseUnit] = value.split("_");
@@ -800,6 +813,14 @@ setAllottedLotId("");
       navigate("#");
     });
   };
+
+  const [purchaseMode, setPurchaseMode] = useState(""); // "Manual" or "Bid"
+const handlePurchaseModeChange = (e) => {
+  setPurchaseMode(e.target.value);
+  // Optionally clear dependent fields
+  setData({ ...data, buyerId: "", reelerName: "" });
+};
+
   
   
   const saveError = (message) => {
@@ -1038,7 +1059,7 @@ setAllottedLotId("");
                                   {/* <th></th> */}
                                   <th>{t("Action")}</th>
                                   <th>{t("Buyer Type")}</th>
-                                  <th>{t("License Number/Address/Grainage")}</th>
+                                  <th>{t("License Number/Address/Grainage/Name")}</th>
                                   <th>{t("Quantity of Cocoons(In Kgs)")}</th>
                                   {/* <th>No Of DFL</th>
                                   <th>Average Yield</th> */}
@@ -1153,7 +1174,8 @@ setAllottedLotId("");
         </Modal.Header>
         <Modal.Body>
         <Form noValidate validated={validatedLot} onSubmit={handleAddLotDetails}>
-          <Row className="g-5 ">     
+          <Row className="g-5 "> 
+          <>    
                   <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -1259,6 +1281,68 @@ setAllottedLotId("");
                     ) : (
                       ""
                     )} */}
+                    {data.buyerType === "Reeling" && (
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Purchase Mode")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="purchaseMode"
+                                value={purchaseMode}
+                                onChange={handlePurchaseModeChange}
+                                required
+                                isInvalid={purchaseMode === ""}
+                              >
+                                <option value="">{t("Select Purchase Mode")}</option>
+                                <option value="Manual">{t("Manual")}</option>
+                                <option value="Bid">{t("Bid")}</option>
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Purchase Mode is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      )}
+
+                      {/* Show Reeler dropdown only when Manual is selected */}
+                      {data.buyerType === "Reeling" && purchaseMode === "Manual" && (
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Reeler")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="buyerId"
+                                value={`${data.buyerId}_${data.reelerName}`}
+                                onChange={handleManualReelerOption}
+                                onBlur={handleManualReelerOption}
+                                required
+                                isInvalid={
+                                  data.buyerId === undefined || data.buyerId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Reeler")}</option>
+                                {reelerListData.map((list) => (
+                                  <option
+                                    key={`${list.reelerId}_${list.reelerName}`}
+                                    value={`${list.reelerId}_${list.reelerName}`}
+                                  >
+                                    {list.reelerName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Reeler is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      )}
+                    </>
                     {data.buyerType === 'NSSO' && (
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
