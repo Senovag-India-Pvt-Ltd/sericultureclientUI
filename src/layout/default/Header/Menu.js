@@ -1707,6 +1707,14 @@ function Menu() {
                   {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
+                          text={t("Seed Market Invoice,Permit,Cash Receipt,Market Receipt")}
+                          to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
+                  {showMenu.Market_SeedCocoonMarket_Inward ? (
+                      <MenuItem>
+                        <MenuItemLink
                           text={t("e-Inward")}
                           to="/seriui/seed-cocoon-inward"
                         />
@@ -1729,7 +1737,7 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                    
+
                     {showMenu.Market_SeedMarket_Weighment ? (
                       <MenuItem>
                         <MenuItemLink

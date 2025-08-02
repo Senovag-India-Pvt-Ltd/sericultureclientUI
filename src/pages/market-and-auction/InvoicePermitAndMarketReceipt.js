@@ -380,14 +380,14 @@ const handleGenerateReport = (e) => {
                             <Form.Label>{t("Grainage")}<span className="text-danger">*</span></Form.Label>
                             <Col>
                                 <Form.Select
-                                name="grainageUserMasterId"
-                                value={data.grainageUserMasterId}
+                                name="grainageMasterId"
+                                value={data.grainageMasterId}
                                 onChange={handleInputs}
                                 required
                                 >
                                 <option value="">{t("Select Grainage")}</option>
                                 {grainageListData?.map((list) => (
-                                    <option key={list.userMasterId} value={list.userMasterId}>
+                                    <option key={list.grainageMasterId} value={list.grainageMasterId}>
                                     {list.grainageMasterName}
                                     </option>
                                 ))}
