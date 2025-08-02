@@ -1037,14 +1037,14 @@ const styles = {
       hide: "md",
     },
     {
-      name: t("Spun on date"),
+      name: t("Spun on date(From)"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Spun on To date"),
+      name: t(" Spun On Date(To)"),
       selector: (row) => row.spunOnToDate,
       cell: (row) => <span>{row.spunOnToDate}</span>,
       sortable: true,

@@ -1723,7 +1723,7 @@ const [showModal8, setShowModal8] = useState(false);
     },
 
     {
-      name: t("Spun On Date"),
+      name: t("Spun on date(From)"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{formatDate(row.spunOnDate)}</span>,
       sortable: true,
@@ -1731,7 +1731,7 @@ const [showModal8, setShowModal8] = useState(false);
     },
 
     {
-      name: t("Spun On To Date"),
+      name: t(" Spun On Date(To)"),
       selector: (row) => row.spunOnToDate,
       cell: (row) => <span>{formatDate(row.spunOnToDate)}</span>,
       sortable: true,

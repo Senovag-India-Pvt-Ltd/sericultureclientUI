@@ -228,7 +228,7 @@ function GrearingofDfls() {
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3">
-                      <Form.Label>Spun on date</Form.Label>
+                      <Form.Label>Spun on date(From)</Form.Label>
                       <div className="form-control-wrap">
                         <DatePicker />
                       </div>

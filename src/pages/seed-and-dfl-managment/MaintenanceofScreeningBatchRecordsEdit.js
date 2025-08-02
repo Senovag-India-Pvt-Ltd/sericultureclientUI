@@ -706,7 +706,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="sordfl">
-                                {t("Spun on date")}
+                                {t("Spun on date(From)")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -727,7 +727,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   />
                                 )}
                                 <Form.Control.Feedback type="invalid">
-                                  {t("Spun on date is required")}
+                                  {t("Spun on date(From) is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -736,7 +736,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                           <Col lg="2">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
-                              {t("Spun On To Date")}
+                              {t(" Spun On Date(To)")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker

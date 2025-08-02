@@ -133,13 +133,13 @@ function PreservationOfSeedCocoonForProcessingView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {t("Spun On Date")}:
+                          {t("Spun on date(From)")}:
                         </td>
                         <td>{seedCocoon.spunOnDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {t("Spun On To Date")}:
+                          {t(" Spun On Date(To)")}:
                         </td>
                         <td>{seedCocoon.spunOnToDate}</td>
                       </tr>

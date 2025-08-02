@@ -128,7 +128,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                         <td>{maintenanceScreen.brushedOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Spun on date")}:</td>
+                        <td style={styles.ctstyle}>{t("Spun on date(From)")}:</td>
                         <td>{maintenanceScreen.spunOnDate}</td>
                       </tr>
                       <tr>

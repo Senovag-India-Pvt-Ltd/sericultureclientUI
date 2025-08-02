@@ -141,7 +141,7 @@ function RearingOfDFLsView() {
                         <td>{rearingOfDFLs.wormWeight}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
+                        <td style={styles.ctstyle}>{t("Spun on date(From)")}:</td>
                         <td>{rearingOfDFLs.spunOnDate}</td>
                       </tr>
                       <tr>

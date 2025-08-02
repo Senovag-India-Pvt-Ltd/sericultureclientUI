@@ -1038,14 +1038,14 @@ const [showModal8, setShowModal8] = useState(false);
       hide: "md",
     },
     {
-      name: t("Spun On Date"),
+      name: t("Spun on date(From)"),
       selector: (row) => row.spunOnDate,
       cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Spun On To Date"),
+      name: t(" Spun On Date(To)"),
       selector: (row) => row.spunOnToDate,
       cell: (row) => <span>{row.spunOnToDate}</span>,
       sortable: true,

@@ -125,7 +125,7 @@ function SupplyOfCocoonsToGrainageView() {
                         <td>{supplyOfCoocons.generationNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
+                        <td style={styles.ctstyle}>{t("Spun on date(From)")}:</td>
                         <td>{supplyOfCoocons.spunOnDate}</td>
                       </tr>
                       <tr>

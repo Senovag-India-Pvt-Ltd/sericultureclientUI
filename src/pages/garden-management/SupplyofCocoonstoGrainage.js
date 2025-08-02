@@ -28,7 +28,8 @@ function SupplyofCocoonstoGrainage() {
     numberOfCocoonsDispatched: "",
     dateOfSupply: "",
     dispatchDate: "",
-    cacoonsSuppliedInKg: ""
+    cacoonsSuppliedInKg: "",
+    spunOnToDate: "",
   });
 
   const { t } = useTranslation();
@@ -109,7 +110,8 @@ function SupplyofCocoonstoGrainage() {
               numberOfCocoonsDispatched: "",
               dateOfSupply: "",
               dispatchDate: "",
-              cacoonsSuppliedInKg: ""
+              cacoonsSuppliedInKg: "",
+              spunOnToDate: "",
             });
             setValidated(false);
           }
@@ -135,7 +137,8 @@ function SupplyofCocoonstoGrainage() {
       numberOfCocoonsDispatched: "",
       dateOfSupply: "",
       dispatchDate: "",
-      cacoonsSuppliedInKg: ""
+      cacoonsSuppliedInKg: "",
+      spunOnToDate: "",
     });
     // setLot({
     //   lotNumber: "",
@@ -606,7 +609,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                {t("Spun on Date")}
+                                {t("Spun on date(From)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -622,6 +625,28 @@ function SupplyofCocoonstoGrainage() {
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                           <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                {t(" Spun On Date(To)")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.spunOnToDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "spunOnToDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
                                 />
                               </div>
                             </Form.Group>

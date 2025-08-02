@@ -220,9 +220,16 @@ function SupplyOfCocoonsToGrainageList(){
           hide: "md",
         },
         {
-          name: t("Spun Date"),
+          name: t("Spun on date(From)"),
           selector: (row) => row.spunOnDate,
           cell: (row) => <span>{row.spunOnDate}</span>,
+          sortable: true,
+          hide: "md",
+        },
+        {
+          name: t(" Spun on date(To)"),
+          selector: (row) => row.spunOnToDate,
+          cell: (row) => <span>{row.spunOnToDate}</span>,
           sortable: true,
           hide: "md",
         },

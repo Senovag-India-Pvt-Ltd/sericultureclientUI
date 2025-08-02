@@ -131,7 +131,7 @@ function DispatchofCocoonstoP4GrainageView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        {t("Spun On Date")}:
+                        {t("Spun on date(From)")}:
                         </td>
                         <td>{dispatchCocoon.spunOnDate}</td>
                       </tr>

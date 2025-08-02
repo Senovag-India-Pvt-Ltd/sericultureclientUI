@@ -620,7 +620,7 @@ function RearingofDFLs() {
                  <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        {t("Spun On To Date")}
+                        {t(" Spun On Date(To)")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <DatePicker

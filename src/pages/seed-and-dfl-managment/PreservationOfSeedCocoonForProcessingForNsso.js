@@ -410,7 +410,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
 //       hide: "md",
 //     },
 //     {
-//       name: "Spun On Date",
+//       name: "Spun on date(From)",
 //       selector: (row) => row.spunOnDate,
 //       cell: (row) => <span>{row.spunOnDate}</span>,
 //       sortable: true,

@@ -148,7 +148,7 @@ function RearingOfDFLsForThe8LinesView() {
                         <td>{rearing8Lines.wormWeightInGrams}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Spun On Date")}:</td>
+                        <td style={styles.ctstyle}>{t("Spun on date(From)")}:</td>
                         <td>{formatDate(rearing8Lines.spunOnDate)}</td>
                       </tr>
                       <tr>

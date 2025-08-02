@@ -233,7 +233,7 @@ function DispatchofCocoonstoP4GrainageList() {
     },
 
     {
-      name: t("Spun On To Date"),
+      name: t(" Spun On Date(To)"),
       selector: (row) => row.spunOnToDate,
       cell: (row) => <span>{row.spunOnToDate}</span>,
       sortable: true,
