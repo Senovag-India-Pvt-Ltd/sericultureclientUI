@@ -531,7 +531,7 @@ function SupplyofCocoonstoGrainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                {t("Spun on date(From)")}
+                                {t("Spun on date(From)")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
