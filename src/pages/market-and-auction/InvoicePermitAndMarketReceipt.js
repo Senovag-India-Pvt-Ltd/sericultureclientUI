@@ -195,7 +195,7 @@ function InvoicePermitAndMarketReceipt() {
     
         try {
           const response = await api.post(
-            baseURLReport + `get-cash-receipt`,
+            baseURLReport + `get-Rasheedi`,
             {
               marketId: data.marketId,
               allottedLotId: data.allottedLotId,
@@ -226,7 +226,7 @@ function InvoicePermitAndMarketReceipt() {
     
         try {
           const response = await api.post(
-            baseURLReport + `get-market-receipt`,
+            baseURLReport + `get-market-reciept`,
             {
               marketId: data.marketId,
               allottedLotId: data.allottedLotId,
@@ -452,7 +452,7 @@ const handleGenerateReport = (e) => {
                                 <DatePicker
                                 dateFormat="dd/MM/yyyy"
                                 selected={data.auctionDate}
-                                onChange={handleFromDateChange}
+                                onChange={handleAuctionDateChange}
                                 className="form-control"
                                 maxDate={new Date()}
                                  required
