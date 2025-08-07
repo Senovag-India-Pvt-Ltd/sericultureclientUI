@@ -738,8 +738,8 @@ function SaleDisposalofDFLseggs() {
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
-                      name="dflType"
-                      value={data.dflType}
+                      name="dflsType"
+                      value={data.dflsType}
                       onChange={handleInputs}
                       // required
                       // isInvalid={

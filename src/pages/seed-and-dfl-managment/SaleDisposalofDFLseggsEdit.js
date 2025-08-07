@@ -592,8 +592,8 @@ function SaleDisposalofDFLseggsEdit() {
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
-                      name="dflType"
-                      value={data.dflType}
+                      name="dflsType"
+                      value={data.dflsType}
                       onChange={handleInputs}
                       // required
                       // isInvalid={
@@ -764,7 +764,7 @@ function SaleDisposalofDFLseggsEdit() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                               {t("DFLs Type")}
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
