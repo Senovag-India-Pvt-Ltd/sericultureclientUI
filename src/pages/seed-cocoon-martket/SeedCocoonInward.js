@@ -582,6 +582,7 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
           : 0;
         const response = await api.post(baseURL + `cocoon/reserveLot`, {
           ...data,
+          lotParentalLevel: (data.lotParentalLevel || '').trim(),
           godownId: addGodown,
         });
 
