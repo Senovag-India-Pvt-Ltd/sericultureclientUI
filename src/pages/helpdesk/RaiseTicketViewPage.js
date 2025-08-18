@@ -88,6 +88,101 @@ function RaiseTicketView() {
     setEscalate(value);
   };
 
+const [HelpDesks, setHelpDesks] = useState({});
+  const getPhotoList = () => {
+      setLoading(true);
+      api
+        .get(baseURL + `hdTicket/get-join/${id}`)
+        .then((response) => {
+          setHelpDesks(response.data.content);
+          if (response.data.content.hdAttachFiles) {
+            getFile(response.data.content.hdAttachFiles);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setHelpDesks({});
+          setLoading(false);
+        });
+    };
+
+    // To get Photo
+      const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+    
+      const getDocumentFile = async (file) => {
+        const parameters = `fileName=${file}`;
+        try {
+          const response = await api.get(
+            baseURL + `api/s3/download?${parameters}`,
+            {
+              responseType: "arraybuffer",
+            }
+          );
+          const blob = new Blob([response.data]);
+          const url = URL.createObjectURL(blob);
+          setSelectedDocumentFile(url);
+        } catch (error) {
+          console.error("Error fetching file:", error);
+        }
+      };
+    
+      // To get Photo
+      const [selectedFile, setSelectedFile] = useState(null);
+    
+      const getFile = async (file) => {
+        const parameters = `fileName=${file}`;
+        try {
+          const response = await api.get(
+            baseURL + `api/s3/download?${parameters}`,
+            {
+              responseType: "arraybuffer",
+            }
+          );
+          const blob = new Blob([response.data]);
+          const url = URL.createObjectURL(blob);
+          setSelectedFile(url);
+        } catch (error) {
+          console.error("Error fetching file:", error);
+        }
+      };
+    
+      // console.log(getIdList());
+    
+      useEffect(() => {
+        getPhotoList();
+      
+      }, [id]);
+    
+      const downloadFile = async (file) => {
+        const parameters = `fileName=${file}`;
+        try {
+          const response = await api.get(
+            baseURL + `api/s3/download?${parameters}`,
+            {
+              responseType: "arraybuffer",
+            }
+          );
+          const blob = new Blob([response.data]);
+          const url = URL.createObjectURL(blob);
+    
+          const fileExtension = file.split(".").pop();
+    
+          const link = document.createElement("a");
+          link.href = url;
+    
+          const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+    
+          link.download = modifiedFileName;
+    
+          document.body.appendChild(link);
+          link.click();
+    
+          document.body.removeChild(link);
+        } catch (error) {
+          console.error("Error fetching file:", error);
+        }
+      };
+
   // to get Severity
   const [severityListData, setSeverityListData] = useState([]);
 
@@ -292,6 +387,24 @@ function RaiseTicketView() {
                         <td style={styles.ctstyle}>{t("Ticket Number")}</td>
                         <td>{raiseTicket.ticketArn}</td>
                       </tr>
+                      <tr>
+                      <td style={styles.ctstyle}> {t("Attach File")}:</td>
+                      {/* <td>{StakeHolder.taluk}</td> */}
+                      <td>
+                        {" "}
+                        {/* <img
+                          style={{ height: "100px", width: "100px" }}
+                          src="../images/user/user.png"
+                        /> */}
+                        {selectedFile && (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={selectedFile}
+                            alt="Selected File"
+                          />
+                        )}
+                      </td>
+                    </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>Status:</td>
                         <td>

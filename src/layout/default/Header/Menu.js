@@ -2517,7 +2517,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("SI/SD Area Under Mulberry Monthly Target")}
+                        text={t("Range Area Under Mulberry Monthly Target")}
                         to="/seriui/si-sd-mulberry-target-new"
                       />
                     </MenuItem>
@@ -2525,7 +2525,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("SI/SD Area Under Mulberry Daily Target")}
+                        text={t("Range Area Under Mulberry Daily Target")}
                         to="/seriui/si-sd-mulberry-day-target-new"
                       />
                     </MenuItem>
@@ -2574,7 +2574,7 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Training Wise Target Setting")}
+                        text={t("Sericulture Training Institute Wise Target Setting")}
                         to="/seriui/training-wise-target-setting"
                       />
                     </MenuItem>

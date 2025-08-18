@@ -220,6 +220,40 @@ function HelpDesk() {
     }
   }, [data.hdModuleId]);
 
+  
+    // Display Image
+    const [image, setImage] = useState("");
+    // const [photoFile,setPhotoFile] = useState("")
+  
+    const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      setImage(file);
+      setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
+      // setPhotoFile(file);
+    };
+  
+    // // Upload Image to S3 Bucket
+    // const handleAttachFileUpload = async (hdid) => {
+    //   const parameters = `hdTicketId=${hdid}`;
+    //   try {
+    //     const formData = new FormData();
+    //     formData.append("multipartFile", image);
+  
+    //     const response = await api.post(
+    //       baseURL2 + `hdTicket/hd-attach-files?${parameters}`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     );
+    //     console.log("File upload response:", response.data);
+    //   } catch (error) {
+    //     console.error("Error uploading file:", error);
+    //   }
+    // };
+
   // to get BoardCategory
   const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
 
@@ -746,6 +780,7 @@ function HelpDesk() {
                       )}
                     </Form.Group>
                   </Col> */}
+                  
 
 <Col lg="4">
   <Form.Group className="form-group mt-n4">
@@ -757,13 +792,53 @@ function HelpDesk() {
         type="file"
         id="hdAttachFiles"
         name="hdAttachFiles"
-        onChange={handleAttachFileChange} // File input handler remains the same
+        onChange={handleImageChange} // File input handler remains the same
       />
     </div>
   </Form.Group>
 
+  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                          {image ? (
+                            <>
+                              {image.type.startsWith("image/") ||
+                              image.name.endsWith(".jpeg") ||
+                              image.name.endsWith(".jpg") ||
+                              image.name.endsWith(".png") ? (
+                                <img
+                                  style={{
+                                    height: "300px",
+                                    width: "auto",
+                                    objectFit: "cover",
+                                  }}
+                                  src={URL.createObjectURL(image)}
+                                  alt="Uploaded Image"
+                                />
+                              ) : image.type === "application/pdf" ? (
+                                <embed
+                                  src={URL.createObjectURL(image)}
+                                  type="application/pdf"
+                                  width="300px"
+                                  height="300px"
+                                />
+                              ) : image.name.endsWith(".docx") ? (
+                                <p>
+                                  Preview not available for .docx files. File
+                                  name: {image.name}
+                                </p>
+                              ) : (
+                                <p>
+                                  Preview not available for this file type:{" "}
+                                  {image.name}
+                                </p>
+                              )}
+                            </>
+                          ) : (
+                            <p>No file selected or file was canceled.</p>
+                          )}
+                        </Form.Group>
+
   {/* Show preview and download option for the uploaded file */}
-  <Form.Group className="form-group mt-3 d-flex flex-column align-items-center">
+  {/* <Form.Group className="form-group mt-3 d-flex flex-column align-items-center">
     {attachFiles && attachFiles.name ? (
       <>
         {attachFiles.type.startsWith('image/') || 
@@ -789,7 +864,7 @@ function HelpDesk() {
         )}
 
         {/* Download link for all file types */}
-        <a
+        {/* <a
           href={URL.createObjectURL(attachFiles)}
           download={attachFiles.name}
           className="btn btn-primary mt-3"
@@ -800,13 +875,13 @@ function HelpDesk() {
     ) : (
       <p>{t("No file selected or file was canceled.")}</p>
     )}
-  </Form.Group>
-</Col>
+  </Form.Group> */}
+  
+  </Col>  
 
-
-
-
-
+  
+  
+                        
 
                   <div className="gap-col">
                     <ul className="d-flex align-items-start justify-content-start gap g-3">
