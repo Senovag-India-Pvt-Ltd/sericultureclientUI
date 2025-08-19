@@ -561,7 +561,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 {t("Selected Bed as per the Mean Performance")}
@@ -570,7 +570,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               <div className="form-control-wrap">
                                 <Form.Select
                                   name="selectedBedAsPerTheMeanPerformance"
-                                  value={data.selectedBedAsPerTheMeanPerformance.split(",")}
+                                  value={(data.selectedBedAsPerTheMeanPerformance || "").split(",")}
                                   onChange={handleInputs}
                                   required
                                   multiple
@@ -595,7 +595,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
