@@ -194,6 +194,8 @@ function SeedCocoonInward() {
         dflLotNumber: "", // Initial values are empty
         lotVariety: "",
         lotParentalLevel: "",
+        spunFromDate: "",
+        spunToDate: "",
         marketId: localStorage.getItem("marketId"),
         godownId: localStorage.getItem("godownId")
           ? localStorage.getItem("godownId")
@@ -303,6 +305,8 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
             lotParentalLevel: singleLot.lotNumberRsp,
             dflLotNumber: singleLot.numbersOfDfls,
             lotVariety: singleLot.raceOfDfls,
+            spunFromDate: singleLot.spunFromDate,
+            spunToDate: singleLot.spunToDate,
           }));
         } else {
           // Multiple entries - wait for user to input
@@ -312,6 +316,8 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
             lotParentalLevel: "",
             dflLotNumber: "",
             lotVariety: "",
+           spunFromDate: "",
+           spunToDate: "",
           }));
         }
       } else {
@@ -404,6 +410,8 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
     dflLotNumber: "",
     lotVariety: "",
     lotParentalLevel: "",
+    spunFromDate: "",
+    spunToDate: "",
     dob: new Date(),
   });
   console.log(data);
@@ -1461,6 +1469,14 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
                       <td style={styles.ctstyle}>{t("Variety")}:</td>
                       <td>{item.raceName || "N/A"}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("Spun From Date ")}:</td>
+                      <td>{item.spunFromDate || "N/A"}</td>
+                    </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>{t("Spun To Date ")}:</td>
+                      <td>{item.spunToDate || "N/A"}</td>
+                    </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
                       <td>
@@ -1530,6 +1546,8 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
                             lotParentalLevel: matchedLot.lotNumberRsp,
                             dflLotNumber: matchedLot.numbersOfDfls,
                             lotVariety: matchedLot.raceOfDfls,
+                            spunFromDate: matchedLot.spunFromDate,
+                            spunToDate: matchedLot.spunToDate,
                           }));
                         } else {
                           setData((prev) => ({
@@ -1537,6 +1555,8 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
                             lotParentalLevel: enteredValue,
                             dflLotNumber: "",
                             lotVariety: "",
+                            spunFromDate: "",
+                            spunToDate: "",
                           }));
                         }
                       }}
