@@ -273,11 +273,69 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
 
   const [prepareEggs, setPrepareEggs] = useState([]);
   const [pathList, setPathList] = useState([]);
-  const getIdList = (farmerId) => {
+//   const getIdList = (farmerId) => {
+//   setLoading(true);
+//   api
+//     .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
+//     .then((response) => {
+//       const dataResponse = response.data || [];
+
+//       setPrepareEggs(dataResponse);
+//       setFitnessLotOptions(dataResponse);
+//       setPathList([]);
+//       setSelectedDocumentFile([]);
+
+//       if (dataResponse.length > 0) {
+//         dataResponse.forEach((data) => {
+//           if (data.fitnessCertificatePath) {
+//             setPathList((prev) => [...prev, data.fitnessCertificatePath]);
+//             getDocumentFile(data.fitnessCertificatePath);
+//           }
+//         });
+
+//         if (dataResponse.length === 1) {
+//           const singleLot = dataResponse[0];
+
+//           // Automatically assign values from the only available entry
+//           setSelectedParentalLotNumber(singleLot.lotNumberRsp);
+//           setData((prev) => ({
+//             ...prev,
+//             lotParentalLevel: singleLot.lotNumberRsp,
+//             dflLotNumber: singleLot.numbersOfDfls,
+//             lotVariety: singleLot.raceOfDfls,
+//           }));
+//         } else {
+//           // Multiple entries - wait for user to input
+//           setSelectedParentalLotNumber("");
+//           setData((prev) => ({
+//             ...prev,
+//             lotParentalLevel: "",
+//             dflLotNumber: "",
+//             lotVariety: "",
+//           }));
+//         }
+//       } else {
+//         setPrepareEggs([]);
+//         setFitnessLotOptions([]);
+//         setPathList([]);
+//         setSelectedDocumentFile([]);
+//       }
+
+//       setLoading(false);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       setPrepareEggs([]);
+//       setFitnessLotOptions([]);
+//       setLoading(false);
+//     });
+// };
+
+const getIdList = (farmerId) => {
   setLoading(true);
   api
     .get(`${baseURLChawki}cropInspection/getFitnessCertificatePath/${farmerId}`)
-    .then((response) => {
+    .then(async (response) => {   // ✅ make callback async
       const dataResponse = response.data || [];
 
       setPrepareEggs(dataResponse);
@@ -286,12 +344,18 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
       setSelectedDocumentFile([]);
 
       if (dataResponse.length > 0) {
-        dataResponse.forEach((data) => {
-          if (data.fitnessCertificatePath) {
-            setPathList((prev) => [...prev, data.fitnessCertificatePath]);
-            getDocumentFile(data.fitnessCertificatePath);
-          }
-        });
+        // Fetch all files in parallel
+        const updatedData = await Promise.all(
+          dataResponse.map(async (data) => {
+            if (data.fitnessCertificatePath) {
+              const url = await getDocumentFile(data.fitnessCertificatePath);
+              return { ...data, previewUrl: url };
+            }
+            return data;
+          })
+        );
+
+        setPrepareEggs(updatedData);
 
         if (dataResponse.length === 1) {
           const singleLot = dataResponse[0];
@@ -330,6 +394,7 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
       setLoading(false);
     });
 };
+
 
 
   // const getIdList = (farmerId) => {
@@ -1353,7 +1418,7 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
           </div>
         </Modal.Body>
       </Modal> */}
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+      {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
   <Modal.Header closeButton>
     <Modal.Title>{t("FC Details")}</Modal.Title>
   </Modal.Header>
@@ -1386,7 +1451,43 @@ const [selectedParentalLotNumber, setSelectedParentalLotNumber] = useState("");
       </table>
     </div>
   </Modal.Body>
+</Modal> */}
+
+<Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+  <Modal.Header closeButton>
+    <Modal.Title>{t("FC Details")}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <div className="d-flex flex-column justify-content-center">
+      <table>
+        <tbody>
+          {prepareEggs?.length > 0 &&
+            prepareEggs.map((data, index) => (
+              <tr key={index}>
+                <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
+                <td>
+                  <img
+                    style={{ height: "100px", width: "100px" }}
+                    src={data.previewUrl}
+                    alt={`Fitness Certificate ${index + 1}`}
+                  />
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="ms-2"
+                    onClick={() => downloadFile(data.fitnessCertificatePath)}
+                  >
+                    {t("Download File")}
+                  </Button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  </Modal.Body>
 </Modal>
+
 
 
       {/* <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
