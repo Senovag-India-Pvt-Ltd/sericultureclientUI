@@ -309,8 +309,8 @@ function DashboardReportList() {
     // },
     {
       name: "Subsidy Amount",
-      selector: (row) => row.schemeAmount,
-      cell: (row) => <span>{row.schemeAmount}</span>,
+      selector: (row) => row.subsidyAmount,
+      cell: (row) => <span>{row.subsidyAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -2169,7 +2169,7 @@ function DashboardReportList() {
           return {
             applicationFormId: item.applicationFormId,
             componentType: item.schemeQuotaId,
-            schemeAmount: item.schemeAmount,
+            schemeAmount: item.subsidyAmount,
             eligibleAmount: item.calculatedEligibleAmount,
             paymentTo: item.paymentTo,
             paymentMethod: item.paymentMethod,
@@ -4250,7 +4250,7 @@ function DashboardReportList() {
                           }}
                           className="mb-3"
                         >
-                          Push To DBT
+                          Push To DBT OR K2
                         </Accordion.Header>
                         <Accordion.Body>
                           <Block className="mt-n5">
@@ -4370,7 +4370,7 @@ function DashboardReportList() {
                           }}
                           className="mb-3"
                         >
-                          Push To DBT
+                          Push To DBT OR K2
                         </Accordion.Header>
                         <Accordion.Body>
                           <Block className="mt-n5">
