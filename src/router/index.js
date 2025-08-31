@@ -972,6 +972,13 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
+import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
+import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
+import MaintenanceeAndSaleOfNurseryReport from "../pages/stake-holder/MaintenanceAndSaleOfNurseryReport";
+import SupplyOfCocoonsReport from "../pages/stake-holder/SupplyOfCocoonsReport";
+import MaintenanceOfMulberryGardenReport from "../pages/stake-holder/MaintenanceOfMulberryGardenReport";
+import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOfMulberryFarmReport";
 
 // Admin and Reports
 
@@ -1277,6 +1284,35 @@ function Router() {
             <Route
               path="farmer-wise-report"
               element={<FarmerRegistrationList />}
+            />
+            <Route
+              path="chawki-management-report"
+              element={<ChawkiManagementReport />}
+            />
+            <Route
+              path="chawki-distribution-report"
+              element={<ChawkiDistributionReport />}
+            />
+            <Route
+              path="seed-cutting-bank-report"
+              element={<SeedCuttingBankReport />}
+            />
+            <Route
+              path="maintenance-and-sale-of-nursery-report"
+              element={<MaintenanceeAndSaleOfNurseryReport />}
+            />
+            <Route
+              path="supply-of-cocoons-report"
+              element={<SupplyOfCocoonsReport />}
+            />
+
+            <Route
+              path="maintenance-of-mulberry-garden-report"
+              element={<MaintenanceOfMulberryGardenReport />}
+            />
+            <Route
+              path="maintenance-of-mulberry-farm-report"
+              element={<MaintenanceOfMulberryFarmReport />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route
