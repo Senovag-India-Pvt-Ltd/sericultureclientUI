@@ -972,6 +972,7 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+<<<<<<< HEAD
 import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
 import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
 import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
@@ -979,6 +980,11 @@ import MaintenanceeAndSaleOfNurseryReport from "../pages/stake-holder/Maintenanc
 import SupplyOfCocoonsReport from "../pages/stake-holder/SupplyOfCocoonsReport";
 import MaintenanceOfMulberryGardenReport from "../pages/stake-holder/MaintenanceOfMulberryGardenReport";
 import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOfMulberryFarmReport";
+=======
+import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
+import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
+import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
+>>>>>>> origin/production_11_07_2024
 
 // Admin and Reports
 
@@ -1315,6 +1321,11 @@ function Router() {
               element={<MaintenanceOfMulberryFarmReport />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
+            <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
+            <Route path="trader-license-list-report" element={<TraderLicenseListReport />} />
+            <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
+
+
             <Route
               path="direct-fruits-details"
               element={<DirectFruitsDetails />}
