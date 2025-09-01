@@ -980,6 +980,8 @@ import DbtSuccessApplication from "../pages/direct-benefit-transfer/DbtSuccessAp
 import DbtFailureApplication from "../pages/direct-benefit-transfer/DbtFailureApplication";
 import DbtK2Application from "../pages/direct-benefit-transfer/DbtK2Application";
 import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
+import FarmerWithoutFruitsListReport from "../pages/stake-holder/FarmerWithoutFruitsIdListReport";
+import OtherStateFarmerListReport from "../pages/stake-holder/OtherStateFarmerListReport";
 
 // Admin and Reports
 
@@ -1290,6 +1292,8 @@ function Router() {
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
             <Route path="trader-license-list-report" element={<TraderLicenseListReport />} />
             <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
+            <Route path="farmer-without-fruits-report" element={<FarmerWithoutFruitsListReport />} />
+            <Route path="other-state-farmer-report" element={<OtherStateFarmerListReport />} />
 
 
             <Route
