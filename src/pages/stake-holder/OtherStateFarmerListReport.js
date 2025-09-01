@@ -230,25 +230,26 @@ function OtherStateFarmerListReport() {
     }
   }, [hobliData.hobliId]);
 
-  // to get State
-    const [stateListData, setStateListData] = useState([]);
-  
-    const getStateList = () => {
-      const response = api
-        .get(baseURL + `state/get-all`)
-        .then((response) => {
-          if (response.data.content.state) {
-            setStateListData(response.data.content.state);
-          }
-        })
-        .catch((err) => {
-          setStateListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getList();
-    }, []);
+// to get State
+  const [stateListData, setStateListData] = useState([]);
+
+  const getStateList = () => {
+    const response = api
+      .get(baseURL + `state/get-all`)
+      .then((response) => {
+        if (response.data.content.state) {
+          setStateListData(response.data.content.state);
+        }
+      })
+      .catch((err) => {
+        setStateListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getStateList();
+  }, []);
+
 
   // to get District Implementing Officer
   const [marketListData, setMarketListData] = useState([]);
@@ -421,23 +422,32 @@ function OtherStateFarmerListReport() {
           {/* State (Not Mandatory) */}
           <Col sm={2}>
             <Form.Group className="form-group">
-              <Form.Label>{t("State")}</Form.Label>
-              <div className="form-control-wrap">
-                <Form.Select
-                  name="stateId"
-                  value={data.stateId}
-                  onChange={handleInputs}
-                  onBlur={() => handleInputs}
-                >
-                  <option value="">{t("Select State")}</option>
-                  {stateListData.map((list) => (
-                    <option key={list.stateId} value={list.stateId}>
-                      {list.stateName}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-            </Form.Group>
+                                  <Form.Label>
+                                    {t("State")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="stateId"
+                                      value={data.stateId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.stateId === undefined || data.stateId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select State")}</option>
+                                      {stateListData.map((list) => (
+                                        <option key={list.stateId} value={list.stateId}>
+                                          {list.stateName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("State Name is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
           </Col>
 
           {/* District */}
