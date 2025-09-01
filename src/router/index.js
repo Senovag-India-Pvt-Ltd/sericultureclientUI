@@ -972,6 +972,11 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import AllApplicationDetails from "../pages/direct-benefit-transfer/AllApplicationDetails";
+import DbtSuccessApplication from "../pages/direct-benefit-transfer/DbtSuccessApplication";
+import DbtFailureApplication from "../pages/direct-benefit-transfer/DbtFailureApplication";
+import DbtK2Application from "../pages/direct-benefit-transfer/DbtK2Application";
+import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
 
 // Admin and Reports
 
@@ -1326,6 +1331,11 @@ function Router() {
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route path="dbt-pushed-list" element={<DbtPushedList />} />
+            <Route path="all-application" element={<AllApplicationDetails />} />
+            <Route path="dbt-success-report" element={<DbtSuccessApplication />} />
+            <Route path="dbt-failure-report" element={<DbtFailureApplication />} />
+            <Route path="dbt-k2-report" element={<DbtK2Application/>} />
+            <Route path="dbt-b-report" element={<DbtBApplication/>} />
 
             <Route
               path="district-wise-farmer-count-list"
