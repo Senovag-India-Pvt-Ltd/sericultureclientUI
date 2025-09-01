@@ -94,7 +94,7 @@ function PendingRenewReelerLicenseReport() {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `reeler_report.csv`;
+        link.download = `pending_reeler_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
