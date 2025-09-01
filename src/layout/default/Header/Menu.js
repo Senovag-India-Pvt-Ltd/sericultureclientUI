@@ -453,6 +453,15 @@ function Menu() {
     Admin_Master_General_Activate_External: false,
 
     Admin_Report: false,
+    Admin_Report_Registration: false,
+    Admin_Report_Registration_Farmer_Registration_Report: false,
+    Admin_Report_Registration_Reeler_Registration_Report: false,
+    Admin_Report_Registration_Renewal_Of_Reeler_License_Report: false,
+    Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report: false,
+    Admin_Report_Registration_Trader_License_Report: false,
+    Admin_Report_Registration_External_Unit_Registration_Report: false,
+    Admin_Report_Registration_Farmer_Without_Fruits_Report: false,
+    Admin_Report_Registration_Other_State_Farmer_Report: false,
 
     Admin_Report_Commercial_Market: false,
     Admin_Report_Commercial_Market_Admin: false,
@@ -471,8 +480,6 @@ function Menu() {
     Admin_Report_Commercial_Market_Farmer_Transaction_Report: false,
     Admin_Report_Commercial_Market_District_Wise_Farmer_Count: false,
     Admin_Report_Commercial_Market_District_Wise_Reeler_Count: false,
-    Admin_Report_Commercial_Market_Farmer_Wise: false,
-    Admin_Report_Commercial_Market_Reeler_Wise: false,
     Admin_Report_Commercial_Market_Direct_From_Fruits: false,
     Admin_Report_Commercial_Market_Reeler_Transaction_Report: false,
     Admin_Report_Commercial_Market_GeneratedTriplet: false,
@@ -487,6 +494,7 @@ function Menu() {
     Admin_Report_Commercial_Market_Average_Cocoon_Report: false,
 
     Admin_Report_Seed_Market: false,
+    Admin_Report_Seed_Market_Invoice_Permit_Receipt: false,
 
     Admin_Report_Silk_Type_Market: false,
     Admin_Report_Silk_Type_Market_Dashboard: false,
@@ -3831,6 +3839,82 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
+                {showMenu.Admin_Report_Registration ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Registration")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Registration_Farmer_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farmer Wise Report")}
+                              to="/seriui/farmer-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Reeler_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Reeler Wise Report")}
+                              to="/seriui/reeler-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Renewal_Of_Reeler_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Renewal of Reeler License Report")}
+                              to="/seriui/renewal-wise-report-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t(" Pending to renew License Report ")}
+                              to="/seriui/pending-reeler-license"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Trader_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trader License Report ")}
+                              to="/seriui/trader-license-list-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_External_Unit_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("RSP/ CRC/ NSSO Registration Report")}
+                              to="/seriui/external-registration-list-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Farmer_Without_Fruits_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farmer Without Fruits Report")}
+                              to="/seriui/farmer-without-fruits-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Other_State_Farmer_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Other State Farmer Report")}
+                              to="/seriui/other-state-farmer-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
                   {showMenu.Admin_Report_Seed_Market ? (
                     <MenuItem sub>
@@ -3841,14 +3925,14 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {/* {showMenu.Admin_Report_Seed_Market ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Land Holding Category"
-                              to="/seriui/land-category"
-                            />
-                          </MenuItem>
-                        ) : null} */}
+                        {showMenu.Admin_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Seed Market Invoice,Permit,Cash Receipt,Market Receipt")}
+                          to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4084,22 +4168,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Farmer Wise Report")}
-                              to="/seriui/farmer-wise-report"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Reeler Wise Report")}
-                              to="/seriui/reeler-wise-report"
-                            />
-                          </MenuItem>
-                        ) : null}
+                        
                         {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
                           <MenuItem>
                             <MenuItemLink
