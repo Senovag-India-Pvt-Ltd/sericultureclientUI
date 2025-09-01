@@ -174,14 +174,14 @@ function DispatchofCocoonstoP4GrainageList() {
             {t("Edit")}
           </Button>
           
-          {/* <Button
+          <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
             Delete
-          </Button> */}
+          </Button>
         </div>
       ),
       sortable: false,

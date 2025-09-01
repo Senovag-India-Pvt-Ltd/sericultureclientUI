@@ -972,6 +972,9 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
+import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
+import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
 import AllApplicationDetails from "../pages/direct-benefit-transfer/AllApplicationDetails";
 import DbtSuccessApplication from "../pages/direct-benefit-transfer/DbtSuccessApplication";
 import DbtFailureApplication from "../pages/direct-benefit-transfer/DbtFailureApplication";
@@ -1284,6 +1287,11 @@ function Router() {
               element={<FarmerRegistrationList />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
+            <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
+            <Route path="trader-license-list-report" element={<TraderLicenseListReport />} />
+            <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
+
+
             <Route
               path="direct-fruits-details"
               element={<DirectFruitsDetails />}

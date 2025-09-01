@@ -76,7 +76,7 @@ function MapComponentAndHoaList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLDBT + `/master/cost/scSchemeDetails/delete/${_id}`)
+          .delete(baseURLDBT + `master/cost/deleteMapComponentDetails/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -147,40 +147,40 @@ function MapComponentAndHoaList() {
   };
 
   const ScSchemeDetailsDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.scSchemeDetailsId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.scSchemeDetailsId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.scSchemeDetailsId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          {/* <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.scSchemeDetailsId)}
+          >
+            View
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.scSchemeDetailsId)}
+          >
+            Edit
+          </Button> */}
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
     {
         name: t("Head Of Account"),
         selector: (row) => row.scHeadAccountName,

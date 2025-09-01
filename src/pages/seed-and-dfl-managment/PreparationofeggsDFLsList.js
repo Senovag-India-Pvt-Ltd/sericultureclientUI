@@ -280,7 +280,7 @@ function PreparationofeggsDFLsList() {
       if (result.value) {
         // console.log("hello");
         api
-          .delete(baseURLSeedDfl + `MaintenanceOfScreen/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `EggPreparation/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();

@@ -20,6 +20,7 @@ const baseURLFarmerServer =
   process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ServiceApplication() {
   // Translation
@@ -53,8 +54,82 @@ function ServiceApplication() {
     // availBonus: true,
     lotWeight:"",
     lotNo:"",
-    transactionDate:""
+    transactionDate:new Date(),
   });
+
+  const formatAuctionDate = (auctionDate) => {
+    const distributionDate = new Date(auctionDate);
+    return (
+      distributionDate.getFullYear() +
+      "-" +
+      (distributionDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      distributionDate.getDate().toString().padStart(2, "0")
+    );
+  };
+
+//   const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId) => {
+//   const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+//   api.post(
+//     baseURLMarket + `lotGroupage/getLotDistributeResponseForInvoiceAndBonusScheme`,
+//     {
+//       auctionDate: formattedAuctionDate,
+//       marketId: localStorage.getItem("marketId"),
+//       fruitsId: data.fruitsId,
+//       allottedLotId: lotId,// include if backend requires
+//     }
+//   )
+//   .then((response) => {
+//     setFarmerDetails(response.data.content || []); // ✅ always array
+//     setShowFarmerDetails(true);
+//   })
+//   .catch((err) => {
+//     console.error("Error fetching farmer details:", err);
+//     Swal.fire({
+//       icon: "warning",
+//       title: "Details Not Found for This Lot and Auction Date",
+//     });
+//     setFarmerDetails([]);
+//     setLoading(false);
+//   });
+// };
+
+
+// State to store allottted lots
+const [lotOptions, setLotOptions] = useState([]);
+
+// Fetch allotted lots from backend
+const fetchLotOptions = () => {
+  if (!data.transactionDate || !data.fruitsId) return;
+
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api
+    .post(baseURLMarket + `lotGroupage/getAllottedLotIds`, {
+      auctionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+    })
+    .then((response) => {
+      // Convert response to objects for dropdown
+      const options = (response.data.content || []).map((id) => ({
+        allottedLotId: id,
+      }));
+      setLotOptions(options);
+    })
+    .catch((err) => {
+      console.error("Error fetching allotted lots:", err);
+      setLotOptions([]);
+    });
+};
+
+// Fetch lot options when transactionDate or fruitsId changes
+useEffect(() => {
+  fetchLotOptions();
+}, [data.transactionDate, data.fruitsId]);
+
+
 
   // console.log("nodu", data);
 
@@ -144,14 +219,26 @@ function ServiceApplication() {
       // Check if unitForScheme matches "Bivoltine Bonus"
       if (details.unitForScheme === "Bivoltine Bonus") {
         setShowButton(true);
+        setData((prevData) => ({
+          ...prevData,
+          availBonus: true, // ✅ set default only when showButton is true
+        }));
       } else {
         setShowButton(false);
+        setData((prevData) => ({
+          ...prevData,
+          availBonus: false, // ✅ set default only when showButton is true
+        }));
       }
       setLoading(false);
     })
     .catch((err) => {
       setLoading(false);
-      setShowButton(false); // Hide button in case of error
+      setShowButton(false);
+      setData((prevData) => ({
+        ...prevData,
+        availBonus: false,
+      })); // Hide button in case of error
     });
 };
   useEffect(() => {
@@ -424,6 +511,113 @@ function ServiceApplication() {
       getSubSchemeList(data.scSchemeDetailsId);
     }
   }, [data.scSchemeDetailsId]);
+
+ // State to store incentive and bonus data
+const [getIncentiveAndBonusData, setIncentiveAndBonusData] = useState([]);
+
+// Function to fetch incentive/bonus data
+const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
+  if (!scSchemeDetailsId || !scSubSchemeDetailsId) return; // avoid unnecessary calls
+
+  api
+    .get(
+      baseURLMasterData + 
+      `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${scSchemeDetailsId}/${scSubSchemeDetailsId}`
+    )
+    .then((response) => {
+      const content = response.data.content;
+
+     if (content && content.scSubSchemeDetails.length > 0) {
+        setIncentiveAndBonusData(content.scSubSchemeDetails);
+
+        // Extract subSchemeType from first item
+        const schemeType = content.scSubSchemeDetails[0]?.subSchemeType;
+
+        // Trigger lot API if lotNo exists
+        if (data.lotNo && schemeType) {
+          getLotDistributeResponseForInvoiceAndBonusScheme(data.lotNo, schemeType);
+        }
+      } else {
+        setIncentiveAndBonusData([]);
+      }
+    })
+    .catch((err) => {
+      setIncentiveAndBonusData([]);
+      console.error("Error fetching incentive/bonus data:", err);
+    });
+};
+
+const [farmerDetailsForIB, setFarmerDetailsForIB] = useState({});
+
+// Modified getLotDistributeResponseForInvoiceAndBonusScheme to include schemeType logic
+const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => {
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api.post(
+    baseURLMarket + `lotGroupage/getLotDistributeResponseForInvoiceAndBonusScheme`,
+    {
+      auctionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+      allottedLotId: lotId,
+    }
+  )
+  .then((response) => {
+    const respData = response.data.content || [];
+    setFarmerDetailsForIB(respData);
+    setShowFarmerDetails(true);
+
+    const lotData = respData[0] || {};
+
+    // Update fields based on schemeType
+   if (schemeType == "2") {
+      // Incentive
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight: lotData.totalLotWeight || 0,
+        lotWeight: lotData.lotWeightAfterWeighment || 0,
+      }));
+    } else if (schemeType == "3") {
+      // Bonus
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight: lotData.sumLotWeightReeling || 0,
+        lotWeight: lotData.lotWeightAfterWeighment || 0,
+      }));
+    }
+  })
+  .catch((err) => {
+    console.error("Error fetching lot distribution:", err);
+    Swal.fire({
+      icon: "warning",
+      title: "Details Not Found for This Lot and Auction Date",
+    });
+    setFarmerDetailsForIB([]);
+    setData((prev) => ({
+      ...prev,
+      cocoonsWeight: 0,
+      lotWeight: 0,
+    }));
+    setLoading(false);
+  });
+};
+
+// Call when scheme or sub-scheme changes
+useEffect(() => {
+  if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+    getIncentiveAndBonusList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+  }
+}, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+
+// Trigger lot fetch when lotNo changes, after all required data is available
+useEffect(() => {
+  if (data.lotNo && data.transactionDate && data.fruitsId && getIncentiveAndBonusData.length > 0) {
+    const schemeType = getIncentiveAndBonusData[0]?.subSchemeType;
+    if (schemeType) {
+      getLotDistributeResponseForInvoiceAndBonusScheme(data.lotNo, schemeType);
+    }
+  }
+}, [data.lotNo, data.transactionDate, data.fruitsId, getIncentiveAndBonusData]);
 
   // const getSubSchemeList = () => {
   //    api
@@ -872,37 +1066,7 @@ function ServiceApplication() {
 
   const [listData, setListData] = useState({});
 
-  // const getAmountList = () => {
-  //   setLoading(true);
-  //   const spacingId = data.spacingId;
-  //   const hectareId = data.hectareId;
-    
-  //   const response = api
-  //     .get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
-  //     .then((response) => {
-  //       const result = response.data[0]; // Assuming the first element contains the relevant data
-  //       setAmountValue({
-  //         ...amountValue,
-  //         unitPrice: result.amount, // Set the Unit Price
-  //       });
-  //       setData({
-  //         ...data,
-  //         expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
-  //       });
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setAmountValue({
-  //         ...amountValue,
-  //         unitPrice: "", // Clear Unit Price if API call fails
-  //       });
-  //       setData({
-  //         ...data,
-  //         expectedAmount: "", // Clear expectedAmount if API call fails
-  //       });
-  //       setLoading(false);
-  //     });
-  // };
+ 
   const getAmountList = () => {
     setLoading(true);
     const spacingId = data.spacingId;
@@ -941,55 +1105,7 @@ function ServiceApplication() {
 
   const [saveDisabled, setSaveDisabled] = useState(false);
 
-//   const getEligibleAmount = () => {
-//     const { scComponentId, scCategoryId, fruitsId } = data;
 
-//     if (!fruitsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
-
-//     setLoading(true);
-    
-//     api.post(`${baseURLDBT}service/getEligibleAmount?componentId=${scComponentId}&categoryId=${scCategoryId}&fruitsId=${fruitsId}`, {}, {
-//         headers: {
-//             "Content-Type": "application/json"
-//         }
-//     })
-//     .then((response) => {
-//         const result = response.data.content?.[0]; // Ensure correct data access
-//         const eligibleAmount = result?.eligibleAmount;
-
-//         // Check only if schemeDetails.calculationBasedOn is "PMKSY"
-//         if (schemeDetails.calculationBasedOn === "PMKSY") {
-//             if (eligibleAmount === null || eligibleAmount === undefined || eligibleAmount === 0) {
-//                 Swal.fire({
-//                     icon: "warning",
-//                     title: "First apply application for PDMC",
-//                     text: "Please apply for PDMC before proceeding.",
-//                 });
-//                 setSaveDisabled(true);
-//             } else {
-//                 setSaveDisabled(false);
-//             }
-//         } else {
-//             // If schemeDetails.calculationBasedOn is NOT "PMKSY", enable save
-//             setSaveDisabled(false);
-//         }
-
-//         setData({ ...data, expectedAmount: eligibleAmount || "" });
-//     })
-//     .catch(() => {
-//         setData({ ...data, expectedAmount: "" });
-//     })
-//     .finally(() => {
-//         setLoading(false);
-//     });
-// };
-
-// // useEffect to trigger API call
-// useEffect(() => {
-//   if (data.scComponentId && data.scCategoryId && data.fruitsId) {
-//     getEligibleAmount();
-//   }
-// }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
 
 const getEligibleAmount = () => {
   const { scComponentId, scCategoryId, fruitsId } = data;
@@ -1040,53 +1156,7 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
 }
 }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
 
-//   const getCalculateAmountForRH = () => {
-//   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
 
-//   if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return; // Ensure required fields are selected
-
-//   setLoading(true);
-  
-//   api.get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component?scSchemeDetailsId=${scSchemeDetailsId}&componentId=${scComponentId}&categoryId=${scCategoryId}`, {}, {
-//       headers: {
-//           "Content-Type": "application/json"
-//       }
-//   })
-//   .then((response) => {
-//       const result = response.data.content.configureRHAmount?.[0]; // Ensure correct data access
-//       const sqft = result?.sqft;
-//       const amount = result?.amount;
-      
-//       if (schemeDetails.calculationBasedOn === "Sericulture Development Programme") {
-//         if (sqft && amount) {
-//             const calculatedAmount = sqft * amount;
-
-//             // Set unitPrice using setAmountValue
-//             setAmountValue({
-//               ...amountValue,
-//               unitPrice: calculatedAmount, // Set Unit Price to calculatedAmount
-//             });
-
-//             // Set expectedAmount in data
-//             setData({ 
-//               ...data, 
-//               expectedAmount: calculatedAmount 
-//             });
-//         } else {
-//             // Reset values if invalid data
-//             setAmountValue({ ...amountValue, unitPrice: "" });
-//             setData({ ...data, expectedAmount: "" });
-//         }
-//     }
-// })
-// .catch(() => {
-//     setAmountValue({ ...amountValue, unitPrice: "" });
-//     setData({ ...data, expectedAmount: "" });
-// })
-// .finally(() => {
-//     setLoading(false);
-// });
-// };
 const getCalculateAmountForRH = () => { 
   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
 
@@ -1167,120 +1237,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     });
   };
   
-  // const handleCalculateUnitPrice = () => {
-  //   if (schemeDetails.calculateBasedOn === "PDMC") {
-  //     getAmountList();
-  //   } else if (schemeDetails.calculateBasedOn === "Bivoltine Bonus") {
-  //     calculateBonusAmount();
-  //   }
-  // };
-  // const handleCalculateUnitPrice = () => {
-  //   // if (!schemeDetails || !schemeDetails.calculateBasedOn) {
-  //   //   alert("Scheme details are not loaded. Please try again.");
-  //   //   return;
-  //   // }
-  
-  //   if (schemeDetails.calculationBasedOn === "PDMC") {
-  //     getAmountList();
-  //   } else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
-  //     calculateBonusAmount();
-  //   } else {
-  //     alert("Invalid calculation method.");
-  //   }
-  // };
-
-  // const handleCalculateUnitPrice = () => {
-  //   // Validation for PDMC
-  //   if (schemeDetails.calculationBasedOn === "PDMC") {
-  //     if (!data.spacingId) {
-  //       alert("Please select a Spacing ID.");
-  //       return;
-  //     }
-  //     if (!data.hectareId) {
-  //       alert("Please select a Hectare ID.");
-  //       return;
-  //     } 
-  //     getAmountList();
-  //   } 
-  //   // Validation for Bivoltine Bonus
-  //   else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
-  //     if (!data.scCategoryId) {
-  //       alert("Please select a Category ID.");
-  //       return;
-  //     }
-  //     if (!data.scComponentId) {
-  //       alert("Please select a Component ID.");
-  //       return;
-  //     }
-  //     if (!data.cocoonsWeight) {
-  //       alert("Please enter the Cocoons Weight.");
-  //       return;
-  //     }
-  //     calculateBonusAmount();
-  //   } 
-  //   // Fallback for invalid calculation method
-  //   else {
-  //     alert("Invalid calculation method.");
-  //   }
-  // };
-  // const handleCalculateUnitPrice = () => {
-  //   // Validation for PDMC
-  //   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
-  //     if (!data.spacingId) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         title: "Validation Error",
-  //         text: "Please select a Spacing.",
-  //       });
-  //       return;
-  //     }
-  //     if (!data.hectareId) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         title: "Validation Error",
-  //         text: "Please select a Hectare.",
-  //       });
-  //       return;
-  //     }
-  //     getAmountList();
-  //   }  
-  //   // Validation for Bivoltine Bonus
-  //   else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
-  //     if (!data.scCategoryId) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         title: "Validation Error",
-  //         text: "Please select a Sub Component.",
-  //       });
-  //       return;
-  //     }
-  //     if (!data.scComponentId) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         title: "Validation Error",
-  //         text: "Please select a Component.",
-  //       });
-  //       return;
-  //     }
-  //     if (!data.cocoonsWeight) {
-  //       Swal.fire({
-  //         icon: "warning",
-  //         title: "Validation Error",
-  //         text: "Please enter the Cocoons Weight.",
-  //       });
-  //       return;
-  //     }
-  //     calculateBonusAmount();
-  //   } 
-  //   // Fallback for invalid calculation method
-  //   else {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error",
-  //       text: "Invalid calculation method.",
-  //     });
-  //   }
-  // };
+ 
   const handleCalculateUnitPrice = () => { 
     if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
         if (!data.spacingId) {
@@ -1361,76 +1318,6 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     let value = e.target.value;
     setEquipment({ ...equipment, [name]: value });
   };
-
-  // const postData = (event) => {
-  //   const transformedData = Object.keys(developedArea).map((id) => ({
-  //     // landDeveloped: developedLand.landDeveloped,
-  //     // landDetailId: parseInt(id),
-  //     ...developedArea[id],
-  //   }));
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     const sendPost = {
-  //       approvalStageId: data.approvalStageId,
-  //       userMasterId: data.userId,
-  //       farmerId: data.farmerId,
-  //       fruitsId: data.fruitsId,
-  //       payToVendor: equipment.payToVendor,
-  //       headOfAccountId: data.scHeadAccountId,
-  //       schemeId: data.scSchemeDetailsId,
-  //       subSchemeId: data.scSubSchemeDetailsId,
-  //       categoryId: data.scCategoryId,
-  //       landDetailId: landDetailsIds[0],
-  //       talukId: landData.talukId,
-  //       newFarmer: true,
-  //       componentId: data.scComponentId,
-  //       // expectedAmount: data.expectedAmount,
-  //       financialYearMasterId: data.financialYearMasterId,
-  //       devAcre: 0,
-  //       devGunta: 0,
-  //       devFGunta: 0,
-  //       schemeAmount: data.schemeAmount,
-  //       sanctionNumber: data.sanctionNumber,
-  //       initialAmount: data.expectedAmount,
-  //       periodFrom: data.periodFrom,
-  //       periodTo: data.periodTo,
-  //       vendorId: equipment.vendorId,
-  //       spacingId: data.spacingId,
-  //       hectareId: data.hectareId,
-  //       description: equipment.description,
-  //       loggedInUserId: localStorage.getItem("userMasterId"),
-  //     };
-
-  //     if (data.equordev === "land") {
-  //       // sendPost.applicationFormLandDetailRequestList = [
-  //       //   {
-  //       //     // unitTypeMasterId: developedLand.unitType,
-  //       //     landDeveloped: developedLand.landDeveloped,
-  //       //   },
-  //       // ];
-  //       sendPost.dbtFarmerLandDetailsRequestList = transformedData;
-  //     } else if (data.equordev === "equipment") {
-  //       sendPost.applicationFormLineItemRequestList = [
-  //         {
-  //           // unitTypeMasterId: equipment.unitType,
-  //           lineItemComment: equipment.description,
-  //           cost: equipment.price,
-  //           vendorId: equipment.vendorId,
-  //         },
-  //       ];
-  //     }
-
-  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-  //       return;
-  //     }
-  //     uploadFileConfirm(sendPost);
-  //   }
-  // };
 
   const postData = (event) => {
     event.preventDefault(); // Prevent the default form submission
@@ -1731,142 +1618,6 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     clear();
   };
 
-  // const uploadFileConfirm = (post) => {
-  //   Swal.fire({
-  //     title: "Do you want to Upload the Documents?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Yes",
-  //     cancelButtonText: "Later",
-  //   }).then((result) => {
-  //     if (result.value) {
-  //    // User clicked 'Yes', show document upload modal
-  //    handleShowModal(post);
-  //   } else {
-  //     // User clicked 'Later', directly save the application
-  //     saveApplication(post);
-  //   }
-  //   });
-  // };
-
-  // const saveApplication = (post) => {
-  //   api
-  //     .post(baseURLDBT + `service/saveApplicationForm`, post)
-  //     .then((response) => {
-  //       if (response.data.errorCode === -1) {
-  //         saveError(response.data.message);
-  //       } else {
-  //                   // Show success message after saving
-  //          saveSuccess();
-  //         setApplicationId(response.data.content.applicationDocumentId);
-  //         setValidated(false);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (
-  //         err.response &&
-  //         err.response.data &&
-  //         err.response.data.validationErrors
-  //       ) {
-  //         saveError(err.response.data.validationErrors);
-  //       }
-  //     });
-  // };
-
-  // const uploadFileConfirm = (post) => {
-  //   Swal.fire({
-  //     title: "Do you want to Upload the Documents?",
-  //     // text: "It will delete permanently!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Yes",
-  //     cancelButtonText: "Later",
-  //   }).then((result) => {
-  //     if (result.value) {
-  //       api
-  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
-  //         .then((response) => {
-  //           if (response.data.errorCode === -1) {
-  //             saveError(response.data.errorMessages[0]);
-  //           } else if (response.data && response.data.error) {
-  //             saveError(response.data.error_description);
-  //           } else {
-  //             // saveSuccess(response.data.receiptNo);
-  //             setApplicationId(response.data.content.applicationDocumentId);
-  //             setSchemeId(response.data.content.schemeId);
-  //             clear();
-  //             // Call the acknowledgment API after a successful response
-  //             // generateAcknowledgment(
-  //             //   response.data.content.applicationDocumentId
-  //             // );
-  //             generateAcknowledgment(
-  //               response.data.content.applicationDocumentId,
-  //               response.data.content.schemeId // Ensure schemeId exists in the response data
-  //             );
-              
-  //             handleShowModal();
-
-  //             setValidated(false);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           if (
-  //             err.response &&
-  //             err.response &&
-  //             err.response.data &&
-  //             err.response.data.validationErrors
-  //           ) {
-  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //               saveError(err.response.data.validationErrors);
-  //             }
-  //           }
-  //         });
-  //       setValidated(true);
-  //       // Swal.fire("Deleted", "You successfully deleted this record", "success");
-  //     } else {
-  //       console.log(result.value);
-  //       api
-  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
-  //         .then((response) => {
-  //           if (response.data.errorCode === -1) {
-  //             saveError(response.data.errorMessages[0]);
-  //           } else if (response.data && response.data.error) {
-  //             saveError(response.data.error_description);
-  //           } else {
-  //             saveSuccess();
-  //             setApplicationId(response.data.content.applicationDocumentId);
-  //             setSchemeId(response.data.content.schemeId);
-  //             // add acknowledgement API here
-
-  //             // Call the acknowledgment API after a successful response
-  //             generateAcknowledgment(
-  //               response.data.content.applicationDocumentId,
-  //               response.data.content.schemeId
-  //             );
-
-  //             // generateBiddingSlip(response.data.content.applicationDocumentId);
-  //             // handleShowModal();
-  //             setValidated(false);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           if (
-  //             err.response &&
-  //             err.response &&
-  //             err.response.data &&
-  //             err.response.data.validationErrors
-  //           ) {
-  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //               saveError(err.response.data.validationErrors);
-  //             }
-  //           }
-  //         });
-  //       setValidated(true);
-  //       // clear();
-  //       // Swal.fire("Cancelled", "Your record is not deleted", "info");
-  //     }
-  //   });
-  // };
   const uploadFileConfirm = (post) => {
     Swal.fire({
       title: "Do you want to Upload the Documents?",
@@ -2020,93 +1771,14 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       } else {
         setDisable(true);
       }
-      // api
-      //   .post(baseURLRegistration + `farmer/get-farmer-details`, {
-      //     fruitsId: data.fruitsId,
-      //   })
-      //   .then((response) => {
-      //     console.log(response);
-      //     if (!response.data.content.error) {
-      //       if (response.data.content.farmerResponse) {
-      //         setData((prev) => ({
-      //           ...prev,
-      //           farmerId: response.data.content.farmerResponse.farmerId,
-      //         }));
-      //         setFarmerDetails((prev) => ({
-      //           ...prev,
-      //           farmerName: response.data.content.farmerResponse.firstName,
-      //           hobli:
-      //             response.data.content.farmerAddressDTOList &&
-      //             response.data.content.farmerAddressDTOList.length > 0
-      //               ? response.data.content.farmerAddressDTOList[0].hobliName
-      //               : "",
-      //           village:
-      //             response.data.content.farmerAddressDTOList &&
-      //             response.data.content.farmerAddressDTOList.length > 0
-      //               ? response.data.content.farmerAddressDTOList[0].villageName
-      //               : "",
-      //         }));
-      //         setShowFarmerDetails(true);
-      //       }
-      //       // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-      //       //   setLandDetailsList(
-      //       //     response.data.content.farmerLandDetailsDTOList
-      //       //   );
-      //       // }
+      
 
       api
         .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
           fruitsId: data.fruitsId,
         })
         .then((response) => {
-  //         if (response.data.content.farmerResponse) {
-  //           setData((prev) => ({
-  //             ...prev,
-  //             farmerId: response.data.content.farmerResponse.farmerId,
-  //           }));
-  //           setFarmerDetails((prev) => ({
-  //             ...prev,
-  //             farmerName: response.data.content.farmerResponse.firstName,
-  //             // districtName:
-  //             //   response.data.content.farmerAddressDTOList &&
-  //             //   response.data.content.farmerAddressDTOList.length > 0
-  //             //     ? response.data.content.farmerAddressDTOList[0].districtName
-  //             //     : "",
-  //             // talukName:
-  //             //   response.data.content.farmerAddressDTOList &&
-  //             //   response.data.content.farmerAddressDTOList.length > 0
-  //             //     ? response.data.content.farmerAddressDTOList[0].talukName
-  //             //     : "",
-  //             // hobli:
-  //             //   response.data.content.farmerAddressDTOList &&
-  //             //   response.data.content.farmerAddressDTOList.length > 0
-  //             //     ? response.data.content.farmerAddressDTOList[0].hobliName
-  //             //     : "",
-  //             // village:
-  //             //   response.data.content.farmerAddressDTOList &&
-  //             //   response.data.content.farmerAddressDTOList.length > 0
-  //             //     ? response.data.content.farmerAddressDTOList[0].villageName
-  //             //     : "",
-  //           }));
-  //           if (response.data.content.farmerAddressDTOList.length > 0) {
-  //             setFarmerDetails((prev) => ({
-  //               ...prev,
-  //               address:
-  //                 response.data.content.farmerAddressDTOList[0].addressText,
-  //             }));
-  //           }
-  //           setShowFarmerDetails(true);
-  //         }
-  //         console.log("landdetails", response.data);
-  //         if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-  //           setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         setLandDetailsList([]);
-  //       });
-  //   }
-  // };
+  
   if (response.data.errorCode === -1) {
     saveError(response.data.errorMessages[0]);
   } else if (response.data.content && response.data.content.error) {
@@ -2647,30 +2319,20 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     })); 
   };
 
-  //  console.log("nodappa",document);
-  //  console.log("nodappa2",uploadDocuments);
-
-  // Upload Image to S3 Bucket
-  //  const handleFileDocumentUpload = async (scApplicationFormDocumentDetailId) => {
-  //    const parameters = `farmerBankAccountId=${scApplicationFormDocumentDetailId}`;
-  //    try {
-  //      const formData = new FormData();
-  //      formData.append("multipartFile", document);
-
-  //      const response = await api.post(
-  //        baseURLDBT + `farmer-bank-account/upload-photo?${parameters}`,
-  //        formData,
-  //        {
-  //          headers: {
-  //            "Content-Type": "multipart/form-data",
-  //          },
-  //        }
-  //      );
-  //      console.log("File upload response:", response.data);
-  //    } catch (error) {
-  //      console.error("Error uploading file:", error);
-  //    }
-  //  };
+  const searchError = (message = "Something went wrong!") => {
+       let errorMessage;
+       if (typeof message === "object") {
+         errorMessage = Object.values(message).join("<br>");
+       } else {
+         errorMessage = message;
+       }
+       Swal.fire({
+         icon: "error",
+         title: "Details not Found",
+         html: errorMessage,
+       });
+     };
+  
 
   return (
     <Layout title="Scheme Details Form">
@@ -2770,97 +2432,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
           </Card>
         </Form>
 
-        {/* <Card className="mt-1">
-          <Card.Body>
-            <Row lg="12" className="g-gs">
-              <Col lg={6}>
-                <Row>
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="subsidy"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="subinc"
-                          value="subsidy"
-                          checked={data.subinc === "subsidy"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="subsidy">
-                        Subsidy
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="3">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="incentive"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="subinc"
-                          value="incentive"
-                          checked={data.subinc === "incentive"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label
-                        column
-                        sm={9}
-                        className="mt-n2"
-                        id="incentive"
-                      >
-                        Incentive
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Col>
-              <Col lg={6}>
-                <Row>
-                  <Col lg="3">
-                    <Form.Group as={Row} className="form-group" controlId="crc">
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="with"
-                          value="withLand"
-                          checked={data.with === "withLand"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="crc">
-                        With Land
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="3" className="ms-n2">
-                    <Form.Group as={Row} className="form-group" controlId="crc">
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="with"
-                          value="withOutLand"
-                          checked={data.with === "withOutLand"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="crc">
-                        Without Land
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card> */}
+        
       </Block>
       <Row>
         <Block>
@@ -3060,77 +2632,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              Scheme Type
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSubSchemeType"
-                                value={data.scSubSchemeType}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  data.scSubSchemeType === undefined ||
-                                  data.scSubSchemeType === "0"
-                                }
-                              >
-                                <option value="">Select Sub Scheme</option>
-                                {schemeQuotaDetailsListData.map((list) => (
-                                  <option
-                                    key={list.schemeQuotaId}
-                                    value={list.schemeQuotaId}
-                                  >
-                                    {list.schemeQuotaName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Sub Scheme is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Scheme
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSchemeDetailsId"
-                                value={data.scSchemeDetailsId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  data.scSchemeDetailsId === undefined ||
-                                  data.scSchemeDetailsId === "0"
-                                }
-                              >
-                                <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData.map((list) => (
-                                  <option
-                                    key={list.scSchemeDetailsId}
-                                    value={list.scSchemeDetailsId}
-                                  >
-                                    {list.schemeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Scheme is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
+                        
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
@@ -3168,12 +2670,11 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                           </Form.Group>
                         </Col>
 
-                        {schemeDetails.calculationBasedOn ==="Bivoltine Bonus" && (
+                        {/* {schemeDetails.calculationBasedOn ==="Bivoltine Bonus" && (
                           <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
                               Total Cocoons Weight
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -3185,13 +2686,10 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                 placeholder="Enter Total Cocoons Weight"
                                 // required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
-                        )}
+                        )} */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -3368,507 +2866,13 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                             </div>
                           </Form.Group>
                         </Col>
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="schemeAmount">
-                              Scheme Amount
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="schemeAmount"
-                                type="text"
-                                name="schemeAmount"
-                                value={data.schemeAmount}
-                                onChange={handleInputs}
-                                placeholder="Enter Scheme Amount"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Scheme Amount is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sanctionNumber">
-                              Sanction Number
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sanctionNumber"
-                                type="text"
-                                name="sanctionNumber"
-                                value={data.sanctionNumber}
-                                onChange={handleInputs}
-                                placeholder="Enter Sanction Number"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Sanction Number is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="expectedAmount">
-                              Initial Amount
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="expectedAmount"
-                                type="text"
-                                name="expectedAmount"
-                                value={data.expectedAmount}
-                                onChange={handleInputs}
-                                placeholder="Enter Expected Amount"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Expected Amount is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
                       </Row>
                     </Card.Body>
                   </Card>
                 </Block>
               </Col>
 
-              {/* <Block className="mt-3">
-                <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
-                    Vendors List
-                  </Card.Header>
-                  <Card.Body>
-                    <Row className="g-gs">
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label>
-                            Vendor Name<span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="scVendorId"
-                              value={data.scVendorId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // multiple
-                              required
-                              isInvalid={
-                                data.scVendorId === undefined ||
-                                data.scVendorId === "0"
-                              }
-                            >
-                              <option value="">Select Vendor Name</option>
-                              {scVendorListData.map((list) => (
-                                <option
-                                  key={list.scVendorId}
-                                  value={list.scVendorId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                              Vendor Name is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Block> */}
-
-              {/* <Card className="mt-1">
-                <Row className="ms-1 mt-2">
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="land"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="equordev"
-                          value="land"
-                          checked={data.equordev === "land"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="land">
-                        Constructed Area
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="equip"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="equordev"
-                          value="equipment"
-                          checked={data.equordev === "equipment"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="equip">
-                        Equipment Purchase
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="land"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="equordev"
-                          value="land"
-                          checked={data.equordev === "land"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="land">
-                        Land Wise
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card>
-              
-              {/* {data.with === "withLand" && landDetailsList.length > 0 ? ( */}
-              {/* {data.equordev === "land" && data.with === "withLand" && landDetailsList.length > 0 ? (
-                <>
-                  <Block className="mt-3">
-                    <Card>
-                
-                      <Card.Body>
-                        <Row>
-                          <DataTable
-                            tableClassName="data-table-head-light table-responsive"
-                            columns={LandDetailsForDevColumns}
-                            data={landDetailsList}
-                            highlightOnHover
-                            // pagination
-                            // paginationServer
-                            // paginationTotalRows={totalRows}
-                            // paginationPerPage={countPerPage}
-                            // paginationComponentOptions={{
-                            //   noRowsPerPage: true,
-                            // }}
-                            // onChangePage={(page) => setPage(page - 1)}
-                            progressPending={loading}
-                            theme="solarized"
-                            customStyles={customStyles}
-                          />
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                  
-                 
-                  <Block className="mt-3">
-                    <Card>
-                      <Card.Header style={{ fontWeight: "bold" }}>
-                        Sanction Amount
-                      </Card.Header>
-                      <Card.Body>
-                        <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="landDeveloped">
-                                Unit Price
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="landDeveloped"
-                                  type="text"
-                                  name="unitPrice"
-                                  value={amountValue.unitPrice}
-                                  onChange={handleDevelopedLandInputs}
-                                  placeholder="Enter Unit Price"
-                                  readOnly
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Unit Price is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="landDeveloped">
-                                Subsidy Amount
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="expectedAmount"
-                                  type="text"
-                                  name="expectedAmount"
-                                  value={data.expectedAmount}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Expected Amount"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Subsidy Amount is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          {amountValue.fullPrice && (
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="landDeveloped">
-                                  Quantity
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="landDeveloped"
-                                    type="text"
-                                    name="landDeveloped"
-                                    value={developedLand.landDeveloped}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Quantity"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Quantity is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                          )}
-                        </Row>
-                        
-                      </Card.Body>
-                    </Card>
-                  </Block>
-
-                  {data.equordev === "land" ? (
-                    <Block className="mt-3">
-                      <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
-                          Constructed Area
-                        </Card.Header>
-                        <Card.Body>
-                          <Row className="g-gs">
-                           
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="landDeveloped">
-                                  Unit
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="landDeveloped"
-                                    type="text"
-                                    name="landDeveloped"
-                                    value={developedLand.landDeveloped}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Unit"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Unit Quantity is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                           
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Block>
-                  ) : data.equordev === "equipment" ? (
-                    <Block className="mt-3">
-                      <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
-                          Equipment Purchase
-                        </Card.Header>
-                        <Card.Body>
-                          <Row className="g-gs">
-                           
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Vendor Name
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="vendorId"
-                                    value={equipment.vendorId}
-                                    onChange={handleEquipmentInputs}
-                                    onBlur={() => handleEquipmentInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      equipment.vendorId === undefined ||
-                                      equipment.vendorId === "0"
-                                    }
-                                  >
-                                    <option value="">Select Vendor Name</option>
-                                    {scVendorListData.map((list) => (
-                                      <option
-                                        key={list.scVendorId}
-                                        value={list.scVendorId}
-                                      >
-                                        {list.name}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Vendor Name is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="description">
-                                  Description
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="description"
-                                    type="text"
-                                    name="description"
-                                    value={equipment.description}
-                                    onChange={handleEquipmentInputs}
-                                    placeholder="Enter Description"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Description is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="price">
-                                  Price
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="price"
-                                    type="text"
-                                    name="price"
-                                    value={equipment.price}
-                                    onChange={handleEquipmentInputs}
-                                    placeholder="Enter Price"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Price is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                           
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Block>
-                  ) : null}
-                  )}
-                </> 
-              ) : (
-                ""
-              )} */}
-
-              {/* <Card className="mt-1">
-                <Row className="ms-1 mt-2">
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="land"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="radio"
-                          name="equordev"
-                          value="constructedArea"
-                          checked={data.equordev === "constructedArea"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="land">
-                        Constructed Area
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="equip"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="checkbox"
-                          name="equordev"
-                          value="equipment"
-                          checked={data.equordev === "equipment"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="equip">
-                        Equipment Purchase
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="2">
-                    <Form.Group
-                      as={Row}
-                      className="form-group"
-                      controlId="land"
-                    >
-                      <Col sm={1}>
-                        <Form.Check
-                          type="checkbox"
-                          name="equordev"
-                          value="land"
-                          checked={data.equordev === "land"}
-                          onChange={handleInputs}
-                        />
-                      </Col>
-                      <Form.Label column sm={9} className="mt-n2" id="land">
-                        Land Wise
-                      </Form.Label>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card> */}
+             
               <Card className="mt-1">
                 <Row className="ms-1 mt-2">
                   <Col lg="2">
@@ -3934,6 +2938,228 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                 </Row>
               </Card>
 
+              {showButton && (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          {t("Transaction Details")}
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className="g-4">
+                            {/* <Col sm={4}>
+                              <Form.Group className="form-group">
+                                <Form.Label>Bidding Slip Lot No</Form.Label>
+                                <Form.Control
+                                  id="lotNo"
+                                  name="lotNo"
+                                  value={data.lotNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Enter Bidding Slip Lot No"
+                                  className="form-control"
+                                />
+                              </Form.Group>
+                            </Col> */}
+
+                            <Col lg="2">
+                              <Form.Group className="form-group">
+                                <Form.Label htmlFor="transactionDate">
+                                  {t("Transaction Date")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.transactionDate}
+                                    onChange={(date) => handleDateChange(date, "transactionDate")}
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    maxDate={new Date()}
+                                    required
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="3">
+                            <Form.Group className="form-group">
+                              <Form.Label>Bidding Slip Lot No</Form.Label>
+                              <Form.Control
+                                as="select"
+                                name="lotNo"
+                                value={data.lotNo || ""}
+                                disabled={!data.transactionDate || !data.fruitsId} 
+                               onChange={(e) => {
+                                const selectedLotId = e.target.value;
+                                setData((prev) => ({
+                                  ...prev,
+                                  lotNo: selectedLotId, // 🔥 only update lotNo (it is allottedLotId)
+                                }));
+
+
+                                  // Fetch additional details for this lot if needed
+                                  fetchLotOptions(e);
+                                  const selectedSubScheme = getIncentiveAndBonusData[0];
+                                  const schemeType = selectedSubScheme?.subSchemeType;
+
+                                  // ✅ Call only when we have auctionDate + fruitsId + allottedLotId
+                                  if (selectedLotId && data.transactionDate && data.fruitsId && schemeType) {
+                                    getLotDistributeResponseForInvoiceAndBonusScheme(selectedLotId, schemeType);
+                                  }
+                                }}
+                                className="form-control"
+                              >
+                                <option value="">-- Select Lot --</option>
+                                {lotOptions.map((lot) => (
+                                  <option key={lot.allottedLotId} value={lot.allottedLotId}>
+                                    {lot.allottedLotId}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="3">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Total Cocoons Weight
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="cocoonsWeight"
+                                type="text"
+                                name="cocoonsWeight"
+                                value={data.cocoonsWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter Total Cocoons Weight"
+                                readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                            <Col lg="3">
+                              <Form.Group className="form-group">
+                                <Form.Label>Lot Weight</Form.Label>
+                                <Form.Control
+                                  id="lotWeight"
+                                  name="lotWeight"
+                                  value={data.lotWeight}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Weight"
+                                  className="form-control"
+                                  readOnly
+                                />
+                              </Form.Group>
+                            </Col>
+
+                            
+                          </Row>
+
+                          <Col lg="2">
+                            <Form.Group as={Row} className="form-group" controlId="availBonus">
+                              <Col sm={1}>
+                                <Form.Check
+                                  type="checkbox"
+                                  name="availBonus"
+                                  value="availBonus"
+                                  checked={data.availBonus}
+                                  onChange={handleBonusCheckBox}
+                                />
+                              </Col>
+                              <Form.Label column sm={9} className="mt-n2">
+                                {t("Avail Bonus Or Incentive")}
+                              </Form.Label>
+                            </Form.Group>
+                          </Col>
+
+                      {/* <Row>
+                        <div className="gap-col d-flex justify-content-center">
+                          <Button
+                            variant="primary"
+                            type="button"
+                            onClick={() =>
+                              console.log("Submit Transaction Details", data)
+                            }
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                      </Row> */}
+                      {/* Farmer Details Card - show only after lot is selected */}
+                      {data.lotNo && farmerDetailsForIB.length > 0 && (
+                        <Card className="mt-3">
+                          <Card.Header style={{ fontWeight: "bold" }}>
+                            {t("Farmer Details")}
+                          </Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col lg="12">
+                                <table className="table small table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Sl. No</th>
+                                      <th>Farmer Name</th>
+                                      <th>Buyer Type</th>
+                                      <th>Cocoons Weight</th>
+                                      <th>Lot Parent Level</th>
+                                      <th>DFL Lot No</th>
+                                      <th>Buyer Name</th>
+                                      <th>Amount</th>
+                                      <th>Market Name</th>
+                                      <th>Farmer Village</th>
+                                      <th>Total Lot Weight</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {farmerDetailsForIB.map((farmer, index) => (
+                                      <tr key={farmer.serialNumber}>
+                                        <td>{farmer.serialNumber}</td>
+                                        <td>{farmer.farmerFullName}</td>
+                                        <td>{farmer.buyerType}</td>
+                                        <td>{farmer.lotWeight}</td>
+                                        <td>{farmer.lotParentLevel}</td>
+                                        <td>{farmer.dflLotNumber}</td>
+                                        <td>{farmer.buyerName}</td>
+                                        <td>{farmer.soldAmount}</td>
+                                        <td>{farmer.marketName}</td>
+                                        <td>{farmer.farmerVillage}</td>
+                                        <td>{farmer.lotWeightAfterWeighment}</td>
+                                      </tr>
+                                    ))}
+                                    <tr>
+                                      <td colSpan="10">
+                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                          <span style={{ color: "green", fontWeight: "bold" }}>
+                                            Total Cocoons Weight Of Seed Area – Eligible for Incentive: {farmerDetailsForIB[0]?.totalLotWeight || 0}
+                                          </span>
+                                          <span style={{ color: "green", fontWeight: "bold" }}>
+                                            Total Cocoons Weight For Reeling – Eligible for Bonus and Incentive: {farmerDetailsForIB[0]?.sumLotWeightReeling || 0}
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Block>
+              )}
+
               {/* Common Sanction Amount Section */}
               <Block className="mt-3">
                 <Card>
@@ -3968,7 +3194,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                             Select Transaction Details
                           </Button>
                         </li> */}
-                        <li>
+                        {/* <li>
                           {showButton && ( // Conditionally render the button
                             <Button
                               type="button"
@@ -3978,7 +3204,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                               {t("Select Transaction Details")}
                             </Button>
                           )}
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                     <div className="gap-col">
@@ -4427,7 +3653,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
         </Modal.Body>
       </Modal>
 
-       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+       {/* <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
               <Modal.Header closeButton>
                 <Modal.Title>Select Transaction Details</Modal.Title>
               </Modal.Header>
@@ -4525,7 +3751,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                   </Card>
                 </Block>
               </Modal.Body>
-            </Modal>
+            </Modal> */}
 
           <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
             <Modal.Header closeButton>
