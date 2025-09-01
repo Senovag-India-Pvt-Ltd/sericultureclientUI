@@ -990,6 +990,10 @@ import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
 import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
 import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
 import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
+import ColdStorageScheduleReport from "../pages/stake-holder/ColdStorageScheduleReport";
+import MaintenanceOfPiercedCocoonsReport from "../pages/stake-holder/MaintenanceOfPiercedCocoonsReport";
+import MaintenanceOfLineReportForGrainage from "../pages/stake-holder/MaintenanceOfLineReportForGrainage";
+import RemittanceReportForGrainage from "../pages/stake-holder/RemittanceReportForGrainage";
 
 // Admin and Reports
 
@@ -1334,8 +1338,25 @@ function Router() {
               element={<FarmWiseReportForSeedAndDFLs />}
             />
             <Route
-              path="tsc_wise-sold-dfl-details-report"
+              path="tsc-wise-sold-dfl-details-report"
               element={<TSCWiseSoldDFLsReport />}
+            />
+            <Route
+              path="cold-storage-schedule-report"
+              element={<ColdStorageScheduleReport />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-report"
+              element={<MaintenanceOfPiercedCocoonsReport />}
+            />
+
+            <Route
+              path="maintenance-of-line-report-for-grainage"
+              element={<MaintenanceOfLineReportForGrainage />}
+            />
+            <Route
+              path="remittance-report"
+              element={<RemittanceReportForGrainage />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
