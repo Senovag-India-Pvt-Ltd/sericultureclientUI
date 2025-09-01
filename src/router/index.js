@@ -972,7 +972,6 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
-<<<<<<< HEAD
 import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
 import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
 import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
@@ -980,11 +979,12 @@ import MaintenanceeAndSaleOfNurseryReport from "../pages/stake-holder/Maintenanc
 import SupplyOfCocoonsReport from "../pages/stake-holder/SupplyOfCocoonsReport";
 import MaintenanceOfMulberryGardenReport from "../pages/stake-holder/MaintenanceOfMulberryGardenReport";
 import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOfMulberryFarmReport";
-=======
 import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
 import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
 import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
->>>>>>> origin/production_11_07_2024
+import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
+import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
+import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
 
 // Admin and Reports
 
@@ -1319,6 +1319,18 @@ function Router() {
             <Route
               path="maintenance-of-mulberry-farm-report"
               element={<MaintenanceOfMulberryFarmReport />}
+            />
+             <Route
+              path="dispatch-of-cocoons-to-grainage-report" 
+              element={<DispatchOfCocoonsToGrainageReport />}
+            />
+            <Route
+              path="rearing-of-dfls-for-the-8lines-report" 
+              element={<FarmWiseReportForSeedAndDFLs />}
+            />
+            <Route
+              path="tsc_wise-sold-dfl-details-report" 
+              element={<TSCWiseSoldDFLsReport />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
