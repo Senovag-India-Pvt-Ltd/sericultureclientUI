@@ -394,11 +394,11 @@ function FarmerWithoutFruitsListReport() {
   ];
 
   return (
-    <Layout title={t("Farmer Without Fruits Report List")}>
+    <Layout title={t("Farmer Without Fruits Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Farmer Without Fruits Report List")}</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Without Fruits Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>

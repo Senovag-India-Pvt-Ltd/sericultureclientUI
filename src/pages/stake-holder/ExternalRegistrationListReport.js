@@ -459,11 +459,11 @@ const handleInputs = (e) => {
 
 
 return (
-  <Layout title={t("External Registration List Report")}>
+  <Layout title={t("RSP/ CRC/ NSSO Registration Report")}>
     <Block.Head>
       <Block.HeadBetween>
         <Block.HeadContent>
-          <Block.Title tag="h2">{t("External Registration List Report")}</Block.Title>
+          <Block.Title tag="h2">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
         </Block.HeadContent>
       </Block.HeadBetween>
     </Block.Head>

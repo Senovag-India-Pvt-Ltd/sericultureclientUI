@@ -992,6 +992,7 @@ import OtherStateFarmerListReport from "../pages/stake-holder/OtherStateFarmerLi
 import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
 import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
 import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
+import PendingRenewReelerLicenseReport from "../pages/stake-holder/PendingRenewReelerLicenseReport";
 
 // Admin and Reports
 
@@ -1341,6 +1342,7 @@ function Router() {
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
+            <Route path="pending-reeler-license" element={<PendingRenewReelerLicenseReport />} />
             <Route path="trader-license-list-report" element={<TraderLicenseListReport />} />
             <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
             <Route path="farmer-without-fruits-report" element={<FarmerWithoutFruitsListReport />} />
