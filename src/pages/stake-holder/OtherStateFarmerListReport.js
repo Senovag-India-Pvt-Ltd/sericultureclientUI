@@ -16,23 +16,23 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function ExternalRegistrationListReport() {
+function OtherStateFarmerListReport() {
   const { t } = useTranslation();
-//   const [listData, setListData] = useState({});
-const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-//   const _params = { params: { pageNumber: page, size: countPerPage } };
-const _params = { params: { pageNumber: page, pageSize: countPerPage } };
+  const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [isActive, setIsActive] = useState(false);
 
   const [data, setData] = useState({
-    raceMasterId: "",
-    externalUnitTypeId: "",
+ districtId: "",
+    talukId: "",
+    hobliId: "",
+    stateId: "",
   });
 
   const [hobliData, setHobliData] = useState({
@@ -43,16 +43,17 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
   const search = (e) => {
     api
       .post(
-        baseURLFarmer + `external-unit-registration/list-external`,
+        baseURLFarmer + `farmer/list-nonka`,
         {},
         {
           params: {
-  raceMasterId: data.raceMasterId || 0,
-  externalUnitTypeId: data.externalUnitTypeId || 0,
-  pageNumber: page,
-  pageSize: countPerPage,
-},
-
+             districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            hobliId: data.hobliId || 0,
+             stateId: data.stateId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
         }
       )
       .then((response) => {
@@ -67,12 +68,14 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `external-unit-registration/report-external`,
+        baseURLFarmer + `farmer/report-nonka`,
         {},
         {
           params: {
-            raceMasterId: data.raceMasterId || 0,
-            externalUnitTypeId: data.externalUnitTypeId || 0,
+              districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            hobliId: data.hobliId || 0,
+             stateId: data.stateId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -85,7 +88,7 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `external_registration_report.csv`;
+        link.download = `Other_State_Farmer.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -102,16 +105,17 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
   const getReelerList = (e) => {
     api
       .post(
-        baseURLFarmer + `external-unit-registration/list-external`,
+        baseURLFarmer + `farmer/list-nonka`,
         {},
         {
           params: {
-            raceMasterId: data.raceMasterId || 0,
-            externalUnitTypeId: data.externalUnitTypeId || 0, 
-  pageNumber: page,
-  pageSize: countPerPage,
-},
-
+             districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            hobliId: data.hobliId || 0,
+             stateId: data.stateId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
         }
       )
       .then((response) => {
@@ -127,22 +131,11 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
     getReelerList();
   }, [page]);
 
-//   const handleInputs = (e) => {
-//     // debugger;
-//     let { name, value } = e.target;
-//     setData({ ...data, [name]: value });
-//   };
-
-const handleInputs = (e) => {
-  let { name, value } = e.target;
-
-  if (name === "raceMasterId" || name === "externalUnitTypeId") {
-    setData({ ...data, [name]: value === "" ? "" : Number(value) });
-  } else {
-    setData({ ...data, [name]: value === "" ? null : value });
-  }
-};
-
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const handleHobliInputs = (e) => {
     // debugger;
@@ -237,40 +230,24 @@ const handleInputs = (e) => {
     }
   }, [hobliData.hobliId]);
 
-  // to get external Unit
-    const [externalUnitTypeListData, setExternalUnitTypeListData] = useState([]);
+  // to get State
+    const [stateListData, setStateListData] = useState([]);
   
-    const getExternalUnitTypeList = () => {
+    const getStateList = () => {
       const response = api
-        .get(baseURL + `externalUnitType/get-all`)
+        .get(baseURL + `state/get-all`)
         .then((response) => {
-          setExternalUnitTypeListData(response.data.content.externalUnitType);
+          if (response.data.content.state) {
+            setStateListData(response.data.content.state);
+          }
         })
         .catch((err) => {
-          setExternalUnitTypeListData([]);
+          setStateListData([]);
         });
     };
   
     useEffect(() => {
-      getExternalUnitTypeList();
-    }, []);
-
-  // to get traderType Unit
-    const [traderTypeListData, setTraderTypeListData] = useState([]);
-  
-    const getTraderTypeList = () => {
-      const response = api
-        .get(baseURL + `traderTypeMaster/get-all`)
-        .then((response) => {
-          setTraderTypeListData(response.data.content.traderTypeMaster);
-        })
-        .catch((err) => {
-          setTraderTypeListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getTraderTypeList();
+      getList();
     }, []);
 
   // to get District Implementing Officer
@@ -296,23 +273,7 @@ const handleInputs = (e) => {
     }
   }, [data.districtId]);
 
- // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
-         api
-      .get(baseURL + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRaceList();
-  }, []);
+ 
   
   createTheme(
     "solarized",
@@ -376,153 +337,194 @@ const handleInputs = (e) => {
 
   const ReelerDataColumns = [
     {
-      name: t("Serial No"),
+      name: "Sl.No",
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
+
+    
     {
-      name: t("External Unit"),
-      selector: (row) => row.externalUnitTypeName,
-      cell: (row) => <span>{row.externalUnitTypeName}</span>,
+      name:  t("Name"),
+      selector: (row) => row.firstName,
+      cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Race"),
-      selector: (row) => row.raceMasterName,
-      cell: (row) => <span>{row.raceMasterName}</span>,
+      name: t("FRUITS ID"),
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Name of the Unit"),
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("address"),
-      selector: (row) => row.address,
-      cell: (row) => <span>{row.address}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Name of the Owner/Organisation"),
-      selector: (row) => row.organisationName,
-      cell: (row) => <span>{row.organisationName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("License/Registration Number"),
-      selector: (row) => row.licenseNumber,
-      cell: (row) => <span>{row.licenseNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("External Units ID"),
-      selector: (row) => row.externalUnitNumber,
-      cell: (row) => <span>{row.externalUnitNumber}</span>,
+      name: t("farmer_number"),
+      selector: (row) => row.farmerNumber,
+      cell: (row) => <span>{row.farmerNumber}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: t("Virtual Account Number"),
-      selector: (row) => row.virtualAccountNumber,
-      cell: (row) => <span>{row.virtualAccountNumber}</span>,
+      name: t("mobile_number"),
+      selector: (row) => row.mobileNumber,
+      cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Branch Name"),
-      selector: (row) => row.branchName,
-      cell: (row) => <span>{row.branchName}</span>,
+      name: t("State "),
+      selector: (row) => row.stateName,
+      cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("IFSC Code"),
-      selector: (row) => row.ifscCode,
-      cell: (row) => <span>{row.ifscCode}</span>,
+      name: t("District "),
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
-    
+     {
+      name: t("Taluk  "),
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+     {
+      name: t("Hobli  "),
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
-
-
-return (
-  <Layout title={t("RSP/ CRC/ NSSO Registration Report")}>
+  return (
+  <Layout title={t("Other State Farmer Report")}>
     <Block.Head>
       <Block.HeadBetween>
         <Block.HeadContent>
-          <Block.Title tag="h2">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
+          <Block.Title tag="h2">{t("Other State Farmer Report")}</Block.Title>
         </Block.HeadContent>
+        <Block.HeadContent></Block.HeadContent>
       </Block.HeadBetween>
     </Block.Head>
 
     <Block className="mt-n4">
       <Card className="mt-1">
-        {/* ✅ Race + External Unit Type + Search + Export all in one row */}
-        <Row className="m-4 g-3 align-items-end">
-  {/* Race Dropdown */}
-  <Col lg={3}>
-    <Form.Group className="form-group">
-      <Form.Label>{t("Race")}</Form.Label>
-      <Form.Select
-        name="raceMasterId"
-        value={data.raceMasterId}
-        onChange={handleInputs}
-      >
-        <option value="">{t("Select Race")}</option>
-        {raceListData?.map((list) => (
-          <option key={list.raceMasterId} value={list.raceMasterId}>
-            {list.raceMasterName}
-          </option>
-        ))}
-      </Form.Select>
-    </Form.Group>
-  </Col>
+        <Row className="m-4 align-items-end">
+          {/* State (Not Mandatory) */}
+          <Col sm={2}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("State")}</Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="stateId"
+                  value={data.stateId}
+                  onChange={handleInputs}
+                  onBlur={() => handleInputs}
+                >
+                  <option value="">{t("Select State")}</option>
+                  {stateListData.map((list) => (
+                    <option key={list.stateId} value={list.stateId}>
+                      {list.stateName}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
 
-  {/* External Unit Type Dropdown */}
-  <Col lg={3}>
-    <Form.Group className="form-group">
-      <Form.Label>{t("External Unit Type")}</Form.Label>
-      <Form.Select
-        name="externalUnitTypeId"
-        value={data.externalUnitTypeId}
-        onChange={handleInputs}
-      >
-        <option value="">{t("Select External Unit Type")}</option>
-        {externalUnitTypeListData?.map((list) => (
-          <option key={list.externalUnitTypeId} value={list.externalUnitTypeId}>
-            {list.externalUnitTypeName}
-          </option>
-        ))}
-      </Form.Select>
-    </Form.Group>
-  </Col>
+          {/* District */}
+          <Col sm={2}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("District")}</Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="districtId"
+                  value={data.districtId}
+                  onChange={handleInputs}
+                  onBlur={() => handleInputs}
+                >
+                  <option value="">{t("Select District")}</option>
+                  {districtListData && districtListData.length
+                    ? districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
 
-  {/* Buttons (Search + Export in same col, side by side) */}
-  <Col lg={3} className="d-flex gap-2">
-    <Button type="button" variant="primary" onClick={search}>
-      {t("Search")}
-    </Button>
-    <Button type="button" variant="primary" onClick={exportCsv}>
-      {t("Export")}
-    </Button>
-  </Col>
-</Row>
+          {/* Taluk */}
+          <Col sm={2}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("Taluk")}</Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="talukId"
+                  value={data.talukId}
+                  onChange={handleInputs}
+                  onBlur={() => handleInputs}
+                >
+                  <option value="">{t("Select Taluk")}</option>
+                  {talukListData && talukListData.length
+                    ? talukListData.map((list) => (
+                        <option key={list.talukId} value={list.talukId}>
+                          {list.talukName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
 
+          {/* Hobli */}
+          <Col sm={2}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("Hobli")}</Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="hobliId"
+                  value={hobliData.hobliId}
+                  onChange={handleHobliInputs}
+                  onBlur={() => handleHobliInputs}
+                >
+                  <option value="">{t("Select Hobli")}</option>
+                  {hobliListData && hobliListData.length
+                    ? hobliListData.map((list) => (
+                        <option key={list.hobliId} value={list.hobliId}>
+                          {list.hobliName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
 
-        {/* ✅ Data Table */}
+          {/* Buttons */}
+          <Col sm={1}>
+            <Button type="button" variant="primary" onClick={search}>
+              {t("Search")}
+            </Button>
+          </Col>
+          <Col sm={1}>
+            <Button type="button" variant="primary" onClick={exportCsv}>
+              {t("Export")}
+            </Button>
+          </Col>
+        </Row>
+
         <DataTable
           tableClassName="data-table-head-light table-responsive"
           columns={ReelerDataColumns}
@@ -532,7 +534,9 @@ return (
           paginationServer
           paginationTotalRows={totalRows}
           paginationPerPage={countPerPage}
-          paginationComponentOptions={{ noRowsPerPage: true }}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
           onChangePage={(page) => setPage(page - 1)}
           progressPending={loading}
           theme="solarized"
@@ -544,4 +548,4 @@ return (
 );
 }
 
-export default ExternalRegistrationListReport;
+export default OtherStateFarmerListReport;
