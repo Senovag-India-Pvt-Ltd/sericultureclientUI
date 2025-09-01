@@ -11,13 +11,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
-import FarmerWithoutFruits from "./FarmerWithoutFruits";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function FarmerWithoutFruitsListReport() {
+function PendingRenewReelerLicenseReport() {
   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
@@ -32,10 +31,11 @@ function FarmerWithoutFruitsListReport() {
   const [data, setData] = useState({
     districtId: "",
     talukId: "",
-    hobliId: "",
-    stateId: "",
+    villageId: "",
+    marketId: "",
+    renewalDate: null,
+    expiryDate: null,
   });
-
 
   const [hobliData, setHobliData] = useState({
     hobliId: "",
@@ -45,14 +45,16 @@ function FarmerWithoutFruitsListReport() {
   const search = (e) => {
     api
       .post(
-        baseURLFarmer + `farmer/list-ka-without-fruits`,
+        baseURLFarmer + `reeler/expired-reeler-list`,
         {},
         {
           params: {
             districtId: data.districtId || 0,
             talukId: data.talukId || 0,
-            hobliId: data.hobliId || 0,
-            stateId: data.stateId || 0,
+            villageId: data.villageId || 0,
+            marketId: data.marketId || 0,
+            renewalDate: data.renewalDate ? data.renewalDate : null,
+            expiryDate: data.expiryDate ? data.expiryDate : null,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -70,14 +72,16 @@ function FarmerWithoutFruitsListReport() {
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `farmer/report-ka-without-fruits`,
+        baseURLFarmer + `reeler/expired-reeler-report`,
         {},
         {
           params: {
             districtId: data.districtId || 0,
             talukId: data.talukId || 0,
-            hobliId: data.hobliId || 0,
-             stateId: data.stateId || 0,
+            villageId: data.villageId || 0,
+            marketId: data.marketId || 0,
+            renewalDate: data.renewalDate ? data.renewalDate : null,
+            expiryDate: data.expiryDate ? data.expiryDate : null,
           },
           responseType: 'blob',
           headers: {
@@ -90,7 +94,7 @@ function FarmerWithoutFruitsListReport() {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `Farmer_without_Fruits.csv`;
+        link.download = `reeler_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -107,14 +111,16 @@ function FarmerWithoutFruitsListReport() {
   const getReelerList = (e) => {
     api
       .post(
-        baseURLFarmer + `farmer/list-ka-without-fruits`,
+        baseURLFarmer + `reeler/expired-reeler-list`,
         {},
         {
           params: {
             districtId: data.districtId || 0,
             talukId: data.talukId || 0,
-            hobliId: data.hobliId || 0,
-             stateId: data.stateId || 0,
+            villageId: data.villageId || 0,
+            marketId: data.marketId || 0,
+            renewalDate: data.renewalDate ? data.renewalDate : null,
+            expiryDate: data.expiryDate ? data.expiryDate : null,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -327,78 +333,98 @@ function FarmerWithoutFruitsListReport() {
     },
 
     {
-      name:  t("Name"),
+      name: "First Name",
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("FRUITS ID"),
+      name: "Father Name",
+      selector: (row) => row.fatherName,
+      cell: (row) => <span>{row.fatherName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Fruits Id",
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("farmer_number"),
-      selector: (row) => row.farmerNumber,
-      cell: (row) => <span>{row.farmerNumber}</span>,
+        name: "Reeler License Number",
+        selector: (row) => row.reelerLicenseNumber,
+        cell: (row) => <span>{row.reelerLicenseNumber}</span>,
+        sortable: true,
+        hide: "md",
+      },
+    {
+      name: "Reeler Number",
+      selector: (row) => row.reelerNumber,
+      cell: (row) => <span>{row.reelerNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mobile Number",
+      selector: (row) => row.reelerMobileNumber,
+      cell: (row) => <span>{row.reelerMobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
     
-
     {
-      name:t("mobile_number"),
-      selector: (row) => row.mobileNumber,
-      cell: (row) => <span>{row.mobileNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("passbook_number"),
+      name: "Passbook Number",
       selector: (row) => row.passbookNumber,
       cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("State "),
-      selector: (row) => row.stateName,
-      cell: (row) => <span>{row.stateName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: t("District "),
+      name: "District Name",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
-     {
-      name: t("Taluk  "),
+    {
+      name: "Taluk  Name",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
-     {
-      name: t("Hobli "),
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
+    {
+      name: "Village Name",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Renew License Date",
+      selector: (row) => row.renewalDate,
+      cell: (row) => <span>{row.renewalDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Expiration Date",
+      selector: (row) => row.expiryDate,
+      cell: (row) => <span>{row.expiryDate}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title={t("Farmer Without Fruits Report")}>
+    <Layout title={t("Pending to renew License Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Farmer Without Fruits Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Pending to renew License Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -495,7 +521,95 @@ function FarmerWithoutFruitsListReport() {
               </Form.Group>
             </Col>
 
-                        <Col sm={1}>
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>{t("Village")}</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="villageId"
+                    value={data.villageId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.villageId === undefined || data.villageId === "0"
+                    }
+                  >
+                    <option value="">{t("Select village")}</option>
+                    {villageListData && villageListData.length
+                      ? villageListData.map((list) => (
+                          <option key={list.villageId} value={list.villageId}>
+                            {list.villageName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Village Name is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>{t("Market")}</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="marketId"
+                    value={data.marketId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.marketId === undefined || data.marketId === "0"
+                    }
+                  >
+                    <option value="">{t("Select Market")}</option>
+                    {marketListData && marketListData.length
+                      ? marketListData.map((list) => (
+                          <option
+                            key={list.marketMasterId}
+                            value={list.marketMasterId}
+                          >
+                            {list.marketMasterName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Market is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col sm={2}>
+    <Form.Group className="form-group mt-n4">
+      <Form.Label>{t("Renewal Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="date"
+          name="renewalDate"
+          value={data.renewalDate || ""}
+          onChange={handleInputs}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col sm={2}>
+    <Form.Group className="form-group mt-n4">
+      <Form.Label>{t("Expiry Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="date"
+          name="expiryDate"
+          value={data.expiryDate || ""}
+          onChange={handleInputs}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+            <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
                 {t("Search")}
               </Button>
@@ -529,4 +643,4 @@ function FarmerWithoutFruitsListReport() {
   );
 }
 
-export default FarmerWithoutFruitsListReport;
+export default PendingRenewReelerLicenseReport;
