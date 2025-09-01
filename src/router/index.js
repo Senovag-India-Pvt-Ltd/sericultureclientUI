@@ -972,6 +972,13 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
+import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
+import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
+import MaintenanceeAndSaleOfNurseryReport from "../pages/stake-holder/MaintenanceAndSaleOfNurseryReport";
+import SupplyOfCocoonsReport from "../pages/stake-holder/SupplyOfCocoonsReport";
+import MaintenanceOfMulberryGardenReport from "../pages/stake-holder/MaintenanceOfMulberryGardenReport";
+import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOfMulberryFarmReport";
 import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
 import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
 import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
@@ -982,6 +989,9 @@ import DbtK2Application from "../pages/direct-benefit-transfer/DbtK2Application"
 import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
 import FarmerWithoutFruitsListReport from "../pages/stake-holder/FarmerWithoutFruitsIdListReport";
 import OtherStateFarmerListReport from "../pages/stake-holder/OtherStateFarmerListReport";
+import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
+import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
+import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
 
 // Admin and Reports
 
@@ -1287,6 +1297,47 @@ function Router() {
             <Route
               path="farmer-wise-report"
               element={<FarmerRegistrationList />}
+            />
+            <Route
+              path="chawki-management-report"
+              element={<ChawkiManagementReport />}
+            />
+            <Route
+              path="chawki-distribution-report"
+              element={<ChawkiDistributionReport />}
+            />
+            <Route
+              path="seed-cutting-bank-report"
+              element={<SeedCuttingBankReport />}
+            />
+            <Route
+              path="maintenance-and-sale-of-nursery-report"
+              element={<MaintenanceeAndSaleOfNurseryReport />}
+            />
+            <Route
+              path="supply-of-cocoons-report"
+              element={<SupplyOfCocoonsReport />}
+            />
+
+            <Route
+              path="maintenance-of-mulberry-garden-report"
+              element={<MaintenanceOfMulberryGardenReport />}
+            />
+            <Route
+              path="maintenance-of-mulberry-farm-report"
+              element={<MaintenanceOfMulberryFarmReport />}
+            />
+             <Route
+              path="dispatch-of-cocoons-to-grainage-report"
+              element={<DispatchOfCocoonsToGrainageReport />}
+            />
+            <Route
+              path="rearing-of-dfls-for-the-8lines-report"
+              element={<FarmWiseReportForSeedAndDFLs />}
+            />
+            <Route
+              path="tsc_wise-sold-dfl-details-report"
+              element={<TSCWiseSoldDFLsReport />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
