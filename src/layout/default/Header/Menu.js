@@ -453,6 +453,7 @@ function Menu() {
     Admin_Master_General_Activate_External: false,
 
     Admin_Report: false,
+
     Admin_Report_Registration: false,
     Admin_Report_Registration_Farmer_Registration_Report: false,
     Admin_Report_Registration_Reeler_Registration_Report: false,
@@ -462,6 +463,13 @@ function Menu() {
     Admin_Report_Registration_External_Unit_Registration_Report: false,
     Admin_Report_Registration_Farmer_Without_Fruits_Report: false,
     Admin_Report_Registration_Other_State_Farmer_Report: false,
+
+    Admin_Report_DBT_And_Service: false,
+    Admin_Report_DBT_And_Service_All_Application_Details: false,
+    Admin_Report_DBT_And_Service_DBT_Success_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_Failure_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_K2_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_B_Application_Report: false,
 
     Admin_Report_Commercial_Market: false,
     Admin_Report_Commercial_Market_Admin: false,
@@ -507,6 +515,24 @@ function Menu() {
 
     Admin_Report_Seed_And_Dfl: false,
     Admin_Report_Seed_And_Dfl_Farmer_Details: false,
+    Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report: false,
+    Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report: false,
+    Admin_Report_Seed_And_Dfl_Farm_Wise_Report: false,
+    Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details: false,
+    Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage: false,
+    Admin_Report_Seed_And_Dfl_Remittance_Report: false,
+
+    Admin_Report_Garden: false,
+    Admin_Report_Garden_Mulberry_Garden_Report: false,
+    Admin_Report_Garden_Supply_Of_Cocoons_Report: false,
+    Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report: false,
+    Admin_Report_Garden_Seed_Cutting_Report: false,
+    Admin_Report_Garden_Chawki_Distribution_Report: false,
+
+    Admin_Report_Chawki_Management: false,
+    Admin_Report_Chawki_Management_Report: false,
 
     Reports: false,
     Reports_Dashboard: false,
@@ -3916,6 +3942,60 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
+                     {showMenu.Admin_Report_DBT_And_Service ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("DBT And Service")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_DBT_And_Service_All_Application_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("All Application Details")}
+                              to="/seriui/all-application"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_Success_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT Success Application Report")}
+                              to="/seriui/dbt-success-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_Failure_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT Failure Application Report")}
+                              to="/seriui/dbt-failure-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_K2_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT K2 Application Report")}
+                              to="/seriui/dbt-k2-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_B_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT B Application Report")}
+                              to="/seriui/dbt-b-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
                   {showMenu.Admin_Report_Seed_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
@@ -4270,9 +4350,153 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+
+                         {showMenu.Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Farm Report")}
+                              to="/seriui/maintenance-of-mulberry-farm-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Dispatch Of Cocoons To P4 Grainage Report")}
+                              to="/seriui/dispatch-of-cocoons-to-grainage-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Farm_Wise_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farm Wise Report")}
+                              to="/seriui/rearing-of-dfls-for-the-8lines-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("TSC Wise Sold DFLs Report")}
+                              to="/seriui/tsc-wise-sold-dfl-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Cold Storage Schedule Report")}
+                              to="/seriui/cold-storage-schedule-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Pierced Cocoons Report")}
+                              to="/seriui/maintenance-of-pierced-cocoons-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Line Report For Grainage")}
+                              to="/seriui/maintenance-of-line-report-for-grainage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Remittance_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Remittance Report")}
+                              to="/seriui/remittance-report"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
+
+
+                  {showMenu.Admin_Report_Garden ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Garden Management")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Garden_Mulberry_Garden_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Garden Report")}
+                              to="/seriui/maintenance-of-mulberry-garden-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Garden_Supply_Of_Cocoons_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Rearing And Supply Of Cocoons Report")}
+                              to="/seriui/supply-of-cocoons-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance And Sale Of Nursery Report")}
+                              to="/seriui/maintenance-and-sale-of-nursery-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Seed_Cutting_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Cutting Bank Report")}
+                              to="/seriui/seed-cutting-bank-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Chawki_Distribution_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Chawki Distribution Report")}
+                              to="/seriui/chawki-distribution-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Chawki_Management ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Chawki Management")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Chawki_Management_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Chawki Management Report")}
+                              to="/seriui/chawki-management-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  
                 </MenuSub>
               </MenuItem>
             ) : null}

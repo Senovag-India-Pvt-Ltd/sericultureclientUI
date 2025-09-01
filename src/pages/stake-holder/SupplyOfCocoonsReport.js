@@ -367,11 +367,11 @@ const handleDateChange = (date, type) => {
   ];
 
   return (
-    <Layout title={t("Garden Management Farm Wise Report")}>
+    <Layout title={t("Rearing And Supply Of Cocoons Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Garden Management Farm Wise Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Rearing And Supply Of Cocoons Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
