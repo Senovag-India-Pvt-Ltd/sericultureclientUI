@@ -982,6 +982,11 @@ import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOf
 import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
 import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
 import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
+import AllApplicationDetails from "../pages/direct-benefit-transfer/AllApplicationDetails";
+import DbtSuccessApplication from "../pages/direct-benefit-transfer/DbtSuccessApplication";
+import DbtFailureApplication from "../pages/direct-benefit-transfer/DbtFailureApplication";
+import DbtK2Application from "../pages/direct-benefit-transfer/DbtK2Application";
+import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
 import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
 import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
 import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
@@ -1321,15 +1326,15 @@ function Router() {
               element={<MaintenanceOfMulberryFarmReport />}
             />
              <Route
-              path="dispatch-of-cocoons-to-grainage-report" 
+              path="dispatch-of-cocoons-to-grainage-report"
               element={<DispatchOfCocoonsToGrainageReport />}
             />
             <Route
-              path="rearing-of-dfls-for-the-8lines-report" 
+              path="rearing-of-dfls-for-the-8lines-report"
               element={<FarmWiseReportForSeedAndDFLs />}
             />
             <Route
-              path="tsc_wise-sold-dfl-details-report" 
+              path="tsc_wise-sold-dfl-details-report"
               element={<TSCWiseSoldDFLsReport />}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
@@ -1385,6 +1390,11 @@ function Router() {
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route path="dbt-pushed-list" element={<DbtPushedList />} />
+            <Route path="all-application" element={<AllApplicationDetails />} />
+            <Route path="dbt-success-report" element={<DbtSuccessApplication />} />
+            <Route path="dbt-failure-report" element={<DbtFailureApplication />} />
+            <Route path="dbt-k2-report" element={<DbtK2Application/>} />
+            <Route path="dbt-b-report" element={<DbtBApplication/>} />
 
             <Route
               path="district-wise-farmer-count-list"

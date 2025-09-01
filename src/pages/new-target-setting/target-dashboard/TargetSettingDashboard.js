@@ -9,6 +9,7 @@ import {
   OverlayTrigger,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 // import { ChartDoughnut } from "../../../components/Chart/Charts";
 // import { ChartLegend } from "../../../components";
 import Block from "../../../components/Block/Block";
@@ -25,6 +26,7 @@ import { useTranslation } from "react-i18next";
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLTarget = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 // import {
 //     Image,
@@ -44,8 +46,8 @@ function TargetSettingDashboard() {
     borderRadius: "3%",
     cursor: "pointer",
   };
-// Translation
-const { t } = useTranslation();
+  // Translation
+  const { t } = useTranslation();
   const rainbowColors = [
     "#b82424",
     "#ca8b17",
@@ -57,8 +59,11 @@ const { t } = useTranslation();
   ];
 
   const [data, setData] = useState({
-    text: "",
-    searchBy: "ticketArn",
+    // text: "",
+    // searchBy: "ticketArn",
+    month: "JUNE",
+    type: "NAREGA",
+    financialYearMasterId: 3,
   });
 
   const handleInputs = (e) => {
@@ -94,6 +99,66 @@ const { t } = useTranslation();
     getList();
   }, []);
 
+  // to get dashboard data
+  const [dashboardData, setDashboardData] = useState([]);
+  const getDashboardList = () => {
+    api
+      .post(baseURLTarget + `targetsDashboard/get-dashboard`, data)
+      .then((response) => {
+        setDashboardData(response.data.content);
+      })
+      .catch((err) => {
+        setDashboardData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDashboardList();
+  }, []);
+
+  // Get Default Financial Year
+  
+    const getFinancialDefaultDetails = () => {
+      api
+        .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+        .then((response) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: response.data.content.financialYearMasterId,
+          }));
+        })
+        .catch((err) => {
+          setData((prev) => ({
+            ...prev,
+            financialYearMasterId: "",
+          }));
+        });
+    };
+  
+    useEffect(() => {
+      getFinancialDefaultDetails();
+    }, []);
+
+    // to get Financial Year
+      const [financialyearListData, setFinancialyearListData] = useState([]);
+    
+      const getFinancialList = () => {
+         api
+          .get(baseURLMasterData + `financialYearMaster/get-all`)
+          .then((response) => {
+            setFinancialyearListData(response.data.content.financialYearMaster);
+          })
+          .catch((err) => {
+            setFinancialyearListData([]);
+          });
+      };
+    
+      useEffect(() => {
+        getFinancialList();
+      }, []);
+
+  // console.log("dashboardData", dashboardData);
+
   const [hdUserData, setHdUserData] = useState({
     userMasterId: localStorage.getItem("userMasterId"),
   });
@@ -115,70 +180,73 @@ const { t } = useTranslation();
   // };
 
   // Get Dashboards
-  const [dashboardList, setDashboardList] = useState([{
-    stepName: "District Wise Area Under Mulberry Monthly Target",
-  },
-{
-    stepName: "TSC Wise Area Under Mulberry Monthly Target",
-},
-{
-    stepName: "Range Wise Area Under Mulberry Monthly Target",
-},
-{
-    stepName: "Range Wise Area Under Mulberry Daily Target",
-},
-{
-    stepName: "District Wise Physical Target Setting",
-},
-{
-    stepName: "TSC Wise Physical Target Setting",
-},
-{
-    stepName: "Range Wise Physical Target Setting",
-},
-{
-    stepName: "Farm Wise Target Setting",
-},
-{
-    stepName: "Grainage Wise Target Setting",
-},
-{
-    stepName: "Sericulture Training Institute  Wise Target Setting",
-},
-{
-    stepName: "District Wise Scheme Target Setting",
-},
-{
-    stepName: "TSC Wise Scheme Target Setting",
-},
-{
-    stepName: "Reeling TSC Wise Scheme Target Setting",
-}
-]);
-//   const getDashboard = (e) => {
-//     // setLoading(true);
-//     api
-//       .post(
-//         baseURLDBT + `service/getUserDashboardCount`,
-//         {},
-//         { params: { id: localStorage.getItem("userMasterId") } }
-//         // { params: { id: 30 } }
-//       )
-//       .then((response) => {
-//         setDashboardList(response.data.content);
-//         // setListData(response.data.content.hdTicket);
-//         // setTotalRows(response.data.content.totalItems);
-//         // setLoading(false);
-//       })
-//       .catch((err) => {
-//         // setListData({});
-//         // setLoading(false);
-//       });
-//   };
+  const [dashboardList, setDashboardList] = useState([]);
+  useEffect(() => {
+    if(dashboardData){
+      setDashboardList([
+    {
+      stepName: "Mulberry Monthly Target",
+      achieveCount: dashboardData.mulberryTotalTarAchievePerMonth,
+      targetCount: dashboardData.mulberryTotalTarPerMonth,
+      redirect: "/seriui/mulberry-achievement"
+    },
+    {
+      stepName: "Physical Target Monthly Setting",
+      achieveCount: dashboardData.productTotalTarAchievePerMonth,
+      targetCount: dashboardData.productTotalTarPerMonth,
+      redirect: "/seriui/physical-achievement"
+    },
+    {
+      stepName: "Farm Wise Target Setting",
+      achieveCount: dashboardData.farmTotalTarAchievePerMonth,
+      targetCount: dashboardData.farmTotalTarPerMonth,
+      redirect: "/seriui/farm-achievement"
+    },
+    {
+      stepName: "Grainage Wise Target Setting",
+      achieveCount: dashboardData.grainageTotalTarAchievePerMonth,
+      targetCount: dashboardData.grainageTotalTarPerMonth,
+      redirect: "/seriui/grainage-achievement"
+    },
+    {
+      stepName: "Sericulture Training Institute  Wise Target Setting",
+      achieveCount: dashboardData.trainingTotalTarAchievePerMonth,
+      targetCount: dashboardData.trainingTotalTarPerMonth,
+      redirect: "/seriui/training-achievement"
+    },
+    {
+      stepName: "Scheme Wise Target Setting",
+      achieveCount: dashboardData.trainingTotalTarAchievePerMonth,
+      targetCount: dashboardData.schemeTotalPhyFinTarPerMonth,
+      redirect: ""
+    },
+  ]);
+    }
+  },[dashboardData])
+  //   const getDashboard = (e) => {
+  //     // setLoading(true);
+  //     api
+  //       .post(
+  //         baseURLDBT + `service/getUserDashboardCount`,
+  //         {},
+  //         { params: { id: localStorage.getItem("userMasterId") } }
+  //         // { params: { id: 30 } }
+  //       )
+  //       .then((response) => {
+  //         setDashboardList(response.data.content);
+  //         // setListData(response.data.content.hdTicket);
+  //         // setTotalRows(response.data.content.totalItems);
+  //         // setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         // setListData({});
+  //         // setLoading(false);
+  //       });
+  //   };
 
-//   useEffect(() => {
-//     getDashboard();
-//   }, []);
+  //   useEffect(() => {
+  //     getDashboard();
+  //   }, []);
 
   const [schemeId, setSchemeId] = useState("");
 
@@ -200,7 +268,6 @@ const { t } = useTranslation();
   // useEffect(() => {
   //   getDashboard();
   // }, []);
-
 
   const customStyles = {
     rows: {
@@ -224,6 +291,14 @@ const { t } = useTranslation();
       },
     },
   };
+
+  const message = (message) => {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: message,
+      });
+    };
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -323,24 +398,24 @@ const { t } = useTranslation();
   //     },
   //   ];
 
-  const goto = (id) => {
-    // if (name === "Pre Inspection") {
-    //   navigate(`/seriui/dashboard-report-list/1`);
-    // } else if (name === "Work Order Issue") {
-    //   navigate(`/seriui/application-dashboard-list/2`);
-    // } else if (name === "Work Order Complete") {
-    //   navigate(`/seriui/application-dashboard-list/3`);
-    // } else if (name === "Inspection") {
-    //   navigate(`/seriui/application-dashboard-list/4`);
-    // } else if (name === "Sanction Order Generation") {
-    //   navigate(`/seriui/application-dashboard-list/5`);
-    // } else if (name === "Sanction Order Verification") {
-    //   navigate(`/seriui/application-dashboard-list/6`);
-    // } else {
-    //   navigate(`/seriui/application-dashboard-list/7`);
-    // }
-    navigate(`/seriui/dashboard-report-list/${id}`)
-  };
+  // const goto = (id) => {
+  //   // if (name === "Pre Inspection") {
+  //   //   navigate(`/seriui/dashboard-report-list/1`);
+  //   // } else if (name === "Work Order Issue") {
+  //   //   navigate(`/seriui/application-dashboard-list/2`);
+  //   // } else if (name === "Work Order Complete") {
+  //   //   navigate(`/seriui/application-dashboard-list/3`);
+  //   // } else if (name === "Inspection") {
+  //   //   navigate(`/seriui/application-dashboard-list/4`);
+  //   // } else if (name === "Sanction Order Generation") {
+  //   //   navigate(`/seriui/application-dashboard-list/5`);
+  //   // } else if (name === "Sanction Order Verification") {
+  //   //   navigate(`/seriui/application-dashboard-list/6`);
+  //   // } else {
+  //   //   navigate(`/seriui/application-dashboard-list/7`);
+  //   // }
+  //   navigate(`/seriui/dashboard-report-list/${id}`);
+  // };
 
   return (
     <Layout title="User Dashboard">
@@ -349,104 +424,115 @@ const { t } = useTranslation();
           <Block.HeadContent>
             <Block.Title tag="h2">{t("User Dashboard")}</Block.Title>
           </Block.HeadContent>
-          
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-      
-  <Card className="shadow-sm" style={{ maxWidth: "1800px", margin: "auto" }}>
-  <Card.Body className="p-3">
-    <div className="mx-auto" style={{ maxWidth: "1500px" }}>
-      <Row className="g-3 align-items-end">
-        {/* Scheme Selection */}
-        <Col lg="8" md="7" sm="12">
-          <Form.Group className="form-group">
-            <Form.Label htmlFor="scheme" className="fw-bold">
-              {t("Scheme")}
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="schemeId"
-                value={schemeId}
-                onChange={(e) => setSchemeId(e.target.value)}
-                className="form-control shadow-sm"
-              >
-                <option value="">{t("Select Scheme Names")}</option>
-                {scSchemeDetailsListData &&
-                  scSchemeDetailsListData.map((list) => (
-                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                      {list.schemeName}
-                    </option>
-                  ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </Col>
-
-        {/* Search Button */}
-        <Col lg="4" md="5" sm="12">
-          <Button
-            type="button"
-            variant="primary"
-            onClick={getUserDashboardCountBySchemeId}
-            className="w-100 shadow-sm"
-          >
-            {t("Search")}
-          </Button>
-        </Col>
-      </Row>
-    </div>
-  </Card.Body>
-</Card>
-
-
-
-      <Row className="g-gs d-flex justify-content-center mt-2">
-        {dashboardList.map((dashboard, i) => (
-          <Col xxl="3" 
-          key={i}
-          >
-           
-            <Card
-              className="h-100"
-              style={{
-                ...styles,
-                backgroundColor: rainbowColors[i % rainbowColors.length],
-              }}
-            //   onClick={() => goto(dashboard.approvalStageId)}
-            >
-              <Card.Body>
-                <div className="d-flex justify-content-center text-center">
-                  <div>
-                    <div className="card-title">
-                      <h4 className="title mb-1 bold" style={{ color: "white" }}>
-                        {dashboard.stepName}
-                      </h4>
-                    </div>
-                    <div className="my-3">
-                      <div
-                        className="amount h2 fw-bold"
-                        style={{ color: "white" }}
-                      >
-                        {/* {dashboard.count} */}
-                        10/10
+        <Card
+          className="shadow-sm"
+          style={{ maxWidth: "1800px", margin: "auto" }}
+        >
+          <Card.Body className="p-3">
+            <div className="mx-auto" style={{ maxWidth: "1500px" }}>
+              <Row className="g-3 align-items-end">
+                {/* Scheme Selection */}
+                <Col lg="8" md="7" sm="12">
+                  <Form.Group className="form-group mt-n3">
+                      <Form.Label>
+                        {t("Financial Year")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="financialYearMasterId"
+                          value={data.financialYearMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.financialYearMasterId === undefined ||
+                            data.financialYearMasterId === "0"
+                          }
+                        >
+                          <option value="">{t("Select Year")}</option>
+                          {financialyearListData && financialyearListData.length
+                          ?financialyearListData.map((list) => (
+                            <option
+                              key={list.financialYearMasterId}
+                              value={list.financialYearMasterId}
+                            >
+                              {list.financialYear}
+                            </option>
+                          ))
+                          : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("Financial Year is required")}
+                        </Form.Control.Feedback>
                       </div>
-                    </div>
-                    {/* <Button
+                    </Form.Group>
+                </Col>
+
+                {/* Search Button */}
+                <Col lg="4" md="5" sm="12">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={getDashboardList}
+                    className="w-100 shadow-sm"
+                  >
+                    {t("Search")}
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </Card.Body>
+        </Card>
+
+        <Row className="g-gs d-flex justify-content-center mt-2">
+          {dashboardList.map((dashboard, i) => (
+            <Col xxl="3" key={i}>
+              <Card
+                className="h-100"
+                style={{
+                  ...styles,
+                  backgroundColor: rainbowColors[i % rainbowColors.length],
+                }}
+                  onClick={() => navigate(dashboard.redirect? dashboard.redirect : message("Scheme achievement is done automatically"))}
+              >
+                <Card.Body>
+                  <div className="d-flex justify-content-center text-center">
+                    <div>
+                      <div className="card-title">
+                        <h4
+                          className="title mb-1 bold"
+                          style={{ color: "white" }}
+                        >
+                          {dashboard.stepName}
+                        </h4>
+                      </div>
+                      <div className="my-3">
+                        <div
+                          className="amount h2 fw-bold"
+                          style={{ color: "white" }}
+                        >
+                          {dashboard.achieveCount}/{dashboard.targetCount}
+                        </div>
+                      </div>
+                      {/* <Button
                       size="sm"
                       variant="primary"
                       // onClick={() => goto(dashboard.stepName)}
                     >
                       View
                     </Button> */}
+                    </div>
                   </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-         ))} 
-      </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </Block>
     </Layout>
   );
