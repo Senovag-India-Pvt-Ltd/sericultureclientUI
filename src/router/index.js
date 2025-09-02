@@ -1003,6 +1003,7 @@ import FitnessCertificateReport from "../pages/stake-holder/FitnessCertificateRe
 import FarmerMulberryExtensionReport from "../pages/stake-holder/FarmerMulberryExtensionReport";
 import SupplyOfDisinfectantReport from "../pages/stake-holder/SupplyOfDisinfectantReport";
 import HelpDeskReport from "../pages/stake-holder/HelpDeskReport";
+import TrainerDetailsReport from "../pages/stake-holder/TrainerDetailsReport";
 
 // Admin and Reports
 
@@ -1392,6 +1393,10 @@ function Router() {
             <Route
               path="help-desk-report"
               element={<HelpDeskReport/>}
+            />
+            <Route
+              path="trainer-details-report"
+              element={<TrainerDetailsReport/>}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
