@@ -972,6 +972,13 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
+import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
+import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
+import MaintenanceeAndSaleOfNurseryReport from "../pages/stake-holder/MaintenanceAndSaleOfNurseryReport";
+import SupplyOfCocoonsReport from "../pages/stake-holder/SupplyOfCocoonsReport";
+import MaintenanceOfMulberryGardenReport from "../pages/stake-holder/MaintenanceOfMulberryGardenReport";
+import MaintenanceOfMulberryFarmReport from "../pages/stake-holder/MaintenanceOfMulberryFarmReport";
 import RenewReelerLicenseList from "../pages/stake-holder/RenewReelerLicenseList";
 import TraderLicenseListReport from "../pages/stake-holder/TraderLicenseListReport";
 import ExternalRegistrationListReport from "../pages/stake-holder/ExternalRegistrationListReport";
@@ -980,6 +987,25 @@ import DbtSuccessApplication from "../pages/direct-benefit-transfer/DbtSuccessAp
 import DbtFailureApplication from "../pages/direct-benefit-transfer/DbtFailureApplication";
 import DbtK2Application from "../pages/direct-benefit-transfer/DbtK2Application";
 import DbtBApplication from "../pages/direct-benefit-transfer/DbtBApplication";
+import FarmerWithoutFruitsListReport from "../pages/stake-holder/FarmerWithoutFruitsIdListReport";
+import OtherStateFarmerListReport from "../pages/stake-holder/OtherStateFarmerListReport";
+import DispatchOfCocoonsToGrainageReport from "../pages/stake-holder/DispatchOfCocoonsToGrainageReport";
+import FarmWiseReportForSeedAndDFLs from "../pages/stake-holder/FarmWiseReportSeedAndDFLs";
+import TSCWiseSoldDFLsReport from "../pages/stake-holder/TscWiseSoldDFLsReport";
+import ColdStorageScheduleReport from "../pages/stake-holder/ColdStorageScheduleReport";
+import MaintenanceOfPiercedCocoonsReport from "../pages/stake-holder/MaintenanceOfPiercedCocoonsReport";
+import MaintenanceOfLineReportForGrainage from "../pages/stake-holder/MaintenanceOfLineReportForGrainage";
+import RemittanceReportForGrainage from "../pages/stake-holder/RemittanceReportForGrainage";
+import PendingRenewReelerLicenseReport from "../pages/stake-holder/PendingRenewReelerLicenseReport";
+import UpdatedDFLsReport from "../pages/stake-holder/UpdatedDFLsReport";
+import CropInspectionReport from "../pages/stake-holder/CropInspectionReport";
+import FitnessCertificateReport from "../pages/stake-holder/FitnessCertificateReport";
+import FarmerMulberryExtensionReport from "../pages/stake-holder/FarmerMulberryExtensionReport";
+import SupplyOfDisinfectantReport from "../pages/stake-holder/SupplyOfDisinfectantReport";
+import HelpDeskReport from "../pages/stake-holder/HelpDeskReport";
+import TrainerDetailsReport from "../pages/stake-holder/TrainerDetailsReport";
+import TraineeDetailsReport from "../pages/stake-holder/TraineeDetailsReport";
+import TrainingDeputationTrackerReport from "../pages/stake-holder/TrainingDeputationTrackerReport";
 
 // Admin and Reports
 
@@ -1286,10 +1312,109 @@ function Router() {
               path="farmer-wise-report"
               element={<FarmerRegistrationList />}
             />
+            <Route
+              path="chawki-management-report"
+              element={<ChawkiManagementReport />}
+            />
+            <Route
+              path="chawki-distribution-report"
+              element={<ChawkiDistributionReport />}
+            />
+            <Route
+              path="seed-cutting-bank-report"
+              element={<SeedCuttingBankReport />}
+            />
+            <Route
+              path="maintenance-and-sale-of-nursery-report"
+              element={<MaintenanceeAndSaleOfNurseryReport />}
+            />
+            <Route
+              path="supply-of-cocoons-report"
+              element={<SupplyOfCocoonsReport />}
+            />
+
+            <Route
+              path="maintenance-of-mulberry-garden-report"
+              element={<MaintenanceOfMulberryGardenReport />}
+            />
+            <Route
+              path="maintenance-of-mulberry-farm-report"
+              element={<MaintenanceOfMulberryFarmReport />}
+            />
+             <Route
+              path="dispatch-of-cocoons-to-grainage-report"
+              element={<DispatchOfCocoonsToGrainageReport />}
+            />
+            <Route
+              path="rearing-of-dfls-for-the-8lines-report"
+              element={<FarmWiseReportForSeedAndDFLs />}
+            />
+            <Route
+              path="tsc-wise-sold-dfl-details-report"
+              element={<TSCWiseSoldDFLsReport />}
+            />
+            <Route
+              path="cold-storage-schedule-report"
+              element={<ColdStorageScheduleReport />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-report"
+              element={<MaintenanceOfPiercedCocoonsReport />}
+            />
+
+            <Route
+              path="maintenance-of-line-report-for-grainage"
+              element={<MaintenanceOfLineReportForGrainage />}
+            />
+            <Route
+              path="remittance-report"
+              element={<RemittanceReportForGrainage />}
+            />
+
+            <Route
+              path="verified-dfls-report"
+              element={<UpdatedDFLsReport />}
+            />
+
+             <Route
+              path="crop-inspection-report"
+              element={<CropInspectionReport/>}
+            />
+            <Route
+              path="fitness-report"
+              element={<FitnessCertificateReport/>}
+            />
+            <Route
+              path="farmer-mulberry-extension-report"
+              element={<FarmerMulberryExtensionReport/>}
+            />
+            <Route
+              path="supply-of-disinfectants-to-farmers-report"
+              element={<SupplyOfDisinfectantReport/>}
+            />
+            <Route
+              path="help-desk-report"
+              element={<HelpDeskReport/>}
+            />
+            <Route
+              path="trainer-details-report"
+              element={<TrainerDetailsReport/>}
+            />
+            <Route
+              path="trainee-details-report"
+              element={<TraineeDetailsReport/>}
+            />
+            <Route
+              path="training-deputation-tracker-details"
+              element={<TrainingDeputationTrackerReport/>}
+            />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
+            <Route path="pending-reeler-license" element={<PendingRenewReelerLicenseReport />} />
             <Route path="trader-license-list-report" element={<TraderLicenseListReport />} />
             <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
+            <Route path="farmer-without-fruits-report" element={<FarmerWithoutFruitsListReport />} />
+            <Route path="other-state-farmer-report" element={<OtherStateFarmerListReport />} />
 
 
             <Route

@@ -454,6 +454,23 @@ function Menu() {
 
     Admin_Report: false,
 
+    Admin_Report_Registration: false,
+    Admin_Report_Registration_Farmer_Registration_Report: false,
+    Admin_Report_Registration_Reeler_Registration_Report: false,
+    Admin_Report_Registration_Renewal_Of_Reeler_License_Report: false,
+    Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report: false,
+    Admin_Report_Registration_Trader_License_Report: false,
+    Admin_Report_Registration_External_Unit_Registration_Report: false,
+    Admin_Report_Registration_Farmer_Without_Fruits_Report: false,
+    Admin_Report_Registration_Other_State_Farmer_Report: false,
+
+    Admin_Report_DBT_And_Service: false,
+    Admin_Report_DBT_And_Service_All_Application_Details: false,
+    Admin_Report_DBT_And_Service_DBT_Success_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_Failure_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_K2_Application_Report: false,
+    Admin_Report_DBT_And_Service_DBT_B_Application_Report: false,
+
     Admin_Report_Commercial_Market: false,
     Admin_Report_Commercial_Market_Admin: false,
     Admin_Report_Commercial_Market_Transaction: false,
@@ -471,8 +488,6 @@ function Menu() {
     Admin_Report_Commercial_Market_Farmer_Transaction_Report: false,
     Admin_Report_Commercial_Market_District_Wise_Farmer_Count: false,
     Admin_Report_Commercial_Market_District_Wise_Reeler_Count: false,
-    Admin_Report_Commercial_Market_Farmer_Wise: false,
-    Admin_Report_Commercial_Market_Reeler_Wise: false,
     Admin_Report_Commercial_Market_Direct_From_Fruits: false,
     Admin_Report_Commercial_Market_Reeler_Transaction_Report: false,
     Admin_Report_Commercial_Market_GeneratedTriplet: false,
@@ -487,6 +502,7 @@ function Menu() {
     Admin_Report_Commercial_Market_Average_Cocoon_Report: false,
 
     Admin_Report_Seed_Market: false,
+    Admin_Report_Seed_Market_Invoice_Permit_Receipt: false,
 
     Admin_Report_Silk_Type_Market: false,
     Admin_Report_Silk_Type_Market_Dashboard: false,
@@ -499,6 +515,39 @@ function Menu() {
 
     Admin_Report_Seed_And_Dfl: false,
     Admin_Report_Seed_And_Dfl_Farmer_Details: false,
+    Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report: false,
+    Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report: false,
+    Admin_Report_Seed_And_Dfl_Farm_Wise_Report: false,
+    Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details: false,
+    Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage: false,
+    Admin_Report_Seed_And_Dfl_Remittance_Report: false,
+
+    Admin_Report_Garden: false,
+    Admin_Report_Garden_Mulberry_Garden_Report: false,
+    Admin_Report_Garden_Supply_Of_Cocoons_Report: false,
+    Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report: false,
+    Admin_Report_Garden_Seed_Cutting_Report: false,
+    Admin_Report_Garden_Chawki_Distribution_Report: false,
+
+    Admin_Report_Chawki_Management: false,
+    Admin_Report_Chawki_Management_Report: false,
+
+    Admin_Report_Inspection: false,
+    Admin_Report_Inspection_Verified_DFLs_Report: false,
+    Admin_Report_Inspection_Crop_Inspection_Report: false,
+    Admin_Report_Inspection_Fitness_Report: false,
+    Admin_Report_Inspection_Farmer_Mulberry_Extension_Report: false,
+    Admin_Report_Inspection_Supply_Of_Disinfectants_Report: false,
+
+    Admin_Report_Training: false,
+    Admin_Report_Training_Trainer_Details_Report: false,
+    Admin_Report_Training_Trainee_Details_Report: false,
+    Admin_Report_Training_Training_Deputation_Tracker_Report: false,
+
+    Admin_Report_Helpdesk: false,
+    Admin_Report_Helpdesk_Details_Report: false,
 
     Reports: false,
     Reports_Dashboard: false,
@@ -3840,6 +3889,136 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
+                {showMenu.Admin_Report_Registration ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Registration")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Registration_Farmer_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farmer Wise Report")}
+                              to="/seriui/farmer-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Reeler_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Reeler Wise Report")}
+                              to="/seriui/reeler-wise-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Renewal_Of_Reeler_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Renewal of Reeler License Report")}
+                              to="/seriui/renewal-wise-report-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t(" Pending to renew License Report ")}
+                              to="/seriui/pending-reeler-license"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Trader_License_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trader License Report ")}
+                              to="/seriui/trader-license-list-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_External_Unit_Registration_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("RSP/ CRC/ NSSO Registration Report")}
+                              to="/seriui/external-registration-list-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Farmer_Without_Fruits_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farmer Without Fruits Report")}
+                              to="/seriui/farmer-without-fruits-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Registration_Other_State_Farmer_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Other State Farmer Report")}
+                              to="/seriui/other-state-farmer-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                     {showMenu.Admin_Report_DBT_And_Service ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("DBT And Service")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_DBT_And_Service_All_Application_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("All Application Details")}
+                              to="/seriui/all-application"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_Success_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT Success Application Report")}
+                              to="/seriui/dbt-success-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_Failure_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT Failure Application Report")}
+                              to="/seriui/dbt-failure-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_K2_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT K2 Application Report")}
+                              to="/seriui/dbt-k2-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_DBT_And_Service_DBT_B_Application_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("DBT B Application Report")}
+                              to="/seriui/dbt-b-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
                   {showMenu.Admin_Report_Seed_Market ? (
                     <MenuItem sub>
@@ -3850,14 +4029,14 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {/* {showMenu.Admin_Report_Seed_Market ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Land Holding Category"
-                              to="/seriui/land-category"
-                            />
-                          </MenuItem>
-                        ) : null} */}
+                        {showMenu.Admin_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Seed Market Invoice,Permit,Cash Receipt,Market Receipt")}
+                          to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4093,22 +4272,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_Farmer_Wise ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Farmer Wise Report")}
-                              to="/seriui/farmer-wise-report"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Report_Commercial_Market_Reeler_Wise ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Reeler Wise Report")}
-                              to="/seriui/reeler-wise-report"
-                            />
-                          </MenuItem>
-                        ) : null}
+                        
                         {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
                           <MenuItem>
                             <MenuItemLink
@@ -4210,9 +4374,267 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+
+                         {showMenu.Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Farm Report")}
+                              to="/seriui/maintenance-of-mulberry-farm-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Dispatch Of Cocoons To P4 Grainage Report")}
+                              to="/seriui/dispatch-of-cocoons-to-grainage-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Farm_Wise_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farm Wise Report")}
+                              to="/seriui/rearing-of-dfls-for-the-8lines-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("TSC Wise Sold DFLs Report")}
+                              to="/seriui/tsc-wise-sold-dfl-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Cold Storage Schedule Report")}
+                              to="/seriui/cold-storage-schedule-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Pierced Cocoons Report")}
+                              to="/seriui/maintenance-of-pierced-cocoons-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Line Report For Grainage")}
+                              to="/seriui/maintenance-of-line-report-for-grainage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Seed_And_Dfl_Remittance_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Remittance Report")}
+                              to="/seriui/remittance-report"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
+
+
+                  {showMenu.Admin_Report_Garden ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Garden Management")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Garden_Mulberry_Garden_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Garden Report")}
+                              to="/seriui/maintenance-of-mulberry-garden-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Garden_Supply_Of_Cocoons_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Rearing And Supply Of Cocoons Report")}
+                              to="/seriui/supply-of-cocoons-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance And Sale Of Nursery Report")}
+                              to="/seriui/maintenance-and-sale-of-nursery-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Seed_Cutting_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Cutting Bank Report")}
+                              to="/seriui/seed-cutting-bank-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Garden_Chawki_Distribution_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Chawki Distribution Report")}
+                              to="/seriui/chawki-distribution-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Chawki_Management ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Chawki Management")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Chawki_Management_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Chawki Management Report")}
+                              to="/seriui/chawki-management-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+
+                  {showMenu.Admin_Report_Inspection ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Inspection")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Inspection_Verified_DFLs_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Verified DFLs Report")}
+                              to="/seriui/verified-dfls-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Inspection_Crop_Inspection_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Crop Inspection Details Report")}
+                              to="/seriui/crop-inspection-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Fitness_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Fitness Details Report")}
+                              to="/seriui/fitness-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Farmer_Mulberry_Extension_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Extension Report")}
+                              to="/seriui/farmer-mulberry-extension-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Supply_Of_Disinfectants_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Supply Of Disinfectants Report")}
+                              to="/seriui/supply-of-disinfectants-to-farmers-report"
+                            />
+                          </MenuItem>
+                        ) : null}  
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Training ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Training")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Training_Trainer_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trainer Details Report")}
+                              to="/seriui/trainer-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Training_Trainee_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trainee Details Report")}
+                              to="/seriui/trainee-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Training_Training_Deputation_Tracker_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Training Deputation Tracket Report")}
+                              to="/seriui/training-deputation-tracker-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Helpdesk ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Help Desk")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Helpdesk_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Ticket Details Report")}
+                              to="/seriui/help-desk-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -4224,7 +4646,7 @@ function Menu() {
         <MenuItem sub>
           {showMenu.Reports ? (
             <MenuItemLink
-              text={t("Reports & Dashboards")}
+              text={t("Reports")}
               onClick={menuToggle}
               onMouseEnter={menuHover}
               sub
@@ -4240,7 +4662,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Reports_Dashboard ? (
+            {/* {showMenu.Reports_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Dashboard")}
@@ -4248,7 +4670,7 @@ function Menu() {
                   blank={true}
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
