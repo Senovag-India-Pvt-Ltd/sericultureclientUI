@@ -1009,6 +1009,14 @@ import TrainingDeputationTrackerReport from "../pages/stake-holder/TrainingDeput
 import TrainingTargetReport from "../pages/stake-holder/TrainingTargetReport";
 import GrainageTargetReport from "../pages/stake-holder/GrainageTargetReport";
 import FarmTargetReport from "../pages/stake-holder/FarmTargetReport";
+import DistrictWiseMonthlyMulberryTarget from "../pages/stake-holder/DistrictWiseMonthlyMulberryTargetReport";
+import DistrictWiseMonthlyMulberryTargetReport from "../pages/stake-holder/DistrictWiseMonthlyMulberryTargetReport";
+import TSCWiseMonthlyMulberryTargetReport from "../pages/stake-holder/TSCWiseMonthlyMulberryTargetReport";
+import RangeWiseMulberryTargetReport from "../pages/stake-holder/RangeWiseMulberryTargetReport";
+import RangeWiseMulberryTargetDailyReport from "../pages/stake-holder/RangeWiseMulberryTargetDailyReport";
+import DistrictWisePhysicalTargetReport from "../pages/stake-holder/DistrictWisePhysicalTargetReport";
+import TSCWisePhysicalTargetReports from "../pages/stake-holder/TSCWisePhysicalTargetReports";
+import RangeWisePhysicalTargetReport from "../pages/stake-holder/RangeWisePhysicalTargetReport";
 
 // Admin and Reports
 
@@ -1422,6 +1430,34 @@ function Router() {
             <Route
               path="farm-target-details-report"
               element={<FarmTargetReport/>}
+            />
+            <Route
+              path="district-wise-mulberry-target-report"
+              element={<DistrictWiseMonthlyMulberryTargetReport/>}
+            />
+            <Route
+              path="tsc-wise-mulberry-target-report"
+              element={<TSCWiseMonthlyMulberryTargetReport/>}
+            />
+            <Route
+              path="range-wise-mulberry-target-report"
+              element={<RangeWiseMulberryTargetReport/>}
+            />
+            <Route
+              path="range-wise-mulberry-daily-target-report"
+              element={<RangeWiseMulberryTargetDailyReport/>}
+            />
+            <Route
+              path="district-wise-physical-target-report"
+              element={<DistrictWisePhysicalTargetReport/>}
+            />
+            <Route
+              path="tsc-wise-physical-target-report"
+              element={<TSCWisePhysicalTargetReports/>}
+            />
+            <Route
+              path="range-wise-physical-target-report"
+              element={<RangeWisePhysicalTargetReport/>}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
