@@ -353,13 +353,13 @@ function OtherStateFarmerListReport() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("FRUITS ID"),
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("FRUITS ID"),
+    //   selector: (row) => row.fruitsId,
+    //   cell: (row) => <span>{row.fruitsId}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("farmer_number"),
       selector: (row) => row.farmerNumber,
@@ -375,34 +375,34 @@ function OtherStateFarmerListReport() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("State "),
-      selector: (row) => row.stateName,
-      cell: (row) => <span>{row.stateName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("District "),
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: t("Taluk  "),
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: t("Hobli  "),
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("State "),
+    //   selector: (row) => row.stateName,
+    //   cell: (row) => <span>{row.stateName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: t("District "),
+    //   selector: (row) => row.districtName,
+    //   cell: (row) => <span>{row.districtName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    //  {
+    //   name: t("Taluk  "),
+    //   selector: (row) => row.talukName,
+    //   cell: (row) => <span>{row.talukName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    //  {
+    //   name: t("Hobli  "),
+    //   selector: (row) => row.hobliName,
+    //   cell: (row) => <span>{row.hobliName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
   ];
 
   return (
