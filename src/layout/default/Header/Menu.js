@@ -534,6 +534,21 @@ function Menu() {
     Admin_Report_Chawki_Management: false,
     Admin_Report_Chawki_Management_Report: false,
 
+    Admin_Report_Inspection: false,
+    Admin_Report_Inspection_Verified_DFLs_Report: false,
+    Admin_Report_Inspection_Crop_Inspection_Report: false,
+    Admin_Report_Inspection_Fitness_Report: false,
+    Admin_Report_Inspection_Farmer_Mulberry_Extension_Report: false,
+    Admin_Report_Inspection_Supply_Of_Disinfectants_Report: false,
+
+    Admin_Report_Training: false,
+    Admin_Report_Training_Trainer_Details_Report: false,
+    Admin_Report_Training_Trainee_Details_Report: false,
+    Admin_Report_Training_Training_Deputation_Tracker_Report: false,
+
+    Admin_Report_Helpdesk: false,
+    Admin_Report_Helpdesk_Details_Report: false,
+
     Reports: false,
     Reports_Dashboard: false,
     Reports_Reports: false,
@@ -4496,6 +4511,120 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
+
+                  {showMenu.Admin_Report_Inspection ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Inspection")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Inspection_Verified_DFLs_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Verified DFLs Report")}
+                              to="/seriui/verified-dfls-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Inspection_Crop_Inspection_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Crop Inspection Details Report")}
+                              to="/seriui/crop-inspection-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Fitness_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Fitness Details Report")}
+                              to="/seriui/fitness-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Farmer_Mulberry_Extension_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Extension Report")}
+                              to="/seriui/farmer-mulberry-extension-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Inspection_Supply_Of_Disinfectants_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Supply Of Disinfectants Report")}
+                              to="/seriui/supply-of-disinfectants-to-farmers-report"
+                            />
+                          </MenuItem>
+                        ) : null}  
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Training ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Training")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Training_Trainer_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trainer Details Report")}
+                              to="/seriui/trainer-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                         {showMenu.Admin_Report_Training_Trainee_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Trainee Details Report")}
+                              to="/seriui/trainee-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Report_Training_Training_Deputation_Tracker_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Training Deputation Tracket Report")}
+                              to="/seriui/training-deputation-tracker-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.Admin_Report_Helpdesk ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Help Desk")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Helpdesk_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Ticket Details Report")}
+                              to="/seriui/help-desk-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
                   
                 </MenuSub>
               </MenuItem>
@@ -4508,7 +4637,7 @@ function Menu() {
         <MenuItem sub>
           {showMenu.Reports ? (
             <MenuItemLink
-              text={t("Reports & Dashboards")}
+              text={t("Reports")}
               onClick={menuToggle}
               onMouseEnter={menuHover}
               sub
@@ -4524,7 +4653,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Reports_Dashboard ? (
+            {/* {showMenu.Reports_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Dashboard")}
@@ -4532,7 +4661,7 @@ function Menu() {
                   blank={true}
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
