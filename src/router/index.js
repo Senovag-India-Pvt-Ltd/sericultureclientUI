@@ -1006,6 +1006,9 @@ import HelpDeskReport from "../pages/stake-holder/HelpDeskReport";
 import TrainerDetailsReport from "../pages/stake-holder/TrainerDetailsReport";
 import TraineeDetailsReport from "../pages/stake-holder/TraineeDetailsReport";
 import TrainingDeputationTrackerReport from "../pages/stake-holder/TrainingDeputationTrackerReport";
+import TrainingTargetReport from "../pages/stake-holder/TrainingTargetReport";
+import GrainageTargetReport from "../pages/stake-holder/GrainageTargetReport";
+import FarmTargetReport from "../pages/stake-holder/FarmTargetReport";
 
 // Admin and Reports
 
@@ -1407,6 +1410,18 @@ function Router() {
             <Route
               path="training-deputation-tracker-details"
               element={<TrainingDeputationTrackerReport/>}
+            />
+            <Route
+              path="training-target-details-report"
+              element={<TrainingTargetReport/>}
+            />
+            <Route
+              path="graininge-target-details-report"
+              element={<GrainageTargetReport/>}
+            />
+            <Route
+              path="farm-target-details-report"
+              element={<FarmTargetReport/>}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
