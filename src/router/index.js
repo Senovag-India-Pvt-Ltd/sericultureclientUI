@@ -997,6 +997,12 @@ import MaintenanceOfPiercedCocoonsReport from "../pages/stake-holder/Maintenance
 import MaintenanceOfLineReportForGrainage from "../pages/stake-holder/MaintenanceOfLineReportForGrainage";
 import RemittanceReportForGrainage from "../pages/stake-holder/RemittanceReportForGrainage";
 import PendingRenewReelerLicenseReport from "../pages/stake-holder/PendingRenewReelerLicenseReport";
+import UpdatedDFLsReport from "../pages/stake-holder/UpdatedDFLsReport";
+import CropInspectionReport from "../pages/stake-holder/CropInspectionReport";
+import FitnessCertificateReport from "../pages/stake-holder/FitnessCertificateReport";
+import FarmerMulberryExtensionReport from "../pages/stake-holder/FarmerMulberryExtensionReport";
+import SupplyOfDisinfectantReport from "../pages/stake-holder/SupplyOfDisinfectantReport";
+import HelpDeskReport from "../pages/stake-holder/HelpDeskReport";
 
 // Admin and Reports
 
@@ -1360,6 +1366,32 @@ function Router() {
             <Route
               path="remittance-report"
               element={<RemittanceReportForGrainage />}
+            />
+
+            <Route
+              path="verified-dfls-report"
+              element={<UpdatedDFLsReport />}
+            />
+
+             <Route
+              path="crop-inspection-report"
+              element={<CropInspectionReport/>}
+            />
+            <Route
+              path="fitness-report"
+              element={<FitnessCertificateReport/>}
+            />
+            <Route
+              path="farmer-mulberry-extension-report"
+              element={<FarmerMulberryExtensionReport/>}
+            />
+            <Route
+              path="supply-of-disinfectants-to-farmers-report"
+              element={<SupplyOfDisinfectantReport/>}
+            />
+            <Route
+              path="help-desk-report"
+              element={<HelpDeskReport/>}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
