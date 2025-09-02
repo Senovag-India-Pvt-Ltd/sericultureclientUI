@@ -2640,8 +2640,17 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
+            {showMenu.TargetSetting ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Target Setting Dahboard")}
+                  to="/seriui/target-setting-dashboard"
+                />
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
+        
       ) : null}
 
       {showMenu.Inspection ? (
