@@ -1020,6 +1020,9 @@ import RangeWisePhysicalTargetReport from "../pages/stake-holder/RangeWisePhysic
 import DistrictWiseSchemeTargetsReport from "../pages/stake-holder/DistrictWiseSchemeTargetsReport";
 import TSCWiseSchemeTargetsReport from "../pages/stake-holder/TSCWiseSchemeTargetsReport";
 import ReelingTSCWiseSchemeTargetReport from "../pages/stake-holder/ReelingTSCWiseSchemeTargetReport";
+import SoldDflDetailsReportForRsso from "../pages/stake-holder/SoldDflDetailsReportForRsso";
+import RearingOfDFLsAssessmentReport from "../pages/stake-holder/RearingOfDFLsAssessmentReport";
+import MaintenanceofScreeningBatchRecordsReport from "../pages/stake-holder/MaintenanceOfScreeningBatchRecordsReport";
 
 // Admin and Reports
 
@@ -1383,6 +1386,20 @@ function Router() {
             <Route
               path="remittance-report"
               element={<RemittanceReportForGrainage />}
+            />
+            <Route
+              path="sold-dfls-report-for-rsso"
+              element={<SoldDflDetailsReportForRsso />}
+            />
+
+             <Route
+              path="rearing-of-dfls-for-the-8lines-assessment-report"
+              element={<RearingOfDFLsAssessmentReport />}
+            />
+
+            <Route
+              path="maintenance-of-screening-bath-bed-wise-details-report"
+              element={<MaintenanceofScreeningBatchRecordsReport />}
             />
 
             <Route
