@@ -534,6 +534,23 @@ function Menu() {
     Admin_Report_Chawki_Management: false,
     Admin_Report_Chawki_Management_Report: false,
 
+    // Mulberry Target Reports
+    Admin_Report_Target_Setting: false,
+    Admin_Report_Target_Setting_District_wise: false,
+    Admin_Report_Target_Setting_TSC_wise: false,
+    Admin_Report_Target_Setting_Range_wise: false,
+    Admin_Report_Target_Setting_Range_wise_Daily: false,
+    Admin_Report_Target_Setting_District_wise_Physical: false,
+    Admin_Report_Target_Setting_TSC_wise_Physical: false,
+    Admin_Report_Target_Setting_Range_wise_Physical: false,
+    Admin_Report_Target_Setting_Training_Target: false,
+    Admin_Report_Target_Setting_Grainage_Target: false,
+    Admin_Report_Target_Setting_Farm_Target: false,
+    Admin_Report_Target_Setting_District_wise_Scheme: false,
+    Admin_Report_Target_Setting_TSC_wise_Scheme: false,
+    Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme: false,
+
+
     Admin_Report_Inspection: false,
     Admin_Report_Inspection_Verified_DFLs_Report: false,
     Admin_Report_Inspection_Crop_Inspection_Report: false,
@@ -4519,6 +4536,136 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
+
+                  {showMenu.Admin_Report_Target_Setting ? (
+                  <MenuItem sub>
+                    <MenuItemLink
+                      text={t("Target Setting Reports")}
+                      onClick={menuToggle}
+                      onMouseEnter={menuHover}
+                      sub
+                    />
+                    <MenuSub>
+                      {showMenu.Admin_Report_Target_Setting_District_wise ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("District Wise Monthly Target")}
+                            to="/seriui/district-wise-mulberry-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_TSC_wise ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("TSC Wise Monthly Target")}
+                            to="/seriui/tsc-wise-mulberry-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Range_wise ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Range Wise Monthly Target")}
+                            to="/seriui/range-wise-mulberry-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Range_wise_Daily ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Range Wise Daily Target")}
+                            to="/seriui/range-wise-mulberry-daily-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_District_wise_Physical ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("District Wise Physical Target")}
+                            to="/seriui/district-wise-physical-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_TSC_wise_Physical ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("TSC Wise Physical Target")}
+                            to="/seriui/tsc-wise-physical-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Range_wise_Physical ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Range Wise Physical Target")}
+                            to="/seriui/range-wise-physical-target-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Training_Target ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Training Target")}
+                            to="/seriui/training-target-details-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Grainage_Target ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Grainage Target")}
+                            to="/seriui/graininge-target-details-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Farm_Target ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Farm Target")}
+                            to="/seriui/farm-target-details-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_District_wise_Scheme ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("District Wise Scheme Targets")}
+                            to="/seriui/district-wise-scheme-targets-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_TSC_wise_Scheme ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("TSC Wise Scheme Targets")}
+                            to="/seriui/tsc-wise-scheme-targets-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Reeling TSC Wise Scheme Targets")}
+                            to="/seriui/reeling-tsc-wise-scheme-targets-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+                    </MenuSub>
+                  </MenuItem>
+                ) : null}
+
 
 
                   {showMenu.Admin_Report_Inspection ? (
