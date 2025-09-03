@@ -1017,6 +1017,9 @@ import RangeWiseMulberryTargetDailyReport from "../pages/stake-holder/RangeWiseM
 import DistrictWisePhysicalTargetReport from "../pages/stake-holder/DistrictWisePhysicalTargetReport";
 import TSCWisePhysicalTargetReports from "../pages/stake-holder/TSCWisePhysicalTargetReports";
 import RangeWisePhysicalTargetReport from "../pages/stake-holder/RangeWisePhysicalTargetReport";
+import DistrictWiseSchemeTargetsReport from "../pages/stake-holder/DistrictWiseSchemeTargetsReport";
+import TSCWiseSchemeTargetsReport from "../pages/stake-holder/TSCWiseSchemeTargetsReport";
+import ReelingTSCWiseSchemeTargetReport from "../pages/stake-holder/ReelingTSCWiseSchemeTargetReport";
 
 // Admin and Reports
 
@@ -1458,6 +1461,18 @@ function Router() {
             <Route
               path="range-wise-physical-target-report"
               element={<RangeWisePhysicalTargetReport/>}
+            />
+            <Route
+              path="district-wise-scheme-targets-report"
+              element={<DistrictWiseSchemeTargetsReport/>}
+            />
+            <Route
+              path="tsc-wise-scheme-targets-report"
+              element={<TSCWiseSchemeTargetsReport/>}
+            />
+             <Route
+              path="reeling-tsc-wise-scheme-targets-report"
+              element={<ReelingTSCWiseSchemeTargetReport/>}
             />
             <Route path="reeler-wise-report" element={<ReelerCountList />} />
             <Route path="renewal-wise-report-list" element={<RenewReelerLicenseList />} />
