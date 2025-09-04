@@ -363,13 +363,6 @@ function ProductionAchievementReport() {
       hide: "md", 
     },
     {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "TSC",
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
@@ -391,7 +384,7 @@ function ProductionAchievementReport() {
       hide: "md",
     },
     {
-      name: "Target",
+      name: "Value",
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -410,11 +403,11 @@ function ProductionAchievementReport() {
   ];
 
   return (
-    <Layout title={t("Range Wise Physical Target Details Report")}>
+    <Layout title={t("Production Achievement Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Range Wise Physical Target Details Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Production Achievement Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
