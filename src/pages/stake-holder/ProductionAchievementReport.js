@@ -393,8 +393,8 @@ function ProductionAchievementReport() {
 
     {
       name: "User",
-      selector: (row) => row.userName,
-      cell: (row) => <span>{row.userName}</span>,
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },

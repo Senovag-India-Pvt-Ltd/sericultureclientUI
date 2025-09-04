@@ -1027,6 +1027,7 @@ import MaintenanceOfScreeningBatchAssessmentReport from "../pages/stake-holder/M
 import PreparationOfEggsDFLsReport from "../pages/stake-holder/PreparationOfEggsDFLsReport";
 import MulberryAchievementReport from "../pages/stake-holder/MulberryAchievementReport";
 import ProductionAchievementReport from "../pages/stake-holder/ProductionAchievementReport";
+import TrainingAchievementReport from "../pages/stake-holder/TrainingAchievementReport";
 
 // Admin and Reports
 
@@ -1514,7 +1515,9 @@ function Router() {
             <Route path="farmer-without-fruits-report" element={<FarmerWithoutFruitsListReport />} />
             <Route path="other-state-farmer-report" element={<OtherStateFarmerListReport />} />
             <Route path="mulberry-achievement-report" element={<MulberryAchievementReport />} />
-            <Route path="production-achievement-report" element={<ProductionAchievementReport />} />        
+            <Route path="production-achievement-report" element={<ProductionAchievementReport />} /> 
+            <Route path="training-achievement-report" element={<TrainingAchievementReport />} />        
+       
 
 
             <Route
