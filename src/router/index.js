@@ -1028,6 +1028,8 @@ import PreparationOfEggsDFLsReport from "../pages/stake-holder/PreparationOfEggs
 import MulberryAchievementReport from "../pages/stake-holder/MulberryAchievementReport";
 import ProductionAchievementReport from "../pages/stake-holder/ProductionAchievementReport";
 import TrainingAchievementReport from "../pages/stake-holder/TrainingAchievementReport";
+import FarmAchievementReport from "../pages/stake-holder/FarmAchievementReport";
+import GrainageAchievementReport from "../pages/stake-holder/GrainageAchievementReport";
 
 // Admin and Reports
 
@@ -1516,7 +1518,9 @@ function Router() {
             <Route path="other-state-farmer-report" element={<OtherStateFarmerListReport />} />
             <Route path="mulberry-achievement-report" element={<MulberryAchievementReport />} />
             <Route path="production-achievement-report" element={<ProductionAchievementReport />} /> 
-            <Route path="training-achievement-report" element={<TrainingAchievementReport />} />        
+            <Route path="training-achievement-report" element={<TrainingAchievementReport />} />
+            <Route path="farm-achievement-report" element={<FarmAchievementReport />} /> 
+            <Route path="grainage-achievement-report" element={<GrainageAchievementReport />} />        
        
 
 

@@ -13,13 +13,13 @@ import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import TrainingTarget from "../new-target-setting/training-target/TrainingTarget";
-import TrainingAchievement from "../new-target-setting/achievement/TrainingAchievement";
+import GrainageAchievement from "../new-target-setting/achievement/GrainageAchievement";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function TrainingAchievementReport() {
+function GrainageAchievementReport() {
   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
@@ -33,9 +33,8 @@ function TrainingAchievementReport() {
 
   const [data, setData] = useState({
     financialYearId: "",
-    trainingInstitutionId: "",
-    trainingProgramId: "",
-    targetType: "",
+    raceId: "",
+    grainageId: "",
   });
 
 
@@ -43,14 +42,13 @@ function TrainingAchievementReport() {
   const search = (e) => {
     api
       .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
+        baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
         {},
         {
           params: {
             financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
+            raceId: data.raceId || 0,
+            grainageId: data.grainageId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -68,14 +66,13 @@ function TrainingAchievementReport() {
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievementsReport`,
+        baseURLFarmer + `targetsAchievement/getGrainageAchievementsReport`,
         {},
         {
           params: {
-           financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
+            financialYearId: data.financialYearId || 0,
+            raceId: data.raceId || 0,
+            grainageId: data.grainageId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -88,7 +85,7 @@ function TrainingAchievementReport() {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `training_targets_report.csv`;
+        link.download = `grainage_achievement_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -105,14 +102,13 @@ function TrainingAchievementReport() {
   const getFarmerList = (e) => {
     api
       .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
+        baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
         {},
         {
           params: {
             financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
+            raceId: data.raceId || 0,
+            grainageId: data.grainageId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -228,6 +224,43 @@ function TrainingAchievementReport() {
       getFinancialYearList();
     }, []);
 
+     // to get Race
+         const [raceListData, setRaceListData] = useState([]);
+       
+         const getRaceList = () => {
+           const response = api
+             .get(baseURL + `raceMaster/get-all`)
+             .then((response) => {
+               setRaceListData(response.data.content.raceMaster);
+             })
+             .catch((err) => {
+               setRaceListData([]);
+             });
+         };
+       
+         useEffect(() => {
+           getRaceList();
+         }, []);
+
+        // to get Grainage
+        const [grainageListData, setGrainageListData] = useState([]);
+        
+        const getGrainageList = () => {
+            const response = api
+            .get(baseURL + `grainageMaster/get-all`)
+            .then((response) => {
+                setGrainageListData(response.data.content.grainageMaster);
+            })
+            .catch((err) => {
+                setGrainageListData([]);
+            });
+        };
+        
+        useEffect(() => {
+            getGrainageList();
+        }, []);
+         
+
     // to get username
     const [userListData, setUserListData] = useState([]);
   
@@ -325,16 +358,16 @@ function TrainingAchievementReport() {
     },
 
     {
-      name: "Institution Name",
-      selector: (row) => row.institutionName,
-      cell: (row) => <span>{row.institutionName}</span>,
+      name: "Race Name",
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program",
-      selector: (row) => row.courseName,
-      cell: (row) => <span>{row.courseName}</span>,
+      name: "Grainage Name",
+      selector: (row) => row.grainageName,
+      cell: (row) => <span>{row.grainageName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -359,23 +392,16 @@ function TrainingAchievementReport() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Target Type",
-      selector: (row) => row.target,
-      cell: (row) => <span>{row.target}</span>,
-      sortable: true,
-      hide: "md",
-    },
    
     
   ];
 
   return (
-    <Layout title={t("Training Achievement Report")}>
+    <Layout title={t("Grainage Achievement Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Training Achievement Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Grainage Achievement Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -444,89 +470,72 @@ function TrainingAchievementReport() {
 
                         
                         <Col sm={2}>
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              {t("Training Institution")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
+                        <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                            {t("Grainage")}
+                            {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <Col>
                             <div className="form-control-wrap">
-                              <Form.Select
-                                name="trainingInstitutionId"
-                                value={data.trainingInstitutionId}
+                            <Form.Select
+                                name="grainageId"
+                                value={data.grainageId}
                                 onChange={handleInputs}
-                                
-                              >
-                                <option value="">{t("Select Institution")}</option>
-                                {trInstituteListData && trInstituteListData.length ?
-                                trInstituteListData.map((list) => (
-                                  <option
-                                    key={list.trInstitutionMasterId}
-                                    value={list.trInstitutionMasterId}
-                                  >
-                                    {list.trInstitutionMasterName}
-                                  </option>
-                                ))
-                                : ""}
-                              </Form.Select>
-                              
+                                // onBlur={() => handleInputs}
+                                // required
+                            >
+                                <option value="">{t("Select Grainage")}</option>
+                                {grainageListData && grainageListData.length?(grainageListData.map((list) => (
+                                <option
+                                    key={list.grainageMasterId}
+                                    value={list.grainageMasterId}
+                                >
+                                    {list.grainageMasterName}
+                                </option>
+                                ))):""}
+                            </Form.Select>
+                            {/* <Form.Control.Feedback type="invalid">
+                                {t("Grainage is required")}
+                            </Form.Control.Feedback> */}
                             </div>
-                          </Form.Group>
                         </Col>
-
-                        <Col sm={2}>
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              {t("Training Program")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="trainingProgramId"
-                                value={data.trainingProgramId}
-                                onChange={handleInputs}
-                               
-                              >
-                                <option value="">{t("Select Program")}</option>
-                                {trCourseListData && trCourseListData.length
-                                ?trCourseListData.map((list) => (
-                                  <option
-                                    key={list.trCourseMasterId}
-                                    value={list.trCourseMasterId}
-                                  >
-                                    {list.trCourseMasterName}
-                                  </option>
-                                ))
-                                : ""}
-                              </Form.Select>
-                              
-                            </div>
-                          </Form.Group>
-                        </Col>
+                        </Form.Group>
+                    </Col>
 
                         <Col sm={2}>
                         <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                            {t("Target Type")}
+                            {t("Race")}
                             {/* <span className="text-danger">*</span> */}
                         </Form.Label>
-                        <div className="form-control-wrap">
+                        <Col>
+                            <div className="form-control-wrap">
                             <Form.Select
-                            name="targetType"
-                            value={data.targetType}
-                            onChange={handleInputs}
-                            
+                                name="raceId"
+                                value={data.raceId}
+                                onChange={handleInputs}
+                            //   onBlur={() => handleInputs}
+                                // required
                             >
-                            <option value="">{t("Select Target Type")}</option>
-                            <option value="PHYSICAL TARGET">PHYSICAL TARGET</option>
-                            <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
-
+                                <option value="">{t("Select Race")}</option>
+                                {raceListData.map((list) => (
+                                <option
+                                    key={list.raceMasterId}
+                                    value={list.raceMasterId}
+                                >
+                                    {list.raceMasterName}
+                                </option>
+                                ))}
                             </Form.Select>
                             {/* <Form.Control.Feedback type="invalid">
-                            {t("Month is required")}
+                                Race is required
                             </Form.Control.Feedback> */}
-                        </div>
+                            </div>
+                        </Col>
                         </Form.Group>
                     </Col>
+
+                        
                         
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
@@ -562,4 +571,4 @@ function TrainingAchievementReport() {
   );
 }
 
-export default TrainingAchievementReport;
+export default GrainageAchievementReport;
