@@ -18,7 +18,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function MaintenanceofScreeningBatchRecordsReport() {
+function MaintenanceOfScreeningBatchAssessmentReport() {
   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
@@ -48,7 +48,7 @@ const handleDateChange = (date, type) => {
   const search = (e) => {
     api
       .post(
-        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-details`,
+        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-assessment-details`,
         {},
         {
           params: {
@@ -72,7 +72,7 @@ const handleDateChange = (date, type) => {
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-report`,
+        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-assessment-report`,
         {},
         {
           params: {
@@ -91,7 +91,7 @@ const handleDateChange = (date, type) => {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `maintenance_screening_batch_report_.csv`;
+        link.download = `maintenance_screening_batch_assessment_report_.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -108,7 +108,7 @@ const handleDateChange = (date, type) => {
   const getFarmerList = (e) => {
     api
       .post(
-        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-details`,
+        baseURLFarmer + `MaintenanceOfScreen/maintenance-screening-batch-assessment-details`,
         {},
         {
           params: {
@@ -281,72 +281,101 @@ const handleDateChange = (date, type) => {
     },
 
     {
-      name: "Bed 1",
-      selector: (row) => row.bed1,
-      cell: (row) => <span>{row.bed1}</span>,
+      name: "Spun On Date(From)",
+      selector: (row) => row.spunOnDate,
+      cell: (row) => <span>{row.spunOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 2",
-      selector: (row) => row.bed2,
-      cell: (row) => <span>{row.bed2}</span>,
+      name: "Spun On Date(To)",
+      selector: (row) => row.spunOnToDate,
+      cell: (row) => <span>{row.spunOnToDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 3",
-      selector: (row) => row.bed3,
-      cell: (row) => <span>{row.bed3}</span>,
+      name: "Bed",
+      selector: (row) => row.bedName,
+      cell: (row) => <span>{row.bedName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 4",
-      selector: (row) => row.bed4,
-      cell: (row) => <span>{row.bed4}</span>,
+      name: "Weight Of 25 Cocoons",
+      selector: (row) => row.weightCacoons,
+      cell: (row) => <span>{row.weightCacoons}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 5",
-      selector: (row) => row.bed5,
-      cell: (row) => <span>{row.bed5}</span>,
+      name: "Weight Of 25 Pupa",
+      selector: (row) => row.weightPupa,
+      cell: (row) => <span>{row.weightPupa}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 6",
-      selector: (row) => row.bed6,
-      cell: (row) => <span>{row.bed6}</span>,
+      name: "Weight Of 25 Shells",
+      selector: (row) => row.weightShells,
+      cell: (row) => <span>{row.weightShells}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 7",
-      selector: (row) => row.bed7,
-      cell: (row) => <span>{row.bed7}</span>,
+      name: "Single Weight Of Cocoon",
+      selector: (row) => row.singleWeightCacoons,
+      cell: (row) => <span>{row.singleWeightCacoons}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 8",
-      selector: (row) => row.bed8,
-      cell: (row) => <span>{row.bed8}</span>,
+      name: "Single Weight Pupa",
+      selector: (row) => row.singleWeightPupa,
+      cell: (row) => <span>{row.singleWeightPupa}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 9",
-      selector: (row) => row.bed9,
-      cell: (row) => <span>{row.bed9}</span>,
+      name: "Single Weight Shells",
+      selector: (row) => row.singleWeightShells,
+      cell: (row) => <span>{row.singleWeightShells}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Bed 10",
-      selector: (row) => row.bed10,
-      cell: (row) => <span>{row.bed10}</span>,
+      name: "Male Ratio",
+      selector: (row) => row.maleRatio,
+      cell: (row) => <span>{row.maleRatio}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Female Ratio",
+      selector: (row) => row.femaleRatio,
+      cell: (row) => <span>{row.femaleRatio}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Shell Percentage",
+      selector: (row) => row.shellPercentage,
+      cell: (row) => <span>{row.shellPercentage}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
+    {
+      name: "Cocoons Formed",
+      selector: (row) => row.cacoonsFormed,
+      cell: (row) => <span>{row.cacoonsFormed}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Worms Brushed",
+      selector: (row) => row.wormsBrushed,
+      cell: (row) => <span>{row.wormsBrushed}</span>,
       sortable: true,
       hide: "md",
     },
@@ -354,11 +383,11 @@ const handleDateChange = (date, type) => {
   ];
 
   return (
-    <Layout title={t("Maintenance Of Screening Batch Records Bed Wise Details Report")}>
+    <Layout title={t("Maintenance Of Screening Batch Records Assessment Details Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Maintenance Of Screening Batch Records Bed Wise Details Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Maintenance Of Screening Batch Assessment Details Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -510,4 +539,4 @@ const handleDateChange = (date, type) => {
   );
 }
 
-export default MaintenanceofScreeningBatchRecordsReport;
+export default MaintenanceOfScreeningBatchAssessmentReport;

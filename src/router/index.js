@@ -1023,6 +1023,7 @@ import ReelingTSCWiseSchemeTargetReport from "../pages/stake-holder/ReelingTSCWi
 import SoldDflDetailsReportForRsso from "../pages/stake-holder/SoldDflDetailsReportForRsso";
 import RearingOfDFLsAssessmentReport from "../pages/stake-holder/RearingOfDFLsAssessmentReport";
 import MaintenanceofScreeningBatchRecordsReport from "../pages/stake-holder/MaintenanceOfScreeningBatchRecordsReport";
+import MaintenanceOfScreeningBatchAssessmentReport from "../pages/stake-holder/MaintenanceOfScreeningBathAssessmentReport";
 
 // Admin and Reports
 
@@ -1401,6 +1402,12 @@ function Router() {
               path="maintenance-of-screening-bath-bed-wise-details-report"
               element={<MaintenanceofScreeningBatchRecordsReport />}
             />
+
+            <Route
+              path="maintenance-of-screening-batch-assessment-details-report"
+              element={<MaintenanceOfScreeningBatchAssessmentReport />}
+            />
+
 
             <Route
               path="verified-dfls-report"
