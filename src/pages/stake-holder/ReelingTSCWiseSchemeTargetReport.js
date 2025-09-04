@@ -873,8 +873,8 @@ function ReelingTSCWiseSchemeTargetReport() {
                             
                             >
                             <option value="">{t("Select Target Type")}</option>
-                            <option value="PHYSICAL TARGET">{t("PHYSICAL TARGET")}</option>
-                            <option value="FINANCIAL TARGET">{t("FINANCIAL TARGET")}</option>
+                            <option value="PHYSICAL TARGET">PHYSICAL TARGET</option>
+                            <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
 
                             </Form.Select>
                             {/* <Form.Control.Feedback type="invalid">

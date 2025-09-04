@@ -510,8 +510,8 @@ function RangeWiseMulberryTargetReport() {
                             
                             >
                             <option value="">{t("Select Target Type")}</option>
-                            <option value="NAREGA">{t("NAREGA")}</option>
-                            <option value="NON NAREGA">{t("NON NAREGA")}</option>
+                            <option value="NAREGA">NAREGA</option>
+                            <option value="NON NAREGA">NON NAREGA</option>
 
                             </Form.Select>
                             {/* <Form.Control.Feedback type="invalid">

@@ -1774,10 +1774,10 @@ function TscwiseSchemeTargetSetting() {
                                   {t("Select Target Type")}
                                 </option>
                                 <option value="Physical Target">
-                                  {t("Physical Target")}
+                                  PHYSICAL TARGET
                                 </option>
                                 <option value="Financial Target">
-                                  {t("Financial Target")}
+                                  FINANCIAL TARGET
                                 </option>
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -2447,11 +2447,11 @@ function TscwiseSchemeTargetSetting() {
                         {t("Select Target Type")}
                       </option>
                       <option value="Physical Target">
-                        {t("Physical Target")}
-                      </option>
-                      <option value="Financial Target">
-                        {t("Financial Target")}
-                      </option>
+                                  PHYSICAL TARGET
+                                </option>
+                                <option value="Financial Target">
+                                  FINANCIAL TARGET
+                                </option>
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
                             {list.districtName}

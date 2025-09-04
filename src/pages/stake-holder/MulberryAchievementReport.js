@@ -13,12 +13,13 @@ import api from "../../services/auth/api";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import TrainingTarget from "../new-target-setting/training-target/TrainingTarget";
+import MulberryAchievement from "../new-target-setting/achievement/MulberryAchievement";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function DistrictWiseMonthlyMulberryTargetReport() {
+function MulberryAchievementReport() {
   const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
@@ -34,7 +35,8 @@ function DistrictWiseMonthlyMulberryTargetReport() {
     financialYearId: "",
     mulberryTargetTypeId: "",
     districtId: "",
-    targetType: "",
+    tscMasterId: "",
+    target: "",
   });
 
 
@@ -42,14 +44,15 @@ function DistrictWiseMonthlyMulberryTargetReport() {
   const search = (e) => {
     api
       .post(
-        baseURLFarmer + `mulberryTargets/getDistrictWiseMulberryTargets`,
+        baseURLFarmer + `schemeAchievement/getMulberryAchievements`,
         {},
         {
           params: {
             financialYearId: data.financialYearId || 0,
             mulberryTargetTypeId: data.mulberryTargetTypeId || 0,
             districtId: data.districtId || 0,
-            targetType: data.targetType || '',
+            tscMasterId: data.tscMasterId || 0,
+            target: data.target || '',
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -67,14 +70,15 @@ function DistrictWiseMonthlyMulberryTargetReport() {
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `mulberryTargets/getDistrictWiseMulberryTargetsReport`,
+        baseURLFarmer + `schemeAchievement/getMulberryAchievementsReport`,
         {},
         {
           params: {
            financialYearId: data.financialYearId || 0,
             mulberryTargetTypeId: data.mulberryTargetTypeId || 0,
             districtId: data.districtId || 0,
-            targetType: data.targetType || '',
+            tscMasterId: data.tscMasterId || 0,
+            target: data.target || '',
           },
           responseType: 'blob',
           headers: {
@@ -87,7 +91,7 @@ function DistrictWiseMonthlyMulberryTargetReport() {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `mulberry_targets_report.csv`;
+        link.download = `mulberry_achievement_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -104,14 +108,15 @@ function DistrictWiseMonthlyMulberryTargetReport() {
   const getFarmerList = (e) => {
     api
       .post(
-        baseURLFarmer + `mulberryTargets/getDistrictWiseMulberryTargets`,
+        baseURLFarmer + `schemeAchievement/getMulberryAchievements`,
         {},
         {
           params: {
             financialYearId: data.financialYearId || 0,
             mulberryTargetTypeId: data.mulberryTargetTypeId || 0,
             districtId: data.districtId || 0,
-            targetType: data.targetType || '',
+            tscMasterId: data.tscMasterId || 0,
+            target: data.target || '',
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -194,24 +199,23 @@ function DistrictWiseMonthlyMulberryTargetReport() {
       getFinancialYearList();
     }, []);
 
-    // to get username
-    const [userListData, setUserListData] = useState([]);
-  
-    const getUserList = () => {
-      api
-        .get(baseURL + `userMaster/get-all`)
-        .then((response) => {
-          setUserListData(response.data.content.userMaster);
-        })
-        .catch((err) => {
-          setUserListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getUserList();
-    }, []);
-     
+    // to get tsc
+         const [tscListData, setTscListData] = useState([]);
+       
+         const getTscList = () => {
+           const response = api
+             .get(baseURL + `tscMaster/get-all`)
+             .then((response) => {
+               setTscListData(response.data.content.tscMaster);
+             })
+             .catch((err) => {
+               setTscListData([]);
+             });
+         };
+       
+         useEffect(() => {
+           getTscList();
+         }, []);
 
 
   createTheme(
@@ -304,10 +308,18 @@ function DistrictWiseMonthlyMulberryTargetReport() {
       sortable: true,
       hide: "md",
     },
+    
+    {
+      name: "TSC",
+      selector: (row) => row.tscName,
+      cell: (row) => <span>{row.tscName}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Target Type",
-      selector: (row) => row.targetType,
-      cell: (row) => <span>{row.targetType}</span>,
+      selector: (row) => row.target,
+      cell: (row) => <span>{row.target}</span>,
       sortable: true,
       hide: "md",
     },
@@ -319,7 +331,7 @@ function DistrictWiseMonthlyMulberryTargetReport() {
       hide: "md",
     },
     {
-      name: "Target",
+      name: "Value",
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -338,11 +350,11 @@ function DistrictWiseMonthlyMulberryTargetReport() {
   ];
 
   return (
-    <Layout title={t("District Wise Monthly Mulberry Target Details Report")}>
+    <Layout title={t("Mulberry Achievement Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("District Wise Monthly Mulberry Target Details Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Mulberry Achievement Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
@@ -410,6 +422,42 @@ function DistrictWiseMonthlyMulberryTargetReport() {
                         </div>
                     </Form.Group>
                     </Col>
+
+                    <Col sm={2}>
+                      <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                      {t("tsc")}
+                      {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                          <Form.Select
+                          name="tscMasterId"
+                          value={data.tscMasterId}
+                          onChange={handleInputs}
+                          // onBlur={() => handleInputs}
+                          // required
+                          // isInvalid={
+                          //     data.tscMasterId === undefined ||
+                          //     data.tscMasterId === "0"
+                          // }
+                          >
+                          <option value="">{t("select_tsc")}</option>
+                          {tscListData.map((list) => (
+                              <option
+                              key={list.tscMasterId}
+                              value={list.tscMasterId}
+                              >
+                              {list.name}
+                              </option>
+                          ))}
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          {t("tsc_is_required")}
+                          </Form.Control.Feedback> */}
+                      </div>
+                      </Form.Group>
+                      </Col>
+
                        <Col sm={2}>
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -451,8 +499,8 @@ function DistrictWiseMonthlyMulberryTargetReport() {
                         </Form.Label>
                         <div className="form-control-wrap">
                             <Form.Select
-                            name="targetType"
-                            value={data.targetType}
+                            name="target"
+                            value={data.target}
                             onChange={handleInputs}
                             
                             >
@@ -466,7 +514,7 @@ function DistrictWiseMonthlyMulberryTargetReport() {
                             </Form.Control.Feedback> */}
                         </div>
                         </Form.Group>
-                    </Col>
+                        </Col>
                         
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
@@ -502,4 +550,4 @@ function DistrictWiseMonthlyMulberryTargetReport() {
   );
 }
 
-export default DistrictWiseMonthlyMulberryTargetReport;
+export default MulberryAchievementReport;

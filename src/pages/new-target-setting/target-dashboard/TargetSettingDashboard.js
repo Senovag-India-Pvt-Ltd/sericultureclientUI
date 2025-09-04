@@ -903,10 +903,10 @@ function TargetSettingDashboard() {
       >
         <option value="">{t("Select Target Type")}</option>
         <option value="Physical">Physical</option>
-        <option value="Cocoon Production">Cocoon Production</option>
         <option value="PHYSICAL TARGET">PHYSICAL TARGET</option>
-        <option value="Brushing">Brushing</option>
-        <option value="Narega">Narega</option>
+        <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
+        <option value="COCOON PRODUCTION">COCOON PRODUCTION</option>
+        <option value="BRUSHING">BRUSHING</option>
         <option value="NON NAREGA">NON NAREGA</option>
         <option value="NAREGA">NAREGA</option>
       </Form.Select>
