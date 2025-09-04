@@ -1056,53 +1056,107 @@ useEffect(() => {
   // };
 
 
-   const postData = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-          setValidated(true);
-        } else {
-          event.preventDefault();
-          // event.stopPropagation();
-          api
-            .post(baseURLTargetSetting + `targetsAchievement/add-Training`, data)
-            .then((response) => {
-              if (response.data.content.error) {
-                saveError(response.data.content.error_description);
-              } else {
-                saveSuccess();
-                setData({   
-    targetsAchievementId: "",
-    financialYearMasterId: "",
-    trainingInstitution: "",
-    courseId: "",
-    target: "", 
-    month: "",
-    value: "",           
-    userMasterId: "",
-    pageType: "TRAINING",
+  //  const postData = (event) => {
+  //       const form = event.currentTarget;
+  //       if (form.checkValidity() === false) {
+  //         event.preventDefault();
+  //         event.stopPropagation();
+  //         setValidated(true);
+  //       } else {
+  //         event.preventDefault();
+  //         // event.stopPropagation();
+  //         api
+  //           .post(baseURLTargetSetting + `targetsAchievement/add-Training`, data)
+  //           .then((response) => {
+  //             if (response.data.content.error) {
+  //               saveError(response.data.content.error_description);
+  //             } else {
+  //               saveSuccess();
+  //               setData({   
+  //   targetsAchievementId: "",
+  //   financialYearMasterId: "",
+  //   trainingInstitution: "",
+  //   courseId: "",
+  //   target: "", 
+  //   month: "",
+  //   value: "",           
+  //   userMasterId: "",
+  //   pageType: "TRAINING",
   
 
-                });
-                setValidated(false);
-              }
-            })
-            .catch((err) => {
-              if (
-                err.response &&
-                err.response &&
-                err.response.data &&
-                err.response.data.validationErrors
-              ) {
-                if (Object.keys(err.response.data.validationErrors).length > 0) {
-                  saveError(err.response.data.validationErrors);
-                }
-              }
-            });
-          setValidated(true);
+  //               });
+  //               setValidated(false);
+  //             }
+  //           })
+  //           .catch((err) => {
+  //             if (
+  //               err.response &&
+  //               err.response &&
+  //               err.response.data &&
+  //               err.response.data.validationErrors
+  //             ) {
+  //               if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //                 saveError(err.response.data.validationErrors);
+  //               }
+  //             }
+  //           });
+  //         setValidated(true);
+  //       }
+  //     };
+
+
+  const postData = (event) => {
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+  } else {
+    event.preventDefault();
+
+    // Add targetTypetraining to request body
+    const requestBody = {
+      ...data,
+      targetTypetraining: "training", // or "grainage" depending on use case
+    };
+
+    api
+      .post(baseURLTargetSetting + `targetsAchievement/add-Grainage`, requestBody)
+      .then((response) => {
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+        } else {
+          saveSuccess();
+          setData({
+            targetsAchievementId: "",
+            financialYearMasterId: "",
+            trainingInstitution: "",
+            courseId: "",
+            target: "",
+            month: "",
+            value: "",
+            userMasterId: "",
+            pageType: "TRAINING", // for grainage case, this should be "GRAINAGE"
+          });
+          setValidated(false);
         }
-      };
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        }
+      });
+
+    setValidated(true);
+  }
+};
+
 
 
   const postEditData = (event) => {

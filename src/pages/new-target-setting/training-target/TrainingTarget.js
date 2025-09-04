@@ -1521,41 +1521,70 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
     //     setViewMonthlyTargetsData([]);
     //   });
 
-      const target = ["PHYSICAL TARGET","FINANCIAL TARGET"];
-    targets.forEach((target) => {
-    api
-      .post(
-        baseURLTargetSetting + `targets/getTrainingTargetDetails`,
-        {},
-        {
-          params: {
-            financialYearMasterId,
-            courseId,
-            trainingInstitutionId,
-            targetType:target
-            // month
-          },
-        }
-      )
-      .then((response) => {
-        if(target === "PHYSICAL TARGET"){
-          setViewTotalTargetsDataPhysical(response.data);
-        }
-        else{
-          setViewTotalTargetsDataFinancial(response.data);
-        }
+    //   const target = ["PHYSICAL TARGET","FINANCIAL TARGET"];
+    // targets.forEach((target) => {
+    // api
+    //   .post(
+    //     baseURLTargetSetting + `targets/getTrainingTargetDetails`,
+    //     {},
+    //     {
+    //       params: {
+    //         financialYearMasterId,
+    //         courseId,
+    //         trainingInstitutionId,
+    //         targetType:target
+    //         // month
+    //       },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     if(target === "PHYSICAL TARGET"){
+    //       setViewTotalTargetsDataPhysical(response.data);
+    //     }
+    //     else{
+    //       setViewTotalTargetsDataFinancial(response.data);
+    //     }
           
-        // setTotalRows(response.data.totalRecords);
-        // setShowModal4(true);
-      })
-      .catch((err) => {
-        if(target === "PHYSICAL TARGET"){
-          setViewTotalTargetsDataPhysical([]);
-        }else{
-          setViewTotalTargetsDataFinancial([]);
-        }
-      });
+    //     // setTotalRows(response.data.totalRecords);
+    //     // setShowModal4(true);
+    //   })
+    //   .catch((err) => {
+    //     if(target === "PHYSICAL TARGET"){
+    //       setViewTotalTargetsDataPhysical([]);
+    //     }else{
+    //       setViewTotalTargetsDataFinancial([]);
+    //     }
+    //   });
+    // });
+
+    const targetTypes = ["PHYSICAL TARGET", "FINANCIAL TARGET"];
+
+targetTypes.forEach((targetType) => {
+  const requestBody = {
+    financialYearMasterId,
+    courseId,
+    trainingInstitutionId,
+    targetType: targetType,
+    targetTypetraining: "training" // 👈 this is important, tells backend it's training
+  };
+
+  api
+    .post(baseURLTargetSetting + `targets/getGrainageTargetDetails`, requestBody)
+    .then((response) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setViewTotalTargetsDataPhysical(response.data.content || response.data);
+      } else {
+        setViewTotalTargetsDataFinancial(response.data.content || response.data);
+      }
+    })
+    .catch((err) => {
+      if (targetType === "PHYSICAL TARGET") {
+        setViewTotalTargetsDataPhysical([]);
+      } else {
+        setViewTotalTargetsDataFinancial([]);
+      }
     });
+});
 
     
   
