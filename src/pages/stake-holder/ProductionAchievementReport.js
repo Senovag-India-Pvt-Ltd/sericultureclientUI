@@ -69,7 +69,7 @@ function ProductionAchievementReport() {
   const exportCsv = (e) => {
     api
       .post(
-        baseURLFarmer + `schemeAchievement/getRangeWisePhysicalTargetsReport`,
+        baseURLFarmer + `schemeAchievement/getProductionAchievementsReport`,
         {},
         {
           params: {
@@ -107,7 +107,7 @@ function ProductionAchievementReport() {
   const getFarmerList = (e) => {
     api
       .post(
-        baseURLFarmer + `schemeAchievement/getRangeWisePhysicalTargetsDetails`,
+        baseURLFarmer + `schemeAchievement/getProductionAchievements`,
         {},
         {
           params: {
