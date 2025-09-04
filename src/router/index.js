@@ -1024,6 +1024,7 @@ import SoldDflDetailsReportForRsso from "../pages/stake-holder/SoldDflDetailsRep
 import RearingOfDFLsAssessmentReport from "../pages/stake-holder/RearingOfDFLsAssessmentReport";
 import MaintenanceofScreeningBatchRecordsReport from "../pages/stake-holder/MaintenanceOfScreeningBatchRecordsReport";
 import MaintenanceOfScreeningBatchAssessmentReport from "../pages/stake-holder/MaintenanceOfScreeningBathAssessmentReport";
+import PreparationOfEggsDFLsReport from "../pages/stake-holder/PreparationOfEggsDFLsReport";
 
 // Admin and Reports
 
@@ -1406,6 +1407,11 @@ function Router() {
             <Route
               path="maintenance-of-screening-batch-assessment-details-report"
               element={<MaintenanceOfScreeningBatchAssessmentReport />}
+            />
+
+             <Route
+              path="added-dfls-report"
+              element={<PreparationOfEggsDFLsReport />}
             />
 
 

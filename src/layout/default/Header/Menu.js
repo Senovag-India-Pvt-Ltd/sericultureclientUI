@@ -524,6 +524,12 @@ function Menu() {
     Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage: false,
     Admin_Report_Seed_And_Dfl_Remittance_Report: false,
 
+    Admin_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report: false,
+    Admin_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report: false,
+    Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report: false,
+    Admin_Report_Seed_And_Dfl_added_dfls_report: false,
+
     Admin_Report_Garden: false,
     Admin_Report_Garden_Mulberry_Garden_Report: false,
     Admin_Report_Garden_Supply_Of_Cocoons_Report: false,
@@ -4453,6 +4459,51 @@ function Menu() {
                             <MenuItemLink
                               text={t("Remittance Report")}
                               to="/seriui/remittance-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Sale and Disposal of DFLs(RSSO/NSSO) Details Report")}
+                              to="/seriui/sold-dfls-report-for-rsso"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Rearing Of DFLs Assessment Report")}
+                              to="/seriui/rearing-of-dfls-for-the-8lines-assessment-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Screening Batch Bed Wise Report")}
+                              to="/seriui/maintenance-of-screening-bath-bed-wise-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Maintenance Of Screening Batch Assessment Wise Report")}
+                              to="/seriui/maintenance-of-screening-batch-assessment-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Report_Seed_And_Dfl_added_dfls_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Added DFLs Report")}
+                              to="/seriui/added-dfls-report"
                             />
                           </MenuItem>
                         ) : null}
