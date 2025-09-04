@@ -555,6 +555,11 @@ function Menu() {
     Admin_Report_Target_Setting_District_wise_Scheme: false,
     Admin_Report_Target_Setting_TSC_wise_Scheme: false,
     Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme: false,
+    Admin_Report_Target_Setting_Grainage_Achievement_Report: false,
+    Admin_Report_Target_Setting_Farm_Achievement_Report: false,
+    Admin_Report_Target_Setting_Mulberry_Achievement_Report: false,
+    Admin_Report_Target_Setting_Training_Achievement_Report: false,
+    Admin_Report_Target_Setting_Physical_Achievement_Report: false,
 
 
     Admin_Report_Inspection: false,
@@ -4713,9 +4718,58 @@ function Menu() {
                           />
                         </MenuItem>
                       ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Grainage_Achievement_Report ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Grainage Achievement Report")}
+                            to="/seriui/reeling-tsc-wise-scheme-targets-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Farm_Achievement_Report ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Farm Achievement Report")}
+                            to="/seriui/farm-achievement-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                        {showMenu.Admin_Report_Target_Setting_Mulberry_Achievement_Report ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Mulberry Achievement Report")}
+                            to="/seriui/mulberry-achievement-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Training_Achievement_Report ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Training Achievement Report")}
+                            to="/seriui/training-achievement-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+                      {showMenu.Admin_Report_Target_Setting_Physical_Achievement_Report ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text={t("Physical Achievement Report")}
+                            to="/seriui/production-achievement-report"
+                          />
+                        </MenuItem>
+                      ) : null}
+
+
                     </MenuSub>
                   </MenuItem>
                 ) : null}
+
+                
 
 
 
