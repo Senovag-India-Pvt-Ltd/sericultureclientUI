@@ -902,7 +902,7 @@ function TargetSettingDashboard() {
         className="form-control form-control-lg bg-white"
       >
         <option value="">{t("Select Target Type")}</option>
-        <option value="Physical">Physical</option>
+        {/* <option value="Physical">Physical</option> */}
         <option value="PHYSICAL TARGET">PHYSICAL TARGET</option>
         <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
         <option value="COCOON PRODUCTION">COCOON PRODUCTION</option>
