@@ -53,10 +53,13 @@ function GrainageTargetReport() {
           },
         }
       )
-      .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
+       .then((response) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
       .catch((err) => {
         setListData([]);
       });
@@ -113,10 +116,13 @@ function GrainageTargetReport() {
           },
         }
       )
-      .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
+        .then((response) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
       .catch((err) => {
         setListData([]);
       });
