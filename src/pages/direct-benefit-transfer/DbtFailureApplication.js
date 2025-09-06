@@ -236,6 +236,8 @@ function DbtFailureApplication() {
           params: {
             districtId: addressDetails.districtId,
             talukId: addressDetails.talukId,
+            hobliId: addressDetails.talukId,
+            villageId: addressDetails.talukId,
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
@@ -505,6 +507,8 @@ function DbtFailureApplication() {
           params: {
             districtId: addressDetails.districtId,
             talukId: addressDetails.talukId,
+            hobliId: addressDetails.talukId,
+            villageId: addressDetails.talukId,
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
