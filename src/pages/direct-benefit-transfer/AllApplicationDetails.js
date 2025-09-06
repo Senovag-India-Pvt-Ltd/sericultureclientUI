@@ -152,50 +152,49 @@ function AllApplicationDetails() {
     }
   }, [addressDetails.districtId]);
 
-
   // to get hobli
-    const [hobliListData, setHobliListData] = useState([]);
-  
-    const getHobliList = (_id) => {
-      const response = api
-        .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
-        .then((response) => {
-          if (response.data.content.hobli) {
-            setHobliListData(response.data.content.hobli);
-          }
-        })
-        .catch((err) => {
-          setHobliListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    };
-  
-    useEffect(() => {
-      if (addressDetails.talukId) {
-        getHobliList(addressDetails.talukId);
-      }
-    }, [addressDetails.talukId]);
+  const [hobliListData, setHobliListData] = useState([]);
 
-    // to get village
-    const [villageListData, setVillageListData] = useState([]);
-    
-      const getVillageList = (_id) => {
-        api
-          .get(baseURL + `village/get-by-hobli-id/${_id}`)
-          .then((response) => {
-            setVillageListData(response.data.content.village);
-          })
-          .catch((err) => {
-            setVillageListData([]);
-            // alert(err.response.data.errorMessages[0].message[0].message);
-          });
-      };
-    
-      useEffect(() => {
-        if (addressDetails.hobliId) {
-          getVillageList(addressDetails.hobliId);
+  const getHobliList = (_id) => {
+    const response = api
+      .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.hobli) {
+          setHobliListData(response.data.content.hobli);
         }
-      }, [addressDetails.hobliId]);
+      })
+      .catch((err) => {
+        setHobliListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (addressDetails.talukId) {
+      getHobliList(addressDetails.talukId);
+    }
+  }, [addressDetails.talukId]);
+
+  // to get village
+  const [villageListData, setVillageListData] = useState([]);
+
+  const getVillageList = (_id) => {
+    api
+      .get(baseURL + `village/get-by-hobli-id/${_id}`)
+      .then((response) => {
+        setVillageListData(response.data.content.village);
+      })
+      .catch((err) => {
+        setVillageListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (addressDetails.hobliId) {
+      getVillageList(addressDetails.hobliId);
+    }
+  }, [addressDetails.hobliId]);
 
   const handleInputsaddress = (e) => {
     let name = e.target.name;
@@ -237,6 +236,8 @@ function AllApplicationDetails() {
           params: {
             districtId: addressDetails.districtId,
             talukId: addressDetails.talukId,
+            hobliId: addressDetails.talukId,
+            villageId: addressDetails.talukId,
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
@@ -506,6 +507,8 @@ function AllApplicationDetails() {
           params: {
             districtId: addressDetails.districtId,
             talukId: addressDetails.talukId,
+            hobliId: addressDetails.talukId,
+            villageId: addressDetails.talukId,
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
@@ -1593,63 +1596,61 @@ function AllApplicationDetails() {
                     </Form.Select>
                   </div>
                 </Col>
-
-                
               </Form.Group>
             </Col>
             <Col className="d-flex justify-content-center mt-2">
               <Form.Label column sm={1}>
-                  {t("hobli")}
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="hobliId"
-                      value={addressDetails.hobliId}
-                      onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
-                    >
-                      <option value="0">{t("select_hobli")}</option>
-                      {hobliListData.map((list) => (
-                        <option key={list.hobliId} value={list.hobliId}>
-                          {list.hobliName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </div>
-                </Col>
+                {t("hobli")}
+              </Form.Label>
+              <Col sm={2}>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="hobliId"
+                    value={addressDetails.hobliId}
+                    onChange={handleInputsaddress}
+                    style={{ marginLeft: "-14%" }}
+                  >
+                    <option value="0">{t("select_hobli")}</option>
+                    {hobliListData.map((list) => (
+                      <option key={list.hobliId} value={list.hobliId}>
+                        {list.hobliName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+              </Col>
 
-                <Form.Label column sm={1}>
-                  {t("village")}
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="villageId"
-                      value={addressDetails.villageId}
-                      onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
-                    >
-                      <option value="0">{t("select_village")}</option>
-                      {villageListData.map((list) => (
-                        <option key={list.villageId} value={list.villageId}>
-                          {list.villageName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </div>
-                </Col>
+              <Form.Label column sm={1}>
+                {t("village")}
+              </Form.Label>
+              <Col sm={2}>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="villageId"
+                    value={addressDetails.villageId}
+                    onChange={handleInputsaddress}
+                    style={{ marginLeft: "-14%" }}
+                  >
+                    <option value="0">{t("select_village")}</option>
+                    {villageListData.map((list) => (
+                      <option key={list.villageId} value={list.villageId}>
+                        {list.villageName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+              </Col>
 
-                <Col sm={1}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    {t("search")}
-                  </Button>
-                </Col>
-                <Col sm={1}>
-                  <Button type="button" variant="primary" onClick={exportCsv}>
-                    {t("Export")}
-                  </Button>
-                </Col>
+              <Col sm={1}>
+                <Button type="button" variant="primary" onClick={search}>
+                  {t("search")}
+                </Button>
+              </Col>
+              <Col sm={1}>
+                <Button type="button" variant="primary" onClick={exportCsv}>
+                  {t("Export")}
+                </Button>
+              </Col>
             </Col>
           </Row>
         </Card>
