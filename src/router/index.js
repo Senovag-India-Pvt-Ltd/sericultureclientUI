@@ -1020,6 +1020,16 @@ import RangeWisePhysicalTargetReport from "../pages/stake-holder/RangeWisePhysic
 import DistrictWiseSchemeTargetsReport from "../pages/stake-holder/DistrictWiseSchemeTargetsReport";
 import TSCWiseSchemeTargetsReport from "../pages/stake-holder/TSCWiseSchemeTargetsReport";
 import ReelingTSCWiseSchemeTargetReport from "../pages/stake-holder/ReelingTSCWiseSchemeTargetReport";
+import SoldDflDetailsReportForRsso from "../pages/stake-holder/SoldDflDetailsReportForRsso";
+import RearingOfDFLsAssessmentReport from "../pages/stake-holder/RearingOfDFLsAssessmentReport";
+import MaintenanceofScreeningBatchRecordsReport from "../pages/stake-holder/MaintenanceOfScreeningBatchRecordsReport";
+import MaintenanceOfScreeningBatchAssessmentReport from "../pages/stake-holder/MaintenanceOfScreeningBathAssessmentReport";
+import PreparationOfEggsDFLsReport from "../pages/stake-holder/PreparationOfEggsDFLsReport";
+import MulberryAchievementReport from "../pages/stake-holder/MulberryAchievementReport";
+import ProductionAchievementReport from "../pages/stake-holder/ProductionAchievementReport";
+import TrainingAchievementReport from "../pages/stake-holder/TrainingAchievementReport";
+import FarmAchievementReport from "../pages/stake-holder/FarmAchievementReport";
+import GrainageAchievementReport from "../pages/stake-holder/GrainageAchievementReport";
 
 // Admin and Reports
 
@@ -1384,6 +1394,31 @@ function Router() {
               path="remittance-report"
               element={<RemittanceReportForGrainage />}
             />
+            <Route
+              path="sold-dfls-report-for-rsso"
+              element={<SoldDflDetailsReportForRsso />}
+            />
+
+             <Route
+              path="rearing-of-dfls-for-the-8lines-assessment-report"
+              element={<RearingOfDFLsAssessmentReport />}
+            />
+
+            <Route
+              path="maintenance-of-screening-bath-bed-wise-details-report"
+              element={<MaintenanceofScreeningBatchRecordsReport />}
+            />
+
+            <Route
+              path="maintenance-of-screening-batch-assessment-details-report"
+              element={<MaintenanceOfScreeningBatchAssessmentReport />}
+            />
+
+             <Route
+              path="added-dfls-report"
+              element={<PreparationOfEggsDFLsReport />}
+            />
+
 
             <Route
               path="verified-dfls-report"
@@ -1481,6 +1516,12 @@ function Router() {
             <Route path="external-registration-list-report" element={<ExternalRegistrationListReport />} />
             <Route path="farmer-without-fruits-report" element={<FarmerWithoutFruitsListReport />} />
             <Route path="other-state-farmer-report" element={<OtherStateFarmerListReport />} />
+            <Route path="mulberry-achievement-report" element={<MulberryAchievementReport />} />
+            <Route path="production-achievement-report" element={<ProductionAchievementReport />} /> 
+            <Route path="training-achievement-report" element={<TrainingAchievementReport />} />
+            <Route path="farm-achievement-report" element={<FarmAchievementReport />} /> 
+            <Route path="grainage-achievement-report" element={<GrainageAchievementReport />} />        
+       
 
 
             <Route

@@ -500,8 +500,8 @@ function FarmTargetReport() {
                         
                         >
                         <option value="">{t("Select Target Type")}</option>
-                        <option value="Brushing">{t("Brushing")}</option>
-                        <option value="Cocoon Production">{t("Cocoon Production")}</option>
+                        <option value="Brushing">BRUSHING</option>
+                        <option value="Cocoon Production">Cocoon Production</option>
 
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
