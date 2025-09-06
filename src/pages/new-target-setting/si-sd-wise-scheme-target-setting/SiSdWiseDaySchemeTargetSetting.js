@@ -1623,10 +1623,10 @@ function SiSdWiseDaySchemeTargetSetting() {
                               >
                                 <option value="">{t("Select Target Type")}</option>
                                 <option value="Physical Target">
-                                  {t("PHYSICAL TARGET")}
+                                  PHYSICAL TARGET
                                 </option>
                                 <option value="Financial Target">
-                                  {t("FINANCIAL TARGET")}
+                                  FINANCIAL TARGET
                                 </option>
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
@@ -2201,8 +2201,8 @@ function SiSdWiseDaySchemeTargetSetting() {
                       required
                     >
                       <option value="">{t("Select Target Type")}</option>
-                      <option value="Physical Target">{t("PHYSICAL TARGET")}</option>
-                      <option value="Financial Target">{t("FINANCIAL TARGET")}</option>
+                      <option value="Physical Target">PHYSICAL TARGET</option>
+                      <option value="Financial Target">FINANCIAL TARGET</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Target Type is required")}
