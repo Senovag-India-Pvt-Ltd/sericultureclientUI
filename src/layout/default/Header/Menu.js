@@ -3892,10 +3892,45 @@ function Menu() {
               </MenuItem>
             ) : null}
 
+            
+          </MenuSub>
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Reports ? (
+        <MenuItem sub>
+          {showMenu.Reports ? (
+            <MenuItemLink
+              text={t("Report")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
+          ) : null}
+          <MenuSub>
+            {showMenu.Reports_Reports ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Formatted Reports")}
+                  to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboard")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiM2E5OGNjYWMtYTc5MC00NDZiLWJhZTUtNDI5ZmJmMjA3M2ZjIiwidCI6ImNiYTJlNTNiLWZiNTktNDI4Ni1hMjk1LTBmYzFiYTNlMTQzOSJ9"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null} */}
+
             {showMenu.Admin_Report ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text={t("Report")}
+                  text={t("Export Report")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -4723,7 +4758,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text={t("Grainage Achievement Report")}
-                            to="/seriui/reeling-tsc-wise-scheme-targets-report"
+                            to="/seriui/grainage-achievement-report"
                           />
                         </MenuItem>
                       ) : null}
@@ -4890,39 +4925,6 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
-          </MenuSub>
-        </MenuItem>
-      ) : null}
-
-      {showMenu.Reports ? (
-        <MenuItem sub>
-          {showMenu.Reports ? (
-            <MenuItemLink
-              text={t("Reports")}
-              onClick={menuToggle}
-              onMouseEnter={menuHover}
-              sub
-            />
-          ) : null}
-          <MenuSub>
-            {showMenu.Reports_Reports ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Reports")}
-                  to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
-                  blank={true}
-                />
-              </MenuItem>
-            ) : null}
-            {/* {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboard")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiM2E5OGNjYWMtYTc5MC00NDZiLWJhZTUtNDI5ZmJmMjA3M2ZjIiwidCI6ImNiYTJlNTNiLWZiNTktNDI4Ni1hMjk1LTBmYzFiYTNlMTQzOSJ9"
-                  blank={true}
-                />
-              </MenuItem>
-            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
