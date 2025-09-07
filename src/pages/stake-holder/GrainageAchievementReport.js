@@ -32,20 +32,115 @@ function GrainageAchievementReport() {
   const [isActive, setIsActive] = useState(false);
 
   const [data, setData] = useState({
+    targetTypeTraining: "grainage",
     financialYearId: "",
     raceId: "",
     grainageId: "",
   });
 
 
-  // Search
-  const search = (e) => {
+//   // Search
+//   const search = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
+//         {},
+//         {
+//           params: {
+//             financialYearId: data.financialYearId || 0,
+//             raceId: data.raceId || 0,
+//             grainageId: data.grainageId || 0,
+//             pageNumber: page,
+//             pageSize: countPerPage,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         setListData(response.data.content);
+//         setTotalRows(response.data.totalRecords);
+//       })
+//       .catch((err) => {
+//         setListData([]);
+//       });
+//   };
+
+//   const exportCsv = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getGrainageAchievementsReport`,
+//         {},
+//         {
+//           params: {
+//             financialYearId: data.financialYearId || 0,
+//             raceId: data.raceId || 0,
+//             grainageId: data.grainageId || 0,
+//           },
+//           responseType: 'blob',
+//           headers: {
+//             accept: "text/csv",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         const blob = new Blob([response.data], { type: "text/csv" });
+//         const link = document.createElement("a");
+//         link.href = window.URL.createObjectURL(blob);
+//         link.download = `grainage_achievement_report.csv`;
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         window.URL.revokeObjectURL(link.href);
+//       })
+//       .catch((err) => {
+//         Swal.fire({
+//           icon: "warning",
+//           title: "No record found!!!",
+//         });
+//       });
+// };
+
+//   const getFarmerList = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
+//         {},
+//         {
+//           params: {
+//             financialYearId: data.financialYearId || 0,
+//             raceId: data.raceId || 0,
+//             grainageId: data.grainageId || 0,
+//             pageNumber: page,
+//             pageSize: countPerPage,
+//           },
+//         }
+//       )
+//        .then((response) => {
+//   const records = response?.data?.content?.body?.content || [];
+//   setListData(records);
+
+//   const total = response?.data?.content?.body?.totalRecords || 0;
+//   setTotalRows(total);
+// })
+//       .catch((err) => {
+//         setListData([]);
+//       });
+//   };
+
+//   useEffect(() => {
+//     getFarmerList();
+//   }, [page]);
+
+
+// 🔍 Search
+  const search = () => {
     api
       .post(
         baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
         {},
         {
           params: {
+            targetTypeTraining: data.targetTypeTraining || "grainage",
             financialYearId: data.financialYearId || 0,
             raceId: data.raceId || 0,
             grainageId: data.grainageId || 0,
@@ -55,57 +150,68 @@ function GrainageAchievementReport() {
         }
       )
       .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
-      .catch((err) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
+
+      .catch(() => {
         setListData([]);
       });
   };
 
-  const exportCsv = (e) => {
+  // 📥 Export
+  const exportCsv = () => {
     api
       .post(
         baseURLFarmer + `targetsAchievement/getGrainageAchievementsReport`,
         {},
         {
           params: {
+            targetTypeTraining: data.targetTypeTraining || "grainage",
             financialYearId: data.financialYearId || 0,
             raceId: data.raceId || 0,
             grainageId: data.grainageId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
           },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
+          responseType: "blob",
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `grainage_achievement_report.csv`;
+        link.download =
+          data.targetTypeTraining === "training"
+            ? "training_achievements_report.xlsx"
+            : "grainage_achievements_report.xlsx";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
       })
-      .catch((err) => {
+      .catch(() => {
         Swal.fire({
           icon: "warning",
           title: "No record found!!!",
         });
       });
-};
+  };
 
-  const getFarmerList = (e) => {
+  // 📋 Load list
+  const getFarmerList = () => {
     api
       .post(
         baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
         {},
         {
           params: {
+            targetTypeTraining: data.targetTypeTraining || "grainage",
             financialYearId: data.financialYearId || 0,
             raceId: data.raceId || 0,
             grainageId: data.grainageId || 0,
@@ -115,10 +221,14 @@ function GrainageAchievementReport() {
         }
       )
       .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
-      .catch((err) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
+
+      .catch(() => {
         setListData([]);
       });
   };

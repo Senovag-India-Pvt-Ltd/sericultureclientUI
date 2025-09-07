@@ -305,6 +305,14 @@ function Menu() {
     TargetSetting_Release_Taluk: false,
     TargetSetting_Release_Institution: false,
 
+    TargetSetting_Achievement: false,
+    TargetSetting_Achievement_FARM: false,
+    TargetSetting_Achievement_GRAINAGE: false,
+    TargetSetting_Achievement_Training: false,
+    TargetSetting_Achievement_PRODUCTION: false,
+    TargetSetting_Achievement_MULBERRY: false,
+    
+
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
     Inspection_Supply_of_Disinfectants_to_Farmers: false,
@@ -2374,179 +2382,6 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {/* {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Assigning Yearly Targets"
-                  to="/seriui/attribute-assigning"
-                />
-              </MenuItem>
-            ) : null} */}
-            {/* {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Dashboard"
-                  to="/seriui/budget-dashboard"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Allocate_Budget ? (
-              <MenuItem>
-                <MenuItemLink text="Budget" to="/seriui/budget" />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
-              <MenuItem>
-                <MenuItemLink text="Budget to HOA" to="/seriui/budget-hoa" />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_District ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to District"
-                  to="/seriui/budget-district"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to Taluk"
-                  to="/seriui/budget-taluk"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to Institution"
-                  to="/seriui/budget-tsc"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget HOA Extension"
-                  to="/seriui/budgethoaextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget District Extension"
-                  to="/seriui/budgetdistrictextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Taluk Extension"
-                  to="/seriui/budgettalukextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Institution Extension"
-                  to="/seriui/budgetinstitutionextension"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Allocate ? (
-              <MenuItem sub>
-                <MenuItemLink
-                  text="Physical Target Setting"
-                  onClick={menuToggle}
-                  onMouseEnter={menuHover}
-                  sub
-                />
-                <MenuSub>
-                  {showMenu.TargetSetting_Allocate_Budget ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting District"
-                        to="/seriui/physicaltargetsettingsdistrict"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Budget to HOA"
-                        to="/seriui/budget-hoa"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Budget to District"
-                        to="/seriui/budget-district"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting Taluk"
-                        to="/seriui/physicaltargetsettingstaluk"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting Institution"
-                        to="/seriui/physicaltargetsettingstsc"
-                      />
-                    </MenuItem>
-                  ) : null}
-                </MenuSub>
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Release ? (
-              <MenuItem sub>
-                <MenuItemLink
-                  text="Financial Target Setting"
-                  onClick={menuToggle}
-                  onMouseEnter={menuHover}
-                  sub
-                />
-                <MenuSub>
-                  {showMenu.TargetSetting_Release_District ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting District"
-                        to="/seriui/financialtargetsettingsdistrict"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Release_Taluk ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting Taluk"
-                        to="/seriui/financialtargetsettingstaluk"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Release_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting  Institution"
-                        to="/seriui/financialtargetsettingsinstitution"
-                      />
-                    </MenuItem>
-                  ) : null}
-                </MenuSub>
-              </MenuItem>
-            ) : null} */}
 
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
@@ -2706,30 +2541,89 @@ function Menu() {
                         text={t("Direct And All Reportee Details")}
                         to="/seriui/user-and-manager-hierarchy-mapping-list"
                       />
+                      
                     </MenuItem>
                   ) : null}
-                  {/* {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeling TSC Wise Scheme Target Setting"
-                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-                </MenuSub>
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting ? (
+      </MenuSub>
+      </MenuItem>
+      ) : null}
+
+      {showMenu.TargetSetting_Achievement ? (
+        <MenuItem sub>
+          <MenuItemLink
+            text={t("Target Setting Achievement")}
+            onClick={menuToggle}
+            onMouseEnter={menuHover}
+            sub
+          />
+          <MenuSub>
+            
+
+            {showMenu.TargetSetting_Achievement_MULBERRY ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Target Setting Dahboard")}
-                  to="/seriui/target-setting-dashboard"
+                  text={t("Mulberry Achievement")}
+                  to="/seriui/mulberry-achievement"
                 />
               </MenuItem>
             ) : null}
+
+             {showMenu.TargetSetting_Achievement_PRODUCTION ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Physical Achievement")}
+                  to="/seriui/physical-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Achievement_Training ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Training Achievement")}
+                  to="/seriui/training-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+            
+
+            {showMenu.TargetSetting_Achievement_GRAINAGE ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Grainage Achievement")}
+                  to="/seriui/grainage-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Achievement_FARM ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Farm Achievement")}
+                  to="/seriui/farm-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+           
           </MenuSub>
         </MenuItem>
       ) : null}
+
+      {/* 🔹 Target Setting Dashboard */}
+      {showMenu.TargetSetting ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Target Setting Dahboard")}
+            to="/seriui/target-setting-dashboard"
+          />
+        </MenuItem>
+      ) : null}
+
+    </MenuSub>
+  </MenuItem>
+) : null}
 
       {showMenu.Inspection ? (
         <MenuItem sub>

@@ -39,97 +39,210 @@ function TrainingAchievementReport() {
   });
 
 
-  // Search
-  const search = (e) => {
-    api
-      .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
-        {},
-        {
-          params: {
-            financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
-            pageNumber: page,
-            pageSize: countPerPage,
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
-      .catch((err) => {
-        setListData([]);
-      });
-  };
+//   // Search
+//   const search = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
+//         {},
+//         {
+//           params: {
+//             financialYearId: data.financialYearId || 0,
+//             trainingInstitutionId: data.trainingInstitutionId || 0,
+//             trainingProgramId: data.trainingProgramId || 0,
+//             targetType: data.targetType || '',
+//             pageNumber: page,
+//             pageSize: countPerPage,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         setListData(response.data.content);
+//         setTotalRows(response.data.totalRecords);
+//       })
+//       .catch((err) => {
+//         setListData([]);
+//       });
+//   };
 
-  const exportCsv = (e) => {
-    api
-      .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievementsReport`,
-        {},
-        {
-          params: {
-           financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
-          },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `training_targets_report.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(link.href);
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: "warning",
-          title: "No record found!!!",
-        });
-      });
+//   const exportCsv = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getGrainageAchievementsReport`,
+//         {},
+//         {
+//           params: {
+//            financialYearId: data.financialYearId || 0,
+//             trainingInstitutionId: data.trainingInstitutionId || 0,
+//             trainingProgramId: data.trainingProgramId || 0,
+//             targetType: data.targetType || '',
+//           },
+//           responseType: 'blob',
+//           headers: {
+//             accept: "text/csv",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         const blob = new Blob([response.data], { type: "text/csv" });
+//         const link = document.createElement("a");
+//         link.href = window.URL.createObjectURL(blob);
+//         link.download = `training_targets_report.csv`;
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//         window.URL.revokeObjectURL(link.href);
+//       })
+//       .catch((err) => {
+//         Swal.fire({
+//           icon: "warning",
+//           title: "No record found!!!",
+//         });
+//       });
+// };
+
+//   const getFarmerList = (e) => {
+//     api
+//       .post(
+//         baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
+//         {},
+//         {
+//           params: {
+//             financialYearId: data.financialYearId || 0,
+//             trainingInstitutionId: data.trainingInstitutionId || 0,
+//             trainingProgramId: data.trainingProgramId || 0,
+//             targetType: data.targetType || '',
+//             pageNumber: page,
+//             pageSize: countPerPage,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         setListData(response.data.content);
+//         setTotalRows(response.data.totalRecords);
+//       })
+//       .catch((err) => {
+//         setListData([]);
+//       });
+//   };
+
+//   useEffect(() => {
+//     getFarmerList();
+//   }, [page]);
+
+
+// Search
+const search = () => {
+  api
+    .post(
+      baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
+      {},
+      {
+        params: {
+          targetTypeTraining: data.targetTypeTraining || "training", // "training" or "grainage"
+          financialYearId: data.financialYearId || 0,
+          trainingInstitutionId: data.trainingInstitutionId || 0,
+          trainingProgramId: data.trainingProgramId || 0,
+          target: data.targetType || "",
+          raceId: data.raceId || 0,
+          grainageId: data.grainageId || 0,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+      }
+    )
+    .then((response) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
+    .catch((err) => {
+      setListData([]);
+    });
 };
 
-  const getFarmerList = (e) => {
-    api
-      .post(
-        baseURLFarmer + `targetsAchievement/getTrainingAchievements`,
-        {},
-        {
-          params: {
-            financialYearId: data.financialYearId || 0,
-            trainingInstitutionId: data.trainingInstitutionId || 0,
-            trainingProgramId: data.trainingProgramId || 0,
-            targetType: data.targetType || '',
-            pageNumber: page,
-            pageSize: countPerPage,
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-        setTotalRows(response.data.totalRecords);
-      })
-      .catch((err) => {
-        setListData([]);
+const exportCsv = () => {
+  api
+    .post(
+      baseURLFarmer + `targetsAchievement/getGrainageAchievementsReport`,
+      {},
+      {
+        params: {
+          targetTypeTraining: data.targetTypeTraining || "training", // must pass type
+          financialYearId: data.financialYearId || 0,
+          trainingInstitutionId: data.trainingInstitutionId || 0,
+          trainingProgramId: data.trainingProgramId || 0,
+          target: data.targetType || "",
+          raceId: data.raceId || 0,
+          grainageId: data.grainageId || 0,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+        responseType: "blob",
+      }
+    )
+    .then((response) => {
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-  };
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${
+        data.targetTypeTraining === "training"
+          ? "training_achievements_report"
+          : "grainage_achievements_report"
+      }.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "warning",
+        title: "No record found!!!",
+      });
+    });
+};
 
-  useEffect(() => {
-    getFarmerList();
-  }, [page]);
+const getFarmerList = () => {
+  api
+    .post(
+      baseURLFarmer + `targetsAchievement/getGrainageAchievements`,
+      {},
+      {
+        params: {
+          targetTypeTraining: data.targetTypeTraining || "training",
+          financialYearId: data.financialYearId || 0,
+          trainingInstitutionId: data.trainingInstitutionId || 0,
+          trainingProgramId: data.trainingProgramId || 0,
+          target: data.targetType || "",
+          raceId: data.raceId || 0,
+          grainageId: data.grainageId || 0,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+      }
+    )
+   .then((response) => {
+  const records = response?.data?.content?.body?.content || [];
+  setListData(records);
+
+  const total = response?.data?.content?.body?.totalRecords || 0;
+  setTotalRows(total);
+})
+    .catch((err) => {
+      setListData([]);
+    });
+};
+
+useEffect(() => {
+  getFarmerList();
+}, [page]);
+
 
   const handleInputs = (e) => {
     // debugger;
