@@ -305,6 +305,14 @@ function Menu() {
     TargetSetting_Release_Taluk: false,
     TargetSetting_Release_Institution: false,
 
+    TargetSetting_Achievement: false,
+    TargetSetting_Achievement_FARM: false,
+    TargetSetting_Achievement_GRAINAGE: false,
+    TargetSetting_Achievement_Training: false,
+    TargetSetting_Achievement_PRODUCTION: false,
+    TargetSetting_Achievement_MULBERRY: false,
+    
+
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
     Inspection_Supply_of_Disinfectants_to_Farmers: false,
@@ -2538,7 +2546,7 @@ function Menu() {
       </MenuItem>
       ) : null}
 
-      {showMenu.TargetSetting ? (
+      {showMenu.TargetSetting_Achievement ? (
         <MenuItem sub>
           <MenuItemLink
             text={t("Target Setting Achievement")}
@@ -2549,49 +2557,49 @@ function Menu() {
           <MenuSub>
             
 
-            {showMenu.Admin_Report_Target_Setting_Mulberry_Achievement_Report ? (
+            {showMenu.TargetSetting_Achievement_MULBERRY ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Mulberry Achievement Report")}
-                  to="/seriui/mulberry-achievement-report"
+                  text={t("Mulberry Achievement")}
+                  to="/seriui/mulberry-achievement"
                 />
               </MenuItem>
             ) : null}
 
-             {showMenu.Admin_Report_Target_Setting_Physical_Achievement_Report ? (
+             {showMenu.TargetSetting_Achievement_PRODUCTION ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Physical Achievement Report")}
-                  to="/seriui/production-achievement-report"
+                  text={t("Physical Achievement")}
+                  to="/seriui/physical-achievement"
                 />
               </MenuItem>
             ) : null}
 
-            {showMenu.Admin_Report_Target_Setting_Training_Achievement_Report ? (
+            {showMenu.TargetSetting_Achievement_Training ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Training Achievement Report")}
-                  to="/seriui/training-achievement-report"
+                  text={t("Training Achievement")}
+                  to="/seriui/training-achievement"
                 />
               </MenuItem>
             ) : null}
 
             
 
-            {showMenu.Admin_Report_Target_Setting_Grainage_Achievement_Report ? (
+            {showMenu.TargetSetting_Achievement_GRAINAGE ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Grainage Achievement Report")}
-                  to="/seriui/grainage-achievement-report"
+                  text={t("Grainage Achievement")}
+                  to="/seriui/grainage-achievement"
                 />
               </MenuItem>
             ) : null}
 
-            {showMenu.Admin_Report_Target_Setting_Farm_Achievement_Report ? (
+            {showMenu.TargetSetting_Achievement_FARM ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Farm Achievement Report")}
-                  to="/seriui/farm-achievement-report"
+                  text={t("Farm Achievement")}
+                  to="/seriui/farm-achievement"
                 />
               </MenuItem>
             ) : null}
