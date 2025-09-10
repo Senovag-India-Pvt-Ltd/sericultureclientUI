@@ -3807,15 +3807,7 @@ function Menu() {
           ) : null}
           <MenuSub>
             
-            {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboards")}
-                  to="https://app.powerbi.com/reportEmbed?reportId=c9ccdb15-fa80-4ab9-8ec8-e3a1525ea55b&autoAuth=true&ctid=955f3eb7-19dc-4bb8-966d-5bf9335cb39d"
-                  blank={true}
-                />
-              </MenuItem>
-            ) : null}
+            
             {/* {showMenu.Reports_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
@@ -4822,8 +4814,22 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
+                 
+                </MenuSub>
+              </MenuItem>
+            ) : null}
 
-                  {showMenu.Reports_Format_Reports ? (
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards")}
+                  to="https://app.powerbi.com/reportEmbed?reportId=c9ccdb15-fa80-4ab9-8ec8-e3a1525ea55b&autoAuth=true&ctid=955f3eb7-19dc-4bb8-966d-5bf9335cb39d"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
+
+             {showMenu.Reports_Format_Reports ? (
                 <MenuItem>
                   <MenuItemLink
                     text={t("Format Reports")}
@@ -4832,9 +4838,8 @@ function Menu() {
                   />
                 </MenuItem>
               ) : null}
-                </MenuSub>
-              </MenuItem>
-            ) : null}
+
+              
           </MenuSub>
         </MenuItem>
       ) : null}
