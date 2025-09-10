@@ -305,6 +305,14 @@ function Menu() {
     TargetSetting_Release_Taluk: false,
     TargetSetting_Release_Institution: false,
 
+    TargetSetting_Achievement: false,
+    TargetSetting_Achievement_FARM: false,
+    TargetSetting_Achievement_GRAINAGE: false,
+    TargetSetting_Achievement_Training: false,
+    TargetSetting_Achievement_PRODUCTION: false,
+    TargetSetting_Achievement_MULBERRY: false,
+
+
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
     Inspection_Supply_of_Disinfectants_to_Farmers: false,
@@ -583,7 +591,7 @@ function Menu() {
     Reports_Admin_Report_Helpdesk: false,
     Reports_Admin_Report_Helpdesk_Details_Report: false,
 
-    
+
 
     // Admin_Report_Admin: false,
     // Admin_Report_Transaction: false,
@@ -1785,15 +1793,17 @@ function Menu() {
                     sub
                   />
                   <MenuSub>
-                  {showMenu.Market_SeedCocoonMarket_Inward ? (
+                    {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Seed Market Invoice,Permit,Cash Receipt,Market Receipt")}
+                          text={t(
+                            "Seed Market Invoice,Permit,Cash Receipt,Market Receipt"
+                          )}
                           to="/seriui/invoice-permit-market-receipt"
                         />
                       </MenuItem>
                     ) : null}
-                  {showMenu.Market_SeedCocoonMarket_Inward ? (
+                    {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("e-Inward")}
@@ -1835,7 +1845,7 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-    
+
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
@@ -2079,7 +2089,6 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                   
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -2378,179 +2387,6 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {/* {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Assigning Yearly Targets"
-                  to="/seriui/attribute-assigning"
-                />
-              </MenuItem>
-            ) : null} */}
-            {/* {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Dashboard"
-                  to="/seriui/budget-dashboard"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Allocate_Budget ? (
-              <MenuItem>
-                <MenuItemLink text="Budget" to="/seriui/budget" />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
-              <MenuItem>
-                <MenuItemLink text="Budget to HOA" to="/seriui/budget-hoa" />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_District ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to District"
-                  to="/seriui/budget-district"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to Taluk"
-                  to="/seriui/budget-taluk"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget to Institution"
-                  to="/seriui/budget-tsc"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget HOA Extension"
-                  to="/seriui/budgethoaextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget District Extension"
-                  to="/seriui/budgetdistrictextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Taluk Extension"
-                  to="/seriui/budgettalukextension"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Budget Institution Extension"
-                  to="/seriui/budgetinstitutionextension"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.TargetSetting_Allocate ? (
-              <MenuItem sub>
-                <MenuItemLink
-                  text="Physical Target Setting"
-                  onClick={menuToggle}
-                  onMouseEnter={menuHover}
-                  sub
-                />
-                <MenuSub>
-                  {showMenu.TargetSetting_Allocate_Budget ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting District"
-                        to="/seriui/physicaltargetsettingsdistrict"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Budget to HOA"
-                        to="/seriui/budget-hoa"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Budget to District"
-                        to="/seriui/budget-district"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-            {/* {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting Taluk"
-                        to="/seriui/physicaltargetsettingstaluk"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Physical Target Setting Institution"
-                        to="/seriui/physicaltargetsettingstsc"
-                      />
-                    </MenuItem>
-                  ) : null}
-                </MenuSub>
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting_Release ? (
-              <MenuItem sub>
-                <MenuItemLink
-                  text="Financial Target Setting"
-                  onClick={menuToggle}
-                  onMouseEnter={menuHover}
-                  sub
-                />
-                <MenuSub>
-                  {showMenu.TargetSetting_Release_District ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting District"
-                        to="/seriui/financialtargetsettingsdistrict"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Release_Taluk ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting Taluk"
-                        to="/seriui/financialtargetsettingstaluk"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Release_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Financial Target Setting  Institution"
-                        to="/seriui/financialtargetsettingsinstitution"
-                      />
-                    </MenuItem>
-                  ) : null}
-                </MenuSub>
-              </MenuItem>
-            ) : null} */}
 
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
@@ -2655,7 +2491,9 @@ function Menu() {
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text={t("Sericulture Training Institute Wise Target Setting")}
+                        text={t(
+                          "Sericulture Training Institute Wise Target Setting"
+                        )}
                         to="/seriui/training-wise-target-setting"
                       />
                     </MenuItem>
@@ -2708,31 +2546,89 @@ function Menu() {
                         text={t("Direct And All Reportee Details")}
                         to="/seriui/user-and-manager-hierarchy-mapping-list"
                       />
+
                     </MenuItem>
                   ) : null}
-                  {/* {showMenu.TargetSetting_Allocate_Budget_Institution ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Reeling TSC Wise Scheme Target Setting"
-                        to="/seriui/reeling-tsc-wise-scheme-target-setting"
-                      />
-                    </MenuItem>
-                  ) : null} */}
-                </MenuSub>
-              </MenuItem>
-            ) : null}
-            {showMenu.TargetSetting ? (
+      </MenuSub>
+      </MenuItem>
+      ) : null}
+
+      {showMenu.TargetSetting_Achievement ? (
+        <MenuItem sub>
+          <MenuItemLink
+            text={t("Target Setting Achievement")}
+            onClick={menuToggle}
+            onMouseEnter={menuHover}
+            sub
+          />
+          <MenuSub>
+
+
+            {showMenu.TargetSetting_Achievement_MULBERRY ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Target Setting Dahboard")}
-                  to="/seriui/target-setting-dashboard"
+                  text={t("Mulberry Achievement")}
+                  to="/seriui/mulberry-achievement"
                 />
               </MenuItem>
             ) : null}
+
+             {showMenu.TargetSetting_Achievement_PRODUCTION ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Physical Achievement")}
+                  to="/seriui/physical-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Achievement_Training ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Training Achievement")}
+                  to="/seriui/training-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+
+
+            {showMenu.TargetSetting_Achievement_GRAINAGE ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Grainage Achievement")}
+                  to="/seriui/grainage-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Achievement_FARM ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Farm Achievement")}
+                  to="/seriui/farm-achievement"
+                />
+              </MenuItem>
+            ) : null}
+
+
           </MenuSub>
         </MenuItem>
-        
       ) : null}
+
+      {/* 🔹 Target Setting Dashboard */}
+      {showMenu.TargetSetting ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Target Setting Dahboard")}
+            to="/seriui/target-setting-dashboard"
+          />
+        </MenuItem>
+      ) : null}
+
+    </MenuSub>
+  </MenuItem>
+) : null}
 
       {showMenu.Inspection ? (
         <MenuItem sub>
@@ -3895,8 +3791,6 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
-
-            
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -3917,6 +3811,15 @@ function Menu() {
                 <MenuItemLink
                   text={t("Formatted Reports")}
                   to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Reports_Reports ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards")}
+                  to="https://app.powerbi.com/reportEmbed?reportId=c9ccdb15-fa80-4ab9-8ec8-e3a1525ea55b&autoAuth=true&ctid=955f3eb7-19dc-4bb8-966d-5bf9335cb39d"
                   blank={true}
                 />
               </MenuItem>
@@ -3956,7 +3859,7 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
-                {showMenu.Admin_Report_Registration ? (
+                  {showMenu.Admin_Report_Registration ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Registration")}
@@ -4033,7 +3936,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                     {showMenu.Admin_Report_DBT_And_Service ? (
+                  {showMenu.Admin_Report_DBT_And_Service ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("DBT And Service")}
@@ -4082,7 +3985,6 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4097,13 +3999,15 @@ function Menu() {
                       />
                       <MenuSub>
                         {showMenu.Admin_Report_Seed_Market_Invoice_Permit_Receipt ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Seed Market Invoice,Permit,Cash Receipt,Market Receipt")}
-                          to="/seriui/invoice-permit-market-receipt"
-                        />
-                      </MenuItem>
-                    ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t(
+                                "Seed Market Invoice,Permit,Cash Receipt,Market Receipt"
+                              )}
+                              to="/seriui/invoice-permit-market-receipt"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4339,7 +4243,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {showMenu.Admin_Report_Commercial_Market_Direct_From_Fruits ? (
                           <MenuItem>
                             <MenuItemLink
@@ -4442,7 +4346,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                         {showMenu.Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
+                        {showMenu.Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Mulberry Farm Report")}
@@ -4453,7 +4357,9 @@ function Menu() {
                         {showMenu.Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Dispatch Of Cocoons To P4 Grainage Report")}
+                              text={t(
+                                "Dispatch Of Cocoons To P4 Grainage Report"
+                              )}
                               to="/seriui/dispatch-of-cocoons-to-grainage-report"
                             />
                           </MenuItem>
@@ -4493,7 +4399,9 @@ function Menu() {
                         {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Maintenance Of Line Report For Grainage")}
+                              text={t(
+                                "Maintenance Of Line Report For Grainage"
+                              )}
                               to="/seriui/maintenance-of-line-report-for-grainage"
                             />
                           </MenuItem>
@@ -4510,7 +4418,9 @@ function Menu() {
                         {showMenu.Admin_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Sale and Disposal of DFLs(RSSO/NSSO) Details Report")}
+                              text={t(
+                                "Sale and Disposal of DFLs(RSSO/NSSO) Details Report"
+                              )}
                               to="/seriui/sold-dfls-report-for-rsso"
                             />
                           </MenuItem>
@@ -4528,7 +4438,9 @@ function Menu() {
                         {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Maintenance Of Screening Batch Bed Wise Report")}
+                              text={t(
+                                "Maintenance Of Screening Batch Bed Wise Report"
+                              )}
                               to="/seriui/maintenance-of-screening-bath-bed-wise-details-report"
                             />
                           </MenuItem>
@@ -4537,7 +4449,9 @@ function Menu() {
                         {showMenu.Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Maintenance Of Screening Batch Assessment Wise Report")}
+                              text={t(
+                                "Maintenance Of Screening Batch Assessment Wise Report"
+                              )}
                               to="/seriui/maintenance-of-screening-batch-assessment-details-report"
                             />
                           </MenuItem>
@@ -4554,7 +4468,6 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
-
 
                   {showMenu.Admin_Report_Garden ? (
                     <MenuItem sub>
@@ -4574,7 +4487,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                         {showMenu.Admin_Report_Garden_Supply_Of_Cocoons_Report ? (
+                        {showMenu.Admin_Report_Garden_Supply_Of_Cocoons_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Rearing And Supply Of Cocoons Report")}
@@ -4606,7 +4519,6 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4633,184 +4545,178 @@ function Menu() {
                   ) : null}
 
                   {showMenu.Admin_Report_Target_Setting ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text={t("Target Setting Reports")}
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Report_Target_Setting_District_wise ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("District Wise Monthly Target")}
-                            to="/seriui/district-wise-mulberry-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Target Setting Reports")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Report_Target_Setting_District_wise ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("District Wise Monthly Target")}
+                              to="/seriui/district-wise-mulberry-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_TSC_wise ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("TSC Wise Monthly Target")}
-                            to="/seriui/tsc-wise-mulberry-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_TSC_wise ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("TSC Wise Monthly Target")}
+                              to="/seriui/tsc-wise-mulberry-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Range_wise ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Range Wise Monthly Target")}
-                            to="/seriui/range-wise-mulberry-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Range_wise ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Range Wise Monthly Target")}
+                              to="/seriui/range-wise-mulberry-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Range_wise_Daily ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Range Wise Daily Target")}
-                            to="/seriui/range-wise-mulberry-daily-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Range_wise_Daily ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Range Wise Daily Target")}
+                              to="/seriui/range-wise-mulberry-daily-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_District_wise_Physical ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("District Wise Physical Target")}
-                            to="/seriui/district-wise-physical-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_District_wise_Physical ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("District Wise Physical Target")}
+                              to="/seriui/district-wise-physical-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_TSC_wise_Physical ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("TSC Wise Physical Target")}
-                            to="/seriui/tsc-wise-physical-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_TSC_wise_Physical ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("TSC Wise Physical Target")}
+                              to="/seriui/tsc-wise-physical-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Range_wise_Physical ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Range Wise Physical Target")}
-                            to="/seriui/range-wise-physical-target-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Range_wise_Physical ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Range Wise Physical Target")}
+                              to="/seriui/range-wise-physical-target-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Training_Target ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Training Target")}
-                            to="/seriui/training-target-details-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Training_Target ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Training Target")}
+                              to="/seriui/training-target-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Grainage_Target ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Grainage Target")}
-                            to="/seriui/graininge-target-details-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Grainage_Target ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Grainage Target")}
+                              to="/seriui/graininge-target-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Farm_Target ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Farm Target")}
-                            to="/seriui/farm-target-details-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Farm_Target ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farm Target")}
+                              to="/seriui/farm-target-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_District_wise_Scheme ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("District Wise Scheme Targets")}
-                            to="/seriui/district-wise-scheme-targets-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_District_wise_Scheme ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("District Wise Scheme Targets")}
+                              to="/seriui/district-wise-scheme-targets-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_TSC_wise_Scheme ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("TSC Wise Scheme Targets")}
-                            to="/seriui/tsc-wise-scheme-targets-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_TSC_wise_Scheme ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("TSC Wise Scheme Targets")}
+                              to="/seriui/tsc-wise-scheme-targets-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Reeling TSC Wise Scheme Targets")}
-                            to="/seriui/reeling-tsc-wise-scheme-targets-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Reeling TSC Wise Scheme Targets")}
+                              to="/seriui/reeling-tsc-wise-scheme-targets-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Grainage_Achievement_Report ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Grainage Achievement Report")}
-                            to="/seriui/grainage-achievement-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Grainage_Achievement_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Grainage Achievement Report")}
+                              to="/seriui/grainage-achievement-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Farm_Achievement_Report ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Farm Achievement Report")}
-                            to="/seriui/farm-achievement-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Farm_Achievement_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Farm Achievement Report")}
+                              to="/seriui/farm-achievement-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
                         {showMenu.Admin_Report_Target_Setting_Mulberry_Achievement_Report ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Mulberry Achievement Report")}
-                            to="/seriui/mulberry-achievement-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mulberry Achievement Report")}
+                              to="/seriui/mulberry-achievement-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Training_Achievement_Report ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Training Achievement Report")}
-                            to="/seriui/training-achievement-report"
-                          />
-                        </MenuItem>
-                      ) : null}
+                        {showMenu.Admin_Report_Target_Setting_Training_Achievement_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Training Achievement Report")}
+                              to="/seriui/training-achievement-report"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-                      {showMenu.Admin_Report_Target_Setting_Physical_Achievement_Report ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text={t("Physical Achievement Report")}
-                            to="/seriui/production-achievement-report"
-                          />
-                        </MenuItem>
-                      ) : null}
-
-
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
-
-                
-
-
+                        {showMenu.Admin_Report_Target_Setting_Physical_Achievement_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Physical Achievement Report")}
+                              to="/seriui/production-achievement-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
                   {showMenu.Admin_Report_Inspection ? (
                     <MenuItem sub>
@@ -4830,7 +4736,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                         {showMenu.Admin_Report_Inspection_Crop_Inspection_Report ? (
+                        {showMenu.Admin_Report_Inspection_Crop_Inspection_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Crop Inspection Details Report")}
@@ -4861,7 +4767,7 @@ function Menu() {
                               to="/seriui/supply-of-disinfectants-to-farmers-report"
                             />
                           </MenuItem>
-                        ) : null}  
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -4884,7 +4790,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                         {showMenu.Admin_Report_Training_Trainee_Details_Report ? (
+                        {showMenu.Admin_Report_Training_Trainee_Details_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Trainee Details Report")}
@@ -4924,8 +4830,6 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
-
-                  
                 </MenuSub>
               </MenuItem>
             ) : null}

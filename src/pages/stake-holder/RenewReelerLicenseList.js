@@ -596,9 +596,9 @@ function RenewReelerLicenseList() {
     </Form.Group>
   </Col>
 
-  <Col sm={2}>
+  {/* <Col sm={2}>
     <Form.Group className="form-group mt-n4">
-      <Form.Label>{t("Expiry Date")}</Form.Label>
+      <Form.Label>Expiry Date</Form.Label>
       <div className="form-control-wrap">
         <Form.Control
           type="date"
@@ -608,7 +608,22 @@ function RenewReelerLicenseList() {
         />
       </div>
     </Form.Group>
-  </Col>
+  </Col> */}
+
+  <Col sm={2}>
+  <Form.Group className="mb-3" controlId="expiryDate">
+    <Form.Label className="form-label">Expiry Date</Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        type="date"
+        name="expiryDate"
+        value={data.expiryDate || ""}
+        onChange={handleInputs}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
                 {t("Search")}
