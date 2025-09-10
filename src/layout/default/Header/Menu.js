@@ -466,130 +466,130 @@ function Menu() {
 
     Reports_Dashboard: false,
 
-    Reports_Admin_Report: false,
+    Reports_Export_Report: false,
 
-    Reports_Admin_Report_Registration: false,
-    Reports_Admin_Report_Registration_Farmer_Registration_Report: false,
-    Reports_Admin_Report_Registration_Reeler_Registration_Report: false,
-    Reports_Admin_Report_Registration_Renewal_Of_Reeler_License_Report: false,
-    Reports_Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report: false,
-    Reports_Admin_Report_Registration_Trader_License_Report: false,
-    Reports_Admin_Report_Registration_External_Unit_Registration_Report: false,
-    Reports_Admin_Report_Registration_Farmer_Without_Fruits_Report: false,
-    Reports_Admin_Report_Registration_Other_State_Farmer_Report: false,
+    Reports_Export_Report_Registration: false,
+    Reports_Export_Report_Registration_Farmer_Registration_Report: false,
+    Reports_Export_Report_Registration_Reeler_Registration_Report: false,
+    Reports_Export_Report_Registration_Renewal_Of_Reeler_License_Report: false,
+    Reports_Export_Report_Registration_Pending_Renewal_Of_Reeler_License_Report: false,
+    Reports_Export_Report_Registration_Trader_License_Report: false,
+    Reports_Export_Report_Registration_External_Unit_Registration_Report: false,
+    Reports_Export_Report_Registration_Farmer_Without_Fruits_Report: false,
+    Reports_Export_Report_Registration_Other_State_Farmer_Report: false,
 
-    Reports_Admin_Report_DBT_And_Service: false,
-    Reports_Admin_Report_DBT_And_Service_All_Application_Details: false,
-    Reports_Admin_Report_DBT_And_Service_DBT_Success_Application_Report: false,
-    Reports_Admin_Report_DBT_And_Service_DBT_Failure_Application_Report: false,
-    Reports_Admin_Report_DBT_And_Service_DBT_K2_Application_Report: false,
-    Reports_Admin_Report_DBT_And_Service_DBT_B_Application_Report: false,
+    Reports_Export_Report_DBT_And_Service: false,
+    Reports_Export_Report_DBT_And_Service_All_Application_Details: false,
+    Reports_Export_Report_DBT_And_Service_DBT_Success_Application_Report: false,
+    Reports_Export_Report_DBT_And_Service_DBT_Failure_Application_Report: false,
+    Reports_Export_Report_DBT_And_Service_DBT_K2_Application_Report: false,
+    Reports_Export_Report_DBT_And_Service_DBT_B_Application_Report: false,
 
-    Reports_Admin_Report_Commercial_Market: false,
-    Reports_Admin_Report_Commercial_Market_Admin: false,
-    Reports_Admin_Report_Commercial_Market_Transaction: false,
-    Reports_Admin_Report_Commercial_Market_Dashboard: false,
-    Reports_Admin_Report_Commercial_Market_Abstract: false,
-    Reports_Admin_Report_Commercial_Market_District_Abstract: false,
-    Reports_Admin_Report_Commercial_Market_DTR_Blank_Report: false,
-    Reports_Admin_Report_Commercial_Market_DTR: false,
-    Reports_Admin_Report_Commercial_Market_Unit: false,
-    Reports_Admin_Report_Commercial_Market_Reeler_MF: false,
-    Reports_Admin_Report_Commercial_Market_District_Wise_Monthly_Report: false,
-    Reports_Admin_Report_Commercial_Market_Pending: false,
-    Reports_Admin_Report_Commercial_Market_Bidding_Report: false,
-    Reports_Admin_Report_Commercial_Market_Bidding_Reeler_Report: false,
-    Reports_Admin_Report_Commercial_Market_Farmer_Transaction_Report: false,
-    Reports_Admin_Report_Commercial_Market_District_Wise_Farmer_Count: false,
-    Reports_Admin_Report_Commercial_Market_District_Wise_Reeler_Count: false,
-    Reports_Admin_Report_Commercial_Market_Direct_From_Fruits: false,
-    Reports_Admin_Report_Commercial_Market_Reeler_Transaction_Report: false,
-    Reports_Admin_Report_Commercial_Market_GeneratedTriplet: false,
-    Reports_Admin_Report_Commercial_Market_GeneratedFarmerCopy: false,
-    Reports_Admin_Report_Commercial_Market_ReelerPendingReport: false,
-    Reports_Admin_Report_Commercial_Market_Average_Report: false,
-    Reports_Admin_Report_Commercial_Market_Audio_Visual_Report: false,
-    Reports_Admin_Report_Commercial_Market_B_Report: false,
-    Reports_Admin_Report_Commercial_Market_Monthly_Report: false,
-    Reports_Admin_Report_Commercial_Market_Market_Report: false,
-    Reports_Admin_Report_Commercial_Market_District_Report: false,
-    Reports_Admin_Report_Commercial_Market_Average_Cocoon_Report: false,
+    Reports_Export_Report_Commercial_Market: false,
+    Reports_Export_Report_Commercial_Market_Admin: false,
+    Reports_Export_Report_Commercial_Market_Transaction: false,
+    Reports_Export_Report_Commercial_Market_Dashboard: false,
+    Reports_Export_Report_Commercial_Market_Abstract: false,
+    Reports_Export_Report_Commercial_Market_District_Abstract: false,
+    Reports_Export_Report_Commercial_Market_DTR_Blank_Report: false,
+    Reports_Export_Report_Commercial_Market_DTR: false,
+    Reports_Export_Report_Commercial_Market_Unit: false,
+    Reports_Export_Report_Commercial_Market_Reeler_MF: false,
+    Reports_Export_Report_Commercial_Market_District_Wise_Monthly_Report: false,
+    Reports_Export_Report_Commercial_Market_Pending: false,
+    Reports_Export_Report_Commercial_Market_Bidding_Report: false,
+    Reports_Export_Report_Commercial_Market_Bidding_Reeler_Report: false,
+    Reports_Export_Report_Commercial_Market_Farmer_Transaction_Report: false,
+    Reports_Export_Report_Commercial_Market_District_Wise_Farmer_Count: false,
+    Reports_Export_Report_Commercial_Market_District_Wise_Reeler_Count: false,
+    Reports_Export_Report_Commercial_Market_Direct_From_Fruits: false,
+    Reports_Export_Report_Commercial_Market_Reeler_Transaction_Report: false,
+    Reports_Export_Report_Commercial_Market_GeneratedTriplet: false,
+    Reports_Export_Report_Commercial_Market_GeneratedFarmerCopy: false,
+    Reports_Export_Report_Commercial_Market_ReelerPendingReport: false,
+    Reports_Export_Report_Commercial_Market_Average_Report: false,
+    Reports_Export_Report_Commercial_Market_Audio_Visual_Report: false,
+    Reports_Export_Report_Commercial_Market_B_Report: false,
+    Reports_Export_Report_Commercial_Market_Monthly_Report: false,
+    Reports_Export_Report_Commercial_Market_Market_Report: false,
+    Reports_Export_Report_Commercial_Market_District_Report: false,
+    Reports_Export_Report_Commercial_Market_Average_Cocoon_Report: false,
 
-    Reports_Admin_Report_Seed_Market: false,
-    Reports_Admin_Report_Seed_Market_Invoice_Permit_Receipt: false,
+    Reports_Export_Report_Seed_Market: false,
+    Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
 
-    Reports_Admin_Report_Silk_Type_Market: false,
-    Reports_Admin_Report_Silk_Type_Market_Dashboard: false,
-    Reports_Admin_Report_Silk_Type_DTR_Report: false,
-    Reports_Admin_Report_Silk_Type_Market_Blank_DTR_Report: false,
-    Reports_Admin_Report_Silk_Type_Market_Form_Report_Abstract: false,
-    Reports_Admin_Report_Silk_Type_Market_Form_District_Abstract_Report: false,
-    Reports_Admin_Report_Silk_Type_Market_District_Wise_Monthly: false,
-    Reports_Admin_Report_Silk_Type_Market_Unit_Counter_Report: false,
+    Reports_Export_Report_Silk_Type_Market: false,
+    Reports_Export_Report_Silk_Type_Market_Dashboard: false,
+    Reports_Export_Report_Silk_Type_DTR_Report: false,
+    Reports_Export_Report_Silk_Type_Market_Blank_DTR_Report: false,
+    Reports_Export_Report_Silk_Type_Market_Form_Report_Abstract: false,
+    Reports_Export_Report_Silk_Type_Market_Form_District_Abstract_Report: false,
+    Reports_Export_Report_Silk_Type_Market_District_Wise_Monthly: false,
+    Reports_Export_Report_Silk_Type_Market_Unit_Counter_Report: false,
 
-    Reports_Admin_Report_Seed_And_Dfl: false,
-    Reports_Admin_Report_Seed_And_Dfl_Farmer_Details: false,
-    Reports_Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Farm_Wise_Report: false,
-    Reports_Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details: false,
-    Reports_Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage: false,
-    Reports_Admin_Report_Seed_And_Dfl_Remittance_Report: false,
+    Reports_Export_Report_Seed_And_Dfl: false,
+    Reports_Export_Report_Seed_And_Dfl_Farmer_Details: false,
+    Reports_Export_Report_Seed_And_Dfl_Mulberry_Farm_Report: false,
+    Reports_Export_Report_Seed_And_Dfl_Dispatched_Cocoon_Report: false,
+    Reports_Export_Report_Seed_And_Dfl_Farm_Wise_Report: false,
+    Reports_Export_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details: false,
+    Reports_Export_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report: false,
+    Reports_Export_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report: false,
+    Reports_Export_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage: false,
+    Reports_Export_Report_Seed_And_Dfl_Remittance_Report: false,
 
-    Reports_Admin_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report: false,
-    Reports_Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report: false,
-    Reports_Admin_Report_Seed_And_Dfl_added_dfls_report: false,
+    Reports_Export_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report: false,
+    Reports_Export_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report: false,
+    Reports_Export_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report: false,
+    Reports_Export_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report: false,
+    Reports_Export_Report_Seed_And_Dfl_added_dfls_report: false,
 
-    Reports_Admin_Report_Garden: false,
-    Reports_Admin_Report_Garden_Mulberry_Garden_Report: false,
-    Reports_Admin_Report_Garden_Supply_Of_Cocoons_Report: false,
-    Reports_Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report: false,
-    Reports_Admin_Report_Garden_Seed_Cutting_Report: false,
-    Reports_Admin_Report_Garden_Chawki_Distribution_Report: false,
+    Reports_Export_Report_Garden: false,
+    Reports_Export_Report_Garden_Mulberry_Garden_Report: false,
+    Reports_Export_Report_Garden_Supply_Of_Cocoons_Report: false,
+    Reports_Export_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report: false,
+    Reports_Export_Report_Garden_Seed_Cutting_Report: false,
+    Reports_Export_Report_Garden_Chawki_Distribution_Report: false,
 
-    Reports_Admin_Report_Chawki_Management: false,
-    Reports_Admin_Report_Chawki_Management_Report: false,
+    Reports_Export_Report_Chawki_Management: false,
+    Reports_Export_Report_Chawki_Management_Report: false,
 
     // Mulberry Target Reports
-    Reports_Admin_Report_Target_Setting: false,
-    Reports_Admin_Report_Target_Setting_District_wise: false,
-    Reports_Admin_Report_Target_Setting_TSC_wise: false,
-    Reports_Admin_Report_Target_Setting_Range_wise: false,
-    Reports_Admin_Report_Target_Setting_Range_wise_Daily: false,
-    Reports_Admin_Report_Target_Setting_District_wise_Physical: false,
-    Reports_Admin_Report_Target_Setting_TSC_wise_Physical: false,
-    Reports_Admin_Report_Target_Setting_Range_wise_Physical: false,
-    Reports_Admin_Report_Target_Setting_Training_Target: false,
-    Reports_Admin_Report_Target_Setting_Grainage_Target: false,
-    Reports_Admin_Report_Target_Setting_Farm_Target: false,
-    Reports_Admin_Report_Target_Setting_District_wise_Scheme: false,
-    Reports_Admin_Report_Target_Setting_TSC_wise_Scheme: false,
-    Reports_Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme: false,
-    Reports_Admin_Report_Target_Setting_Grainage_Achievement_Report: false,
-    Reports_Admin_Report_Target_Setting_Farm_Achievement_Report: false,
-    Reports_Admin_Report_Target_Setting_Mulberry_Achievement_Report: false,
-    Reports_Admin_Report_Target_Setting_Training_Achievement_Report: false,
-    Reports_Admin_Report_Target_Setting_Physical_Achievement_Report: false,
+    Reports_Export_Report_Target_Setting: false,
+    Reports_Export_Report_Target_Setting_District_wise: false,
+    Reports_Export_Report_Target_Setting_TSC_wise: false,
+    Reports_Export_Report_Target_Setting_Range_wise: false,
+    Reports_Export_Report_Target_Setting_Range_wise_Daily: false,
+    Reports_Export_Report_Target_Setting_District_wise_Physical: false,
+    Reports_Export_Report_Target_Setting_TSC_wise_Physical: false,
+    Reports_Export_Report_Target_Setting_Range_wise_Physical: false,
+    Reports_Export_Report_Target_Setting_Training_Target: false,
+    Reports_Export_Report_Target_Setting_Grainage_Target: false,
+    Reports_Export_Report_Target_Setting_Farm_Target: false,
+    Reports_Export_Report_Target_Setting_District_wise_Scheme: false,
+    Reports_Export_Report_Target_Setting_TSC_wise_Scheme: false,
+    Reports_Export_Report_Target_Setting_Reeling_TSC_wise_Scheme: false,
+    Reports_Export_Report_Target_Setting_Grainage_Achievement_Report: false,
+    Reports_Export_Report_Target_Setting_Farm_Achievement_Report: false,
+    Reports_Export_Report_Target_Setting_Mulberry_Achievement_Report: false,
+    Reports_Export_Report_Target_Setting_Training_Achievement_Report: false,
+    Reports_Export_Report_Target_Setting_Physical_Achievement_Report: false,
 
 
-    Reports_Admin_Report_Inspection: false,
-    Reports_Admin_Report_Inspection_Verified_DFLs_Report: false,
-    Reports_Admin_Report_Inspection_Crop_Inspection_Report: false,
-    Reports_Admin_Report_Inspection_Fitness_Report: false,
-    Reports_Admin_Report_Inspection_Farmer_Mulberry_Extension_Report: false,
-    Reports_Admin_Report_Inspection_Supply_Of_Disinfectants_Report: false,
+    Reports_Export_Report_Inspection: false,
+    Reports_Export_Report_Inspection_Verified_DFLs_Report: false,
+    Reports_Export_Report_Inspection_Crop_Inspection_Report: false,
+    Reports_Export_Report_Inspection_Fitness_Report: false,
+    Reports_Export_Report_Inspection_Farmer_Mulberry_Extension_Report: false,
+    Reports_Export_Report_Inspection_Supply_Of_Disinfectants_Report: false,
 
-    Reports_Admin_Report_Training: false,
-    Reports_Admin_Report_Training_Trainer_Details_Report: false,
-    Reports_Admin_Report_Training_Trainee_Details_Report: false,
-    Reports_Admin_Report_Training_Training_Deputation_Tracker_Report: false,
+    Reports_Export_Report_Training: false,
+    Reports_Export_Report_Training_Trainer_Details_Report: false,
+    Reports_Export_Report_Training_Trainee_Details_Report: false,
+    Reports_Export_Report_Training_Training_Deputation_Tracker_Report: false,
 
-    Reports_Admin_Report_Helpdesk: false,
-    Reports_Admin_Report_Helpdesk_Details_Report: false,
+    Reports_Export_Report_Helpdesk: false,
+    Reports_Export_Report_Helpdesk_Details_Report: false,
 
 
 
@@ -3818,7 +3818,7 @@ function Menu() {
               </MenuItem>
             ) : null} */}
 
-            {showMenu.Reports_Admin_Report ? (
+            {showMenu.Reports_Export_Report ? (
               <MenuItem sub>
                 <MenuItemLink
                   text={t("Export Report")}
@@ -3843,7 +3843,7 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
-                  {showMenu.Reports_Admin_Report_Registration ? (
+                  {showMenu.Reports_Export_Report_Registration ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Registration")}
@@ -3852,7 +3852,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Registration_Farmer_Registration_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Farmer_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Wise Report")}
@@ -3860,7 +3860,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Reeler_Registration_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Reeler_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Wise Report")}
@@ -3868,7 +3868,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Renewal_Of_Reeler_License_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Renewal_Of_Reeler_License_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Renewal of Reeler License Report")}
@@ -3876,7 +3876,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Pending_Renewal_Of_Reeler_License_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Pending_Renewal_Of_Reeler_License_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(" Pending to renew License Report ")}
@@ -3884,7 +3884,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Trader_License_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Trader_License_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Trader License Report ")}
@@ -3892,7 +3892,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_External_Unit_Registration_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_External_Unit_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("RSP/ CRC/ NSSO Registration Report")}
@@ -3900,7 +3900,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Farmer_Without_Fruits_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Farmer_Without_Fruits_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Without Fruits Report")}
@@ -3908,7 +3908,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Registration_Other_State_Farmer_Report ? (
+                        {showMenu.Reports_Export_Report_Registration_Other_State_Farmer_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Other State Farmer Report")}
@@ -3920,7 +3920,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_DBT_And_Service ? (
+                  {showMenu.Reports_Export_Report_DBT_And_Service ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("DBT And Service")}
@@ -3929,7 +3929,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_DBT_And_Service_All_Application_Details ? (
+                        {showMenu.Reports_Export_Report_DBT_And_Service_All_Application_Details ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("All Application Details")}
@@ -3937,7 +3937,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_DBT_And_Service_DBT_Success_Application_Report ? (
+                        {showMenu.Reports_Export_Report_DBT_And_Service_DBT_Success_Application_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("DBT Success Application Report")}
@@ -3945,7 +3945,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_DBT_And_Service_DBT_Failure_Application_Report ? (
+                        {showMenu.Reports_Export_Report_DBT_And_Service_DBT_Failure_Application_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("DBT Failure Application Report")}
@@ -3953,7 +3953,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_DBT_And_Service_DBT_K2_Application_Report ? (
+                        {showMenu.Reports_Export_Report_DBT_And_Service_DBT_K2_Application_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("DBT K2 Application Report")}
@@ -3961,7 +3961,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_DBT_And_Service_DBT_B_Application_Report ? (
+                        {showMenu.Reports_Export_Report_DBT_And_Service_DBT_B_Application_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("DBT B Application Report")}
@@ -3973,7 +3973,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Seed_Market ? (
+                  {showMenu.Reports_Export_Report_Seed_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Seed Market")}
@@ -3982,7 +3982,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                        {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -3996,7 +3996,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Silk_Type_Market ? (
+                  {showMenu.Reports_Export_Report_Silk_Type_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Silk Exchange Market")}
@@ -4005,7 +4005,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_Dashboard ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Dashboard Report")}
@@ -4013,7 +4013,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_DTR_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Dtr Report")}
@@ -4021,7 +4021,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_Blank_DTR_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_Blank_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Real Time Dtr Report")}
@@ -4029,7 +4029,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_Unit_Counter_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_Unit_Counter_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Unit Counter Report")}
@@ -4037,7 +4037,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_Form_Report_Abstract ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_Form_Report_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Abstract Report")}
@@ -4045,7 +4045,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_Form_District_Abstract_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_Form_District_Abstract_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Abstract Report")}
@@ -4053,7 +4053,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_Market_District_Wise_Monthly ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_Market_District_Wise_Monthly ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Monthly Report")}
@@ -4065,7 +4065,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Commercial_Market ? (
+                  {showMenu.Reports_Export_Report_Commercial_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Commercial Market")}
@@ -4074,7 +4074,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Dashboard ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Dashboard")}
@@ -4082,7 +4082,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Dashboard ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("All Market Dashboard")}
@@ -4090,7 +4090,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Abstract ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Abstract Report")}
@@ -4098,7 +4098,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_District_Abstract ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_District_Abstract ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Abstract Report")}
@@ -4106,7 +4106,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_DTR_Blank_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_DTR_Blank_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Real Time DTR Report")}
@@ -4114,7 +4114,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_DTR ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_DTR ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("DTR Online")}
@@ -4122,7 +4122,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_GeneratedTriplet ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_GeneratedTriplet ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Generated Triplet")}
@@ -4130,7 +4130,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_GeneratedFarmerCopy ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_GeneratedFarmerCopy ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Generated Bidding Slip")}
@@ -4138,7 +4138,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_DTR_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Current Balance Report")}
@@ -4146,7 +4146,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Silk_Type_DTR_Report ? (
+                        {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Credit Report")}
@@ -4154,7 +4154,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Unit ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Unit ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Unit Counter Report")}
@@ -4162,7 +4162,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Reeler_MF ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Reeler_MF ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler MF Report")}
@@ -4171,7 +4171,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Commercial_Market_District_Wise_Monthly_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Monthly Report")}
@@ -4179,7 +4179,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Pending ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Pending ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Pending Report")}
@@ -4187,7 +4187,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Bidding_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Bidding_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Lot Wise Bidding Report")}
@@ -4195,7 +4195,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Bidding_Reeler_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Bidding_Reeler_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Bidding Report")}
@@ -4203,7 +4203,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Farmer_Transaction_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Farmer_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Transaction Report")}
@@ -4211,7 +4211,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_District_Wise_Farmer_Count ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Farmer_Count ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Farmer Count")}
@@ -4219,7 +4219,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_District_Wise_Reeler_Count ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Reeler_Count ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Reeler Count")}
@@ -4228,7 +4228,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Direct_From_Fruits ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Direct_From_Fruits ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Details Direct From Fruits")}
@@ -4236,7 +4236,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Reeler_Transaction_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Reeler_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Transaction Report")}
@@ -4244,7 +4244,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_ReelerPendingReport ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_ReelerPendingReport ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeler Pending Report")}
@@ -4252,7 +4252,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Average_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Average_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Average Report")}
@@ -4260,7 +4260,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Audio_Visual_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Audio_Visual_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Audio Visual Report")}
@@ -4268,7 +4268,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_B_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_B_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("27 B Report")}
@@ -4276,7 +4276,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Monthly_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Monthly_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Monthly Report")}
@@ -4284,7 +4284,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Market_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Market_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Market Report")}
@@ -4292,7 +4292,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_District_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_District_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Report")}
@@ -4300,7 +4300,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Commercial_Market_Average_Cocoon_Report ? (
+                        {showMenu.Reports_Export_Report_Commercial_Market_Average_Cocoon_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Average Cocoon Report")}
@@ -4312,7 +4312,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Seed_And_Dfl ? (
+                  {showMenu.Reports_Export_Report_Seed_And_Dfl ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Seed and DFL")}
@@ -4321,7 +4321,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Farmer_Details ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Farmer_Details ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Details By TSC")}
@@ -4330,7 +4330,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Mulberry_Farm_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Mulberry Farm Report")}
@@ -4338,7 +4338,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Dispatched_Cocoon_Report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Dispatched_Cocoon_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -4348,7 +4348,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Farm_Wise_Report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Farm_Wise_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farm Wise Report")}
@@ -4356,7 +4356,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_TSC_Wise_Sold_DFL_Details ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("TSC Wise Sold DFLs Report")}
@@ -4364,7 +4364,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Cold_Storage_Schedule_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Cold Storage Schedule Report")}
@@ -4372,7 +4372,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Maintenance_Of_Pierced_Cocoons_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Maintenance Of Pierced Cocoons Report")}
@@ -4380,7 +4380,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Maintenance_Of_Line_Report_For_Grainage ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -4390,7 +4390,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Remittance_Report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Remittance_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Remittance Report")}
@@ -4399,7 +4399,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Sale_and_disposal_dfls_rsso_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -4410,7 +4410,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Rearing_of_dfls_assessment_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Rearing Of DFLs Assessment Report")}
@@ -4419,7 +4419,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Maintenance_of_screening_batch_bed_wise_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -4430,7 +4430,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_Maintenance_of_screening_batch_assessment_wise_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t(
@@ -4441,7 +4441,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Seed_And_Dfl_added_dfls_report ? (
+                        {showMenu.Reports_Export_Report_Seed_And_Dfl_added_dfls_report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Added DFLs Report")}
@@ -4453,7 +4453,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Garden ? (
+                  {showMenu.Reports_Export_Report_Garden ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Garden Management")}
@@ -4462,7 +4462,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Garden_Mulberry_Garden_Report ? (
+                        {showMenu.Reports_Export_Report_Garden_Mulberry_Garden_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Mulberry Garden Report")}
@@ -4471,7 +4471,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Garden_Supply_Of_Cocoons_Report ? (
+                        {showMenu.Reports_Export_Report_Garden_Supply_Of_Cocoons_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Rearing And Supply Of Cocoons Report")}
@@ -4479,7 +4479,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report ? (
+                        {showMenu.Reports_Export_Report_Garden_Maintenance_And_Sale_Of_Nursery_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Maintenance And Sale Of Nursery Report")}
@@ -4487,7 +4487,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Garden_Seed_Cutting_Report ? (
+                        {showMenu.Reports_Export_Report_Garden_Seed_Cutting_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Cutting Bank Report")}
@@ -4495,7 +4495,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Garden_Chawki_Distribution_Report ? (
+                        {showMenu.Reports_Export_Report_Garden_Chawki_Distribution_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Chawki Distribution Report")}
@@ -4507,7 +4507,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Chawki_Management ? (
+                  {showMenu.Reports_Export_Report_Chawki_Management ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Chawki Management")}
@@ -4516,7 +4516,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Chawki_Management_Report ? (
+                        {showMenu.Reports_Export_Report_Chawki_Management_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Chawki Management Report")}
@@ -4528,7 +4528,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Target_Setting ? (
+                  {showMenu.Reports_Export_Report_Target_Setting ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Target Setting Reports")}
@@ -4537,7 +4537,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Target_Setting_District_wise ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_District_wise ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Monthly Target")}
@@ -4546,7 +4546,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_TSC_wise ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_TSC_wise ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("TSC Wise Monthly Target")}
@@ -4555,7 +4555,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Range_wise ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Range_wise ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Range Wise Monthly Target")}
@@ -4564,7 +4564,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Range_wise_Daily ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Range_wise_Daily ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Range Wise Daily Target")}
@@ -4573,7 +4573,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_District_wise_Physical ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_District_wise_Physical ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Physical Target")}
@@ -4582,7 +4582,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_TSC_wise_Physical ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_TSC_wise_Physical ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("TSC Wise Physical Target")}
@@ -4591,7 +4591,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Range_wise_Physical ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Range_wise_Physical ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Range Wise Physical Target")}
@@ -4600,7 +4600,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Training_Target ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Training_Target ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Training Target")}
@@ -4609,7 +4609,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Grainage_Target ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Grainage_Target ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Grainage Target")}
@@ -4618,7 +4618,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Farm_Target ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Farm_Target ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farm Target")}
@@ -4627,7 +4627,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_District_wise_Scheme ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_District_wise_Scheme ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("District Wise Scheme Targets")}
@@ -4636,7 +4636,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_TSC_wise_Scheme ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_TSC_wise_Scheme ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("TSC Wise Scheme Targets")}
@@ -4645,7 +4645,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Reeling_TSC_wise_Scheme ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Reeling_TSC_wise_Scheme ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reeling TSC Wise Scheme Targets")}
@@ -4654,7 +4654,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Grainage_Achievement_Report ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Grainage_Achievement_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Grainage Achievement Report")}
@@ -4663,7 +4663,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Farm_Achievement_Report ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Farm_Achievement_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farm Achievement Report")}
@@ -4672,7 +4672,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Mulberry_Achievement_Report ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Mulberry_Achievement_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Mulberry Achievement Report")}
@@ -4681,7 +4681,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Training_Achievement_Report ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Training_Achievement_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Training Achievement Report")}
@@ -4690,7 +4690,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Target_Setting_Physical_Achievement_Report ? (
+                        {showMenu.Reports_Export_Report_Target_Setting_Physical_Achievement_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Physical Achievement Report")}
@@ -4702,7 +4702,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Inspection ? (
+                  {showMenu.Reports_Export_Report_Inspection ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Inspection")}
@@ -4711,7 +4711,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Inspection_Verified_DFLs_Report ? (
+                        {showMenu.Reports_Export_Report_Inspection_Verified_DFLs_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Verified DFLs Report")}
@@ -4720,7 +4720,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Inspection_Crop_Inspection_Report ? (
+                        {showMenu.Reports_Export_Report_Inspection_Crop_Inspection_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Crop Inspection Details Report")}
@@ -4728,7 +4728,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Inspection_Fitness_Report ? (
+                        {showMenu.Reports_Export_Report_Inspection_Fitness_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Fitness Details Report")}
@@ -4736,7 +4736,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Inspection_Farmer_Mulberry_Extension_Report ? (
+                        {showMenu.Reports_Export_Report_Inspection_Farmer_Mulberry_Extension_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Mulberry Extension Report")}
@@ -4744,7 +4744,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Inspection_Supply_Of_Disinfectants_Report ? (
+                        {showMenu.Reports_Export_Report_Inspection_Supply_Of_Disinfectants_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Supply Of Disinfectants Report")}
@@ -4756,7 +4756,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Training ? (
+                  {showMenu.Reports_Export_Report_Training ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Training")}
@@ -4765,7 +4765,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Training_Trainer_Details_Report ? (
+                        {showMenu.Reports_Export_Report_Training_Trainer_Details_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Trainer Details Report")}
@@ -4774,7 +4774,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
-                        {showMenu.Reports_Admin_Report_Training_Trainee_Details_Report ? (
+                        {showMenu.Reports_Export_Report_Training_Trainee_Details_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Trainee Details Report")}
@@ -4782,7 +4782,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Reports_Admin_Report_Training_Training_Deputation_Tracker_Report ? (
+                        {showMenu.Reports_Export_Report_Training_Training_Deputation_Tracker_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Training Deputation Tracket Report")}
@@ -4794,7 +4794,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Admin_Report_Helpdesk ? (
+                  {showMenu.Reports_Export_Report_Helpdesk ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Help Desk")}
@@ -4803,7 +4803,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Admin_Report_Helpdesk_Details_Report ? (
+                        {showMenu.Reports_Export_Report_Helpdesk_Details_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Ticket Details Report")}
