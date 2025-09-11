@@ -217,6 +217,10 @@ function Menu() {
     DBT_DBT_Pushed_List: false,
     DBT_Success_List: false,
     DBT_Drawing_Officer_List: false,
+    // DBT_Drawing_Officer_List_For_K2_Push: false,
+    // DBT_Drawing_Officer_List_For_DBT_Push: false,
+    // DBT_Drawing_Officer_List_For_Vendor_DBT_Push: false,
+    // DBT_Drawing_Officer_List_For_Vendor_K2_Push: false,
     DBT_Tsc_Officer_List: false,
 
     Market: false,
@@ -1529,6 +1533,38 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {/* {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Drawing Officer List – K2 Push")}
+                  to="/seriui/drawing-officer-list-for-k2-push"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Drawing_Officer_List_For_DBT_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Drawing Officer List – DBT Push")}
+                  to="/seriui/drawing-officer-list-for-dbt-push"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Drawing_Officer_List_For_Vendor_DBT_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Drawing Officer List – Vendor DBT Push")}
+                  to="/seriui/drawing-officer-list-for-vendor-dbt-push"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Drawing_Officer_List_For_Vendor_K2_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Drawing Officer List – Vendor K2 Push")}
+                  to="/seriui/drawing-officer-list-for-vendor-k2-push"
+                />
+              </MenuItem>
+            ) : null} */}
             {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
@@ -4823,7 +4859,7 @@ function Menu() {
               <MenuItem>
                 <MenuItemLink
                   text={t("Dashboards")}
-                  to="https://app.powerbi.com/reportEmbed?reportId=c9ccdb15-fa80-4ab9-8ec8-e3a1525ea55b&autoAuth=true&ctid=955f3eb7-19dc-4bb8-966d-5bf9335cb39d"
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
                   blank={true}
                 />
               </MenuItem>
