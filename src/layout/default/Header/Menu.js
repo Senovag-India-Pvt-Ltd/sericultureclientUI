@@ -4859,7 +4859,7 @@ function Menu() {
               <MenuItem>
                 <MenuItemLink
                   text={t("Dashboards")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
                   blank={true}
                 />
               </MenuItem>
