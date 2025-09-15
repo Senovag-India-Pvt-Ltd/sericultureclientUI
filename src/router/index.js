@@ -1030,6 +1030,10 @@ import ProductionAchievementReport from "../pages/stake-holder/ProductionAchieve
 import TrainingAchievementReport from "../pages/stake-holder/TrainingAchievementReport";
 import FarmAchievementReport from "../pages/stake-holder/FarmAchievementReport";
 import GrainageAchievementReport from "../pages/stake-holder/GrainageAchievementReport";
+import DrawingOfficerListForK2Push from "../pages/direct-benefit-transfer/DrawingOfficerListForK2Push";
+import DrawingOfficerListForDBTPush from "../pages/direct-benefit-transfer/DrawingOfficerListForDBTPush";
+import DrawingOfficerListForDBTVendorPush from "../pages/direct-benefit-transfer/DrawingOfficerListForDBTVendorPush";
+import DrawingOfficerListForK2VendorPush from "../pages/direct-benefit-transfer/DrawingOfficerListForK2VendorPush";
 
 // Admin and Reports
 
@@ -1596,6 +1600,23 @@ function Router() {
             <Route
               path="drawing-officer-list"
               element={<DrawingOfficerList />}
+            />
+
+            <Route
+              path="drawing-officer-list-for-k2-push"
+              element={<DrawingOfficerListForK2Push />}
+            />
+            <Route
+              path="drawing-officer-list-for-dbt-push"
+              element={<DrawingOfficerListForDBTPush />}
+            />
+            <Route
+              path="drawing-officer-list-for-vendor-dbt-push"
+              element={<DrawingOfficerListForDBTVendorPush />}
+            />
+            <Route
+              path="drawing-officer-list-for-vendor-k2-push"
+              element={<DrawingOfficerListForK2VendorPush />}
             />
             <Route path="tsc-officer-list" element={<TscOfficerList />} />
             <Route
