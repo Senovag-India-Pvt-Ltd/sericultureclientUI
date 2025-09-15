@@ -144,7 +144,13 @@ const handleCheckXmlFile = (rows, ddoCode) => {
 
   const [showModal6, setShowModal6] = useState(false);
   const handleShowModal6 = () => setShowModal6(true);
-  const handleCloseModal6 = () => setShowModal6(false);
+  // const handleCloseModal6 = () => setShowModal6(false);
+  const handleCloseModal6 = () => {
+  setShowModal6(false);
+  setPushVisible(true);   // Enable Push button when modal closes
+  setCheckingXml(false); 
+};
+
 
    const [checkFileDetails, setCheckFileDetails] = useState([]); // should be an array
 
@@ -170,7 +176,7 @@ const handleCheckXmlFile = (rows, ddoCode) => {
         setCheckFileDetails([]);
       }
       setShowModal6(true);
-      thirtyMinHold();
+      // thirtyMinHold();
     })
     .catch((err) => {
       setCheckFileDetails([]);
@@ -691,10 +697,21 @@ const handlePush = (id) => {
         saveError(response.data.content.error_description);
         setPushing(false); // enable again on failure
       } else {
-        pushedSuccess(beneficiaryId, fruitsId);
-        getList();
+        const successRows = id 
+        ? [listData.find((row) => row.scApplicationFormId === id)]
+        : listData.filter((row) => 
+            selectedRows.some((sel) => sel.scApplicationFormId === row.scApplicationFormId)
+          );
+        pushedSuccess(successRows);
+        
+        // getList()
+        // window.location.reload();
+        setPushVisible(false);
         setSelectedIds([]);
         setSelectedRows([]);
+    //     setTimeout(() => {
+    //   window.location.reload();
+    // }, 30000);
         // keep disabled after success
       }
     })
@@ -1090,33 +1107,12 @@ const getFinancialDefaultDetails = () => {
 
   // console.log(searchData);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-    if (e.target.name === "financialYearMasterId") {
-      const selectedYearObject = financialyearListData.find(
-        (year) => year.financialYearMasterId === parseInt(e.target.value)
-      );
-      const year = selectedYearObject.financialYear;
-      const [fromDate, toDate] = year.split("-");
-      // setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-    }
-  };
 
   const handleInputsaddress = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     setAddressDetails({ ...addressDetails, [name]: value });
-    // if (e.target.name === "financialYearId") {
-    //   const selectedYearObject = financialyearListData.find(
-    //     (year) => year.financialYearMasterId === parseInt(e.target.value)
-    //   );
-    //   const year = selectedYearObject.financialYear;
-    //   const [fromDate, toDate] = year.split("-");
-    //   setAddressDetails((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-    // }
+    
   };
 
   // const handleInputsSearch = (e) => {
@@ -1163,13 +1159,35 @@ const getFinancialDefaultDetails = () => {
     });
   };
 
-  const pushedSuccess = (b,f) => {
-    Swal.fire({
-      icon: "success",
-      title: "Pushed successfully",
-      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
-    });
-  };
+  // const pushedSuccess = (b,f) => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Pushed successfully",
+  //     text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+  //     // text: message,
+  //   });
+  // };
+    const pushedSuccess = (rows) => {
+  const details = rows
+    .map(
+      (item, index) =>
+        `${index + 1}. Beneficiary Id: ${item.beneficiaryId}, Fruits Id: ${item.fruitsId}`
+    )
+    .join("<br>");
+
+  Swal.fire({
+    icon: "success",
+    title: "Pushed successfully",
+    html: `Application Details:<br>${details}`,
+    confirmButtonText: "OK", // show OK button
+  }).then(() => {
+    // reload only after clicking OK
+    window.location.reload();
+  });
+};
+
+
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {

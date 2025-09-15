@@ -217,10 +217,10 @@ function Menu() {
     DBT_DBT_Pushed_List: false,
     DBT_Success_List: false,
     DBT_Drawing_Officer_List: false,
-    // DBT_Drawing_Officer_List_For_K2_Push: false,
-    // DBT_Drawing_Officer_List_For_DBT_Push: false,
-    // DBT_Drawing_Officer_List_For_Vendor_DBT_Push: false,
-    // DBT_Drawing_Officer_List_For_Vendor_K2_Push: false,
+    DBT_Drawing_Officer_List_For_K2_Push: false,
+    DBT_Drawing_Officer_List_For_DBT_Push: false,
+    DBT_Drawing_Officer_List_For_Vendor_DBT_Push: false,
+    DBT_Drawing_Officer_List_For_Vendor_K2_Push: false,
     DBT_Tsc_Officer_List: false,
 
     Market: false,
@@ -1533,7 +1533,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {/* {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
+            {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Drawing Officer List – K2 Push")}
@@ -1564,7 +1564,7 @@ function Menu() {
                   to="/seriui/drawing-officer-list-for-vendor-k2-push"
                 />
               </MenuItem>
-            ) : null} */}
+            ) : null}
             {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
