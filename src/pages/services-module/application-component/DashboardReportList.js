@@ -432,6 +432,10 @@ function DashboardReportList() {
   const [schemeId, setSchemeId] = useState(null);
 
   const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
+  const [workOrderNumber, setWorkOrderNumber] = useState(null);
+  const [workOrderForScheme, setWorkOrderForScheme] = useState(null);
+  const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
+  const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
   // const getActionFarmerList = (fid) => {
   //   setLoading(true);
@@ -926,6 +930,12 @@ function DashboardReportList() {
         const schemeId = recordData?.schemeId;
         setApplicationFormId(recordData?.applicationDocumentId);
         setWorkOrderSchemeId(recordData?.schemeId);
+
+        setWorkOrderNumber(recordData?.workOrderNumber);
+        setWorkOrderForScheme(recordData?.workOrderForScheme);
+
+        setSanctionOrderNumber(recordData?.sanctionOrderNumber);
+        setSanctionOrderForScheme(recordData?.sanctionOrderForScheme);
 
         if (recordData.financialDelegation) {
           const amountToPass =
@@ -2884,10 +2894,17 @@ function DashboardReportList() {
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
             landDetails: content.landDetailsResponses,
-            applicationTransactionDetails:
-              content.applicationTransactionResponses,
-            documents: content.documentsResponses,
+            applicationTransactionDetails:content.applicationTransactionResponses,
+            // documents: content.documentsResponses,
+            documents: content.documentsResponses || [],
             workflowDetails: content.workFlowDetailsResponses,
+
+          applicationFormId: applicationFormId, // coming from state set earlier
+          workOrderSchemeId: workOrderSchemeId,
+          workOrderNumber: workOrderNumber,
+          workOrderForScheme: workOrderForScheme,
+          sanctionOrderNumber: sanctionOrderNumber,
+          sanctionOrderForScheme: sanctionOrderForScheme,
           });
         }
       })
@@ -3029,7 +3046,7 @@ function DashboardReportList() {
                 Download Work Order
               </Button>
             )} */}
-            {row.workOrderNumber && (
+            {/* {row.workOrderNumber && (
               <Button
                 variant="primary"
                 size="sm"
@@ -3071,7 +3088,7 @@ function DashboardReportList() {
               >
                 Download Sanction Order
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       ),
@@ -5107,6 +5124,8 @@ function DashboardReportList() {
                                       </Button>
                                     </>
                                   )}
+
+                                
                               </td>
                             </tr>
                           )
@@ -5116,6 +5135,54 @@ function DashboardReportList() {
                   ) : (
                     <p>No Documents Available</p>
                   )}
+
+
+                            <div className="mt-2">
+                                  {viewDetailsData?.workOrderNumber && (
+                                    <Button
+                                      variant="primary"
+                                      size="sm"
+                                      className="me-2"
+                                      onClick={() => {
+                                        if (
+                                          viewDetailsData.workOrderForScheme === "PDMC" ||
+                                          viewDetailsData.workOrderForScheme === "PMKSY"
+                                        ) {
+                                          generateWorkOrderAcknowledgment(
+                                            viewDetailsData.applicationFormId,
+                                            viewDetailsData.workOrderSchemeId
+                                          );
+                                        } else if (
+                                          viewDetailsData.workOrderForScheme === "Silk Samagra State" ||
+                                          viewDetailsData.workOrderForScheme === "Silk Samagra Central"
+                                        ) {
+                                          generateWorkOrderAcknowledgmentRH(
+                                            viewDetailsData.applicationFormId,
+                                            viewDetailsData.workOrderSchemeId
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      Download Work Order
+                                    </Button>
+                                  )}
+
+                                  {viewDetailsData?.sanctionOrderNumber && viewDetailsData?.applicationFormId && (
+                                    <Button
+                                      variant="primary"
+                                      size="sm"
+                                      onClick={() =>
+                                        handleDownloadSanctionOrder(
+                                          viewDetailsData.applicationFormId,
+                                          viewDetailsData.workOrderSchemeId,
+                                          viewDetailsData.sanctionOrderForScheme
+                                        )
+                                      }
+                                    >
+                                      Download Sanction Order
+                                    </Button>
+                                  )}
+                                </div>
                 </Accordion.Body>
               </Accordion.Item>
 
