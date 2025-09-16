@@ -5138,7 +5138,7 @@ function DashboardReportList() {
 
 
                             <div className="mt-2">
-                                  {viewDetailsData?.workOrderNumber && (
+                                  {viewDetailsData?.workOrderNumber  && viewDetailsData?.applicationFormId && (
                                     <Button
                                       variant="primary"
                                       size="sm"
