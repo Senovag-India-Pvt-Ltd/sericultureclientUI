@@ -1511,59 +1511,86 @@ function AllApplicationList() {
   </Accordion.Body>
 </Accordion.Item>
 
-{viewDetailsData?.workflowDetails?.length > 0 ? (
-          viewDetailsData.workflowDetails.map((workFlow, index) => (
-            <Accordion.Item eventKey="workflow-details">
-              <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Work Flow Details</Accordion.Header>
-              <Accordion.Body>
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}>Step Name:</td>
-                      <td>{workFlow.stepName || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Status:</td>
-                      <td>{workFlow.status || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Assigned By:</td>
-                      <td>{workFlow.assignedBy || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Reject Reason:</td>
-                      <td>{workFlow.rejectReason || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Rejected By:</td>
-                      <td>{workFlow.rejectReason || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Comment:</td>
-                      <td>{workFlow.comment || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Reason:</td>
-                      <td>{workFlow.reason || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Assigned To:</td>
-                      <td>{workFlow.assignedTo || 'N/A'}</td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))
-        ) : (
-          <Accordion.Item eventKey="land">
-            <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2" >Work Flow Details</Accordion.Header>
-            <Accordion.Body>No Work Flow Details Available</Accordion.Body>
-          </Accordion.Item>
-        )}
+      {viewDetailsData?.workflowDetails?.length > 0 ? (
+                <Accordion.Item eventKey="workflow-details">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    className="mb-2"
+                  >
+                    Work Flow Details
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    {viewDetailsData.workflowDetails.map((workFlow, index) => (
+                      <table className="table small table-bordered" key={index}>
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}>Step Name:</td>
+                            <td>{workFlow.stepName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Status:</td>
+                            <td>{workFlow.status || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Assigned By:</td>
+                            <td>{workFlow.assignedBy || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Reject Reason:</td>
+                            <td>{workFlow.rejectReason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Rejected By:</td>
+                            <td>{workFlow.rejectReason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                ...styles.ctstyle,
+                                fontWeight: "bold",
+                                color: "green",
+                              }}
+                            >
+                              Comment:
+                            </td>
+                            <td style={{ fontWeight: "bold", color: "green" }}>
+                              {workFlow.comment || "N/A"}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Reason:</td>
+                            <td>{workFlow.reason || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Assigned To:</td>
+                            <td>{workFlow.assignedTo || "N/A"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              ) : (
+                <Accordion.Item eventKey="land">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    className="mb-2"
+                  >
+                    Work Flow Details
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    No Work Flow Details Available
+                  </Accordion.Body>
+                </Accordion.Item>
+              )}
 
 
 

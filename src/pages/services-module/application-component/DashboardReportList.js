@@ -977,21 +977,21 @@ function DashboardReportList() {
               }
 
               // ✅ **Move `fieldsShouldBeDisabled` logic inside `if (isAllowed)`**
-              if (isAllowed) {
-                const sanctionOrderNumber = recordData?.sanctionOrderNumber;
-                const fieldsShouldBeDisabled =
-                  recordData?.sanctionOrder && !sanctionOrderNumber;
+              // if (isAllowed) {
+              //   const sanctionOrderNumber = recordData?.sanctionOrderNumber;
+              //   const fieldsShouldBeDisabled =
+              //     recordData?.sanctionOrder && !sanctionOrderNumber;
 
-                if (fieldsShouldBeDisabled) {
-                  Swal.fire({
-                    title: "Action Required!",
-                    text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                  });
-                }
-                setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled);
-              }
+              //   if (fieldsShouldBeDisabled) {
+              //     Swal.fire({
+              //       title: "Action Required!",
+              //       text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
+              //       icon: "warning",
+              //       confirmButtonText: "OK",
+              //     });
+              //   }
+              //   setFieldsSanctionOrderDisabled(fieldsShouldBeDisabled);
+              // }
 
               handleShowModal(fid);
             })
@@ -1099,6 +1099,8 @@ function DashboardReportList() {
   // }, [districtId, talukId]);
 
   // to get push to dbt details
+  const [isAllSchemesSelected, setIsAllSchemesSelected] = useState(false);
+
   const [pushToDBTListData, setPushToDBTListData] = useState([]);
   const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
   const getPushToDBTList = (
@@ -1138,6 +1140,19 @@ function DashboardReportList() {
       setPushToDBTListData([]);
     });
 };
+
+// useEffect(() => {
+//   if (actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder) {
+//     setIsAllSchemesSelected(
+//       pushToDBTListData.length > 0 &&
+//       pushToDBTListData.every((item) => item.isSelected) &&  // depends on how you mark selected
+//       pushToDBTListData.length === schemeQuotaListCount
+//     );
+//   } else {
+//     setIsAllSchemesSelected(true); // not sanction order → always allow submit
+//   }
+// }, [pushToDBTListData, schemeQuotaListCount, actionFarmerData]);
+
 
   // const getPushToDBTList = (
   //   categoryId,
@@ -2121,34 +2136,325 @@ function DashboardReportList() {
       });
   };
 
-  const postActionData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      setDisplaySubmit(true);
-      // Check if Reject Type is "Permanent", then call rejectServiceApplication
-      if (actionData.rejectType === "Permanent") {
-        rejectServiceApplication();
-        return;
-      }
+  // const postActionData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     setDisplaySubmit(true);
+  //     // Check if Reject Type is "Permanent", then call rejectServiceApplication
+  //     if (actionData.rejectType === "Permanent") {
+  //       rejectServiceApplication();
+  //       return;
+  //     }
 
-      // const sendResponse = sendApplicationFormServiceData.map((item) => {
-      //   return {
-      //     schemeQuotaId: item.schemeQuotaId,
-      //     componentType: item.schemeQuotaId,
-      //     schemeAmount: item.subsidyAmount,
-      //     eligibleAmount: item.calculatedEligibleAmount,
-      //     paymentTo: item.paymentTo,
-      //     paymentMethod: item.paymentMethod,
-      //     dateOfPayment: item.dateOfPayment,
-      //     referenceNo: item.referenceNo,
-      //   };
-      // });
-      const sendResponse = sendApplicationFormServiceData
+  //     // const sendResponse = sendApplicationFormServiceData.map((item) => {
+  //     //   return {
+  //     //     schemeQuotaId: item.schemeQuotaId,
+  //     //     componentType: item.schemeQuotaId,
+  //     //     schemeAmount: item.subsidyAmount,
+  //     //     eligibleAmount: item.calculatedEligibleAmount,
+  //     //     paymentTo: item.paymentTo,
+  //     //     paymentMethod: item.paymentMethod,
+  //     //     dateOfPayment: item.dateOfPayment,
+  //     //     referenceNo: item.referenceNo,
+  //     //   };
+  //     // });
+  //     const sendResponse = sendApplicationFormServiceData
+  //     .filter(item => item) // ensures no nulls
+  //     .map((item) => {
+  //       return {
+  //         schemeQuotaId: item.schemeQuotaId,
+  //         componentType: item.schemeQuotaId,
+  //         schemeAmount: item.subsidyAmount,
+  //         eligibleAmount: item.calculatedEligibleAmount,
+  //         paymentTo: item.paymentTo,
+  //         paymentMethod: item.paymentMethod,
+  //         dateOfPayment: item.dateOfPayment,
+  //         referenceNo: item.referenceNo,
+  //       };
+  //     });
+
+  //     let sendPost;
+  //     if (actionFarmerData[0].pushToDbt) {
+  //       const sendData = sendApplicationFormServiceData.map((item) => {
+  //         return {
+  //           applicationFormId: item.applicationFormId,
+  //           componentType: item.schemeQuotaId,
+  //           schemeAmount: item.subsidyAmount,
+  //           eligibleAmount: item.calculatedEligibleAmount,
+  //           paymentTo: item.paymentTo,
+  //           paymentMethod: item.paymentMethod,
+  //           dateOfPayment: item.dateOfPayment,
+  //           referenceNo: item.referenceNo,
+  //           categoryId: item.categoryId,
+  //           componentId: item.componentId,
+  //           schemeId: item.schemeId,
+  //         };
+  //       });
+  //       sendPost = sendData;
+  //     } else if (actionFarmerData[0].directlyToFruits) {
+  //       const paymentType = actionData.schemeQuotaPaymentType;
+  //       const ddoCodeToSend =
+  //       paymentType === "B"
+  //         ? reportingOfficerDdoCode
+  //         : paymentType === "K"
+  //         ? reportingOfficerKhazaneRecipientId
+  //         : null;
+
+  //          if (!ddoCodeToSend) {
+  //           warningAlert("Unable to determine DDO Code from payment type", "Alert!!!");
+  //           return;
+  //         }
+
+  //       sendPost = {
+  //         applicationList: [actionFarmerData[0]?.applicationFormId],
+  //         userMasterId: localStorage.getItem("userMasterId"),
+  //         paymentMode: "P",
+  //         pushType: "P",
+  //         // ddoCode: reportingOfficerDdoCode,
+  //         ddoCode: ddoCodeToSend,
+  //         sanctionNo: actionData.sanctionNo,
+  //         categoryId: actionFarmerData[0]?.categoryId,
+  //         componentId: actionFarmerData[0]?.componentId,
+  //         schemeId: actionFarmerData[0]?.schemeId,
+  //         componentType: actionFarmerData[0]?.componentType,
+  //       };
+  //     } else {
+  //       sendPost = {
+  //         description: actionData.comment,
+  //         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+  //         applicationFormId: applicationFormId,
+  //         workOrderNumber: actionData.workOrderNumber,
+  //         sanctionOrderNumber: actionData.sanctionOrderNumber,
+  //         userId: actionData.userId,
+  //         stepId: actionData.stepId,
+  //         eligibleAmount: actionData.eligibleAmount,
+  //         pushToDBTRequestList: sendResponse,
+  //       };
+  //     }
+
+  //     let apiCall;
+
+  //     // Check if all conditions are null/false, if so, call inspection update API
+  //     // if (
+  //     //   !actionFarmerData[0].pushToDbt &&
+  //     //   !actionFarmerData[0].sanctionOrder &&
+  //     //   !actionFarmerData[0].workOrder
+  //     // ) {
+  //     //   apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+  //     // } else {
+  //     // First condition: If pushToDbt, sanctionOrder, and workOrder are not present, call inspectionUpdate
+  //     if (
+  //       !actionFarmerData[0].pushToDbt &&
+  //       !actionFarmerData[0].sanctionOrder &&
+  //       !actionFarmerData[0].workOrder &&
+  //       !actionFarmerData[0].directlyToFruits
+  //     ) {
+  //       apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+  //     } else {
+  //       // Second condition: If sanctionOrder exists and approval failed, call inspectionUpdate instead of sanctionOrderUpdate
+  //       if (
+  //         actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
+  //         actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
+  //         !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
+  //         (!isSanctionOrderAllowed || actionFarmerData[0].sanctionOrderNumber)
+  //       ) 
+  //       {
+  //         apiCall = api
+  //           .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
+  //           .then((response) => {
+  //             saveSuccess(
+  //               "Please forward the request to the higher authority to initiate the generation of the sanction order and submit it to FRUITS."
+  //             );
+  //             clear();
+  //             setValidated(false);
+  //             getList();
+  //           })
+  //           .catch((err) => {
+  //             saveError(
+  //               err.response?.data?.error_description ||
+  //                 "Inspection Update Failed"
+  //             );
+  //           });
+  //       } else {
+  //         if (actionFarmerData[0].workOrder) {
+  //           apiCall = api.post(
+  //             baseURLDBT + `service/workOrderUpdate`,
+  //             sendPost
+  //           );
+  //         }
+  //         // if (actionFarmerData[0].sanctionOrder) {
+  //         //   apiCall = api.post(
+  //         //     baseURLDBT + `service/sanctionOrderUpdate`,
+  //         //     sendPost
+  //         //   );
+  //         // }
+  //         if (actionFarmerData[0].sanctionOrder) {
+  //           if (sendPost.pushToDBTRequestList.length === 0) {
+  //             warningAlert("Please select the scheme", "Alert!!!");
+  //             return;
+  //           } else if (
+  //             schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
+  //           ) {
+  //             warningAlert("Select all schemes to proceed", "Alert!!!");
+  //             return;
+  //           }
+
+  //           apiCall = api
+  //             .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
+  //             .then((response) => {
+  //               if (response.data.applicationFormId) {
+  //                 // Update state with the generated applicationId
+  //                 setApplicationId(response.data.applicationFormId);
+  //                 // Pass the applicationId to handleGenerateSanctionOrder
+  //                 handleGenerateSanctionOrder(
+  //                   response.data.applicationFormId,
+  //                   schemeId
+  //                 );
+  //                 setDisplaySubmit(false);
+  //                 getList();
+  //               } else {
+  //                 saveError(
+  //                   "Failed to generate application ID for sanction order."
+  //                 );
+  //                 setDisplaySubmit(false);
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               saveError(
+  //                 err.response?.data?.error_description ||
+  //                   "Sanction Order Update Failed"
+  //               );
+  //               setDisplaySubmit(false);
+  //             });
+  //         }
+
+  //         if (actionFarmerData[0].directlyToFruits) {
+  //           // if (sendPost.sanctionNo == 0 || !sendPost.sanctionNo) {
+  //           //   warningAlert("Please Enter The Sanction Number", "Alert!!!");
+  //           //   return;
+  //           // }
+  //           apiCall = api
+  //             .post(
+  //               baseURLDBT +
+  //                 `applicationTransaction/saveApplicationTransaction`,
+  //               sendPost
+  //             )
+  //             .then((response) => {
+  //               if (response.data.content.errorCode) {
+  //                 saveError(response.data.content.error_description);
+  //                 setDisplaySubmit(false);
+  //               } else {
+  //                 pushedSuccess(
+  //                   checkFileDetails.beneficiaryId,
+  //                   checkFileDetails.farmerRegNo
+  //                 );
+  //                 setDisplaySubmit(false);
+  //                 getList();
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               // For testing purpose Uncomment saveError and delete pushedSuccess
+  //               saveError(
+  //                 err.response?.data?.error_description ||
+  //                   "Sanction Order Update Failed"
+  //               );
+  //               setDisplaySubmit(false);
+  //               // pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
+  //             });
+  //         }
+  //       }
+  //       if (actionFarmerData[0].pushToDbt) {
+  //         apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
+  //       }
+  //     }
+
+  //     if (apiCall) {
+  //       apiCall
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //           } else if (response.data.error) {
+  //             saveError(response.data.error_description);
+  //           } else {
+  //             // Generate the acknowledgment after a successful work order update
+  //             // if (actionFarmerData[0].workOrder) {
+  //             //   generateWorkOrderAcknowledgment(applicationFormId,schemeId);
+  //             // }
+  //             // if (
+  //             //   actionFarmerData[0].workOrder &&
+  //             //   actionFarmerData[0].workOrderForScheme === "PDMC"
+  //             // ) {
+  //             //   generateWorkOrderAcknowledgment(applicationFormId, schemeId); // Pass schemeId to API
+  //             // }
+  //             if (actionFarmerData[0].workOrder) {
+  //               if (
+  //                 actionFarmerData[0].workOrderForScheme === "PDMC" ||
+  //                 actionFarmerData[0].workOrderForScheme === "PMKSY"
+  //               ) {
+  //                 generateWorkOrderAcknowledgment(
+  //                   applicationFormId,
+  //                   workOrderSchemeId
+  //                 );
+  //               } else if (
+  //                 actionFarmerData[0].workOrderForScheme ===
+  //                   "Silk Samagra State" ||
+  //                 actionFarmerData[0].workOrderForScheme ===
+  //                   "Silk Samagra Central"
+  //               ) {
+  //                 generateWorkOrderAcknowledgmentRH(
+  //                   applicationFormId,
+  //                   workOrderSchemeId
+  //                 );
+  //               }
+  //             }
+
+  //             saveSuccess();
+  //             getList();
+  //             clear();
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+  //     }
+
+  //     setValidated(true);
+  //   }
+  // };
+  const [canSubmit, setCanSubmit] = useState(true);
+
+  const postActionData = (event) => {
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+  } else {
+    event.preventDefault();
+    setDisplaySubmit(true);
+
+    // Check if Reject Type is "Permanent", then call rejectServiceApplication
+    if (actionData.rejectType === "Permanent") {
+      rejectServiceApplication();
+      return;
+    }
+
+    // Prepare common pushToDBTRequestList
+    const sendResponse = sendApplicationFormServiceData
       .filter(item => item) // ensures no nulls
       .map((item) => {
         return {
@@ -2163,262 +2469,210 @@ function DashboardReportList() {
         };
       });
 
-      let sendPost;
-      if (actionFarmerData[0].pushToDbt) {
-        const sendData = sendApplicationFormServiceData.map((item) => {
-          return {
-            applicationFormId: item.applicationFormId,
-            componentType: item.schemeQuotaId,
-            schemeAmount: item.subsidyAmount,
-            eligibleAmount: item.calculatedEligibleAmount,
-            paymentTo: item.paymentTo,
-            paymentMethod: item.paymentMethod,
-            dateOfPayment: item.dateOfPayment,
-            referenceNo: item.referenceNo,
-            categoryId: item.categoryId,
-            componentId: item.componentId,
-            schemeId: item.schemeId,
-          };
-        });
-        sendPost = sendData;
-      } else if (actionFarmerData[0].directlyToFruits) {
-        const paymentType = actionData.schemeQuotaPaymentType;
-        const ddoCodeToSend =
+    let sendPost;
+
+    if (actionFarmerData[0].pushToDbt) {
+      const sendData = sendApplicationFormServiceData.map((item) => {
+        return {
+          applicationFormId: item.applicationFormId,
+          componentType: item.schemeQuotaId,
+          schemeAmount: item.subsidyAmount,
+          eligibleAmount: item.calculatedEligibleAmount,
+          paymentTo: item.paymentTo,
+          paymentMethod: item.paymentMethod,
+          dateOfPayment: item.dateOfPayment,
+          referenceNo: item.referenceNo,
+          categoryId: item.categoryId,
+          componentId: item.componentId,
+          schemeId: item.schemeId,
+        };
+      });
+      sendPost = sendData;
+    } else if (actionFarmerData[0].directlyToFruits) {
+      const paymentType = actionData.schemeQuotaPaymentType;
+      const ddoCodeToSend =
         paymentType === "B"
           ? reportingOfficerDdoCode
           : paymentType === "K"
           ? reportingOfficerKhazaneRecipientId
           : null;
 
-           if (!ddoCodeToSend) {
-            warningAlert("Unable to determine DDO Code from payment type", "Alert!!!");
-            return;
-          }
-
-        sendPost = {
-          applicationList: [actionFarmerData[0]?.applicationFormId],
-          userMasterId: localStorage.getItem("userMasterId"),
-          paymentMode: "P",
-          pushType: "P",
-          // ddoCode: reportingOfficerDdoCode,
-          ddoCode: ddoCodeToSend,
-          sanctionNo: actionData.sanctionNo,
-          categoryId: actionFarmerData[0]?.categoryId,
-          componentId: actionFarmerData[0]?.componentId,
-          schemeId: actionFarmerData[0]?.schemeId,
-          componentType: actionFarmerData[0]?.componentType,
-        };
-      } else {
-        sendPost = {
-          description: actionData.comment,
-          rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
-          applicationFormId: applicationFormId,
-          workOrderNumber: actionData.workOrderNumber,
-          sanctionOrderNumber: actionData.sanctionOrderNumber,
-          userId: actionData.userId,
-          stepId: actionData.stepId,
-          eligibleAmount: actionData.eligibleAmount,
-          pushToDBTRequestList: sendResponse,
-        };
+      if (!ddoCodeToSend) {
+        warningAlert("Unable to determine DDO Code from payment type", "Alert!!!");
+        return;
       }
 
-      let apiCall;
+      sendPost = {
+        applicationList: [actionFarmerData[0]?.applicationFormId],
+        userMasterId: localStorage.getItem("userMasterId"),
+        paymentMode: "P",
+        pushType: "P",
+        ddoCode: ddoCodeToSend,
+        sanctionNo: actionData.sanctionNo,
+        categoryId: actionFarmerData[0]?.categoryId,
+        componentId: actionFarmerData[0]?.componentId,
+        schemeId: actionFarmerData[0]?.schemeId,
+        componentType: actionFarmerData[0]?.componentType,
+      };
+    } else {
+      sendPost = {
+        description: actionData.comment,
+        rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+        applicationFormId: applicationFormId,
+        workOrderNumber: actionData.workOrderNumber,
+        sanctionOrderNumber: actionData.sanctionOrderNumber,
+        userId: actionData.userId,
+        stepId: actionData.stepId,
+        sanctionNo: actionData.sanctionNo,
+        eligibleAmount: actionData.eligibleAmount,
+        pushToDBTRequestList: sendResponse,
+      };
+    }
 
-      // Check if all conditions are null/false, if so, call inspection update API
-      // if (
-      //   !actionFarmerData[0].pushToDbt &&
-      //   !actionFarmerData[0].sanctionOrder &&
-      //   !actionFarmerData[0].workOrder
-      // ) {
-      //   apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
-      // } else {
-      // First condition: If pushToDbt, sanctionOrder, and workOrder are not present, call inspectionUpdate
-      if (
-        !actionFarmerData[0].pushToDbt &&
-        !actionFarmerData[0].sanctionOrder &&
-        !actionFarmerData[0].workOrder &&
-        !actionFarmerData[0].directlyToFruits
-      ) {
-        apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
-      } else {
-        // Second condition: If sanctionOrder exists and approval failed, call inspectionUpdate instead of sanctionOrderUpdate
-        if (
-          actionFarmerData[0].sanctionOrder && // Check if sanctionOrder is true
-          actionFarmerData[0].financialDelegation && // Check if financialDelegation is true
-          // !isSanctionOrderAllowed // Check if isSanctionOrderAllowed is false
-          (!isSanctionOrderAllowed || actionFarmerData[0].sanctionOrderNumber)
+    let apiCall;
+
+    // Case 1: inspectionUpdate (no pushToDbt, no sanctionOrder, no workOrder, no directlyToFruits)
+    if (
+      !actionFarmerData[0].pushToDbt &&
+      !actionFarmerData[0].sanctionOrder &&
+      !actionFarmerData[0].workOrder &&
+      !actionFarmerData[0].directlyToFruits
+    ) {
+      apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+    } else {
+      // Case 2: workOrder update
+      if (actionFarmerData[0].workOrder) {
+        apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+      }
+
+      // Case 3: sanctionOrder update 
+      if (actionFarmerData[0].sanctionOrder) {
+        if (sendPost.pushToDBTRequestList.length === 0) {
+          warningAlert("Please select the scheme", "Alert!!!");
+          setDisplaySubmit(false);
+          return;
+        } else if (
+          schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
         ) {
-          apiCall = api
-            .post(baseURLDBT + `service/inspectionUpdate`, sendPost)
-            .then((response) => {
-              saveSuccess(
-                "Please forward the request to the higher authority to initiate the generation of the sanction order and submit it to FRUITS."
-              );
-              clear();
-              setValidated(false);
-              getList();
-            })
-            .catch((err) => {
-              saveError(
-                err.response?.data?.error_description ||
-                  "Inspection Update Failed"
-              );
-            });
-        } else {
-          if (actionFarmerData[0].workOrder) {
-            apiCall = api.post(
-              baseURLDBT + `service/workOrderUpdate`,
-              sendPost
-            );
-          }
-          // if (actionFarmerData[0].sanctionOrder) {
-          //   apiCall = api.post(
-          //     baseURLDBT + `service/sanctionOrderUpdate`,
-          //     sendPost
-          //   );
-          // }
-          if (actionFarmerData[0].sanctionOrder) {
-            if (sendPost.pushToDBTRequestList.length === 0) {
-              warningAlert("Please select the scheme", "Alert!!!");
-              return;
-            } else if (
-              schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
-            ) {
-              warningAlert("Select all schemes to proceed", "Alert!!!");
-              return;
-            }
-
-            apiCall = api
-              .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
-              .then((response) => {
-                if (response.data.applicationFormId) {
-                  // Update state with the generated applicationId
-                  setApplicationId(response.data.applicationFormId);
-                  // Pass the applicationId to handleGenerateSanctionOrder
-                  handleGenerateSanctionOrder(
-                    response.data.applicationFormId,
-                    schemeId
-                  );
-                  setDisplaySubmit(false);
-                  getList();
-                } else {
-                  saveError(
-                    "Failed to generate application ID for sanction order."
-                  );
-                  setDisplaySubmit(false);
-                }
-              })
-              .catch((err) => {
-                saveError(
-                  err.response?.data?.error_description ||
-                    "Sanction Order Update Failed"
-                );
-                setDisplaySubmit(false);
-              });
-          }
-
-          if (actionFarmerData[0].directlyToFruits) {
-            // if (sendPost.sanctionNo == 0 || !sendPost.sanctionNo) {
-            //   warningAlert("Please Enter The Sanction Number", "Alert!!!");
-            //   return;
-            // }
-            apiCall = api
-              .post(
-                baseURLDBT +
-                  `applicationTransaction/saveApplicationTransaction`,
-                sendPost
-              )
-              .then((response) => {
-                if (response.data.content.errorCode) {
-                  saveError(response.data.content.error_description);
-                  setDisplaySubmit(false);
-                } else {
-                  pushedSuccess(
-                    checkFileDetails.beneficiaryId,
-                    checkFileDetails.farmerRegNo
-                  );
-                  setDisplaySubmit(false);
-                  getList();
-                }
-              })
-              .catch((err) => {
-                // For testing purpose Uncomment saveError and delete pushedSuccess
-                saveError(
-                  err.response?.data?.error_description ||
-                    "Sanction Order Update Failed"
-                );
-                setDisplaySubmit(false);
-                // pushedSuccess(checkFileDetails.beneficiaryId,checkFileDetails.farmerRegNo);
-              });
-          }
+          warningAlert("Select all schemes to proceed", "Alert!!!");
+          setDisplaySubmit(false);
+          return;
         }
-        if (actionFarmerData[0].pushToDbt) {
-          apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
-        }
-      }
-
-      if (apiCall) {
-        apiCall
+        
+        apiCall = api
+          .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
           .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.errorMessages[0]);
-            } else if (response.data.error) {
-              saveError(response.data.error_description);
-            } else {
-              // Generate the acknowledgment after a successful work order update
-              // if (actionFarmerData[0].workOrder) {
-              //   generateWorkOrderAcknowledgment(applicationFormId,schemeId);
-              // }
-              // if (
-              //   actionFarmerData[0].workOrder &&
-              //   actionFarmerData[0].workOrderForScheme === "PDMC"
-              // ) {
-              //   generateWorkOrderAcknowledgment(applicationFormId, schemeId); // Pass schemeId to API
-              // }
-              if (actionFarmerData[0].workOrder) {
-                if (
-                  actionFarmerData[0].workOrderForScheme === "PDMC" ||
-                  actionFarmerData[0].workOrderForScheme === "PMKSY"
-                ) {
-                  generateWorkOrderAcknowledgment(
-                    applicationFormId,
-                    workOrderSchemeId
-                  );
-                } else if (
-                  actionFarmerData[0].workOrderForScheme ===
-                    "Silk Samagra State" ||
-                  actionFarmerData[0].workOrderForScheme ===
-                    "Silk Samagra Central"
-                ) {
-                  generateWorkOrderAcknowledgmentRH(
-                    applicationFormId,
-                    workOrderSchemeId
-                  );
-                }
-              }
-
-              saveSuccess();
+            if (response.data.applicationFormId) {
+              setApplicationId(response.data.applicationFormId);
+              handleGenerateSanctionOrder(
+                response.data.applicationFormId,
+                schemeId
+              );
+              setDisplaySubmit(false);
               getList();
-              clear();
-              setValidated(false);
+            } else {
+              saveError("Failed to generate application ID for sanction order.");
+              setDisplaySubmit(false);
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            saveError(
+              err.response?.data?.error_description ||
+                "Sanction Order Update Failed"
+            );
+            setDisplaySubmit(false);
           });
       }
 
-      setValidated(true);
+      // Case 4: directly to fruits
+      if (actionFarmerData[0].directlyToFruits) {
+        apiCall = api
+          .post(
+            baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.content.errorCode) {
+              saveError(response.data.content.error_description);
+              setDisplaySubmit(false);
+            } else {
+              pushedSuccess(
+                checkFileDetails.beneficiaryId,
+                checkFileDetails.farmerRegNo
+              );
+              setDisplaySubmit(false);
+              getList();
+            }
+          })
+          .catch((err) => {
+            saveError(
+              err.response?.data?.error_description ||
+                "Sanction Order Update Failed"
+            );
+            setDisplaySubmit(false);
+          });
+      }
+
+      // Case 5: pushToDbt
+      if (actionFarmerData[0].pushToDbt) {
+        apiCall = api.post(baseURLDBT + `service/pushToDBT`, sendPost);
+      }
     }
-  };
+
+    if (apiCall) {
+      apiCall
+        .then((response) => {
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data.error) {
+            saveError(response.data.error_description);
+          } else {
+            // Work order acknowledgment
+            if (actionFarmerData[0].workOrder) {
+              if (
+                actionFarmerData[0].workOrderForScheme === "PDMC" ||
+                actionFarmerData[0].workOrderForScheme === "PMKSY"
+              ) {
+                generateWorkOrderAcknowledgment(
+                  applicationFormId,
+                  workOrderSchemeId
+                );
+              } else if (
+                actionFarmerData[0].workOrderForScheme ===
+                  "Silk Samagra State" ||
+                actionFarmerData[0].workOrderForScheme ===
+                  "Silk Samagra Central"
+              ) {
+                generateWorkOrderAcknowledgmentRH(
+                  applicationFormId,
+                  workOrderSchemeId
+                );
+              }
+            }
+
+            saveSuccess();
+            getList();
+            clear();
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+
+    setValidated(true);
+  }
+};
+
 
   // const viewModal = async (e) => {
   //   if (!!actionFarmerData[0]?.applicationFormId) {
@@ -3497,7 +3751,7 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              {actionFarmerData[0]?.directlyToFruits && (
+                              {actionFarmerData[0]?.sanctionOrder && (
                                 <Col lg="6">
                                   <Form.Group className="form-group">
                                     <Form.Label>
@@ -3520,117 +3774,7 @@ function DashboardReportList() {
                                 </Col>
                               )}
 
-                              {/* <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    Approval Stage
-                                    <span className="text-danger">*</span>
-                                  </Form.Label>
-                                  <Col>
-                                    <div className="form-control-wrap">
-                                      <Form.Select
-                                        name="stepId"
-                                        value={actionData.stepId}
-                                        onChange={handleActionInputs}
-                                        onBlur={() => handleActionInputs}
-                                        required
-                                        isInvalid={
-                                          actionData.stepId === undefined ||
-                                          actionData.stepId === "0"
-                                        }
-                                        disabled={fieldsDisabled}
-                                        // isInvalid={
-                                        //   actionData.approvalStageId === undefined ||
-                                        //   actionData.approvalStageId === "0"
-                                        // }
-                                      >
-                                        <option value="">
-                                          Select Approval Stage
-                                        </option>
-                                        {approvalStageAfterNextStepListData.map(
-                                          (list) => (
-                                            <option
-                                              key={list.approvalStageId}
-                                              value={list.approvalStageId}
-                                            >
-                                              {list.approvalStageName}
-                                            </option>
-                                          )
-                                        )}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        Approval Stage Name is required
-                                      </Form.Control.Feedback>
-                                    </div>
-                                  </Col>
-                                </Form.Group>
-                              </Col> */}
-
-                              {/* <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>Approval Stage <span className="text-danger">*</span></Form.Label>
-                                  <Form.Select
-                                    name="stepId"
-                                    value={actionData.stepId}
-                                    onChange={handleActionInputs}
-                                    required
-                                    // isInvalid={!actionData.stepId || actionData.stepId === "0"}
-                                    disabled={fieldsDisabled}
-                                  >
-                                    <option value="">Select Approval Stage</option>
-                                    {(actionData.rejectType === "Objection" ? approvalRejectStageBeforeStepListData : approvalStageAfterNextStepListData).map((list) => (
-                                      <option key={list.approvalStageId} value={list.approvalStageId}>
-                                        {list.approvalStageName}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Approval Stage Name is required
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    User
-                                    <span className="text-danger">*</span>
-                                  </Form.Label>
-                                  <Col>
-                                    <div className="form-control-wrap">
-                                      <Form.Select
-                                        name="userId"
-                                        value={actionData.userId}
-                                        onChange={handleActionInputs}
-                                        onBlur={() => handleActionInputs}
-                                        required
-                                        isInvalid={
-                                          actionData.userId === undefined ||
-                                          actionData.userId === "0"
-                                        }
-                                        disabled={fieldsDisabled}
-                                        // isInvalid={
-                                        //   actionData.userId === undefined ||
-                                        //   actionData.userId === "0"
-                                        // }
-                                      >
-                                        <option value="">Select User</option>
-                                        {userFromDistrictData.map((list) => (
-                                          <option
-                                            key={list.userId}
-                                            value={list.userId}
-                                          >
-                                            {list.userName}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        User is required
-                                      </Form.Control.Feedback>
-                                    </div>
-                                  </Col>
-                                </Form.Group>
-                              </Col> */}
+                              
 
                               {actionFarmerData[0]?.financialDelegation ? (
                                 isSanctionOrderAllowed ? (
@@ -3909,13 +4053,7 @@ function DashboardReportList() {
                         </Card>
                       </Block>
 
-                      {/* <Col lg="12">
-                        <div className="d-flex justify-content-center gap-2">
-                          <Button type="submit" variant="success">
-                            Submit
-                          </Button>
-                        </div>
-                      </Col> */}
+                      
                     </Accordion.Body>
                   </Accordion.Item>
 
@@ -3936,119 +4074,11 @@ function DashboardReportList() {
                           Generate Work Order
                         </Accordion.Header>
                         <Accordion.Body>
-                          {/* <Block className="mt-3">
-                            <Row>
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Work Order No.</strong>
-                                  </Form.Label>
-                                  <Form.Control
-                                    id="workOrderNumber"
-                                    type="text"
-                                    name="workOrderNumber"
-                                    value={actionData.workOrderNumber}
-                                    onChange={handleActionInputs}
-                                    placeholder="Enter Work Order NO."
-                                  />
-                                </Form.Group>
-                              </Col> */}
-
-                          {/* <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    Approval Stage
-                                  </Form.Label>
-                                  <Col>
-                                    <div className="form-control-wrap">
-                                      <Form.Select
-                                        name="stepId"
-                                        value={actionData.stepId}
-                                        onChange={handleActionInputs}
-                                        onBlur={() => handleActionInputs}
-                                        // required
-                                        // isInvalid={
-                                        //   actionData.approvalStageId === undefined ||
-                                        //   actionData.approvalStageId === "0"
-                                        // }
-                                      >
-                                        <option value="">
-                                          Select Approval Stage
-                                        </option>
-                                        {approvalStageAfterNextStepListData.map(
-                                          (list) => (
-                                            <option
-                                              key={list.approvalStageId}
-                                              value={list.approvalStageId}
-                                            >
-                                              {list.approvalStageName}
-                                            </option>
-                                          )
-                                        )}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        Approval Stage Name is required
-                                      </Form.Control.Feedback>
-                                    </div>
-                                  </Col>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    User
-                                  </Form.Label>
-                                  <Col>
-                                    <div className="form-control-wrap">
-                                      <Form.Select
-                                        name="userId"
-                                        value={actionData.userId}
-                                        onChange={handleActionInputs}
-                                        onBlur={() => handleActionInputs}
-                                        // required
-                                        // isInvalid={
-                                        //   actionData.userId === undefined ||
-                                        //   actionData.userId === "0"
-                                        // }
-                                      >
-                                        <option value="">Select User</option>
-                                        {userFromDistrictData.map((list) => (
-                                          <option
-                                            key={list.userId}
-                                            value={list.userId}
-                                          >
-                                            {list.userName}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                     
-                                    </div>
-                                  </Col>
-                                </Form.Group>
-                              </Col> */}
-                          {/* </Row> */}
-                          {/* </Block> */}
-
-                          {/* <Col lg="12"> */}
-                          {/* <div className="gap-col mt-1">
-                          <ul className="d-flex align-items-center justify-content-center gap g-3">
-                            <li>
-                              <Button type="submit" variant="success">
-                                Generate Work Order
-                              </Button>
-                            </li>
-                          </ul>
-                        </div> */}
-                          {/* </Col> */}
+                          
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
-                  {/* {actionFarmerData.length > 0 &&
-                    actionFarmerData[0].sanctionOrder && ( */}
-                  {/* {actionFarmerData.length > 0 &&
-                      actionFarmerData[0].sanctionOrder &&
-                      isSanctionOrderAllowed && ( */}
+                 
                   {actionFarmerData.length > 0 &&
                     !actionFarmerData[0].sanctionOrderNumber &&
                     (actionFarmerData[0].financialDelegation
@@ -4221,18 +4251,7 @@ function DashboardReportList() {
                             </ul>
                           </div>
 
-                          {/* Generate Sanction Order Button */}
-                          {/* <div className="d-flex justify-content-center mt-3">
-                          <Button variant="primary" onClick={handleGenerateSanctionOrder}>
-                            Generate Sanction Order
-                          </Button>
-                        </div>
-                        <Button
-                        variant="success"
-                        onClick={() => handleGenerateSanctionOrder(applicationFormId)}
-                      >
-                        Generate Sanction Order
-                      </Button> */}
+                          
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -4262,83 +4281,7 @@ function DashboardReportList() {
                               }}
                             >
                               <Card.Body>
-                                {/* <div style={{ overflowX: "auto" }}>
-                                  <table
-                                    className="table small table-bordered table-hover"
-                                    style={{ tableLayout: "fixed" }}
-                                  >
-                                    <thead
-                                      style={{ backgroundColor: "#27488A" }}
-                                    >
-                                      <tr>
-                                        {[
-                                          "Scheme Quota Name",
-                                          "Component Name",
-                                          "Allocated Amount",
-                                          "Share Percentage",
-                                          "Subsidy Amount",
-                                          "Action",
-                                        ].map((header) => (
-                                          <th
-                                            key={header}
-                                            style={{
-                                              width: "10%",
-                                              color: "white",
-                                            }}
-                                          >
-                                            {header}
-                                          </th>
-                                        ))}
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {pushToDBTListData?.length > 0 ? (
-                                        pushToDBTListData.map(
-                                          (pushDBTList, index) => (
-                                            <tr key={index}>
-                                              {[
-                                                "schemeQuotaName",
-                                                "schemeComponentName",
-                                                "allocatedAmount",
-                                                "shareInPercentage",
-                                                "subsidyAmount",
-                                              ].map((key) => (
-                                                <td
-                                                  key={key}
-                                                  style={{
-                                                    wordBreak: "break-word",
-                                                  }}
-                                                >
-                                                  {pushDBTList[key] || "N/A"}
-                                                </td>
-                                              ))}
-                                              <td>
-                                                {" "}
-                                                <Button
-                                                  variant="primary"
-                                                  onClick={() =>
-                                                    handleShowModal3(index)
-                                                  }
-                                                >
-                                                  Add
-                                                </Button>
-                                              </td>
-                                            </tr>
-                                          )
-                                        )
-                                      ) : (
-                                        <tr>
-                                          <td
-                                            colSpan="10"
-                                            className="text-center"
-                                          >
-                                            No Details Available
-                                          </td>
-                                        </tr>
-                                      )}
-                                    </tbody>
-                                  </table>
-                                </div> */}
+                               
                                 <Row>
                                   <DataTable
                                     tableClassName="data-table-head-light table-responsive"
@@ -4382,83 +4325,7 @@ function DashboardReportList() {
                               }}
                             >
                               <Card.Body>
-                                {/* <div style={{ overflowX: "auto" }}>
-                                  <table
-                                    className="table small table-bordered table-hover"
-                                    style={{ tableLayout: "fixed" }}
-                                  >
-                                    <thead
-                                      style={{ backgroundColor: "#27488A" }}
-                                    >
-                                      <tr>
-                                        {[
-                                          "Scheme Quota Name",
-                                          "Component Name",
-                                          "Allocated Amount",
-                                          "Share Percentage",
-                                          "Subsidy Amount",
-                                          "Action",
-                                        ].map((header) => (
-                                          <th
-                                            key={header}
-                                            style={{
-                                              width: "10%",
-                                              color: "white",
-                                            }}
-                                          >
-                                            {header}
-                                          </th>
-                                        ))}
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {pushToDBTListData?.length > 0 ? (
-                                        pushToDBTListData.map(
-                                          (pushDBTList, index) => (
-                                            <tr key={index}>
-                                              {[
-                                                "schemeQuotaName",
-                                                "schemeComponentName",
-                                                "allocatedAmount",
-                                                "shareInPercentage",
-                                                "subsidyAmount",
-                                              ].map((key) => (
-                                                <td
-                                                  key={key}
-                                                  style={{
-                                                    wordBreak: "break-word",
-                                                  }}
-                                                >
-                                                  {pushDBTList[key] || "N/A"}
-                                                </td>
-                                              ))}
-                                              <td>
-                                                {" "}
-                                                <Button
-                                                  variant="primary"
-                                                  onClick={() =>
-                                                    handleShowModal3(index)
-                                                  }
-                                                >
-                                                  Add
-                                                </Button>
-                                              </td>
-                                            </tr>
-                                          )
-                                        )
-                                      ) : (
-                                        <tr>
-                                          <td
-                                            colSpan="10"
-                                            className="text-center"
-                                          >
-                                            No Details Available
-                                          </td>
-                                        </tr>
-                                      )}
-                                    </tbody>
-                                  </table>
-                                </div> */}
+                                
                                 <Row>
                                   <DataTable
                                     tableClassName="data-table-head-light table-responsive"
@@ -4739,7 +4606,8 @@ function DashboardReportList() {
                     <option value="">Select Payment Method</option>
                     <option value="CASH">CASH</option>
                     <option value="DBT">DBT</option>
-                    <option value="CASH">CASH</option>
+                    <option value="K2">K2</option>
+                    {/* <option value="CASH">CASH</option> */}
                     <option value="CHEQUE">CHEQUE</option>
                     <option value="ONLINE">ONLINE</option>
                   </Form.Select>

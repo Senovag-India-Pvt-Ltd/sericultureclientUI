@@ -256,16 +256,21 @@ const [showCheckboxes, setShowCheckboxes] = useState(false);
   const exportCsv = (e) => {
     api
       .post(
-        baseURLDBT + `service/subsidy-sanctioned-dbt-push-list-report`,
+        baseURLDBT + `service/getVendorListForK2PushReport`,
         {},
         {
           params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
             userMasterId: localStorage.getItem("userMasterId"),
-            // text: searchData.text,
-            // type: searchData.type,
-            displayAllRecords: true,
+          fruitsId: addressDetails.fruitsId || '',
+          beneficiaryId: addressDetails.beneficiaryId || '',
+          financialYearId: addressDetails.financialYearId || 0,
+          componentId: addressDetails.componentId || 0,
+          subSchemeId: addressDetails.subSchemeId || 0,
+          districtId: addressDetails.districtId || 0,
+          talukId: addressDetails.talukId || 0,
+          tscMasterId: addressDetails.tscMasterId || 0,
+          scSchemeDetailsId: addressDetails.scSchemeDetailsId || 0,
+          scCategoryId: addressDetails.scCategoryId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -278,7 +283,7 @@ const [showCheckboxes, setShowCheckboxes] = useState(false);
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `dbt_subsidy_sanctioned_report.csv`;
+        link.download = `vendor_list_for_k2_push_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
