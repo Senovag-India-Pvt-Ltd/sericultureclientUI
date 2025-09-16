@@ -2374,7 +2374,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                        }}
                        className="mb-2"
                      >
-                       Download Sanction Order or Work Order
+                       Download
                      </Accordion.Header>
                      <Accordion.Body>
                        {/* {viewDetailsData?.documents?.length > 0 ? (
