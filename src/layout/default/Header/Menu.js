@@ -1501,38 +1501,6 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
-            {showMenu.DBT_Reject_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Report Rejection List")}
-                  to="/seriui/report-reject-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_Success_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Report Success List")}
-                  to="/seriui/report-success-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_DBT_Pushed_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("DBT Pushed List")}
-                  to="/seriui/dbt-pushed-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_Drawing_Officer_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Drawing Officer List")}
-                  to="/seriui/drawing-officer-list"
-                />
-              </MenuItem>
-            ) : null}
             {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
@@ -1565,6 +1533,39 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.DBT_Reject_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Report Rejection List")}
+                  to="/seriui/report-reject-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Success_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Report Success List")}
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_DBT_Pushed_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Pushed List")}
+                  to="/seriui/dbt-pushed-list"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.DBT_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Drawing Officer List")}
+                  to="/seriui/drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null} */}
+            
             {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
