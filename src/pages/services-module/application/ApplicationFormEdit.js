@@ -16,7 +16,6 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLFarmerServer =
   process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -34,22 +33,38 @@ function ApplicationFormEdit() {
     scHeadAccountId: "",
     scCategoryId: "",
     scSubSchemeType: "",
+    scVendorId: "",
+    farmerId: "",
+    expectedAmount: "",
+    financialYearMasterId: "",
     scComponentId: "",
-    sanctionAmount: "",
     schemeAmount: "",
     sanctionNumber: "",
-    farmerId: "",
-    financialYearMasterId: "",
-    periodFrom: new Date(),
-    periodTo: new Date(),
+    spacingId: "",
+    hectareId: "",
+    periodFrom: "",
+    periodTo: "",
   });
 
   const [developedLand, setDevelopedLand] = useState({
-    landDeveloped: 0,
-    unitType: "",
-    gunta: "",
-    fgunta: "",
+    dbtFarmerLandDetailsId: "",
+    scApplicationFormId: "",
+    farmerId: "",
+    hissa: "",
+    subsidyAvailed: "",
+    surveyNumber: "",
+    ownerName: "",
+    surNoc: "",
+    ownerNo: "",
+    mainOwnerNo: "",
     acre: "",
+    gunta: "",
+    landCode: "",
+    districtCode: "",
+    talukCode: "",
+    hobliCode: "",
+    villageCode: "",
+    fgunta: "",
   });
 
   const [equipment, setEquipment] = useState({
@@ -80,6 +95,109 @@ function ApplicationFormEdit() {
     // setPhotoFile(file);
   };
 
+     
+    
+      const handleEditDocument = async (documentPath) => {
+        await getDocumentFile(documentPath);
+        handleShowModal();
+      };
+
+      const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
+
+      const handleDocumentClick = async (documentPath) => {
+        setCurrentDocumentPath(documentPath);
+        await getDocumentFile(documentPath);
+      };
+      
+        // To get Photo from S3 Bucket
+        const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+      
+        const getDocumentFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.get(
+              baseURLDBT + `service/downLoadFile?${parameters}`,
+              {
+                responseType: "arraybuffer",
+              }
+            );
+            const blob = new Blob([response.data]);
+            const url = URL.createObjectURL(blob);
+            setSelectedDocumentFile(url);
+          } catch (error) {
+            console.error("Error fetching file:", error);
+          }
+        };
+
+        const downloadFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.get(
+              baseURLDBT + `service/downLoadFile?${parameters}`,
+              {
+                responseType: "arraybuffer",
+              }
+            );
+            const blob = new Blob([response.data]);
+            const url = URL.createObjectURL(blob);
+      
+            const fileExtension = file.split(".").pop();
+      
+            const link = document.createElement("a");
+            link.href = url;
+      
+            const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+      
+            link.download = modifiedFileName;
+      
+            document.body.appendChild(link);
+            link.click();
+      
+            document.body.removeChild(link);
+          } catch (error) {
+            console.error("Error fetching file:", error);
+          }
+        };
+
+        const deleteFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.delete(
+              baseURLDBT + `service/delete?${parameters}`
+            );
+            if (response.status === 200) {
+              console.log("File deleted successfully");
+              // Optionally, you can refresh the file list or update the UI
+            }
+          } catch (error) {
+            console.error("Error deleting file:", error);
+          }
+        };
+
+        const [schemeDetails, setSchemeDetails] = useState({});
+const [schemeId, setSchemeId] = useState("");
+
+// Get data from API
+const getAreaDetailsList = () => {
+  setLoading(true);
+  api
+    .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
+    .then((response) => {
+      setSchemeDetails(response.data.content); // Store response data in state
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+    });
+};
+
+useEffect(() => {
+  if (schemeId) {
+    getAreaDetailsList();
+  }
+}, [schemeId]);
+        
+
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
     hobli: "",
@@ -90,110 +208,6 @@ function ApplicationFormEdit() {
 
   const [farmerId, setFarmerId] = useState(0);
 
-  // const getIdList = () => {
-  //   setLoading(true);
-  //   const response = api
-  //     .get(baseURLDBT + `service/get-join/${id}`)
-  //     .then((response) => {
-  //       // setData(response.data.content);
-  //       const datas = response.data.content;
-  //       // console.log("hellohello", response.data.content);
-  //       setData((prev) => ({
-  //         ...prev,
-  //         scSchemeDetailsId: datas.schemeId,
-  //         scSubSchemeDetailsId: datas.subSchemeId,
-  //         scComponentId: datas.componentId,
-  //         scCategoryId: datas.categoryId,
-  //         scHeadAccountId: datas.headOfAccountId,
-  //         financialYearMasterId: datas.financialYearMasterId,
-  //         schemeAmount: datas.schemeAmount,
-  //         sanctionNumber: datas.sanctionNo,
-  //         scSubSchemeType: datas.componentType,
-  //         periodFrom: new Date("2023-04-01"),
-  //         periodTo: new Date("2024-03-31"),
-  //         // periodFrom: datas.periodFrom,
-  //         // periodTo: datas.periodTo,
-  //         // scSubSchemeType:datas.  Need to get from api
-  //       }));
-
-  //       setFarmerId(datas.farmerId);
-
-  //       api
-  //         .get(
-  //           baseURLFarmer +
-  //             `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
-  //         )
-  //         .then((response) => {
-  //           if (response.data.errorCode === -1) {
-  //             saveError(response.data.message);
-  //           } else {
-  //             setFarmerDetails((prev) => ({
-  //               ...prev,
-  //               village:
-  //                 response.data.content.farmerAddress &&
-  //                 response.data.content.farmerAddress[0].villageName,
-  //               talukName:
-  //                 response.data.content.farmerAddress &&
-  //                 response.data.content.farmerAddress[0].talukName,
-  //             }));
-  //             setValidated(false);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           if (
-  //             err.response &&
-  //             err.response &&
-  //             err.response.data &&
-  //             err.response.data.validationErrors
-  //           ) {
-  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //               saveError(err.response.data.validationErrors);
-  //             }
-  //           }
-  //         });
-
-  //       api
-  //         .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
-  //         .then((response) => {
-  //           if (response.data.errorCode === -1) {
-  //             saveError(response.data.message);
-  //           } else {
-  //             setFarmerDetails((prev) => ({
-  //               ...prev,
-  //               farmerName: response.data.content.firstName,
-  //             }));
-  //             setValidated(false);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           if (
-  //             err.response &&
-  //             err.response &&
-  //             err.response.data &&
-  //             err.response.data.validationErrors
-  //           ) {
-  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //               saveError(err.response.data.validationErrors);
-  //             }
-  //           }
-  //         });
-
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       const message = err.response.data.errorMessages[0].message[0].message;
-  //       setData({});
-  //       // editError(message);
-  //       setLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getIdList();
-  // }, [id]);
-
-  console.log("data.scSubSchemeDetailsId", data.scSubSchemeDetailsId);
-  console.log("FarmerDetails master", farmerDetails);
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -211,8 +225,12 @@ function ApplicationFormEdit() {
           schemeAmount: datas.schemeAmount,
           sanctionNumber: datas.sanctionNo,
           scSubSchemeType: datas.componentType,
-          periodFrom: new Date("2023-04-01"),
-          periodTo: new Date("2024-03-31"),
+          vendorId: datas.vendorId,
+          description: datas.description,
+          hectareId: datas.hectareId,
+          spacingId: datas.spacingId,
+          periodFrom: new Date("2025-04-01"),
+          periodTo: new Date("2026-03-31"),
         }));
 
         setFarmerId(datas.farmerId);
@@ -285,60 +303,16 @@ function ApplicationFormEdit() {
             setLoading(false);
           });
 
-        // api
-        // .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-        //   fruitsId: farmerDetails.fid,
-        // })
-        // .then((response) => {
-
-        //   console.log("landdetails", response.data);
-        //   if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-        //     setLandDetailsList(
-        //       response.data.content.farmerLandDetailsDTOList
-        //     );
-        //   }
-        // })
-        // .catch((err) => {
-        //   setLandDetailsList([]);
-        // });
-
-        // api
-        //   .get(
-        //     baseURLRegistration +
-        //       `farmer-land-details/get-by-farmer-id-join/${datas.farmerId}`
-        //   )
-        //   .then((response) => {
-        //     if (response.data.errorCode === -1) {
-        //       saveError(response.data.message);
-        //     } else {
-        //       const landDetails = response.data.content.farmerLandDetails || [];
-        //       console.log("Fetched land details:", landDetails); // Log the fetched data
-        //       setLandDetailsList(landDetails); // Set land details list
-
-        //       const areaDetails = landDetails.reduce((acc, detail) => {
-        //         acc[detail.farmerLandDetailsId] = {
-        //           acre: detail.acre || "",
-        //           gunta: detail.gunta || "",
-        //           fgunta: detail.fgunta || "",
-        //         };
-        //         return acc;
-        //       }, {});
-        //       setDevelopedArea(areaDetails);
-        //     }
-        //     setLoading(false);
-        //   })
-        //   .catch((err) => {
-        //     handleError(err);
-        //     setLoading(false);
-        //   });
-
-        setLoading(false);
-      })
+       // Call handleView with applicationFormId
+      handleView(id); // Ensure applicationFormId exists in datas
+      
+      setLoading(false);
+    })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
         setLoading(false);
-      });
+      }); 
   };
 
   useEffect(() => {
@@ -377,6 +351,9 @@ function ApplicationFormEdit() {
     }
   };
 
+  const [savedLandDetailsList, setSavedLandDetailsList] = useState([]);
+ 
+
   console.log("changes", data);
 
   const handleRemoveImage = (documentId) => {
@@ -387,19 +364,42 @@ function ApplicationFormEdit() {
     // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
   };
 
-  // console.log(documentAttachments);
+  
 
-  // Upload Image to S3 Bucket
+  const [uploadDocuments, setUploadDocuments] = useState({
+    applicationFormId: "",
+    documentTypeId: "",
+    documentPath: "",
+  });
+  const handleDocumentInputs = (e) => {
+    let { name, value } = e.target;
+    // setUploadDocuments({ ...uploadDocuments, [name]: value });
+    setUploadDocuments(prev=>({...prev,  [name]: value }));
+  };
+
+  //Display Document
+   const [document, setDocument] = useState("");
+
+   const handleDocumentChange = (e) => {
+     const file = e.target.files[0];
+     setDocument(file);
+     setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
+    //  setPhotoFile(file);
+   };
+
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
+
   const handleAttachFileUpload = async (documentId) => {
-    // const parameters = `applicationFormId =${data.applicationId}`;
     const param = {
-      applicationFormId: applicationId,
+      applicationFormId: id,
       documentTypeId: documentId,
     };
+  
     try {
       const formData = new FormData();
-      formData.append("multipartFile", documentAttachments[documentId]);
-
+      // formData.append("multipartFile", documentAttachments[documentId]);
+      formData.append("multipartFile", document);
+  
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
         formData,
@@ -410,15 +410,64 @@ function ApplicationFormEdit() {
           },
         }
       );
+  
       console.log("File upload response:", response.data);
+  
+      // Show SweetAlert success message after successful upload
+      // SweetAlert success function
+  Swal.fire({
+    icon: "success",
+    title: "File uploaded successfully",
+  });
+  // setIsUploaded(true);
+  // Update the upload status for this specific document
+  setUploadStatus((prevStatus) => ({
+    ...prevStatus,
+    [documentId]: true, // Mark this document as uploaded
+  }));
+   // Add the uploaded document to the list of uploaded documents
+  //  setUploadedDocuments((prevDocs) => [
+  //   ...prevDocs,
+  //   {
+  //     documentId,
+  //     documentName: document.name,
+  //   },
+  // ]);
+  // Modify the setUploadedDocuments to include documentMasterName
+setUploadedDocuments((prevDocs) => [
+  ...prevDocs,
+  {
+    documentId,
+    documentName: document.name,
+    documentMasterName: docListData.find(
+      (list) => list.documentMasterId === documentId
+    )?.documentMasterName, // Find and store the documentMasterName
+    documentFile: document, // Store the file itself for image preview
+  },
+]);
     } catch (error) {
       console.error("Error uploading file:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error uploading file. Please try again.",
+      });
     }
   };
+const[applicationFormId ,setApplicationFormId] = useState ("");
 
   const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = (applicationFormId) => {
+    // Check if the applicationFormId is valid
+    if (applicationFormId) {
+      setApplicationId(applicationFormId);  // Set applicationId if passed from the button click
+    }
+    setShowModal(true);  // Open the modal
+  };
+  
+  
+  
+  // const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   const handleCheckBox = (e) => {
@@ -432,15 +481,17 @@ function ApplicationFormEdit() {
     setData({ ...data, [type]: date });
   };
 
+  console.log("hehehehehe", data);
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [landDetailsList, setLandDetailsList] = useState([]);
 
-  const [savedLandDetailsList, setSavedLandDetailsList] = useState([]);
-
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
   const [developedArea, setDevelopedArea] = useState([]);
+
+  
 
   const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
     setLandDetailsIds((prevIds) => {
@@ -473,6 +524,46 @@ function ApplicationFormEdit() {
       return newIds;
     });
   };
+
+   // to get scheme-Quota-details
+   const [spacingListData, setSpacingDetailsListData] = useState(
+    []
+  );
+
+  const getSpacingList = () => {
+    api
+      .get(baseURLMasterData + `spacingMaster/get-all`)
+      .then((response) => {
+        setSpacingDetailsListData(response.data.content.spacingMaster);
+      })
+      .catch((err) => {
+        setSpacingDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSpacingList();
+  }, []);
+
+  // to get scheme-Quota-details
+  const [hectareListData, setHectareListData] = useState(
+    []
+  );
+
+  const getHectareList = () => {
+    api
+      .get(baseURLMasterData + `hectareMaster/get-all`)
+      .then((response) => {
+        setHectareListData(response.data.content.hectareMaster);
+      })
+      .catch((err) => {
+        setHectareListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHectareList();
+  }, []);
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -535,26 +626,38 @@ function ApplicationFormEdit() {
     }
   }, [data.scSchemeDetailsId]);
 
-  // const getSubSchemeList = () => {
-  //   const response = api
-  //     .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-  //     .then((response) => {
-  //       if (response.data.content.scSubSchemeDetails) {
-  //         setScSubSchemeDetailsListData(
-  //           response.data.content.scSubSchemeDetails
-  //         );
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setScSubSchemeDetailsListData([]);
-  //       // alert(err.response.data.errorMessages[0].message[0].message);
-  //     });
-  // };
+  
 
-  // useEffect(() => {
-  //   getSubSchemeList();
-  // }, []);
+  const [viewDetailsData, setViewDetailsData] = useState({
+    // applicationDetails: [],
+    // landDetails: [],
+    // applicationTransactionDetails: [],
+    documentsResponses: [],
+  });
 
+  const handleView = (_id) => {
+    api
+      .post(baseURLDBT + `service/viewServiceApplicationDetails`, {
+        applicationFormId: _id,
+      })
+      .then((response) => {
+        const content = response.data.content[0];
+        
+        // if (content.applicationDetailsResponses.length <= 0) {
+        //   saveError("No Details Found!!!");
+        // } else {
+          // Update state with document responses and other details if needed
+          setViewDetailsData(content.documentsResponses);
+          
+          // Fetch the ID list based on applicationFormId
+          // getIdList(_id);
+        // }
+      })
+      .catch((err) => {
+        // Handle error if needed
+      });
+  };
+  
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
@@ -578,29 +681,11 @@ function ApplicationFormEdit() {
     getFinancialDefaultDetails();
   }, []);
 
+  console.log(data);
+
   // to get head of account by sc-scheme-details
   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
-  // const getHeadAccountList = (_id) => {
-  //   api
-  //     .get(
-  //       baseURLMasterData + `scHeadAccount/get-by-sc-scheme-details-id/${_id}`
-  //     )
-  //     .then((response) => {
-  //       if (response.data.content.scHeadAccount) {
-  //         setScHeadAccountListData(response.data.content.scHeadAccount);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setScHeadAccountListData([]);
-  //       // alert(err.response.data.errorMessages[0].message[0].message);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (data.scSchemeDetailsId) {
-  //     getHeadAccountList(data.scSchemeDetailsId);
-  //   }
-  // }, [data.scSchemeDetailsId]);
+  
   const getHeadAccountList = () => {
     api
       .get(baseURLMasterData + `scHeadAccount/get-all`)
@@ -621,28 +706,7 @@ function ApplicationFormEdit() {
 
   // to get category by head of account id
   const [scCategoryListData, setScCategoryListData] = useState([]);
-  // const getCategoryList = (_id) => {
-  //   api
-  //     .get(
-  //       baseURLMasterData +
-  //         `scHeadAccountCategory/get-by-sc-head-account-id/${_id}`
-  //     )
-  //     .then((response) => {
-  //       if (response.data.content.scHeadAccountCategory) {
-  //         setScCategoryListData(response.data.content.scHeadAccountCategory);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setScCategoryListData([]);
-  //       // alert(err.response.data.errorMessages[0].message[0].message);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (data.scHeadAccountId) {
-  //     getCategoryList(data.scHeadAccountId);
-  //   }
-  // }, [data.scHeadAccountId]);
+  
 
   const getCategoryList = () => {
     api
@@ -680,23 +744,7 @@ function ApplicationFormEdit() {
     getVendorList();
   }, []);
 
-  // to get uploadable documents
-  // const [docListData, setDocListData] = useState([]);
-
-  // const getDocList = () => {
-  //   api
-  //     .post(baseURLDBT + `service/getApplicableDocumentList`)
-  //     .then((response) => {
-  //       setDocListData(response.data.content);
-  //     })
-  //     .catch((err) => {
-  //       setDocListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getDocList();
-  // }, []);
+  
 
   // to get scheme-Quota-details
   const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
@@ -717,20 +765,7 @@ function ApplicationFormEdit() {
   // to get component
   const [scComponentListData, setScComponentListData] = useState([]);
 
-  // const getComponentList = () => {
-  //   api
-  //     .get(baseURLMasterData + `scComponent/get-all`)
-  //     .then((response) => {
-  //       setScComponentListData(response.data.content.scComponent);
-  //     })
-  //     .catch((err) => {
-  //       setScComponentListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getComponentList();
-  // }, []);
+  
 
   const getComponentList = (schemeId, subSchemeId) => {
     api
@@ -814,6 +849,9 @@ function ApplicationFormEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if (name === "scSchemeDetailsId") {
+      setSchemeId(value);  // Trigger fetching scheme details
+    }
   };
 
   const handleDevelopedLandInputs = (e) => {
@@ -826,6 +864,17 @@ function ApplicationFormEdit() {
     let name = e.target.name;
     let value = e.target.value;
     setEquipment({ ...equipment, [name]: value });
+  };
+
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined dates
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0")
+    );
   };
 
   const postData = (event) => {
@@ -841,30 +890,40 @@ function ApplicationFormEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const formattedDates = {
+        periodFrom: formatDate(data.periodFrom),
+        periodTo: formatDate(data.periodTo),
+      };
       const sendPost = {
         id: id,
-        farmerId: data.farmerId,
-        payToVendor: equipment.payToVendor,
+        farmerId: farmerId,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
-        // subSchemeId: data.scSubSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeType,
+        componentTypeName: "",
+        sanctionAmount: data.sanctionAmount,
+        schemeAmount: data.schemeAmount,
+        sanctionNo: data.sanctionNumber,
+        acre: developedLand.acre,
+        gunta: developedLand.gunta,
+        fgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
+        componentId: data.scComponentId,
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        componentId: data.scComponentId,
-        componentType: data.scSubSchemeType,
-        // expectedAmount: data.expectedAmount,
+        expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
+        vendorId: equipment.vendorId,
+        spacingId: data.spacingId,
+        hectareId: data.hectareId,
+        description: equipment.description,
         devAcre: 0,
         devGunta: 0,
         devFGunta: 0,
-        schemeAmount: data.schemeAmount,
-        sanctionNo: data.sanctionNumber,
-        initialAmount: data.expectedAmount,
-        periodFrom: data.periodFrom,
-        periodTo: data.periodTo,
+        periodFrom: formattedDates.periodFrom,
+        periodTo: formattedDates.periodTo,
       };
 
       if (data.equordev === "land") {
@@ -892,12 +951,16 @@ function ApplicationFormEdit() {
       api
         .post(baseURLDBT + `service/editApplicationForm`, sendPost)
         .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
+          
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data && response.data.error) {
+            saveError(response.data.error_description);
           } else {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
+            
             getIdList();
             setValidated(false);
           }
@@ -943,29 +1006,75 @@ function ApplicationFormEdit() {
     },
   };
 
+  // const clear = () => {
+  //   setData({
+  //   with: "withLand",
+  //   subinc: "subsidy",
+  //   equordev: "land",
+  //   scSchemeDetailsId: "",
+  //   scSubSchemeDetailsId: "",
+  //   scHeadAccountId: "",
+  //   scCategoryId: "",
+  //   scSubSchemeType: "",
+  //   scVendorId: "",
+  //   farmerId: "",
+  //   expectedAmount: "",
+  //   financialYearMasterId: "",
+  //   scComponentId: "",
+  //   schemeAmount: "",
+  //   sanctionNumber: "",
+  //   });
+  //   setDevelopedLand({
+  //     landDeveloped: "",
+  //     unitType: "",
+  //   });
+  //   setEquipment({
+  //     unitType: "",
+  //     description: "",
+  //     price: "",
+  //     vendorId: "",
+  //     payToVendor: false,
+  //   });
+  //   setDocumentAttachments({});
+  //   setSavedLandDetailsList([]);
+  //   setLandDetailsList([]);
+  //   setDevelopedArea([]);
+  //   setLandDetailsIds([]);
+  //   getIdList();
+  //   getDirectData();
+  // };
+
   const clear = () => {
+    // Resetting all data and states
     setData({
       with: "withLand",
       subinc: "subsidy",
       equordev: "land",
       scSchemeDetailsId: "",
       scSubSchemeDetailsId: "",
-      scSubSchemeType: "",
       scHeadAccountId: "",
       scCategoryId: "",
+      scSubSchemeType: "",
+      scVendorId: "",
+      farmerId: "",
+      expectedAmount: "",
+      financialYearMasterId: "",
       scComponentId: "",
-      sanctionAmount: "",
       schemeAmount: "",
       sanctionNumber: "",
-      farmerId: "",
-      financialYearMasterId: "",
-      periodFrom: new Date(),
-      periodTo: new Date(),
+      spacingId: "",
+      hectareId: "",
+      vendorId: "",
+      description: ""
     });
+  
+    // Clear developed land details
     setDevelopedLand({
       landDeveloped: "",
       unitType: "",
     });
+  
+    // Clear equipment-related fields
     setEquipment({
       unitType: "",
       description: "",
@@ -973,131 +1082,40 @@ function ApplicationFormEdit() {
       vendorId: "",
       payToVendor: false,
     });
+  
+    // Clear document attachments
     setDocumentAttachments({});
+  
+    // Clear saved and editable land details
     setSavedLandDetailsList([]);
     setLandDetailsList([]);
+  
+    // Clear developed area data
     setDevelopedArea([]);
+  
+    // Clear land detail IDs
     setLandDetailsIds([]);
+  
+    // Fetch new IDs and other related data again after clearing
     getIdList();
     getDirectData();
   };
+  
 
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: "Updated Successfully",
       //   text: `Receipt Number ${message}`,
     });
+    clear();
   };
+
+  const [uploadStatus, setUploadStatus] = useState({});
 
   const [applicationId, setApplicationId] = useState("");
 
-  const uploadFileConfirm = (post) => {
-    Swal.fire({
-      title: "Do you want to Upload the Documents?",
-      // text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Later",
-    }).then((result) => {
-      if (result.value) {
-        api
-          .post(
-            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
-            post
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              //   saveSuccess();
-              setApplicationId(response.data.content.applicationDocumentId);
-              handleShowModal();
-
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-        setValidated(true);
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        api
-          .post(
-            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
-            post
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              // saveSuccess(response.data.receiptNo);
-              saveSuccess();
-              setApplicationId(response.data.content.applicationDocumentId);
-              clear();
-              // handleShowModal();
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-        setValidated(true);
-        // clear();
-        // Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
+  
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -1187,6 +1205,10 @@ function ApplicationFormEdit() {
     }
   };
 
+  // const handleInlineDevelopedLandChange = (e, row) => {
+  //   const { name, value } = e.target;
+  //   const farmerLandDetailsId = row.farmerLandDetailsId;
+
   const handleInlineDevelopedLandChange = (e, row,i) => {
     const { name, value } = e.target;
     const farmerLandDetailsId =i;
@@ -1200,8 +1222,39 @@ function ApplicationFormEdit() {
     }));
   };
 
+  const handleCheckbox = (e) => {
+    const { value, checked } = e.target;
+  
+    if (checked) {
+      // Add the selected option to the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: [...prevData.equordev, value],
+      }));
+    } else {
+      // Remove the unchecked option from the array
+      setData((prevData) => ({
+        ...prevData,
+        equordev: prevData.equordev.filter((item) => item !== value),
+      }));
+    }
+  };
+  
+  
+
+
   const LandDetailsForDevColumns = [
     {
+      // name: "Select",
+      // selector: "select",
+      // cell: (row) => (
+      //   <input
+      //     type="checkbox"
+      //     name="selectedLand"
+      //     value={row.farmerLandDetailsId}
+      //     checked={landDetailsIds.includes(row.farmerLandDetailsId)}
+      //     onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+      //   />
       name: "Select",
       selector: "select",
       cell: (row, i) => (
@@ -1218,49 +1271,49 @@ function ApplicationFormEdit() {
       button: true,
     },
     {
-      name: "District",
+      name: t("district"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name: t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name: t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1277,7 +1330,7 @@ function ApplicationFormEdit() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1295,7 +1348,7 @@ function ApplicationFormEdit() {
     },
 
     {
-      name: "FGunta",
+      name: t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1312,43 +1365,80 @@ function ApplicationFormEdit() {
       hide: "md",
     },
 
-    {
-      name: "Developed Area (Acre/Gunta/FGunta)",
-      // selector: (row) => row.acre,
-      cell: (row, i) => (
-        <>
-          <Form.Control
-            name="devAcre"
-            type="text"
-            value={developedArea[i]?.devAcre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-            placeholder="Acre"
-            className="m-1"
-          />
-          <Form.Control
-            name="devGunta"
-            type="text"
-            value={developedArea[i]?.devGunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-            placeholder="Gunta"
-            className="m-1"
-          />
-          <Form.Control
-            name="devFGunta"
-            type="text"
-            value={developedArea[i]?.devFGunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-            placeholder="FGunta"
-            className="m-1"
-          />
-        </>
-      ),
-      // cell: (row) => <span>{row.acre}</span>,
-      sortable: true,
-      hide: "md",
-      grow: 3,
-    },
-  ];
+  //   {
+  //     name: "Developed Area (Acre/Gunta/FGunta)",
+  //     // selector: (row) => row.acre,
+  //     cell: (row) => (
+  //       <>
+  //         <Form.Control
+  //           name="acre"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.acre || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="Acre"
+  //           className="m-1"
+  //         />
+  //         <Form.Control
+  //           name="gunta"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="Gunta"
+  //           className="m-1"
+  //         />
+  //         <Form.Control
+  //           name="fgunta"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="FGunta"
+  //           className="m-1"
+  //         />
+  //       </>
+  //     ),
+  //     // cell: (row) => <span>{row.acre}</span>,
+  //     sortable: true,
+  //     hide: "md",
+  //     grow: 3,
+  //   },
+  // ];
+  {
+    name: "Developed Area (Acre/Gunta/FGunta)",
+    // selector: (row) => row.acre,
+    cell: (row, i) => (
+      <>
+        <Form.Control
+          name="devAcre"
+          type="text"
+          value={developedArea[i]?.devAcre || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="Acre"
+          className="m-1"
+        />
+        <Form.Control
+          name="devGunta"
+          type="text"
+          value={developedArea[i]?.devGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="Gunta"
+          className="m-1"
+        />
+        <Form.Control
+          name="devFGunta"
+          type="text"
+          value={developedArea[i]?.devFGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="FGunta"
+          className="m-1"
+        />
+      </>
+    ),
+    // cell: (row) => <span>{row.acre}</span>,
+    sortable: true,
+    hide: "md",
+    grow: 3,
+  },
+];
 
   const LandDetailsColumns = [
     // {
@@ -1368,49 +1458,49 @@ function ApplicationFormEdit() {
     //   button: true,
     // },
     {
-      name: "District",
-      selector: (row) => row.districtName,
+      name: t("district"),
+      selector: (row) => row.districtName,  
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Survey Number",
+      name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Owner",
+      name:  t("owner_name"),
       selector: (row) => row.ownerName,
       cell: (row) => <span>{row.ownerName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Acre",
+      name:  t("Acre"),
       selector: (row) => row.acre,
       // cell: (row) => (
       //   <Form.Control
@@ -1427,7 +1517,7 @@ function ApplicationFormEdit() {
       hide: "md",
     },
     {
-      name: "Gunta",
+      name: t("Gunta"),
       selector: (row) => row.gunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1445,7 +1535,7 @@ function ApplicationFormEdit() {
     },
 
     {
-      name: "FGunta",
+      name:t("FGunta"),
       selector: (row) => row.fgunta,
       // cell: (row) => (
       //   <Form.Control
@@ -1457,10 +1547,11 @@ function ApplicationFormEdit() {
       //     placeholder="Edit FGunta"
       //   />
       // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },
+
     {
       name: "DevAcre",
       selector: (row) => row.devAcre,
@@ -1512,6 +1603,7 @@ function ApplicationFormEdit() {
       sortable: true,
       hide: "md",
     },
+    
     // {
     //   name: "Action",
     //   cell: (row) => (
@@ -1532,6 +1624,138 @@ function ApplicationFormEdit() {
     //   hide: "md",
     // },
   ];
+
+   // to get uploadable documents
+   const [docListData, setDocListData] = useState([]);
+
+   const getDocList = () => {
+     api
+       .get(baseURLMasterData + `documentMaster/get-all`)
+       .then((response) => {
+         setDocListData(response.data.content.documentMaster);
+       })
+       .catch((err) => {
+         setDocListData([]);
+       });
+   };
+
+   useEffect(() => {
+    getDocList();
+  }, []);
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        const response = api
+          .delete(baseURLDBT + `service/delete/${id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            handleView();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const DocumentsUploaded = [
+    
+    {
+      name: "Document Name",
+      selector: (row) => row.documentName,  
+      cell: (row) => <span>{row.documentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Document Path",
+      selector: (row) => row.documentPath,
+      cell: (row) => <span>{row.documentPath}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Documents",
+      selector: (row) => row.documentPath,
+      cell: (row) => (
+        <div>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleDocumentClick(row.documentPath)}
+          >
+            {t("View Document")}
+          </Button>
+          {currentDocumentPath === row.documentPath && selectedDocumentFile && (
+            <>
+              <img
+                style={{ height: "100px", width: "100px" }}
+                src={selectedDocumentFile}
+                alt="Selected File"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => downloadFile(row.documentPath)}
+              >
+                Download Selected File
+              </Button>
+            </>
+          )}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+        
+    {
+      name: t("Action"),
+      // selector: (row) => row.documentPath,
+      cell: (row) => (
+        <div className="text-start w-100">
+       
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => deleteConfirm(row.id)}
+          className="ms-2"
+        >
+          {t("delete")}
+        </Button>
+      </div>
+    ),
+    sortable: false,
+    hide: "md",
+  },
+    
+  ];
+
 
   createTheme(
     "solarized",
@@ -1583,33 +1807,35 @@ function ApplicationFormEdit() {
   };
 
   return (
-    <Layout title="DBT Application Edit">
+    <Layout title=" Edit Scheme Details Form">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">DBT Application Edit</Block.Title>
+            <Block.Title tag="h2"> {t("Edit Scheme Details Form")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+           <ul className="d-flex list-unstyled gap-3">
               <li>
                 <Link
-                  to="/seriui/application-form-list"
-                  className="btn btn-primary btn-md d-md-none"
+                  to="/seriui/report-reject-list-k2"
+                  className="btn d-none d-md-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm btn-primary transition-all"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application Form List</span>
+                  <span>{t("Rejection List-K2")}</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/application-form-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                  to="/seriui/report-reject-list-dbt"
+                  className="btn d-none d-md-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm btn-success transition-all"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application Reject List</span>
+                  <span>{t("Rejection List-DBT")}</span>
                 </Link>
               </li>
             </ul>
+
+
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -1646,13 +1872,13 @@ function ApplicationFormEdit() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Farmer Name:</td>
+                            <td style={styles.ctstyle}>{t("farmer_name")}</td>
                             <td>{farmerDetails.farmerName}</td>
-                            <td style={styles.ctstyle}> FID:</td>
+                            <td style={styles.ctstyle}> {t("FRUITS ID")}</td>
                             <td>{farmerDetails.fid}</td>
-                            <td style={styles.ctstyle}> Taluk :</td>
+                            <td style={styles.ctstyle}>{t("taluk")}</td>
                             <td>{farmerDetails.talukName}</td>
-                            <td style={styles.ctstyle}> Village:</td>
+                            <td style={styles.ctstyle}>{t("village")}</td>
                             <td>{farmerDetails.village}</td>
                           </tr>
                         </tbody>
@@ -1764,14 +1990,14 @@ function ApplicationFormEdit() {
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
-                      Scheme Details
+                      {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Financial Year
+                              {t("Financial Year")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1781,12 +2007,13 @@ function ApplicationFormEdit() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
+                                disabled
                                 isInvalid={
                                   data.financialYearMasterId === undefined ||
                                   data.financialYearMasterId === "0"
                                 }
                               >
-                                <option value="">Select Year</option>
+                                <option value="">{t("Select Year")}</option>
                                 {financialyearListData.map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
@@ -1797,7 +2024,7 @@ function ApplicationFormEdit() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Financial Year is required
+                                {t("Financial Year is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1806,7 +2033,7 @@ function ApplicationFormEdit() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                              {t("Scheme")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1822,27 +2049,110 @@ function ApplicationFormEdit() {
                                   data.scSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData.map((list) => (
+                                <option value="">{t("Select Scheme Names")}</option>
+                                {scSchemeDetailsListData && scSchemeDetailsListData.length > 0 ? (
+                                  scSchemeDetailsListData.map((list) => (
                                   <option
                                     key={list.scSchemeDetailsId}
                                     value={list.scSchemeDetailsId}
                                   >
                                     {list.schemeName}
                                   </option>
-                                ))}
+                                ))
+                              ) : (
+                                <></> 
+                              )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                                {t("Scheme is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
 
+                              {/* Conditionally Render Spacing Field */}
+                    {/* {schemeDetails.spacing && ( */}
+                    {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="spacing">
+                                {t("Spacing")} <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="spacingId"
+                                  value={data.spacingId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.spacingId === undefined ||
+                                    data.spacingId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select Spacing")}</option>
+                                  {spacingListData && spacingListData.length > 0
+                                    ? spacingListData.map((list) => (
+                                        <option
+                                          key={list.spacingId}
+                                          value={list.spacingId}
+                                        >
+                                          {list.spacingName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                              Spacing is required
+                            </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
+                        {/* Conditionally Render Hectare Field */}
+                        {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="hectare">
+                                {t("Hectare")} <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="hectareId"
+                                  value={data.hectareId}
+                                  onChange={handleInputs}
+                                  // required
+                                  isInvalid={
+                                    data.hectareId === undefined ||
+                                    data.hectareId === "0"
+                                  }
+                                >
+                                  <option value="">{t("Select Hectare")}</option>
+                                  {hectareListData && hectareListData.length > 0
+                                    ? hectareListData.map((list) => (
+                                        <option
+                                          key={list.hectareId}
+                                          value={list.hectareId}
+                                        >
+                                          {list.hectareName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                              Hectare is required
+                            </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
+
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
+                            {t("Component Type")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1858,21 +2168,24 @@ function ApplicationFormEdit() {
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData &&
+                                <option value="">{t("Select Component Type")}</option>
+                                {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length > 0 ? (
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
                                       {list.subSchemeName}
                                     </option>
-                                  ))}
+                                  ))
+                              ) : (
+                                <></> 
+                              )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                              {t("Component Type is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Scheme Type
@@ -1906,12 +2219,12 @@ function ApplicationFormEdit() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Component
+                            {t("Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1927,7 +2240,7 @@ function ApplicationFormEdit() {
                                   data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Component</option>
+                                <option value="">{t("Select Component")}</option>
                                 {scComponentListData.map((list) => (
                                   <option
                                     key={list.scComponentId}
@@ -1938,7 +2251,7 @@ function ApplicationFormEdit() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component is required
+                              {t("Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1947,7 +2260,7 @@ function ApplicationFormEdit() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                            {t("Sub Component")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1963,7 +2276,7 @@ function ApplicationFormEdit() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Category</option>
+                                <option value="">{t("Select Sub Component")}</option>
                                 {scCategoryListData.map((list) => (
                                   <option
                                     key={list.scCategoryId}
@@ -1974,7 +2287,7 @@ function ApplicationFormEdit() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Category is required
+                              {t("Sub Component is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1983,7 +2296,7 @@ function ApplicationFormEdit() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Head of Account
+                            {t("Head of Account")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1999,7 +2312,7 @@ function ApplicationFormEdit() {
                                   data.scHeadAccountId === "0"
                                 }
                               >
-                                <option value="">Select Head of Account</option>
+                                <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData.map((list) => (
                                   <option
                                     key={list.headOfAccountId}
@@ -2010,36 +2323,36 @@ function ApplicationFormEdit() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Head of Account is required
+                              {t("Head of Account is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sanctionAmount">
+                              {t("Scheme Amount")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="schemeAmount"
+                                type="text"
+                                name="schemeAmount"
+                                value={data.schemeAmount}
+                                onChange={handleInputs}
+                                placeholder={t("Enter Scheme Amount")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              {t("Scheme Amount is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
 
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sanctionAmount">
-                              Sanction Amount
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sanctionAmount"
-                                type="text"
-                                name="sanctionAmount"
-                                value={data.sanctionAmount}
-                                onChange={handleInputs}
-                                placeholder="Enter Sanction Amount"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Sanction Amount is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
                               Scheme Amount
@@ -2083,17 +2396,17 @@ function ApplicationFormEdit() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              From Date
+                              {t("From Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={new Date(data.periodFrom)}
+                                selected={data.periodFrom ? new Date(data.periodFrom) : null}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodFrom")
                                 }
@@ -2112,12 +2425,12 @@ function ApplicationFormEdit() {
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              To Date
+                              {t("To Date")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={new Date(data.periodTo)}
+                                selected={data.periodTo ? new Date(data.periodTo):null}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodTo")
                                 }
@@ -2142,7 +2455,7 @@ function ApplicationFormEdit() {
               <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
-                    Saved Land Details
+                    {t("Saved Land Details")}
                   </Card.Header>
                   <Card.Body>
                     <Row>
@@ -2168,59 +2481,85 @@ function ApplicationFormEdit() {
                 </Card>
               </Block>
 
-              {/* <Block className="mt-3">
-                <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
-                    Vendors List
-                  </Card.Header>
-                  <Card.Body>
-                    <Row className="g-gs">
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label>
-                            Vendor Name<span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="scVendorId"
-                              value={data.scVendorId}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              // multiple
-                              required
-                              isInvalid={
-                                data.scVendorId === undefined ||
-                                data.scVendorId === "0"
-                              }
-                            >
-                              <option value="">Select Vendor Name</option>
-                              {scVendorListData.map((list) => (
-                                <option
-                                  key={list.scVendorId}
-                                  value={list.scVendorId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                              Vendor Name is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Block> */}
+              {/* {data.equordev.includes("equipment") && ( */}
+                {/* <Block className="mt-3">
+                  <Card>
+                    <Card.Header style={{ fontWeight: "bold" }}>
+                      Equipment Purchase
+                    </Card.Header>
+                    <Card.Body>
+                      <Row className="g-gs">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Vendor Name
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="vendorId"
+                                value={equipment.vendorId}
+                                onChange={handleEquipmentInputs}
+                                required
+                                isInvalid={
+                                  equipment.vendorId === undefined ||
+                                  equipment.vendorId === "0"
+                                }
+                              >
+                                <option value="">Select Vendor Name</option>
+                                {scVendorListData.map((list) => (
+                                  <option
+                                    key={list.scVendorId}
+                                    value={list.scVendorId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Vendor Name is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="description">
+                              Description
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={equipment.description}
+                                onChange={handleEquipmentInputs}
+                                placeholder="Enter Description"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Description is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Block> */}
+              {/* )} */}
               {data.with === "withLand" && landDetailsList.length > 0 ? (
                 <>
                   <Block className="mt-3">
                     <Card>
-                      <Card.Header style={{ fontWeight: "bold" }}>
-                        Edit Land Details
-                      </Card.Header>
+                      {/* <Card.Header style={{ fontWeight: "bold" }}>
+                        RTC Details
+                      </Card.Header> */}
                       <Card.Body>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        {t("Edit Land Details")}
+                      </Card.Header>
                         <Row>
                           <DataTable
                             tableClassName="data-table-head-light table-responsive"
@@ -2296,6 +2635,51 @@ function ApplicationFormEdit() {
                       </Row> */}
                     </Card>
                   </Block>
+
+                  {/* <Block className="mt-3">
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    {t("Documents")}
+                  </Card.Header>
+                  <Card.Body>
+                    <Row>
+                      <DataTable
+                        tableClassName="data-table-head-light table-responsive"
+                        columns={DocumentsUploaded}
+                        data={viewDetailsData}
+                        highlightOnHover
+                        // pagination
+                        // paginationServer
+                        // paginationTotalRows={totalRows}
+                        // paginationPerPage={countPerPage}
+                        // paginationComponentOptions={{
+                        //   noRowsPerPage: true,
+                        // }}
+                        // onChangePage={(page) => setPage(page - 1)}
+                        progressPending={loading}
+                        theme="solarized"
+                        customStyles={customStyles}
+                      />
+                    </Row>
+                    <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+            
+                    <Button
+                    variant="secondary"
+                    size="sm"
+                    className="ms-2"
+                    onClick={() => handleShowModal(applicationId)}
+                  >
+                    {t("Upload Documents")}
+                  </Button>
+                  </li>
+                  
+                </ul>
+              </div>
+                  </Card.Body>
+                </Card>
+              </Block> */}
                 </>
               ) : (
                 ""
@@ -2306,12 +2690,12 @@ function ApplicationFormEdit() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Update
+                    {t("update")}
                     </Button>
                   </li>
                   <li>
                     <Button type="button" variant="secondary" onClick={clear}>
-                      Cancel
+                    {t("cancel")}
                     </Button>
                   </li>
                 </ul>
@@ -2320,6 +2704,190 @@ function ApplicationFormEdit() {
           </Form>
         </Block>
       </Row>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("Upload Documents")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* {docListData.map(({ documentMasterId, documentMasterName }) => (
+            <div key={documentMasterId}>
+              <Row className="d-flex justify-content-center align-items-center">
+                <Col lg="2">
+                  <Form.Group className="form-group mt-1">
+                    <Form.Label htmlFor="trUploadPath">
+                      {documentMasterName}
+                    </Form.Label>
+                  </Form.Group>
+                </Col>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-1">
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id={`attImage${documentMasterId}`}
+                        onChange={(e) => handleAttachFileChange(e, documentMasterId)}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4" style={{ position: "relative" }}>
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {documentAttachments[documentMasterId] && (
+                      <div style={{ position: "relative" }}>
+                        <img
+                          style={{ height: "150px", width: "150px" }}
+                          src={URL.createObjectURL(
+                            documentAttachments[documentMasterId]
+                          )}
+                        />
+                        <button
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            background: "transparent",
+                            border: "none",
+                            color: "black",
+                            fontSize: "24px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleRemoveImage(documentMasterId)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
+               
+                <Col lg="2">
+              
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(documentMasterId)}
+                disabled={uploadStatus[documentMasterId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"}
+              </Button>
+              </Col>
+              </Row>
+            </div>
+          ))} */}
+          <Block className="mt-3">
+              <Row>
+                <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label><strong>{t("Documents")}</strong></Form.Label>
+                        <Form.Select
+                          name="documentTypeId"
+                          value={uploadDocuments.documentTypeId}
+                          onChange={handleDocumentInputs}
+                        >
+                          <option value="">{t("Choose Document Type")}</option>
+                          {docListData.map((list) => (
+                            <option
+                              key={list.documentMasterId}
+                              value={list.documentMasterId}
+                            >
+                              {list.documentMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
+                <Form.Group className="form-group">
+                        <Form.Label htmlFor="accountImagePath">
+                        {t("Upload Documents(PDF/jpg/png)(Max:2mb)")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="documentPath"
+                            name="documentPath"
+                            // value={data.photoPath}
+                            onChange={handleDocumentChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {document ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(document)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                      </Col>
+              </Row>
+
+              {/* {uploadedDocuments.length > 0 && (
+    <div className="mt-3">
+      <h5>Uploaded Documents</h5>
+      <ul>
+        {uploadedDocuments.map((doc, index) => (
+          <li key={index}>
+            Document Type: {doc.documentId} - {doc.documentName}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )} */}
+
+  {uploadedDocuments.length > 0 && (
+  <div className="mt-3">
+    <h5>{t("Uploaded Documents")}</h5>
+    <ul>
+      {uploadedDocuments.map((doc, index) => (
+        <li key={index} className="d-flex align-items-center">
+          {/* Show the image if it's available */}
+          {doc.documentFile && (
+            <img
+              src={URL.createObjectURL(doc.documentFile)}
+              alt={doc.documentName}
+              style={{ height: "100px", width: "100px", marginRight: "10px" }}
+            />
+          )}
+          {/* Show the document master name */}
+          {/* <span>Document Type: {doc.documentMasterName }</span> */}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+            </Block>
+
+            {/* <Col lg="12"> */}
+            <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="submit" variant="success">
+                  Upload Documents
+                </Button> */}
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
+                disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
+              </Button>
+                </li>
+        </ul>
+      </div>
+        </Modal.Body>
+      </Modal>
+
+    
+
       {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>

@@ -1034,6 +1034,8 @@ import DrawingOfficerListForK2Push from "../pages/direct-benefit-transfer/Drawin
 import DrawingOfficerListForDBTPush from "../pages/direct-benefit-transfer/DrawingOfficerListForDBTPush";
 import DrawingOfficerListForDBTVendorPush from "../pages/direct-benefit-transfer/DrawingOfficerListForDBTVendorPush";
 import DrawingOfficerListForK2VendorPush from "../pages/direct-benefit-transfer/DrawingOfficerListForK2VendorPush";
+import RejectionListForK2 from "../pages/direct-benefit-transfer/RejectionListForK2";
+import RejectionListForDBT from "../pages/direct-benefit-transfer/RejectionListForDBT";
 
 // Admin and Reports
 
@@ -1580,6 +1582,9 @@ function Router() {
             <Route path="dbt-failure-report" element={<DbtFailureApplication />} />
             <Route path="dbt-k2-report" element={<DbtK2Application/>} />
             <Route path="dbt-b-report" element={<DbtBApplication/>} />
+
+            <Route path="report-reject-list-k2" element={<RejectionListForK2 />} />
+            <Route path="report-reject-list-dbt" element={<RejectionListForDBT />} />
 
             <Route
               path="district-wise-farmer-count-list"
