@@ -374,7 +374,7 @@ const getUserMastersList = (_id) => {
       .get(baseURL + `userMaster/get-join/${_id}`)
       .then((response) => {
         if (response.data) {
-          setReportingOfficerDdoCode(response.data.content.ddoCode);
+          setReportingOfficerDdoCode(response.data.content.khazaneRecipientId);
           // setData(prev=>({...prev,
           //   reportFirstName:response.data.content.firstName
           // }));
