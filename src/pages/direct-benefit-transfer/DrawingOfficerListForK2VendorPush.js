@@ -1608,6 +1608,13 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       hide: "md",
     },
     {
+      name:  t("Financial Year"),
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name:  t("FRUITS ID"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
