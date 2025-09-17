@@ -682,14 +682,18 @@ const validateSelectionFields = (showAlert = true) => {
 //     });
 // };
 const [disabledIds, setDisabledIds] = useState([]);
+const [isSaving, setIsSaving] = useState(false);
   const handleSaveFromModal  = (id) => {
-    if (listData && listData.length > 0) {
-      listData.forEach((list) => {
-        if (list.scApplicationFormId === id) {
-          setDisabledIds((prevState) => [...prevState, id]);
-        }
-      });
-    }
+    // if (listData && listData.length > 0) {
+    //   listData.forEach((list) => {
+    //     if (list.scApplicationFormId === id) {
+    //       setDisabledIds((prevState) => [...prevState, id]);
+    //     }
+    //   });
+    // }
+    // setDisabledIds((prevState) => [...prevState, id]);
+    setIsSaving(true); 
+
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
@@ -703,24 +707,27 @@ const [disabledIds, setDisabledIds] = useState([]);
         pushdata
       )
       .then((response) => {
-        if (response.data.content.errorCode) {
-          saveError(response.data.content.error_description);
-          setDisabledIds((prevDisabledIds) =>
-            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
-          );
-        } else {
-          saveSuccess();
-          getList();
-        }
-      })
-      .catch((err) => {
-        saveError(err.response.data.validationErrors);
-        setDisabledIds((prevDisabledIds) =>
-          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
-        );
-      });
-    setValidated(true);
-  };
+       if (response.data.content.errorCode) {
+        saveError(response.data.content.error_description);
+        setIsSaving(false);  
+      } else {
+        // ✅ show success popup first
+        Swal.fire({
+          icon: "success",
+          title: "Pushed Successfully",
+          text: "Your data has been Pushed.",
+        }).then(() => {
+          // only after OK button clicked
+          handleCloseModal6();
+          window.location.reload();
+        });
+      }
+    })
+    .catch((err) => {
+      saveError(err.response?.data?.validationErrors || "Something went wrong");
+      setIsSaving(false); // ❌ re-enable if failed
+    });
+};
 
 
 
@@ -777,6 +784,7 @@ const [disabledIds, setDisabledIds] = useState([]);
         } else {
           saveSuccess();
           getList();
+          
         }
       })
       .catch((err) => {
@@ -2659,12 +2667,24 @@ const getFinancialDefaultDetails = () => {
     )}
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal6}>
+    {/* <Button variant="secondary" onClick={handleCloseModal6}>
       Close
     </Button>
-    <Button variant="primary" onClick={() => handleSaveFromModal(currentPushId)}>
+    <Button variant="primary" onClick={() => handleSaveFromModal(currentPushId)}
+    disabled={disabledIds.includes(currentPushId)}
+    >
     Proceed & Save
-  </Button>
+  </Button> */}
+  <Button variant="secondary" onClick={handleCloseModal6}>
+      Close
+    </Button>
+  <Button
+  variant="primary"
+  onClick={() => handleSaveFromModal(currentPushId)}
+  disabled={isSaving} // ✅ disables immediately on click
+>
+  {isSaving ? "Saving..." : "Proceed & Save"}
+</Button>
   </Modal.Footer>
 </Modal>
 
