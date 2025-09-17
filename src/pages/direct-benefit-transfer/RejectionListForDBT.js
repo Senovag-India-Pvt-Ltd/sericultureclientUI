@@ -179,13 +179,11 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   const exportCsv = (e) => {
     api
       .post(
-        baseURLDBT + `service/getDBTRejectionList`,
+        baseURLDBT + `service/getDBTRejectionListReport`,
         {},
         {
           params: {
            userMasterId: localStorage.getItem("userMasterId"),
-          fruitsId: addressDetails.fruitsId || '',
-          beneficiaryId: addressDetails.beneficiaryId || '',
           financialYearId: addressDetails.financialYearId || 0,
           componentId: addressDetails.componentId || 0,
           subSchemeId: addressDetails.subSchemeId || 0,
@@ -193,8 +191,8 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
           talukId: addressDetails.talukId || 0,
           tscMasterId: addressDetails.tscMasterId || 0,
           scSchemeDetailsId: addressDetails.scSchemeDetailsId || 0,
-          remarks: addressDetails.remarks || '',
           scCategoryId: addressDetails.scCategoryId || 0,
+          remarks: addressDetails.remarks || '',
           },
           responseType: 'blob',
           headers: {
@@ -207,7 +205,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `k2_list_for_dbt_push_report.csv`;
+        link.download = `dbt_rejection_list_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
