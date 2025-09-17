@@ -1036,6 +1036,9 @@ import DrawingOfficerListForDBTVendorPush from "../pages/direct-benefit-transfer
 import DrawingOfficerListForK2VendorPush from "../pages/direct-benefit-transfer/DrawingOfficerListForK2VendorPush";
 import RejectionListForK2 from "../pages/direct-benefit-transfer/RejectionListForK2";
 import RejectionListForDBT from "../pages/direct-benefit-transfer/RejectionListForDBT";
+import RejectionList from "../pages/masters/reject-reason/RejectionList";
+import RejectReasonList from "../pages/masters/reject-reason/RejectReasonList";
+import RejectionListEdit from "../pages/masters/reject-reason/RejectionListEdit";
 
 // Admin and Reports
 
@@ -3139,6 +3142,19 @@ function Router() {
             <Route
               path="reject-reason-workflow-edit/:id"
               element={<RejectReasonWorkFlowEdit />}
+            />
+             <Route
+              path="reject-reason"
+              element={<RejectionList />}
+            />
+            <Route
+              path="reject-reason-list"
+              element={<RejectReasonList />}
+            />
+            
+            <Route
+              path="reject-reason-edit/:id"
+              element={<RejectionListEdit />}
             />
             <Route
               path="user-hierarchy-mapping"

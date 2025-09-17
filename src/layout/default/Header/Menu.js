@@ -221,6 +221,8 @@ function Menu() {
     DBT_Drawing_Officer_List_For_DBT_Push: false,
     DBT_Drawing_Officer_List_For_Vendor_DBT_Push: false,
     DBT_Drawing_Officer_List_For_Vendor_K2_Push: false,
+    DBT_Rejection_List_For_DBT: false,
+    DBT_Rejection_List_For_K2: false,
     DBT_Tsc_Officer_List: false,
 
     Market: false,
@@ -376,6 +378,7 @@ function Menu() {
     Admin_Master_Service_Document: false,
     Admin_Master_Service_Department: false,
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
+    Admin_Master_Service_Reject_Reason: false,
     Admin_Master_Service_Program: false,
     Admin_Master_Service_Scheme_Details: false,
     Admin_Master_Service_DbtStatusCheck: false,
@@ -1533,11 +1536,27 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.DBT_Reject_List ? (
+            {/* {showMenu.DBT_Reject_List ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Report Rejection List")}
                   to="/seriui/report-reject-list"
+                />
+              </MenuItem>
+            ) : null} */}
+            {showMenu.DBT_Rejection_List_For_DBT ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Rejection List-K2")}
+                  to="/seriui/report-reject-list-k2"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Rejection_List_For_K2? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Rejection List-DBT")}
+                  to="/seriui/report-reject-list-dbt"
                 />
               </MenuItem>
             ) : null}
@@ -3191,6 +3210,15 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Reject_Reason? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Reject Reason")}
+                              to="/seriui/reject-reason"
+                            />
+                          </MenuItem>
+                        ) : null}
+
                         {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3332,12 +3360,12 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Reject Reason")}
+                              text={t("Reject Reason For Work Flow")}
                               to="/seriui/reject-reason-workflow"
                             />
                           </MenuItem>
                         ) : null}
-
+                        
                         {/* {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
                           <MenuItem>
                             <MenuItemLink
