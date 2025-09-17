@@ -2058,7 +2058,8 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
               onClick={() => handlePush()}
               disabled={pushing || selectedRows.length === 0}
             >
-              {t("Push")}
+              {/* {t("Push")} */}
+              {pushing ? t("Pushing...") : t("Push")}
             </Button>
           </li>
         )}
