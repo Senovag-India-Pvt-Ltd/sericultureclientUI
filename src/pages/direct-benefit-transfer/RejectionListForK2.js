@@ -703,7 +703,7 @@ const [isSaving, setIsSaving] = useState(false);
     };
     api
       .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
         pushdata
       )
       .then((response) => {
@@ -775,7 +775,7 @@ const [isSaving, setIsSaving] = useState(false);
     event.preventDefault();
     api
       .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
         post
       )
       .then((response) => {

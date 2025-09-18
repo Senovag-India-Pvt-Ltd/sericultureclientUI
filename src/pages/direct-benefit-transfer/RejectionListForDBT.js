@@ -642,7 +642,7 @@ const validateSelectionFields = (showAlert = true) => {
 //     applicationList,
 //     userMasterId: localStorage.getItem("userMasterId"),
 //     paymentMode: "P",
-//     pushType: "P",
+//     pushType: "R",
 //     ddoCode: reportingOfficerDdoCode,
 //     // sanctionNo:
 //     ...extraDetails,
@@ -743,7 +743,7 @@ const [isSaving, setIsSaving] = useState(false);
       };
       api
         .post(
-          baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+          baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
           pushdata
         )
         .then((response) => {
@@ -815,7 +815,7 @@ const [isSaving, setIsSaving] = useState(false);
     event.preventDefault();
     api
       .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
         post
       )
       .then((response) => {
