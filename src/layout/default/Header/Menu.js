@@ -864,6 +864,117 @@ function Menu() {
         }
       });
     }
+    if (data.includes("Reports_Format_Reports")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Format_Reports_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Dashboard")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Dashboard_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Reports_Export_Report_Registration")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Registration_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    
+    if (data.includes("Reports_Export_Report_DBT_And_Service")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_DBT_And_Service_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Commercial_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Commercial_Market_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Seed_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Seed_Market_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Silk_Type_Market")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Silk_Type_Market_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Seed_And_Dfl")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Seed_And_Dfl_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Garden")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Garden_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Chawki_Management")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Chawki_Management_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Reports_Export_Report_Target_Setting")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Target_Setting_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Reports_Export_Report_Inspection")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Inspection_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Training")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Training_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Reports_Export_Report_Helpdesk")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Helpdesk_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
     //  else {
     data.forEach((key) => {
       // console.log(key);
@@ -1109,28 +1220,209 @@ function Menu() {
       }));
     }
 
-    const hasAdminReport = data.some((item) =>
-      item.startsWith("Admin_Report_")
-    );
-    if (hasAdminReport) {
-      setShowMenu((prevMenu) => ({
-        ...prevMenu,
-        Admin: true,
-        Admin_Master: true,
-        Admin_Master_Report: true,
-      }));
-    }
+    // const hasAdminReport = data.some((item) =>
+    //   item.startsWith("Admin_Report_")
+    // );
+    // if (hasAdminReport) {
+    //   setShowMenu((prevMenu) => ({
+    //     ...prevMenu,
+    //     Admin: true,
+    //     Admin_Master: true,
+    //     Admin_Master_Report: true,
+    //   }));
+    // }
 
-    const hasReportsAndDashboard = data.some((item) =>
+    const hasReports = data.some((item) =>
       item.startsWith("Reports_")
     );
-    if (hasReportsAndDashboard) {
+    if (hasReports) {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Reports: true,
       }));
     }
+
+    const hasReportsFormatReports = data.some((item) =>
+      item.startsWith("Reports_Format_Reports_")
+    );
+    if (hasReportsFormatReports) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Format_Reports: true,
+      }));
+    }
+
+    const hasReportsDashboard = data.some((item) =>
+      item.startsWith("Reports_Dashboard_")
+    );
+    if (hasReportsDashboard) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Dashboard: true,
+      }));
+    }
+
+    const hasReportsExportReport = data.some((item) =>
+      item.startsWith("Reports_Export_Report_")
+    );
+    if (hasReportsExportReport) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+      }));
+    }
+
+    const hasReportsExportReportRegistration = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Registration_")
+    );
+    if (hasReportsExportReportRegistration) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Registration: true,
+      }));
+    }
+
+    const hasReportsExportReportDBTAndService = data.some((item) =>
+      item.startsWith("Reports_Export_Report_DBT_And_Service_")
+    );
+    if (hasReportsExportReportDBTAndService) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_DBT_And_Service: true,
+      }));
+    }
+
+    const hasReportsExportReportCommercialMarket = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Commercial_Market_")
+    );
+    if (hasReportsExportReportCommercialMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Commercial_Market: true,
+      }));
+    }
+
+    const hasReportsExportReportSeedMarket = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Seed_Market_")
+    );
+    if (hasReportsExportReportSeedMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Seed_Market: true,
+      }));
+    }
+
+    const hasReportsExportReportSilkTypeMarket = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Silk_Type_Market_")
+    );
+    if (hasReportsExportReportSilkTypeMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Silk_Type_Market: true,
+      }));
+    }
+
+    const hasReportsExportReportSeedAndDfl = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Seed_And_Dfl_")
+    );
+    if (hasReportsExportReportSeedAndDfl) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Seed_And_Dfl: true,
+      }));
+    }
+
+    const hasReportsExportReportGarden = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Garden_")
+    );
+    if (hasReportsExportReportGarden) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Garden: true,
+      }));
+    }
+
+    const hasReportsExportReportChawkiManagement = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Chawki_Management_")
+    );
+    if (hasReportsExportReportChawkiManagement) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Chawki_Management: true,
+      }));
+    }
+
+    const hasReportsExportReportTargetSetting = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Target_Setting_")
+    );
+    if (hasReportsExportReportTargetSetting) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Target_Setting: true,
+      }));
+    }
+
+    const hasReportsExportReportInspection = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Inspection_")
+    );
+    if (hasReportsExportReportInspection) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Inspection: true,
+      }));
+    }
+
+    const hasReportsExportReportTraining = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Training_")
+    );
+    if (hasReportsExportReportTraining) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Training: true,
+      }));
+    }
+
+    const hasReportsExportReportHelpdesk = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Helpdesk_")
+    );
+    if (hasReportsExportReportHelpdesk) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Helpdesk: true,
+      }));
+    }
+
   }, [data]);
+
+  
+  
 
   // variables for Sidebar
   let menu = {
