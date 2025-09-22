@@ -298,7 +298,7 @@ const handlePush = (id) => {
   const recordData = listData[0];
 
   api
-    .post(baseURLDBT + `service/checkXmlFileDetails`, {
+    .post(baseURLDBT + `service/checkXmlFileDetailsForMultiple`, {
       applicationFormIds: applicationFormIds,
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",

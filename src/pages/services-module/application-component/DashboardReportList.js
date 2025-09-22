@@ -200,6 +200,13 @@ function DashboardReportList() {
       hide: "md",
     },
     {
+      name: "Component Type",
+      selector: (row) => row.schemeSubSchemeName,
+      cell: (row) => <span>{row.schemeSubSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Component Name",
       selector: (row) => row.schemeComponentName,
       cell: (row) => <span>{row.schemeComponentName}</span>,
@@ -283,6 +290,13 @@ function DashboardReportList() {
       name: "Scheme Quota Name",
       selector: (row) => row.schemeQuotaName,
       cell: (row) => <span>{row.schemeQuotaName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Type",
+      selector: (row) => row.schemeSubSchemeName,
+      cell: (row) => <span>{row.schemeSubSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1073,13 +1087,14 @@ function DashboardReportList() {
           }
         }
 
-        if (categoryId && componentId && schemeId && applicationDocumentId) {
+        if (categoryId && componentId && schemeId  && applicationDocumentId && subSchemeId) {
           getPushToDBTList(
             categoryId,
             componentId,
             schemeId,
             applicationDocumentId,
-            componentType
+            subSchemeId,
+            componentType,
           );
         }
 
@@ -1118,12 +1133,13 @@ function DashboardReportList() {
   componentId,
   schemeId,
   applicationFormId,
+  subSchemeId,
   componentType
 ) => {
   api
     .post(
       baseURLDBT +
-        `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&componentType=${componentType}`
+        `service/getDetailsByComponentIdAndCategoryId?categoryId=${categoryId}&componentId=${componentId}&schemeId=${schemeId}&applicationFormId=${applicationFormId}&subSchemeId=${subSchemeId}&componentType=${componentType}`
     )
     .then((response) => {
       if (response.data.content) {
@@ -2108,7 +2124,8 @@ function DashboardReportList() {
       return {
         schemeQuotaId: item.schemeQuotaId,
         // schemeAmount: item.subsidyAmount,
-        schemeAmount: item.schemeAmount,
+        // schemeAmount: item.schemeAmount,
+        schemeAmount: item.subsidyAmount,
         eligibleAmount: item.calculatedEligibleAmount,
         paymentTo: item.paymentTo,
         paymentMethod: item.paymentMethod,
@@ -2598,7 +2615,7 @@ function DashboardReportList() {
       if (actionFarmerData[0].directlyToFruits) {
         apiCall = api
           .post(
-            baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+            baseURLDBT + `applicationTransaction/saveApplicationTransactionForRH`,
             sendPost
           )
           .then((response) => {
@@ -3768,7 +3785,7 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              {actionFarmerData[0]?.sanctionOrder && (
+                              {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
                                 <Col lg="6">
                                   <Form.Group className="form-group">
                                     <Form.Label>
@@ -4286,7 +4303,7 @@ function DashboardReportList() {
                           }}
                           className="mb-3"
                         >
-                          Push To DBT OR K2
+                          Push To DBT
                         </Accordion.Header>
                         <Accordion.Body>
                           <Block className="mt-n5">
@@ -4330,7 +4347,7 @@ function DashboardReportList() {
                           }}
                           className="mb-3"
                         >
-                          Push To DBT OR K2
+                          Push To DBT 
                         </Accordion.Header>
                         <Accordion.Body>
                           <Block className="mt-n5">
