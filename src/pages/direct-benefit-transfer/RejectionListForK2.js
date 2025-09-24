@@ -683,41 +683,90 @@ const validateSelectionFields = (showAlert = true) => {
 // };
 const [disabledIds, setDisabledIds] = useState([]);
 const [isSaving, setIsSaving] = useState(false);
-  const handleSaveFromModal  = (id) => {
-    // if (listData && listData.length > 0) {
-    //   listData.forEach((list) => {
-    //     if (list.scApplicationFormId === id) {
-    //       setDisabledIds((prevState) => [...prevState, id]);
-    //     }
-    //   });
-    // }
-    // setDisabledIds((prevState) => [...prevState, id]);
-    setIsSaving(true); 
+//   const handleSaveFromModal  = (id) => {
+//     // if (listData && listData.length > 0) {
+//     //   listData.forEach((list) => {
+//     //     if (list.scApplicationFormId === id) {
+//     //       setDisabledIds((prevState) => [...prevState, id]);
+//     //     }
+//     //   });
+//     // }
+//     // setDisabledIds((prevState) => [...prevState, id]);
+//     setIsSaving(true); 
 
-    const pushdata = {
-      applicationList: [id],
-      userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: "P",
-      pushType: "R",
-      ddoCode: reportingOfficerDdoCode,
-    };
-    api
-      .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
-        pushdata
-      )
-      .then((response) => {
-       if (response.data.content.errorCode) {
+//     const pushdata = {
+//       applicationList: [id],
+//       userMasterId: localStorage.getItem("userMasterId"),
+//       paymentMode: "P",
+//       pushType: "R",
+//       ddoCode: reportingOfficerDdoCode,
+//     };
+//     api
+//       .post(
+//         baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
+//         pushdata
+//       )
+//       .then((response) => {
+//        if (response.data.content.errorCode) {
+//         saveError(response.data.content.error_description);
+//         setIsSaving(false);  
+//       } else {
+//         // ✅ show success popup first
+//         Swal.fire({
+//           icon: "success",
+//           title: "Pushed Successfully",
+//           text: "Your data has been Pushed.",
+//         }).then(() => {
+//           // only after OK button clicked
+//           handleCloseModal6();
+//           window.location.reload();
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       saveError(err.response?.data?.validationErrors || "Something went wrong");
+//       setIsSaving(false); // ❌ re-enable if failed
+//     });
+// };
+ const handleSaveFromModal = (id) => {
+  setIsSaving(true);
+
+  // find the record from listData by id
+  const selectedRecord = listData.find(
+    (list) => list.scApplicationFormId === id
+  );
+
+  // determine pushType based on applicationStatus
+  let pushType = "R"; // default
+  if (selectedRecord?.applicationStatus === "ACKNOWLEDGEMENT FAILED") {
+    pushType = "P";
+  } else if (selectedRecord?.applicationStatus === null) {
+    pushType = "R";
+  }
+
+  const pushdata = {
+    applicationList: [id],
+    userMasterId: localStorage.getItem("userMasterId"),
+    paymentMode: "P",
+    pushType: pushType,
+    ddoCode: reportingOfficerDdoCode,
+  };
+
+  api
+    .post(
+      baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
+      pushdata
+    )
+    .then((response) => {
+      if (response.data.content.errorCode) {
         saveError(response.data.content.error_description);
-        setIsSaving(false);  
+        setIsSaving(false);
       } else {
-        // ✅ show success popup first
         Swal.fire({
           icon: "success",
           title: "Pushed Successfully",
           text: "Your data has been Pushed.",
         }).then(() => {
-          // only after OK button clicked
           handleCloseModal6();
           window.location.reload();
         });
@@ -725,10 +774,9 @@ const [isSaving, setIsSaving] = useState(false);
     })
     .catch((err) => {
       saveError(err.response?.data?.validationErrors || "Something went wrong");
-      setIsSaving(false); // ❌ re-enable if failed
+      setIsSaving(false);
     });
 };
-
 
 
 
