@@ -42,6 +42,18 @@ function PreservationofseedcocoonforprocessingList() {
   const [showModal4, setShowModal4] = useState(false);
   const handleShowModal4 = () => setShowModal4(true); 
   const handleCloseModal4 = () => setShowModal4(false);
+const [showViewModal, setShowViewModal] = useState(false);
+const [selectedRow, setSelectedRow] = useState(null);
+
+// const handleViewDetails = (row) => {
+//   setSelectedRow(row);
+//   setShowViewModal(true);
+// };
+
+const handleCloseViewModal = () => {
+  setShowViewModal(false);
+  setSelectedRow(null);
+};
 
   const [listMoultData, setMoultListData] = useState({});
 
@@ -167,6 +179,14 @@ function PreservationofseedcocoonforprocessingList() {
     navigate(`/seriui/preservation-of-seed-cocoon-edit/${_id}`);
   };
 
+  const handleViewDetails = (row) => {
+  api.get(baseURLSeedDfl + `PreservationOfSeed/lot-groupage/${row.lotGroupageId}`)
+    .then(res => {
+      setSelectedRow(res.data);
+      setShowViewModal(true);
+    })
+    .catch(err => console.error(err));
+};
 
 
   const acceptConfirm = (_id, status, senderType) => {
@@ -481,34 +501,40 @@ function PreservationofseedcocoonforprocessingList() {
   ];
 
   const PreservationOfSeedCocoonGardenDataColumns = [
-    {
-      name: t("Action"),
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
-          >
-            {t("Accept")}
-          </Button>
-         
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
-            className="ms-2"
-          >
-            {t("Reject")}
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-      grow: 2,
-    },
+  {
+    name: t("Action"),
+    cell: (row) => (
+      <div className="d-flex gap-2">
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
+        >
+          {t("Accept")}
+        </Button>
+
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
+        >
+          {t("Reject")}
+        </Button>
+
+        <Button
+          variant="primary" // Blue color
+          size="sm"
+          onClick={() => handleViewDetails(row)}
+        >
+          {t("View")}
+        </Button>
+      </div>
+    ),
+    sortable: false,
+    hide: "md",
+    grow: 3,
+  },
+
 
     {
       name: t("Lot Number"),
@@ -961,6 +987,125 @@ function PreservationofseedcocoonforprocessingList() {
           </Modal.Body>
         </Modal>
       )}
+      
+
+{showViewModal && selectedRow && (
+  <Modal
+    show={showViewModal}
+    onHide={handleCloseViewModal}
+    size="xl" 
+    className="modal-item" 
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>{t("Lot Groupage Details")}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Block className="mt-2">
+        <Card>
+          <Card.Body>
+            <Row className="g-gs">
+              <Col lg="12">
+                <div className="table-responsive">
+                  <table className="table table-bordered table-sm">
+                    <tbody>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Farmer Name")}</td>
+                        <td>{selectedRow.firstName}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Market Name")}</td>
+                        <td>{selectedRow.marketName}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Farmer Fruits Id")}</td>
+                        <td>{selectedRow.fruitsId}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Farmer Mobile Number")}</td>
+                        <td>{selectedRow.mobileNumber}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Bidding Slip Lot No")}</td>
+                        <td>{selectedRow.bidSlipLotNo}</td>
+                      </tr>
+                      
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Buyer Type")}</td>
+                        <td>{selectedRow.buyerType}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Buyer Name")}</td>
+                        <td>{selectedRow.buyerName}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Lot Weight")}</td>
+                        <td>{selectedRow.lotWeight} kg</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Amount")}</td>
+                        <td>{selectedRow.amount}</td>
+                      </tr>
+                      
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Sold Amount")}</td>
+                        <td>{selectedRow.soldAmount}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Invoice Number")}</td>
+                        <td>{selectedRow.invoiceNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Lot Parental Level")}</td>
+                        <td>{selectedRow.lotParentalLevel}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Auction Date")}</td>
+                        <td>{formatDate(selectedRow.auctionDate)}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Average Yield")}</td>
+                        <td>{selectedRow.averageYield}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("No Of DFLs")}</td>
+                        <td>{selectedRow.noOfDfls}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Remaining Cocoon")}</td>
+                        <td>{selectedRow.remainingCocoon}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>{t("Accepted Status")}</td>
+                        <td>
+                          {selectedRow.isAccepted === 0
+                            ? "Pending"
+                            : selectedRow.isAccepted === 1
+                            ? "Accepted"
+                            : selectedRow.isAccepted === 2
+                            ? "Rejected"
+                            : "Unknown"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </Block>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleCloseViewModal}>
+        {t("Close")}
+      </Button>
+    </Modal.Footer>
+  </Modal>
+)}
+
+
+
 
       <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
   <Modal.Header closeButton>
