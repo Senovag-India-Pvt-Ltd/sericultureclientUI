@@ -1178,7 +1178,7 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirmForFeedingandMoult(row.id)}
+            onClick={() => deleteConfirmForFeeding(row.id)}
           >
             Delete
           </Button>
@@ -1197,7 +1197,7 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      // grow: 2,
+      grow: 2,
     },
 
     // {
@@ -1295,7 +1295,7 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirmForFeedingandMoult(row.id)}
+            onClick={() => deleteConfirmForMoult(row.id)}
           >
             Delete
           </Button>
@@ -1314,10 +1314,348 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      // grow: 2,
+      grow: 2,
     },
 
   ];
+
+  
+    const [showModal9, setShowModal9] = useState(false);
+    const handleShowModal9 = () => setShowModal9(true); 
+    const handleCloseModal9 = () => setShowModal9(false);
+  
+     const [listOnlyTemperatureData, setOnlyTemperatureListData] = useState({});
+    
+      const getOnlyTemperatureList = () => {
+        setLoading(true);
+      
+        api
+          .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info-for-temperature`)
+          .then((response) => {
+            setOnlyTemperatureListData(response.data);
+            setLoading(false);
+            handleShowModal9(); // Open modal after data is fetched
+          })
+          .catch((err) => {
+            setLoading(false);
+          });
+      };
+  
+    const [showModal10, setShowModal10] = useState(false);
+  const handleShowModal10 = (row) => {
+      setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, rearingOfDFLsForThe8linesId: row.id });
+      setShowModal10(true); 
+    };
+  
+     const handleCloseModal10 = () => setShowModal10(false);
+  
+    const [onlyTemperatureTableDetails, setOnlyTemperatureTable] = useState({
+      rearingOfDFLsForThe8linesId: "",
+      lotNumber: "",
+      temperatureHumidityDate: new Date(),
+      temperature: "",
+      humidity: "",
+      afterNoonTwelveTemperature: "",
+      afterNoonTwelveHumidity: "",
+      eveningSixTemperature:"",
+      eveningSixHumidity:"",
+    });
+  
+    const [validatedForTemperature, setValidatedForTemperature] = useState(false);
+    const [validatedForTemperatureEdit, setValidatedForTemperatureEdit] = useState(false);
+  
+    const handleDateChangeForTemperature = (date, type) => {
+        setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, [type]: date });
+      };
+    
+    
+      const handleOnlyTemperatureInputs = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, [name]: value });
+      };
+  
+      const formattedDate = (date) => {
+      if (!date) return ""; // Handle null or undefined dates
+      return (
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        date.getDate().toString().padStart(2, "0")
+      );
+    };
+  
+    
+      const postTemperatureTableData = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+          setValidatedForTemperature(true);
+        } else {
+          event.preventDefault();
+          const formattedTemperatureHumidityDate = formattedDate(onlyTemperatureTableDetails.temperatureHumidityDate);
+         
+          const sendPost = {
+            rearingOfDFLsForThe8linesId: onlyTemperatureTableDetails.rearingOfDFLsForThe8linesId,
+            lotNumber: onlyTemperatureTableDetails.lotNumber,
+            temperatureHumidityDate: formattedTemperatureHumidityDate,
+            temperature: onlyTemperatureTableDetails.temperature,
+            humidity: onlyTemperatureTableDetails.humidity,
+            afterNoonTwelveTemperature: onlyTemperatureTableDetails.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: onlyTemperatureTableDetails.afterNoonTwelveHumidity,
+            eveningSixTemperature:onlyTemperatureTableDetails.eveningSixTemperature,
+            eveningSixHumidity: onlyTemperatureTableDetails.eveningSixHumidity,
+           
+          };
+          api
+            .post(
+              baseURLSeedDfl + `FeedingAndMoultTest/add-info-for-temperature-humidity`,
+              sendPost
+            )
+            .then((response) => {
+              if (response.data.error) {
+                saveError(response.data.message);
+              } else {
+                saveSuccess(response.data.message);
+                // clear();
+                // handleCloseModal();
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidatedForTemperature(true);
+        }
+      };
+  
+      const [showModal11, setShowModal11] = useState(false);
+      const handleCloseModal11 = () => setShowModal11(false);
+     const [idForTemperature, setIdForTemperature] = useState(null);
+    const [editForTemperatureDetails, setEditForTemperatureTable] = useState({
+      rearingOfDFLsForThe8linesId: "",
+      lotNumber: "",
+      temperatureHumidityDate: new Date(),
+      temperature: "",
+      humidity: "",
+      afterNoonTwelveTemperature: "",
+      afterNoonTwelveHumidity: "",
+      eveningSixTemperature:"",
+      eveningSixHumidity:"",
+    });
+  
+    const handleDateChangeForEditTemperature = (date, type) => {
+        setEditForTemperatureTable({ ...editForTemperatureDetails, [type]: date });
+      };
+    
+    
+      const handleTemperatureForEditInputs = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setEditForTemperatureTable({ ...editForTemperatureDetails, [name]: value });
+      }; 
+    
+      const postTemperatureTableForEditData = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+          setValidatedForTemperatureEdit(true);
+        } else {
+          event.preventDefault();
+          const formattedTemperatureHumidityDate = formattedDate(editForTemperatureDetails.temperatureHumidityDate);
+          const sendPost = {
+            id: editForTemperatureDetails.id,
+           rearingOfDFLsForThe8linesId: editForTemperatureDetails.rearingOfDFLsForThe8linesId,
+            lotNumber: editForTemperatureDetails.lotNumber,
+            temperatureHumidityDate: formattedTemperatureHumidityDate,
+            temperature: editForTemperatureDetails.temperature,
+            humidity: editForTemperatureDetails.humidity,
+            afterNoonTwelveTemperature: editForTemperatureDetails.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: editForTemperatureDetails.afterNoonTwelveHumidity,
+            eveningSixTemperature:editForTemperatureDetails.eveningSixTemperature,
+            eveningSixHumidity: editForTemperatureDetails.eveningSixHumidity,
+          };
+          api
+            .post(
+              baseURLSeedDfl + `FeedingAndMoultTest/update-info-for-temperature-humidity`,
+              sendPost
+            )
+            .then((response) => {
+              if (response.data.error) {
+                saveError(response.data.message);
+              } else {
+                saveSuccess(response.data.message);
+                getOnlyTemperatureList(); // Refresh the list after editing
+                // clear();
+                // handleCloseModal();
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidatedForTemperatureEdit(true);
+        }
+      };
+  
+     const handleShowModal11 = (row) => {
+      setIdForTemperature(row.id); // this is used for fetching via API
+      setEditForTemperatureTable((prev) => ({
+        ...prev,
+        rearingOfDFLsForThe8linesId: row.rearingOfDFLsForThe8linesId || "",
+      }));
+      setShowModal11(true);
+    };
+    
+      const getIdListForTemperature = () => {
+      setLoading(true);
+      api
+        .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info-by-id/${idForTemperature}`)
+        .then((response) => {
+          const data = response.data;
+    
+          // Update form fields with fetched data
+          setEditForTemperatureTable({
+            rearingOfDFLsForThe8linesId: data.rearingOfDFLsForThe8linesId || "",
+            id: data.id || "",
+            lotNumber: data.lotNumber || "",
+            temperatureHumidityDate: new Date(data.temperatureHumidityDate), // Ensure it's a Date object
+            temperature: data.temperature || "",
+            humidity: data.humidity || "",
+            afterNoonTwelveTemperature: data.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: data.afterNoonTwelveHumidity || "",
+            eveningSixTemperature: data.eveningSixTemperature || "",
+            eveningSixHumidity: data.eveningSixHumidity || "",
+          });
+    
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch edit data", err);
+          setEditForTemperatureTable({});
+          setLoading(false);
+        });
+    };
+    useEffect(() => {
+      if (idForTemperature) {
+        getIdListForTemperature();
+      }
+    }, [idForTemperature]);
+
+    const RearingOfDFLSOnlyTemperatureDataColumns = [
+          
+          {
+            name: t("Lot Number"),
+            selector: (row) => row.lotNumber,
+            cell: (row) => <span>{row.lotNumber}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: t("Date"),
+            selector: (row) => row.temperatureHumidityDate,
+            cell: (row) => <span>{row.temperatureHumidityDate}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          {
+            name: t("Morning 6 Temperature"),
+            selector: (row) => row.temperature,
+            cell: (row) => <span>{row.temperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("Morning 6 Humidity"),
+            selector: (row) => row.humidity,
+            cell: (row) => <span>{row.humidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+      
+         {
+            name: t("12 PM Temperature"),
+            selector: (row) => row.afterNoonTwelveTemperature,
+            cell: (row) => <span>{row.afterNoonTwelveTemperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("12 PM Humidity"),
+            selector: (row) => row.afterNoonTwelveHumidity,
+            cell: (row) => <span>{row.afterNoonTwelveHumidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: t("6 PM Temperature"),
+            selector: (row) => row.eveningSixTemperature,
+            cell: (row) => <span>{row.eveningSixTemperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("6 PM Humidity"),
+            selector: (row) => row.eveningSixHumidity,
+            cell: (row) => <span>{row.eveningSixHumidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: "Action",
+            cell: (row) => (
+              //   Button style
+              <div className="text-start w-100">
+                {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => deleteConfirmForTemperature(row.id)}
+                >
+                  Delete
+                </Button>
+      
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => handleShowModal11(row)} // <-- correct
+                >
+                  {t("Edit")}
+                </Button>
+      
+               
+              </div>
+            ),
+            sortable: false,
+            hide: "md",
+            grow: 2,
+          },
+      
+        ];
 
 
   const navigate = useNavigate();
@@ -1392,7 +1730,39 @@ const [showModal8, setShowModal8] = useState(false);
     });
   };
 
-  const deleteConfirmForFeedingandMoult = (_id) => {
+  const deleteConfirmForMoult = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `FeedingAndMoultTest/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getOnlyMoultingList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const deleteConfirmForFeeding = (_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -1407,6 +1777,38 @@ const [showModal8, setShowModal8] = useState(false);
           .then((response) => {
             // deleteConfirm(_id);
             getMoultList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+   const deleteConfirmForTemperature = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `FeedingAndMoultTest/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getOnlyTemperatureList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -1479,17 +1881,7 @@ const [showModal8, setShowModal8] = useState(false);
     return format(date, "dd/MM/yyyy");
   };
 
-  const formattedDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
-
+  
   // const getCocoonList = (_id) => {
   //   setLoading(true);
   //   handleShowModal();
@@ -1642,11 +2034,20 @@ const [showModal8, setShowModal8] = useState(false);
           >
             {t("Add Moulting Table")}
           </Button>
+
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => handleShowModal10(row)}
+            className="ms-2"
+          >
+            {t("Add Temperature Table")}
+          </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 4,
+      grow: 6,
     },
     {
       name: t("Disinfectant Usage Details"),
@@ -1837,6 +2238,16 @@ const [showModal8, setShowModal8] = useState(false);
                 className="ms-2"
               >
                 {t("Moulting Table")}
+              </Button>
+            </li>
+             <li>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => getOnlyTemperatureList()}
+                className="ms-2"
+              >
+                {t("Temperature Humidity Table")}
               </Button>
             </li>
           </ul>
@@ -5073,6 +5484,564 @@ const [showModal8, setShowModal8] = useState(false);
           </Block>
           </Modal.Body>
       </Modal>
+
+      <Modal show={showModal10} onHide={handleCloseModal10} size="xl">
+                  <Modal.Header closeButton>
+                    <Modal.Title>{t("Add Temperature Details")}</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Block className="mt-4">
+                      <Form noValidate validated={validatedForTemperature} onSubmit={postTemperatureTableData}>
+                        <Row className="g-3 ">
+                          <div>
+                            <Row className="g-gs">
+                              <Col lg="12">
+                                <Block>
+                                  <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="weightCacoons">
+                                          {t("Lot Number")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="lotNumber"
+                                            name="lotNumber"
+                                            value={
+                                              onlyTemperatureTableDetails.lotNumber || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Lot Number")}
+                                            // readOnly
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                          Bed Name is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+          
+                                    
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="sordfl">
+                                          {t("Date")}
+                                          {/* <span className="text-danger">*</span> */}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <DatePicker
+                                            selected={onlyTemperatureTableDetails.temperatureHumidityDate}
+                                            onChange={(date) =>
+                                              handleDateChangeForTemperature(date, "temperatureHumidityDate")
+                                            }
+                                            peekNextMonth
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dropdownMode="select"
+                                            // maxDate={new Date()}
+                                            dateFormat="dd/MM/yyyy"
+                                            className="form-control"
+                                            // required
+                                          />
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                              
+                                  <Block >
+                                    <Card>
+                                    <Card.Header>
+                                    {t("Morning 6-00 AM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="temperature"
+                                            name="temperature"
+                                            value={
+                                              onlyTemperatureTableDetails.temperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="humidity"
+                                            name="humidity"
+                                            value={
+                                              onlyTemperatureTableDetails.humidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              {/* </Block> */}
+          
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Afternoon 12-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveTemperature"
+                                            name="afterNoonTwelveTemperature"
+                                            value={
+                                              onlyTemperatureTableDetails.afterNoonTwelveTemperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveHumidity"
+                                            name="afterNoonTwelveHumidity"
+                                            value={
+                                              onlyTemperatureTableDetails.afterNoonTwelveHumidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Evening 6-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixTemperature"
+                                            name="eveningSixTemperature"
+                                            value={
+                                              onlyTemperatureTableDetails.eveningSixTemperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixHumidity"
+                                            name="eveningSixHumidity"
+                                            value={
+                                              onlyTemperatureTableDetails.eveningSixHumidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                                </Block>
+                                    
+                                  </Row>
+                                  <div className="gap-col mt-2">
+                                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                    <li>
+                                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                      <Button type="submit" variant="primary">
+                                        {t("Update")}
+                                      </Button>
+                                    </li>
+                                    <li>
+                                      
+                                    </li>
+                                  </ul>
+                                </div>
+                                  {/* </Card.Body>
+                              </Card> */}
+                                </Block>
+                                
+                              </Col>
+                            </Row>
+                          </div>
+                        </Row>
+                      </Form>
+                    </Block>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal show={showModal9} onHide={handleCloseModal9} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>{t("Temperature-Humidity Table")}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Block className="mt-3">
+                        <Card>
+                          <DataTable
+                            tableClassName="data-table-head-light table-responsive"
+                            columns={RearingOfDFLSOnlyTemperatureDataColumns}
+                            data={listOnlyTemperatureData}
+                            highlightOnHover
+                            pagination
+                            paginationServer
+                            paginationTotalRows={totalRows}
+                            paginationPerPage={countPerPage}
+                            paginationComponentOptions={{
+                              noRowsPerPage: true,
+                            }}
+                            onChangePage={(page) => setPage(page - 1)}
+                            progressPending={loading}
+                            theme="solarized"
+                            customStyles={customStyles}
+                          />
+                        </Card>
+                      </Block>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleCloseModal9}>
+                        {t("Close")}
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
+                <Modal show={showModal11} onHide={handleCloseModal11} size="xl">
+                      <Modal.Header closeButton>
+                        <Modal.Title>{t("Edit Temperature Humidity Details")}</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Block className="mt-4">
+                      <Form noValidate validated={validatedForTemperatureEdit} onSubmit={postTemperatureTableForEditData}>
+                        <Row className="g-3 ">
+                          <div>
+                            <Row className="g-gs">
+                              <Col lg="12">
+                                <Block>
+                                  <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="weightCacoons">
+                                          {t("Lot Number")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="lotNumber"
+                                            name="lotNumber"
+                                            value={
+                                              editForTemperatureDetails.lotNumber || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Lot Number")}
+                                            // readOnly
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                          Bed Name is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+          
+                                    
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="sordfl">
+                                          {t("Date")}
+                                          {/* <span className="text-danger">*</span> */}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <DatePicker
+                                            selected={editForTemperatureDetails.temperatureHumidityDate}
+                                            onChange={(date) =>
+                                              handleDateChangeForEditTemperature(date, "temperatureHumidityDate")
+                                            }
+                                            peekNextMonth
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dropdownMode="select"
+                                            // maxDate={new Date()}
+                                            dateFormat="dd/MM/yyyy"
+                                            className="form-control"
+                                            // required
+                                          />
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                              
+                                  <Block >
+                                    <Card>
+                                    <Card.Header>
+                                    {t("Morning 6-00 AM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="temperature"
+                                            name="temperature"
+                                            value={
+                                              editForTemperatureDetails.temperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="humidity"
+                                            name="humidity"
+                                            value={
+                                              editForTemperatureDetails.humidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              {/* </Block> */}
+          
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Afternoon 12-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveTemperature"
+                                            name="afterNoonTwelveTemperature"
+                                            value={
+                                              editForTemperatureDetails.afterNoonTwelveTemperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveHumidity"
+                                            name="afterNoonTwelveHumidity"
+                                            value={
+                                              editForTemperatureDetails.afterNoonTwelveHumidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Evening 6-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixTemperature"
+                                            name="eveningSixTemperature"
+                                            value={
+                                              editForTemperatureDetails.eveningSixTemperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixHumidity"
+                                            name="eveningSixHumidity"
+                                            value={
+                                              editForTemperatureDetails.eveningSixHumidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                                </Block>
+                                        
+                                      </Row>
+                                      <div className="gap-col mt-2">
+                                      <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                        <li>
+                                          {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                          <Button type="submit" variant="primary">
+                                            {t("Update")}
+                                          </Button>
+                                        </li>
+                                        <li>
+                                          
+                                        </li>
+                                      </ul>
+                                    </div>
+                                      {/* </Card.Body>
+                                  </Card> */}
+                                    </Block>
+                                    
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Row>
+                          </Form>
+                        </Block>
+                        </Modal.Body>
+                    </Modal>
     </Layout>
   );
 }

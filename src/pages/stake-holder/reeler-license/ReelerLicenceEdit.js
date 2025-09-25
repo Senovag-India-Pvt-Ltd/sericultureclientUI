@@ -605,24 +605,27 @@ function ReelerLicenceEdit() {
   }, []);
 
   const handleRenewedDateChange = (date) => {
-    console.log(data);
-    console.log(date);
-    const expirationDate = new Date(date);
-    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-    // console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
+  if (!date) return;
 
-    setData((prev) => ({
-      ...prev,
-      receiptDate: date,
-      licenseExpiryDate: expirationDate,
-    }));
+  const receiptDate = new Date(date);
+  let expiryYear;
 
-    // setData(prev=>({
-    //   ...prev,
-    //   // receiptDate: date,
-    //   licenseExpiryDate: date,
-    // }));
-  };
+  if (receiptDate.getMonth() + 1 >= 4) {
+    // If April (4) or later → expiry = 31st March (year + 3)
+    expiryYear = receiptDate.getFullYear() + 3;
+  } else {
+    // If Jan–Mar → expiry = 31st March (year + 2)
+    expiryYear = receiptDate.getFullYear() + 2;
+  }
+
+  const expirationDate = new Date(expiryYear, 2, 31); // March is month=2 (0-indexed)
+
+  setData({
+    ...data,
+    receiptDate,
+    licenseExpiryDate: expirationDate,
+  });
+}; 
 
   // Display Image
   const [mahajar, setMahajar] = useState("");

@@ -281,13 +281,7 @@ function TrainingScheduleList() {
       hide: "md",
       grow:2,
     },
-    {
-      name: t("Training Schedule"),
-      selector: (row) => row.trScheduleId,
-      cell: (row) => <span>{row.trScheduleId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: t("Start Date"),
       selector: (row) => row.trStartDate,
@@ -328,6 +322,20 @@ function TrainingScheduleList() {
       name: t("Training Course Name"),
       selector: (row) => row.trCourseMasterName,
       cell: (row) => <span>{row.trCourseMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("District"),
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Taluk"),
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },

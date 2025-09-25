@@ -151,6 +151,7 @@ function NewTraderLicense() {
     silkExchangeMahajar: "",
     licenseNumberSequence: "",
     silkType: "",
+    gstNumber: "",
     traderLicenseDetailsRequests: [],
   });
 
@@ -243,6 +244,7 @@ function NewTraderLicense() {
       silkExchangeMahajar: "",
       licenseNumberSequence: "",
       silkType: "",
+      gstNumber: "",
     });
     virtualAccountClear();
   };
@@ -809,6 +811,24 @@ function NewTraderLicense() {
                           onChange={handleInputs}
                           type="text"
                           placeholder={t("Enter Corresponding Silk Exchange Mahajar")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="gstNumber">
+                        {t("GST Number")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="gstNumber"
+                          name="gstNumber"
+                          value={data.gstNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t("Enter GST Number")}
                         />
                       </div>
                     </Form.Group>

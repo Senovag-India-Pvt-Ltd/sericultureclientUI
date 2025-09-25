@@ -207,6 +207,18 @@ function TrainingScheduleView() {
                         <td style={styles.ctstyle}>{t("No Of Participant")}:</td>
                         <td>{trainingSchedule.trNoOfParticipant}</td>
                       </tr>
+                       <tr>
+                        <td style={styles.ctstyle}>{t("District")}:</td>
+                        <td>{trainingSchedule.districtName}</td>
+                      </tr>
+                       <tr>
+                        <td style={styles.ctstyle}>{t("Taluk")}:</td>
+                        <td>{trainingSchedule.talukName}</td>
+                      </tr>
+                       <tr>
+                        <td style={styles.ctstyle}>{t("Place")}:</td>
+                        <td>{trainingSchedule.place}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Training Start Date")}:</td>
                         <td>{formatDate(trainingSchedule.trStartDate)}</td>

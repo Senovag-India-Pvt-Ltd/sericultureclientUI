@@ -267,6 +267,9 @@ function TrainingScheduleEdit() {
               trUploadPath: "",
               trStartDate: null,
               trDateOfCompletion: null,
+              districtId: "",
+              talukId: "",
+              place: "",
             });
             setPPtFile("");
             setTrainerUser({
@@ -306,6 +309,9 @@ function TrainingScheduleEdit() {
       trUploadPath: "",
       trStartDate: null,
       trDateOfCompletion: null,
+      districtId: "",
+      talukId: "",
+      place: "",
     });
     setPPt("");
     setPPtFile("");
@@ -352,6 +358,54 @@ function TrainingScheduleEdit() {
     getIdList();
     getTrainerUserDetailsList();
   }, [id]);
+
+   // to get District
+      const [districtListData, setDistrictListData] = useState([]);
+    
+      const getDistrictList = () => {
+        const response = api
+          .get(baseURL + `district/get-all`)
+          .then((response) => {
+            setDistrictListData(response.data.content.district);
+          })
+          .catch((err) => {
+            setDistrictListData([]);
+          });
+      };
+    
+      useEffect(() => {
+        getDistrictList();
+      }, []);
+  
+      // to get taluk
+        const [talukListData, setTalukListData] = useState([]);
+      
+        const getTalukList = (_id) => {
+          const response = api
+            .get(baseURL + `taluk/get-by-district-id/${_id}`)
+            .then((response) => {
+              if (response.data.content.taluk) {
+                setTalukListData(response.data.content.taluk);
+              }
+            })
+            .catch((err) => {
+              setTalukListData([]);
+              // alert(err.response.data.errorMessages[0].message[0].message);
+            });
+        };
+      
+        // useEffect(() => {
+        //   if (searchData.districtId) {
+        //     getTalukList(searchData.districtId);
+        //   }
+        // }, [searchData.districtId]);
+        useEffect(() => {
+          const districtId =
+            data.districtId
+          if (districtId) {
+            getTalukList(districtId);
+          }
+        }, [data.districtId]);
 
   // to get Tr User
   const [trUserListData, setTrUserListData] = useState([]);
@@ -839,7 +893,7 @@ function TrainingScheduleEdit() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
+                  <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trNoOfParticipant">
                         {t("Training No Of Participant")}<span className="text-danger">*</span>
@@ -859,6 +913,138 @@ function TrainingScheduleEdit() {
                           {t("Participant Number Must Be Limited To Three Digits or Less")}
                         </Form.Control.Feedback>
                       </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("District")}
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="districtId"
+                          value={data.districtId}
+                          onChange={handleInputs}
+                          // onBlur={() => handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.districtId === undefined ||
+                          //   data.districtId === "0"
+                          // }
+                        >
+                          <option value="">{t("Select District")}</option>
+                          {districtListData && districtListData.length
+                          ?districtListData.map((list) => (
+                            <option
+                              key={list.districtId}
+                              value={list.districtId}
+                            >
+                              {list.districtName}
+                            </option>
+                          ))
+                          :""}
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                          {t("District is required")}
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Taluk")}
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="talukId"
+                          value={data.talukId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                          // isInvalid={
+                          //   data.talukId === undefined ||
+                          //   data.talukId === "0"
+                          // }
+                        >
+                          <option value="">{t("Select Taluk")}</option>
+                          {talukListData && talukListData.length
+                          ?talukListData.map((list) => (
+                            <option
+                              key={list.talukId}
+                              value={list.talukId}
+                            >
+                              {list.talukName}
+                            </option>
+                          ))
+                          : ""}
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                          {t("Taluk is required")}
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                    <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="trNoOfParticipant">
+                      {t("Training Place")}
+                      {/* <span className="text-danger">*</span> */}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="place"
+                        name="place"
+                        value={data.place}
+                        onChange={handleInputs}
+                        type="text"
+                        // maxLength="3"
+                        placeholder={t("Enter Training Place")}
+                        // required
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        {t("Participant Number Must Be Limited To Three Digits or Less")}
+                      </Form.Control.Feedback> */}
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="photoPath">
+                        {t("Upload Pdf/PPt/Video(Max:2mb)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          type="file"
+                          id="trUploadPath"
+                          name="trUploadPath"
+                          // value={data.trUploadPath}
+                          onChange={handlePPtChange}
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                      {ppt ? (
+                        <img
+                          style={{ height: "100px", width: "100px" }}
+                          src={URL.createObjectURL(ppt)}
+                        />
+                      ) : (
+                        selectedPPtFile && (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={selectedPPtFile}
+                            alt={t("Selected File")}
+                          />
+                        )
+                      )}
                     </Form.Group>
                   </Col>
 
@@ -910,39 +1096,7 @@ function TrainingScheduleEdit() {
                     </div>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="photoPath">
-                        {t("Upload Pdf/PPt/Video(Max:2mb)")}
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          type="file"
-                          id="trUploadPath"
-                          name="trUploadPath"
-                          // value={data.trUploadPath}
-                          onChange={handlePPtChange}
-                        />
-                      </div>
-                    </Form.Group>
-
-                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                      {ppt ? (
-                        <img
-                          style={{ height: "100px", width: "100px" }}
-                          src={URL.createObjectURL(ppt)}
-                        />
-                      ) : (
-                        selectedPPtFile && (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={selectedPPtFile}
-                            alt={t("Selected File")}
-                          />
-                        )
-                      )}
-                    </Form.Group>
-                  </Col>
+                  
                 </Row>
               )}
             </Card.Body>
