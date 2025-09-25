@@ -33,6 +33,7 @@ function OtherStateFarmerListReport() {
     talukId: "",
     hobliId: "",
     stateId: "",
+    casteId: "",
   });
 
   const [hobliData, setHobliData] = useState({
@@ -51,6 +52,7 @@ function OtherStateFarmerListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
              stateId: data.stateId || 0,
+             casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -76,6 +78,7 @@ function OtherStateFarmerListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
              stateId: data.stateId || 0,
+             casteId: data.casteId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -113,6 +116,7 @@ function OtherStateFarmerListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
              stateId: data.stateId || 0,
+             casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -224,11 +228,30 @@ function OtherStateFarmerListReport() {
       });
   };
 
+
+
   useEffect(() => {
     if (hobliData.hobliId) {
       getVillageList(hobliData.hobliId);
     }
   }, [hobliData.hobliId]);
+
+  // to get caste
+      const [casteListData, setCasteListData] = useState([]);
+    
+      const getCasteList = () =>
+        api
+          .get(baseURL + `caste/get-all`)
+          .then((response) => {
+            setCasteListData(response.data.content.caste);
+          })
+          .catch((err) => {
+            setCasteListData([]);
+          });
+    
+      useEffect(() => {
+        getCasteList();
+      }, []);
 
 // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -364,6 +387,13 @@ function OtherStateFarmerListReport() {
       name: t("farmer_number"),
       selector: (row) => row.farmerNumber,
       cell: (row) => <span>{row.farmerNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Caste",
+      selector: (row) => row.title,
+      cell: (row) => <span>{row.title}</span>,
       sortable: true,
       hide: "md",
     },
@@ -520,6 +550,24 @@ function OtherStateFarmerListReport() {
                 </Form.Select>
               </div>
             </Form.Group>
+          </Col>
+
+          <Col sm={2}>
+            <Form.Group className="w-100 mb-0"> 
+                <Form.Label>{t("Caste")}</Form.Label>
+                <Form.Select
+                  name="casteId"
+                  value={data.casteId}
+                  onChange={handleInputs}
+                >
+                  <option value="0">{t("Select Caste")}</option>
+                  {casteListData.map((list) => (
+                    <option key={list.id} value={list.id}>
+                      {list.title}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
           </Col>
 
           {/* Buttons */}

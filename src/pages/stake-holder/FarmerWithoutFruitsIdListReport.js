@@ -34,6 +34,7 @@ function FarmerWithoutFruitsListReport() {
     talukId: "",
     hobliId: "",
     stateId: "",
+    casteId: "",
   });
 
 
@@ -53,6 +54,7 @@ function FarmerWithoutFruitsListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
             stateId: data.stateId || 0,
+            casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -78,6 +80,7 @@ function FarmerWithoutFruitsListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
              stateId: data.stateId || 0,
+             casteId: data.casteId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -115,6 +118,7 @@ function FarmerWithoutFruitsListReport() {
             talukId: data.talukId || 0,
             hobliId: data.hobliId || 0,
              stateId: data.stateId || 0,
+             casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -164,6 +168,23 @@ function FarmerWithoutFruitsListReport() {
   useEffect(() => {
     getList();
   }, []);
+
+  // to get caste
+      const [casteListData, setCasteListData] = useState([]);
+    
+      const getCasteList = () =>
+        api
+          .get(baseURL + `caste/get-all`)
+          .then((response) => {
+            setCasteListData(response.data.content.caste);
+          })
+          .catch((err) => {
+            setCasteListData([]);
+          });
+    
+      useEffect(() => {
+        getCasteList();
+      }, []);
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -333,6 +354,13 @@ function FarmerWithoutFruitsListReport() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Caste",
+      selector: (row) => row.title,
+      cell: (row) => <span>{row.title}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: t("FRUITS ID"),
     //   selector: (row) => row.fruitsId,
@@ -406,106 +434,118 @@ function FarmerWithoutFruitsListReport() {
 
       <Block className="mt-n4">
         <Card className="mt-1">
-          <Row className="m-4">
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("District")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="districtId"
-                    value={data.districtId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.districtId === undefined || data.districtId === "0"
-                    }
-                  >
-                    <option value="">{t("Select District")}</option>
-                    {districtListData && districtListData.length
-                      ? districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("District Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+         <Row className="m-4 align-items-end"> {/* 🔄 Changed from 'align-items-end g-3 m-0' to match reference (m-4 for outer spacing) */}
+  
+  {/* District */}
+  <Col sm={2}>
+    <Form.Group className="form-group"> {/* 🔄 Removed 'mb-3' to match reference */}
+      <Form.Label>{t("District")}</Form.Label>
+      <div className="form-control-wrap"> {/* 🆕 Added wrapper div for consistency */}
+        <Form.Select
+          name="districtId"
+          value={data.districtId}
+          onChange={handleInputs}
+          isInvalid={data.districtId === undefined || data.districtId === "0"}
+        >
+          <option value="">{t("Select District")}</option>
+          {districtListData?.map((list) => (
+            <option key={list.districtId} value={list.districtId}>
+              {list.districtName}
+            </option>
+          ))}
+        </Form.Select>
+        <Form.Control.Feedback type="invalid">
+          {t("District Name is required")}
+        </Form.Control.Feedback>
+      </div>
+    </Form.Group>
+  </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Taluk")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="talukId"
-                    value={data.talukId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.talukId === undefined || data.talukId === "0"
-                    }
-                  >
-                    <option value="">{t("Select Taluk")}</option>
-                    {talukListData && talukListData.length
-                      ? talukListData.map((list) => (
-                          <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Taluk Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+  {/* Taluk */}
+  <Col sm={2}>
+    <Form.Group className="form-group"> {/* 🔄 Removed 'mb-3' */}
+      <Form.Label>{t("Taluk")}</Form.Label>
+      <div className="form-control-wrap"> {/* 🆕 Added wrapper div */}
+        <Form.Select
+          name="talukId"
+          value={data.talukId}
+          onChange={handleInputs}
+          isInvalid={data.talukId === undefined || data.talukId === "0"}
+        >
+          <option value="">{t("Select Taluk")}</option>
+          {talukListData?.map((list) => (
+            <option key={list.talukId} value={list.talukId}>
+              {list.talukName}
+            </option>
+          ))}
+        </Form.Select>
+        <Form.Control.Feedback type="invalid">
+          {t("Taluk Name is required")}
+        </Form.Control.Feedback>
+      </div>
+    </Form.Group>
+  </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Hobli")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="hobliId"
-                    value={hobliData.hobliId}
-                    onChange={handleHobliInputs}
-                    onBlur={() => handleHobliInputs}
-                    isInvalid={
-                      hobliData.hobliId === undefined ||
-                      hobliData.hobliId === "0"
-                    }
-                  >
-                    <option value="">{t("Select hobli")}</option>
-                    {hobliListData && hobliListData.length
-                      ? hobliListData.map((list) => (
-                          <option key={list.hobliId} value={list.hobliId}>
-                            {list.hobliName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Hobli Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+  {/* Hobli */}
+  <Col sm={2}>
+    <Form.Group className="form-group"> {/* 🔄 Removed 'mb-3' */}
+      <Form.Label>{t("Hobli")}</Form.Label>
+      <div className="form-control-wrap"> {/* 🆕 Added wrapper div */}
+        <Form.Select
+          name="hobliId"
+          value={hobliData.hobliId}
+          onChange={handleHobliInputs}
+          isInvalid={hobliData.hobliId === undefined || hobliData.hobliId === "0"}
+        >
+          <option value="">{t("Select Hobli")}</option>
+          {hobliListData?.map((list) => (
+            <option key={list.hobliId} value={list.hobliId}>
+              {list.hobliName}
+            </option>
+          ))}
+        </Form.Select>
+        <Form.Control.Feedback type="invalid">
+          {t("Hobli Name is required")}
+        </Form.Control.Feedback>
+      </div>
+    </Form.Group>
+  </Col>
 
-                        <Col sm={1}>
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+  {/* Caste */}
+  <Col sm={2}>
+    <Form.Group className="form-group"> {/* 🔄 Removed 'mb-3' */}
+      <Form.Label>{t("Caste")}</Form.Label>
+      <Form.Select
+        name="casteId"
+        value={data.casteId}
+        onChange={handleInputs}
+      >
+        <option value="0">{t("Select Caste")}</option>
+        {casteListData.map((list) => (
+          <option key={list.id} value={list.id}>
+            {list.title}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
+  </Col>
+
+  {/* Search Button */}
+  <Col sm={1}> {/* 🔄 Changed from sm={2} to sm={1} to match reference layout */}
+    <Button type="button" variant="primary" onClick={search}>
+      {t("Search")}
+    </Button>
+  </Col>
+
+  {/* Export Button */}
+  <Col sm={1}> {/* 🔄 Same here, sm={1} for compact spacing */}
+    <Button type="button" variant="primary" onClick={exportCsv}>
+      {t("Export")}
+    </Button>
+  </Col>
+</Row>
+
+
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ReelerDataColumns}
