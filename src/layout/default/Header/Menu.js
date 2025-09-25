@@ -5096,7 +5096,7 @@ function Menu() {
                         {showMenu.Reports_Export_Report_Inspection_Farmer_Mulberry_Extension_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Mulberry Extension Report")}
+                              text={t("Mulberry Expansion Report")}
                               to="/seriui/farmer-mulberry-extension-report"
                             />
                           </MenuItem>

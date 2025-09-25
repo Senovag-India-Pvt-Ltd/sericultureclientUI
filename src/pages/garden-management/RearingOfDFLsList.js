@@ -26,6 +26,14 @@ function RearingOfDFLsList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+  };
+
   const getList = () => {
     setLoading(true);
 
@@ -625,7 +633,7 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirmForFeedingandMoult(row.id)}
+            onClick={() => deleteConfirmForFeeding(row.id)}
           >
             Delete
           </Button>
@@ -644,32 +652,338 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      // grow: 2,
+      grow: 2,
     },
 
-    // {
-    //   name: t("Worm Stage"),
-    //   selector: (row) => row.wormStage,
-    //   cell: (row) => <span>{row.wormStage}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: t("Temperature"),
-    //   selector: (row) => row.temperature,
-    //   cell: (row) => <span>{row.temperature}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: t("Humidity"),
-    //   selector: (row) => row.humidity,
-    //   cell: (row) => <span>{row.humidity}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-
   ];
+
+  const [showModal9, setShowModal9] = useState(false);
+    const handleShowModal9 = () => setShowModal9(true); 
+    const handleCloseModal9 = () => setShowModal9(false);
+  
+     const [listOnlyTemperatureData, setOnlyTemperatureListData] = useState({});
+    
+      const getOnlyTemperatureList = () => {
+        setLoading(true);
+      
+        api
+          .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info-for-temperature`)
+          .then((response) => {
+            setOnlyTemperatureListData(response.data);
+            setLoading(false);
+            handleShowModal9(); // Open modal after data is fetched
+          })
+          .catch((err) => {
+            setLoading(false);
+          });
+      };
+  
+    const [showModal10, setShowModal10] = useState(false);
+  const handleShowModal10 = (row) => {
+      setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, rearingOfDFLsForThe8linesId: row.id });
+      setShowModal10(true); 
+    };
+  
+     const handleCloseModal10 = () => setShowModal10(false);
+  
+    const [onlyTemperatureTableDetails, setOnlyTemperatureTable] = useState({
+      rearingOfDFLsForThe8linesId: "",
+      lotNumber: "",
+      temperatureHumidityDate: new Date(),
+      temperature: "",
+      humidity: "",
+      afterNoonTwelveTemperature: "",
+      afterNoonTwelveHumidity: "",
+      eveningSixTemperature:"",
+      eveningSixHumidity:"",
+    });
+  
+    const [validatedForTemperature, setValidatedForTemperature] = useState(false);
+    const [validatedForTemperatureEdit, setValidatedForTemperatureEdit] = useState(false);
+  
+    const handleDateChangeForTemperature = (date, type) => {
+        setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, [type]: date });
+      };
+    
+    
+      const handleOnlyTemperatureInputs = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setOnlyTemperatureTable({ ...onlyTemperatureTableDetails, [name]: value });
+      };
+  
+    
+    
+      const postTemperatureTableData = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+          setValidatedForTemperature(true);
+        } else {
+          event.preventDefault();
+          const formattedTemperatureHumidityDate = formattedDate(onlyTemperatureTableDetails.temperatureHumidityDate);
+         
+          const sendPost = {
+            rearingOfDFLsForThe8linesId: onlyTemperatureTableDetails.rearingOfDFLsForThe8linesId,
+            lotNumber: onlyTemperatureTableDetails.lotNumber,
+            temperatureHumidityDate: formattedTemperatureHumidityDate,
+            temperature: onlyTemperatureTableDetails.temperature,
+            humidity: onlyTemperatureTableDetails.humidity,
+            afterNoonTwelveTemperature: onlyTemperatureTableDetails.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: onlyTemperatureTableDetails.afterNoonTwelveHumidity,
+            eveningSixTemperature:onlyTemperatureTableDetails.eveningSixTemperature,
+            eveningSixHumidity: onlyTemperatureTableDetails.eveningSixHumidity,
+           
+          };
+          api
+            .post(
+              baseURLSeedDfl + `FeedingAndMoultTest/add-info-for-temperature-humidity`,
+              sendPost
+            )
+            .then((response) => {
+              if (response.data.error) {
+                saveError(response.data.message);
+              } else {
+                saveSuccess(response.data.message);
+                // clear();
+                // handleCloseModal();
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidatedForTemperature(true);
+        }
+      };
+  
+      const [showModal11, setShowModal11] = useState(false);
+      const handleCloseModal11 = () => setShowModal11(false);
+     const [idForTemperature, setIdForTemperature] = useState(null);
+    const [editForTemperatureDetails, setEditForTemperatureTable] = useState({
+      rearingOfDFLsForThe8linesId: "",
+      lotNumber: "",
+      temperatureHumidityDate: new Date(),
+      temperature: "",
+      humidity: "",
+      afterNoonTwelveTemperature: "",
+      afterNoonTwelveHumidity: "",
+      eveningSixTemperature:"",
+      eveningSixHumidity:"",
+    });
+  
+    const handleDateChangeForEditTemperature = (date, type) => {
+        setEditForTemperatureTable({ ...editForTemperatureDetails, [type]: date });
+      };
+    
+    
+      const handleTemperatureForEditInputs = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setEditForTemperatureTable({ ...editForTemperatureDetails, [name]: value });
+      }; 
+    
+      const postTemperatureTableForEditData = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+          setValidatedForTemperatureEdit(true);
+        } else {
+          event.preventDefault();
+          const formattedTemperatureHumidityDate = formattedDate(editForTemperatureDetails.temperatureHumidityDate);
+          const sendPost = {
+            id: editForTemperatureDetails.id,
+           rearingOfDFLsForThe8linesId: editForTemperatureDetails.rearingOfDFLsForThe8linesId,
+            lotNumber: editForTemperatureDetails.lotNumber,
+            temperatureHumidityDate: formattedTemperatureHumidityDate,
+            temperature: editForTemperatureDetails.temperature,
+            humidity: editForTemperatureDetails.humidity,
+            afterNoonTwelveTemperature: editForTemperatureDetails.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: editForTemperatureDetails.afterNoonTwelveHumidity,
+            eveningSixTemperature:editForTemperatureDetails.eveningSixTemperature,
+            eveningSixHumidity: editForTemperatureDetails.eveningSixHumidity,
+          };
+          api
+            .post(
+              baseURLSeedDfl + `FeedingAndMoultTest/update-info-for-temperature-humidity`,
+              sendPost
+            )
+            .then((response) => {
+              if (response.data.error) {
+                saveError(response.data.message);
+              } else {
+                saveSuccess(response.data.message);
+                getOnlyTemperatureList(); // Refresh the list after editing
+                // clear();
+                // handleCloseModal();
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidatedForTemperatureEdit(true);
+        }
+      };
+  
+     const handleShowModal11 = (row) => {
+      setIdForTemperature(row.id); // this is used for fetching via API
+      setEditForTemperatureTable((prev) => ({
+        ...prev,
+        rearingOfDFLsForThe8linesId: row.rearingOfDFLsForThe8linesId || "",
+      }));
+      setShowModal11(true);
+    };
+    
+      const getIdListForTemperature = () => {
+      setLoading(true);
+      api
+        .get(baseURLSeedDfl + `FeedingAndMoultTest/get-info-by-id/${idForTemperature}`)
+        .then((response) => {
+          const data = response.data;
+    
+          // Update form fields with fetched data
+          setEditForTemperatureTable({
+            rearingOfDFLsForThe8linesId: data.rearingOfDFLsForThe8linesId || "",
+            id: data.id || "",
+            lotNumber: data.lotNumber || "",
+            temperatureHumidityDate: new Date(data.temperatureHumidityDate), // Ensure it's a Date object
+            temperature: data.temperature || "",
+            humidity: data.humidity || "",
+            afterNoonTwelveTemperature: data.afterNoonTwelveTemperature,
+            afterNoonTwelveHumidity: data.afterNoonTwelveHumidity || "",
+            eveningSixTemperature: data.eveningSixTemperature || "",
+            eveningSixHumidity: data.eveningSixHumidity || "",
+          });
+    
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch edit data", err);
+          setEditForTemperatureTable({});
+          setLoading(false);
+        });
+    };
+    useEffect(() => {
+      if (idForTemperature) {
+        getIdListForTemperature();
+      }
+    }, [idForTemperature]);
+
+    const RearingOfDFLSOnlyTemperatureDataColumns = [
+          
+          {
+            name: t("Lot Number"),
+            selector: (row) => row.lotNumber,
+            cell: (row) => <span>{row.lotNumber}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: t("Date"),
+            selector: (row) => row.temperatureHumidityDate,
+            cell: (row) => <span>{row.temperatureHumidityDate}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          {
+            name: t("Morning 6 Temperature"),
+            selector: (row) => row.temperature,
+            cell: (row) => <span>{row.temperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("Morning 6 Humidity"),
+            selector: (row) => row.humidity,
+            cell: (row) => <span>{row.humidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+      
+         {
+            name: t("12 PM Temperature"),
+            selector: (row) => row.afterNoonTwelveTemperature,
+            cell: (row) => <span>{row.afterNoonTwelveTemperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("12 PM Humidity"),
+            selector: (row) => row.afterNoonTwelveHumidity,
+            cell: (row) => <span>{row.afterNoonTwelveHumidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: t("6 PM Temperature"),
+            selector: (row) => row.eveningSixTemperature,
+            cell: (row) => <span>{row.eveningSixTemperature}</span>,
+            sortable: true,
+            hide: "md",
+          },
+          
+          {
+            name: t("6 PM Humidity"),
+            selector: (row) => row.eveningSixHumidity,
+            cell: (row) => <span>{row.eveningSixHumidity}</span>,
+            sortable: true,
+            hide: "md",
+          },
+    
+          {
+            name: "Action",
+            cell: (row) => (
+              //   Button style
+              <div className="text-start w-100">
+                {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => deleteConfirmForTemperature(row.id)}
+                >
+                  Delete
+                </Button>
+      
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => handleShowModal11(row)} // <-- correct
+                >
+                  {t("Edit")}
+                </Button>
+      
+               
+              </div>
+            ),
+            sortable: false,
+            hide: "md",
+            grow: 2,
+          },
+      
+        ];
+
 
   const RearingOfDFLSOnlyMoultingDataColumns = [
     
@@ -742,7 +1056,7 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirmForFeedingandMoult(row.id)}
+            onClick={() => deleteConfirmForMoult(row.id)}
           >
             Delete
           </Button>
@@ -761,13 +1075,45 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      // grow: 2,
+      grow: 2,
     },
 
   ];
 
 
-   const deleteConfirmForFeedingandMoult = (_id) => {
+    const deleteConfirmForMoult = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `FeedingAndMoultTest/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getOnlyMoultingList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const deleteConfirmForFeeding = (_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -782,6 +1128,38 @@ const [showModal8, setShowModal8] = useState(false);
           .then((response) => {
             // deleteConfirm(_id);
             getMoultList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+   const deleteConfirmForTemperature = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `FeedingAndMoultTest/delete-info/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getOnlyTemperatureList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -912,6 +1290,603 @@ const [showModal8, setShowModal8] = useState(false);
     },
   };
 
+  const [cocoonAssesmentDetailsBedWise, setCocoonAssesmentDetailsBedWise] = useState({
+      bed1Id: "",
+      bed1Name: "",
+      bed1WeightCacoons: "",
+      bed1WeightPupa: "",
+      bed1WeightShells: "",
+      bed1ShellPercentage: "",
+      bed1Err:"",
+      bed1CacoonsFormed: "",
+      bed1WormsBrushed: "",
+      bed1SingleWeightCacoons: "",
+      bed1SingleWeightPupa: "",
+      bed1SingleWeightShells: "",
+      bed2Id: "",
+      bed2Name: "",
+      bed2WeightCacoons: "",
+      bed2WeightPupa: "",
+      bed2WeightShells: "",
+      bed2SingleWeightCacoons: "",
+      bed2SingleWeightPupa: "",
+      bed2SingleWeightShells: "",
+      bed2ShellPercentage: "",
+      bed2Err:"",
+      bed2CacoonsFormed: "",
+      bed2WormsBrushed: "",
+      bed3Id: "",
+      bed3Name: "",
+      bed3WeightCacoons: "",
+      bed3WeightPupa: "",
+      bed3WeightShells: "",
+      bed3ShellPercentage: "",
+      bed3Err:"",
+      bed3CacoonsFormed: "",
+      bed3WormsBrushed: "",
+      bed3SingleWeightCacoons: "",
+      bed3SingleWeightPupa: "",
+      bed3SingleWeightShells: "",
+      bed4Id: "",
+      bed4Name: "",
+      bed4WeightCacoons: "",
+      bed4WeightPupa: "",
+      bed4WeightShells: "",
+      bed4ShellPercentage: "",
+      bed4Err:"",
+      bed4CacoonsFormed: "",
+      bed4WormsBrushed: "",
+      bed4SingleWeightCacoons: "",
+      bed4SingleWeightPupa: "",
+      bed4SingleWeightShells: "",
+      bed5Id: "",
+      bed5Name: "",
+      bed5WeightCacoons: "",
+      bed5WeightPupa: "",
+      bed5WeightShells: "",
+      bed5ShellPercentage: "",
+      bed5Err:"",
+      bed5CacoonsFormed: "",
+      bed5WormsBrushed: "",
+      bed5SingleWeightCacoons: "",
+      bed5SingleWeightPupa: "",
+      bed5SingleWeightShells: "",
+    });
+  
+    
+  
+    const handleInputs = (e) => {
+      let name = e.target.name;
+      let value = e.target.value;
+      setCocoonAssesmentDetailsBedWise({ ...cocoonAssesmentDetailsBedWise, [name]: value });
+    };
+  
+    const postData = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+      } else {
+        event.preventDefault();
+        const sendPost = {
+          id: cocoonAssesmentDetailsBedWise.bed1Id,
+          bedName: cocoonAssesmentDetailsBedWise.bed1Name,
+          weightCacoons: cocoonAssesmentDetailsBedWise.bed1WeightCacoons,
+          weightPupa: cocoonAssesmentDetailsBedWise.bed1WeightPupa,
+          weightShells: cocoonAssesmentDetailsBedWise.bed1WeightShells,
+          singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed1SingleWeightCacoons,
+          singleWeightPupa: cocoonAssesmentDetailsBedWise.bed1SingleWeightPupa,
+          singleWeightShells: cocoonAssesmentDetailsBedWise.bed1SingleWeightShells,
+          shellPercentage:cocoonAssesmentDetailsBedWise.bed1ShellPercentage,
+          err: cocoonAssesmentDetailsBedWise.bed1Err,
+          cacoonsFormed: cocoonAssesmentDetailsBedWise.bed1CacoonsFormed,
+          wormsBrushed: cocoonAssesmentDetailsBedWise.bed1WormsBrushed,
+          maleRatio: cocoonAssesmentDetailsBedWise.bed1MaleRatio,
+          femaleRatio: cocoonAssesmentDetailsBedWise.bed1FemaleRatio, 
+        };
+        api
+          .post(
+            baseURL2 + `Rearing-of-dfls/update-cacoon-assesment-data-by-id`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.error) {
+              saveError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+              // handleCloseModal();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+      }
+    };
+  
+    const postBed2Data = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+      } else {
+        event.preventDefault();
+        const sendPost = {
+          id: cocoonAssesmentDetailsBedWise.bed2Id,
+          bedName: cocoonAssesmentDetailsBedWise.bed2Name,
+          weightCacoons: cocoonAssesmentDetailsBedWise.bed2WeightCacoons,
+          weightPupa: cocoonAssesmentDetailsBedWise.bed2WeightPupa,
+          weightShells: cocoonAssesmentDetailsBedWise.bed2WeightShells,
+          shellPercentage:cocoonAssesmentDetailsBedWise.bed2ShellPercentage,
+          singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed2SingleWeightCacoons,
+          singleWeightPupa: cocoonAssesmentDetailsBedWise.bed2SingleWeightPupa,
+          singleWeightShells: cocoonAssesmentDetailsBedWise.bed2SingleWeightShells,
+          err: cocoonAssesmentDetailsBedWise.bed2Err,
+          cacoonsFormed: cocoonAssesmentDetailsBedWise.bed2CacoonsFormed,
+          wormsBrushed: cocoonAssesmentDetailsBedWise.bed2WormsBrushed,
+          maleRatio: cocoonAssesmentDetailsBedWise.bed2MaleRatio,
+          femaleRatio: cocoonAssesmentDetailsBedWise.bed2FemaleRatio, 
+        };
+        api
+          .post(
+            baseURL2 + `Rearing-of-dfls/update-cacoon-assesment-data-by-id`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.error) {
+              saveError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+              // handleCloseModal();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+      }
+    };
+  
+    const postBed3Data = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+      } else {
+        event.preventDefault();
+        const sendPost = {
+          id: cocoonAssesmentDetailsBedWise.bed3Id,
+          bedName: cocoonAssesmentDetailsBedWise.bed3Name,
+          weightCacoons: cocoonAssesmentDetailsBedWise.bed3WeightCacoons,
+          weightPupa: cocoonAssesmentDetailsBedWise.bed3WeightPupa,
+          weightShells: cocoonAssesmentDetailsBedWise.bed3WeightShells,
+          singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed3SingleWeightCacoons,
+          singleWeightPupa: cocoonAssesmentDetailsBedWise.bed3SingleWeightPupa,
+          singleWeightShells: cocoonAssesmentDetailsBedWise.bed3SingleWeightShells,
+          shellPercentage:cocoonAssesmentDetailsBedWise.bed3ShellPercentage,
+          err: cocoonAssesmentDetailsBedWise.bed3Err,
+          cacoonsFormed: cocoonAssesmentDetailsBedWise.bed3CacoonsFormed,
+          wormsBrushed: cocoonAssesmentDetailsBedWise.bed3WormsBrushed,
+          maleRatio: cocoonAssesmentDetailsBedWise.bed3MaleRatio,
+          femaleRatio: cocoonAssesmentDetailsBedWise.bed3FemaleRatio, 
+        };
+        api
+          .post(
+            baseURL2 + `Rearing-of-dfls/update-cacoon-assesment-data-by-id`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.error) {
+              saveError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+              // handleCloseModal();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+      }
+    };
+  
+    const postBed4Data = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+      } else {
+        event.preventDefault();
+        const sendPost = {
+          id: cocoonAssesmentDetailsBedWise.bed4Id,
+          bedName: cocoonAssesmentDetailsBedWise.bed4Name,
+          weightCacoons: cocoonAssesmentDetailsBedWise.bed4WeightCacoons,
+          weightPupa: cocoonAssesmentDetailsBedWise.bed4WeightPupa,
+          weightShells: cocoonAssesmentDetailsBedWise.bed4WeightShells,
+          singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed4SingleWeightCacoons,
+          singleWeightPupa: cocoonAssesmentDetailsBedWise.bed4SingleWeightPupa,
+          singleWeightShells: cocoonAssesmentDetailsBedWise.bed4SingleWeightShells,
+          shellPercentage:cocoonAssesmentDetailsBedWise.bed4ShellPercentage,
+          err: cocoonAssesmentDetailsBedWise.bed4Err,
+          cacoonsFormed: cocoonAssesmentDetailsBedWise.bed4CacoonsFormed,
+          wormsBrushed: cocoonAssesmentDetailsBedWise.bed4WormsBrushed,
+          maleRatio: cocoonAssesmentDetailsBedWise.bed4MaleRatio,
+          femaleRatio: cocoonAssesmentDetailsBedWise.bed4FemaleRatio, 
+        };
+        api
+          .post(
+            baseURL2 + `Rearing-of-dfls/update-cacoon-assesment-data-by-id`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.error) {
+              saveError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+              // handleCloseModal();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+      }
+    };
+  
+    const postBed5Data = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+      } else {
+        event.preventDefault();
+        const sendPost = {
+          id: cocoonAssesmentDetailsBedWise.bed5Id,
+          bedName: cocoonAssesmentDetailsBedWise.bed5Name,
+          weightCacoons: cocoonAssesmentDetailsBedWise.bed5WeightCacoons,
+          weightPupa: cocoonAssesmentDetailsBedWise.bed5WeightPupa,
+          weightShells: cocoonAssesmentDetailsBedWise.bed5WeightShells,
+          singleWeightCacoons: cocoonAssesmentDetailsBedWise.bed5SingleWeightCacoons,
+          singleWeightPupa: cocoonAssesmentDetailsBedWise.bed5SingleWeightPupa,
+          singleWeightShells: cocoonAssesmentDetailsBedWise.bed5SingleWeightShells,
+          shellPercentage:cocoonAssesmentDetailsBedWise.bed5ShellPercentage,
+          err: cocoonAssesmentDetailsBedWise.bed5Err,
+          cacoonsFormed: cocoonAssesmentDetailsBedWise.bed5CacoonsFormed,
+          wormsBrushed: cocoonAssesmentDetailsBedWise.bed5WormsBrushed,
+          maleRatio: cocoonAssesmentDetailsBedWise.bed5MaleRatio,
+          femaleRatio: cocoonAssesmentDetailsBedWise.bed5FemaleRatio, 
+        };
+        api
+          .post(
+            baseURL2 + `Rearing-of-dfls/update-cacoon-assesment-data-by-id`,
+            sendPost
+          )
+          .then((response) => {
+            if (response.data.error) {
+              saveError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+              // handleCloseModal();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+      }
+    };
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal1 = () => setShowModal1(false);
+
+   const getCocoonList = (_id) => {
+      setLoading(true);
+      handleShowModal();
+    
+      api
+        .get(
+          baseURL2 + `Rearing-of-dfls/get-cacoon-assesment-data-by-id/${_id}`
+        )
+        .then((response) => {
+          const data = response.data;
+    
+          // Update the state for each bed based on the response
+          setCocoonAssesmentDetailsBedWise({
+            bed1Id: data[0]?.id || "",
+            bed1Name: data[0]?.bedName || "",
+            bed1WeightCacoons: data[0]?.weightCacoons || "",
+            bed1WeightPupa: data[0]?.weightPupa || "",
+            bed1WeightShells: data[0]?.weightShells || "",
+            bed1SingleWeightCacoons: data[0]?.singleWeightCacoons || "",
+            bed1SingleWeightPupa: data[0]?.singleWeightPupa || "",
+            bed1SingleWeightShells: data[0]?.singleWeightShells || "",
+            bed1ShellPercentage: data[0]?.shellPercentage || "",
+            bed1Err: data[0]?.err || "",
+            bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
+            bed1WormsBrushed: data[0]?.wormsBrushed || "",
+            bed1MaleRatio: data[0]?.maleRatio || "",
+            bed1FemaleRatio: data[0]?.femaleRatio || "",
+            bed2Id: data[1]?.id || "",
+            bed2Name: data[1]?.bedName || "",
+            bed2WeightCacoons: data[1]?.weightCacoons || "",
+            bed2WeightPupa: data[1]?.weightPupa || "",
+            bed2WeightShells: data[1]?.weightShells || "",
+            bed2SingleWeightCacoons: data[1]?.singleWeightCacoons || "",
+            bed2SingleWeightPupa: data[1]?.singleWeightPupa || "",
+            bed2SingleWeightShells: data[1]?.singleWeightShells || "",
+            bed2ShellPercentage: data[1]?.shellPercentage || "",
+            bed2Err: data[1]?.err || "",
+            bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
+            bed2WormsBrushed: data[1]?.wormsBrushed || "",
+            bed2MaleRatio: data[1]?.maleRatio || "",
+            bed2FemaleRatio: data[1]?.femaleRatio || "",
+            bed3Id: data[2]?.id || "",
+            bed3Name: data[2]?.bedName || "",
+            bed3WeightCacoons: data[2]?.weightCacoons || "",
+            bed3WeightPupa: data[2]?.weightPupa || "",
+            bed3WeightShells: data[2]?.weightShells || "",
+            bed3SingleWeightCacoons: data[2]?.singleWeightCacoons || "",
+            bed3SingleWeightPupa: data[2]?.singleWeightPupa || "",
+            bed3SingleWeightShells: data[2]?.singleWeightShells || "",
+            bed3ShellPercentage: data[2]?.shellPercentage || "",
+            bed3Err: data[2]?.err || "",
+            bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
+            bed3WormsBrushed: data[2]?.wormsBrushed || "",
+            bed3MaleRatio: data[2]?.maleRatio || "",
+            bed3FemaleRatio: data[2]?.femaleRatio || "",
+            bed4Id: data[3]?.id || "",
+            bed4Name: data[3]?.bedName || "",
+            bed4WeightCacoons: data[3]?.weightCacoons || "",
+            bed4WeightPupa: data[3]?.weightPupa || "",
+            bed4WeightShells: data[3]?.weightShells || "",
+            bed4SingleWeightCacoons: data[3]?.singleWeightCacoons || "",
+            bed4SingleWeightPupa: data[3]?.singleWeightPupa || "",
+            bed4SingleWeightShells: data[3]?.singleWeightShells || "",
+            bed4ShellPercentage: data[3]?.shellPercentage || "",
+            bed4Err: data[3]?.err || "",
+            bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
+            bed4WormsBrushed: data[3]?.wormsBrushed || "",
+            bed4MaleRatio: data[3]?.maleRatio || "",
+            bed4FemaleRatio: data[3]?.femaleRatio || "",
+            bed5Id: data[4]?.id || "",
+            bed5Name: data[4]?.bedName || "",
+            bed5WeightCacoons: data[4]?.weightCacoons || "",
+            bed5WeightPupa: data[4]?.weightPupa || "",
+            bed5WeightShells: data[4]?.weightShells || "",
+            bed5SingleWeightCacoons: data[4]?.singleWeightCacoons || "",
+            bed5SingleWeightPupa: data[4]?.singleWeightPupa || "",
+            bed5SingleWeightShells: data[4]?.singleWeightShells || "",
+            bed5ShellPercentage: data[4]?.shellPercentage || "",
+            bed5Err: data[4]?.err || "",
+            bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
+            bed5WormsBrushed: data[4]?.wormsBrushed || "",
+            bed5MaleRatio: data[4]?.maleRatio || "",
+            bed5FemaleRatio: data[4]?.femaleRatio || "",
+          });
+    
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    };
+
+     const [viewDetailsData, setViewDetailsData] = useState({
+        bed1Id: "",
+        bed1Name: "",
+        bed1WeightCacoons: "",
+        bed1WeightPupa: "",
+        bed1WeightShells: "",
+        bed1ShellPercentage: "",
+        bed1Err:"",
+        bed1CacoonsFormed: "",
+        bed1WormsBrushed: "",
+        bed1SingleWeightCacoons: "",
+        bed1SingleWeightPupa: "",
+        bed1SingleWeightShells: "",
+        bed1MaleRatio: "",
+        bed1FemaleRatio: "",
+        bed2Id: "",
+        bed2Name: "",
+        bed2WeightCacoons: "",
+        bed2WeightPupa: "",
+        bed2WeightShells: "",
+        bed2SingleWeightCacoons: "",
+        bed2SingleWeightPupa: "",
+        bed2SingleWeightShells: "",
+        bed2ShellPercentage: "",
+        bed2Err:"",
+        bed2CacoonsFormed: "",
+        bed2WormsBrushed: "",
+        bed2MaleRatio: "",
+        bed2FemaleRatio: "",
+        bed3Id: "",
+        bed3Name: "",
+        bed3WeightCacoons: "",
+        bed3WeightPupa: "",
+        bed3WeightShells: "",
+        bed3ShellPercentage: "",
+        bed3Err:"",
+        bed3CacoonsFormed: "",
+        bed3WormsBrushed: "",
+        bed3SingleWeightCacoons: "",
+        bed3SingleWeightPupa: "",
+        bed3SingleWeightShells: "",
+        bed3MaleRatio: "",
+        bed3FemaleRatio: "",
+        bed4Id: "",
+        bed4Name: "",
+        bed4WeightCacoons: "",
+        bed4WeightPupa: "",
+        bed4WeightShells: "",
+        bed4ShellPercentage: "",
+        bed4Err:"",
+        bed4CacoonsFormed: "",
+        bed4WormsBrushed: "",
+        bed4SingleWeightCacoons: "",
+        bed4SingleWeightPupa: "",
+        bed4SingleWeightShells: "",
+        bed4MaleRatio: "",
+        bed4FemaleRatio: "",
+        bed5Id: "",
+        bed5Name: "",
+        bed5WeightCacoons: "",
+        bed5WeightPupa: "",
+        bed5WeightShells: "",
+        bed5ShellPercentage: "",
+        bed5Err:"",
+        bed5CacoonsFormed: "",
+        bed5WormsBrushed: "",
+        bed5SingleWeightCacoons: "",
+        bed5SingleWeightPupa: "",
+        bed5SingleWeightShells: "",
+        bed5MaleRatio: "",
+        bed5FemaleRatio: "",
+      });
+    
+      const viewDetails = (_id) => {
+        handleShowModal1();
+        api
+          .get(baseURL2 + `Rearing-of-dfls/get-cacoon-assesment-data-by-id/${_id}`)
+          .then((response) => {
+            const data = response.data;
+            setViewDetailsData({
+              bed1Id: data[0]?.id || "",
+              bed1Name: data[0]?.bedName || "",
+              bed1WeightCacoons: data[0]?.weightCacoons || "",
+              bed1WeightPupa: data[0]?.weightPupa || "",
+              bed1WeightShells: data[0]?.weightShells || "",
+              bed1SingleWeightCacoons: data[0]?.singleWeightCacoons || "",
+              bed1SingleWeightPupa: data[0]?.singleWeightPupa || "",
+              bed1SingleWeightShells: data[0]?.singleWeightShells || "",
+              bed1ShellPercentage: data[0]?.shellPercentage || "",
+              bed1Err: data[0]?.err || "",
+              bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
+              bed1WormsBrushed: data[0]?.wormsBrushed || "",
+              bed1MaleRatio: data[0]?.maleRatio || "",
+              bed1FemaleRatio: data[0]?.femaleRatio || "",
+              bed2Id: data[1]?.id || "",
+              bed2Name: data[1]?.bedName || "",
+              bed2WeightCacoons: data[1]?.weightCacoons || "",
+              bed2WeightPupa: data[1]?.weightPupa || "",
+              bed2WeightShells: data[1]?.weightShells || "",
+              bed2SingleWeightCacoons: data[1]?.singleWeightCacoons || "",
+              bed2SingleWeightPupa: data[1]?.singleWeightPupa || "",
+              bed2SingleWeightShells: data[1]?.singleWeightShells || "",
+              bed2ShellPercentage: data[1]?.shellPercentage || "",
+              bed2Err: data[1]?.err || "",
+              bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
+              bed2WormsBrushed: data[1]?.wormsBrushed || "",
+              bed2MaleRatio: data[1]?.maleRatio || "",
+              bed2FemaleRatio: data[1]?.femaleRatio || "",
+              bed3Id: data[2]?.id || "",
+              bed3Name: data[2]?.bedName || "",
+              bed3WeightCacoons: data[2]?.weightCacoons || "",
+              bed3WeightPupa: data[2]?.weightPupa || "",
+              bed3WeightShells: data[2]?.weightShells || "",
+              bed3SingleWeightCacoons: data[2]?.singleWeightCacoons || "",
+              bed3SingleWeightPupa: data[2]?.singleWeightPupa || "",
+              bed3SingleWeightShells: data[2]?.singleWeightShells || "",
+              bed3ShellPercentage: data[2]?.shellPercentage || "",
+              bed3Err: data[2]?.err || "",
+              bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
+              bed3WormsBrushed: data[2]?.wormsBrushed || "",
+              bed3MaleRatio: data[2]?.maleRatio || "",
+              bed3FemaleRatio: data[2]?.femaleRatio || "",
+              bed4Id: data[3]?.id || "",
+              bed4Name: data[3]?.bedName || "",
+              bed4WeightCacoons: data[3]?.weightCacoons || "",
+              bed4WeightPupa: data[3]?.weightPupa || "",
+              bed4WeightShells: data[3]?.weightShells || "",
+              bed4SingleWeightCacoons: data[3]?.singleWeightCacoons || "",
+              bed4SingleWeightPupa: data[3]?.singleWeightPupa || "",
+              bed4SingleWeightShells: data[3]?.singleWeightShells || "",
+              bed4ShellPercentage: data[3]?.shellPercentage || "",
+              bed4Err: data[3]?.err || "",
+              bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
+              bed4WormsBrushed: data[3]?.wormsBrushed || "",
+              bed4MaleRatio: data[3]?.maleRatio || "",
+              bed4FemaleRatio: data[3]?.femaleRatio || "",
+              bed5Id: data[4]?.id || "",
+              bed5Name: data[4]?.bedName || "",
+              bed5WeightCacoons: data[4]?.weightCacoons || "",
+              bed5WeightPupa: data[4]?.weightPupa || "",
+              bed5WeightShells: data[4]?.weightShells || "",
+              bed5SingleWeightCacoons: data[4]?.singleWeightCacoons || "",
+              bed5SingleWeightPupa: data[4]?.singleWeightPupa || "",
+              bed5SingleWeightShells: data[4]?.singleWeightShells || "",
+              bed5ShellPercentage: data[4]?.shellPercentage || "",
+              bed5Err: data[4]?.err || "",
+              bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
+              bed5WormsBrushed: data[4]?.wormsBrushed || "",
+              bed5MaleRatio: data[4]?.maleRatio || "",
+              bed5FemaleRatio: data[4]?.femaleRatio || "",
+            });
+      
+            // setViewDetailsData(response.data);
+    
+            setLoading(false);
+          })
+          .catch((err) => {
+            setViewDetailsData({});
+            setLoading(false);
+          });
+      };
+
   const RearingOfDFLsDataColumns = [
     {
       name: t("Action"),
@@ -950,6 +1925,15 @@ const [showModal8, setShowModal8] = useState(false);
             className="ms-2"
           >
             {t("Add Moulting Table")}
+          </Button>
+
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => handleShowModal10(row)}
+            className="ms-2"
+          >
+            {t("Add Temperature Table")}
           </Button>
         </div>
       ),
@@ -1051,6 +2035,36 @@ const [showModal8, setShowModal8] = useState(false);
       sortable: true,
       hide: "md",
     },
+    {
+          name: t("Cocoon Assesment Details"),
+          cell: (row) => (
+            <Button
+              className="d-flex justify-content-center"
+              variant="primary"
+              size="sm"
+              onClick={() => getCocoonList(row.id)}
+            >
+              {t("Show")}
+            </Button>
+          ),
+          sortable: true,
+          hide: "md",
+        },
+        {
+          name: t("View Cocoon Assesment Details"),
+          cell: (row) => (
+            <Button
+              className="d-flex justify-content-center"
+              variant="primary"
+              size="sm"
+              onClick={() => viewDetails(row.id)}
+            >
+              {t("View")}
+            </Button>
+          ),
+          sortable: true,
+          hide: "md",
+        },
   ];
 
   return (
@@ -1101,6 +2115,17 @@ const [showModal8, setShowModal8] = useState(false);
                 {t("Moulting Table")}
               </Button>
             </li>
+
+            <li>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => getOnlyTemperatureList()}
+                className="ms-2"
+              >
+                {t("Temperature Humidity Table")}
+              </Button>
+            </li>
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
@@ -1108,7 +2133,7 @@ const [showModal8, setShowModal8] = useState(false);
 
       <Block className="mt-n4">
         <Card>
-        <div style={{ overflowX: 'auto' }}>
+        {/* <div style={{ overflowX: 'auto' }}> */}
           <DataTable
             // title="New Trader License List"
             // tableClassName="data-table-head-light table-responsive"
@@ -1127,7 +2152,7 @@ const [showModal8, setShowModal8] = useState(false);
             theme="solarized"
             customStyles={customStyles}
           />
-          </div>
+          {/* </div> */}
         </Card>
       </Block>
 
@@ -2133,6 +3158,2693 @@ const [showModal8, setShowModal8] = useState(false);
           </Block>
           </Modal.Body>
       </Modal>
+
+      <Modal show={showModal10} onHide={handleCloseModal10} size="xl">
+                  <Modal.Header closeButton>
+                    <Modal.Title>{t("Add Temperature Details")}</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Block className="mt-4">
+                      <Form noValidate validated={validatedForTemperature} onSubmit={postTemperatureTableData}>
+                        <Row className="g-3 ">
+                          <div>
+                            <Row className="g-gs">
+                              <Col lg="12">
+                                <Block>
+                                  <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="weightCacoons">
+                                          {t("Lot Number")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="lotNumber"
+                                            name="lotNumber"
+                                            value={
+                                              onlyTemperatureTableDetails.lotNumber || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Lot Number")}
+                                            // readOnly
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                          Bed Name is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+          
+                                    
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="sordfl">
+                                          {t("Date")}
+                                          {/* <span className="text-danger">*</span> */}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <DatePicker
+                                            selected={onlyTemperatureTableDetails.temperatureHumidityDate}
+                                            onChange={(date) =>
+                                              handleDateChangeForTemperature(date, "temperatureHumidityDate")
+                                            }
+                                            peekNextMonth
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dropdownMode="select"
+                                            // maxDate={new Date()}
+                                            dateFormat="dd/MM/yyyy"
+                                            className="form-control"
+                                            // required
+                                          />
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                              
+                                  <Block >
+                                    <Card>
+                                    <Card.Header>
+                                    {t("Morning 6-00 AM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="temperature"
+                                            name="temperature"
+                                            value={
+                                              onlyTemperatureTableDetails.temperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="humidity"
+                                            name="humidity"
+                                            value={
+                                              onlyTemperatureTableDetails.humidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              {/* </Block> */}
+          
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Afternoon 12-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveTemperature"
+                                            name="afterNoonTwelveTemperature"
+                                            value={
+                                              onlyTemperatureTableDetails.afterNoonTwelveTemperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveHumidity"
+                                            name="afterNoonTwelveHumidity"
+                                            value={
+                                              onlyTemperatureTableDetails.afterNoonTwelveHumidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Evening 6-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixTemperature"
+                                            name="eveningSixTemperature"
+                                            value={
+                                              onlyTemperatureTableDetails.eveningSixTemperature || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixHumidity"
+                                            name="eveningSixHumidity"
+                                            value={
+                                              onlyTemperatureTableDetails.eveningSixHumidity || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                                </Block>
+                                    
+                                  </Row>
+                                  <div className="gap-col mt-2">
+                                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                    <li>
+                                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                      <Button type="submit" variant="primary">
+                                        {t("Update")}
+                                      </Button>
+                                    </li>
+                                    <li>
+                                      
+                                    </li>
+                                  </ul>
+                                </div>
+                                  {/* </Card.Body>
+                              </Card> */}
+                                </Block>
+                                
+                              </Col>
+                            </Row>
+                          </div>
+                        </Row>
+                      </Form>
+                    </Block>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal show={showModal9} onHide={handleCloseModal9} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>{t("Temperature-Humidity Table")}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Block className="mt-3">
+                        <Card>
+                          <DataTable
+                            tableClassName="data-table-head-light table-responsive"
+                            columns={RearingOfDFLSOnlyTemperatureDataColumns}
+                            data={listOnlyTemperatureData}
+                            highlightOnHover
+                            pagination
+                            paginationServer
+                            paginationTotalRows={totalRows}
+                            paginationPerPage={countPerPage}
+                            paginationComponentOptions={{
+                              noRowsPerPage: true,
+                            }}
+                            onChangePage={(page) => setPage(page - 1)}
+                            progressPending={loading}
+                            theme="solarized"
+                            customStyles={customStyles}
+                          />
+                        </Card>
+                      </Block>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleCloseModal9}>
+                        {t("Close")}
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
+                <Modal show={showModal11} onHide={handleCloseModal11} size="xl">
+                      <Modal.Header closeButton>
+                        <Modal.Title>{t("Edit Temperature Humidity Details")}</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Block className="mt-4">
+                      <Form noValidate validated={validatedForTemperatureEdit} onSubmit={postTemperatureTableForEditData}>
+                        <Row className="g-3 ">
+                          <div>
+                            <Row className="g-gs">
+                              <Col lg="12">
+                                <Block>
+                                  <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="weightCacoons">
+                                          {t("Lot Number")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="lotNumber"
+                                            name="lotNumber"
+                                            value={
+                                              editForTemperatureDetails.lotNumber || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Lot Number")}
+                                            // readOnly
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                          Bed Name is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+          
+                                    
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="sordfl">
+                                          {t("Date")}
+                                          {/* <span className="text-danger">*</span> */}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <DatePicker
+                                            selected={editForTemperatureDetails.temperatureHumidityDate}
+                                            onChange={(date) =>
+                                              handleDateChangeForEditTemperature(date, "temperatureHumidityDate")
+                                            }
+                                            peekNextMonth
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dropdownMode="select"
+                                            // maxDate={new Date()}
+                                            dateFormat="dd/MM/yyyy"
+                                            className="form-control"
+                                            // required
+                                          />
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                              
+                                  <Block >
+                                    <Card>
+                                    <Card.Header>
+                                    {t("Morning 6-00 AM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="temperature"
+                                            name="temperature"
+                                            value={
+                                              editForTemperatureDetails.temperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="humidity"
+                                            name="humidity"
+                                            value={
+                                              editForTemperatureDetails.humidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                              {/* </Block> */}
+          
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Afternoon 12-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveTemperature"
+                                            name="afterNoonTwelveTemperature"
+                                            value={
+                                              editForTemperatureDetails.afterNoonTwelveTemperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="afterNoonTwelveHumidity"
+                                            name="afterNoonTwelveHumidity"
+                                            value={
+                                              editForTemperatureDetails.afterNoonTwelveHumidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+
+                                <Card className="mt-3">
+                                <Card.Header>
+                                    {t("Evening 6-00 PM")}
+                                    </Card.Header>
+                                    <Card.Body>
+                                    <Row className="g-gs">
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Temperature (°C)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixTemperature"
+                                            name="eveningSixTemperature"
+                                            value={
+                                              editForTemperatureDetails.eveningSixTemperature || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Temperature (°C)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="shellPercentage">
+                                          {t("Humidity (%)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="eveningSixHumidity"
+                                            name="eveningSixHumidity"
+                                            value={
+                                              editForTemperatureDetails.eveningSixHumidity || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="text"
+                                            placeholder={t("Humidity (%)")}
+                                            // required
+                                          />
+                                          {/* <Form.Control.Feedback type="invalid">
+                                            Shell Percentage is required
+                                          </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    </Row>
+                                  </Card.Body>
+                                </Card>
+                                </Block>
+                                        
+                                      </Row>
+                                      <div className="gap-col mt-2">
+                                      <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                        <li>
+                                          {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                          <Button type="submit" variant="primary">
+                                            {t("Update")}
+                                          </Button>
+                                        </li>
+                                        <li>
+                                          
+                                        </li>
+                                      </ul>
+                                    </div>
+                                      {/* </Card.Body>
+                                  </Card> */}
+                                    </Block>
+                                    
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Row>
+                          </Form>
+                        </Block>
+                        </Modal.Body>
+                    </Modal>
+
+                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                            <Modal.Header closeButton>
+                              <Modal.Title>{t("Cocoon Assesment Details")}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <Block className="mt-4">
+                                <Form noValidate validated={validated} onSubmit={postData}>
+                                  <Row className="g-3 ">
+                                    <div>
+                                      <Row className="g-gs">
+                                        <Col lg="12">
+                                          <Block>
+                                          <Card>
+                                          <Card.Header>
+                                           {t("Bed 1")}
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <Row className="g-gs">
+                                            <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Bed Name")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1Name"
+                                                      name="bed1Name"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1Name || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Bed Name")}
+                                                      readOnly
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                    Bed Name is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Average Weight of 25 Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1WeightCacoons"
+                                                      name="bed1WeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1WeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Weight of Single Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1SingleWeightCacoons"
+                                                      name="bed1SingleWeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1SingleWeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Average Weight of 25 Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1WeightPupa"
+                                                      name="bed1WeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1WeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Weight of Single Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1SingleWeightPupa"
+                                                      name="bed1SingleWeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1SingleWeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Average Weight of 25 Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1WeightShells"
+                                                      name="bed1WeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1WeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Weight of Single Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1SingleWeightShells"
+                                                      name="bed1SingleWeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1SingleWeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="shellPercentage">
+                                                    {t("Shell Percentage")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1ShellPercentage"
+                                                      name="bed1ShellPercentage"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1ShellPercentage || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Shell Percentage")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Shell Percentage is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Err")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1Err"
+                                                      name="bed1Err"
+                                                      value={cocoonAssesmentDetailsBedWise.bed1Err || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("ERR")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="cacoonsFormed">
+                                                    {t("No of Cocoon's Formed")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1CacoonsFormed"
+                                                      name="bed1CacoonsFormed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1CacoonsFormed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Cocoon's Formed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Cocoon's Formed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="wormsBrushed">
+                                                    {t("No of Worms Brushed")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1WormsBrushed"
+                                                      name="bed1WormsBrushed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed1WormsBrushed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Worms Brushed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Worms Brushed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Male Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1MaleRatio"
+                                                      name="bed1MaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed1MaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Male Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Female Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed1FemaleRatio"
+                                                      name="bed1FemaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed1FemaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Female Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                            </Row>
+                                            <div className="gap-col mt-2">
+                                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                              <li>
+                                                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                                <Button type="submit" variant="primary">
+                                                  {t("Update")}
+                                                </Button>
+                                              </li>
+                                              <li>
+                                                {/* <Button
+                                                  type="button"
+                                                  variant="secondary"
+                                                  onClick={clear}
+                                                >
+                                                  Cancel
+                                                </Button> */}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                            </Card.Body>
+                                        </Card>
+                                          </Block>
+                                         
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Row>
+                                </Form>
+                              </Block>
+                    
+                              <Block className="mt-4">
+                                <Form noValidate validated={validated} onSubmit={postBed2Data}>
+                                  <Row className="g-3 ">
+                                    <div>
+                                      <Row className="g-gs">
+                                        <Col lg="12">
+                                          <Block>
+                                          <Card>
+                                          <Card.Header>
+                                           {t("Bed 2")}
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <Row className="g-gs">
+                                            <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Bed Name")}      
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2Name"
+                                                      name="bed2Name"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2Name || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Bed Name")}
+                                                      readOnly
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                    Bed Name is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Average Weight of 25 Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2WeightCacoons"
+                                                      name="bed2WeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2WeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Weight of Single Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2SingleWeightCacoons"
+                                                      name="bed2SingleWeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2SingleWeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Average Weight of 25 Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2WeightPupa"
+                                                      name="bed2WeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2WeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t(" Weight of Single Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2SingleWeightPupa"
+                                                      name="bed2SingleWeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2SingleWeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Average Weight of 25 Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2WeightShells"
+                                                      name="bed2WeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2WeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Weight of Single Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2SingleWeightShells"
+                                                      name="bed2SingleWeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2SingleWeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="shellPercentage">
+                                                    {t("Shell Percentage")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2ShellPercentage"
+                                                      name="bed2ShellPercentage"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2ShellPercentage || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Shell Percentage")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Shell Percentage is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Err")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2Err"
+                                                      name="bed2Err"
+                                                      value={cocoonAssesmentDetailsBedWise.bed2Err || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("ERR")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="cacoonsFormed">
+                                                    {t("No of Cocoon's Formed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2CacoonsFormed"
+                                                      name="bed2CacoonsFormed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2CacoonsFormed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Cocoon's Formed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Cocoon's Formed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="wormsBrushed">
+                                                    {t("No of Worms Brushed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2WormsBrushed"
+                                                      name="bed2WormsBrushed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed2WormsBrushed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Worms Brushed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Worms Brushed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Male Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2MaleRatio"
+                                                      name="bed2MaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed2MaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Male Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Female Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed2FemaleRatio"
+                                                      name="bed2FemaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed2FemaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Female Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                            </Row>
+                                             
+                                        <div className="gap-col mt-2">
+                                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                              <li>
+                                                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                                <Button type="submit" variant="primary">
+                                                  {t("Update")}
+                                                </Button>
+                                              </li>
+                                              <li>
+                                                {/* <Button
+                                                  type="button"
+                                                  variant="secondary"
+                                                  onClick={clear}
+                                                >
+                                                  Cancel
+                                                </Button> */}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                            </Card.Body>
+                                        </Card>
+                                       
+                                          </Block>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Row>
+                                </Form>
+                              </Block>
+                    
+                              <Block className="mt-4">
+                                <Form noValidate validated={validated} onSubmit={postBed3Data}>
+                                  <Row className="g-3 ">
+                                    <div>
+                                      <Row className="g-gs">
+                                        <Col lg="12">
+                                          <Block>
+                                          <Card>
+                                          <Card.Header>
+                                           {t("Bed 3")}
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <Row className="g-gs">
+                                            <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Bed Name")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3Name"
+                                                      name="bed3Name"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3Name || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Bed Name")}
+                                                      readOnly
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                    Bed Name is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Average Weight of 25 Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3WeightCacoons"
+                                                      name="bed3WeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3WeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Weight of Single Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3SingleWeightCacoons"
+                                                      name="bed3SingleWeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3SingleWeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Average Weight of 25 Pupa")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3WeightPupa"
+                                                      name="bed3WeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3WeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Weight of Single Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3SingleWeightPupa"
+                                                      name="bed3SingleWeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3SingleWeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Average Weight of 25 Shells")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3WeightShells"
+                                                      name="bed3WeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3WeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Weight of Single Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3SingleWeightShells"
+                                                      name="bed3SingleWeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3SingleWeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="shellPercentage">
+                                                    {t("Shell Percentage")}        
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3ShellPercentage"
+                                                      name="bed3ShellPercentage"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3ShellPercentage || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Shell Percentage")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Shell Percentage is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                      {t("Err")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3Err"
+                                                      name="bed3Err"
+                                                      value={cocoonAssesmentDetailsBedWise.bed3Err || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("ERR")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="cacoonsFormed">
+                                                    {t("No of Cocoon's Formed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3CacoonsFormed"
+                                                      name="bed3CacoonsFormed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3CacoonsFormed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Cocoon's Formed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Cocoon's Formed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="bed3WormsBrushed">
+                                                    {t("No of Worms Brushed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3WormsBrushed"
+                                                      name="bed3WormsBrushed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed3WormsBrushed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Worms Brushed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Worms Brushed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Male Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3MaleRatio"
+                                                      name="bed3MaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed3MaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Male Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Female Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed3FemaleRatio"
+                                                      name="bed3FemaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed3FemaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Female Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                            </Row>
+                                            <div className="gap-col mt-2">
+                                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                              <li>
+                                                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                                <Button type="submit" variant="primary">
+                                                  {t("Update")}
+                                                </Button>
+                                              </li>
+                                              <li>
+                                                {/* <Button
+                                                  type="button"
+                                                  variant="secondary"
+                                                  onClick={clear}
+                                                >
+                                                  Cancel
+                                                </Button> */}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                            </Card.Body>
+                                        </Card>
+                                          </Block>
+                                         
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Row>
+                                </Form>
+                              </Block>
+                    
+                              <Block className="mt-4">
+                                <Form noValidate validated={validated} onSubmit={postBed4Data}>
+                                  <Row className="g-3 ">
+                                    <div>
+                                      <Row className="g-gs">
+                                        <Col lg="12">
+                                          <Block>
+                                          <Card>
+                                          <Card.Header>
+                                           {t("Bed 4")}
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <Row className="g-gs">
+                                            <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Bed Name")}       
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4Name"
+                                                      name="bed4Name"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4Name || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Bed Name")}
+                                                      readOnly
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                    Bed Name is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Average Weight of 25 Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4WeightCacoons"
+                                                      name="bed4WeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4WeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Weight of Single Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4SingleWeightCacoons"
+                                                      name="bed4SingleWeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4SingleWeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Average Weight of 25 Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4WeightPupa"
+                                                      name="bed4WeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4WeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Weight of Single Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4SingleWeightPupa"
+                                                      name="bed4SingleWeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4SingleWeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Average Weight of 25 Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4WeightShells"
+                                                      name="bed4WeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4WeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Weight of Single Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4SingleWeightShells"
+                                                      name="bed4SingleWeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4SingleWeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="shellPercentage">
+                                                    {t("Shell Percentage")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4ShellPercentage"
+                                                      name="bed4ShellPercentage"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4ShellPercentage || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Shell Percentage")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Shell Percentage is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Err")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4Err"
+                                                      name="bed4Err"
+                                                      value={cocoonAssesmentDetailsBedWise.bed4Err || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("ERR")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="cacoonsFormed">
+                                                    {t("No of Cocoon's Formed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4CacoonsFormed"
+                                                      name="bed4CacoonsFormed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4CacoonsFormed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Cocoon's Formed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Cocoon's Formed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="wormsBrushed">
+                                                    {t("No of Worms Brushed")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4WormsBrushed"
+                                                      name="bed4WormsBrushed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed4WormsBrushed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Worms Brushed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Worms Brushed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Male Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4MaleRatio"
+                                                      name="bed4MaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed4MaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Male Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Female Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed4FemaleRatio"
+                                                      name="bed4FemaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed4FemaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Female Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                            </Row>
+                                            <div className="gap-col mt-2">
+                                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                              <li>
+                                                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                                <Button type="submit" variant="primary">
+                                                  {t("Update")}
+                                                </Button>
+                                              </li>
+                                              <li>
+                                                {/* <Button
+                                                  type="button"
+                                                  variant="secondary"
+                                                  onClick={clear}
+                                                >
+                                                  Cancel
+                                                </Button> */}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                            </Card.Body>
+                                        </Card>
+                                          </Block>
+                                          
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Row>
+                                </Form>
+                              </Block>
+                    
+                              <Block className="mt-4">
+                                <Form noValidate validated={validated} onSubmit={postBed5Data}>
+                                  <Row className="g-3 ">
+                                    <div>
+                                      <Row className="g-gs">
+                                        <Col lg="12">
+                                          <Block>
+                                          <Card>
+                                          <Card.Header>
+                                           {t("Bed 5")}
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <Row className="g-gs">
+                                            <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Bed Name")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5Name"
+                                                      name="bed5Name"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5Name || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Bed Name")}
+                                                      readOnly
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                    Bed Name is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Average Weight of 25 Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5WeightCacoons"
+                                                      name="bed5WeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5WeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightCacoons">
+                                                    {t("Weight of Single Cocoons")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5SingleWeightCacoons"
+                                                      name="bed5SingleWeightCacoons"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5SingleWeightCacoons || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Cocoons")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Cocoons is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Average Weight of 25 Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5WeightPupa"
+                                                      name="bed5WeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5WeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightPupa">
+                                                    {t("Weight of Single Pupa")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5SingleWeightPupa"
+                                                      name="bed5SingleWeightPupa"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5SingleWeightPupa || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Pupa")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Pupa is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Average Weight of 25 Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5WeightShells"
+                                                      name="bed5WeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5WeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Average Weight of 25 Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                               <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="weightShells">
+                                                    {t("Weight of Single Shells")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5SingleWeightShells"
+                                                      name="bed5SingleWeightShells"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5SingleWeightShells || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Weight of Single Shells")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Average Weight of 25 Shells is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="bed5ShellPercentage">
+                                                    {t("Shell Percentage")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5ShellPercentage"
+                                                      name="bed5ShellPercentage"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5ShellPercentage || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Shell Percentage")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      Shell Percentage is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Err")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5Err"
+                                                      name="bed5Err"
+                                                      value={cocoonAssesmentDetailsBedWise.bed5Err || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("ERR")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="bed5CacoonsFormed">
+                                                    {t("No of Cocoon's Formed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5CacoonsFormed"
+                                                      name="bed5CacoonsFormed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5CacoonsFormed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Cocoon's Formed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Cocoon's Formed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="wormsBrushed">
+                                                    {t("No of Worms Brushed")}
+                            
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5WormsBrushed"
+                                                      name="bed5WormsBrushed"
+                                                      value={
+                                                        cocoonAssesmentDetailsBedWise.bed5WormsBrushed || ""
+                                                      }
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("No of Worms Brushed")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      No of Worms Brushed is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Male Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5MaleRatio"
+                                                      name="bed5MaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed5MaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Male Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                                              <Col lg="4">
+                                                <Form.Group className="form-group mt-n3">
+                                                  <Form.Label htmlFor="err">
+                                                  {t("Female Ratio")}
+                                                  </Form.Label>
+                                                  <div className="form-control-wrap">
+                                                    <Form.Control
+                                                      id="bed5FemaleRatio"
+                                                      name="bed5FemaleRatio"
+                                                      value={cocoonAssesmentDetailsBedWise.bed5FemaleRatio || ""}
+                                                      onChange={handleInputs}
+                                                      type="text"
+                                                      placeholder={t("Female Ratio")}
+                                                      // required
+                                                    />
+                                                    {/* <Form.Control.Feedback type="invalid">
+                                                      ERR is required
+                                                    </Form.Control.Feedback> */}
+                                                  </div>
+                                                </Form.Group>
+                                              </Col>
+                    
+                                            </Row>
+                                            <div className="gap-col mt-2">
+                                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                                              <li>
+                                                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                                                <Button type="submit" variant="primary">
+                                                  {t("Update")}
+                                                </Button>
+                                              </li>
+                                              <li>
+                                                {/* <Button
+                                                  type="button"
+                                                  variant="secondary"
+                                                  onClick={clear}
+                                                >
+                                                  Cancel
+                                                </Button> */}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                            </Card.Body>
+                                        </Card>
+                                        
+                                          </Block>
+                    
+                                          
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </Row>
+                                </Form>
+                              </Block>
+                            </Modal.Body>
+                          </Modal>
+                    
+                          <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+                            <Modal.Header closeButton>
+                              <Modal.Title>{t("View")}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              {loading ? (
+                                <h1 className="d-flex justify-content-center align-items-center">
+                                  {t("Loading...")}
+                                </h1>
+                              ) : (
+                                <>
+                                <Card className="mt-3">
+                                <Card.Header>
+                                  {t("Bed 1")}
+                                </Card.Header>
+                                <Card.Body>
+                                <Row className="g-gs">
+                                  <Col lg="12">
+                                    <table className="table small table-bordered">
+                                      <tbody>
+                                      <tr>
+                                          <td style={styles.ctstyle}>{t("Bed Name")}:</td>
+                                          <td>{viewDetailsData.bed1Name}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed1WeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed1SingleWeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
+                                          <td>{viewDetailsData.bed1WeightPupa}</td>
+                                        </tr>
+                                         <tr>
+                                          <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                                          <td>{viewDetailsData.bed1SingleWeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
+                                          <td>{viewDetailsData.bed1WeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                                          <td>{viewDetailsData.bed1SingleWeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
+                                          <td>{viewDetailsData.bed1ShellPercentage}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("ERR")}</td>
+                                          <td>{viewDetailsData.bed1Err}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
+                                          <td>{viewDetailsData.bed1CacoonsFormed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
+                                          <td>{viewDetailsData.bed1WormsBrushed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                                          <td>{viewDetailsData.bed1MaleRatio}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                                          <td>{viewDetailsData.bed1FemaleRatio}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </Col>
+                                </Row>
+                                </Card.Body>
+                                </Card>
+                    
+                                <Card className="mt-3">
+                                <Card.Header>
+                                  {t("Bed 2")}
+                                </Card.Header>
+                                <Card.Body>
+                                <Row className="g-gs">
+                                  <Col lg="12">
+                                    <table className="table small table-bordered">
+                                      <tbody>
+                                      <tr>
+                                          <td style={styles.ctstyle}>{t("Bed Name")}:</td>
+                                          <td>{viewDetailsData.bed2Name}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed2WeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed2SingleWeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
+                                          <td>{viewDetailsData.bed2WeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                                          <td>{viewDetailsData.bed2SingleWeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
+                                          <td>{viewDetailsData.bed2WeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                                          <td>{viewDetailsData.bed2SingleWeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
+                                          <td>{viewDetailsData.bed2ShellPercentage}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("ERR")}</td>
+                                          <td>{viewDetailsData.bed2Err}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
+                                          <td>{viewDetailsData.bed2WormsBrushed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
+                                          <td>{viewDetailsData.bed2CacoonsFormed}</td>
+                                        </tr>
+                                         <tr>
+                                          <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                                          <td>{viewDetailsData.bed2MaleRatio}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                                          <td>{viewDetailsData.bed2FemaleRatio}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </Col>
+                                </Row>
+                                </Card.Body>
+                                </Card>
+                    
+                                <Card className="mt-3">
+                                <Card.Header>
+                                  {t("Bed 3")}
+                                </Card.Header>
+                                <Card.Body>
+                                <Row className="g-gs">
+                                  <Col lg="12">
+                                    <table className="table small table-bordered">
+                                      <tbody>
+                                      <tr>
+                                          <td style={styles.ctstyle}>{t("Bed Name")}:</td>
+                                          <td>{viewDetailsData.bed3Name}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed3WeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed3SingleWeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
+                                          <td>{viewDetailsData.bed3WeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                                          <td>{viewDetailsData.bed3SingleWeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
+                                          <td>{viewDetailsData.bed3WeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                                          <td>{viewDetailsData.bed3SingleWeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
+                                          <td>{viewDetailsData.bed3ShellPercentage}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("ERR")}</td>
+                                          <td>{viewDetailsData.bed3Err}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
+                                          <td>{viewDetailsData.bed3WormsBrushed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
+                                          <td>{viewDetailsData.bed3CacoonsFormed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                                          <td>{viewDetailsData.bed3MaleRatio}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                                          <td>{viewDetailsData.bed3FemaleRatio}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </Col>
+                                </Row>
+                                </Card.Body>
+                                </Card>
+                    
+                                <Card className="mt-3">
+                                <Card.Header>
+                                  {t("Bed 4")}
+                                </Card.Header>
+                                <Card.Body>
+                                <Row className="g-gs">
+                                  <Col lg="12">
+                                    <table className="table small table-bordered">
+                                      <tbody>
+                                      <tr>
+                                          <td style={styles.ctstyle}>{t("Bed Name")}:</td>
+                                          <td>{viewDetailsData.bed4Name}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed4WeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed4SingleWeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
+                                          <td>{viewDetailsData.bed4WeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                                          <td>{viewDetailsData.bed4SingleWeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
+                                          <td>{viewDetailsData.bed4WeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                                          <td>{viewDetailsData.bed4SingleWeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
+                                          <td>{viewDetailsData.bed4ShellPercentage}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("ERR")}</td>
+                                          <td>{viewDetailsData.bed4Err}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
+                                          <td>{viewDetailsData.bed4WormsBrushed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
+                                          <td>{viewDetailsData.bed4CacoonsFormed}</td>
+                                        </tr>
+                                         <tr>
+                                          <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                                          <td>{viewDetailsData.bed4MaleRatio}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                                          <td>{viewDetailsData.bed4FemaleRatio}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </Col>
+                                </Row>
+                                </Card.Body>
+                                </Card>
+                    
+                                <Card className="mt-3">
+                                <Card.Header>
+                                  {t("Bed 5")}
+                                </Card.Header>
+                                <Card.Body>
+                                <Row className="g-gs">
+                                  <Col lg="12">
+                                    <table className="table small table-bordered">
+                                      <tbody>
+                                      <tr>
+                                          <td style={styles.ctstyle}>{t("Bed Name")}:</td>
+                                          <td>{viewDetailsData.bed5Name}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed5WeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Cocoons")}:</td>
+                                          <td>{viewDetailsData.bed5SingleWeightCacoons}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Average Weight of 25 Pupa")}:</td>
+                                          <td>{viewDetailsData.bed5WeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}> {t("Weight of Single Pupa")}:</td>
+                                          <td>{viewDetailsData.bed5SingleWeightPupa}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Average Weight of 25 Shells")}:</td>
+                                          <td>{viewDetailsData.bed5WeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Weight of Single Shells")}:</td>
+                                          <td>{viewDetailsData.bed5SingleWeightShells}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Shell Percentage")}</td>
+                                          <td>{viewDetailsData.bed5ShellPercentage}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("ERR")}</td>
+                                          <td>{viewDetailsData.bed5Err}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Worms Brushed")}:</td>
+                                          <td>{viewDetailsData.bed5WormsBrushed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("No of Cocoon's Formed")}:</td>
+                                          <td>{viewDetailsData.bed5CacoonsFormed}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Male Ratio")}:</td>
+                                          <td>{viewDetailsData.bed5MaleRatio}</td>
+                                        </tr>
+                                        <tr>
+                                          <td style={styles.ctstyle}>{t("Female Ratio")}:</td>
+                                          <td>{viewDetailsData.bed5FemaleRatio}</td>
+                                        </tr> 
+                                      </tbody>
+                                    </table>
+                                  </Col>
+                                </Row>
+                                </Card.Body>
+                                </Card>
+                                </>
+                              )}
+                            </Modal.Body>
+                          </Modal>
     </Layout>
   );
 }

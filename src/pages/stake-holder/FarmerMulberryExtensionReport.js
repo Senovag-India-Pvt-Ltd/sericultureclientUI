@@ -391,11 +391,11 @@ function FarmerMulberryExtensionReport() {
   ];
 
   return (
-    <Layout title={t("Farmer Mulberry Extension Report")}>
+    <Layout title={t("Farmer Mulberry Expansion Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Farmer Mulberry Extension Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Farmer Mulberry Expansion Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>

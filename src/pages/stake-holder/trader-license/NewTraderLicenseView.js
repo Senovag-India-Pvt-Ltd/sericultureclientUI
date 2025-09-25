@@ -191,6 +191,10 @@ function NewTraderLicenseView() {
                         <td style={styles.ctstyle}>{t("IFSC Code")}</td>
                         <td>{NewTraderLicense.ifscCode}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("GST Number")}</td>
+                        <td>{NewTraderLicense.gstNumber}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

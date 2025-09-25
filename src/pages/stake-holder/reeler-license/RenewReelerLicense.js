@@ -41,18 +41,41 @@ function RenewReelerLicense() {
     setData({ ...data, [name]: value });
   };
 
-  // const YourFormComponent = ({ data, handleDateChange }) => {
-  const handleRenewedDateChange = (date) => {
-    // Calculate expiration date by adding 3 years to the renewed date
-    const expirationDate = new Date(date);
-    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+  // // const YourFormComponent = ({ data, handleDateChange }) => {
+  // const handleRenewedDateChange = (date) => {
+  //   // Calculate expiration date by adding 3 years to the renewed date
+  //   const expirationDate = new Date(date);
+  //   expirationDate.setFullYear(expirationDate.getFullYear() + 3);
 
-    setData({
-      ...data,
-      licenseRenewalDate: date,
-      licenseExpiryDate: expirationDate,
-    });
-  };
+  //   setData({
+  //     ...data,
+  //     licenseRenewalDate: date,
+  //     licenseExpiryDate: expirationDate,
+  //   });
+  // };
+
+   const handleRenewedDateChange = (date) => {
+  if (!date) return;
+
+  const licenseRenewalDate = new Date(date);
+  let expiryYear;
+
+  if (licenseRenewalDate.getMonth() + 1 >= 4) {
+    // If April (4) or later → expiry = 31st March (year + 3)
+    expiryYear = licenseRenewalDate.getFullYear() + 3;
+  } else {
+    // If Jan–Mar → expiry = 31st March (year + 2)
+    expiryYear = licenseRenewalDate.getFullYear() + 2;
+  }
+
+  const expirationDate = new Date(expiryYear, 2, 31); // March is month=2 (0-indexed)
+
+  setData({
+    ...data,
+    licenseRenewalDate,
+    licenseExpiryDate: expirationDate,
+  });
+}; 
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
