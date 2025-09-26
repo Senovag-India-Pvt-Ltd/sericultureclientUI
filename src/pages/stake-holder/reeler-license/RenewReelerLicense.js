@@ -24,6 +24,7 @@ function RenewReelerLicense() {
     feeAmount: "",
     licenseRenewalDate: "",
     licenseExpiryDate: "",
+    mahajarDetails: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -99,6 +100,10 @@ function RenewReelerLicense() {
       api
         .post(baseURL2 + `reeler/update-reeler-license`, withReelerid)
         .then((response) => {
+          if (response.data.content.reelerId) {
+            const mahajarId = response.data.content.reelerId;
+            handleMahajarUpload(mahajarId);
+          }
           saveSuccess();
           setData({
             reelerId: "",
@@ -124,6 +129,40 @@ const clear = () => {
     licenseExpiryDate: "",
   })
 }
+
+
+// Display Image
+  const [mahajar, setMahajar] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleMahajarChange = (e) => {
+    const file = e.target.files[0];
+    setMahajar(file);
+    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleMahajarUpload = async (reelerid) => {
+    const parameters = `reelerId=${reelerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", mahajar);
+
+      const response = await api.post(
+        baseURL + `reeler/upload-document?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -297,6 +336,33 @@ const clear = () => {
                               />
                             </div>
                           </Form.Group>
+
+                           <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="trUploadPath">
+                          {t("Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="mahajarDetails"
+                            name="mahajarDetails"
+                            // value={data.photoPath}
+                            onChange={handleMahajarChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                            
                         </Col>
                       </Row>
                     </Card.Body>

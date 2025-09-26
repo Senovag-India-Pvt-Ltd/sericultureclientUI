@@ -175,10 +175,10 @@ const getUploadReceipt = async (file) => {
                         <td style={styles.ctstyle}>{t("Bank Challan No:")}</td>
                         <td>{remittance.bankChallanNumber}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>{t("KTC 25:")}</td>
-                        <td>{remittance.rtc25}</td>
-                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Number Of Cocoons:")}</td>
+                        <td>{remittance.numberOfCocoons}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Date:")}</td>
                         <td>{remittance.date}</td>

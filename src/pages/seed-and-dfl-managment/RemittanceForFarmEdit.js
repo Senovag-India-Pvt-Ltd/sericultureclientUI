@@ -82,6 +82,7 @@ function RemittanceForFarmEdit() {
               bankChallanUpload: "",
               rtc25: "",
               date: "",
+              numberOfCocoons: "",
             });
     //         setReceiptUpload("")
     // document.getElementById("viewReceipt").value = "";
@@ -109,6 +110,7 @@ function RemittanceForFarmEdit() {
       bankChallanUpload: "",
       rtc25: "",
       date: "",
+      numberOfCocoons: "",
     });
     // setReceiptUpload("")
     // document.getElementById("viewReceipt").value = "";
@@ -414,6 +416,30 @@ const getUploadReceipt = async (file) => {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="numberOfDFLsReceived">
+                        {t("Number Of Cocoons in Kgs/grams")}
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="numberOfCocoons"
+                          name="numberOfCocoons"
+                          value={data.numberOfCocoons}
+                          onChange={handleInputs}
+                          // maxLength="4"
+                          type="text"
+                          placeholder={t("Enter Number Of Cocoons")}
+                          // required
+                        />
+                        {/* <Form.Control.Feedback type="invalid">
+                          Number Of DFLs is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">

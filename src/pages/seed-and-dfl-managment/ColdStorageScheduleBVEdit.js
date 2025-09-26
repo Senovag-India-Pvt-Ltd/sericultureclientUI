@@ -363,7 +363,7 @@ function ColdStorageScheduleBVEdit() {
                                   <option value="">
                                     {t("Select Schedule Type")}
                                   </option>
-                                  <option value="4-Months">{t("4-Months")}</option>
+                                  <option value="4-months">{t("4-months")}</option>
                                   <option value="6-Months">{t("6-Months")}</option>\
                                   <option value="10-Months">{t("10-Months")}</option>
                                 </Form.Select>

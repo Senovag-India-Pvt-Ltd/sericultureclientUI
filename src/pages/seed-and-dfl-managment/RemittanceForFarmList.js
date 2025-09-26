@@ -223,13 +223,13 @@ function RemittanceForFarmList() {
         sortable: true,
         hide: "md",
       },
-      // {
-      //   name: t("Rtc 25"),
-      //   selector: (row) => row.rtc25,
-      //   cell: (row) => <span>{row.rtc25}</span>,
-      //   sortable: true,
-      //   hide: "md",
-      // },
+      {
+        name: t("Number Of Cocoons"),
+        selector: (row) => row.numberOfCocoons,
+        cell: (row) => <span>{row.numberOfCocoons}</span>,
+        sortable: true,
+        hide: "md",
+      },
       {
         name: t("Date"),
         selector: (row) => row.date,

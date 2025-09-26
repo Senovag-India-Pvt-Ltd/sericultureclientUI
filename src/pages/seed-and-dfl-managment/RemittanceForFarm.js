@@ -28,6 +28,7 @@ function RemittanceForFarm() {
     bankChallanNumber: "",
     bankChallanUpload: "",
     rtc25: "",
+    numberOfCocoons: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -92,6 +93,7 @@ function RemittanceForFarm() {
               bankChallanUpload: "",
               rtc25: "",
               date: "",
+              numberOfCocoons: "",
             });
             // setReceiptUpload("")
             // document.getElementById("viewReceipt").value = "";
@@ -118,6 +120,7 @@ function RemittanceForFarm() {
       bankChallanUpload: "",
       rtc25: "",
       date: "",
+      numberOfCocoons: "",
     });
     // setReceiptUpload("")
     // document.getElementById("viewReceipt").value = "";
@@ -369,9 +372,33 @@ function RemittanceForFarm() {
                         name="numberOfDFLs"
                         value={data.numberOfDFLs}
                         onChange={handleInputs}
-                        maxLength="4"
+                        // maxLength="4"
                         type="number"
                         placeholder={t("Enter Number Of DFLs")}
+                        // required
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                        Number Of DFLs is required
+                      </Form.Control.Feedback> */}
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                      {t("Number Of Cocoons in Kgs/grams")}
+                      {/* <span className="text-danger">*</span> */}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="numberOfCocoons"
+                        name="numberOfCocoons"
+                        value={data.numberOfCocoons}
+                        onChange={handleInputs}
+                        // maxLength="4"
+                        type="text"
+                        placeholder={t("Enter Number Of Cocoons")}
                         // required
                       />
                       {/* <Form.Control.Feedback type="invalid">

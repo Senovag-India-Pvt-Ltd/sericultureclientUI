@@ -2695,7 +2695,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
                               {t("Head of Account")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -2704,11 +2704,11 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                required
-                                isInvalid={
-                                  data.scHeadAccountId === undefined ||
-                                  data.scHeadAccountId === "0"
-                                }
+                                // required
+                                // isInvalid={
+                                //   data.scHeadAccountId === undefined ||
+                                //   data.scHeadAccountId === "0"
+                                // }
                               >
                                 <option value="">{t("Select Head of Account")}</option>
                                 {scHeadAccountListData &&
@@ -2721,9 +2721,9 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                                     </option>
                                   ))}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Head of Account is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
