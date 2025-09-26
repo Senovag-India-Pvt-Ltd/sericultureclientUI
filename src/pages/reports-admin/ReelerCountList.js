@@ -33,6 +33,7 @@ function ReelerCountList() {
     talukId: "",
     villageId: "",
     marketId: "",
+    casteId: "",
   });
 
   const [hobliData, setHobliData] = useState({
@@ -51,6 +52,7 @@ function ReelerCountList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             marketId: data.marketId || 0,
+            casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -76,6 +78,7 @@ function ReelerCountList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             marketId: data.marketId || 0,
+            casteId: data.casteId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -113,6 +116,7 @@ function ReelerCountList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             marketId: data.marketId || 0,
+            casteId: data.casteId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -130,6 +134,23 @@ function ReelerCountList() {
   useEffect(() => {
     getReelerList();
   }, [page]);
+
+    // to get caste
+      const [casteListData, setCasteListData] = useState([]);
+    
+      const getCasteList = () =>
+        api
+          .get(baseURL + `caste/get-all`)
+          .then((response) => {
+            setCasteListData(response.data.content.caste);
+          })
+          .catch((err) => {
+            setCasteListData([]);
+          });
+    
+      useEffect(() => {
+        getCasteList();
+      }, []);
 
   const handleInputs = (e) => {
     // debugger;
@@ -342,6 +363,13 @@ function ReelerCountList() {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Caste",
+      selector: (row) => row.caste,
+      cell: (row) => <span>{row.caste}</span>,
       sortable: true,
       hide: "md",
     },
@@ -559,7 +587,33 @@ function ReelerCountList() {
                 </div>
               </Form.Group>
             </Col>
-            <Col sm={1}>
+            <Col sm={3} className="d-flex align-items-end gap-2"> 
+              
+              <Form.Group className="w-100 mb-0"> 
+                <Form.Label>{t("Caste")}</Form.Label>
+                <Form.Select
+                  name="casteId"
+                  value={data.casteId}
+                  onChange={handleInputs}
+                >
+                  <option value="0">{t("Select Caste")}</option>
+                  {casteListData.map((list) => (
+                    <option key={list.id} value={list.id}>
+                      {list.title}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            
+              <Button type="button" variant="primary" onClick={search}>
+                {t("Search")}
+              </Button>
+            
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                {t("Export")}
+              </Button>
+            </Col>
+            {/* <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
                 {t("Search")}
               </Button>
@@ -568,7 +622,7 @@ function ReelerCountList() {
               <Button type="button" variant="primary" onClick={exportCsv}>
                 {t("Export")}
               </Button>
-            </Col>
+            </Col> */}
           </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

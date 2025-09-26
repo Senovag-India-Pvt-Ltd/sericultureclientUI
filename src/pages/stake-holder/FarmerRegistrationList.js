@@ -33,6 +33,8 @@ function FarmerRegistrationList() {
     talukId: "",
     villageId: "",
     tscMasterId: "",
+    casteId: "",
+    landFilter: "",
   });
 
   const [hobliData, setHobliData] = useState({
@@ -51,6 +53,8 @@ function FarmerRegistrationList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             tscMasterId: data.tscMasterId || 0,
+            casteId: data.casteId || 0,
+            landFilter: data.landFilter || null,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -76,6 +80,8 @@ function FarmerRegistrationList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             tscMasterId: data.tscMasterId || 0,
+            casteId: data.casteId || 0,
+            landFilter: data.landFilter || null,
           },
           responseType: 'blob',
           headers: {
@@ -113,6 +119,8 @@ function FarmerRegistrationList() {
             talukId: data.talukId || 0,
             villageId: data.villageId || 0,
             tscMasterId: data.tscMasterId || 0,
+            casteId: data.casteId || 0,
+            landFilter: data.landFilter || null,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -162,6 +170,23 @@ function FarmerRegistrationList() {
   useEffect(() => {
     getList();
   }, []);
+
+  // to get caste
+    const [casteListData, setCasteListData] = useState([]);
+  
+    const getCasteList = () =>
+      api
+        .get(baseURL + `caste/get-all`)
+        .then((response) => {
+          setCasteListData(response.data.content.caste);
+        })
+        .catch((err) => {
+          setCasteListData([]);
+        });
+  
+    useEffect(() => {
+      getCasteList();
+    }, []);
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -401,9 +426,24 @@ function FarmerRegistrationList() {
       hide: "md",
     },
     {
+  name: "Land Status",    // 🆕 CHANGE
+  selector: (row) => row.landStatus,  // Backend must send mapped field if needed
+  cell: (row) => <span>{row.landStatus}</span>,
+  sortable: true,
+  hide: "md",
+},
+
+    {
       name: "Father Name",
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Caste",
+      selector: (row) => row.caste,
+      cell: (row) => <span>{row.caste}</span>,
       sortable: true,
       hide: "md",
     },
@@ -599,16 +639,52 @@ function FarmerRegistrationList() {
                 </div>
               </Form.Group>
             </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
+
+<Col sm={3} className="d-flex align-items-end gap-2"> 
+  
+  <Form.Group className="w-100 mb-0"> 
+    <Form.Label>{t("Caste")}</Form.Label>
+    <Form.Select
+      name="casteId"
+      value={data.casteId}
+      onChange={handleInputs}
+    >
+      <option value="0">{t("Select Caste")}</option>
+      {casteListData.map((list) => (
+        <option key={list.id} value={list.id}>
+          {list.title}
+        </option>
+      ))}
+    </Form.Select>
+  </Form.Group>
+
+  <Col sm={2}>
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>{t("Land Filter")}</Form.Label>
+    <div className="form-control-wrap">
+      <Form.Select
+        name="landFilter"   // 🆕 CHANGE
+        value={data.landFilter}
+        onChange={handleInputs}
+      >
+        <option value="">{t("All Farmers")}</option>   {/* default = null */}
+        <option value="WITH">{t("With Land")}</option>  {/* 🆕 */}
+        <option value="WITHOUT">{t("Without Land")}</option>  {/* 🆕 */}
+      </Form.Select>
+    </div>
+  </Form.Group>
+</Col>
+
+
+  <Button type="button" variant="primary" onClick={search}>
+    {t("Search")}
+  </Button>
+
+  <Button type="button" variant="primary" onClick={exportCsv}>
+    {t("Export")}
+  </Button>
+</Col>
+
           </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
