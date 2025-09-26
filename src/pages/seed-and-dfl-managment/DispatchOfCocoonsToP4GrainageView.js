@@ -107,6 +107,12 @@ function DispatchofCocoonstoP4GrainageView() {
                         </td>
                         <td>{dispatchCocoon.grainageMasterName}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          {t("Market")}:
+                        </td>
+                        <td>{dispatchCocoon.marketMasterName}</td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>{t("Line Year")}:</td>
                         <td>{dispatchCocoon.lineName}</td>
@@ -146,6 +152,12 @@ function DispatchofCocoonstoP4GrainageView() {
                         {t("Number Of Cocoons Dispatched")}:
                         </td>
                         <td>{dispatchCocoon.numberOfCocoonsDispatched}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        {t("Number Of Cocoons Dispatched(Market)")}:
+                        </td>
+                        <td>{dispatchCocoon.numberOfCocoonsDispatchedMarket}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>

@@ -196,6 +196,13 @@ function DispatchofCocoonstoP4GrainageList() {
       sortable: true,
       hide: "md",
     },
+     {
+      name: t("Market"),
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
       // {
       //   name: "Line Year",
       //   selector: (row) => row.lineYear,
@@ -254,6 +261,13 @@ function DispatchofCocoonstoP4GrainageList() {
       hide: "md",
     },
     {
+      name: t("Number Of Cocoons Dispatched(Market)"),
+      selector: (row) => row.numberOfCocoonsDispatchedMarket,
+      cell: (row) => <span>{row.numberOfCocoonsDispatchedMarket}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: t("Date Of Supply"),
       selector: (row) => row.dateOfSupply,
       cell: (row) => <span>{row.dateOfSupply}</span>,
@@ -267,6 +281,7 @@ function DispatchofCocoonstoP4GrainageList() {
       sortable: true,
       hide: "md",
     },
+   
     {
       name: t("Invoice No"),
       selector: (row) => row.invoiceNo,

@@ -204,7 +204,7 @@ function SaleDisposalofDFLseggs() {
           if (response.data.error) {
             saveError(response.data.message);
           } else {
-            saveSuccess(response.data.invoice_no);
+            discardSuccess(response.data.invoice_no);
             // Reset form data if needed
             setData({
               lotNumber: "",
@@ -469,6 +469,14 @@ function SaleDisposalofDFLseggs() {
     });
   };
 
+  const discardSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: t("Saved successfully"),
+      text: `${t("Dfls is")} ${message}`,
+    });
+  };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -651,141 +659,141 @@ function SaleDisposalofDFLseggs() {
           <Row className="g-1 ">
             <Block className="mt-3">
             {data.userType === "discard" ? (
-    <Card>
-      <Card.Header style={{ fontWeight: "bold" }}>{t("Discard Details")}</Card.Header>
-      <Card.Body>
-        <Row className="g-gs">
-          <Col lg="4">
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("Lot Number")}</Form.Label>
-              <Col>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="lotNumber"
-                    value={data.lotNumber}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    // required
-                  >
-                    <option value="">{t("Select Lot Number")}</option>
-                    {lotListData && lotListData.length
-                      ? lotListData.map((list) => (
-                          <option key={list.id} value={list.lotNumber}>
-                            {list.lotNumber}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  {/* <Form.Control.Feedback type="invalid">
-                    Lot Number is required
-                  </Form.Control.Feedback> */}
-                </div>
-              </Col>
-            </Form.Group>
-          </Col>
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>{t("Discard Details")}</Card.Header>
+                  <Card.Body>
+                    <Row className="g-gs">
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>{t("Lot Number")}</Form.Label>
+                          <Col>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="lotNumber"
+                                value={data.lotNumber}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // required
+                              >
+                                <option value="">{t("Select Lot Number")}</option>
+                                {lotListData && lotListData.length
+                                  ? lotListData.map((list) => (
+                                      <option key={list.id} value={list.lotNumber}>
+                                        {list.lotNumber}
+                                      </option>
+                                    ))
+                                  : ""}
+                              </Form.Select>
+                              {/* <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Col>
+                        </Form.Group>
+                      </Col>
 
 
-          <Col lg="4">
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>
-                {t("Remarks")}<span className="text-danger">*</span>
-              </Form.Label>
-              <div className="form-control-wrap">
-                <Form.Control
-                  id="reason"
-                  name="reason"
-                  value={data.reason}
-                  onChange={handleInputs}
-                  type="text"
-                  placeholder={t("Enter Reason for Disposal")}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  {t("Reason for disposal is required")}
-                </Form.Control.Feedback>
-              </div>
-            </Form.Group>
-          </Col>
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Remarks")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="reason"
+                              name="reason"
+                              value={data.reason}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder={t("Enter Reason for Disposal")}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {t("Reason for disposal is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-          <Col lg="4">
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>
-                {t("Remaining DFLs")}<span className="text-danger">*</span>
-              </Form.Label>
-              <div className="form-control-wrap">
-                <Form.Control
-                  id="remainingDfls"
-                  name="remainingDfls"
-                  value={data.remainingDfls}
-                  onChange={handleInputs}
-                  type="number"
-                  min="0"
-                  placeholder={t("Enter Remaining DFLs")}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  {t("Remaining DFLs is required")}
-                </Form.Control.Feedback>
-              </div>
-            </Form.Group>
-          </Col>
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Remaining DFLs")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="remainingDfls"
+                              name="remainingDfls"
+                              value={data.remainingDfls}
+                              onChange={handleInputs}
+                              type="number"
+                              min="0"
+                              placeholder={t("Enter Remaining DFLs")}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {t("Remaining DFLs is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-          <Col lg="4">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>
-                  {t("DFLs Type")}
-                    {/* <span className="text-danger">*</span> */}
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="dflsType"
-                      value={data.dflsType}
-                      onChange={handleInputs}
-                      // required
-                      // isInvalid={
-                      //   data.dflType === undefined ||
-                      //   data.dflType === "0"
-                      // }
-                    >
-                      <option value="">
-                        {t("Select DFLs Type")}
-                      </option>
-                      <option value="Acid Treated">{t("Acid Treated")}</option>
-                      <option value="Hibernated">{t("Hibernated")}</option>
-                    </Form.Select>
-                    {/* <Form.Control.Feedback type="invalid">
-                    Selected Bed as per the Mean Performance is required
-                    </Form.Control.Feedback> */}
-                  </div>
-                </Form.Group>
-              </Col>  
+                      <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                              {t("DFLs Type")}
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="dflsType"
+                                  value={data.dflsType}
+                                  onChange={handleInputs}
+                                  // required
+                                  // isInvalid={
+                                  //   data.dflType === undefined ||
+                                  //   data.dflType === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    {t("Select DFLs Type")}
+                                  </option>
+                                  <option value="Acid Treated">{t("Acid Treated")}</option>
+                                  <option value="Hibernated">{t("Hibernated")}</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Selected Bed as per the Mean Performance is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>  
 
-          
-          <Col lg="4">
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>
-                {t("Date of Disposal")}
-                {/* <span className="text-danger">*</span> */}
-              </Form.Label>
-              <div className="form-control-wrap">
-                <DatePicker
-                  selected={data.dateOfDisposal}
-                  onChange={(date) => handleDateChange(date, "dateOfDisposal")}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control"
-                  // required
-                />
-              </div>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-  ) : (
+                      
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Date of Burnt/Discarding")}
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <DatePicker
+                              selected={data.dateOfDisposal}
+                              onChange={(date) => handleDateChange(date, "dateOfDisposal")}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              // required
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              ) : (
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
                   {t("Sale / Disposal of DFL's(eggs)")}
@@ -1092,7 +1100,7 @@ function SaleDisposalofDFLseggs() {
                             value={data.ratePer100DflsPrice}
                             onChange={handleInputs}
                             type="text"
-                            maxLength="3"
+                            // maxLength="3"
                             placeholder={t("Enter Rate per 100 DFLs Price")}
                             required
                           />

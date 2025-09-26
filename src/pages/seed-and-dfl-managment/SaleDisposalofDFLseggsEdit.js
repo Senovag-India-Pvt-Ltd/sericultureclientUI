@@ -923,7 +923,7 @@ function SaleDisposalofDFLseggsEdit() {
                             value={data.ratePer100DflsPrice}
                             onChange={handleInputs}
                             type="text"
-                            maxLength="3"
+                            // maxLength="3"
                             placeholder={t("Enter Rate per 100 DFLs Price")}
                             required
                           />

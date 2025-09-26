@@ -118,7 +118,7 @@ function SaleDisposalofDFLseggsView() {
                         <td>{seedDisposal.releaseDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Date of disposal")}:</td>
+                        <td style={styles.ctstyle}>{t("Date of disposal/Burnt")}:</td>
                         <td>{seedDisposal.dateOfDisposal}</td>
                       </tr>
                       <tr>
@@ -149,6 +149,18 @@ function SaleDisposalofDFLseggsView() {
                       <tr>
                         <td style={styles.ctstyle}>{t("Rate per 100 Dfls Price")}:</td>
                         <td>{seedDisposal.ratePer100DflsPrice}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Remarks")}:</td>
+                        <td>{seedDisposal.reason}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("DFLs Type")}:</td>
+                        <td>{seedDisposal.dflsType}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Remaining Dfls")}:</td>
+                        <td>{seedDisposal.remainingDfls}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>{t("Invoice Number")}:</td>

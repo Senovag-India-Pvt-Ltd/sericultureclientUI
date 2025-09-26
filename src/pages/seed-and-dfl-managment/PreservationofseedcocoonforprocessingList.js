@@ -707,6 +707,38 @@ const handleCloseViewModal = () => {
    
   ];
 
+  const deleteConfirmForList = (_id) => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "It will delete permanently!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.value) {
+          // console.log("hello");
+          api
+            .delete(baseURLSeedDfl + `PreservationOfSeed/delete-info/${_id}`)
+            .then((response) => {
+              // deleteConfirm(_id);
+              getList();
+              Swal.fire(
+                "Deleted",
+                "You successfully deleted this record",
+                "success"
+              );
+            })
+            .catch((err) => {
+              deleteError();
+            });
+          // Swal.fire("Deleted", "You successfully deleted this record", "success");
+        } else {
+          console.log(result.value);
+          Swal.fire("Cancelled", "Your record is not deleted", "info");
+        }
+      });
+    };
+
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
     {
@@ -733,7 +765,7 @@ const handleCloseViewModal = () => {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            onClick={() => deleteConfirmForList(row.id)}
             className="ms-2"
           >
             Delete

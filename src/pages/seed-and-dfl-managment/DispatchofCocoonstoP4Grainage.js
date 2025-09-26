@@ -31,6 +31,8 @@ function DispatchofCocoonstoP4Grainage() {
     dateOfSupply: "",
     dispatchDate: "",
     spunOnToDate: "",
+    marketId: "",
+    numberOfCocoonsDispatchedMarket: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -126,6 +128,8 @@ function DispatchofCocoonstoP4Grainage() {
       dateOfSupply: "",
       dispatchDate: "",
       spunOnToDate: "",
+      marketId: "",
+      numberOfCocoonsDispatchedMarket: "",
     });
   };
 
@@ -222,6 +226,24 @@ function DispatchofCocoonstoP4Grainage() {
    useEffect(() => {
      getGenerationList();
    }, []);
+
+    // to get User
+       const [marketListData, setMarketListData] = useState([]);
+     
+       const getMarketList = () => {
+         const response = api
+           .get(baseURL2 + `marketMaster/get-all`)
+           .then((response) => {
+             setMarketListData(response.data.content.marketMaster);
+           })
+           .catch((err) => {
+             setMarketListData([]);
+           });
+       };
+     
+       useEffect(() => {
+         getMarketList();
+       }, []);
 
    // to get Line Year
    const [lineYearListData, setLineYearListData] = useState([]);
@@ -334,6 +356,39 @@ function DispatchofCocoonstoP4Grainage() {
                             <Form.Control.Feedback type="invalid">
                               {t("Grainage is required")}
                             </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          {t("Market")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="marketId"
+                              value={data.marketId}
+                              onChange={handleInputs}
+                              // onBlur={() => handleInputs}
+                              // required
+                            >
+                              <option value="">{t("Select Market")}</option>
+                              {marketListData && marketListData.length?(marketListData.map((list) => (
+                                <option
+                                  key={list.marketMasterId}
+                                  value={list.marketMasterId}
+                                >
+                                  {list.marketMasterName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            {/* <Form.Control.Feedback type="invalid">
+                              {t("Market is required")}
+                            </Form.Control.Feedback> */}
                           </div>
                         </Col>
                       </Form.Group>
@@ -527,10 +582,30 @@ function DispatchofCocoonstoP4Grainage() {
                             </Form.Group>
                           </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                {t("Number of Cocoons Dispatched(Market)")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                id="numberOfCocoonsDispatchedMarket"
+                                name="numberOfCocoonsDispatchedMarket"
+                                value={data.numberOfCocoonsDispatchedMarket}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("Enter Number of Cocoons Dispatched")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 {t("Spun on date(From)")}
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -555,6 +630,7 @@ function DispatchofCocoonstoP4Grainage() {
                               <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="sordfl">
                                   {t(" Spun On Date(To)")}
+                                  {/* <span className="text-danger">*</span> */}
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <DatePicker
@@ -575,7 +651,8 @@ function DispatchofCocoonstoP4Grainage() {
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4 ">
-                              <Form.Label>{t("Date of Supply")}</Form.Label>
+                              <Form.Label>{t("Date of Supply")}
+                              <span className="text-danger">*</span></Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
                                   selected={data.dateOfSupply}
@@ -598,7 +675,7 @@ function DispatchofCocoonstoP4Grainage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                {t("Dispatch Date")}
+                                {t("Dispatch Date")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker

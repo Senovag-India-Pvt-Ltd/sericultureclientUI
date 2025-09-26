@@ -104,6 +104,8 @@ function DispatchofCocoonstoP4GrainageEdit() {
                 dateOfSupply: "",
                 dispatchDate: "",
                 spunOnToDate: "",
+                marketId: "",
+                numberOfCocoonsDispatchedMarket: "",
             });
             setValidated(false);
           }
@@ -131,6 +133,8 @@ function DispatchofCocoonstoP4GrainageEdit() {
         dateOfSupply: "",
         dispatchDate: "",
         spunOnToDate: "",
+        marketId: "",
+        numberOfCocoonsDispatchedMarket: "",
     });
   };
 
@@ -229,6 +233,24 @@ function DispatchofCocoonstoP4GrainageEdit() {
    useEffect(() => {
      getGrainageList();
    }, []);
+
+   // to get User
+          const [marketListData, setMarketListData] = useState([]);
+        
+          const getMarketList = () => {
+            const response = api
+              .get(baseURL2 + `marketMaster/get-all`)
+              .then((response) => {
+                setMarketListData(response.data.content.marketMaster);
+              })
+              .catch((err) => {
+                setMarketListData([]);
+              });
+          };
+        
+          useEffect(() => {
+            getMarketList();
+          }, []);
  
     // to get Source
     const [sourceListData, setSourceListData] = useState([]);
@@ -372,6 +394,39 @@ function DispatchofCocoonstoP4GrainageEdit() {
                         </Col>
                       </Form.Group>
                     </Col>
+
+                     <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Market")}
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <Col>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="marketId"
+                                value={data.marketId}
+                                onChange={handleInputs}
+                                // onBlur={() => handleInputs}
+                                // required
+                              >
+                                <option value="">{t("Select Market")}</option>
+                                {marketListData && marketListData.length?(marketListData.map((list) => (
+                                  <option
+                                    key={list.marketMasterId}
+                                    value={list.marketMasterId}
+                                  >
+                                    {list.marketMasterName}
+                                  </option>
+                                ))):""}
+                              </Form.Select>
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Market is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Col>
+                        </Form.Group>
+                      </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
