@@ -55,6 +55,18 @@ function ServiceApplication() {
     lotWeight:"",
     lotNo:"",
     transactionDate:new Date(),
+    kaneshDistrictId:"",
+    kaneshTalukId: "",
+    kaneshVillageId: "",
+    kaneshNo: "",
+    sqft:"",
+    panchayatName:"",
+    east: "",
+    west: "",
+    north:"",
+    south:"",
+    addKaneshLand:"no",
+    kaneshHobliId: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -362,40 +374,73 @@ useEffect(() => {
   //   });
   // };
 
+  // const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
+  //   console.log(selectedData);
+  //   setLandDetailsIds((prevIds) => {
+  //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+  //     // for single Select
+  //     const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+  //     // For Multiple Select
+  //     // const newIds = isAlreadySelected
+  //     //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+  //     //   : [...prevIds, farmerLandDetailsId];
+
+  //     setDevelopedArea((prevData) => {
+  //       console.log("Need to check", prevData);
+  //       if (isAlreadySelected) {
+  //         console.log("inside if");
+  //         const { [farmerLandDetailsId]: _, ...rest } = prevData;
+  //         return rest;
+  //       } else {
+  //         // If selected, add to developedArea
+  //         return {
+  //           // ...prevData,
+  //           [farmerLandDetailsId]: {
+  //             ...selectedData,
+  //             devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+  //             devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+  //             devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
+  //           },
+  //         };
+  //       }
+  //     });
+
+  //     return newIds;
+  //   });
+  // };
+
   const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
-    console.log(selectedData);
-    setLandDetailsIds((prevIds) => {
-      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-      // for single Select
-      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
-      // For Multiple Select
-      // const newIds = isAlreadySelected
-      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
-      //   : [...prevIds, farmerLandDetailsId];
+  setLandDetailsIds((prevIds) => {
+    const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
 
-      setDevelopedArea((prevData) => {
-        console.log("Need to check", prevData);
-        if (isAlreadySelected) {
-          console.log("inside if");
-          const { [farmerLandDetailsId]: _, ...rest } = prevData;
-          return rest;
-        } else {
-          // If selected, add to developedArea
-          return {
-            // ...prevData,
-            [farmerLandDetailsId]: {
-              ...selectedData,
-              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
-              devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
-              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
-            },
-          };
-        }
-      });
+    // ✅ Multi select logic
+    const newIds = isAlreadySelected
+      ? prevIds.filter((id) => id !== farmerLandDetailsId) // remove if already selected
+      : [...prevIds, farmerLandDetailsId]; // add new one
 
-      return newIds;
+    // ✅ update developedArea state
+    setDevelopedArea((prevData) => {
+      if (isAlreadySelected) {
+        // remove from developedArea
+        const { [farmerLandDetailsId]: _, ...rest } = prevData;
+        return rest;
+      } else {
+        // add new with defaults
+        return {
+          ...prevData,
+          [farmerLandDetailsId]: {
+            ...selectedData,
+            devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+            devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+            devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
+          },
+        };
+      }
     });
-  };
+
+    return newIds;
+  });
+};
 
   console.log(landDetailsIds);
 
@@ -912,6 +957,87 @@ useEffect(() => {
     getVendorList();
   }, []);
 
+   // to get District
+     const [districtListData, setDistrictListData] = useState([]);
+  
+     const getDistrictList = () => {
+       const response = api
+         .get(baseURLMasterData + `district/get-all`)
+         .then((response) => {
+           setDistrictListData(response.data.content.district);
+         })
+         .catch((err) => {
+           setDistrictListData([]);
+         });
+     };
+   
+     useEffect(() => {
+       getDistrictList();
+     }, []);
+
+      // to get taluk
+       const [talukListData, setTalukListData] = useState([]);
+     
+       const getTalukList = (_id) => {
+         api
+           .get(baseURLMasterData + `taluk/get-by-district-id/${_id}`)
+           .then((response) => {
+             setTalukListData(response.data.content.taluk);
+           })
+           .catch((err) => {
+             setTalukListData([]);
+             // alert(err.response.data.errorMessages[0].message[0].message);
+           });
+       };
+     
+       useEffect(() => {
+         if (data.kaneshDistrictId) {
+           getTalukList(data.kaneshDistrictId);
+         }
+       }, [data.kaneshDistrictId]);
+
+       // to get hobli
+         const [hobliListData, setHobliListData] = useState([]);
+       
+         const getHobliList = (_id) => {
+           api
+             .get(baseURLMasterData + `hobli/get-by-taluk-id/${_id}`)
+             .then((response) => {
+               setHobliListData(response.data.content.hobli);
+             })
+             .catch((err) => {
+               setHobliListData([]);
+               // alert(err.response.data.errorMessages[0].message[0].message);
+             });
+         };
+       
+         useEffect(() => {
+           if (data.kaneshTalukId) {
+             getHobliList(data.kaneshTalukId);
+           }
+         }, [data.kaneshTalukId]);
+
+       // to get Village
+         const [villageListData, setVillageListData] = useState([]);
+       
+         const getVillageList = (_id) => {
+           api
+             .get(baseURLMasterData + `village/get-by-hobli-id/${_id}`)
+             .then((response) => {
+               setVillageListData(response.data.content.village);
+             })
+             .catch((err) => {
+               setVillageListData([]);
+               // alert(err.response.data.errorMessages[0].message[0].message);
+             });
+         };
+       
+         useEffect(() => {
+           if (data.kaneshHobliId) {
+             getVillageList(data.kaneshHobliId);
+           }
+         }, [data.kaneshHobliId]);
+
   // to get User Master
   // const [userListData, setUserListData] = useState([]);
 
@@ -1369,6 +1495,16 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       cocoonsWeight: data.cocoonsWeight,
       lotNo: data.lotNo,
       lotWeight: data.lotWeight,
+      kaneshDistrictId: data.kaneshDistrictId,
+      kaneshTalukId: data.kaneshTalukId,
+      kaneshVillageId: data.kaneshVillageId,
+      kaneshNo: data.kaneshNo,
+      panchayatName: data.panchayatName,
+      sqft: data.sqft,
+      east: data.east,
+      west: data.west,
+      north: data.north,
+      south: data.south,
       // transactionDate: data.transactionDate,
       periodFrom: formattedDates.periodFrom,
       periodTo: formattedDates.periodTo,
@@ -1583,7 +1719,18 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       // availBonus: true,
       lotWeight:"",
       lotNo:"",
-      transactionDate:""
+      transactionDate:"",
+      kaneshDistrictId: "",
+      kaneshTalukId: "",
+      kaneshVillageId: "",
+      kaneshNo: "",
+      panchayatName: "",
+      sqft: "",
+      east: "",
+      west: "",
+      north: "",
+      south: "",
+      kaneshHobliId: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -1784,6 +1931,12 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
   } else if (response.data.content && response.data.content.error) {
     saveError(response.data.content.error_description);
   } else if (response.data.content.farmerResponse) {
+
+     // ✅ Reset old selections before setting new data
+      setLandDetailsIds([]);
+      setDevelopedArea({});
+      setLandDetailsList([]);
+
     setData((prev) => ({
       ...prev,
       farmerId: response.data.content.farmerResponse.farmerId,
@@ -1808,6 +1961,8 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 })
 .catch((err) => {
   saveError("An error occurred while fetching farmer details.");
+  setLandDetailsIds([]);     // ✅ also clear on error
+  setDevelopedArea({});
   setLandDetailsList([]);
 });
 }
@@ -3268,6 +3423,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                 </Card>
               </Block>
 
+
               {/* Conditional Section Rendering */}
               {data.equordev.includes("constructedArea") && (
                 <Block className="mt-3">
@@ -3373,6 +3529,359 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                   </Card>
                 </Block>
               )}
+
+            <Block className="mt-3">
+              <Card className="mb-4">
+                  <Card.Header>{t("Kanesh Land Details")}</Card.Header>
+                  <Card.Body>
+                    <Row>
+                      <Col lg="12">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label>
+                            {t("Do you want to add Kanesh Land Details?")}{" "}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Check
+                              inline
+                              label={t("Yes")}
+                              type="radio"
+                              name="addKaneshLand"
+                              id="kaneshYes"
+                              value="yes"
+                              checked={data.addKaneshLand === "yes"}
+                              onChange={handleInputs}
+                            />
+                            <Form.Check
+                              inline
+                              label={t("No")}
+                              type="radio"
+                              name="addKaneshLand"
+                              id="kaneshNo"
+                              value="no"
+                              checked={data.addKaneshLand === "no" || !data.addKaneshLand}
+                              onChange={handleInputs}
+                            />
+
+                            {/* Hidden input for validation */}
+                            <input
+                              type="text"
+                              style={{ display: "none" }}
+                              required
+                              value={data.addKaneshLand || ""}
+                              onChange={() => {}}
+                            />
+
+                            {!data.addKaneshLand && validated && (
+                              <div className="text-danger small mt-1">
+                                {t("Please select Yes or No")}
+                              </div>
+                            )}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    {/* Show fields only if Yes is selected */}
+                    {data.addKaneshLand === "yes" && (
+                      <>
+                        <Row className="mt-3">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Kanesh No")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="kaneshNo"
+                                  value={data.kaneshNo}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter Kanesh No")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("District")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="kaneshDistrictId"
+                                  value={data.kaneshDistrictId}
+                                  onChange={handleInputs}
+                                  // required
+                                  // isInvalid={!data.kaneshDistrictId || data.kaneshDistrictId === "0"}
+                                >
+                                  <option value="">{t("Select District")}</option>
+                                  {districtListData && districtListData.length
+                                    ? districtListData.map((list) => (
+                                        <option
+                                          key={list.districtId}
+                                          value={list.districtId}
+                                        >
+                                          {list.districtName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("District is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Taluk")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="kaneshTalukId"
+                                  value={data.kaneshTalukId}
+                                  onChange={handleInputs}
+                                  // required
+                                  // isInvalid={!data.kaneshTalukId || data.kaneshTalukId === "0"}
+                                >
+                                  <option value="">{t("Select Taluk")}</option>
+                                  {talukListData && talukListData.length
+                                    ? talukListData.map((list) => (
+                                        <option
+                                          key={list.talukId}
+                                          value={list.talukId}
+                                        >
+                                          {list.talukName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("Taluk is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Hobli")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                    name="kaneshHobliId"
+                                    value={data.kaneshHobliId}
+                                    onChange={handleInputs}
+                                    // onBlur={() => handleInputs}
+                                    // required
+                                    // isInvalid={
+                                    //   data.hobliId === undefined || data.hobliId === "0"
+                                    // }
+                                  >
+                                    <option value="">{t("select_hobli")}</option>
+                                          {hobliListData && hobliListData.length
+                                    ? hobliListData.map((list) => (
+                                        <option
+                                          key={list.hobliId}
+                                          value={list.hobliId}
+                                        >
+                                          {list.hobliName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                  </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("Village is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Village")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="kaneshVillageId"
+                                  value={data.kaneshVillageId}
+                                  onChange={handleInputs}
+                                  // required
+                                  // isInvalid={!data.kaneshVillageId || data.kaneshVillageId === "0"}
+                                >
+                                  <option value="">{t("Select Village")}</option>
+                                  {villageListData && villageListData.length
+                                    ? villageListData.map((list) => (
+                                        <option
+                                          key={list.villageId}
+                                          value={list.villageId}
+                                        >
+                                          {list.villageName}
+                                        </option>
+                                      ))
+                                    : ""}
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("Village is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Panchayat Name")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="panchayatName"
+                                  value={data.panchayatName}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter Panchayat Name")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Sqft")} 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="sqft"
+                                  value={data.sqft}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter Sqft")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+
+                        {/* Chakbandi Details */}
+                       <Block className="mt-3">
+                        <Card className="mb-4">
+                          <Card.Header>{t("Chakbandi Details")}</Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col lg="3">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="mahajarEast">
+                                    {t("East")}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="east"
+                                      name="east"
+                                      value={data.east}
+                                      onChange={handleInputs}
+                                      type="text"
+                                      placeholder={t("Enter East")}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      This Field is required
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+          
+                              <Col lg="3">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="mahajarWest">
+                                    {t("West")}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="west"
+                                      name="west"
+                                      value={data.west}
+                                      onChange={handleInputs}
+                                      type="text"
+                                      placeholder={t("West")}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      This Field is required
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+          
+                              <Col lg="3">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="mahajarNorth">
+                                    {t("North")}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="north"
+                                      name="north"
+                                      value={data.north}
+                                      onChange={handleInputs}
+                                      type="text"
+                                      placeholder={t("North")}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      This Field is required
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+          
+                              <Col lg="3">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="mahajarSouth">
+                                    {t("South")}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="south"
+                                      name="south"
+                                      value={data.south}
+                                      onChange={handleInputs}
+                                      type="text"
+                                      placeholder={t("South")}
+                                      // required
+                                    />
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      This Field is required
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Block>
+                      </>
+                    )}
+                  </Card.Body>
+                </Card>
+                </Block>
+
 
               {data.equordev.includes("land") &&
                 data.with === "withLand" &&
