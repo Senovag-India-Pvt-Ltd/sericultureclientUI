@@ -497,6 +497,19 @@ useEffect(() => {
     getChawkiList();
   }, []);
 
+  const [editableData, setEditableData] = useState([]);
+  
+    const handleInputChange = (index, field, value) => {
+      setEditableData(prev => {
+        const newData = [...prev];
+        newData[index] = {
+          ...newData[index],
+          [field]: value,
+        };
+        return newData;
+      });
+    };
+
   //   To get TSC by District
   const [tscListData, setTscListData] = useState([]);
 
