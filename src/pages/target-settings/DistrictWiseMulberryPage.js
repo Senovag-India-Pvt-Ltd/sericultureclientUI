@@ -292,16 +292,28 @@ const styles = {
 
   const [editableData, setEditableData] = useState([]);
 
+  // const handleInputChange = (index, field, value) => {
+  //   setEditableData(prev => {
+  //     const newData = [...prev];
+  //     newData[index] = {
+  //       ...newData[index],
+  //       [field]: value,
+  //     };
+  //     return newData;
+  //   });
+  // };
+
   const handleInputChange = (index, field, value) => {
-    setEditableData(prev => {
-      const newData = [...prev];
-      newData[index] = {
-        ...newData[index],
-        [field]: value,
-      };
-      return newData;
-    });
-  };
+  setEditableData(prev => {
+    const newData = [...prev];
+    newData[index] = {
+      ...newData[index],
+      [field]: value === "" ? null : parseFloat(value), // ✅ convert to float
+    };
+    return newData;
+  });
+};
+
 
   const ApplicationDataColumns = useMemo(() => {
     return [
@@ -343,13 +355,27 @@ const styles = {
             return {
                 name: monthNames[i],
                 cell: (row, index) => (
+                    // <input
+                    //     type="text"
+                    //     className="form-control" // Bootstrap class for styling
+                    //     style={{ width: '100%', margin: '5px 0' }} // Adjust width and margin
+                    //     value={editableData[index]?.[monthNames[i].toLowerCase()] || row[monthNames[i].toLowerCase()]}
+                    //     onChange={(e) => handleInputChange(index, monthNames[i].toLowerCase(), e.target.value)}
+                    // />
                     <input
-                        type="text"
-                        className="form-control" // Bootstrap class for styling
-                        style={{ width: '100%', margin: '5px 0' }} // Adjust width and margin
-                        value={editableData[index]?.[monthNames[i].toLowerCase()] || row[monthNames[i].toLowerCase()]}
-                        onChange={(e) => handleInputChange(index, monthNames[i].toLowerCase(), e.target.value)}
-                    />
+  type="number"
+  step="0.01" // allow decimals
+  className="form-control"
+  value={editableData[index]?.[monthNames[i].toLowerCase()] ?? row[monthNames[i].toLowerCase()]}
+  onChange={(e) =>
+    handleInputChange(
+      index,
+      monthNames[i].toLowerCase(),
+      e.target.value ? parseFloat(e.target.value) : 0 // convert to float
+    )
+  }
+/>
+
                 ),
                 sortable: true,
                 hide: "md",
@@ -360,183 +386,7 @@ const styles = {
   
 
 
-//   const ApplicationDataColumns = useMemo(() => {
-//     return [
-//         {
-//             name: "District",
-//             selector: (row, index) => {
-//               return index === 0 || (districtListData[index]?.districtName !== districtListData[index - 1]?.districtName)
-//                 ? row.districtName
-//                 : "";
-//             },
-//             cell: (row, index) => {
-//               if (districtListData[index]) { // Check if districtListData[index] exists
-//                 return (
-//                   <span>
-//                     {index === 0 || (districtListData[index].districtName !== districtListData[index - 1]?.districtName)
-//                       ? row.districtName
-//                       : ""}
-//                   </span>
-//                 );
-//               }
-//               return null; // Return null if the index is invalid
-//             },
-//             sortable: true,
-//             hide: "md",
-//           },
-//       {
-//         name: "Target Type",
-//         selector: (row) => row.targetType,
-//         cell: (row) => <span>{row.targetType}</span>,
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "April",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.april || row.april}
-//             onChange={(e) => handleInputChange(index, 'april', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "May",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.may || row.may}
-//             onChange={(e) => handleInputChange(index, 'may', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "June",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.june || row.june}
-//             onChange={(e) => handleInputChange(index, 'june', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "July",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.july || row.july}
-//             onChange={(e) => handleInputChange(index, 'july', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "August",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.august || row.august}
-//             onChange={(e) => handleInputChange(index, 'august', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "September",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.september || row.september}
-//             onChange={(e) => handleInputChange(index, 'september', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "October",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.october || row.october}
-//             onChange={(e) => handleInputChange(index, 'october', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "November",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.november || row.november}
-//             onChange={(e) => handleInputChange(index, 'november', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "December",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.december || row.december}
-//             onChange={(e) => handleInputChange(index, 'december', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "January",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.january || row.january}
-//             onChange={(e) => handleInputChange(index, 'january', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "February",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.february || row.february}
-//             onChange={(e) => handleInputChange(index, 'february', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//       {
-//         name: "March",
-//         cell: (row, index) => (
-//           <input
-//             type="text"
-//             value={editableData[index]?.march || row.march}
-//             onChange={(e) => handleInputChange(index, 'march', e.target.value)}
-//           />
-//         ),
-//         sortable: true,
-//         hide: "md",
-//       },
-//     ];
-//   }, [districtListData, editableData]);
+
 
 const [farmerdetails,setFarmerDetails] = useState({
     farmerFirstName:"",
