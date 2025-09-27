@@ -83,6 +83,19 @@ function SiSdMulberryDateTarget() {
     }));
   };
 
+  const [editableData, setEditableData] = useState([]);
+  
+    const handleInputChange = (index, field, value) => {
+      setEditableData(prev => {
+        const newData = [...prev];
+        newData[index] = {
+          ...newData[index],
+          [field]: value,
+        };
+        return newData;
+      });
+    };
+
 
    const [pageNarega, setPageNarega] = useState(0); // UPDATED: zero-based page index
     const [totalRowsNarega, setTotalRowsNarega] = useState(0);
