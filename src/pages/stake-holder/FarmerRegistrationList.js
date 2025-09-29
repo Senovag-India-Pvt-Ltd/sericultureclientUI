@@ -475,6 +475,63 @@ function FarmerRegistrationList() {
       sortable: true,
       hide: "md",
     },
+    // 🆕 New Land + Mulberry Variety Columns
+  {
+    name: "Mulberry Area",
+    selector: (row) => row.mulberryArea,
+    cell: (row) => <span>{row.mulberryArea}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Owner Name",
+    selector: (row) => row.ownerName,
+    cell: (row) => <span>{row.ownerName}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Survey Number",
+    selector: (row) => row.surveyNumber,
+    cell: (row) => <span>{row.surveyNumber}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Spacing",
+    selector: (row) => row.spacing,
+    cell: (row) => <span>{row.spacing}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Hissa",
+    selector: (row) => row.hissa,
+    cell: (row) => <span>{row.hissa}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Rearing House Details",
+    selector: (row) => row.rearingHouseDetails,
+    cell: (row) => <span>{row.rearingHouseDetails}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Land Address",
+    selector: (row) => row.landAddress,
+    cell: (row) => <span>{row.landAddress}</span>,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "Mulberry Variety",
+    selector: (row) => row.mulberryVarietyName,
+    cell: (row) => <span>{row.mulberryVarietyName}</span>,
+    sortable: true,
+    hide: "md",
+  },
   ];
 
   return (
@@ -658,7 +715,7 @@ function FarmerRegistrationList() {
     </Form.Select>
   </Form.Group>
 
-  <Col sm={2}>
+  <Col sm={4}>
   <Form.Group className="form-group mt-n4">
     <Form.Label>{t("Land Filter")}</Form.Label>
     <div className="form-control-wrap">

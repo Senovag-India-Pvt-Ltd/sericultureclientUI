@@ -41,7 +41,15 @@ function AllApplicationDetails() {
     talukId: 0,
     hobliId: 0,
     villageId: 0,
+    scCategoryId: 0,
   });
+
+//   const [searchData, setSearchData] = useState({
+//   text: "",
+//   type: 0,
+//   categoryId: 0, // <-- Add this to send category filter
+// });
+
 
   // Translation
   const { t } = useTranslation();
@@ -241,6 +249,7 @@ function AllApplicationDetails() {
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
+            scCategoryId: searchData.scCategoryId,
             displayAllRecords: true,
             status: "",
           },
@@ -377,6 +386,19 @@ function AllApplicationDetails() {
     setValidated(true);
   };
 
+  const handleCategoryChange = (e) => {
+  const value = e.target.value;
+  setSearchData((prev) => ({
+    ...prev,
+    scCategoryId: value,
+  }));
+  setAddressDetails((prev) => ({
+    ...prev,
+    scCategoryId: value,
+  }));
+};
+
+
   const handleFromDateChange = (date) => {
     setPeriod((prev) => ({ ...prev, periodFrom: date }));
   };
@@ -512,6 +534,7 @@ function AllApplicationDetails() {
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
+            scCategoryId: searchData.scCategoryId,
             displayAllRecords: true,
             status: "",
           },
@@ -710,6 +733,7 @@ function AllApplicationDetails() {
     // year2: "",
     type: 5,
     searchText: "",
+    scCategoryId: 0,
   });
 
   console.log(searchData);
@@ -849,69 +873,7 @@ function AllApplicationDetails() {
     "light"
   );
 
-  //   const customStyles = {
-  //     rows: {
-  //       style: {
-  //         minHeight: "45px", // override the row height
-  //       },
-  //     },
-  //     headCells: {
-  //       style: {
-  //         backgroundColor: "#1e67a8",
-  //         color: "#fff",
-  //         fontSize: "14px",
-  //         paddingLeft: "8px", // override the cell padding for head cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //     cells: {
-  //       style: {
-  //         paddingLeft: "8px", // override the cell padding for data cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //   };
-
-  // const customStyles = {
-  //   header: {
-  //     style: {
-  //       minHeight: "56px",
-  //     },
-  //   },
-  //   headRow: {
-  //     style: {
-  //       borderTopStyle: "solid",
-  //       borderTopWidth: "1px",
-  //       // borderTop:"none",
-  //       // borderTopColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //     },
-  //   },
-  //   headCells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       backgroundColor: "#1e67a8",
-  //       color: "#fff",
-  //       borderStyle: "solid",
-  //       bordertWidth: "1px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  //   cells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       borderStyle: "solid",
-  //       // borderRightWidth: "3px",
-  //       borderWidth: "1px",
-  //       padding: "10px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  // };
+  
   const customStyles = {
     rows: {
       style: {
@@ -957,55 +919,7 @@ function AllApplicationDetails() {
   };
 
   const ApplicationDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.marketMasterId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.marketMasterId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.marketMasterId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // //   grow: 2,
-    // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   button: true,
-    // },
+    
     {
       name: t("Sl.No"),
       selector: (row) => row.scApplicationFormId,
@@ -1071,6 +985,13 @@ function AllApplicationDetails() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Category"),
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
       name: t("Sanction Number"),
@@ -1105,556 +1026,226 @@ function AllApplicationDetails() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("Action"),
-    //   cell: (row) => (
-    //     <>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.scApplicationFormId)}
-    //         className="ms-1"
-    //       >
-    //         {t("View")}
-    //       </Button>
-    //     </>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    //   // grow: 2,
-    // },
   ];
 
-  return (
-    <Layout title="All Application Details">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("All Application Details")}</Block.Title>
-          </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
-        </Block.HeadBetween>
-      </Block.Head>
+   return (
+  <Layout title="All Application Details">
+    <Block.Head>
+      <Block.HeadBetween>
+        <Block.HeadContent>
+          <Block.Title tag="h2">{t("All Application Details")}</Block.Title>
+        </Block.HeadContent>
+      </Block.HeadBetween>
+    </Block.Head>
 
-      <Block className="mt-n4">
-        {/* <Form noValidate validated={validatedDisplay} onSubmit={display}>
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg={12}>
-                  <Row className="g-gs">
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n2">
-                        <Form.Label>
-                          Financial Year
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="financialYearMasterId"
-                            value={data.financialYearMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.financialYearMasterId === undefined ||
-                              data.financialYearMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Year</option>
-                            {financialyearListData.map((list) => (
-                              <option
-                                key={list.financialYearMasterId}
-                                value={list.financialYearMasterId}
-                              >
-                                {list.financialYear}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Financial Year is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n2">
-                        <Form.Label>
-                          Component Type
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSubSchemeDetailsId"
-                            value={data.scSubSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSubSchemeDetailsId === undefined ||
-                              data.scSubSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Component Type</option>
-                            {scSubSchemeDetailsListData.map((list) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
-                              >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Component Type is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSchemeDetailsId"
-                            value={data.scSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.scSchemeDetailsId === undefined ||
-                              data.scSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Scheme Names</option>
-                            {scSchemeDetailsListData.map((list) => (
-                              <option
-                                key={list.scSchemeDetailsId}
-                                value={list.scSchemeDetailsId}
-                              >
-                                {list.schemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+    <Block className="mt-n4">
+      <Card className="mt-1">
+        {/* First Row: Search By and District/Taluk */}
+        <Row className="m-4">
+          {/* Search By */}
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>{t("Search By")}</Form.Label>
+              <Form.Select
+                name="type"
+                value={searchData.type}
+                onChange={handleInputsSearch}
+              >
+                <option value="2">{t("FRUITS ID")}</option>
+                <option value="4">{t("Beneficiary ID")}</option>
+                <option value="5">{t("Financial Year")}</option>
+                <option value="6">{t("Component")}</option>
+                <option value="7">{t("Component Type")}</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Head of Account
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
-                            }
-                          >
-                            <option value="">Select Head of Account</option>
-                            {scHeadAccountListData.map((list) => (
-                              <option
-                                key={list.scHeadAccountId}
-                                value={list.scHeadAccountId}
-                              >
-                                {list.scHeadAccountName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Head of Account is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Category
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scCategoryId"
-                            value={data.scCategoryId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            isInvalid={
-                              data.scCategoryId === undefined ||
-                              data.scCategoryId === "0"
-                            }
-                          >
-                            <option value="">Select Category</option>
-                            {scCategoryListData.map((list) => (
-                              <option
-                                key={list.scCategoryId}
-                                value={list.scCategoryId}
-                              >
-                                {list.codeNumber}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Category is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Component
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scComponentId"
-                            value={data.scComponentId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            isInvalid={
-                              data.scComponentId === undefined ||
-                              data.scComponentId === "0"
-                            }
-                          >
-                            <option value="">Select Component</option>
-                            {scComponentListData.map((list) => (
-                              <option
-                                key={list.scComponentId}
-                                value={list.scComponentId}
-                              >
-                                {list.scComponentName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Component is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="schemeAmount">
-                          Scheme Amount
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="schemeAmount"
-                            type="text"
-                            name="schemeAmount"
-                            value={data.schemeAmount}
-                            onChange={handleInputs}
-                            placeholder="Enter Scheme Amount"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Scheme Amount is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sanctionNumber">
-                          Sanction Number
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="sanctionNumber"
-                            type="text"
-                            name="sanctionNumber"
-                            value={data.sanctionNumber}
-                            onChange={handleInputs}
-                            placeholder="Enter Sanction Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sanction Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Form> */}
-        <Card className="mt-1">
-          <Row className="m-2 d-flex flex-column justify-content-center">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  {t("Search By")}
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="type"
-                      value={searchData.type}
-                      onChange={handleInputsSearch}
-                    >
-                      {/* <option value="0">All</option> */}
-                      {/* <option value="1">Sanction No.</option> */}
-                      <option value="2">{t("FRUITS ID")}</option>
-                      {/* <option value="3">Rejected Reason</option> */}
-                      {/* <option value="3">{t("Rejected Reason")}</option> */}
-                      <option value="4">{t("Beneficiary ID")}</option>
-                      <option value="5">{t("Financial Year")}</option>
-                      <option value="6">{t("Component")}</option>
-                      <option value="7">{t("Component Type")}</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
+          {/* Conditional Input/Select */}
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>&nbsp;</Form.Label> {/* Empty label to align with above */}
+              <div className="form-control-wrap">
                 {Number(searchData.type) === 5 ? (
-                  <Col sm={2} lg={2}>
-                    <Form.Group className="form-group">
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="text"
-                          value={searchData.text}
-                          onChange={handleInputsSearch}
-                          onBlur={() => handleInputsSearch}
-                          // multiple
-                          required
-                          isInvalid={
-                            //  searchData.text === undefined ||
-                            searchData.text === "0"
-                          }
-                        >
-                          <option value="">{t("Select Year")}</option>
-                          {financialyearListData.map((list) => (
-                            <option
-                              key={list.financialYearMasterId}
-                              value={list.financialYearMasterId}
-                            >
-                              {list.financialYear}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  <Form.Select
+                    name="text"
+                    value={searchData.text}
+                    onChange={handleInputsSearch}
+                    isInvalid={searchData.text === "0"}
+                  >
+                    <option value="">{t("Select Year")}</option>
+                    {financialyearListData.map((list) => (
+                      <option
+                        key={list.financialYearMasterId}
+                        value={list.financialYearMasterId}
+                      >
+                        {list.financialYear}
+                      </option>
+                    ))}
+                  </Form.Select>
                 ) : Number(searchData.type) === 6 ? (
-                  <Col sm={2} lg={2}>
-                    <Form.Group className="form-group">
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="text"
-                          value={searchData.text}
-                          onChange={handleInputsSearch}
-                          onBlur={() => handleInputsSearch}
-                          // multiple
-                          required
-                          isInvalid={
-                            //  searchData.text === undefined ||
-                            searchData.text === "0"
-                          }
-                        >
-                          <option value="">{t("Select Component")}</option>
-                          {scComponentListData.map((list) => (
-                            <option
-                              key={list.scComponentId}
-                              value={list.scComponentId}
-                            >
-                              {list.scComponentName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  <Form.Select
+                    name="text"
+                    value={searchData.text}
+                    onChange={handleInputsSearch}
+                    isInvalid={searchData.text === "0"}
+                  >
+                    <option value="">{t("Select Component")}</option>
+                    {scComponentListData.map((list) => (
+                      <option
+                        key={list.scComponentId}
+                        value={list.scComponentId}
+                      >
+                        {list.scComponentName}
+                      </option>
+                    ))}
+                  </Form.Select>
                 ) : Number(searchData.type) === 7 ? (
-                  <Col sm={2} lg={2}>
-                    <Form.Group className="form-group">
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="text"
-                          value={searchData.text}
-                          onChange={handleInputsSearch}
-                          onBlur={() => handleInputsSearch}
-                          // multiple
-                          required
-                          isInvalid={
-                            //  searchData.text === undefined ||
-                            searchData.text === "0"
-                          }
-                        >
-                          <option value="">{t("Select Component Type")}</option>
-                          {scSubSchemeDetailsListData &&
-                            scSubSchemeDetailsListData.map((list, i) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
-                              >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
-                        </Form.Select>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  <Form.Select
+                    name="text"
+                    value={searchData.text}
+                    onChange={handleInputsSearch}
+                    isInvalid={searchData.text === "0"}
+                  >
+                    <option value="">{t("Select Component Type")}</option>
+                    {scSubSchemeDetailsListData.map((list) => (
+                      <option
+                        key={list.scSubSchemeDetailsId}
+                        value={list.scSubSchemeDetailsId}
+                      >
+                        {list.subSchemeName}
+                      </option>
+                    ))}
+                  </Form.Select>
                 ) : (
-                  <Col sm={2} lg={2}>
-                    <Form.Control
-                      id="fruitsId"
-                      name="text"
-                      value={searchData.text}
-                      onChange={handleInputsSearch}
-                      type="text"
-                      placeholder="Search"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {t("Field Value is Required")}
-                    </Form.Control.Feedback>
-                  </Col>
+                  <Form.Control
+                    id="fruitsId"
+                    name="text"
+                    value={searchData.text}
+                    onChange={handleInputsSearch}
+                    type="text"
+                    placeholder="Search"
+                    required
+                  />
                 )}
+              </div>
+            </Form.Group>
+          </Col>
 
-                <Form.Label column sm={1}>
-                  {t("district")}
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="districtId"
-                      value={addressDetails.districtId}
-                      onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
-                    >
-                      <option value="0">{t("select_district")}</option>
-                      {districtListData.map((list) => (
-                        <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </div>
-                </Col>
+          {/* District */}
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>{t("District")}</Form.Label>
+              <Form.Select
+                name="districtId"
+                value={addressDetails.districtId}
+                onChange={handleInputsaddress}
+              >
+                <option value="0">{t("select_district")}</option>
+                {districtListData.map((list) => (
+                  <option key={list.districtId} value={list.districtId}>
+                    {list.districtName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-                <Form.Label column sm={1}>
-                  {t("taluk")}
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="talukId"
-                      value={addressDetails.talukId}
-                      onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
-                    >
-                      <option value="0">{t("select_taluk")}</option>
-                      {talukListData.map((list) => (
-                        <option key={list.talukId} value={list.talukId}>
-                          {list.talukName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </div>
-                </Col>
-              </Form.Group>
-            </Col>
-            <Col className="d-flex justify-content-center mt-2">
-              <Form.Label column sm={1}>
-                {t("hobli")}
-              </Form.Label>
-              <Col sm={2}>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="hobliId"
-                    value={addressDetails.hobliId}
-                    onChange={handleInputsaddress}
-                    style={{ marginLeft: "-14%" }}
-                  >
-                    <option value="0">{t("select_hobli")}</option>
-                    {hobliListData.map((list) => (
-                      <option key={list.hobliId} value={list.hobliId}>
-                        {list.hobliName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </div>
-              </Col>
+          {/* Taluk */}
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>{t("Taluk")}</Form.Label>
+              <Form.Select
+                name="talukId"
+                value={addressDetails.talukId}
+                onChange={handleInputsaddress}
+              >
+                <option value="0">{t("select_taluk")}</option>
+                {talukListData.map((list) => (
+                  <option key={list.talukId} value={list.talukId}>
+                    {list.talukName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
 
-              <Form.Label column sm={1}>
-                {t("village")}
-              </Form.Label>
-              <Col sm={2}>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="villageId"
-                    value={addressDetails.villageId}
-                    onChange={handleInputsaddress}
-                    style={{ marginLeft: "-14%" }}
-                  >
-                    <option value="0">{t("select_village")}</option>
-                    {villageListData.map((list) => (
-                      <option key={list.villageId} value={list.villageId}>
-                        {list.villageName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </div>
-              </Col>
+        {/* Second Row: Hobli, Village, Sub Component, Search & Export */}
+        <Row className="m-4 mt-2">
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>{t("Hobli")}</Form.Label>
+              <Form.Select
+                name="hobliId"
+                value={addressDetails.hobliId}
+                onChange={handleInputsaddress}
+              >
+                <option value="0">{t("select_hobli")}</option>
+                {hobliListData.map((list) => (
+                  <option key={list.hobliId} value={list.hobliId}>
+                    {list.hobliName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-              <Col sm={1}>
-                <Button type="button" variant="primary" onClick={search}>
-                  {t("search")}
-                </Button>
-              </Col>
-              <Col sm={1}>
-                <Button type="button" variant="primary" onClick={exportCsv}>
-                  {t("Export")}
-                </Button>
-              </Col>
-            </Col>
-          </Row>
-        </Card>
-      </Block>
+          <Col sm={3}>
+            <Form.Group className="form-group mt-n4">
+              <Form.Label>{t("Village")}</Form.Label>
+              <Form.Select
+                name="villageId"
+                value={addressDetails.villageId}
+                onChange={handleInputsaddress}
+              >
+                <option value="0">{t("select_village")}</option>
+                {villageListData.map((list) => (
+                  <option key={list.villageId} value={list.villageId}>
+                    {list.villageName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+        <Col sm={3}>
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>{t("Sub Component")}</Form.Label>
+    <Form.Select
+      name="scCategoryId"
+      value={searchData.scCategoryId}   // ✅ Use searchData instead of data
+      onChange={handleInputsSearch}  // ✅ Update searchData
+      isInvalid={
+        searchData.scCategoryId === undefined || searchData.scCategoryId === "0"
+      }
+    >
+      <option value="">{t("Select Category")}</option>
+      {scCategoryListData.map((list) => (
+        <option key={list.scCategoryId} value={list.scCategoryId}>
+          {list.categoryName}
+        </option>
+      ))}
+    </Form.Select>
+  </Form.Group>
+</Col>
+
+
+          {/* Search & Export Buttons */}
+          <Col sm={3} className="d-flex align-items-end gap-2 mt-n4">
+            <Button type="button" variant="primary" onClick={search}>
+              {t("Search")}
+            </Button>
+            <Button type="button" variant="primary" onClick={exportCsv}>
+              {t("Export")}
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+    </Block>
+  {/* </Layout>
+); */}
+
+
 
       <Block className="mt-3">
         <Card>
