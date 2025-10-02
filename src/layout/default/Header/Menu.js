@@ -299,17 +299,24 @@ function Menu() {
 
     TargetSetting: false,
     TargetSetting_Dashboard: false,
-    TargetSetting_Assigning_Yearly_Targets: false,
+
     TargetSetting_Allocate: false,
-    TargetSetting_Allocate_Budget: false,
-    TargetSetting_Allocate_Budget_Hoa: false,
-    TargetSetting_Allocate_Budget_District: false,
-    TargetSetting_Allocate_Budget_Taluk: false,
-    TargetSetting_Allocate_Budget_Institution: false,
-    TargetSetting_Release: false,
-    TargetSetting_Release_District: false,
-    TargetSetting_Release_Taluk: false,
-    TargetSetting_Release_Institution: false,
+    TargetSetting_Allocate_District_Wise_Mulberry: false,
+    TargetSetting_Allocate_TSC_Wise_Mulberry: false,
+    TargetSetting_Allocate_Range_Wise_Mulberry: false,
+    TargetSetting_Allocate_Range_Wise_Mulberry_Targets_Daily: false,
+    TargetSetting_Allocate_District_Wise_Physical_Target: false,
+    TargetSetting_Allocate_TSC_Wise_Physical_Target: false,
+    TargetSetting_Allocate_Range_Wise_Physical_Target: false,
+    TargetSetting_Allocate_Farm_Wise_Target: false,
+    TargetSetting_Allocate_Grainage_Wise_Target: false,
+    TargetSetting_Allocate_Training_Wise_Target: false,
+    TargetSetting_Allocate_District_Wise_Scheme_Target: false,
+    TargetSetting_Allocate_TSC_Wise_Scheme_Target: false,
+    TargetSetting_Allocate_Reeling_Wise_Scheme_Target: false,
+    TargetSetting_Allocate_User_Hierarchy_Mapping: false,
+    TargetSetting_Allocate_Direct_And_All_Reportee_Details: false,
+
 
     TargetSetting_Achievement: false,
     TargetSetting_Achievement_FARM: false,
@@ -725,6 +732,14 @@ function Menu() {
         }
       });
     }
+
+     if (data.includes("TargetSetting_Allocate")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("TargetSetting_Allocate_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
     if (data.includes("Inspection")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Inspection_")) {
@@ -1068,6 +1083,59 @@ function Menu() {
         SeedDFL_External: true,
       }));
     }
+
+    const hasGardenExternal = data.some((item) =>
+      item.startsWith("GardenManagement_")
+    );
+    if (hasGardenExternal) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        GardenManagement: true,
+      }));
+    }
+
+     const hasChawkiExternal = data.some((item) =>
+      item.startsWith("ChawkiManagement_")
+    );
+    if (hasChawkiExternal) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        ChawkiManagement: true,
+      }));
+    }
+
+    const hasTargetSetting = data.some((item) =>
+      item.startsWith("TargetSetting_")
+    );
+    if (hasTargetSetting) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        TargetSetting: true,
+      }));
+    }
+
+    const hasTargetSettingAllocate = data.some((item) =>
+      item.startsWith("TargetSetting_Allocate_")
+    );
+    if (hasTargetSettingAllocate) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        TargetSetting: true,
+        TargetSetting_Allocate: true,
+      }));
+    }
+
+    const hasTargetSettingAchievement = data.some((item) =>
+      item.startsWith("TargetSetting_Achievement_")
+    );
+    if (hasTargetSettingAchievement) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        TargetSetting: true,
+        TargetSetting_Achievement: true,
+      }));
+    }
+
 
     const hasReport = data.some((item) => item.startsWith("Admin_Report_"));
     if (hasReport) {
@@ -2739,13 +2807,13 @@ function Menu() {
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text={t("New Target Setting")}
+                  text={t("Target Setting")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
                 />
                 <MenuSub>
-                  {showMenu.TargetSetting_Allocate_Budget ? (
+                  {showMenu.TargetSetting_Allocate_District_Wise_Mulberry ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t(
@@ -2771,7 +2839,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                  {showMenu.TargetSetting_Allocate_TSC_Wise_Mulberry ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("TSC Wise Area Under Mulberry Monthly Target")}
@@ -2779,7 +2847,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Range_Wise_Mulberry ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Range Area Under Mulberry Monthly Target")}
@@ -2787,7 +2855,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Range_Wise_Mulberry_Targets_Daily ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Range Area Under Mulberry Daily Target")}
@@ -2795,7 +2863,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_District_Wise_Physical_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("District Wise Physical Target Setting")}
@@ -2803,7 +2871,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_TSC_Wise_Physical_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("TSC Wise Physical Target Setting")}
@@ -2811,7 +2879,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Range_Wise_Physical_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Range Wise Physical Target Setting")}
@@ -2820,7 +2888,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Farm_Wise_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Farm Wise Target Setting")}
@@ -2828,7 +2896,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Grainage_Wise_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Grainage Wise Target Setting")}
@@ -2836,7 +2904,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Training_Wise_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t(
@@ -2846,7 +2914,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_District_Wise_Scheme_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("District Wise Scheme Target Setting")}
@@ -2854,7 +2922,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_TSC_Wise_Scheme_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("TSC Wise Scheme Target Setting")}
@@ -2870,7 +2938,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Reeling_Wise_Scheme_Target ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Reeling TSC Wise Scheme Target Setting")}
@@ -2879,7 +2947,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_User_Hierarchy_Mapping ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("User Hierarchy Mapping")}
@@ -2888,7 +2956,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                  {showMenu.TargetSetting_Allocate_Direct_And_All_Reportee_Details ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Direct And All Reportee Details")}

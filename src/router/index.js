@@ -1039,6 +1039,7 @@ import RejectionListForDBT from "../pages/direct-benefit-transfer/RejectionListF
 import RejectionList from "../pages/masters/reject-reason/RejectionList";
 import RejectReasonList from "../pages/masters/reject-reason/RejectReasonList";
 import RejectionListEdit from "../pages/masters/reject-reason/RejectionListEdit";
+import MapComponentAndHoaEdit from "../pages/masters/map-component-hoa/MapComponentAndHoaEdit";
 
 // Admin and Reports
 
@@ -3429,6 +3430,7 @@ function Router() {
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route path="map-component" element={<MapComponent />} />
+            <Route path="map-component-edit/:id" element={<MapComponentAndHoaEdit />} />
             <Route
               path="map-component-list"
               element={<MapComponentAndHoaList />}
