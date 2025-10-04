@@ -175,6 +175,32 @@ function DashboardReportList() {
     handleShowModal3(i);
   };
 
+  const [schemeDataList, setSchemeDataList] = useState([]);
+
+const handleDrawingOfficerChange = (index, selectedUserId) => {
+  setPushToDBTListData((prevList) => {
+    const updatedList = [...prevList];
+    if (updatedList[index]) {
+      updatedList[index] = { ...updatedList[index], userId: selectedUserId };
+    }
+    return updatedList;
+  });
+};
+
+const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
+  setRecordFromAppForm((prevList) => {
+    const updatedList = [...prevList];
+    if (updatedList[index]) {
+      updatedList[index] = { ...updatedList[index], userId: selectedUserId };
+    }
+    return updatedList;
+  });
+};
+
+
+
+
+
   const schemeDetailsListColumn = [
     {
       name: "Select",
@@ -248,6 +274,33 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
     },
+    {
+    name: "Drawing Officer",
+    selector: (row) => row.userId || "",
+    cell: (row, i) => (
+      <Form.Select
+        size="sm"
+        value={row.userId || ""}
+        onChange={(e) => handleDrawingOfficerChange(i, e.target.value)}
+      >
+        {/* <option value="">-- Select Officer --</option>
+        {userForDrawingOfficersData.map((user) => (
+          <option key={user.userId} value={user.userId}>
+            {user.userName}
+          </option>
+        ))}
+      </Form.Select> */}
+      <option value="">-- Select Officer --</option>
+      {(drawingOfficerUsers[i] || []).map((user) => (
+        <option key={user.userId} value={user.userId}>
+          {user.userName}
+        </option>
+      ))}
+    </Form.Select>
+    ),
+    sortable: false,
+    hide: "md",
+  },
     {
       name: "Action",
       cell: (row, i) => (
@@ -328,6 +381,27 @@ function DashboardReportList() {
       sortable: true,
       hide: "md",
     },
+    {
+    name: "Drawing Officer",
+    selector: (row) => row.userId || "",
+    cell: (row, i) => (
+      <Form.Select
+        size="sm"
+        value={row.userId || ""}
+        onChange={(e) => handleDrawingOfficerChangeForSanction(i, e.target.value)}
+      >
+        <option value="">-- Select Officer --</option>
+        {userForDrawingOfficersData.map((user) => (
+          <option key={user.userId} value={user.userId}>
+            {user.userName}
+          </option>
+        ))}
+      </Form.Select>
+    ),
+    sortable: false,
+    hide: "md",
+  },
+
     {
       name: "Action",
       cell: (row, i) => (
@@ -451,71 +525,7 @@ function DashboardReportList() {
   const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
   const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
-  // const getActionFarmerList = (fid) => {
-  //   setLoading(true);
-  //   api
-  //     .post(
-  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-  //       {},
-  //       // { params: { userId: 27, stepId: 1 } }
-  //       {
-  //         params: {
-  //           userId: localStorage.getItem("userMasterId"),
-  //           stepId: id,
-  //           fid: fid,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       setActionFarmerData(response.data.content);
-  //       const scApplicationFormIds = response.data.content.map(
-  //         (item) => item.scApplicationFormId
-  //       );
-
-  //       // Extract and set the applicationDocumentId
-  //     const applicationDocumentId = data[0]?.applicationDocumentId;
-  //     setApplicationFormId(applicationDocumentId); // Set applicationFormId here
-
-  //       // Extract categoryId and componentId
-  //     const categoryId = response.data.content[0]?.categoryId;
-  //     const componentId = response.data.content[0]?.componentId;
-
-  //     // Fetch DBT List using extracted categoryId and componentId
-  //     if (categoryId && componentId) {
-  //       getPushToDBTList(categoryId, componentId);
-  //     }
-
-  //       // Extract categoryId and componentId
-  //       const subSchemeId = response.data.content[0]?.subSchemeId;
-  //       const approvalStageId = response.data.content[0]?.approvalStageId;
-
-  //       // Fetch DBT List using extracted categoryId and componentId
-  //       if (subSchemeId && approvalStageId) {
-  //         getApprovalAfterStageNextStepList(subSchemeId, approvalStageId);
-  //       }
-
-  //       // Extract and set the applicationDocumentId
-  //       const applicationDocumentId =
-  //         response.data.content[0]?.applicationDocumentId;
-
-  //       // Set the applicationDocumentId for both uploadDocuments and sanctionOrderData
-  //       setUploadDocuments((prev) => ({
-  //         ...prev,
-  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
-  //       }));
-
-  //       setSanctionOrderData((prev) => ({
-  //         ...prev,
-  //         applicationFormId: applicationDocumentId, // Set applicationDocumentId here
-  //       }));
-  //       // setAllApplicationIds(scApplicationFormIds);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setActionFarmerData({});
-  //       setLoading(false);
-  //     });userFromDistrictData
-  // };
+  
 
   const [userId, setId] = useState(localStorage.getItem("userMasterId"));
 
@@ -633,49 +643,49 @@ function DashboardReportList() {
       );
   }, [actionData.stepId]);
 
-  // const getList = () => {
-  //   setLoading(true);
-  //   api
-  //     .post(
-  //       baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
-  //       {},
-  //       // { params: { userId: 27, stepId: 1 } }
-  //       { params: { userId: localStorage.getItem("userMasterId"), stepId: id } }
-  //     )
-  //     .then((response) => {
-  //       setListData(response.data.content);
-  //       const scApplicationFormIds = response.data.content.map(
-  //         (item) => item.scApplicationFormId
-  //       );
+  
 
-  //       const data = response.data.content; // Store the response data in a variable
-  //       setAssignData(data);
+//   const getUserForDrawingOfficer = (
+//     subSchemeId,
+//     scComponentId,
+//     schemeQuotaId,
+//     talukId,
+//     districtId,
+//   ) => {
+//     api
+//       .post(
+//         baseURLDBT +
+//           `service/getUserForDrawingOfficer?subSchemeId=${subSchemeId}&scComponentId=${scComponentId}&schemeQuotaId=${schemeQuotaId}&districtId=${districtId}&talukId=${talukId}`
+//       )
+//       .then((response) => {
+//         if (response.data.content) {
+//           setUserForDrawingOfficersData(response.data.content);
+//         }
+//       })
+//       .catch((err) => {
+//         setUserForDrawingOfficersData([]);
+//         // alert(err.response.data.errorMessages[0].message[0].message);
+//       });
+//   };
 
-  //       // Extract and set the applicationDocumentId
-  //       const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
-  //       setApplicationFormId(applicationDocumentId);
+//  useEffect(() => {
+//   if (
+//     actionData.subSchemeId &&
+//     actionData.scComponentId &&
+//     actionData.schemeQuotaId &&
+//     districtId &&
+//     talukId
+//   ) {
+//     getUserForDrawingOfficer(
+//       actionData.subSchemeId,
+//       actionData.scComponentId,
+//       actionData.schemeQuotaId,
+//       talukId,
+//       districtId
+//     );
+//   }
+// }, [actionData.subSchemeId, actionData.scComponentId, actionData.schemeQuotaId, talukId, districtId]);
 
-  //       // Extract subSchemeId and approvalStageId
-  //       const subSchemeId = data[0]?.subSchemeId;
-  //       const approvalStageId = data[0]?.approvalStageId;
-  //       getIdList();
-  //       if (subSchemeId && approvalStageId && districtId && talukId) {
-  //         getUserFromDistrictList(
-  //           subSchemeId,
-  //           approvalStageId,
-  //           districtId,
-  //           talukId
-  //         );
-  //       }
-
-  //       // setAllApplicationIds(scApplicationFormIds);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setListData({});
-  //       setLoading(false);
-  //     });
-  // };
 
   const getList = async (district, taluk) => {
     setLoading(true);
@@ -1151,14 +1161,17 @@ function DashboardReportList() {
 
         // Optional: if dbtData is an array, handle accordingly
         const firstRecord = Array.isArray(dbtData) ? dbtData[0] : dbtData;
-        const { subsidyAmount, calculatedEligibleAmount, schemeQuotaPaymentType } = firstRecord;
+        const { subsidyAmount, calculatedEligibleAmount, schemeQuotaPaymentType,subSchemeId, scComponentId, schemeQuotaId  } = firstRecord;
 
         // Set subsidy and eligible amount in actionData
         setActionData((prevData) => ({
           ...prevData,
           subsidyAmount: subsidyAmount || "",
           calculatedEligibleAmount: calculatedEligibleAmount || "",
-          schemeQuotaPaymentType: schemeQuotaPaymentType || "", // Save for later use
+          schemeQuotaPaymentType: schemeQuotaPaymentType || "", 
+          subSchemeId: subSchemeId,
+          scComponentId: scComponentId,
+          schemeQuotaId: schemeQuotaId,// Save for later use
         }));
       }
     })
@@ -1166,6 +1179,51 @@ function DashboardReportList() {
       setPushToDBTListData([]);
     });
 };
+
+const [userForDrawingOfficersData, setUserForDrawingOfficersData] = useState([]);
+
+  const [drawingOfficerUsers, setDrawingOfficerUsers] = useState({});
+
+const getUserForDrawingOfficer = (
+  rowIndex,
+  subSchemeId,
+  scComponentId,
+  schemeQuotaId,
+  talukId,
+  districtId
+) => {
+  api
+    .post(
+      baseURLDBT +
+        `service/getUserForDrawingOfficer?subSchemeId=${subSchemeId}&scComponentId=${scComponentId}&schemeQuotaId=${schemeQuotaId}&districtId=${districtId}&talukId=${talukId}`
+    )
+    .then((response) => {
+      if (response.data.content) {
+        setDrawingOfficerUsers((prev) => ({
+          ...prev,
+          [rowIndex]: response.data.content,
+        }));
+      }
+    })
+    .catch((err) => {
+      setDrawingOfficerUsers((prev) => ({
+        ...prev,
+        [rowIndex]: [],
+      }));
+    });
+};
+useEffect(() => {
+  pushToDBTListData.forEach((row, index) => {
+    getUserForDrawingOfficer(
+      index,
+      row.subSchemeId,
+      row.scComponentId,
+      row.schemeQuotaId,
+      talukId,
+      districtId
+    );
+  });
+}, [pushToDBTListData, talukId, districtId]);
 
 // useEffect(() => {
 //   if (actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder) {
@@ -2483,7 +2541,7 @@ function DashboardReportList() {
     // Prepare common pushToDBTRequestList
     const sendResponse = sendApplicationFormServiceData
       .filter(item => item) // ensures no nulls
-      .map((item) => {
+      .map((item, index) => {
         return {
           schemeQuotaId: item.schemeQuotaId,
           componentType: item.schemeQuotaId,
@@ -2493,6 +2551,7 @@ function DashboardReportList() {
           paymentMethod: item.paymentMethod,
           dateOfPayment: item.dateOfPayment,
           referenceNo: item.referenceNo,
+          userId: pushToDBTListData[index]?.userId || "",
         };
       });
 
@@ -2542,6 +2601,8 @@ function DashboardReportList() {
         componentType: actionFarmerData[0]?.componentType,
       };
     } else {
+      // get the first row's selected userId
+
       sendPost = {
         description: actionData.comment,
         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
@@ -2549,6 +2610,7 @@ function DashboardReportList() {
         workOrderNumber: actionData.workOrderNumber,
         sanctionOrderNumber: actionData.sanctionOrderNumber,
         userId: actionData.userId,
+        // userId: selectedUserId, 
         stepId: actionData.stepId,
         sanctionNo: actionData.sanctionNo,
         eligibleAmount: actionData.eligibleAmount,
@@ -2573,19 +2635,78 @@ function DashboardReportList() {
       }
 
       // Case 3: sanctionOrder update 
-      if (actionFarmerData[0].sanctionOrder) {
+      // if (actionFarmerData[0].sanctionOrder) {
+      //   if (sendPost.pushToDBTRequestList.length === 0) {
+      //     warningAlert("Please select the scheme", "Alert!!!");
+      //     setDisplaySubmit(false);
+      //     return;
+      //   } else if (
+      //     schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
+      //   ) {
+      //     warningAlert("Select all schemes to proceed", "Alert!!!");
+      //     setDisplaySubmit(false);
+      //     return;
+      //   }
+
+      // if (
+      //   actionFarmerData[0]?.sanctionOrder &&
+      //   actionFarmerData[0]?.financialDelegation &&
+      //   isSanctionOrderAllowed
+      // ) {
+      //   if (sendPost.pushToDBTRequestList.length === 0) {
+      //     warningAlert("Please select the scheme", "Alert!!!");
+      //     setDisplaySubmit(false);
+      //     return;
+      //   } else if (
+      //     schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
+      //   ) {
+      //     warningAlert("Select all schemes to proceed", "Alert!!!");
+      //     setDisplaySubmit(false);
+      //     return;
+      //   // }
+      //   }
+
+        
+      //   apiCall = api
+      //     .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
+      //     .then((response) => {
+      //       if (response.data.applicationFormId) {
+      //         setApplicationId(response.data.applicationFormId);
+      //         handleGenerateSanctionOrder(
+      //           response.data.applicationFormId,
+      //           schemeId
+      //         );
+      //         setDisplaySubmit(false);
+      //         getList();
+      //         handleCloseModal();
+      //       } else {
+      //         saveError("Failed to generate application ID for sanction order.");
+      //         setDisplaySubmit(false);
+      //       }
+      //     })
+      //     .catch((err) => {
+      //       saveError(
+      //         err.response?.data?.error_description ||
+      //           "Sanction Order Update Failed"
+      //       );
+      //       setDisplaySubmit(false);
+      //     });
+      // }
+
+      // Case 3: sanctionOrder update
+    if (actionFarmerData[0]?.sanctionOrder) {
+      if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
+        // Only call sanctionOrderUpdate if financialDelegation && isSanctionOrderAllowed
         if (sendPost.pushToDBTRequestList.length === 0) {
           warningAlert("Please select the scheme", "Alert!!!");
           setDisplaySubmit(false);
           return;
-        } else if (
-          schemeQuotaListCount !== sendPost.pushToDBTRequestList.length
-        ) {
+        } else if (schemeQuotaListCount !== sendPost.pushToDBTRequestList.length) {
           warningAlert("Select all schemes to proceed", "Alert!!!");
           setDisplaySubmit(false);
           return;
         }
-        
+
         apiCall = api
           .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
           .then((response) => {
@@ -2597,6 +2718,7 @@ function DashboardReportList() {
               );
               setDisplaySubmit(false);
               getList();
+              handleCloseModal();
             } else {
               saveError("Failed to generate application ID for sanction order.");
               setDisplaySubmit(false);
@@ -2604,12 +2726,16 @@ function DashboardReportList() {
           })
           .catch((err) => {
             saveError(
-              err.response?.data?.error_description ||
-                "Sanction Order Update Failed"
+              err.response?.data?.error_description || "Sanction Order Update Failed"
             );
             setDisplaySubmit(false);
           });
+      } else {
+        // financialDelegation false or isSanctionOrderAllowed false → fallback to inspectionUpdate
+        apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
       }
+    }
+
 
       // Case 4: directly to fruits
       if (actionFarmerData[0].directlyToFruits) {
@@ -2629,6 +2755,7 @@ function DashboardReportList() {
               );
               setDisplaySubmit(false);
               getList();
+              handleCloseModal();
             }
           })
           .catch((err) => {
@@ -2679,6 +2806,7 @@ function DashboardReportList() {
 
             saveSuccess();
             getList();
+            handleCloseModal();
             clear();
             setValidated(false);
           }
@@ -3785,7 +3913,7 @@ function DashboardReportList() {
                                 </Form.Group>
                               </Col>
 
-                              {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
+                              {/* {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
                                 <Col lg="6">
                                   <Form.Group className="form-group">
                                     <Form.Label>
@@ -3806,7 +3934,33 @@ function DashboardReportList() {
                                     />
                                   </Form.Group>
                                 </Col>
+                              )} */}
+                              {(
+                                (actionFarmerData[0]?.sanctionOrder &&
+                                actionFarmerData[0]?.financialDelegation &&
+                                isSanctionOrderAllowed
+                                ) || actionFarmerData[0]?.directlyToFruits
+                              ) && ( 
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Sanction Number</strong>
+                                      <span className="text-danger">*</span>
+                                    </Form.Label>
+                                    <Form.Control
+                                      id="sanctionNo"
+                                      type="text"
+                                      name="sanctionNo"
+                                      value={actionData.sanctionNo}
+                                      onChange={handleActionInputs}
+                                      placeholder="Enter Sanction Number"
+                                      required
+                                      disabled={actionData.rejectType === "Permanent"}
+                                    />
+                                  </Form.Group>
+                                </Col>
                               )}
+
 
                               
 
@@ -3876,6 +4030,7 @@ function DashboardReportList() {
                                               }
                                               // disabled={fieldsDisabled}
                                               disabled={
+                                                true || 
                                                 fieldsDisabled ||
                                                 fieldsSanctionOrderDisabled ||
                                                 pushToDbtStatus
@@ -5132,7 +5287,7 @@ function DashboardReportList() {
                 </Accordion.Item>
               )} */}
 
-               {viewDetailsData?.landDetails?.length > 0 ? (
+          {viewDetailsData?.landDetails?.length > 0 ? (
           <Accordion.Item eventKey="landDetails">
             <Accordion.Header
               style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}

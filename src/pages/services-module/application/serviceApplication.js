@@ -1731,6 +1731,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       north: "",
       south: "",
       kaneshHobliId: "",
+      addKaneshLand :"no",
     });
     setDevelopedLand({
       landDeveloped: "",
