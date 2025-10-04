@@ -381,26 +381,26 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
       sortable: true,
       hide: "md",
     },
-    {
-    name: "Drawing Officer",
-    selector: (row) => row.userId || "",
-    cell: (row, i) => (
-      <Form.Select
-        size="sm"
-        value={row.userId || ""}
-        onChange={(e) => handleDrawingOfficerChangeForSanction(i, e.target.value)}
-      >
-        <option value="">-- Select Officer --</option>
-        {userForDrawingOfficersData.map((user) => (
-          <option key={user.userId} value={user.userId}>
-            {user.userName}
-          </option>
-        ))}
-      </Form.Select>
-    ),
-    sortable: false,
-    hide: "md",
-  },
+  //   {
+  //   name: "Drawing Officer",
+  //   selector: (row) => row.userId || "",
+  //   cell: (row, i) => (
+  //     <Form.Select
+  //       size="sm"
+  //       value={row.userId || ""}
+  //       onChange={(e) => handleDrawingOfficerChangeForSanction(i, e.target.value)}
+  //     >
+  //       <option value="">-- Select Officer --</option>
+  //       {userForDrawingOfficersData.map((user) => (
+  //         <option key={user.userId} value={user.userId}>
+  //           {user.userName}
+  //         </option>
+  //       ))}
+  //     </Form.Select>
+  //   ),
+  //   sortable: false,
+  //   hide: "md",
+  // },
 
     {
       name: "Action",
