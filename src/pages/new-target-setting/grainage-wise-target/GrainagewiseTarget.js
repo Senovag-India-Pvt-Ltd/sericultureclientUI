@@ -1029,27 +1029,23 @@ const [pageHierarchy, setPageHierarchy] = useState(0);
     // }
 
     // Proceed with API call if validations pass
-    api
-      .post(
-        baseURLTargetSetting + `targets/getGrainageTargetDetails`,
-        {},
-        {
-          params: {
-            financialYearMasterId,
-            raceMasterId,
-            grainageMasterId,
-            // month,
-          },
-        }
-      )
-      .then((response) => {
-        setViewMonthlyTargetsData(response.data);
-        // setTotalRows(response.data.totalRecords);
-        // setShowModal4(true);
-      })
-      .catch((err) => {
-        setViewMonthlyTargetsData([]);
-      });
+api.post(
+  baseURLTargetSetting + `targets/getGrainageTargetDetails`,
+  {
+    financialYearMasterId,
+    raceMasterId,
+    grainageMasterId,
+    targetTypetraining: 'grainage'
+  }
+)
+.then((response) => {
+  setViewMonthlyTargetsData(response.data.content || []);
+})
+.catch((err) => {
+  setViewMonthlyTargetsData([]);
+});
+
+
   };
 
 
@@ -1299,11 +1295,11 @@ const [pageHierarchy, setPageHierarchy] = useState(0);
                               <th style={styles.ctstyle}>{t("Grainage Annual Targets")}</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            {/* <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
                                 {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
-                                <td>{viewMonthlyTargetsData[0].yearlyGrainageValue || "N/A"}</td>
+                                {/* <td>{viewMonthlyTargetsData[0].yearlyGrainageValue || "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>
@@ -1312,7 +1308,23 @@ const [pageHierarchy, setPageHierarchy] = useState(0);
                                 </td>
                               </tr>
                               )}
-                            </tbody>
+                            </tbody> */}
+
+<tbody>
+  {viewMonthlyTargetsData.length > 0 ? (
+    <tr>
+      <td>{viewMonthlyTargetsData[0]?.yearlyGrainageValue || "N/A"}</td>
+    </tr>
+  ) : (
+    <tr>
+      <td colSpan={3} style={{ textAlign: "center" }}>
+        {t("No Data Available")}
+      </td>
+    </tr>
+  )}
+</tbody>
+
+
                       </table>
                     </div>
                     {/* <Card.Body> */}

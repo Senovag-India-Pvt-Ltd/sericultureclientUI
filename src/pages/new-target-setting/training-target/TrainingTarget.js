@@ -112,159 +112,187 @@ function TrainingTarget() {
     }));
   };
   
-  // To get all month targets for Grainage
+ 
+
+
 // const getAllMonthTarget = () => {
-// api
+//   api
 //   .post(
 //     baseURLTargetSetting +
 //       `targets/getTrainingTargetRecords?courseId=${data.courseId}&financialYearId=${data.financialYearMasterId}&trainingInstitutionId=${data.trainingInstitutionId}`,
 //     {}
 //   )
 //   .then((response) => {
-//     const monthDataList = response.data.trainingMonth; // assuming backend sends trainingMonth like trainingMonth
-
-//     if (monthDataList && monthDataList.length > 0) {
-//       const monthData = monthDataList[0]; // assuming 1 record per call
-//       setTrainingMonth({
-//         april: monthData.april,
-//         may: monthData.may,
-//         june: monthData.june,
-//         july: monthData.july,
-//         august: monthData.august,
-//         september: monthData.september,
-//         october: monthData.october,
-//         november: monthData.november,
-//         december: monthData.december,
-//         january: monthData.january,
-//         february: monthData.february,
-//         march: monthData.march,
-//       });
-//     } else {
-//       // Initialize empty values
-//       setTrainingMonth({
-//         april: "",
-//         may: "",
-//         june: "",
-//         july: "",
-//         august: "",
-//         september: "",
-//         october: "",
-//         november: "",
-//         december: "",
-//         january: "",
-//         february: "",
-//         march: "",
-//       });
-//     }
-//   })
-//   .catch((err) => {
-//     console.error("Failed to fetch grainage month targets", err);
-//   });
+//      const physicalMonthList = response.data.physicalTargetMonths;
+//      const financialMonthList = response.data.financialTargetMonths;
+//      if (
+//       physicalMonthList && physicalMonthList.length > 0 &&
+//       financialMonthList && financialMonthList.length > 0
+//      ){
+//        const physicalTargetMonths = physicalMonthList[0];
+//        const financialTargetMonths = financialMonthList[0];
+//        setPhysicalTargetMonths({
+//          april:physicalTargetMonths.april,
+//          may:physicalTargetMonths.may,
+//          june:physicalTargetMonths.june,
+//          july:physicalTargetMonths.july,
+//          august:physicalTargetMonths.august,
+//          september:physicalTargetMonths.september,
+//          october:physicalTargetMonths.october,
+//          november:physicalTargetMonths.november,
+//          december:physicalTargetMonths.december,
+//          january:physicalTargetMonths.january,
+//          february:physicalTargetMonths.february,
+//          march:physicalTargetMonths.march,
+//        });
+//        setFinancialTargetMonths({
+//          april:financialTargetMonths.april,
+//          may:financialTargetMonths.may,
+//          june:financialTargetMonths.june,
+//          july:financialTargetMonths.july,
+//          august:financialTargetMonths.august,
+//          september:financialTargetMonths.september,
+//          october:financialTargetMonths.october,
+//          november:financialTargetMonths.november,
+//          december:financialTargetMonths.december,
+//          january:financialTargetMonths.january,
+//          february:financialTargetMonths.february,
+//          march:financialTargetMonths.march,
+//        });
+//      }else{
+//        setPhysicalTargetMonths({
+//          april:"",
+//          may:"",
+//          june:"",
+//          july:"",
+//          august:"",
+//          september:"",
+//          october:"",
+//          november:"",
+//          december:"",
+//          january:"",
+//          february:"",
+//          march:"",
+//        });
+//        setFinancialTargetMonths({
+//          april:"",
+//          may:"",
+//          june:"",
+//          july:"",
+//          august:"",
+//          september:"",
+//          october:"",
+//          november:"",
+//          december:"",
+//          january:"",
+//          february:"",
+//          march:"",
+//        });
+//      }
+//      // setFinancialyearListData(response.data.content.financialYearMaster);
+//    })
+//    .catch((err) => {
+//      // setFinancialyearListData([]);
+//    });
 // };
+
+
+// useEffect(() => {
+// if (
+//   data.courseId &&
+//   data.financialYearMasterId &&
+//   data.trainingInstitutionId
+// ) {
+//   getAllMonthTarget();
+// }
+// }, [
+// data.courseId,
+// data.financialYearMasterId,
+// data.trainingInstitutionId
+// ]);
+
+
 
 const getAllMonthTarget = () => {
   api
-  .post(
-    baseURLTargetSetting +
-      `targets/getTrainingTargetRecords?courseId=${data.courseId}&financialYearId=${data.financialYearMasterId}&trainingInstitutionId=${data.trainingInstitutionId}`,
-    {}
-  )
-  .then((response) => {
-     const physicalMonthList = response.data.physicalTargetMonths;
-     const financialMonthList = response.data.financialTargetMonths;
-     if (
-      physicalMonthList && physicalMonthList.length > 0 &&
-      financialMonthList && financialMonthList.length > 0
-     ){
-       const physicalTargetMonths = physicalMonthList[0];
-       const financialTargetMonths = financialMonthList[0];
-       setPhysicalTargetMonths({
-         april:physicalTargetMonths.april,
-         may:physicalTargetMonths.may,
-         june:physicalTargetMonths.june,
-         july:physicalTargetMonths.july,
-         august:physicalTargetMonths.august,
-         september:physicalTargetMonths.september,
-         october:physicalTargetMonths.october,
-         november:physicalTargetMonths.november,
-         december:physicalTargetMonths.december,
-         january:physicalTargetMonths.january,
-         february:physicalTargetMonths.february,
-         march:physicalTargetMonths.march,
-       });
-       setFinancialTargetMonths({
-         april:financialTargetMonths.april,
-         may:financialTargetMonths.may,
-         june:financialTargetMonths.june,
-         july:financialTargetMonths.july,
-         august:financialTargetMonths.august,
-         september:financialTargetMonths.september,
-         october:financialTargetMonths.october,
-         november:financialTargetMonths.november,
-         december:financialTargetMonths.december,
-         january:financialTargetMonths.january,
-         february:financialTargetMonths.february,
-         march:financialTargetMonths.march,
-       });
-     }else{
-       setPhysicalTargetMonths({
-         april:"",
-         may:"",
-         june:"",
-         july:"",
-         august:"",
-         september:"",
-         october:"",
-         november:"",
-         december:"",
-         january:"",
-         february:"",
-         march:"",
-       });
-       setFinancialTargetMonths({
-         april:"",
-         may:"",
-         june:"",
-         july:"",
-         august:"",
-         september:"",
-         october:"",
-         november:"",
-         december:"",
-         january:"",
-         february:"",
-         march:"",
-       });
-     }
-     // setFinancialyearListData(response.data.content.financialYearMaster);
-   })
-   .catch((err) => {
-     // setFinancialyearListData([]);
-   });
+    .post(baseURLTargetSetting + "targets/getGrainageTargetRecords", {
+      targetTypetraining: "training", // ✅ backend switch
+      courseId: data.courseId,
+      financialYearMasterId: data.financialYearMasterId,
+      trainingInstitutionId: data.trainingInstitutionId
+    })
+    .then((response) => {
+      const physicalMonthList = response.data.content.physicalTargetMonths;
+      const financialMonthList = response.data.content.financialTargetMonths;
+
+      if (
+        physicalMonthList && physicalMonthList.length > 0 &&
+        financialMonthList && financialMonthList.length > 0
+      ) {
+        const physicalTargetMonths = physicalMonthList[0];
+        const financialTargetMonths = financialMonthList[0];
+
+        setPhysicalTargetMonths({
+          april: physicalTargetMonths.april,
+          may: physicalTargetMonths.may,
+          june: physicalTargetMonths.june,
+          july: physicalTargetMonths.july,
+          august: physicalTargetMonths.august,
+          september: physicalTargetMonths.september,
+          october: physicalTargetMonths.october,
+          november: physicalTargetMonths.november,
+          december: physicalTargetMonths.december,
+          january: physicalTargetMonths.january,
+          february: physicalTargetMonths.february,
+          march: physicalTargetMonths.march,
+        });
+
+        setFinancialTargetMonths({
+          april: financialTargetMonths.april,
+          may: financialTargetMonths.may,
+          june: financialTargetMonths.june,
+          july: financialTargetMonths.july,
+          august: financialTargetMonths.august,
+          september: financialTargetMonths.september,
+          october: financialTargetMonths.october,
+          november: financialTargetMonths.november,
+          december: financialTargetMonths.december,
+          january: financialTargetMonths.january,
+          february: financialTargetMonths.february,
+          march: financialTargetMonths.march,
+        });
+      } else {
+        setPhysicalTargetMonths({
+          april: "", may: "", june: "", july: "", august: "",
+          september: "", october: "", november: "", december: "",
+          january: "", february: "", march: ""
+        });
+        setFinancialTargetMonths({
+          april: "", may: "", june: "", july: "", august: "",
+          september: "", october: "", november: "", december: "",
+          january: "", february: "", march: ""
+        });
+      }
+    })
+    .catch((err) => {
+      setPhysicalTargetMonths({
+        april: "", may: "", june: "", july: "", august: "",
+        september: "", october: "", november: "", december: "",
+        january: "", february: "", march: ""
+      });
+      setFinancialTargetMonths({
+        april: "", may: "", june: "", july: "", august: "",
+        september: "", october: "", november: "", december: "",
+        january: "", february: "", march: ""
+      });
+    });
 };
 
-
 useEffect(() => {
-if (
-  data.courseId &&
-  data.financialYearMasterId &&
-  data.trainingInstitutionId
-) {
-  getAllMonthTarget();
-}
-}, [
-data.courseId,
-data.financialYearMasterId,
-data.trainingInstitutionId
-]);
-// const [displayList, setDisplayList] = useState([]);
-//   const [displayListFinancial,setDisplayListFinancial] = useState([]);
-//   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
-//   const [displayListHierarchyFinancial, setDisplayListHierarchyFinancial] = useState([]);
-//   const [totalRowsView, setTotalRowsView] = useState(0);
-//   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
-//   const [totalRowsViewFinancial, setTotalRowsViewFinancial] = useState(0);
-//   const [totalRowsViewHierarchyFinancial, setTotalRowsViewHierarchyFinancial] = useState(0);
+  if (data.courseId && data.financialYearMasterId && data.trainingInstitutionId) {
+    getAllMonthTarget();
+  }
+}, [data.courseId, data.financialYearMasterId, data.trainingInstitutionId]);
 
 
 
@@ -1465,130 +1493,157 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
   const [viewTotalTargetsDataFinancial, setViewTotalTargetsDataFinancial] = useState({});
 
 
-  const totalTarget = (event) => {
-    const { financialYearMasterId,courseId,trainingInstitutionId,targetType} = data;
+//   const totalTarget = (event) => {
+//     const { financialYearMasterId,courseId,trainingInstitutionId,targetType} = data;
 
     
-    if (!financialYearMasterId || financialYearMasterId === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Financial Year",
-        text: "Please try again!",
-      });
-      return;
-    }
+//     if (!financialYearMasterId || financialYearMasterId === "0") {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Please select Financial Year",
+//         text: "Please try again!",
+//       });
+//       return;
+//     }
 
-    if (!courseId || courseId === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Program",
-        text: "Please try again!",
-      });
-      return;
-    }
+//     if (!courseId || courseId === "0") {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Please select Program",
+//         text: "Please try again!",
+//       });
+//       return;
+//     }
 
-    if (!trainingInstitutionId || trainingInstitutionId === "0") {
-      Swal.fire({
-        icon: "warning",
-        title: "Please select Institution",
-        text: "Please try again!",
-      });
-      return;
-    }
+//     if (!trainingInstitutionId || trainingInstitutionId === "0") {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Please select Institution",
+//         text: "Please try again!",
+//       });
+//       return;
+//     }
+
+// const targetTypes = ["PHYSICAL TARGET", "FINANCIAL TARGET"];
+
+// targetTypes.forEach((targetType) => {
+//   const requestBody = {
+//     financialYearMasterId: data.financialYearMasterId,
+//     courseId: data.courseId,
+//     trainingInstitutionId: data.trainingInstitutionId,
+//     targetType: targetType,
+//     targetTypetraining: "training",
+//   };
+
+//   api
+//     .post(baseURLTargetSetting + `targets/getGrainageTargetRecords`, requestBody)
+//     .then((response) => {
+//       const content = response.data.content || response.data;
+//       if (targetType === "PHYSICAL TARGET") {
+//         setViewTotalTargetsDataPhysical(content);
+//       } else {
+//         setViewTotalTargetsDataFinancial(content);
+//       }
+//     })
+//     .catch(() => {
+//       if (targetType === "PHYSICAL TARGET") setViewTotalTargetsDataPhysical([]);
+//       else setViewTotalTargetsDataFinancial([]);
+//     });
+// });
+
+// const totalTarget = () => {
+//   api
+//     .post(baseURLTargetSetting + "targets/getGrainageTargetRecords", {
+//       targetTypetraining: "training",
+//       courseId: data.courseId,
+//       financialYearMasterId: data.financialYearMasterId,
+//       trainingInstitutionId: data.trainingInstitutionId
+//     })
+//     .then((response) => {
+//       const content = response.data.content || {};
+//       const physicalMonths = content.physicalTargetMonths?.[0] || {};
+//       const financialMonths = content.financialTargetMonths?.[0] || {};
+
+//       // Convert month values to numbers and sum
+//       const sumValues = (months) =>
+//         Object.values(months)
+//           .map(val => parseFloat(val) || 0)
+//           .reduce((a, b) => a + b, 0);
+
+//       const physicalTotal = sumValues(physicalMonths).toFixed(2);
+//       const financialTotal = sumValues(financialMonths).toFixed(2);
+
+//       setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: physicalTotal }]);
+//       setViewTotalTargetsDataFinancial([{ yearlyTrainingValue: financialTotal }]);
+//     })
+//     .catch(() => {
+//       setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: "0.00" }]);
+//       setViewTotalTargetsDataFinancial([{ yearlyTrainingValue: "0.00" }]);
+//     });
+// };
+
+const [totalYearlyTraining, setTotalYearlyTraining] = useState("0.00");
 
 
+const totalTarget = () => {
+  const { financialYearMasterId, courseId, trainingInstitutionId } = data;
 
-    // Proceed with API call if validations pass
-    // api
-    //   .post(
-    //     baseURLTargetSetting + `targets/getTrainingTargetDetails`,
-    //     {},
-    //     {
-    //       params: {
-    //         financialYearMasterId,
-    //         courseId,
-    //         trainingInstitutionId,
-    //         // month,
-    //       },
-    //     }
-    //   )
-    //   .then((response) => {
-    //     setViewMonthlyTargetsData(response.data);
-    //     // setTotalRows(response.data.totalRecords);
-    //     // setShowModal4(true);
-    //   })
-    //   .catch((err) => {
-    //     setViewMonthlyTargetsData([]);
-    //   });
+  if (!financialYearMasterId || financialYearMasterId === "0") {
+    Swal.fire({ icon: "warning", title: "Please select Financial Year", text: "Please try again!" });
+    return;
+  }
 
-    //   const target = ["PHYSICAL TARGET","FINANCIAL TARGET"];
-    // targets.forEach((target) => {
-    // api
-    //   .post(
-    //     baseURLTargetSetting + `targets/getTrainingTargetDetails`,
-    //     {},
-    //     {
-    //       params: {
-    //         financialYearMasterId,
-    //         courseId,
-    //         trainingInstitutionId,
-    //         targetType:target
-    //         // month
-    //       },
-    //     }
-    //   )
-    //   .then((response) => {
-    //     if(target === "PHYSICAL TARGET"){
-    //       setViewTotalTargetsDataPhysical(response.data);
-    //     }
-    //     else{
-    //       setViewTotalTargetsDataFinancial(response.data);
-    //     }
-          
-    //     // setTotalRows(response.data.totalRecords);
-    //     // setShowModal4(true);
-    //   })
-    //   .catch((err) => {
-    //     if(target === "PHYSICAL TARGET"){
-    //       setViewTotalTargetsDataPhysical([]);
-    //     }else{
-    //       setViewTotalTargetsDataFinancial([]);
-    //     }
-    //   });
-    // });
+  if (!courseId || courseId === "0") {
+    Swal.fire({ icon: "warning", title: "Please select Program", text: "Please try again!" });
+    return;
+  }
 
-    const targetTypes = ["PHYSICAL TARGET", "FINANCIAL TARGET"];
-
-targetTypes.forEach((targetType) => {
-  const requestBody = {
-    financialYearMasterId,
-    courseId,
-    trainingInstitutionId,
-    targetType: targetType,
-    targetTypetraining: "training" // 👈 this is important, tells backend it's training
-  };
+  if (!trainingInstitutionId || trainingInstitutionId === "0") {
+    Swal.fire({ icon: "warning", title: "Please select Institution", text: "Please try again!" });
+    return;
+  }
 
   api
-    .post(baseURLTargetSetting + `targets/getGrainageTargetDetails`, requestBody)
-    .then((response) => {
-      if (targetType === "PHYSICAL TARGET") {
-        setViewTotalTargetsDataPhysical(response.data.content || response.data);
-      } else {
-        setViewTotalTargetsDataFinancial(response.data.content || response.data);
-      }
+    .post(baseURLTargetSetting + "targets/getGrainageTargetRecords", {
+      targetTypetraining: "training",
+      courseId,
+      financialYearMasterId,
+      trainingInstitutionId
     })
-    .catch((err) => {
-      if (targetType === "PHYSICAL TARGET") {
-        setViewTotalTargetsDataPhysical([]);
-      } else {
-        setViewTotalTargetsDataFinancial([]);
-      }
-    });
-});
+    .then((response) => {
+      const content = response.data.content || {};
+      const physicalMonths = content.physicalTargetMonths?.[0] || {};
+      const financialMonths = content.financialTargetMonths?.[0] || {};
 
-    
-  
-  };
+      const sumValues = (months) =>
+        Object.values(months)
+          .map(val => parseFloat(val) || 0)
+          .reduce((a, b) => a + b, 0);
+
+      const physicalTotal = sumValues(physicalMonths).toFixed(2);
+      const financialTotal = sumValues(financialMonths).toFixed(2);
+
+      // Update state
+      setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: physicalTotal }]);
+      setViewTotalTargetsDataFinancial([{ yearlyTrainingValue: financialTotal }]);
+
+      // ✅ Calculate total yearly target here
+      const totalYearlyTrainingValue =
+        (!isNaN(parseFloat(physicalTotal)) && !isNaN(parseFloat(financialTotal)))
+          ? (parseFloat(physicalTotal) + parseFloat(financialTotal)).toFixed(2)
+          : "N/A";
+
+      console.log("Total Yearly Training Value:", totalYearlyTrainingValue);
+      setTotalYearlyTraining(totalYearlyTrainingValue); // Optional: if you have a state for total
+    })
+    .catch(() => {
+      setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: "0.00" }]);
+      setViewTotalTargetsDataFinancial([{ yearlyTrainingValue: "0.00" }]);
+      setTotalYearlyTraining("0.00"); // Optional
+    });
+};
+
+
 
   const saveSuccess = () => {
     Swal.fire({
@@ -1646,8 +1701,8 @@ targetTypes.forEach((targetType) => {
                     <Card.Header>
                       {t("Sericulture Training Institute  Wise Target Setting")}
                     </Card.Header>
-                    <Card.Body>
-                    <div
+                    {/* <Card.Body> */}
+                    {/* <div
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -1655,7 +1710,6 @@ targetTypes.forEach((targetType) => {
                         alignItems: 'center', // Ensure items align horizontally
                       }}
                     >
-                      {/* Annual Targets Section */}
                       <Button variant="primary" onClick={totalTarget}>
                         {t('Yearly Targets')}
                       </Button>
@@ -1666,17 +1720,13 @@ targetTypes.forEach((targetType) => {
                       >
                          <thead>
                               <tr>
-                              {/* <th style={styles.ctstyle}>{t("Grainage Monthly Targets")}</th> */}
                               <th style={styles.ctstyle}>{t("Yearly No.Of Trainings")}</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {/* {viewMonthlyTargetsData.length > 0 ? ( */}
                               {viewTotalTargetsDataFinancial.length > 0 ? (
 
                                 <tr>
-                                {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
-                                {/* <td>{viewMonthlyTargetsData[0].yearlyTrainingValue || "N/A"}</td> */}
                                 <td>{viewTotalTargetsDataFinancial[0].yearlyTrainingValue || "N/A"}</td>
 
                                 </tr>
@@ -1689,7 +1739,59 @@ targetTypes.forEach((targetType) => {
                               )}
                             </tbody>
                       </table>
-                    </div>
+                    </div> */}
+
+<Card.Body>
+  {/* 1️⃣ Button Section */}
+  <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'flex-start', gap: '20px' }}>
+    <Button 
+      variant="primary" 
+      onClick={totalTarget}
+      style={{ padding: '8px 20px', fontWeight: 'bold' }}
+    >
+      {t("Yearly Targets")}
+    </Button>
+  </div>
+
+  {/* 2️⃣ Targets Tables Section */}
+  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+    {/* Physical Target */}
+    <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
+      <thead>
+        <tr>
+          <th>{t("Yearly Physical Target")}: {viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue || "N/A"}</th>
+        </tr>
+      </thead>
+    </table>
+
+    {/* Financial Target */}
+    <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
+      <thead>
+        <tr>
+          <th>{t("Yearly Financial Target")}: {viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue || "N/A"}</th>
+        </tr>
+      </thead>
+    </table>
+
+    {/* Total Target */}
+    <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
+      <thead>
+        <tr>
+          <th>
+            {t("Total Yearly Training Targets")}: {
+              (!isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue)) &&
+               !isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)))
+                ? (parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) + 
+                   parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)).toFixed(2)
+                : "N/A"
+            }
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+{/* </Card.Body> */}
+
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
@@ -1806,77 +1908,7 @@ targetTypes.forEach((targetType) => {
 
                         
 
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              {t("Month")}<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="month"
-                                value={data.month}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                // isInvalid={
-                                //   data.month === undefined ||
-                                //   data.month === "0"
-                                // }
-                              >
-                                <option value="">{t("Select Month")}</option>
-                                <option value="JANUARY">{t("January")}</option>
-                                <option value="FEBRUARY">{t("February")}</option>
-                                <option value="MARCH">{t("March")}</option>
-                                <option value="APRIL">{t("April")}</option>
-                                <option value="MAY">{t("May")}</option>
-                                <option value="JUNE">{t("June")}</option>
-                                <option value="JULY">{t("July")}</option>
-                                <option value="AUGUST">{t("August")}</option>
-                                <option value="SEPTEMBER">{t("September")}</option>
-                                <option value="OCTOBER">{t("October")}</option>
-                                <option value="NOVEMBER">{t("November")}</option>
-                                <option value="DECEMBER">{t("December")}</option>
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Month is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              User<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="userMasterId"
-                                value={data.userMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.userMasterId === undefined ||
-                                  data.userMasterId === "0"
-                                }
-                              >
-                                <option value="">Select User</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                User is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
+                        
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -1920,22 +1952,7 @@ targetTypes.forEach((targetType) => {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col sm={3}>
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>{t("Target (No. of Trainings)")}</Form.Label>
-                            <Form.Control
-                              id="value"
-                              name="value"
-                              value={data.value}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder={t("Enter Physical (No. of Trainings)")}
-                              className="form-control"
-                              // readOnly
-                              required
-                            />
-                          </Form.Group>
-                        </Col> */}
+                        
 
                        
                       </Row>
