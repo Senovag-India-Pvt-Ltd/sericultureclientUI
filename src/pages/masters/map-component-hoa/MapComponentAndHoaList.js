@@ -54,7 +54,7 @@ function MapComponentAndHoaList() {
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-scheme-details-edit/${_id}`);
+    navigate(`/seriui/map-component-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
@@ -159,15 +159,15 @@ function MapComponentAndHoaList() {
             onClick={() => handleView(row.scSchemeDetailsId)}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scSchemeDetailsId)}
+            onClick={() => handleEdit(row.id)}
           >
             Edit
-          </Button> */}
+          </Button>
           <Button
             variant="danger"
             size="sm"
@@ -188,13 +188,13 @@ function MapComponentAndHoaList() {
         sortable: true,
         hide: "md",
       },
-    {
-      name: t("Unit Type"),
-      selector: (row) => row.unitType,
-      cell: (row) => <span>{row.unitType}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Unit Type"),
+    //   selector: (row) => row.unitType,
+    //   cell: (row) => <span>{row.unitType}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
         name: t("Measurement Unit"),
         selector: (row) => row.measurementUnit,
@@ -202,34 +202,34 @@ function MapComponentAndHoaList() {
         sortable: true,
         hide: "md",
       },
-      {
-        name: t("Minimum Quantity"),
-        selector: (row) => row.minQty,
-        cell: (row) => <span>{row.minQty}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: t("Maximum Quantity"),
-        selector: (row) => row.maxQty,
-        cell: (row) => <span>{row.maxQty}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: t("Maximum Amount"),
-        selector: (row) => row.maxAmount,
-        cell: (row) => <span>{row.maxAmount}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: t("Minimum Amount"),
-        selector: (row) => row.minAmount,
-        cell: (row) => <span>{row.minAmount}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      // {
+      //   name: t("Minimum Quantity"),
+      //   selector: (row) => row.minQty,
+      //   cell: (row) => <span>{row.minQty}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
+      // {
+      //   name: t("Maximum Quantity"),
+      //   selector: (row) => row.maxQty,
+      //   cell: (row) => <span>{row.maxQty}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
+      // {
+      //   name: t("Maximum Amount"),
+      //   selector: (row) => row.maxAmount,
+      //   cell: (row) => <span>{row.maxAmount}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
+      // {
+      //   name: t("Minimum Amount"),
+      //   selector: (row) => row.minAmount,
+      //   cell: (row) => <span>{row.minAmount}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
       {
         name: t("Unit Cost In  Rupees"),
         selector: (row) => row.unitCostInRupees,
@@ -276,6 +276,13 @@ function MapComponentAndHoaList() {
         name: t("Component"),
         selector: (row) => row.scComponentName,
         cell: (row) => <span>{row.scComponentName   }</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: t("Designation"),
+        selector: (row) => row.name,
+        cell: (row) => <span>{row.name}</span>,
         sortable: true,
         hide: "md",
       },

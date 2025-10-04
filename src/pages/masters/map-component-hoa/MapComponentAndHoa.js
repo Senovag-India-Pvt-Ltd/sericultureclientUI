@@ -20,6 +20,10 @@ function MapComponent() {
     categoryId: "",
     shareInPercentage: "",
     headOfAccountId: "",
+    designationId: "",
+    amount: "",
+    min: "",
+    max: "",
     // unitCostInRupees: "",
 
   });
@@ -48,6 +52,10 @@ function MapComponent() {
         categoryId: "",
         shareInPercentage: "",
         headOfAccountId: "",
+        designationId: "",
+        amount: "",
+        min: "",
+        max: "",
       });
       setShowModal(false);
       setValidatedMapComponent(false);
@@ -92,6 +100,10 @@ function MapComponent() {
         categoryId: "",
         shareInPercentage: "",
         headOfAccountId: "",
+        designationId: "",
+        amount: "",
+        min: "",
+        max: "",
       });
     }
   };
@@ -220,6 +232,10 @@ function MapComponent() {
         categoryId: "",
         shareInPercentage: "",
         headOfAccountId: "",
+        designationId: "",
+        amount: "",
+        min: "",
+        max: "",
     });
     setMapList([])
   };
@@ -251,6 +267,16 @@ function MapComponent() {
       ...mapComponent,
       headOfAccountId: chooseId,
       scHeadAccountName: chooseName,
+    });
+  };
+
+  const handleDesignationOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setMapComponent({
+      ...mapComponent,
+      designationId: chooseId,
+      name: chooseName,
     });
   };
 
@@ -290,6 +316,25 @@ function MapComponent() {
   useEffect(() => {
     getSubSchemeList();
   }, []);
+
+  // to get designation
+  const [designationListData, setDesignationListData] = useState([]);
+
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURLMasterData + `designation/get-all`)
+      .then((response) => {
+        setDesignationListData(response.data.content.designation);
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDesignationList();
+  }, []);
+
 
    // to get Scheme Quota
    const [schemeQuotaListData, setSchemeQuotaListData] = useState([]);
@@ -901,7 +946,7 @@ function MapComponent() {
 
             <Block className="mt-3">
             <Card>
-              <Card.Header>{t("Add Category Details")}</Card.Header>
+              <Card.Header>{t("Add the Category Details and Assign the Drawing Officers")}</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -957,6 +1002,10 @@ function MapComponent() {
                                 <th>{t("Category")}</th>
                                 <th>{t("Head Of Account")}</th>
                                 <th>{t("Share in %")}</th>
+                                <th>{t("Designation")}</th>
+                                <th>{t("Amount")}</th>
+                                <th>{t("Min")}</th>
+                                <th>{t("Max")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -984,6 +1033,10 @@ function MapComponent() {
                                   <td>{item.codeNumber}</td>
                                   <td>{item.scHeadAccountName}</td>
                                   <td>{item.shareInPercentage}</td>
+                                  <td>{item.name}</td>
+                                  <td>{item.amount}</td>
+                                  <td>{item.min}</td>
+                                  <td>{item.max}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -1018,12 +1071,11 @@ function MapComponent() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("Add Category Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Form action="#"> */}
           <Form
             noValidate
             validated={validatedMapComponent}
@@ -1128,7 +1180,6 @@ function MapComponent() {
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
                       {t("Add")}
                     </Button>
@@ -1149,7 +1200,218 @@ function MapComponent() {
             </Row>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal.Header closeButton>
+        <Modal.Title>{t("Add Category Details and Drawing Officers")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form noValidate validated={validatedMapComponent} onSubmit={handleAdd}>
+          <Row className="g-5">
+            {/* ---------------- Existing Category Fields ---------------- */}
+            <Col lg="6">
+              <Form.Group className="form-group mt-n3">
+                <Form.Label>{t("Category")}</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="categoryId"
+                    value={`${mapComponent.categoryId}_${mapComponent.codeNumber}`}
+                    onChange={handleMapComponentOption}
+                    required
+                    isInvalid={
+                      mapComponent.categoryId === undefined ||
+                      mapComponent.categoryId === "0"
+                    }
+                  >
+                    <option value="">{t("Select Category")}</option>
+                    {scCategoryListData.map((list) => (
+                      <option
+                        key={list.scCategoryId}
+                        value={`${list.scCategoryId}_${list.codeNumber}`}
+                      >
+                        {list.codeNumber}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Category is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col lg="6">
+              <Form.Group className="form-group mt-n3">
+                <Form.Label>
+                  {t("Head Of Account")} <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="headOfAccountId"
+                    value={`${mapComponent.headOfAccountId}_${mapComponent.scHeadAccountName}`}
+                    onChange={handleHeadOfAccountOption}
+                    required
+                    isInvalid={
+                      mapComponent.headOfAccountId === undefined ||
+                      mapComponent.headOfAccountId === "0"
+                    }
+                  >
+                    <option value="">{t("Select Head Of Account")}</option>
+                    {scHeadAccountListData.map((list) => (
+                      <option
+                        key={list.scHeadAccountId}
+                        value={`${list.scHeadAccountId}_${list.scHeadAccountName}`}
+                      >
+                        {list.scHeadAccountName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Head Of Account is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col lg="6">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>
+                  {t("Share in %")} <span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="shareInPercentage"
+                    name="shareInPercentage"
+                    value={mapComponent.shareInPercentage}
+                    onChange={handleMapInputs}
+                    type="number"
+                    placeholder={t("Enter Share in %")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Share in % is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            {/* ---------------- New Card for Drawing Officers ---------------- */}
+            <Col lg="12" className="mt-4">
+              <Card>
+                <Card.Header>{t("Add Drawing Officers details")}</Card.Header>
+                <Card.Body>
+                  <Row className="g-3">
+                     <Col lg="6">
+                        <Form.Group>
+                          <Form.Label>{t("Designation")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="designationId"
+                              value={`${mapComponent.designationId}_${mapComponent.name}`}
+                              onChange={handleDesignationOption}
+                              required
+                              isInvalid={
+                                mapComponent.designationId === undefined ||
+                                mapComponent.designationId === "0"
+                              }
+                            >
+                              <option value="">{t("Select Designation")}</option>
+                              {designationListData.map((list) => (
+                                <option
+                                  key={list.designationId}
+                                  value={`${list.designationId}_${list.name}`}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              {t("Designation is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                    <Col lg="6">
+                      <Form.Group>
+                        <Form.Label>{t("Amount")} <span className="text-danger">*</span></Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="amount"
+                          value={mapComponent.amount || ""}
+                          onChange={handleMapInputs}
+                          placeholder={t("Enter Amount")}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Amount is required")}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group>
+                        <Form.Label>{t("Min")} <span className="text-danger">*</span></Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="min"
+                          value={mapComponent.min || ""}
+                          onChange={handleMapInputs}
+                          placeholder={t("Enter Min Value")}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Min is required")}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group>
+                        <Form.Label>{t("Max")} <span className="text-danger">*</span></Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="max"
+                          value={mapComponent.max || ""}
+                          onChange={handleMapInputs}
+                          placeholder={t("Enter Max Value")}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Max is required")}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            {/* ---------------- Buttons ---------------- */}
+            <Col lg="12" className="mt-3">
+              <div className="d-flex justify-content-center gap g-2">
+                <div className="gap-col">
+                  <Button type="submit" variant="success">
+                    {t("Add")}
+                  </Button>
+                </div>
+                <div className="gap-col">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={mapComponentClear}
+                  >
+                    {t("Clear")}
+                  </Button>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Form>
+      </Modal.Body>
+    </Modal>
+
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
@@ -1258,6 +1520,97 @@ function MapComponent() {
                           </div>
                         </Form.Group>
                       </Col>
+
+                      <Col lg="12" className="mt-4">
+                      <Card>
+                        <Card.Header>{t("Edit Drawing Officers details")}</Card.Header>
+                        <Card.Body>
+                          <Row className="g-3">
+                            <Col lg="6">
+                                <Form.Group>
+                                  <Form.Label>{t("Designation")} <span className="text-danger">*</span></Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="designationId"
+                                      value={`${mapComponent.designationId}_${mapComponent.name}`}
+                                      onChange={handleDesignationOption}
+                                      required
+                                      isInvalid={
+                                        mapComponent.designationId === undefined ||
+                                        mapComponent.designationId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Designation")}</option>
+                                      {designationListData.map((list) => (
+                                        <option
+                                          key={list.designationId}
+                                          value={`${list.designationId}_${list.name}`}
+                                        >
+                                          {list.name}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Designation is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                            <Col lg="6">
+                              <Form.Group>
+                                <Form.Label>{t("Amount")} <span className="text-danger">*</span></Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  name="amount"
+                                  value={mapComponent.amount || ""}
+                                  onChange={handleMapInputs}
+                                  placeholder={t("Enter Amount")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Amount is required")}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="6">
+                              <Form.Group>
+                                <Form.Label>{t("Min")} <span className="text-danger">*</span></Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  name="min"
+                                  value={mapComponent.min || ""}
+                                  onChange={handleMapInputs}
+                                  placeholder={t("Enter Min Value")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Min is required")}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="6">
+                              <Form.Group>
+                                <Form.Label>{t("Max")} <span className="text-danger">*</span></Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  name="max"
+                                  value={mapComponent.max || ""}
+                                  onChange={handleMapInputs}
+                                  placeholder={t("Enter Max Value")}
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Max is required")}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
 
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">

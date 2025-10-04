@@ -2277,101 +2277,89 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
      
                    {/* Land Details Accordion */}
                    {viewDetailsData?.landDetails?.length > 0 ? (
-                     viewDetailsData.landDetails.map((landDetail, index) => (
-                       <Accordion.Item eventKey={index + 1} key={index}>
-                         <Accordion.Header
-                           style={{
-                             backgroundColor: "#0F6CBE",
-                             color: "white",
-                             fontWeight: "bold",
-                           }}
-                           className="mb-2"
-                         >
-                           Land Details
-                         </Accordion.Header>
-                         <Accordion.Body>
-                           <table className="table small table-bordered">
-                             <tbody>
-                               <tr>
-                                 <td style={styles.ctstyle}>Survey Number:</td>
-                                 <td>{landDetail.surveyNumber || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>District Name:</td>
-                                 <td>{landDetail.districtName || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Taluk Name:</td>
-                                 <td>{landDetail.talukName || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Village Name:</td>
-                                 <td>{landDetail.villageName || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Acre:</td>
-                                 <td>{landDetail.acre || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>F Gunta:</td>
-                                 <td>{landDetail.fGunta || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Gunta:</td>
-                                 <td>{landDetail.gunta || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Developed Area Acre:</td>
-                                 <td>{landDetail.devAcre || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>
-                                   Developed Area F Gunta:
-                                 </td>
-                                 <td>{landDetail.devFGunta || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>
-                                   Developed Area Gunta:
-                                 </td>
-                                 <td>{landDetail.devGunta || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Hissa:</td>
-                                 <td>{landDetail.hissa || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Land Code:</td>
-                                 <td>{landDetail.landCode || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Main Owner No:</td>
-                                 <td>{landDetail.mainOwnerNo || "N/A"}</td>
-                               </tr>
-                               <tr>
-                                 <td style={styles.ctstyle}>Owner Name:</td>
-                                 <td>{landDetail.ownerName || "N/A"}</td>
-                               </tr>
-                             </tbody>
-                           </table>
-                         </Accordion.Body>
-                       </Accordion.Item>
-                     ))
-                   ) : (
-                     <Accordion.Item eventKey="land">
-                       <Accordion.Header
-                         style={{
-                           backgroundColor: "#0F6CBE",
-                           color: "white",
-                           fontWeight: "bold",
-                         }}
-                         className="mb-2"
-                       >
-                         Land Details
-                       </Accordion.Header>
-                       <Accordion.Body>No Land Details Available</Accordion.Body>
-                     </Accordion.Item>
-                   )}
+                      <Accordion.Item eventKey="landDetails">
+                          <Accordion.Header
+                            style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+                            className="mb-2"
+                          >
+                            Land Details
+                          </Accordion.Header>
+                          <Accordion.Body>
+                            {viewDetailsData.landDetails.map((landDetail, index) => (
+                              <table className="table small table-bordered mb-3" key={index}>
+                                <tbody>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Survey Number:</td>
+                                    <td>{landDetail.surveyNumber || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>District Name:</td>
+                                    <td>{landDetail.districtName || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Taluk Name:</td>
+                                    <td>{landDetail.talukName || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Village Name:</td>
+                                    <td>{landDetail.villageName || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Acre:</td>
+                                    <td>{landDetail.acre || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>F Gunta:</td>
+                                    <td>{landDetail.fGunta || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Gunta:</td>
+                                    <td>{landDetail.gunta || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Developed Area Acre:</td>
+                                    <td>{landDetail.devAcre || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                                    <td>{landDetail.devFGunta || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                                    <td>{landDetail.devGunta || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Hissa:</td>
+                                    <td>{landDetail.hissa || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Land Code:</td>
+                                    <td>{landDetail.landCode || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Main Owner No:</td>
+                                    <td>{landDetail.mainOwnerNo || "N/A"}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={styles.ctstyle}>Owner Name:</td>
+                                    <td>{landDetail.ownerName || "N/A"}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            ))}
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      ) : (
+                        <Accordion.Item eventKey="land">
+                          <Accordion.Header
+                            style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+                            className="mb-2"
+                          >
+                            Land Details
+                          </Accordion.Header>
+                          <Accordion.Body>No Land Details Available</Accordion.Body>
+                        </Accordion.Item>
+                      )}
      
                    <Accordion.Item eventKey="documents">
                      <Accordion.Header
