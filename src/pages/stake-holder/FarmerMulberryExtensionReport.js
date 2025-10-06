@@ -32,6 +32,8 @@ function FarmerMulberryExtensionReport() {
 
   const [data, setData] = useState({
     tscId: "",
+    districtId: "",
+    talukId: "",
     applicationType: "", 
   });
 
@@ -45,6 +47,8 @@ function FarmerMulberryExtensionReport() {
         {
           params: {
             tscId: data.tscId || 0,
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
             applicationType: data.applicationType || '',
             pageNumber: page,
             pageSize: countPerPage,
@@ -68,6 +72,8 @@ function FarmerMulberryExtensionReport() {
         {
           params: {
             tscId: data.tscId || 0,
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
             applicationType: data.applicationType || '',
           },
           responseType: 'blob',
@@ -103,6 +109,8 @@ function FarmerMulberryExtensionReport() {
         {
           params: {
             tscId: data.tscId || 0,
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
             applicationType: data.applicationType || '',
             pageNumber: page,
             pageSize: countPerPage,
@@ -217,7 +225,51 @@ function FarmerMulberryExtensionReport() {
          useEffect(() => {
            getTscList();
          }, []);
-     
+
+          // to get State
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+    
+   // to get taluk
+    const [talukListData, setTalukListData] = useState([]);
+  
+    const getTalukList = (_id) => {
+      const response = api
+        .get(baseURL + `taluk/get-by-district-id/${_id}`)
+        .then((response) => {
+          if (response.data.content.taluk) {
+            setTalukListData(response.data.content.taluk);
+          }
+        })
+        .catch((err) => {
+          setTalukListData([]);
+          // alert(err.response.data.errorMessages[0].message[0].message);
+        });
+    };
+  
+    useEffect(() => {
+      if (data.districtId) {
+        getTalukList(data.districtId);
+      }
+    }, [data.districtId]);
+  
 
 
   createTheme(
@@ -380,6 +432,20 @@ function FarmerMulberryExtensionReport() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
       name: "Tsc",
@@ -434,6 +500,63 @@ function FarmerMulberryExtensionReport() {
             </Col> */}
 
             
+<Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>{t("District")}</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="districtId"
+                    value={data.districtId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.districtId === undefined || data.districtId === "0"
+                    }
+                  >
+                    <option value="">{t("Select District")}</option>
+                    {districtListData && districtListData.length
+                      ? districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("District Name is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>{t("Taluk")}</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="talukId"
+                    value={data.talukId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.talukId === undefined || data.talukId === "0"
+                    }
+                  >
+                    <option value="">{t("Select Taluk")}</option>
+                    {talukListData && talukListData.length
+                      ? talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Taluk Name is required")}
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
                 <Col sm={2}>
                     <Form.Group className="form-group mt-n4">
