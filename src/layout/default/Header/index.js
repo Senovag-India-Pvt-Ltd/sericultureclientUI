@@ -6,7 +6,7 @@ import SimpleBar from "simplebar-react";
 import api from "../../../services/auth/api";
 
 
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button,Modal,Accordion,Table} from "react-bootstrap";
 
 import {
   Logo,
@@ -34,6 +34,8 @@ import { useTranslation } from "react-i18next";
 import { logout } from "../../../services/authService";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function QuickNav({ className, ...props }) {
   const { t } = useTranslation();
@@ -139,6 +141,68 @@ function Header({ show, ...props }) {
       getGodownList(data.marketId);
     }
   }, [data.marketId]);
+
+  const [showModal, setShowModal] = useState(false);
+  const [pendingReelers, setPendingReelers] = useState([]);
+  const [reelerLots, setReelerLots] = useState([]);
+
+  // Fetch Pending License Details
+  const fetchPendingReelers = async () => {
+    try {
+      const res = await api.post(
+        `${baseURLFarmer}reeler/getPendingLicenseDetailsOfReeler`,
+        {},
+        { params: {} }
+      );
+      setPendingReelers(res.data.content || []);
+    } catch (err) {
+      setPendingReelers([]);
+    }
+  };
+
+  // Fetch Reeling Lot Number Details
+  const fetchReelerLots = async () => {
+    try {
+      const res = await api.post(
+        `${baseURLMarket}lotGroupage/getReelingLotNumberDetails`,
+        {},
+        { params: {} }
+      );
+      setReelerLots(res.data.content || []);
+    } catch (err) {
+      setReelerLots([]);
+    }
+  };
+
+  const handleBellClick = () => {
+    fetchPendingReelers();
+    fetchReelerLots();
+    setShowModal(true);
+  };
+
+ const accordionHeaderStyles = {
+  base: {
+    background: "linear-gradient(90deg, #0f4a85, #0f3060)", // gradient blue
+    color: "white", // text color
+    fontWeight: "bold",
+    fontSize: "20px",
+    borderRadius: "8px",
+    padding: "8px 16px",
+    marginBottom: "8px",
+    transition: "all 0.3s ease",
+    display: "flex",
+    alignItems: "center",
+  },
+  hover: {
+    background: "linear-gradient(90deg, #0f3060, #0f4a85)",
+    cursor: "pointer",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  },
+  icon: {
+    filter: "invert(1)", // for accordion-button::after
+  },
+};
+
 
   //  console.log("market name",marketName);
 
@@ -303,6 +367,51 @@ function Header({ show, ...props }) {
                   ) : (
                     ""
                   )}
+                  {/* <QuickNavItem>
+                  <div
+                    className="d-flex align-items-center me-4"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => alert("Show pending activities list here")}
+                  >
+                    <Icon name="bell-fill" style={{ color: "#ffcc00", fontSize: "25px" }}></Icon>
+                    <span className="ms-2 fw-bold" style={{ color: "#333" }}>
+                      Pending Activities
+                    </span>
+                  </div>
+                </QuickNavItem> */}
+                <QuickNavItem>
+                    <div
+                      className="d-flex align-items-center me-4"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleBellClick}
+                    >
+                      <Icon
+                        name="bell-fill"
+                        // className={pendingActivities?.length > 0 ? "bell-alert" : ""}
+                        className={`bi bi-bell-fill ${
+                          pendingReelers.length > 0 || reelerLots.length > 0
+                            ? "bell-alert"
+                            : ""
+                        }`}
+                        style={{
+                          color: "#ffcc00",
+                          fontSize: "32px",
+                          marginRight: "6px",
+                        }}
+                      ></Icon>
+                      <span
+                        className="fw-bold"
+                        style={{
+                          color: "#333",
+                          fontSize: "16px",
+                        }}
+                      >
+                        Pending Activities
+                      </span>
+                    </div>
+                  </QuickNavItem>
+
+
                   <QuickNavItem>
                     <span className="me-5 d-flex align-items-center">
                       <a
@@ -605,6 +714,7 @@ function Header({ show, ...props }) {
         </div>
       </div>
 
+
       <Offcanvas
         className="offcanvas-size-lg"
         placement="end"
@@ -716,6 +826,126 @@ function Header({ show, ...props }) {
           </SimpleBar>
         </Offcanvas.Body>
       </Offcanvas>
+
+
+     <Modal
+  show={showModal}
+  onHide={() => setShowModal(false)}
+  size="xl"
+  centered
+  dialogClassName="custom-modal"
+>
+  <Modal.Header closeButton style={{ borderBottom: "2px solid #0f6cbe" }}>
+    <Modal.Title style={{ fontWeight: "bold", color: "white", fontSize: "22px" }}>
+      Pending Activities
+    </Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    <Accordion defaultActiveKey="0">
+      {/* Pending Reeler Licenses */}
+      <Accordion.Item eventKey="0">
+        {/* <Accordion.Header>License Renewal Pending</Accordion.Header> */}
+        <Accordion.Header
+        style={accordionHeaderStyles.base}
+        onMouseEnter={(e) => Object.assign(e.currentTarget.style, accordionHeaderStyles.hover)}
+        onMouseLeave={(e) => Object.assign(e.currentTarget.style, accordionHeaderStyles.base)}
+      >
+  License Renewal Pending
+</Accordion.Header>
+        <Accordion.Body>
+          {pendingReelers.length === 0 ? (
+            <p>No pending reeler licenses.</p>
+          ) : (
+            <Table striped hover responsive className="table-custom">
+              <thead>
+                <tr>
+                  <th>Serial Number</th>
+                  <th>Name</th>
+                  <th>Fruits ID</th>
+                  <th>License Number</th>
+                  <th>Father Name</th>
+                  <th>Reeler Number</th>
+                  <th>Expiry Date</th>
+                  <th>District</th>
+                  <th>Taluk</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingReelers.map((r) => (
+                  <tr key={r.reelerId}>
+                    <td>{r.serialNumber}</td>
+                    <td>{r.firstName}</td>
+                    <td>{r.fruitsId}</td>
+                    <td>{r.reelerLicenseNumber}</td>
+                    <td>{r.fatherName}</td>
+                    <td>{r.reelerNumber}</td>
+                    <td>{r.expiryDate}</td>
+                    <td>{r.districtName}</td>
+                    <td>{r.talukName}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Accordion.Body>
+      </Accordion.Item>
+
+      {/* Reeling Lot Number Details */}
+      <Accordion.Item eventKey="1">
+        <Accordion.Header
+        style={accordionHeaderStyles.base}
+        onMouseEnter={(e) => Object.assign(e.currentTarget.style, accordionHeaderStyles.hover)}
+        onMouseLeave={(e) => Object.assign(e.currentTarget.style, accordionHeaderStyles.base)}
+      >Reeling Lot Details</Accordion.Header>
+        <Accordion.Body>
+          {reelerLots.length === 0 ? (
+            <p>No reeling lot details.</p>
+          ) : (
+            <Table striped hover responsive className="table-custom">
+              <thead>
+                <tr>
+                <th>Sr. No</th>
+                 <th>Lot Number</th>
+                  <th>Buyer Name</th>
+                  <th>Farmer Name</th>
+                  <th>Farmer Fruits Id</th>
+                  <th>Market</th>
+                  <th>Lot Weight</th>
+                  <th>Sold Amount</th>
+                  <th>Invoice No</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                {reelerLots.map((lot,index) => (
+                  <tr key={lot.lotGroupageId}>
+                  <td>{index + 1}</td>
+                    <td>{lot.lotParentLevel}</td>
+                    <td>{lot.buyerName}</td>
+                    <td>{lot.farmerFirstName}</td>
+                    <td>{lot.farmerFruitsId}</td>
+                    <td>{lot.marketName}</td>
+                    <td>{lot.lotWeight}</td>
+                    <td>{lot.soldAmount}</td>
+                    <td>{lot.invoiceNumber}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowModal(false)}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
+
     </>
   );
 }
