@@ -1666,7 +1666,7 @@ const totalTarget = () => {
     });
   };
   return (
-    <Layout title={t("Sericulture Training Institute  Wise Target Setting")}>
+    <Layout title={t("Sericulture Training Institute Wise Target Setting")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
