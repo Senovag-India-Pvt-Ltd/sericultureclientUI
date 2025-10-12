@@ -10,9 +10,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
-import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
-
-
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -31,6 +28,7 @@ function ScSubSchemeDetails() {
     withLand: "",
     beneficiaryType: "",
     allowMultipleSanction: "",
+    schemeForReeling: "",
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -78,6 +76,7 @@ function ScSubSchemeDetails() {
                 withLand: "",
                 beneficiaryType: "",
                 allowMultipleSanction: "",
+                schemeForReeling: "",
             });
             setValidated(false);
           }
@@ -110,6 +109,7 @@ function ScSubSchemeDetails() {
         withLand: "",
         beneficiaryType: "",
         allowMultipleSanction: "",
+        schemeForReeling: "",
     });
   };
 
@@ -126,6 +126,14 @@ function ScSubSchemeDetails() {
     setData((prev) => ({
       ...prev,
       allowMultipleSanction: e.target.checked,
+    }));
+  };
+
+  const handleSanctionForReelingCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      sanctionForReeling: e.target.checked,
     }));
   };
 
@@ -420,37 +428,50 @@ function ScSubSchemeDetails() {
                           
                         </Col>
 
-                        <Form.Group as={Row} className="form-group mt-4">
-                      <Col sm={1}>
-                        <Form.Check
-                          type="checkbox"
-                          id="withLand"
-                          checked={data.withLand}
-                          onChange={handleCheckBox}
-                          // Optional: disable the checkbox in view mode
-                          // defaultChecked
-                        />
-                      </Col>
-                      <Form.Label column sm={11} className="mt-n2">
-                        {t("With Land")}
-                      </Form.Label>
-                    </Form.Group>
+                       <Row className="form-group mt-4">
+                        {/* With Land */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="withLand"
+                            checked={data.withLand}
+                            onChange={handleCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="withLand" className="mb-0">
+                            {t("With Land")}
+                          </Form.Label>
+                        </Col>
 
-                    <Form.Group as={Row} className="form-group mt-4">
-                      <Col sm={1}>
-                        <Form.Check
-                          type="checkbox"
-                          id="allowMultipleSanction"
-                          checked={data.allowMultipleSanction}
-                          onChange={handleMultipleSanctionCheckBox}
-                          // Optional: disable the checkbox in view mode
-                          // defaultChecked
-                        />
-                      </Col>
-                      <Form.Label column sm={11} className="mt-n2">
-                        {t("Allow Multiple Sanction Order")}
-                      </Form.Label>
-                    </Form.Group>
+                        {/* Allow Multiple Sanction Order */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="allowMultipleSanction"
+                            checked={data.allowMultipleSanction}
+                            onChange={handleMultipleSanctionCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="allowMultipleSanction" className="mb-0">
+                            {t("Allow Multiple Sanction Order")}
+                          </Form.Label>
+                        </Col>
+
+                        {/* Sanction for Reeling */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="sanctionForReeling"
+                            checked={data.sanctionForReeling}
+                            onChange={handleSanctionForReelingCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="sanctionForReeling" className="mb-0">
+                            {t("Sanction for Reeling")}
+                          </Form.Label>
+                        </Col>
+                      </Row>
+
                 </Row>
               </Card.Body>
             </Card>
