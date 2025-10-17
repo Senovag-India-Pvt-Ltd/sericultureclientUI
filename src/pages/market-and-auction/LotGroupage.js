@@ -1317,7 +1317,7 @@ const handlePurchaseModeChange = (e) => {
                             <div className="form-control-wrap">
                               <Form.Select
                                 name="buyerId"
-                                value={`${data.buyerId}_${data.reelerName}_${data.externalUnitId}`}
+                                value={`${data.buyerId}_${data.reelerName}`}
                                 onChange={handleManualReelerOption}
                                 onBlur={handleManualReelerOption}
                                 required
