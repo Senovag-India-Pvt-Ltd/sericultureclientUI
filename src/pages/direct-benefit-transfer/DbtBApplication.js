@@ -191,17 +191,34 @@ function DbtBApplication() {
       });
   };
 
+  // useEffect(() => {
+  //   if (addressDetails.hobliId) {
+  //     getVillageList(addressDetails.hobliId);
+  //   }
+  // }, [addressDetails.hobliId]);
+
   useEffect(() => {
-    if (addressDetails.hobliId) {
+    if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
       getVillageList(addressDetails.hobliId);
+    } else {
+      setVillageListData([]); // Clear if no hobli
     }
   }, [addressDetails.hobliId]);
 
+  // const handleInputsaddress = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setAddressDetails({ ...addressDetails, [name]: value });
+  // };
+
   const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
+  const { name, value } = e.target;
+  setAddressDetails((prev) => ({
+    ...prev,
+    [name]: Number(value),
+  }));
+};
+
 
   // const handleInputsSearch = (e) => {
   //   let name = e.target.name;
