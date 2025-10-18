@@ -1040,6 +1040,22 @@ import RejectionList from "../pages/masters/reject-reason/RejectionList";
 import RejectReasonList from "../pages/masters/reject-reason/RejectReasonList";
 import RejectionListEdit from "../pages/masters/reject-reason/RejectionListEdit";
 import MapComponentAndHoaEdit from "../pages/masters/map-component-hoa/MapComponentAndHoaEdit";
+import ConfigureIcb from "../pages/masters/configureIcb/ConfigureIcb";
+import ConfigureIcbList from "../pages/masters/configureIcb/ConfigureIcbList";
+import ConfigureIcbView from "../pages/masters/configureIcb/ConfigureIcbView";
+import ConfigureIcbEdit from "../pages/masters/configureIcb/ConfigureIcbEdit";
+import ConfigureImcbList from "../pages/masters/configureImcb/ConfigureImcbList";
+import ConfigureImcbView from "../pages/masters/configureImcb/ConfigureImcbView";
+import ConfigureImcbEdit from "../pages/masters/configureImcb/ConfigureImcbEdit";
+import ConfigureImcb from "../pages/masters/configureImcb/ConfigureImcb";
+import ConfigureSilkIncentive from "../pages/masters/configureSilkIncentive/ConfigureSilkIncentive";
+import ConfigureSilkIncentiveList from "../pages/masters/configureSilkIncentive/ConfigureSilkIncentiveList";
+import ConfigureSilkIncentiveView from "../pages/masters/configureSilkIncentive/ConfigureSilkIncentiveView";
+import ConfigureSilkIncentiveEdit from "../pages/masters/configureSilkIncentive/ConfigureSilkIncentiveEdit";
+import ConfigureReelingShed from "../pages/masters/configureReelingShed/ConfigureReelingShed";
+import ConfigureReelingShedList from "../pages/masters/configureReelingShed/ConfigureReelingShedList";
+import ConfigureReelingShedView from "../pages/masters/configureReelingShed/ConfigureReelingShedView";
+import ConfigureReelingShedEdit from "../pages/masters/configureReelingShed/ConfigureReelingShedEdit";
 
 // Admin and Reports
 
@@ -2774,6 +2790,27 @@ function Router() {
               path="relationship-edit/:id"
               element={<RelationshipEdit />}
             />
+
+            <Route path="configureIcb" element={<ConfigureIcb />} />
+            <Route path="configure-icb-list" element={<ConfigureIcbList />} />
+            <Route path="configure-icb-view/:id" element={<ConfigureIcbView />} />
+            <Route path="configure-icb-edit/:id" element={<ConfigureIcbEdit />} />
+
+            <Route path="configureImcb" element={<ConfigureImcb />} />
+            <Route path="configure-imcb-list" element={<ConfigureImcbList />} />
+            <Route path="configure-imcb-view/:id" element={<ConfigureImcbView />} />
+            <Route path="configure-imcb-edit/:id" element={<ConfigureImcbEdit />} />
+
+            <Route path="configure-silk-incentive" element={<ConfigureSilkIncentive />} />
+            <Route path="configure-silk-incentive-list" element={<ConfigureSilkIncentiveList />} />
+            <Route path="configure-silk-incentive-view/:id" element={<ConfigureSilkIncentiveView />} />
+            <Route path="configure-silk-incentive-edit/:id" element={<ConfigureSilkIncentiveEdit />} />
+
+            <Route path="configure-reeling-shed" element={<ConfigureReelingShed />} />
+            <Route path="configure-reeling-shed-list" element={<ConfigureReelingShedList />} />
+            <Route path="configure-reeling-shed-view/:id" element={<ConfigureReelingShedView />} />
+            <Route path="configure-reeling-shed-edit/:id" element={<ConfigureReelingShedEdit />} />
+
 
             <Route path="cropStatus" element={<CropStatus />} />
             <Route path="crop-status-list" element={<CropStatusList />} />

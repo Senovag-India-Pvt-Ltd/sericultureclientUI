@@ -1066,22 +1066,22 @@ function AllApplicationDetails() {
               <Form.Label>&nbsp;</Form.Label> {/* Empty label to align with above */}
               <div className="form-control-wrap">
                 {Number(searchData.type) === 5 ? (
-                  <Form.Select
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    isInvalid={searchData.text === "0"}
-                  >
-                    <option value="">{t("Select Year")}</option>
-                    {financialyearListData.map((list) => (
-                      <option
-                        key={list.financialYearMasterId}
-                        value={list.financialYearMasterId}
-                      >
-                        {list.financialYear}
-                      </option>
-                    ))}
-                  </Form.Select>
+                                  <Form.Select
+                                    name="text"
+                                    value={searchData.text}
+                                    onChange={handleInputsSearch}
+                                    isInvalid={searchData.text === "0"}
+                                  >
+                                    <option value="">{t("Select Year")}</option>
+                                    {financialyearListData.map((list) => (
+                                      <option
+                                        key={list.financialYearMasterId}
+                                        value={list.financialYearMasterId}
+                                      >
+                                        {list.financialYear}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
                 ) : Number(searchData.type) === 6 ? (
                   <Form.Select
                     name="text"
