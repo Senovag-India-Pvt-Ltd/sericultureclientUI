@@ -264,6 +264,13 @@ function SaleDisposalofDFLseggsList() {
       hide: "md",
     },
     {
+      name: t("External User"),
+      selector: (row) => row.externalUserName,
+      cell: (row) => <span>{row.externalUserName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: t("Invoice Number"),
       selector: (row) => row.invoiceNumber,
       cell: (row) => <span>{row.invoiceNumber}</span>,

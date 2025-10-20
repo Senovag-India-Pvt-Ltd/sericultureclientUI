@@ -39,6 +39,7 @@ function SaleDisposalofDFLseggs() {
     remainingDfls: "",
     dflsType: "",
     tsc:  "",
+    externalUnitId: "",
   });
 
   const styles = {
@@ -223,6 +224,7 @@ function SaleDisposalofDFLseggs() {
               remainingDfls: "",
               dflsType: "",
               tsc:  "",
+              externalUnitId: "",
             });
             setValidated(false);
           }
@@ -264,6 +266,7 @@ function SaleDisposalofDFLseggs() {
               remainingDfls: "",
               dflsType: "",
               tsc:  "",
+              externalUnitId: "",
             });
             setValidated(false);
           }
@@ -302,6 +305,7 @@ function SaleDisposalofDFLseggs() {
       remainingDfls: "",
       dflsType: "",
       tsc:  "",
+      externalUnitId: "",
     });
     setValidated(false);
   };
@@ -354,6 +358,24 @@ function SaleDisposalofDFLseggs() {
         });
     }
   };
+
+   // to get Race
+    const [externalListData, setExternalListData] = useState([]);
+  
+    const getExternalList = (_id) => {
+      const response = api
+        .get(baseURLFarmer + `external-unit-registration/get-all`)
+        .then((response) => {
+          setExternalListData(response.data.content.externalUnitRegistration);
+          })
+      .catch((err) => {
+        setExternalListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getExternalList();
+  }, []);
 
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
@@ -944,8 +966,8 @@ function SaleDisposalofDFLseggs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
-                                  name="dflType"
-                                  value={data.dflType}
+                                  name="dflsType"
+                                  value={data.dflsType}
                                   onChange={handleInputs}
                                   // required
                                   // isInvalid={
@@ -965,6 +987,38 @@ function SaleDisposalofDFLseggs() {
                               </div>
                             </Form.Group>
                           </Col>  
+
+                      {data.userType === "crc" && (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label>
+                            {t("External Users")}
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="externalUnitId"
+                              value={data.externalUnitId}
+                              onChange={handleInputs}
+                            >
+                              <option value="">{t("Select External Users")}</option>
+                              {externalListData.map((list) => (
+                                <option
+                                  key={list.externalUnitRegistrationId}
+                                  value={list.externalUnitRegistrationId}
+                                >
+                                  {list.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            {/* <Form.Control.Feedback type="invalid">
+                              {t("Address is required")}
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
+
 
                     {data.userType === "farm" ? (
                       <Col lg="4">

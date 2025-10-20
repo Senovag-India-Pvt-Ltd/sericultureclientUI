@@ -163,6 +163,10 @@ function SaleDisposalofDFLseggsView() {
                         <td>{seedDisposal.remainingDfls}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>{t("External User")}:</td>
+                        <td>{seedDisposal.externalUserName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>{t("Invoice Number")}:</td>
                         <td>{seedDisposal.invoiceNumber}</td>
                       </tr>
