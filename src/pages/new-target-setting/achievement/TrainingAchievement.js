@@ -24,6 +24,8 @@ function TrainingAchievement() {
     month: "",
     target: "",
     value: "",
+    financialValue: "",
+  physicalValue: "",
     raceMasterId: "",
     grainageMasterId: "",
     trainingInstitution: "",
@@ -112,55 +114,7 @@ function TrainingAchievement() {
     }));
   };
   
-  // To get all month targets for Grainage
-// const getAllMonthTarget = () => {
-// api
-//   .post(
-//     baseURLTargetSetting +
-//       `targets/getTrainingTargetRecords?courseId=${data.courseId}&financialYearId=${data.financialYearMasterId}&trainingInstitutionId=${data.trainingInstitutionId}`,
-//     {}
-//   )
-//   .then((response) => {
-//     const monthDataList = response.data.trainingMonth; // assuming backend sends trainingMonth like trainingMonth
-
-//     if (monthDataList && monthDataList.length > 0) {
-//       const monthData = monthDataList[0]; // assuming 1 record per call
-//       setTrainingMonth({
-//         april: monthData.april,
-//         may: monthData.may,
-//         june: monthData.june,
-//         july: monthData.july,
-//         august: monthData.august,
-//         september: monthData.september,
-//         october: monthData.october,
-//         november: monthData.november,
-//         december: monthData.december,
-//         january: monthData.january,
-//         february: monthData.february,
-//         march: monthData.march,
-//       });
-//     } else {
-//       // Initialize empty values
-//       setTrainingMonth({
-//         april: "",
-//         may: "",
-//         june: "",
-//         july: "",
-//         august: "",
-//         september: "",
-//         october: "",
-//         november: "",
-//         december: "",
-//         january: "",
-//         february: "",
-//         march: "",
-//       });
-//     }
-//   })
-//   .catch((err) => {
-//     console.error("Failed to fetch grainage month targets", err);
-//   });
-// };
+  
 
 const getAllMonthTarget = () => {
   api
@@ -257,14 +211,6 @@ data.courseId,
 data.financialYearMasterId,
 data.trainingInstitutionId
 ]);
-// const [displayList, setDisplayList] = useState([]);
-//   const [displayListFinancial,setDisplayListFinancial] = useState([]);
-//   const [displayListHierarchy, setDisplayListHierarchy] = useState([]);
-//   const [displayListHierarchyFinancial, setDisplayListHierarchyFinancial] = useState([]);
-//   const [totalRowsView, setTotalRowsView] = useState(0);
-//   const [totalRowsViewHierarchy, setTotalRowsViewHierarchy] = useState(0);
-//   const [totalRowsViewFinancial, setTotalRowsViewFinancial] = useState(0);
-//   const [totalRowsViewHierarchyFinancial, setTotalRowsViewHierarchyFinancial] = useState(0);
 
 
 
@@ -478,107 +424,12 @@ const handleShowModal = () => {
   const [pageView, setPageView] = useState(0); 
 const [pageHierarchy, setPageHierarchy] = useState(0);
 
-// const handleShowModal = () => {
-//   if (data.financialYearMasterId && data.trainingInstitutionId) {
-//     let parametersView = {
-//       params: {
-//         financialYearId: data.financialYearMasterId,
-//         raceId: data.raceMasterId,
-//         courseId: data.courseId,
-//         institutionId: data.institutionId,
-//         pageNumber: pageView, 
-//         size: countPerPage,
-//       },
-//     };
-
-//     let parametersHierarchy = {
-//       params: {
-//         financialYearId: data.financialYearMasterId,
-//         raceId: data.raceMasterId,
-//         courseId: data.courseId,
-//         institutionId: data.institutionId,
-//         pageNumber: pageHierarchy, 
-//         size: countPerPage,
-//       },
-//     };
-
-//     api
-//       .get(baseURLTargetSetting + `targets/get-by-target-details`, parametersView) 
-//       .then((response) => {
-//         setShowModal(true);
-//         setDisplayList(response.data.content.target);
-//         setTotalRowsView(response.data.content.totalItems);
-//       })
-//       .catch((err) => {
-//         setDisplayList([]);
-//       });
-
-//     api
-//       .get(baseURLTargetSetting + `targets/get-by-target-details-hierarchy`, parametersHierarchy)
-//       .then((response) => {
-//         setDisplayListHierarchy(response.data.content.target);
-//         setTotalRowsViewHierarchy(response.data.content.totalItems);
-//       })
-//       .catch((err) => {
-//         setDisplayListHierarchy([]);
-//       });
-//   } else {
-//     warning();
-//   }
-// };
 
 useEffect(() => {
   if (showModal) handleShowModal(); 
 }, [pageView, pageHierarchy]); 
 
 
-
-  // const handleShowModal = () => {
-  //   if (data.financialYearMasterId && data.trainingInstitutionId) {
-  //     let parameters = {
-  //       params: {
-  //         financialYearId: data.financialYearMasterId,
-  //         raceId: data.raceMasterId,
-  //         // targetType: data.scHeadAccountId,
-  //         // farmId: data.scSubSchemeDetailsId,
-  //         // grainageId: data.scComponentId,
-  //         courseId: data.courseId,
-  //         institutionId: data.institutionId,
-  //         pageNumber: page,
-  //         size: countPerPage,
-  //       },
-  //     };
-  //     api
-  //       .get(baseURLTargetSetting + `targets/get-by-target-details`, parameters)
-  //       .then((response) => {
-  //         setShowModal(true);
-  //         setDisplayList(response.data.content.target);
-  //         setTotalRowsView(response.data.content.totalItems);
-  //       })
-  //       .catch((err) => {
-  //         setDisplayList([]);
-  //       });
-
-  //     api
-  //       .get(
-  //         baseURLTargetSetting + `targets/get-by-target-details-hierarchy`,
-  //         parameters
-  //       )
-  //       .then((response) => {
-  //         // setShowModal(true);
-  //         setDisplayListHierarchy(response.data.content.target);
-  //         setTotalRowsViewHierarchy(response.data.content.totalItems);
-  //       })
-  //       .catch((err) => {
-  //         setDisplayListHierarchy([]);
-  //       });
-  //   } else {
-  //     warning();
-  //   }
-  // };
-  // const handleCloseModal = () => setShowModal(false);
-
-  // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
   const getFinancialYearList = () => {
@@ -963,147 +814,7 @@ useEffect(() => {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
-  // const postData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     // event.stopPropagation();
-  //     console.log("Entered Allocate");
-  //     api
-  //       .post(baseURLTargetSetting + `targets/saveTrainingTargets`,   {...data,trainingMonth:[trainingMonth]}
-  //       )
-  //       .then((response) => {
-  //         if (response.data.content.error) {
-  //           saveError(response.data.content.error_description);
-  //         } else {
-  //           saveSuccess();
-  //           getList();
-  //           // clear();
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (
-  //           err.response &&
-  //           err.response &&
-  //           err.response.data &&
-  //           err.response.data.validationErrors
-  //         ) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             saveError(err.response.data.validationErrors);
-  //           }
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
-
-  //  const postData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     // event.stopPropagation();
-  //     console.log("Entered Allocate");
-  //     api
-  //       .post(
-  //         baseURLTargetSetting + `targets/saveGrainageTargets`,
-  //         {...data,targetTypetraining: "training",physicalTargetMonths:[physicalTargetMonths],financialTargetMonths:[financialTargetMonths]}
-  //       )
-  //       .then((response) => {
-  //         if (response.data.content.error) {
-  //           saveError(response.data.content.error_description);
-  //         } else {
-  //           saveSuccess();
-  //           getList();
-  //           // clear();
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (
-  //           err.response &&
-  //           err.response &&
-  //           err.response.data &&
-  //           err.response.data.validationErrors
-  //         ) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             saveError(err.response.data.validationErrors);
-  //           }
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
-
-
-  //  const postData = (event) => {
-  //       const form = event.currentTarget;
-  //       if (form.checkValidity() === false) {
-  //         event.preventDefault();
-  //         event.stopPropagation();
-  //         setValidated(true);
-  //       } else {
-  //         event.preventDefault();
-  //         // event.stopPropagation();
-  //         api
-  //           .post(baseURLTargetSetting + `targetsAchievement/add-Training`, data)
-  //           .then((response) => {
-  //             if (response.data.content.error) {
-  //               saveError(response.data.content.error_description);
-  //             } else {
-  //               saveSuccess();
-  //               setData({   
-  //   targetsAchievementId: "",
-  //   financialYearMasterId: "",
-  //   trainingInstitution: "",
-  //   courseId: "",
-  //   target: "", 
-  //   month: "",
-  //   value: "",           
-  //   userMasterId: "",
-  //   pageType: "TRAINING",
   
-
-  //               });
-  //               setValidated(false);
-  //             }
-  //           })
-  //           .catch((err) => {
-  //             if (
-  //               err.response &&
-  //               err.response &&
-  //               err.response.data &&
-  //               err.response.data.validationErrors
-  //             ) {
-  //               if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //                 saveError(err.response.data.validationErrors);
-  //               }
-  //             }
-  //           });
-  //         setValidated(true);
-  //       }
-  //     };
-
 
   const postData = (event) => {
   const form = event.currentTarget;
@@ -1601,30 +1312,6 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
     }
 
 
-
-    // Proceed with API call if validations pass
-    // api
-    //   .post(
-    //     baseURLTargetSetting + `targets/getTrainingTargetDetails`,
-    //     {},
-    //     {
-    //       params: {
-    //         financialYearMasterId,
-    //         courseId,
-    //         trainingInstitutionId,
-    //         // month,
-    //       },
-    //     }
-    //   )
-    //   .then((response) => {
-    //     setViewMonthlyTargetsData(response.data);
-    //     // setTotalRows(response.data.totalRecords);
-    //     // setShowModal4(true);
-    //   })
-    //   .catch((err) => {
-    //     setViewMonthlyTargetsData([]);
-    //   });
-
       const target = ["PHYSICAL TARGET","FINANCIAL TARGET"];
     targets.forEach((target) => {
     api
@@ -1712,44 +1399,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                       {t("Training Institute  Wise Achievement")}
                     </Card.Header>
                     <Card.Body>
-                    {/* <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '20px',
-                        alignItems: 'center', // Ensure items align horizontally
-                      }}
-                    >
-                      <Button variant="primary" onClick={totalTarget}>
-                        {t('Yearly Targets')}
-                      </Button>
-
-                      <table
-                        className="table table-bordered table-striped"
-                        style={{ ...styles.table, width: '600px', margin: '0' }} // Ensure no unnecessary margin
-                      >
-                         <thead>
-                              <tr>
-                              <th style={styles.ctstyle}>{t("Yearly No.Of Trainings")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {viewTotalTargetsDataFinancial.length > 0 ? (
-
-                                <tr>
-                                <td>{viewTotalTargetsDataFinancial[0].yearlyTrainingValue || "N/A"}</td>
-
-                                </tr>
-                              ) : (
-                                <tr>
-                                <td colSpan={3} style={{ textAlign: "center" }}>
-                                  {t("No Data Available")}
-                                </td>
-                              </tr>
-                              )}
-                            </tbody>
-                      </table>
-                    </div> */}
+                    
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
@@ -1900,7 +1550,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                         </Col>
                         
                         
-                                               <Col lg="6">
+                                               {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("Target Type")}
@@ -1918,9 +1568,9 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                                </Form.Select>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                       <Col lg="6">
+                       {/* <Col lg="6">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="Target Value">
       {t("Target Value")}<span className="text-danger">*</span>
@@ -1938,6 +1588,77 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
       />
       <Form.Control.Feedback type="invalid">
         {t("Target Value is required")}.
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col> */}
+
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="financialValue">
+      {t("Financial Target Value")}<span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="financialValue"
+        name="financialValue"
+        value={data.financialValue || ""}
+        onChange={(e) => {
+          const financialValue = e.target.value;
+          const physicalValue = data.physicalValue || 0;
+          // 👇 Convert to numbers and sum them into `value`
+          const totalValue =
+            (parseFloat(financialValue) || 0) +
+            (parseFloat(physicalValue) || 0);
+
+          setData({
+            ...data,
+            financialValue,
+            value: totalValue.toString(), // Save combined total into backend field 'value'
+          });
+        }}
+        type="number"
+        placeholder={t("Enter Financial Value")}
+        required
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Financial Target Value is required")}
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="physicalValue">
+      {t("Physical Target Value")}<span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="physicalValue"
+        name="physicalValue"
+        value={data.physicalValue || ""}
+        onChange={(e) => {
+          const physicalValue = e.target.value;
+          const financialValue = data.financialValue || 0;
+          // 👇 Combine both values into single backend field 'value'
+          const totalValue =
+            (parseFloat(financialValue) || 0) +
+            (parseFloat(physicalValue) || 0);
+
+          setData({
+            ...data,
+            physicalValue,
+            value: totalValue.toString(), // Combined value for backend
+          });
+        }}
+        type="number"
+        placeholder={t("Enter Physical Value")}
+        required
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Physical Target Value is required")}
       </Form.Control.Feedback>
     </div>
   </Form.Group>
@@ -2221,40 +1942,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              {t("User")}<span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="userMasterId"
-                                value={editData.userMasterId}
-                                onChange={handleEditInputs}
-                                onBlur={() => handleEditInputs}
-                                required
-                                disabled
-                                isInvalid={
-                                  editData.userMasterId === undefined ||
-                                  editData.userMasterId === "0"
-                                }
-                              >
-                                <option value="">{t("Select User")}</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("User is required")}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
+                        
                         <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
