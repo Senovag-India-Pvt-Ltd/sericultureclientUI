@@ -457,11 +457,11 @@ function MaintenanceOfLineReportForGrainage() {
             </Form.Group>
         </Col>
 
-             <Col sm={2}>
+             {/* <Col sm={2}>
                 <Form.Group className="form-group mt-n4">
                 <Form.Label>
                     {t("Grainage")}
-                    {/* <span className="text-danger">*</span> */}
+                    {/* <span className="text-danger">*</span> 
                 </Form.Label>
                 <Col>
                     <div className="form-control-wrap">
@@ -482,13 +482,13 @@ function MaintenanceOfLineReportForGrainage() {
                         </option>
                         ))):""}
                     </Form.Select>
-                    {/* <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback type="invalid">
                         {t("Grainage is required")}
-                    </Form.Control.Feedback> */}
+                    </Form.Control.Feedback> 
                     </div>
                 </Col>
                 </Form.Group>
-            </Col>
+            </Col> */}
 
             <Col sm={2}>
             <Form.Group className="form-group mt-n4">
