@@ -54,7 +54,7 @@ const handleDateChange = (date, type) => {
           params: {
             farmId: data.farmId || 0,
             lineId: data.lineId || 0,
-            raceId: data.lineId || 0,
+            raceId: data.raceId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -78,7 +78,7 @@ const handleDateChange = (date, type) => {
           params: {
             farmId: data.farmId || 0,
             lineId: data.lineId || 0,
-            raceId: data.lineId || 0,
+            raceId: data.raceId || 0,
           },
           responseType: 'blob',
           headers: {
@@ -114,7 +114,7 @@ const handleDateChange = (date, type) => {
           params: {
             farmId: data.farmId || 0,
             lineId: data.lineId || 0,
-            raceId: data.lineId || 0,
+            raceId: data.raceId || 0,
             pageNumber: page,
             pageSize: countPerPage,
           },

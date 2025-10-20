@@ -191,17 +191,34 @@ function DbtFailureApplication() {
       });
   };
 
+  // useEffect(() => {
+  //   if (addressDetails.hobliId) {
+  //     getVillageList(addressDetails.hobliId);
+  //   }
+  // }, [addressDetails.hobliId]);
+
   useEffect(() => {
-    if (addressDetails.hobliId) {
+    if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
       getVillageList(addressDetails.hobliId);
+    } else {
+      setVillageListData([]); // Clear if no hobli
     }
   }, [addressDetails.hobliId]);
 
+  // const handleInputsaddress = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setAddressDetails({ ...addressDetails, [name]: value });
+  // };
+
   const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
+  const { name, value } = e.target;
+  setAddressDetails((prev) => ({
+    ...prev,
+    [name]: Number(value),
+  }));
+};
+
 
   // const handleInputsSearch = (e) => {
   //   let name = e.target.name;
@@ -512,50 +529,104 @@ function DbtFailureApplication() {
     getList();
   }, [page]);
 
+  // const exportCsv = (e) => {
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/dbt-failure-list-report`,
+  //       {},
+  //       {
+  //         params: {
+  //           districtId: addressDetails.districtId,
+  //           talukId: addressDetails.talukId,
+  //           hobliId: addressDetails.hobliId,
+  //           villageId: addressDetails.villageId,
+  //           userMasterId: localStorage.getItem("userMasterId"),
+  //           text: searchData.text,
+  //           type: searchData.type,
+  //           scCategoryId: searchData.scCategoryId,
+  //           displayAllRecords: true,
+  //           status: "",
+  //         },
+  //         responseType: "blob",
+  //         headers: {
+  //           accept: "text/csv",
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       const blob = new Blob([response.data], { type: "text/csv" });
+  //       const link = document.createElement("a");
+  //       link.href = window.URL.createObjectURL(blob);
+  //       link.download = `dbt_status_report.csv`;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       window.URL.revokeObjectURL(link.href);
+  //     })
+  //     .catch((err) => {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "No record found!!!",
+  //       });
+  //     });
+  // };
+
+  // // console.log(allApplicationIds);
+
   const exportCsv = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/dbt-failure-list-report`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            hobliId: addressDetails.hobliId,
-            villageId: addressDetails.villageId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            scCategoryId: searchData.scCategoryId,
-            displayAllRecords: true,
-            status: "",
-          },
-          responseType: "blob",
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
+  // ✅ Use null-safe defaults so API never gets undefined or null
+  const params = {
+    districtId: addressDetails?.districtId || 0,
+    talukId: addressDetails?.talukId || 0,
+    hobliId: addressDetails?.hobliId || 0,
+    villageId: addressDetails?.villageId || 0,
+    userMasterId: localStorage.getItem("userMasterId") || 0,
+    text: searchData?.text ? searchData.text : null,
+    type: searchData?.type || 0,
+    scCategoryId: searchData?.scCategoryId || 0,
+    displayAllRecords: true,
+    status: "",
+  };
+
+  api
+    .post(
+      baseURLDBT + `service/dbt-failure-list-report`,
+      {}, // empty body
+      {
+        params,
+        responseType: "blob",
+        headers: {
+          accept: "text/csv",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      if (response && response.data) {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `dbt_status_report.csv`;
+        link.download = `dbt_failure_report.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
-      })
-      .catch((err) => {
+      } else {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: "No records found!",
         });
+      }
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "warning",
+        title: "No record found or server error!",
       });
-  };
+    });
+};
 
-  // console.log(allApplicationIds);
 
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []

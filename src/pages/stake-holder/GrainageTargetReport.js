@@ -39,20 +39,36 @@ function GrainageTargetReport() {
 
   // Search
   const search = (e) => {
-    api
-      .post(
-        baseURLFarmer + `targets/getGrainageTargetsDetails`,
-        {},
-        {
-          params: {
-            financialYearId: data.financialYearId || 0,
-            raceId: data.raceId || 0,
-            grainageId: data.grainageId || 0,
-            pageNumber: page,
-            pageSize: countPerPage,
-          },
-        }
-      )
+    // api
+    //   .post(
+    //     baseURLFarmer + `targets/getGrainageTargetsDetails`,
+    //     {},
+    //     {
+    //       params: {
+    //         financialYearId: data.financialYearId || 0,
+    //         raceId: data.raceId || 0,
+    //         grainageId: data.grainageId || 0,
+    //         pageNumber: page,
+    //         pageSize: countPerPage,
+    //       },
+    //     }
+    //   )
+
+    api.post(
+  baseURLFarmer + `targets/getGrainageTargetsDetails`,
+  {
+    financialYearMasterId: data.financialYearId || 0,
+    raceMasterId: data.raceId || 0,
+    grainageMasterId: data.grainageId || 0,
+  },
+  {
+    params: {
+      pageNumber: page,
+      pageSize: countPerPage,
+    },
+  }
+)
+
        .then((response) => {
   const records = response?.data?.content?.body?.content || [];
   setListData(records);
@@ -66,23 +82,35 @@ function GrainageTargetReport() {
   };
 
   const exportCsv = (e) => {
-    api
-      .post(
-        baseURLFarmer + `targets/getGrainageTargetsReport`,
-        {},
-        {
-          params: {
-            financialYearId: data.financialYearId || 0,
-            raceId: data.raceId || 0,
-            grainageId: data.grainageId || 0,
-          },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    // api
+    //   .post(
+    //     baseURLFarmer + `targets/getGrainageTargetsReport`,
+    //     {},
+    //     {
+    //       params: {
+    //         financialYearId: data.financialYearId || 0,
+    //         raceId: data.raceId || 0,
+    //         grainageId: data.grainageId || 0,
+    //       },
+    //       responseType: 'blob',
+    //       headers: {
+    //         accept: "text/csv",
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    api.post(
+  baseURLFarmer + `targets/getGrainageTargetsReport`,
+  {
+    financialYearMasterId: data.financialYearId || 0,
+    raceMasterId: data.raceId || 0,
+    grainageMasterId: data.grainageId || 0,
+  },
+  {
+    responseType: 'blob',
+  }
+)
+
       .then((response) => {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");

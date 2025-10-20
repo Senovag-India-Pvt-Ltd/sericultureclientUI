@@ -47,45 +47,7 @@ function DbtSuccessApplication() {
   // Translation
   const { t } = useTranslation();
 
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
-
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
-
-  // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
+  
   const [landData, setLandData] = useState({
     landId: "",
     talukId: "",
@@ -191,17 +153,34 @@ function DbtSuccessApplication() {
       });
   };
 
+  // useEffect(() => {
+  //   if (addressDetails.hobliId) {
+  //     getVillageList(addressDetails.hobliId);
+  //   }
+  // }, [addressDetails.hobliId]);
+
   useEffect(() => {
-    if (addressDetails.hobliId) {
+    if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
       getVillageList(addressDetails.hobliId);
+    } else {
+      setVillageListData([]); // Clear if no hobli
     }
   }, [addressDetails.hobliId]);
 
+  // const handleInputsaddress = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setAddressDetails({ ...addressDetails, [name]: value });
+  // };
+
   const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
+  const { name, value } = e.target;
+  setAddressDetails((prev) => ({
+    ...prev,
+    [name]: Number(value),
+  }));
+};
+
 
   // const handleInputsSearch = (e) => {
   //   let name = e.target.name;
@@ -513,32 +492,78 @@ function DbtSuccessApplication() {
     getList();
   }, [page]);
 
+  // const exportCsv = (e) => {
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/dbt-success-list-report`,
+  //       {},
+  //       {
+  //         params: {
+  //           districtId: addressDetails.districtId,
+  //           talukId: addressDetails.talukId,
+  //           hobliId: addressDetails.hobliId,
+  //           villageId: addressDetails.villageId,
+  //           userMasterId: localStorage.getItem("userMasterId"),
+  //           text: searchData.text,
+  //           type: searchData.type,
+  //           scCategoryId: searchData.scCategoryId,
+  //           displayAllRecords: true,
+  //           status: "",
+  //         },
+  //         responseType: "blob",
+  //         headers: {
+  //           accept: "text/csv",
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       const blob = new Blob([response.data], { type: "text/csv" });
+  //       const link = document.createElement("a");
+  //       link.href = window.URL.createObjectURL(blob);
+  //       link.download = `dbt_status_report.csv`;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       window.URL.revokeObjectURL(link.href);
+  //     })
+  //     .catch((err) => {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "No record found!!!",
+  //       });
+  //     });
+  // };
+
+  // // console.log(allApplicationIds);
+
+
   const exportCsv = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/dbt-success-list-report`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            hobliId: addressDetails.hobliId,
-            villageId: addressDetails.villageId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            scCategoryId: searchData.scCategoryId,
-            displayAllRecords: true,
-            status: "",
-          },
-          responseType: "blob",
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
+  // ✅ Use safe defaults for all parameters
+  const params = {
+    districtId: addressDetails?.districtId || 0,
+    talukId: addressDetails?.talukId || 0,
+    hobliId: addressDetails?.hobliId || 0,
+    villageId: addressDetails?.villageId || 0,
+    userMasterId: localStorage.getItem("userMasterId") || 0,
+    text: searchData?.text || "", // empty string if not selected
+    type: searchData?.type || 0,
+    scCategoryId: searchData?.scCategoryId || 0,
+    displayAllRecords: true,
+    status: "",
+  };
+
+  api
+    .post(baseURLDBT + `service/dbt-success-list-report`, {}, {
+      params,
+      responseType: "blob",
+      headers: {
+        accept: "text/csv",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      if (response && response.data) {
         const blob = new Blob([response.data], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
@@ -547,16 +572,21 @@ function DbtSuccessApplication() {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
-      })
-      .catch((err) => {
+      } else {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: "No records found",
         });
+      }
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "warning",
+        title: "No record found or server error!",
       });
-  };
+    });
+};
 
-  // console.log(allApplicationIds);
 
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
@@ -866,69 +896,7 @@ function DbtSuccessApplication() {
     "light"
   );
 
-  //   const customStyles = {
-  //     rows: {
-  //       style: {
-  //         minHeight: "45px", // override the row height
-  //       },
-  //     },
-  //     headCells: {
-  //       style: {
-  //         backgroundColor: "#1e67a8",
-  //         color: "#fff",
-  //         fontSize: "14px",
-  //         paddingLeft: "8px", // override the cell padding for head cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //     cells: {
-  //       style: {
-  //         paddingLeft: "8px", // override the cell padding for data cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //   };
-
-  // const customStyles = {
-  //   header: {
-  //     style: {
-  //       minHeight: "56px",
-  //     },
-  //   },
-  //   headRow: {
-  //     style: {
-  //       borderTopStyle: "solid",
-  //       borderTopWidth: "1px",
-  //       // borderTop:"none",
-  //       // borderTopColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //     },
-  //   },
-  //   headCells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       backgroundColor: "#1e67a8",
-  //       color: "#fff",
-  //       borderStyle: "solid",
-  //       bordertWidth: "1px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  //   cells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       borderStyle: "solid",
-  //       // borderRightWidth: "3px",
-  //       borderWidth: "1px",
-  //       padding: "10px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  // };
+  
   const customStyles = {
     rows: {
       style: {
@@ -1130,27 +1098,9 @@ function DbtSuccessApplication() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("Action"),
-    //   cell: (row) => (
-    //     <>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.scApplicationFormId)}
-    //         className="ms-1"
-    //       >
-    //         {t("View")}
-    //       </Button>
-    //     </>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    //   // grow: 2,
-    // },
+    
   ];
 
-  {/* ✅ UPDATED CODE WITH COMMENTED CHANGES */}
 return (
   <Layout title="DBT Success Application Report">
     <Block.Head>
@@ -1191,22 +1141,22 @@ return (
               <Form.Label>&nbsp;</Form.Label>
               <div className="form-control-wrap">
                 {Number(searchData.type) === 5 ? (
-                  <Form.Select
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    isInvalid={searchData.text === "0"}
-                  >
-                    <option value="">{t("Select Year")}</option>
-                    {financialyearListData.map((list) => (
-                      <option
-                        key={list.financialYearMasterId}
-                        value={list.financialYearMasterId}
-                      >
-                        {list.financialYear}
-                      </option>
-                    ))}
-                  </Form.Select>
+                                  <Form.Select
+                                    name="text"
+                                    value={searchData.text}
+                                    onChange={handleInputsSearch}
+                                    isInvalid={searchData.text === "0"}
+                                  >
+                                    <option value="">{t("Select Year")}</option>
+                                    {financialyearListData.map((list) => (
+                                      <option
+                                        key={list.financialYearMasterId}
+                                        value={list.financialYearMasterId}
+                                      >
+                                        {list.financialYear}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
                 ) : Number(searchData.type) === 6 ? (
                   <Form.Select
                     name="text"
@@ -1393,258 +1343,10 @@ return (
           />
         </Card>
 
-        {/* <Form
-          noValidate
-          validated={validated}
-          onSubmit={postData}
-          className="mt-1"
-        >
-          <div className="gap-col mt-1">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                <Button type="submit" variant="primary" onClick={postData}>
-                  Save
-                </Button>
-              </li>
-              .
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-        </Form> */}
+        
       </Block>
 
-      {/* <Block className="">
-        <Row className="g-3 ">
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs ">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Form>
-        </Row>
-      </Block> */}
-
-      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {loading ? (
-      <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
-      </h1>
-    ) : (
-      <Row className="g-gs">
-        <Block className="mt-3">
-          <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Scheme Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.applicationDetails.map((detail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Fruits Id:</td>
-                          <td>{detail.fruitsId}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Farmer Name:</td>
-                          <td>{detail.farmerFirstName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sanction No:</td>
-                          <td>{detail.sanctionNo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Name:</td>
-                          <td>{detail.schemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                          <td>{detail.subSchemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Component:</td>
-                          <td>{detail.scComponentName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Component:</td>
-                          <td>{detail.categoryName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Amount:</td>
-                          <td>{detail.schemeAmount}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period From:</td>
-                          <td>{detail.periodFrom}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period To:</td>
-                          <td>{detail.periodTo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{detail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{detail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{detail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Application Status:</td>
-                          <td>{detail.applicationStatus}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
-
-          <Card className="mt-3">
-            <Card.Header style={{ fontWeight: "bold" }}>
-              RTC Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.landDetails.map((landDetail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Survey Number:</td>
-                          <td>{landDetail.surveyNumber}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{landDetail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{landDetail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{landDetail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Acre:</td>
-                          <td>{landDetail.devAcre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>F Gunta:</td>
-                          <td>{landDetail.devFGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Gunta:</td>
-                          <td>{landDetail.devGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Acre:</td>
-                          <td>{landDetail.acre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area F Gunta:</td>
-                          <td>{landDetail.fGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Gunta:</td>
-                          <td>{landDetail.gunta}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Hissa:</td>
-                          <td>{landDetail.hissa}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Land Code:</td>
-                          <td>{landDetail.landCode}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Main Owner No:</td>
-                          <td>{landDetail.mainOwnerNo}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Owner Name:</td>
-                          <td>{landDetail.ownerName}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Sur Noc:</td>
-                          <td>{landDetail.surNoc}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
-        </Block>
-      </Row>
-    )}
-  </Modal.Body>
-</Modal>  */}
+      
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("View Details")}</Modal.Title>

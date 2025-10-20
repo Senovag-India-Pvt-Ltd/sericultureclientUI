@@ -191,17 +191,34 @@ function DbtBApplication() {
       });
   };
 
+  // useEffect(() => {
+  //   if (addressDetails.hobliId) {
+  //     getVillageList(addressDetails.hobliId);
+  //   }
+  // }, [addressDetails.hobliId]);
+
   useEffect(() => {
-    if (addressDetails.hobliId) {
+    if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
       getVillageList(addressDetails.hobliId);
+    } else {
+      setVillageListData([]); // Clear if no hobli
     }
   }, [addressDetails.hobliId]);
 
+  // const handleInputsaddress = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setAddressDetails({ ...addressDetails, [name]: value });
+  // };
+
   const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
+  const { name, value } = e.target;
+  setAddressDetails((prev) => ({
+    ...prev,
+    [name]: Number(value),
+  }));
+};
+
 
   // const handleInputsSearch = (e) => {
   //   let name = e.target.name;
@@ -1193,7 +1210,7 @@ return (
             <Form.Group className="form-group mt-n4">
               <Form.Label>&nbsp;</Form.Label>
               <div className="form-control-wrap">
-                {Number(searchData.type) === 5 ? (
+                {/* {Number(searchData.type) === 5 ? (
                   <Form.Select
                     name="text"
                     value={searchData.text}
@@ -1209,7 +1226,24 @@ return (
                         {list.financialYear}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Select> */}
+                  {Number(searchData.type) === 5 ? (
+                                    <Form.Select
+                                      name="text"
+                                      value={searchData.text}
+                                      onChange={handleInputsSearch}
+                                      isInvalid={searchData.text === "0"}
+                                    >
+                                      <option value="">{t("Select Year")}</option>
+                                      {financialyearListData.map((list) => (
+                                        <option
+                                          key={list.financialYearMasterId}
+                                          value={list.financialYearMasterId}
+                                        >
+                                          {list.financialYear}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
                 ) : Number(searchData.type) === 6 ? (
                   <Form.Select
                     name="text"
