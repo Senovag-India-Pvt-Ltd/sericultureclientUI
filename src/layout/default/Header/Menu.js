@@ -415,6 +415,16 @@ function Menu() {
     Admin_Master_Service_Financial_Year: false,
     Admin_Master_Service_Activity: false,
 
+    Admin_Master_Service_Calculation: false,
+    Admin_Master_Service_Calculation_SILK: false,
+    Admin_Master_Service_Calculation_Icb: false,
+    Admin_Master_Service_Calculation_Imcb: false,
+    Admin_Master_Service_Calculation_reeling: false,
+    Admin_Master_Service_Calculation_PMKSY: false,
+    Admin_Master_Service_Calculation_Bonus: false,
+    Admin_Master_Service_Calculation_RH_Amount: false,
+    
+
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
     Admin_Master_Training_Course: false,
@@ -3514,6 +3524,82 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+
+                        {showMenu.Admin_Master_Service_Calculation ? (
+  <MenuItem sub>
+    <MenuItemLink
+      text={t("Calculation")}
+      onClick={menuToggle}
+      onMouseEnter={menuHover}
+      sub
+    />
+    <MenuSub>
+
+      {showMenu.Admin_Master_Service_Calculation_SILK ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Configure Silk Incentive")}
+            to="/seriui/configure-silk-incentive"
+          />
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Admin_Master_Service_Calculation_Icb ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Configure Icb")}
+            to="/seriui/configureIcb"
+          />
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Admin_Master_Service_Calculation_Imcb ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Configure Imcb")}
+            to="/seriui/configureImcb"
+          />
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Admin_Master_Service_Calculation_reeling ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Configure Reeling Shed")}
+            to="/seriui/configure-reeling-shed"
+          />
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Admin_Master_Service_Calculation_PMKSY ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Configure Amount")}
+                              to="/seriui/configure-pmkys-amount"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Calculation_Bonus ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Configure Bonus Amount")}
+                              to="/seriui/configure-bivoltine-amount"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Calculation_RH_Amount ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Configure RH Amount")}
+                              to="/seriui/configure-rh-amount"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+    </MenuSub>
+  </MenuItem>
+) : null}
+
                         {showMenu.Admin_Master_Service_DbtStatusCheck ? (
                           <MenuItem>
                             <MenuItemLink
@@ -3661,30 +3747,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Configure_Pmkys_Amount ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Configure Amount")}
-                              to="/seriui/configure-pmkys-amount"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Configure_Bonus_Amount ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Configure Bonus Amount")}
-                              to="/seriui/configure-bivoltine-amount"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Configure_RH_Amount ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text={t("Configure RH Amount")}
-                              to="/seriui/configure-rh-amount"
-                            />
-                          </MenuItem>
-                        ) : null}
+                        
                         {showMenu.Admin_Master_Service_Spacing ? (
                           <MenuItem>
                             <MenuItemLink
