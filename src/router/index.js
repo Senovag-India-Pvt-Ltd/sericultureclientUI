@@ -1056,6 +1056,7 @@ import ConfigureReelingShed from "../pages/masters/configureReelingShed/Configur
 import ConfigureReelingShedList from "../pages/masters/configureReelingShed/ConfigureReelingShedList";
 import ConfigureReelingShedView from "../pages/masters/configureReelingShed/ConfigureReelingShedView";
 import ConfigureReelingShedEdit from "../pages/masters/configureReelingShed/ConfigureReelingShedEdit";
+import UserMasterDetailsReport from "../pages/stake-holder/UserMasterDetailsReport";
 
 // Admin and Reports
 
@@ -1547,7 +1548,7 @@ function Router() {
             <Route path="training-achievement-report" element={<TrainingAchievementReport />} />
             <Route path="farm-achievement-report" element={<FarmAchievementReport />} /> 
             <Route path="grainage-achievement-report" element={<GrainageAchievementReport />} />        
-       
+            <Route path="user-master-details-report" element={<UserMasterDetailsReport />} />
 
 
             <Route

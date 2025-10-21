@@ -501,6 +501,7 @@ function Menu() {
     Reports_Export_Report_Registration_External_Unit_Registration_Report: false,
     Reports_Export_Report_Registration_Farmer_Without_Fruits_Report: false,
     Reports_Export_Report_Registration_Other_State_Farmer_Report: false,
+    Reports_Export_Report_Registration_User_master_details_report: false,
 
     Reports_Export_Report_DBT_And_Service: false,
     Reports_Export_Report_DBT_And_Service_All_Application_Details: false,
@@ -4401,6 +4402,15 @@ function Menu() {
                             <MenuItemLink
                               text={t("Other State Farmer Report")}
                               to="/seriui/other-state-farmer-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Reports_Export_Report_Registration_User_master_details_report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("User Details Report")}
+                              to="/seriui/user-master-details-report"
                             />
                           </MenuItem>
                         ) : null}
