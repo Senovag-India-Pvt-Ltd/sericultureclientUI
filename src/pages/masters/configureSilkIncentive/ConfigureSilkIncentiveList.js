@@ -136,7 +136,7 @@ function ConfigureSilkIncentiveList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.icbId)}
+            onClick={() => handleView(row.silkIncentiveId)}
           >
             {t("View")}
           </Button>
@@ -144,7 +144,7 @@ function ConfigureSilkIncentiveList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.icbId)}
+            onClick={() => handleEdit(row.silkIncentiveId)}
           >
             {t("Edit")}
           </Button>
@@ -152,7 +152,7 @@ function ConfigureSilkIncentiveList() {
             variant="danger"
             size="sm"
             className="ms-2"
-            onClick={() => deleteConfirm(row.icbId)}
+            onClick={() => deleteConfirm(row.silkIncentiveId)}
           >
             {t("Delete")}
           </Button>
@@ -163,7 +163,7 @@ function ConfigureSilkIncentiveList() {
     },
     {
       name: t("Machine Type Name"),
-      selector: (row) => row.machineTypeId,
+      selector: (row) => row.machineTypeName,
       sortable: true,
       wrap: true,
     },
@@ -186,8 +186,8 @@ function ConfigureSilkIncentiveList() {
       wrap: true,
     },
     {
-      name: t("Unit Cost"),
-      selector: (row) => row.unitCost,
+      name: t("Amount  Per Kg"),
+      selector: (row) => row.amountPerKg,
       right: true,
       sortable: true,
     },
@@ -206,17 +206,17 @@ function ConfigureSilkIncentiveList() {
   ];
 
   return (
-    <Layout title={t("Configure ICB List")}>
+    <Layout title={t("Configure Silk Incentive List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure ICB List")}</Block.Title>
+            <Block.Title tag="h2">{t("Configure Silk Incentive List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/configureSilkIncentive"
+                  to="/seriui/configure-silk-incentive"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -225,7 +225,7 @@ function ConfigureSilkIncentiveList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/configureSilkIncentive"
+                  to="/seriui/configure-silk-incentive"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

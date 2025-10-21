@@ -136,7 +136,7 @@ function ConfigureReelingShedList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.icbId)}
+            onClick={() => handleView(row.reelingShedId)}
           >
             {t("View")}
           </Button>
@@ -144,7 +144,7 @@ function ConfigureReelingShedList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.icbId)}
+            onClick={() => handleEdit(row.reelingShedId)}
           >
             {t("Edit")}
           </Button>
@@ -152,7 +152,7 @@ function ConfigureReelingShedList() {
             variant="danger"
             size="sm"
             className="ms-2"
-            onClick={() => deleteConfirm(row.icbId)}
+            onClick={() => deleteConfirm(row.reelingShedId)}
           >
             {t("Delete")}
           </Button>
@@ -212,17 +212,17 @@ function ConfigureReelingShedList() {
   ];
 
   return (
-    <Layout title={t("Configure ICB List")}>
+    <Layout title={t("Configure Reeling Shed List")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure ICB List")}</Block.Title>
+            <Block.Title tag="h2">{t("Configure Reeling Shed List")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/configureReelingShed"
+                  to="/seriui/configure-reeling-shed"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -231,7 +231,7 @@ function ConfigureReelingShedList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/configureReelingShed"
+                  to="/seriui/configure-reeling-shed"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

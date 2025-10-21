@@ -43,11 +43,11 @@ function ConfigureReelingShedView() {
   }, [id]);
 
   return (
-    <Layout title={t("Configure ICB View")} content="container">
+    <Layout title={t("Configure Reeling Shed View")} content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure ICB View")}</Block.Title>
+            <Block.Title tag="h2">{t("Configure Reeling Shed View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -76,7 +76,7 @@ function ConfigureReelingShedView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>{t("Configure ICB Details")}</Card.Header>
+          <Card.Header>{t("Configure Reeling Shed Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h5 className="d-flex justify-content-center align-items-center">

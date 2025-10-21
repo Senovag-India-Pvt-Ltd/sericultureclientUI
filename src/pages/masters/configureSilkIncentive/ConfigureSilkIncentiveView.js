@@ -43,11 +43,11 @@ function ConfigureSilkIncentiveView() {
   }, [id]);
 
   return (
-    <Layout title={t("Configure ICB View")} content="container">
+    <Layout title={t("Configure Silk Incentive View")} content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure ICB View")}</Block.Title>
+            <Block.Title tag="h2">{t("Configure Silk Incentive View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -76,7 +76,7 @@ function ConfigureSilkIncentiveView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>{t("Configure ICB Details")}</Card.Header>
+          <Card.Header>{t("Configure Silk Incentive Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h5 className="d-flex justify-content-center align-items-center">
@@ -88,10 +88,10 @@ function ConfigureSilkIncentiveView() {
                   <table className="table small table-bordered">
                     <tbody>
                       
-                      <tr>
+                      {/* <tr>
                         <td style={styles.label}>{t("ICB Basin Ends")}:</td>
                         <td>{configureSilkIncentive.icbBasinEnds}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.label}>{t("Category Name")}:</td>
                         <td>{configureSilkIncentive.categoryName}</td>
@@ -105,8 +105,8 @@ function ConfigureSilkIncentiveView() {
                         <td>{configureSilkIncentive.subSchemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.label}>{t("Unit Cost")}:</td>
-                        <td>{configureSilkIncentive.unitCost}</td>
+                        <td style={styles.label}>{t("Amount  Per Kg")}:</td>
+                        <td>{configureSilkIncentive.amountPerKg}</td>
                       </tr>
                       <tr>
                         <td style={styles.label}>{t("Minimum Value")}:</td>

@@ -19,7 +19,7 @@ function ConfigureSilkIncentive() {
     categoryId: "",
     componentId: "",
     componentTypeId: "",
-    unitCost: "",
+    amountPerKg: "",
     min: "",
     max: "",
   });
@@ -193,286 +193,273 @@ const handleInputs = (e) => {
       categoryId: "",
       componentId: "",
       componentTypeId: "",
-      unitCost: "",
+      amountPerKg: "",
       min: "",
       max: "",
     });
   };
 
   return (
-    <Layout title={t("Configure ICB")}>
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure ICB")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/configure-silk-incentive-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/configure-silk-incentive-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+  <Layout title={t("Configure Silk Incentive")}>
+    <Block.Head>
+      <Block.HeadBetween>
+        <Block.HeadContent>
+          <Block.Title tag="h2">{t("Configure Silk Incentive")}</Block.Title>
+        </Block.HeadContent>
+        <Block.HeadContent>
+          <ul className="d-flex">
+            <li>
+              <Link
+                to="/seriui/configure-silk-incentive-list"
+                className="btn btn-primary btn-md d-md-none"
+              >
+                <Icon name="arrow-long-left" />
+                <span>{t("Go to List")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/seriui/configure-silk-incentive-list"
+                className="btn btn-primary d-none d-md-inline-flex"
+              >
+                <Icon name="arrow-long-left" />
+                <span>{t("Go to List")}</span>
+              </Link>
+            </li>
+          </ul>
+        </Block.HeadContent>
+      </Block.HeadBetween>
+    </Block.Head>
 
-      <Block className="mt-n5">
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3">
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  {/* ICB Basin Ends */}
-                  <Form.Group className="form-group">
-                                          <Form.Label>
-                                            {t("Machine Type")}
-                                            <span className="text-danger">*</span>
-                                          </Form.Label>
-                                          <div className="form-control-wrap">
-                                            <Form.Select
-                                              name="machineTypeId"
-                                              value={data.machineTypeId}
-                                              onChange={handleInputs}
-                                              onBlur={() => handleInputs}
-                                              required
-                                              isInvalid={
-                                                data.machineTypeId === undefined ||
-                                                data.machineTypeId === "0"
-                                              }
-                                            >
-                                              <option value="">{t("Select Machine Type")}</option>
-                                              {machineTypeListData.map((list) => (
-                                                <option
-                                                  key={list.machineTypeId}
-                                                  value={list.machineTypeId}
-                                                >
-                                                  {list.machineTypeName}
-                                                </option>
-                                              ))}
-                                            </Form.Select>
-                                            <Form.Control.Feedback type="invalid">
-                                              {t("Machine Type is required")}
-                                            </Form.Control.Feedback>
-                                          </div>
-                                        </Form.Group>
+    <Block className="mt-n5">
+      <Form noValidate validated={validated} onSubmit={postData}>
+        <Row className="g-4">
+          {/* --- Configuration Details Card --- */}
+          <Card className="shadow-sm border-0 rounded-3">
+            {/* 💙 Blue Header */}
+            <Card.Header
+              className="bg-primary text-white py-3 rounded-top"
+              style={{ fontWeight: "600", fontSize: "1.05rem" }}
+            >
+              {t("Configure Silk Incentive Details")}
+            </Card.Header>
 
-                  {/* Category */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>{t("Category")}</Form.Label>
-                      <Form.Select
-                        name="categoryId"
-                        value={data.categoryId}
-                        onChange={handleInputs}
-                        required
-                      >
-                        <option value="">{t("Select Category")}</option>
-                        {scCategoryListData.map((list) => (
-                          <option key={list.scCategoryId} value={list.scCategoryId}>
-                            {list.categoryName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {t("Category is required")}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-
-                  {/* Component */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>{t("Component")}</Form.Label>
-                      <Form.Select
-                        name="componentId"
-                        value={data.componentId}
-                        onChange={handleInputs}
-                        required
-                      >
-                        <option value="">{t("Select Component")}</option>
-                        {scComponentListData.map((list) => (
-                          <option key={list.scComponentId} value={list.scComponentId}>
-                            {list.scComponentName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {t("Component is required")}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-
-                  {/* <Col lg="6">
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>{t("Component Type")}</Form.Label>
-    <Form.Select
-      name="componentTypeId"
-      value={data.componentTypeId}
-                        onChange={handleInputs}
-      required
-    >
-      <option value="">{t("Select Component Type")}</option>
-      {scSubSchemeDetailsListData.map((list) => (
-        <option key={list.subSchemeId} value={list.subSchemeId}>
-          {list.subSchemeName}
-        </option>
-      ))}
-    </Form.Select>
-    <Form.Control.Feedback type="invalid">
-      {t("Component Type is required")}
-    </Form.Control.Feedback>
-  </Form.Group>
-</Col> */}
-
-
-<Col lg="6">
-                  <Form.Group className="form-group mt-n4">
+            <Card.Body>
+              <Row className="g-4">
+                {/* Machine Type */}
+                <Col lg="6">
+                  <Form.Group>
                     <Form.Label>
-                      {t("Component Type")}
-                      <span className="text-danger">*</span>
+                      {t("Machine Type")} <span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="componentTypeId"
-                        value={data.componentTypeId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        required
-                        isInvalid={
-                          data.componentTypeId === undefined ||
-                          data.componentTypeId === "0"
-                        }
-                      >
-                        <option value="">{t("Select Component Type")}</option>
-                        {subSchemeListData &&
-                          subSchemeListData.map((list) => (
-                            <option
-  key={list.scSubSchemeDetailsId}
-  value={list.scSubSchemeDetailsId} // ✅ sending numeric ID
->
-  {list.subSchemeName}
-</option>
-
-                          ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                      {t("Component Type is required")}
-                      </Form.Control.Feedback>
-                    </div>
+                    <Form.Select
+                      name="machineTypeId"
+                      value={data.machineTypeId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.machineTypeId === undefined ||
+                        data.machineTypeId === "0"
+                      }
+                    >
+                      <option value="">{t("Select Machine Type")}</option>
+                      {machineTypeListData.map((list) => (
+                        <option
+                          key={list.machineTypeId}
+                          value={list.machineTypeId}
+                        >
+                          {list.machineTypeName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Machine Type is required")}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
 
+                {/* Category */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Category")} <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="categoryId"
+                      value={data.categoryId}
+                      onChange={handleInputs}
+                      required
+                    >
+                      <option value="">{t("Select Category")}</option>
+                      {scCategoryListData.map((list) => (
+                        <option
+                          key={list.scCategoryId}
+                          value={list.scCategoryId}
+                        >
+                          {list.categoryName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Category is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
 
-                  {/* Unit Cost */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="unitCost">
-                        {t("Unit Cost")} <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="unitCost"
-                          name="unitCost"
-                          value={data.unitCost}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Unit Cost")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {t("Unit Cost is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                {/* Component */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Component")} <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="componentId"
+                      value={data.componentId}
+                      onChange={handleInputs}
+                      required
+                    >
+                      <option value="">{t("Select Component")}</option>
+                      {scComponentListData.map((list) => (
+                        <option
+                          key={list.scComponentId}
+                          value={list.scComponentId}
+                        >
+                          {list.scComponentName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Component is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
 
-                  {/* Min */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="min">
-                        {t("Min")} <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="min"
-                          name="min"
-                          value={data.min}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Min")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {t("Min is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                {/* Component Type */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Component Type")}{" "}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="componentTypeId"
+                      value={data.componentTypeId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.componentTypeId === undefined ||
+                        data.componentTypeId === "0"
+                      }
+                    >
+                      <option value="">{t("Select Component Type")}</option>
+                      {subSchemeListData &&
+                        subSchemeListData.map((list) => (
+                          <option
+                            key={list.scSubSchemeDetailsId}
+                            value={list.scSubSchemeDetailsId}
+                          >
+                            {list.subSchemeName}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Component Type is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
 
-                  {/* Max */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="max">
-                        {t("Max")} <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="max"
-                          name="max"
-                          value={data.max}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Max")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {t("Max is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                {/* Amount Per Kg */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Amount Per Kg")}{" "}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      id="amountPerKg"
+                      name="amountPerKg"
+                      value={data.amountPerKg}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder={t("Enter Amount Per Kg")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Amount Per Kg is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
 
-            <Card>
-              <Card.Body>
-                <div className="gap-col">
-                  <ul className="d-flex align-items-center justify-content-center gap g-3">
-                    <li>
-                      <Button type="submit" variant="primary">
-                        {t("Save")}
-                      </Button>
-                    </li>
-                    <li>
-                      <Button type="button" variant="secondary" onClick={clear}>
-                        {t("Cancel")}
-                      </Button>
-                    </li>
-                  </ul>
-                </div>
-              </Card.Body>
-            </Card>
-          </Row>
-        </Form>
-      </Block>
-    </Layout>
-  );
+                {/* Min */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Min")} <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      id="min"
+                      name="min"
+                      value={data.min}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder={t("Enter Min")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Min is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+
+                {/* Max */}
+                <Col lg="6">
+                  <Form.Group>
+                    <Form.Label>
+                      {t("Max")} <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      id="max"
+                      name="max"
+                      value={data.max}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder={t("Enter Max")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Max is required")}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          {/* --- Action Buttons --- */}
+          <Card className="shadow-sm border-0 rounded-3 mt-4">
+            <Card.Body className="text-center py-3">
+              <div className="d-flex justify-content-center gap-3">
+                <Button type="submit" variant="primary" className="px-4">
+                  {t("Save")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline-secondary"
+                  onClick={clear}
+                  className="px-4"
+                >
+                  {t("Cancel")}
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Row>
+      </Form>
+    </Block>
+  </Layout>
+);
 }
 
 export default ConfigureSilkIncentive;

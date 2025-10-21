@@ -200,11 +200,11 @@ function ConfigureReelingShedEdit() {
   };
 
   return (
-    <Layout title={t("Edit Configure ICB")}>
+    <Layout title={t("Edit Configure Reeling Shed")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Edit Configure ICB")}</Block.Title>
+            <Block.Title tag="h2">{t("Edit Configure Reeling Shed")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
