@@ -16,7 +16,7 @@ function ConfigureReelingShed() {
 
   const [data, setData] = useState({
     reelingUnit: "",
-    sqft: "",
+    reelingSqft: "",
     categoryId: "",
     componentId: "",
     componentTypeId: "",
@@ -173,7 +173,7 @@ const handleInputs = (e) => {
   const clear = () => {
     setData({
       reelingUnit: "",
-      sqft: "",
+      reelingSqft: "",
       categoryId: "",
       componentId: "",
       componentTypeId: "",
@@ -248,14 +248,14 @@ const handleInputs = (e) => {
                    {/* Unit Cost */}
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sqft">
+                      <Form.Label htmlFor="reelingSqft">
                         {t("Sqft")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="sqft"
-                          name="sqft"
-                          value={data.sqft}
+                          id="reelingSqft"
+                          name="reelingSqft"
+                          value={data.reelingSqft}
                           onChange={handleInputs}
                           type="text"
                           placeholder={t("Enter Sqft")}

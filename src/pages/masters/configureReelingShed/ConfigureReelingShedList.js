@@ -169,7 +169,7 @@ function ConfigureReelingShedList() {
     },
     {
       name: t("Sqft"),
-      selector: (row) => row.sqft,
+      selector: (row) => row.reelingSqft,
       sortable: true,
       wrap: true,
     },

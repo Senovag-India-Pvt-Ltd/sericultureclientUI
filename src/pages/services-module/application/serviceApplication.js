@@ -71,6 +71,9 @@ function ServiceApplication() {
     machineQuantity: "",
     machineTypeId: "",
     imcbTable: "",
+    icbBasinEnds:"",
+    reelingUnit:"",
+    reelingSqft:"",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -1444,6 +1447,58 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 //   }
 // };
 
+const [reelinShedAmountData, setReelingShedAmountListData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getreelingShedAmountList = (reelingUnit ,reelingSqft,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureReelingShed/findByReelingUnitAndSqftAndComponentTypeIdAndComponentIdAndCategoryIdAndActive`, {
+      params: {
+        reelingUnit,
+        reelingSqft,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureIcb || [];
+      setReelingShedAmountListData(incentiveData);
+
+      setAmountValue({
+          ...amountValue,
+          unitPrice: incentiveData.unitCost, // Set the Unit Price
+        });
+        setData({
+              ...data,
+              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
+            });
+    })
+    .catch((err) => {
+      setReelingShedAmountListData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.reelingUnit &&
+    data.reelingSqft &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getreelingShedAmountList( 
+      data.reelingUnit,
+      data.reelingSqft,
+      data.scSubSchemeDetailsId,
+      data.scComponentId, 
+      data.scCategoryId
+    );
+  }
+}, [data.reelingUnit,data.reelingSqft,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
 const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations
   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
@@ -1569,6 +1624,97 @@ const handleCalculateUnitPrice = () => {
     return;
   }
 
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF"
+  ) {
+    if (
+      !data.icbBasinEnds ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+
+  // ✅ Validate that API data is available
+    if (!icbAndArmAmountData || icbAndArmAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No ICB/ARM data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const icbRecord = icbAndArmAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    return;
+  }
+
+  
+if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF"
+  ) {
+    if (
+      !data.reelingUnit ||
+      !data.reelingSqft ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+
+  // ✅ Validate that API data is available
+    if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No Reeling Shed data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const icbRecord = reelinShedAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    return;
+  } 
   
 
   // ✅ Adopting Heat Recovery Unit - PSF
@@ -1749,6 +1895,56 @@ useEffect(() => {
   }
 }, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
+
+const [icbAndArmAmountData, setIcbAndArmAmountListData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureIcb/findByIcbBasinEndsAndComponentTypeIdAndComponentIdAndCategoryIdAndActive`, {
+      params: {
+        icbBasinEnds,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureIcb || [];
+      setIcbAndArmAmountListData(incentiveData);
+
+      setAmountValue({
+          ...amountValue,
+          unitPrice: incentiveData.unitCost, // Set the Unit Price
+        });
+        setData({
+              ...data,
+              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
+            });
+    })
+    .catch((err) => {
+      setIcbAndArmAmountListData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.icbBasinEnds &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getIcbAndArmAmountList( 
+      data.icbBasinEnds,
+      data.scSubSchemeDetailsId,
+      data.scComponentId, 
+      data.scCategoryId
+    );
+  }
+}, [data.icbBasinEnds,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
   const handleEquipmentInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -1826,6 +2022,9 @@ useEffect(() => {
       machineQuantity: data.machineQuantity,
       machineTypeId: data.machineTypeId,
       imcbTable: data.imcbTable,
+      icbBasinEnds: data.icbBasinEnds,
+      reelingUnit: data.reelingUnit,
+      reelingSqft: data.reelingSqft,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -2050,6 +2249,9 @@ useEffect(() => {
       machineQuantity: "",
       machineTypeId: "",
       imcbTable: "",
+      icbBasinEnds: "",
+      reelingSqft: "",
+      reelingUnit: ""
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -2437,7 +2639,7 @@ const search = (event) => {
     });
 };
 
-const fetchReelerDetails = () => {
+const fetchReelerDetails = () => { 
   api
     .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
       fruitsId: data.fruitsId,
@@ -3447,6 +3649,92 @@ const fetchReelerDetails = () => {
                               
                             </>
                           )}
+
+                          {getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF" && (
+                           
+                            <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("ICB Basin Ends")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="icbBasinEnds"
+                                    name="icbBasinEnds"
+                                    value={data.icbBasinEnds}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select ICB Basin Ends")}</option>
+                                    <option value="48 Ends">48 Ends</option>
+                                    <option value="36 Ends">36 Ends</option>
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("ICB Basin Ends is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                               )}
+
+
+                            {getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
+                            <>
+                            <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Reeling Unit")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingUnit"
+                                    name="reelingUnit"
+                                    value={data.reelingUnit}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling Unit")}</option>
+                                    <option value="10 Ends">10 Ends</option>
+                                    <option value="6 Ends">6 Ends</option>
+                                    <option value="48 Ends">48 Ends</option>
+                                    <option value="36 Ends">36 Ends</option>
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling Unit is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                             <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Reeling SQFT")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingSqft"
+                                    name="reelingSqft"
+                                    value={data.reelingSqft}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="1200">1200</option>
+                                    <option value="900">900</option>
+                                    <option value="600">600</option>
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+
+                            </>
+                               )}
 
 
                           {(getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||

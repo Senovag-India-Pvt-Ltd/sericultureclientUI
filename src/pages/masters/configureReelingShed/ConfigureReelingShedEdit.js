@@ -17,7 +17,7 @@ function ConfigureReelingShedEdit() {
 
   const [data, setData] = useState({
     reelingUnit: "",
-    sqft: "",
+    reelingSqft: "",
     categoryId: "",
     componentId: "",
     componentTypeId: "",
@@ -189,7 +189,7 @@ function ConfigureReelingShedEdit() {
   const clear = () => {
     setData({
       reelingUnit: "",
-      sqft: "",
+      reelingSqft: "",
       categoryId: "",
       componentId: "",
       componentTypeId: "",
@@ -268,21 +268,21 @@ function ConfigureReelingShedEdit() {
                                        {/* Unit Cost */}
                                       <Col lg="6">
                                         <Form.Group className="form-group mt-n4">
-                                          <Form.Label htmlFor="sqft">
-                                            {t("Sqft")} <span className="text-danger">*</span>
+                                          <Form.Label htmlFor="reelingSqft">
+                                            {t("reelingSqft")} <span className="text-danger">*</span>
                                           </Form.Label>
                                           <div className="form-control-wrap">
                                             <Form.Control
-                                              id="sqft"
-                                              name="sqft"
-                                              value={data.sqft}
+                                              id="reelingSqft"
+                                              name="reelingSqft"
+                                              value={data.reelingSqft}
                                               onChange={handleInputs}
                                               type="text"
-                                              placeholder={t("Enter Sqft")}
+                                              placeholder={t("Enter reelingSqft")}
                                               required
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                              {t("Sqft is required")}
+                                              {t("reelingSqft is required")}
                                             </Form.Control.Feedback>
                                           </div>
                                         </Form.Group>

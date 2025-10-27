@@ -95,7 +95,7 @@ function ConfigureReelingShedView() {
                       </tr>
                       <tr>
                         <td style={styles.label}>{t("Sqfts")}:</td>
-                        <td>{configureReelingShed.sqft}</td>
+                        <td>{configureReelingShed.reelingSqft}</td>
                       </tr>
                       <tr>
                         <td style={styles.label}>{t("Category Name")}:</td>

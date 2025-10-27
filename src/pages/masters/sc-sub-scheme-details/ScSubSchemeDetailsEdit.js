@@ -414,6 +414,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -456,6 +457,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -498,6 +500,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -540,6 +543,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -582,6 +586,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
