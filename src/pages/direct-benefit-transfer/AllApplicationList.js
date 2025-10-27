@@ -802,7 +802,7 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: t("farmer_name"),
+      name: t("Name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
@@ -1215,7 +1215,7 @@ function AllApplicationList() {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>{t("farmer_name")}</td>
+                  <td style={styles.ctstyle}>{t("Name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>
@@ -1289,6 +1289,18 @@ function AllApplicationList() {
                 <tr>
                   <td style={styles.ctstyle}>Application Status:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Month(Silk Incentive):</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.month || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Machine Quantity(Silk Incentive):</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.machineQuantity || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Machine Type(Silk Incentive):</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.machineTypeName || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td style={styles.ctstyle}>Remarks:</td>
@@ -1736,7 +1748,7 @@ function AllApplicationList() {
 
 
 
-        <Accordion.Item eventKey="transaction">
+        {/* <Accordion.Item eventKey="transaction">
   <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
                         className="mb-2">Application Transaction Details</Accordion.Header>
   <Accordion.Body>
@@ -1781,7 +1793,7 @@ function AllApplicationList() {
       </table>
     </div>
   </Accordion.Body>
-</Accordion.Item>
+</Accordion.Item> */}
       </Accordion>
     )}
 

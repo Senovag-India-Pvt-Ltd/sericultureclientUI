@@ -209,115 +209,271 @@ useEffect(() => {
   const [farmerId, setFarmerId] = useState(0);
 
   const getIdList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURLDBT + `service/get-application-form-service-join/${id}`)
-      .then((response) => {
-        const datas = response.data.content;
-        setData((prev) => ({
-          ...prev,
-          scSchemeDetailsId: datas.schemeId,
-          scSubSchemeDetailsId: datas.subSchemeId,
-          scComponentId: datas.componentId,
-          scCategoryId: datas.categoryId,
-          scHeadAccountId: datas.headOfAccountId,
-          financialYearMasterId: datas.financialYearMasterId,
-          schemeAmount: datas.schemeAmount,
-          sanctionNumber: datas.sanctionNo,
-          scSubSchemeType: datas.componentType,
-          vendorId: datas.vendorId,
-          description: datas.description,
-          hectareId: datas.hectareId,
-          spacingId: datas.spacingId,
-          periodFrom: new Date("2024-04-01"),
-          periodTo: new Date("2025-03-31"),
-        }));
+  setLoading(true);
+  api
+    .get(baseURLDBT + `service/get-application-form-service-join/${id}`)
+    .then((response) => {
+      const datas = response.data.content;
 
-        setFarmerId(datas.farmerId);
+      setData((prev) => ({
+        ...prev,
+        scSchemeDetailsId: datas.schemeId,
+        scSubSchemeDetailsId: datas.subSchemeId,
+        scComponentId: datas.componentId,
+        scCategoryId: datas.categoryId,
+        scHeadAccountId: datas.headOfAccountId,
+        financialYearMasterId: datas.financialYearMasterId,
+        schemeAmount: datas.schemeAmount,
+        sanctionNumber: datas.sanctionNo,
+        scSubSchemeType: datas.componentType,
+        vendorId: datas.vendorId,
+        description: datas.description,
+        hectareId: datas.hectareId,
+        spacingId: datas.spacingId,
+        periodFrom: new Date("2024-04-01"),
+        periodTo: new Date("2025-03-31"),
+      }));
 
-        api
-          .get(
-            baseURLRegistration +
-              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              // console.log("Fruits ID",response.data.content.fruitsId);
-              setFarmerDetails((prev) => ({
-                ...prev,
-                village:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].villageName,
-                talukName:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].talukName,
-              }));
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            handleError(err);
-          });
+      setFarmerId(datas.farmerId);
 
-        api
-          .get(
-            baseURLRegistration +
-              `farmer/get-by-farmer-id-join/${datas.farmerId}`
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              setFarmerDetails((prev) => ({
-                ...prev,
-                farmerName: response.data.content.firstName,
-                fid: response.data.content.fruitsId,
-              }));
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            handleError(err);
-          });
+      // ✅ Step 1: First call reeler/get/{farmerId} to get fruitsId
+      api
+        .get(baseURLRegistration + `reeler/get/${datas.farmerId}`)
+        .then((reelerRes) => {
+          const reelerData = reelerRes.data?.content;
+          const fruitsId = reelerData?.fruitsId;
 
-        api
-          .get(
-            baseURLDBT +
-              `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              const landDetails =
-                response.data.content.dbtFarmerLandDetails || [];
-              console.log("Fetched land details:", landDetails);
-              setSavedLandDetailsList(landDetails);
-            }
-            setLoading(false);
-          })
-          .catch((err) => {
-            handleError(err);
-            setLoading(false);
-          });
+          if (fruitsId) {
+            // ✅ Step 2: Call get-reeler-details-by-fruits-id using fruitsId
+            api
+              .post(
+                baseURLFarmerServer +
+                  `reeler/get-reeler-details-by-fruits-id`,
+                { fruitsId: fruitsId }
+              )
+              .then((reelerDetailsRes) => {
+                const reeler = reelerDetailsRes.data?.content?.reelerResponse;
 
-       // Call handleView with applicationFormId
-      handleView(id); // Ensure applicationFormId exists in datas
-      
-      setLoading(false);
+                if (reeler) {
+                  // ✅ Reeler data found → set as farmerDetails
+                  const reelerAddress = reeler.fruitsId || "";
+                  setFarmerDetails({
+                    farmerName: reeler.reelerName,
+                    fid: reelerAddress, // show address in FRUITS ID column
+                    talukName: reeler.talukName || "",
+                    village: reeler.address || "",
+                  });
+
+                  setData((prev) => ({
+                    ...prev,
+                    reelerId: reeler.reelerId,
+                    reelerName: reeler.reelerName,
+                    fatherName: reeler.fatherName,
+                    gender: reeler.gender,
+                    casteId: reeler.casteId,
+                    address: reelerAddress,
+                  }));
+
+                  setValidated(false);
+                  setLoading(false);
+                } else {
+                  // ❌ No reeler details → call farmer APIs
+                  fetchFarmerRelatedData(datas);
+                }
+              })
+              .catch((err) => {
+                console.error("Error fetching reeler details:", err);
+                fetchFarmerRelatedData(datas);
+              });
+          } else {
+            // ❌ No fruitsId found → fallback to farmer data
+            fetchFarmerRelatedData(datas);
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching reeler by farmerId:", err);
+          fetchFarmerRelatedData(datas);
+        });
+
+      // ✅ Always call handleView at the end
+      handleView(id);
     })
-      .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
-        setData({});
-        setLoading(false);
-      }); 
-  };
+    .catch((err) => {
+      const message =
+        err.response?.data?.errorMessages?.[0]?.message?.[0]?.message;
+      console.error("Error fetching application form details:", message);
+      setData({});
+      setLoading(false);
+    });
+};
 
-  useEffect(() => {
-    getIdList();
-  }, [id]);
+// 🔁 Helper function: fetch farmer details if reeler not found
+const fetchFarmerRelatedData = (datas) => {
+  // Farmer Address API
+  api
+    .get(
+      baseURLRegistration + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+    )
+    .then((response) => {
+      if (response.data.errorCode !== -1 && response.data.content) {
+        const addr = response.data.content.farmerAddress?.[0];
+        if (addr) {
+          setFarmerDetails((prev) => ({
+            ...prev,
+            village: addr.villageName,
+            talukName: addr.talukName,
+          }));
+        }
+      }
+    })
+    .catch(handleError);
+
+  // Farmer Details API
+  api
+    .get(baseURLRegistration + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+    .then((response) => {
+      if (response.data.errorCode !== -1 && response.data.content) {
+        setFarmerDetails((prev) => ({
+          ...prev,
+          farmerName: response.data.content.firstName,
+          fid: response.data.content.fruitsId,
+        }));
+      }
+    })
+    .catch(handleError);
+
+  // Land Details API
+  api
+    .get(baseURLDBT + `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`)
+    .then((response) => {
+      if (response.data.errorCode !== -1 && response.data.content) {
+        const landDetails = response.data.content.dbtFarmerLandDetails || [];
+        setSavedLandDetailsList(landDetails);
+      }
+    })
+    .catch(handleError)
+    .finally(() => {
+      setLoading(false);
+    });
+};
+
+useEffect(() => {
+  getIdList();
+}, [id]);
+
+
+
+
+  // const getIdList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLDBT + `service/get-application-form-service-join/${id}`)
+  //     .then((response) => {
+  //       const datas = response.data.content;
+  //       setData((prev) => ({
+  //         ...prev,
+  //         scSchemeDetailsId: datas.schemeId,
+  //         scSubSchemeDetailsId: datas.subSchemeId,
+  //         scComponentId: datas.componentId,
+  //         scCategoryId: datas.categoryId,
+  //         scHeadAccountId: datas.headOfAccountId,
+  //         financialYearMasterId: datas.financialYearMasterId,
+  //         schemeAmount: datas.schemeAmount,
+  //         sanctionNumber: datas.sanctionNo,
+  //         scSubSchemeType: datas.componentType,
+  //         vendorId: datas.vendorId,
+  //         description: datas.description,
+  //         hectareId: datas.hectareId,
+  //         spacingId: datas.spacingId,
+  //         periodFrom: new Date("2024-04-01"),
+  //         periodTo: new Date("2025-03-31"),
+  //       }));
+
+  //       setFarmerId(datas.farmerId);
+
+  //       api
+  //         .get(
+  //           baseURLRegistration +
+  //             `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             // console.log("Fruits ID",response.data.content.fruitsId);
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               village:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].villageName,
+  //               talukName:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].talukName,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           handleError(err);
+  //         });
+
+  //       api
+  //         .get(
+  //           baseURLRegistration +
+  //             `farmer/get-by-farmer-id-join/${datas.farmerId}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               farmerName: response.data.content.firstName,
+  //               fid: response.data.content.fruitsId,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           handleError(err);
+  //         });
+
+  //       api
+  //         .get(
+  //           baseURLDBT +
+  //             `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             const landDetails =
+  //               response.data.content.dbtFarmerLandDetails || [];
+  //             console.log("Fetched land details:", landDetails);
+  //             setSavedLandDetailsList(landDetails);
+  //           }
+  //           setLoading(false);
+  //         })
+  //         .catch((err) => {
+  //           handleError(err);
+  //           setLoading(false);
+  //         });
+
+  //      // Call handleView with applicationFormId
+  //     handleView(id); // Ensure applicationFormId exists in datas
+      
+  //     setLoading(false);
+  //   })
+  //     .catch((err) => {
+  //       const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       setLoading(false);
+  //     }); 
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  // }, [id]);
 
   const getDirectData = () => {
     api
@@ -2027,7 +2183,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}>{t("farmer_name")}</td>
+                            <td style={styles.ctstyle}>{t("Name")}</td>
                             <td>{farmerDetails.farmerName}</td>
                             <td style={styles.ctstyle}> {t("FRUITS ID")}</td>
                             <td>{farmerDetails.fid}</td>

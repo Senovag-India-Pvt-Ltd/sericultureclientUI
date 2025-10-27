@@ -198,11 +198,11 @@ function ConfigureImcbEdit() {
   };
 
   return (
-    <Layout title={t("Edit Configure Imcb")}>
+    <Layout title={t("Edit Configure IMCB/MERM")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Edit Configure Imcb")}</Block.Title>
+            <Block.Title tag="h2">{t("Edit Configure IMCB/MERM")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -241,10 +241,10 @@ function ConfigureImcbEdit() {
                 ) : (
                   <Row className="g-gs">
                     {/* imcb Basin Ends */}
-<Col lg="6">
+                    <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="imcbTable">
-                        {t("Imcb Table")} <span className="text-danger">*</span>
+                        {t("Imcb Table/Basin")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -254,10 +254,12 @@ function ConfigureImcbEdit() {
                           onChange={handleInputs}
                           required
                         >
-                          <option value="">{t("Select Imcb Table")}</option>
-                          <option value="1-Table">1-Table</option>
-                          <option value="2-Table">2-Table</option>
-                        <option value="3-Table">2-Table</option>
+                         <option value="">{t("Select Imcb Table")}</option>
+                          <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
+                          <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
+                          <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
+                          <option value="6 Basin">6 Basin</option>
+                          <option value="10 Basin">10 Basin</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           {t("Imcb Table is required")}

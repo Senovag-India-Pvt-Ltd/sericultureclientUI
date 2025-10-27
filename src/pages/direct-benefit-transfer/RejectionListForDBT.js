@@ -2032,7 +2032,7 @@ const getFinancialDefaultDetails = () => {
                              </td>
                            </tr>
                            <tr>
-                             <td style={styles.ctstyle}>Farmer Name:</td>
+                             <td style={styles.ctstyle}>Name:</td>
                              <td>
                                {viewDetailsData?.applicationDetails?.[0]
                                  ?.farmerFirstName || "N/A"}
@@ -2644,7 +2644,7 @@ const getFinancialDefaultDetails = () => {
                 <td>{detail.beneficiaryId}</td>
               </tr>
               <tr>
-                <td style={styles.ctstyle}>FarmerRegNo:</td>
+                <td style={styles.ctstyle}>RegNo:</td>
                 <td>{detail.farmerRegNo}</td>
               </tr>
               <tr>

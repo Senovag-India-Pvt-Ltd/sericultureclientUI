@@ -56,19 +56,24 @@ function ScSubSchemeDetailsEdit() {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            setData({
-                scSchemeDetailsId: "",
-                subSchemeName: "",
-                subSchemeNameInKannada: "",
-                subSchemeType:"",
-                subSchemeStartDate:"",
-                subSchemeEndDate:"",
-                dbtCode: "",
-                withLand: "",
-                beneficiaryType: "",
-                allowMultipleSanction: "",
-                schemeForReeling: "",
-            });
+            // setData({
+            //     scSchemeDetailsId: "",
+            //     subSchemeName: "",
+            //     subSchemeNameInKannada: "",
+            //     subSchemeType:"",
+            //     subSchemeStartDate:"",
+            //     subSchemeEndDate:"",
+            //     dbtCode: "",
+            //     withLand: "",
+            //     beneficiaryType: "",
+            //     allowMultipleSanction: "",
+            //     schemeForReeling: "",
+            //     calculationBasedOn: "",
+            //     workOrderForScheme: "",
+            //     sanctionOrderForScheme: "",
+            //     unitForScheme: "",
+            //     acknowledgementForScheme: "",
+            // });
             setValidated(false);
           }
         })
@@ -101,6 +106,11 @@ function ScSubSchemeDetailsEdit() {
         beneficiaryType: "",
         allowMultipleSanction: "",
         schemeForReeling: "",
+        calculationBasedOn: "",
+        workOrderForScheme: "",
+        sanctionOrderForScheme: "",
+        unitForScheme: "",
+        acknowledgementForScheme: "",
     });
   };
 
@@ -369,6 +379,216 @@ function ScSubSchemeDetailsEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                   <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Calculation Based On
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="calculationBasedOn"
+                            value={data.calculationBasedOn}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Calculation Based On
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Adopting Boiler">Adopting Boiler</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Work Order
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="workOrderForScheme"
+                            value={data.workOrderForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Work Order
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Adopting Boiler">Adopting Boiler</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Sanction Order 
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="sanctionOrderForScheme"
+                            value={data.sanctionOrderForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Sanction Order
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Adopting Boiler">Adopting Boiler</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Acknowledgement
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="acknowledgementForScheme"
+                            value={data.acknowledgementForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Acknowledgement
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Adopting Boiler">Adopting Boiler</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For Unit Cost
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="unitForScheme"
+                            value={data.unitForScheme}
+                            onChange={handleInputs}
+                            // required
+                            // isInvalid={
+                            //   data.calculationBasedOn === undefined ||
+                            //   data.calculationBasedOn === "0"
+                            // }
+                          >
+                            <option value="">
+                              Select Scheme For Unit Cost
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Adopting Boiler">Adopting Boiler</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                          Test Results is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
                   
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">

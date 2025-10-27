@@ -3071,7 +3071,7 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: "Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
@@ -3673,7 +3673,7 @@ useEffect(() => {
                               overflow: "hidden",
                             }}
                           >
-                            <span>Farmers Details</span>
+                            <span>Beneficiary Details</span>
                             <div
                               style={{
                                 position: "absolute",
@@ -3701,8 +3701,8 @@ useEffect(() => {
                                   <tr>
                                     {[
                                       "Fruits Id",
-                                      "Farmer Name",
-                                      "Farmer Middle Name",
+                                      "Name",
+                                      "Middle Name",
                                       "Mobile Number",
                                       "District",
                                       "Taluk",
@@ -3740,7 +3740,7 @@ useEffect(() => {
                                   ) : (
                                     <tr>
                                       <td colSpan="10" className="text-center">
-                                        No Farmer Details Available
+                                        No Details Available
                                       </td>
                                     </tr>
                                   )}
@@ -4982,7 +4982,7 @@ useEffect(() => {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Farmer Name:</td>
+                        <td style={styles.ctstyle}>Name:</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
                             ?.farmerFirstName || "N/A"}
@@ -5093,6 +5093,19 @@ useEffect(() => {
                             ?.applicationStatus || "N/A"}
                         </td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Month(Silk Incentive):</td>
+                        <td>{viewDetailsData?.applicationDetails?.[0]?.month || 'N/A'}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Machine Quantity(Silk Incentive):</td>
+                        <td>{viewDetailsData?.applicationDetails?.[0]?.machineQuantity || 'N/A'}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Machine Type(Silk Incentive):</td>
+                        <td>{viewDetailsData?.applicationDetails?.[0]?.machineTypeName || 'N/A'}</td>
+                      </tr>
+                      
                       <tr>
                         <td style={styles.ctstyle}>Remarks:</td>
                         <td>
@@ -5715,7 +5728,7 @@ useEffect(() => {
                 <td>{checkFileDetails.beneficiaryId}</td>
               </tr>
               <tr>
-                <td style={styles.ctstyle}>FarmerRegNo:</td>
+                <td style={styles.ctstyle}>RegNo:</td>
                 <td>{checkFileDetails.farmerRegNo}</td>
               </tr>
               <tr>

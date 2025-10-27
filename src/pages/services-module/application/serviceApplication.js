@@ -67,6 +67,10 @@ function ServiceApplication() {
     south:"",
     addKaneshLand:"no",
     kaneshHobliId: "",
+    month: "",
+    machineQuantity: "",
+    machineTypeId: "",
+    imcbTable: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -227,37 +231,20 @@ useEffect(() => {
     .get(`${baseURLMasterData}scSchemeDetails/get/${schemeId}`)
     .then((response) => {
       const details = response.data.content;
-      setSchemeDetails(details); // Store response data in state
-      // Check if unitForScheme matches "Bivoltine Bonus"
-      if (details.unitForScheme === "Bivoltine Bonus") {
-        setShowButton(true);
-        setData((prevData) => ({
-          ...prevData,
-          availBonus: true, // ✅ set default only when showButton is true
-        }));
-      } else {
-        setShowButton(false);
-        setData((prevData) => ({
-          ...prevData,
-          availBonus: false, // ✅ set default only when showButton is true
-        }));
-      }
+      setSchemeDetails(details);
       setLoading(false);
     })
     .catch((err) => {
       setLoading(false);
-      setShowButton(false);
-      setData((prevData) => ({
-        ...prevData,
-        availBonus: false,
-      })); // Hide button in case of error
+      console.error("Error fetching area details:", err);
     });
 };
-  useEffect(() => {
-    if (schemeId) {
-      getAreaDetailsList();
-    }
-  }, [schemeId]);
+
+useEffect(() => {
+  if (schemeId) {
+    getAreaDetailsList();
+  }
+}, [schemeId]);
 
   const [developedLand, setDevelopedLand] = useState({
     landDeveloped: "",
@@ -557,8 +544,27 @@ useEffect(() => {
     }
   }, [data.scSchemeDetailsId]);
 
+   // to get Machine Type
+    const [machineTypeListData, setMachineTypeListData] = useState([]);
+  
+    const getMachineTypeList = () => {
+      api
+        .get(baseURLMasterData + `machine-type-master/get-all`)
+        .then((response) => {
+          setMachineTypeListData(response.data.content.machineTypeMaster);
+        })
+        .catch((err) => {
+          setMachineTypeListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getMachineTypeList();
+    }, []);
+
  // State to store incentive and bonus data
 const [getIncentiveAndBonusData, setIncentiveAndBonusData] = useState([]);
+const [isSanctionForReeling, setIsSanctionForReeling] = useState(false);
 
 // Function to fetch incentive/bonus data
 const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
@@ -573,24 +579,59 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
       const content = response.data.content;
 
      if (content && content.scSubSchemeDetails.length > 0) {
-        setIncentiveAndBonusData(content.scSubSchemeDetails);
+        const subSchemeList = content.scSubSchemeDetails;
+        setIncentiveAndBonusData(subSchemeList);
 
-        // Extract subSchemeType from first item
-        const schemeType = content.scSubSchemeDetails[0]?.subSchemeType;
+        const sanctionForReeling =
+          subSchemeList[0]?.sanctionForReeling || false;
+        setIsSanctionForReeling(sanctionForReeling);
 
-        // Trigger lot API if lotNo exists
+        // ✅ Check unitForScheme === "Bivoltine Bonus" here
+        const unitForScheme = subSchemeList[0]?.unitForScheme;
+        if (unitForScheme === "Bivoltine Bonus") {
+          setShowButton(true);
+          setData((prev) => ({
+            ...prev,
+            availBonus: true,
+          }));
+        } else {
+          setShowButton(false);
+          setData((prev) => ({
+            ...prev,
+            availBonus: false,
+          }));
+        }
+
+        // ✅ Extract schemeType and trigger next API
+        const schemeType = subSchemeList[0]?.subSchemeType;
         if (data.lotNo && schemeType) {
-          getLotDistributeResponseForInvoiceAndBonusScheme(data.lotNo, schemeType);
+          getLotDistributeResponseForInvoiceAndBonusScheme(
+            data.lotNo,
+            schemeType
+          );
         }
       } else {
         setIncentiveAndBonusData([]);
+        setIsSanctionForReeling(false);
+        setShowButton(false);
+        setData((prev) => ({
+          ...prev,
+          availBonus: false,
+        }));
       }
     })
     .catch((err) => {
       setIncentiveAndBonusData([]);
+      setIsSanctionForReeling(false);
+      setShowButton(false);
+      setData((prev) => ({
+        ...prev,
+        availBonus: false,
+      }));
       console.error("Error fetching incentive/bonus data:", err);
     });
 };
+
 
 const [farmerDetailsForIB, setFarmerDetailsForIB] = useState({});
 
@@ -1364,44 +1405,211 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
   };
   
  
-  const handleCalculateUnitPrice = () => { 
-    if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
-        if (!data.spacingId) {
-            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Spacing." });
-            return;
-        }
-        if (!data.hectareId) {
-            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Hectare." });
-            return;
-        }
+//   const handleCalculateUnitPrice = () => { 
+//     if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
+//         if (!data.spacingId) {
+//             Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Spacing." });
+//             return;
+//         }
+//         if (!data.hectareId) {
+//             Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Hectare." });
+//             return;
+//         }
 
-        if (schemeDetails.calculationBasedOn === "PMKSY") {
-            getEligibleAmount(); // Call the API after selecting fruitsId, categoryId, and componentId
-        }
-        getAmountList(); // Call to fill unitPrice
-    }  
-    else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
-        if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
-            Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
-            return;
-        }
-        calculateBonusAmount();
-    } 
-    else if (
-      schemeDetails.calculationBasedOn === "Sericulture Development Programme" || 
-      schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-      schemeDetails.calculationBasedOn === "Silk Samagra Central"
-  ) {
-      if (!data.scSchemeDetailsId || !data.scCategoryId || !data.scComponentId) {
-          Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
-          return;
-      }
-      getCalculateAmountForRH();
-  }  
-  else {
-      Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
+//         if (schemeDetails.calculationBasedOn === "PMKSY") {
+//             getEligibleAmount(); // Call the API after selecting fruitsId, categoryId, and componentId
+//         }
+//         getAmountList(); // Call to fill unitPrice
+//     }  
+//     else if (schemeDetails.calculationBasedOn === "Bivoltine Bonus") {
+//         if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+//             Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+//             return;
+//         }
+//         calculateBonusAmount();
+//     } 
+//     else if (
+//       schemeDetails.calculationBasedOn === "Sericulture Development Programme" || 
+//       schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+//       schemeDetails.calculationBasedOn === "Silk Samagra Central"
+//   ) {
+//       if (!data.scSchemeDetailsId || !data.scCategoryId || !data.scComponentId) {
+//           Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+//           return;
+//       }
+//       getCalculateAmountForRH();
+//   }  
+//   else {
+//       Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
+//   }
+// };
+
+const handleCalculateUnitPrice = () => {
+  // ✅ Check scheme-based calculations
+  if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
+    if (!data.spacingId) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Spacing." });
+      return;
+    }
+    if (!data.hectareId) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Hectare." });
+      return;
+    }
+
+    if (schemeDetails.calculationBasedOn === "PMKSY") {
+      getEligibleAmount();
+    }
+    getAmountList();
+    return; // ✅ stop further checks
   }
+
+  // ✅ Check for Incentive/Bonus-based calculations
+  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus") {
+    if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      return;
+    }
+    calculateBonusAmount();
+    return;
+  }
+
+  // ✅ Special case: Silk Incentive - PSF
+  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
+    if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    if (!data.machineQuantity) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter Machine Quantity.",
+      });
+      return;
+    }
+
+    // ✅ Check for max machine quantity
+    if (maxMachineQuantity && parseFloat(data.machineQuantity) > parseFloat(maxMachineQuantity)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: `Entered quantity exceeds maximum allowed value (${maxMachineQuantity}). Please enter a lower quantity.`,
+      });
+      return;
+    }
+
+    // ✅ Calculate subsidy/bonus amount using amountPerKg
+        if (silkIncentiveAmountData.length > 0) {
+      const { amountPerKg } = silkIncentiveAmountData[0];
+      const totalAmount = parseFloat(data.machineQuantity) * parseFloat(amountPerKg);
+
+      // ✅ Update Unit Price as amountPerKg
+          setAmountValue((prev) => ({
+        ...prev,
+        unitPrice: Math.round(totalAmount), // no decimals
+      }));
+
+      // ✅ Update Subsidy/Bonus/Incentive Amount
+      setData((prev) => ({
+        ...prev,
+        expectedAmount: Math.round(totalAmount), // no decimals
+      }));
+    }
+
+    return;
+  }
+
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF"
+  ) {
+    if (
+      !data.imcbTable ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    // ✅ Validate that API data is available
+    if (!imcbAndMermAmountData || imcbAndMermAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No IMCB/MERM data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const imcbRecord = imcbAndMermAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(imcbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(imcbRecord.unitCost || 0),
+    }));
+
+    return;
+  }
+
+  
+
+  // ✅ Adopting Heat Recovery Unit - PSF
+  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+    if (!data.scSchemeDetailsId || !data.scSubSchemeDetailsId || !data.scComponentId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    // ✅ Directly assign unitPrice → expectedAmount
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: amountValue.unitPrice || 0,
+    }));
+
+    return;
+  }
+
+  // ✅ Sericulture/State/Central-based calculations
+  if (
+    schemeDetails.calculationBasedOn === "Sericulture Development Programme" ||
+    schemeDetails.calculationBasedOn === "Silk Samagra State" ||
+    schemeDetails.calculationBasedOn === "Silk Samagra Central"
+  ) {
+    if (!data.scSchemeDetailsId || !data.scCategoryId || !data.scComponentId) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      return;
+    }
+    getCalculateAmountForRH();
+    return;
+  }
+
+  // ❌ Default fallback for anything unmatched
+  Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
 };
+
+
   // to get bonus Amount by component and category
   const [bonusAmountData, setBonusAmountListData] = useState(
     []
@@ -1435,9 +1643,111 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       getBonusAmountList(data.scComponentId,data.scCategoryId);
     }
   }, [data.scComponentId, data.scCategoryId]);
-  
 
+const [silkIncentiveAmountData, setSilkIncentiveListData] = useState([]);
+const [maxMachineQuantity, setMaxMachineQuantity] = useState(null);
 
+  // ✅ API call to get Silk Incentive amount list
+const getSilkIncentiveAmountList = (componentTypeId, componentId, categoryId, machineTypeId) => {
+  api
+    .get(`${baseURLMasterData}configureSilkIncentive/getAmountByMachineTypeComponentsAndSchemes`, {
+      params: {
+        componentTypeId,
+        componentId,
+        categoryId,
+        machineTypeId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureSilkIncentive || [];
+      setSilkIncentiveListData(incentiveData);
+
+      if (incentiveData.length > 0) {
+        const { amountPerKg, max } = incentiveData[0];
+        setMaxMachineQuantity(max || null);
+
+        // ✅ Auto calculate total amount if machineQuantity is already entered
+        if (data.machineQuantity && amountPerKg) {
+          const totalAmount = parseFloat(data.machineQuantity) * parseFloat(amountPerKg);
+          setData((prev) => ({
+            ...prev,
+            expectedAmount: Math.round(totalAmount),
+          }));
+        }
+      }
+    })
+    .catch((err) => {
+      setSilkIncentiveListData([]);
+      setMaxMachineQuantity(null);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId &&
+    data.machineTypeId
+  ) {
+    getSilkIncentiveAmountList(
+      data.scSubSchemeDetailsId,
+      data.scComponentId,
+      data.scCategoryId,
+      data.machineTypeId
+    );
+  }
+}, [data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId, data.machineTypeId]);
+
+const [imcbAndMermAmountData, setImcbAndMermAmountListData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getImcbAndMermAmountList = (imcbTable ,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureImcb/findByImcbTableAndComponentTypeIdAndComponentIdAndCategoryIdAndActive`, {
+      params: {
+        imcbTable,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureImcb || [];
+      setImcbAndMermAmountListData(incentiveData);
+
+      setAmountValue({
+          ...amountValue,
+          unitPrice: incentiveData.unitCost, // Set the Unit Price
+        });
+        setData({
+              ...data,
+              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
+            });
+    })
+    .catch((err) => {
+      setImcbAndMermAmountListData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.imcbTable &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getImcbAndMermAmountList(
+      data.imcbTable,
+      data.scSubSchemeDetailsId,
+      data.scComponentId,
+      data.scCategoryId
+    );
+  }
+}, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
   const handleEquipmentInputs = (e) => {
     let name = e.target.name;
@@ -1512,6 +1822,10 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       availBonus: data.availBonus,
       description: equipment.description,
       loggedInUserId: localStorage.getItem("userMasterId"),
+      month: data.month,
+      machineQuantity: data.machineQuantity,
+      machineTypeId: data.machineTypeId,
+      imcbTable: data.imcbTable,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -1732,6 +2046,10 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
       south: "",
       kaneshHobliId: "",
       addKaneshLand :"no",
+      month: "",
+      machineQuantity: "",
+      machineTypeId: "",
+      imcbTable: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -1754,6 +2072,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     setValidated(false);
     setLandDetailsList([]);
     setShowFarmerDetails(false);
+    setShowReelerDetails(false);
     // setDisabled(false);
   };
 
@@ -1767,97 +2086,178 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
   };
 
   const uploadFileConfirm = (post) => {
-    Swal.fire({
-      title: "Do you want to Upload the Documents?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Later",
-    }).then((result) => {
-      if (result.value) {
-        api
-          .post(baseURLDBT + `service/saveApplicationForm`, post)
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.errorMessages[0]);
-              setSaveDisabled(false);
-            } else if (response.data && response.data.error) {
-              saveError(response.data.error_description);
-              setSaveDisabled(false);
-            } else {
-              setApplicationId(response.data.content.applicationDocumentId);
-              setSchemeId(response.data.content.schemeId);
-              clear();
-              setSaveDisabled(false);
-  
-              // Call the appropriate acknowledgment function
-              callAcknowledgmentFunction(
-                schemeDetails.acknowledgementForScheme,
-                response.data.content.applicationDocumentId,
-                response.data.content.schemeId
-              );
-  
-              handleShowModal();
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-            setSaveDisabled(false);
-          });
-        setValidated(true);
+  Swal.fire({
+    title: "Do you want to Upload the Documents?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "Later",
+  }).then((result) => {
+    // ✅ Decide the correct API endpoint based on sanctionForReeling
+    const apiEndpoint = isSanctionForReeling
+      ? `${baseURLDBT}service/saveApplicationFormForReeler`
+      : `${baseURLDBT}service/saveApplicationForm`;
+
+    const handleResponse = (response, showModal = false) => {
+      if (response.data.errorCode === -1) {
+        saveError(response.data.errorMessages[0]);
+        setSaveDisabled(false);
+      } else if (response.data && response.data.error) {
+        saveError(response.data.error_description);
+        setSaveDisabled(false);
       } else {
-        console.log(result.value);
-        api
-          .post(baseURLDBT + `service/saveApplicationForm`, post)
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.errorMessages[0]);
-              setSaveDisabled(false);
-            } else if (response.data && response.data.error) {
-              saveError(response.data.error_description);
-              setSaveDisabled(false);
-            } else {
-              saveSuccess();
-              setApplicationId(response.data.content.applicationDocumentId);
-              setSchemeId(response.data.content.schemeId);
-              clear();
-              setSaveDisabled(false);
-  
-              // Call the appropriate acknowledgment function
-              callAcknowledgmentFunction(
-                schemeDetails.acknowledgementForScheme,
-                response.data.content.applicationDocumentId,
-                response.data.content.schemeId
-              );
-  
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-            setSaveDisabled(false);
-          });
-        setValidated(true);
+        if (!showModal) saveSuccess();
+        setApplicationId(response.data.content.applicationDocumentId);
+        setSchemeId(response.data.content.schemeId);
+        clear();
+        setSaveDisabled(false);
+
+        // ✅ Acknowledgment logic remains same
+        callAcknowledgmentFunction(
+          schemeDetails.acknowledgementForScheme,
+          response.data.content.applicationDocumentId,
+          response.data.content.schemeId
+        );
+
+        if (showModal) handleShowModal();
+        setValidated(false);
       }
-    });
-  };
+    };
+
+    // ✅ Case 1: User clicked "Yes" → Upload + Show Modal
+    if (result.value) {
+      api
+        .post(apiEndpoint, post)
+        .then((response) => handleResponse(response, true))
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+          setSaveDisabled(false);
+        });
+      setValidated(true);
+
+    // ✅ Case 2: User clicked "Later" → Just save, no modal
+    } else {
+      api
+        .post(apiEndpoint, post)
+        .then((response) => handleResponse(response, false))
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+          setSaveDisabled(false);
+        });
+      setValidated(true);
+    }
+  });
+};
+
+
+  // const uploadFileConfirm = (post) => {
+  //   Swal.fire({
+  //     title: "Do you want to Upload the Documents?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "Later",
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       api
+  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //             setSaveDisabled(false);
+  //           } else if (response.data && response.data.error) {
+  //             saveError(response.data.error_description);
+  //             setSaveDisabled(false);
+  //           } else {
+  //             setApplicationId(response.data.content.applicationDocumentId);
+  //             setSchemeId(response.data.content.schemeId);
+  //             clear();
+  //             setSaveDisabled(false);
+  
+  //             // Call the appropriate acknowledgment function
+  //             callAcknowledgmentFunction(
+  //               schemeDetails.acknowledgementForScheme,
+  //               response.data.content.applicationDocumentId,
+  //               response.data.content.schemeId
+  //             );
+  
+  //             handleShowModal();
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //           setSaveDisabled(false);
+  //         });
+  //       setValidated(true);
+  //     } else {
+  //       console.log(result.value);
+  //       api
+  //         .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.errorMessages[0]);
+  //             setSaveDisabled(false);
+  //           } else if (response.data && response.data.error) {
+  //             saveError(response.data.error_description);
+  //             setSaveDisabled(false);
+  //           } else {
+  //             saveSuccess();
+  //             setApplicationId(response.data.content.applicationDocumentId);
+  //             setSchemeId(response.data.content.schemeId);
+  //             clear();
+  //             setSaveDisabled(false);
+  
+  //             // Call the appropriate acknowledgment function
+  //             callAcknowledgmentFunction(
+  //               schemeDetails.acknowledgementForScheme,
+  //               response.data.content.applicationDocumentId,
+  //               response.data.content.schemeId
+  //             );
+  
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //           setSaveDisabled(false);
+  //         });
+  //       setValidated(true);
+  //     }
+  //   });
+  // };
   
  // Function to decide which acknowledgment method to call
  const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
@@ -1906,68 +2306,183 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 
   const [disable, setDisable] = useState(false);
 
-  const search = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setSearchValidated(true);
-    } else {
-      event.preventDefault();
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      } else {
-        setDisable(true);
-      }
+//   const search = (event) => {
+//     const form = event.currentTarget;
+//     if (form.checkValidity() === false) {
+//       event.preventDefault();
+//       event.stopPropagation();
+//       setSearchValidated(true);
+//     } else {
+//       event.preventDefault();
+//       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+//         return;
+//       } else {
+//         setDisable(true);
+//       }
       
 
-      api
-        .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-          fruitsId: data.fruitsId,
-        })
-        .then((response) => {
+//       api
+//         .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+//           fruitsId: data.fruitsId,
+//         })
+//         .then((response) => {
   
-  if (response.data.errorCode === -1) {
-    saveError(response.data.errorMessages[0]);
-  } else if (response.data.content && response.data.content.error) {
-    saveError(response.data.content.error_description);
-  } else if (response.data.content.farmerResponse) {
+//   if (response.data.errorCode === -1) {
+//     saveError(response.data.errorMessages[0]);
+//   } else if (response.data.content && response.data.content.error) {
+//     saveError(response.data.content.error_description);
+//   } else if (response.data.content.farmerResponse) {
 
-     // ✅ Reset old selections before setting new data
-      setLandDetailsIds([]);
-      setDevelopedArea({});
-      setLandDetailsList([]);
+//      // ✅ Reset old selections before setting new data
+//       setLandDetailsIds([]);
+//       setDevelopedArea({});
+//       setLandDetailsList([]);
 
-    setData((prev) => ({
-      ...prev,
-      farmerId: response.data.content.farmerResponse.farmerId,
-    }));
-    setFarmerDetails((prev) => ({
-      ...prev,
-      farmerName: response.data.content.farmerResponse.firstName,
-    }));
+//     setData((prev) => ({
+//       ...prev,
+//       farmerId: response.data.content.farmerResponse.farmerId,
+//     }));
+//     setFarmerDetails((prev) => ({
+//       ...prev,
+//       farmerName: response.data.content.farmerResponse.firstName,
+//     }));
     
-    if (response.data.content.farmerAddressDTOList.length > 0) {
-      setFarmerDetails((prev) => ({
-        ...prev,
-        address: response.data.content.farmerAddressDTOList[0].addressText,
-      }));
-    }
-    setShowFarmerDetails(true);
+//     if (response.data.content.farmerAddressDTOList.length > 0) {
+//       setFarmerDetails((prev) => ({
+//         ...prev,
+//         address: response.data.content.farmerAddressDTOList[0].addressText,
+//       }));
+//     }
+//     setShowFarmerDetails(true);
 
-    if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-      setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
-    }
+//     if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+//       setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+//     }
+//   }
+// })
+// .catch((err) => {
+//   saveError("An error occurred while fetching farmer details.");
+//   setLandDetailsIds([]);     // ✅ also clear on error
+//   setDevelopedArea({});
+//   setLandDetailsList([]);
+// });
+// }
+// };
+
+const [showReelerDetails, setShowReelerDetails] = useState(false);
+const [reelerDetails, setReelerDetails] = useState({});
+
+
+const search = (event) => {
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setSearchValidated(true);
+    return;
   }
-})
-.catch((err) => {
-  saveError("An error occurred while fetching farmer details.");
-  setLandDetailsIds([]);     // ✅ also clear on error
-  setDevelopedArea({});
-  setLandDetailsList([]);
-});
-}
+
+  event.preventDefault();
+
+  if (data.fruitsId.length !== 16) {
+    return;
+  }
+
+  setDisable(true);
+
+  // Step 1: Try fetching Farmer Details first
+  api
+    .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+      fruitsId: data.fruitsId,
+    })
+    .then((response) => {
+      if (
+        response.data &&
+        response.data.content &&
+        response.data.content.farmerResponse
+      ) {
+        // ✅ Farmer details found
+        const farmerData = response.data.content.farmerResponse;
+        const addressList = response.data.content.farmerAddressDTOList || [];
+        const landDetails = response.data.content.farmerLandDetailsDTOList || [];
+
+        // Reset previous selections
+        setLandDetailsIds([]);
+        setDevelopedArea({});
+        setLandDetailsList([]);
+
+        // Set farmer data
+        setData((prev) => ({
+          ...prev,
+          farmerId: farmerData.farmerId,
+        }));
+
+        setFarmerDetails({
+          farmerName: farmerData.firstName,
+          address: addressList.length ? addressList[0].addressText : "",
+        });
+
+        setLandDetailsList(landDetails);
+        setShowFarmerDetails(true);
+        setShowReelerDetails(false); // hide reeler section if farmer found
+      } else {
+        // ✅ If farmer not found, try fetching reeler details
+        fetchReelerDetails();
+      }
+    })
+    .catch((err) => {
+      console.error("Farmer API error:", err);
+      // If farmer API fails, try reeler as fallback
+      fetchReelerDetails();
+    });
 };
+
+const fetchReelerDetails = () => {
+  api
+    .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
+      fruitsId: data.fruitsId,
+    })
+    .then((response) => {
+      const reeler = response.data?.content?.reelerResponse;
+
+      if (reeler) {
+        // Directly use 'reelerResponse.address' since it's available
+        const reelerAddress = reeler.address || "";
+
+        // ✅ Update data state with correct keys
+        setData((prev) => ({
+          ...prev,
+          reelerId: reeler.reelerId,
+          reelerName: reeler.reelerName,
+          fatherName: reeler.fatherName,
+          gender: reeler.gender,
+          casteId: reeler.casteId,
+          address: reelerAddress,
+        }));
+
+        // ✅ Set reeler details for UI
+        setReelerDetails({
+          reelerName: reeler.reelerName,
+          address: reelerAddress,
+          reelingLicenseNumber: reeler.reelingLicenseNumber,
+          reelerNumber: reeler.reelerNumber,
+          mobileNumber: reeler.mobileNumber,
+        });
+
+        // ✅ Show reeler section
+        setShowReelerDetails(true);
+        setShowFarmerDetails(false);
+      } else {
+        saveError("No farmer or reeler details found for this Fruits ID.");
+      }
+    })
+    .catch((error) => {
+      console.error("Reeler API error:", error);
+      saveError("An error occurred while fetching reeler details.");
+    });
+};
+
+
 
 
   const LandDetailsColumns = [
@@ -2562,10 +3077,6 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                 </Col>
               </Row>
               {showFarmerDetails && (
-                // <Col lg="12" className="mt-1">
-                //   <Card>
-                //     <Card.Header>Farmer Personal Info</Card.Header>
-                //     <Card.Body>
                 <Row className="g-gs mt-1">
                   <Col lg="12">
                     <table className="table small table-bordered">
@@ -2580,10 +3091,25 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                     </table>
                   </Col>
                 </Row>
-                //     </Card.Body>
-                //   </Card>
-                // </Col>
               )}
+
+              {showReelerDetails && (
+                <Row className="g-gs mt-1">
+                  <Col lg="12">
+                    <table className="table small table-bordered">
+                      <tbody>
+                        <tr>
+                          <td style={styles.ctstyle}>{t("Reeler Name")}</td>
+                          <td>{reelerDetails.reelerName}</td>
+                          <td style={styles.ctstyle}>{t("Address")}</td>
+                          <td>{reelerDetails.address}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+              )}
+
             </Card.Body>
           </Card>
         </Form>
@@ -2826,26 +3352,133 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                           </Form.Group>
                         </Col>
 
-                        {/* {schemeDetails.calculationBasedOn ==="Bivoltine Bonus" && (
-                          <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="schemeAmount">
-                              Total Cocoons Weight
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="cocoonsWeight"
-                                type="text"
-                                name="cocoonsWeight"
-                                value={data.cocoonsWeight}
-                                onChange={handleInputs}
-                                placeholder="Enter Total Cocoons Weight"
-                                // required
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        )} */}
+                        {getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+                            <>
+                            <Col lg="3">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Quantity in kg<span className="text-danger">*</span></Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="machineQuantity"
+                                      type="text"
+                                      name="machineQuantity"
+                                      value={data.machineQuantity}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Quantity in kg"
+                                      required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="3">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label>
+                                    {t('Month')}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="month"
+                                      value={data.month}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      // isInvalid={
+                                      //   data.month === undefined ||
+                                      //   data.month === "0"
+                                      // }
+                                    >
+                                      <option value="">{t('Select Month')}</option>
+                                      <option value="JANUARY">{t('January')}</option>
+                                      <option value="FEBRUARY">{t('February')}</option>
+                                      <option value="MARCH">{t('March')}</option>
+                                      <option value="APRIL">{t('April')}</option>
+                                      <option value="MAY">{t('May')}</option>
+                                      <option value="JUNE">{t('June')}</option>
+                                      <option value="JULY">{t('July')}</option>
+                                      <option value="AUGUST">{t('August')}</option>
+                                      <option value="SEPTEMBER">{t('September')}</option>
+                                      <option value="OCTOBER">{t('October')}</option>
+                                      <option value="NOVEMBER">{t('November')}</option>
+                                      <option value="DECEMBER">{t('December')}</option>
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t('Month is required')}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              
+                            </>
+                          )}
+
+
+                          {(getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
+                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF") && (
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="imcbTable">
+                                    {t("Imcb Table/Basin")} <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      id="imcbTable"
+                                      name="imcbTable"
+                                      value={data.imcbTable}
+                                      onChange={handleInputs}
+                                      required
+                                    >
+                                      <option value="">{t("Select Imcb Table")}</option>
+                                      <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
+                                      <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
+                                      <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
+                                      <option value="6 Basin">6 Basin</option>
+                                      <option value="10 Basin">10 Basin</option>
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Imcb Table is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                          )}
+
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -3335,7 +3968,13 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                             type="button"
                             variant="secondary"
                             onClick={handleCalculateUnitPrice}
-                            disabled={!schemeDetails.calculationBasedOn}
+                            // disabled={!schemeDetails.calculationBasedOn}
+                            disabled={
+                            !(
+                              schemeDetails.calculationBasedOn ||
+                              getIncentiveAndBonusData[0]?.calculationBasedOn
+                            )
+                          }
                           >
                             {t("Calculate Unit Price")}
                           </Button>
@@ -3401,7 +4040,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
                             {t("Subsidy/Bonus/Incentive Amount")}
-                            {/* <span className="text-danger">*</span> */}
+                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -3411,11 +4050,11 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
                               value={data.expectedAmount}
                               onChange={handleInputs}
                               placeholder={t("Enter Expected Amount")}
-                              // required
+                              required
                             />
-                            {/* <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback type="invalid">
                               {t("Subsidy Amount is required")}
-                            </Form.Control.Feedback> */}
+                            </Form.Control.Feedback>
                           </div>
                         </Form.Group>
                       </Col>
