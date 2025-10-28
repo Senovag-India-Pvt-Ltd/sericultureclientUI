@@ -93,6 +93,13 @@ function ScSubSchemeDetailsEdit() {
     }
   };
 
+  // ✅ FIX 1 — Safe Date Parsing Helper (Prevents “Invalid time value”)
+  const safeDate = (val) => {
+    if (!val) return null;
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
   const clear = () => {
     setData({
         scSchemeDetailsId: "",
@@ -111,20 +118,42 @@ function ScSubSchemeDetailsEdit() {
         sanctionOrderForScheme: "",
         unitForScheme: "",
         acknowledgementForScheme: "",
+        admGovtOrder: "",
+    schemeCircularNo: "",
+    deptDelegationNo: "",
+    allotReleaseNo: "",
+    admGovtDate: "",
+    schemeCircularDate: "",
+    deptDelegationDate: "",
+    allotReleaseDate: "",
     });
   };
 
-  //   to get data from api
+  // ✅ FIX 3 — Safe Date Conversion When Fetching Data
   const getIdList = () => {
     setLoading(true);
-    const response = api
+    api
       .get(baseURL + `scSubSchemeDetails/get/${id}`)
       .then((response) => {
-        setData(response.data.content);
+        const content = response.data.content;
+
+        const sanitizedData = {
+          ...content,
+          subSchemeStartDate: safeDate(content.subSchemeStartDate),
+          subSchemeEndDate: safeDate(content.subSchemeEndDate),
+          admGovtDate: safeDate(content.admGovtDate),
+          schemeCircularDate: safeDate(content.schemeCircularDate),
+          deptDelegationDate: safeDate(content.deptDelegationDate),
+          allotReleaseDate: safeDate(content.allotReleaseDate),
+        };
+
+        setData(sanitizedData);
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        const message =
+          err.response?.data?.errorMessages?.[0]?.message?.[0]?.message ||
+          "Error fetching data";
         setData({});
         editError(message);
         setLoading(false);
@@ -134,6 +163,28 @@ function ScSubSchemeDetailsEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+
+  // //   to get data from api
+  // const getIdList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURL + `scSubSchemeDetails/get/${id}`)
+  //     .then((response) => {
+  //       setData(response.data.content);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       editError(message);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  // }, [id]);
 
   const handleCheckBox = (e) => {
     // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
@@ -603,7 +654,9 @@ function ScSubSchemeDetailsEdit() {
                           <div className="form-control-wrap">
                               {isDataFromSet && (
                                 <DatePicker
-                                  selected={new Date(data.subSchemeStartDate)}
+                                  // selected={new Date(data.subSchemeStartDate)}
+                                  selected={data.subSchemeStartDate ? new Date(data.subSchemeStartDate) : null}
+
                                   onChange={(date) =>
                                     handleDateChange(date, "subSchemeStartDate")
                                   }
@@ -653,7 +706,171 @@ function ScSubSchemeDetailsEdit() {
                       </Form.Group>
                     </Col>
 
+                      {/* 🔹 Administrative & Circular Details Section (8 fields in 2 rows, spaced labels) */}
+                    <Row className="mt-3">
+                      <h6 className="fw-bold mb-3"> </h6>
+                    
+                      {/* 🔸 Row 1: Four Text Inputs */}
+                      <Col lg="6" className="mb-3">
+                        <Form.Group className="form-group">
+                          <Form.Label className="mb-2">{t("Administrative Government Order No")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              type="text"
+                              name="admGovtOrder"
+                              value={data.admGovtOrder}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Administrative Government Order No")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    
+                      <Col lg="6" className="mb-3">
+                        <Form.Group className="form-group">
+                          <Form.Label className="mb-2">{t("Scheme Circular No")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              type="text"
+                              name="schemeCircularNo"
+                              value={data.schemeCircularNo}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Scheme Circular No")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    
+                      <Col lg="6" className="mb-3">
+                        <Form.Group className="form-group">
+                          <Form.Label className="mb-2">{t("Department Delegation No")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              type="text"
+                              name="deptDelegationNo"
+                              value={data.deptDelegationNo}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Department Delegation No")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    
+                      <Col lg="6" className="mb-3">
+                        <Form.Group className="form-group">
+                          <Form.Label className="mb-2">{t("Allotment Release No")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              type="text"
+                              name="allotReleaseNo"
+                              value={data.allotReleaseNo}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Allotment Release No")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    
+                      {/* 🔸 Row 2: Four Date Pickers */}
+                      {/* ✅ FIX 4 — Safe DatePicker usage */}
+                    <Col lg="3" className="mb-3">
+                      <Form.Group>
+                        <Form.Label className="mb-2">
+                          {t("Administrative Govt Date")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={safeDate(data.admGovtDate)}
+                            onChange={(date) => handleDateChange(date, "admGovtDate")}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            placeholderText={t("Select Date")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    
+                      <Col lg="3" className="mb-3">
+                      <Form.Group>
+                        <Form.Label className="mb-2">
+                          {t("Scheme Circular Date")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={safeDate(data.schemeCircularDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "schemeCircularDate")
+                            }
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            placeholderText={t("Select Date")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+
+                    <Col lg="3" className="mb-3">
+                      <Form.Group>
+                        <Form.Label className="mb-2">
+                          {t("Department Delegation Date")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={safeDate(data.deptDelegationDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "deptDelegationDate")
+                            }
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            placeholderText={t("Select Date")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+
+                    <Col lg="3" className="mb-3">
+                      <Form.Group>
+                        <Form.Label className="mb-2">
+                          {t("Allotment Release Date")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={safeDate(data.allotReleaseDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "allotReleaseDate")
+                            }
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            placeholderText={t("Select Date")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    </Row>
+                    
+                      
+                    
+                      {/* <Col lg="3" className="mb-3">
+                        <Form.Group className="form-group">
+                          <Form.Label className="mb-2">{t("Allotment Release Date")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <DatePicker
+                              selected={data.allotReleaseDate}
+                              onChange={(date) => handleDateChange(date, "allotReleaseDate")}
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              placeholderText={t("Select Date")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row> */}
+                    
+                    {/* 🔹 Checkboxes Section Starts Here */}
                     <Row className="form-group mt-4">
+
                         {/* With Land */}
                         <Col sm={2} className="d-flex align-items-center">
                           <Form.Check
