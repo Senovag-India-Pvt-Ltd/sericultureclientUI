@@ -9,6 +9,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; 
+
+
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -24,6 +28,8 @@ function MapComponent() {
     amount: "",
     min: "",
     max: "",
+    releaseNo: "",
+    releaseDate: "",
     // unitCostInRupees: "",
 
   });
@@ -56,6 +62,8 @@ function MapComponent() {
         amount: "",
         min: "",
         max: "",
+        releaseNo: "",
+    releaseDate: "",
       });
       setShowModal(false);
       setValidatedMapComponent(false);
@@ -104,6 +112,8 @@ function MapComponent() {
         amount: "",
         min: "",
         max: "",
+        releaseNo: "",
+    releaseDate: "",
       });
     }
   };
@@ -236,6 +246,8 @@ function MapComponent() {
         amount: "",
         min: "",
         max: "",
+        releaseNo: "",
+    releaseDate: "",
     });
     setMapList([])
   };
@@ -1295,6 +1307,58 @@ function MapComponent() {
                 </div>
               </Form.Group>
             </Col>
+
+           <Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="bidstart">
+      {t("Release No")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="releaseNo"
+        name="releaseNo"
+        value={data.releaseNo}
+        onChange={handleMapInputs}
+        type="text"
+        placeholder="Enter Release No"
+        required
+      />
+    </div>
+  </Form.Group>
+</Col>
+
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="releaseDate">
+      {t("Release Date")}
+      {/* <span className="text-danger">*</span> */}
+    </Form.Label>
+
+    <div className="form-control-wrap">
+      <DatePicker
+        selected={
+          mapComponent.releaseDate
+            ? new Date(mapComponent.releaseDate)
+            : null
+        }
+        onChange={(date) =>
+          setMapComponent({
+            ...mapComponent,
+            releaseDate: date,
+          })
+        }
+        dateFormat="dd/MM/yyyy"
+        className="form-control"
+        placeholderText={t("Select Release Date")}
+        required
+      />
+      {/* <Form.Control.Feedback type="invalid">
+        {t("Release Date is required")}
+      </Form.Control.Feedback> */}
+    </div>
+  </Form.Group>
+</Col>
 
             {/* ---------------- New Card for Drawing Officers ---------------- */}
             <Col lg="12" className="mt-4">

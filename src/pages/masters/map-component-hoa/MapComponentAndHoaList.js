@@ -202,6 +202,28 @@ function MapComponentAndHoaList() {
         sortable: true,
         hide: "md",
       },
+
+       {
+        name: t("Release No"),
+        selector: (row) => row.releaseNo,
+        cell: (row) => <span>{row.releaseNo}</span>,
+        sortable: true,
+        hide: "md",
+      },
+
+       {
+  name: t("Release Date"),
+  selector: (row) => row.releaseDate,
+  cell: (row) => {
+    if (!row.releaseDate) return "-";
+    const date = new Date(row.releaseDate);
+    const formattedDate = date.toLocaleDateString("en-GB"); // dd/mm/yyyy
+    return <span>{formattedDate}</span>;
+  },
+  sortable: true,
+  hide: "md",
+},
+
       // {
       //   name: t("Minimum Quantity"),
       //   selector: (row) => row.minQty,

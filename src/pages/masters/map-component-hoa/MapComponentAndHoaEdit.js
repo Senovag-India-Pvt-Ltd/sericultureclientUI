@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { act } from "react";
 import { useTranslation } from "react-i18next";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
@@ -64,6 +66,8 @@ function MapComponentAndHoaEdit() {
         amount: data.amount,
         min: data.min,
         max: data.max,
+        releaseNo: data.releaseNo,
+        releaseDate: data.releaseDate,
       };
       api
         .post(baseURLDBT + `master/cost/editMapComponentDetails`, sendPost)
@@ -112,6 +116,8 @@ function MapComponentAndHoaEdit() {
         amount: "",
         min: "",
         max: "",
+        releaseNo: "",
+        releaseDate: "",
     });
   };
 
@@ -147,6 +153,8 @@ function MapComponentAndHoaEdit() {
         amount: res.amount,
         min: res.min,
         max: res.max,
+        releaseNo: res.releaseNo,
+        releaseDate: res.releaseDate,
         }));
         setLoading(false);
       })
@@ -780,6 +788,60 @@ function MapComponentAndHoaEdit() {
                 </div>
               </Form.Group>
             </Col>
+
+
+            <Col lg="4">
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>
+                  {t("Release No")} 
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="releaseNo"
+                    name="releaseNo"
+                    value={data.releaseNo}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder={t("Release No")}
+                    required
+                  />
+                </div>
+              </Form.Group>
+            </Col>
+
+            
+                       
+            <Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="releaseDate">
+      {t("Release Date")}
+      {/* <span className="text-danger">*</span> */}
+    </Form.Label>
+
+    <div className="form-control-wrap">
+      <DatePicker
+        // ✅ FIXED: replaced mapComponent with data
+        selected={data.releaseDate ? new Date(data.releaseDate) : null}
+        // ✅ FIXED: replaced setMapComponent with setData and updated state accordingly
+        onChange={(date) =>
+          setData({
+            ...data,
+            releaseDate: date,
+          })
+        }
+        dateFormat="dd/MM/yyyy"
+        className="form-control"
+        placeholderText={t("Select Release Date")}
+        required
+      />
+      {/* <Form.Control.Feedback type="invalid">
+        {t("Release Date is required")}
+      </Form.Control.Feedback> */}
+    </div>
+  </Form.Group>
+</Col>
+
+
               </Row>
               </Card.Body>
             </Card>
