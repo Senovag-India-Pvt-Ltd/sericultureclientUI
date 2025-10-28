@@ -73,7 +73,12 @@ function ServiceApplication() {
     imcbTable: "",
     icbBasinEnds:"",
     reelingUnit:"",
-    reelingSqft:"",
+    reelingSqft:"", 
+    extentOfMulberry:"",
+    rhSqft:"",
+    estimatedCost:"",
+    roofTypeId:"",
+    proposalDate:"",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -174,6 +179,23 @@ useEffect(() => {
     getSchemeQuotaList();
   }, []);
 
+  // to get roofType
+    const [roofTypeListData, setRoofTypeListData] = useState([]);
+  
+    const getRoofTypeList = () => {
+      api
+        .get(baseURLMasterData + `roofType/get-all`)
+        .then((response) => {
+          setRoofTypeListData(response.data.content.roofType);
+        })
+        .catch((err) => {
+          setRoofTypeListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getRoofTypeList();
+    }, []);
   // to get scheme-Quota-details
   const [spacingListData, setSpacingDetailsListData] = useState([]);
 
@@ -252,6 +274,11 @@ useEffect(() => {
   const [developedLand, setDevelopedLand] = useState({
     landDeveloped: "",
     unitType: "",
+    extentOfMulberry:"",
+    rhSqft:"",
+    estimatedCost:"",
+    roofTypeId:"",
+    proposalDate:"",
   });
 
   const [equipment, setEquipment] = useState({
@@ -2025,6 +2052,12 @@ useEffect(() => {
       icbBasinEnds: data.icbBasinEnds,
       reelingUnit: data.reelingUnit,
       reelingSqft: data.reelingSqft,
+      landDeveloped: developedLand.landDeveloped,
+      unitType: developedLand.unitType,
+      extentOfMulberry: developedLand.extentOfMulberry,
+      rhSqft: developedLand.rhSqft,
+      estimatedCost: developedLand.estimatedCost,
+      roofTypeId: developedLand.roofTypeId,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -2256,6 +2289,11 @@ useEffect(() => {
     setDevelopedLand({
       landDeveloped: "",
       unitType: "",
+      extentOfMulberry:"",
+      rhSqft:"",
+      estimatedCost:"",
+      roofTypeId:"",
+      proposalDate:"",
     });
     setEquipment({
       unitType: "",
@@ -4380,6 +4418,109 @@ const fetchReelerDetails = () => {
                               <Form.Control.Feedback type="invalid">
                                 {t("Unit Quantity is required")}
                               </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Extent Of Mulberry")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="extentOfMulberry"
+                                type="text"
+                                name="extentOfMulberry"
+                                value={developedLand.extentOfMulberry}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Extent Of Mulberry"
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Extent Of Mulberry is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Constructed Area in Sqft")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="rhSqft"
+                                type="text"
+                                name="rhSqft"
+                                value={developedLand.rhSqft}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Constructed Area in Sqft"
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Extent Of Mulberry is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Estimated Cost")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="estimatedCost"
+                                type="text"
+                                name="estimatedCost"
+                                value={developedLand.estimatedCost}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Estimated Cost"
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Extent Of Mulberry is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              {t("Roof Type")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="roofTypeId"
+                                value={developedLand.roofTypeId}
+                                onChange={handleDevelopedLandInputs}
+                                // required
+                                // isInvalid={
+                                //   equipment.vendorId === undefined ||
+                                //   equipment.vendorId === "0"
+                                // }
+                              >
+                                <option value="">{t("Select Roof Type")}</option>
+                                {roofTypeListData.map((list) => (
+                                  <option
+                                    key={list.roofTypeId}
+                                    value={list.roofTypeId}
+                                  >
+                                    {list.roofTypeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Vendor Name is required")}
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>

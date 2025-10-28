@@ -66,6 +66,17 @@ function DashboardReportList() {
     setPushToDbtData((prev) => ({ ...prev, [type]: formattedDate }));
   };
 
+  const handleDateForPropasalChange = (date, type) => {
+    const formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0");
+    console.log("formattedDate", formattedDate);
+    setActionData((prev) => ({ ...prev, [type]: formattedDate }));
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
@@ -550,6 +561,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     sanctionNo: "",
     rejectReasonWorkflowMasterId:"",
     comment: "",
+    proposalDate: "",
   });
 
   //  to get data from api
@@ -2595,6 +2607,7 @@ useEffect(() => {
         pushType: "P",
         ddoCode: ddoCodeToSend,
         sanctionNo: actionData.sanctionNo,
+        proposalDate: actionData.proposalDate,
         categoryId: actionFarmerData[0]?.categoryId,
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
@@ -2604,6 +2617,7 @@ useEffect(() => {
       // get the first row's selected userId
 
       sendPost = {
+        proposalDate: actionData.proposalDate,
         description: actionData.comment,
         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
         applicationFormId: applicationFormId,
@@ -3910,6 +3924,32 @@ useEffect(() => {
                                     onChange={handleActionInputs}
                                     placeholder="Enter Description"
                                   />
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="4">
+                                <Form.Group className="form-group">
+                                  <Form.Label htmlFor="sordfl">
+                                    Proposal Date
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <DatePicker
+                                      selected={actionData.proposalDate ? new Date(actionData.proposalDate) : null}
+                                      onChange={(date) =>
+                                        handleDateForPropasalChange(date, "proposalDate")
+                                      }
+                                      // minDate={new Date("01/04/2023")}
+                                      // maxDate={new Date("31/03/2024")}
+                                      peekNextMonth
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      dateFormat="dd/MM/yyyy"
+                                      className="form-control"
+                                      maxDate={new Date()}
+                                     
+                                    />
+                                  </div>
                                 </Form.Group>
                               </Col>
 
