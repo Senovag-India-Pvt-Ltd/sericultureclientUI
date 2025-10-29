@@ -141,6 +141,57 @@ function ScSubSchemeDetailsView() {
                         <td style={styles.ctstyle}> {t("Sub Scheme End Date")}</td>
                         <td>{formatDate(ScSubSchemeDetails.subSchemeEndDate)}</td>
                       </tr>
+
+                      <tr>
+  <td style={styles.ctstyle}>{t("Administrative Govt Order No")}</td>
+  <td>{ScSubSchemeDetails.admGovtOrder || "-"}</td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Scheme Circular No")}</td>
+  <td>{ScSubSchemeDetails.schemeCircularNo || "-"}</td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Department Delegation No")}</td>
+  <td>{ScSubSchemeDetails.deptDelegationNo || "-"}</td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Allotment Release No")}</td>
+  <td>{ScSubSchemeDetails.allotReleaseNo || "-"}</td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Administrative Govt Date")}</td>
+  <td>
+    {ScSubSchemeDetails.admGovtDate
+      ? new Date(ScSubSchemeDetails.admGovtDate).toLocaleDateString("en-GB")
+      : "-"}
+  </td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Scheme Circular Date")}</td>
+  <td>
+    {ScSubSchemeDetails.schemeCircularDate
+      ? new Date(ScSubSchemeDetails.schemeCircularDate).toLocaleDateString("en-GB")
+      : "-"}
+  </td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Department Delegation Date")}</td>
+  <td>
+    {ScSubSchemeDetails.deptDelegationDate
+      ? new Date(ScSubSchemeDetails.deptDelegationDate).toLocaleDateString("en-GB")
+      : "-"}
+  </td>
+</tr>
+<tr>
+  <td style={styles.ctstyle}>{t("Allotment Release Date")}</td>
+  <td>
+    {ScSubSchemeDetails.allotReleaseDate
+      ? new Date(ScSubSchemeDetails.allotReleaseDate).toLocaleDateString("en-GB")
+      : "-"}
+  </td>
+</tr>
+
+
                     </tbody>
                   </table>
                 </Col>

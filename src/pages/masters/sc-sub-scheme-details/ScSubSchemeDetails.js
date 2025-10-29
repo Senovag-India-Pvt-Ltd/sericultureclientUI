@@ -34,6 +34,14 @@ function ScSubSchemeDetails() {
     sanctionOrderForScheme: "",
     unitForScheme: "",
     acknowledgementForScheme: "",
+    admGovtOrder: "",
+    schemeCircularNo: "",
+    deptDelegationNo: "",
+    allotReleaseNo: "",
+    admGovtDate: "",
+    schemeCircularDate: "",
+    deptDelegationDate: "",
+    allotReleaseDate: "",
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -87,6 +95,14 @@ function ScSubSchemeDetails() {
                 sanctionOrderForScheme: "",
                 unitForScheme: "",
                 acknowledgementForScheme: "",
+                admGovtOrder: "",
+    schemeCircularNo: "",
+    deptDelegationNo: "",
+    allotReleaseNo: "",
+    admGovtDate: "",
+    schemeCircularDate: "",
+    deptDelegationDate: "",
+    allotReleaseDate: "",
             });
             setValidated(false);
           }
@@ -125,6 +141,14 @@ function ScSubSchemeDetails() {
         sanctionOrderForScheme: "",
         unitForScheme: "",
         acknowledgementForScheme: "",
+        admGovtOrder: "",
+    schemeCircularNo: "",
+    deptDelegationNo: "",
+    allotReleaseNo: "",
+    admGovtDate: "",
+    schemeCircularDate: "",
+    deptDelegationDate: "",
+    allotReleaseDate: "",
     });
   };
 
@@ -661,7 +685,137 @@ function ScSubSchemeDetails() {
 
 
 
-                       <Row className="form-group mt-4">
+                      {/* 🔹 Administrative & Circular Details Section (8 fields in 2 rows, spaced labels) */}
+<Row className="mt-3">
+  <h6 className="fw-bold mb-3"> </h6>
+
+  {/* 🔸 Row 1: Four Text Inputs */}
+  <Col lg="6" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Administrative Government Order No")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="text"
+          name="admGovtOrder"
+          value={data.admGovtOrder}
+          onChange={handleInputs}
+          placeholder={t("Enter Administrative Government Order No")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="6" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Scheme Circular No")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="text"
+          name="schemeCircularNo"
+          value={data.schemeCircularNo}
+          onChange={handleInputs}
+          placeholder={t("Enter Scheme Circular No")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="6" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Department Delegation No")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="text"
+          name="deptDelegationNo"
+          value={data.deptDelegationNo}
+          onChange={handleInputs}
+          placeholder={t("Enter Department Delegation No")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="6" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Allotment Release No")}</Form.Label>
+      <div className="form-control-wrap">
+        <Form.Control
+          type="text"
+          name="allotReleaseNo"
+          value={data.allotReleaseNo}
+          onChange={handleInputs}
+          placeholder={t("Enter Allotment Release No")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  {/* 🔸 Row 2: Four Date Pickers */}
+  <Col lg="3" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Administrative Govt Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <DatePicker
+          selected={data.admGovtDate}
+          onChange={(date) => handleDateChange(date, "admGovtDate")}
+          dateFormat="dd/MM/yyyy"
+          className="form-control"
+          placeholderText={t("Select Date")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="3" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Scheme Circular Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <DatePicker
+          selected={data.schemeCircularDate}
+          onChange={(date) => handleDateChange(date, "schemeCircularDate")}
+          dateFormat="dd/MM/yyyy"
+          className="form-control"
+          placeholderText={t("Select Date")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="3" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Department Delegation Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <DatePicker
+          selected={data.deptDelegationDate}
+          onChange={(date) => handleDateChange(date, "deptDelegationDate")}
+          dateFormat="dd/MM/yyyy"
+          className="form-control"
+          placeholderText={t("Select Date")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+
+  <Col lg="3" className="mb-3">
+    <Form.Group className="form-group">
+      <Form.Label className="mb-2">{t("Allotment Release Date")}</Form.Label>
+      <div className="form-control-wrap">
+        <DatePicker
+          selected={data.allotReleaseDate}
+          onChange={(date) => handleDateChange(date, "allotReleaseDate")}
+          dateFormat="dd/MM/yyyy"
+          className="form-control"
+          placeholderText={t("Select Date")}
+        />
+      </div>
+    </Form.Group>
+  </Col>
+</Row>
+
+{/* 🔹 Checkboxes Section Starts Here */}
+<Row className="form-group mt-4">
+
+
                         {/* With Land */}
                         <Col sm={2} className="d-flex align-items-center">
                           <Form.Check
