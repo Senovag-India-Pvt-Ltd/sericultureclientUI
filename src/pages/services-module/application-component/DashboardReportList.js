@@ -531,6 +531,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
   const [schemeId, setSchemeId] = useState(null);
 
   const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
   const [workOrderNumber, setWorkOrderNumber] = useState(null);
   const [workOrderForScheme, setWorkOrderForScheme] = useState(null);
   const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
@@ -966,6 +967,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         const schemeId = recordData?.schemeId;
         setApplicationFormId(recordData?.applicationDocumentId);
         setWorkOrderSchemeId(recordData?.schemeId);
+        setCategoryId(recordData?.categoryId);
 
         setWorkOrderNumber(recordData?.workOrderNumber);
         setWorkOrderForScheme(recordData?.workOrderForScheme);
@@ -1434,7 +1436,7 @@ useEffect(() => {
   ) => {
     try {
       const response = await api.post(
-        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        baseURLReport + `getWorkOrder`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -1485,8 +1487,20 @@ useEffect(() => {
   //   });
   // };
 
-  const handleGenerateSanctionOrder = (applicationFormId) => {
-    const schemeId = actionFarmerData[0]?.schemeId;
+  const handleGenerateSanctionOrderClick = () => {
+  const userId = localStorage.getItem("userMasterId");
+  handleGenerateSanctionOrder(
+    applicationId,
+    actionFarmerData[0]?.schemeId,
+    actionFarmerData[0]?.subSchemeId,
+    actionFarmerData[0]?.categoryId,
+    userId
+  );
+};
+
+
+  const handleGenerateSanctionOrder = (applicationFormId, schemeId, subSchemeId, categoryId) => {
+    // const schemeId = actionFarmerData[0]?.schemeId;
     const schemeType = actionFarmerData[0]?.sanctionOrderForScheme; // Fetch the scheme type from the response
 
     Swal.fire({
@@ -1521,7 +1535,9 @@ useEffect(() => {
             applicationFormId,
             schemeId,
             "farmer",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         } else {
           console.error("Unknown scheme type for farmer sanction order.");
@@ -1560,171 +1576,105 @@ useEffect(() => {
   };
 
   const handleDownloadSanctionOrder = (
-    applicationFormId,
-    schemeId,
-    schemeType
-  ) => {
-    // const schemeId = schemeId;
-    // const schemeType = sanctionOrderForScheme; // Fetch the scheme type from the response
-
-    Swal.fire({
-      title: "Generate Sanction Order",
-      text: "Select the recipient:",
-      showCancelButton: true,
-      confirmButtonText: "Farmer",
-      cancelButtonText: "Company",
-      showCloseButton: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Call the Farmer endpoint based on the scheme type
-        if (schemeType === "PMKSY") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            "PMKSY"
-          );
-        } else if (schemeType === "PDMC") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            "PDMC"
-          );
-        } else if (
-          schemeType === "Silk Samagra State" ||
-          schemeType === "Silk Samagra Central"
-        ) {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            schemeType
-          );
-        } else {
-          console.error("Unknown scheme type for farmer sanction order.");
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Call the Company endpoint based on the scheme type
-        if (schemeType === "PMKSY") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "company",
-            "PMKSY"
-          );
-        } else if (schemeType === "PDMC") {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "company",
-            "PDMC"
-          );
-        } else if (
-          schemeType === "Silk Samagra State" ||
-          schemeType === "Silk Samagra Central"
-        ) {
-          downloadSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "company",
-            schemeType
-          );
-        } else {
-          console.error("Unknown scheme type for company sanction order.");
-        }
-      }
-    });
-  };
-
-  const downloadSanctionOrderAcknowledgment = async (
-    applicationId,
-    schemeId,
-    recipientType,
-    schemeType
-  ) => {
-    try {
-      // Determine the appropriate endpoint based on the recipient type and scheme type
-      let endpoint;
-      // if (recipientType === "farmer") {
-      //   endpoint =
-      //     schemeType === "PMKSY"
-      //       ? baseURLReport + `getSanctionOrderPmksy`
-      //       : baseURLReport + `getSanctionOrderPDMC`;
-      // } else if (recipientType === "company") {
-      //   endpoint =
-      //     schemeType === "PMKSY"
-      //       ? baseURLReport + `getSanctionOrderPmksyCompany`
-      //       : baseURLReport + `getSanctionOrderPDMCCompany`;
-      // } else {
-      //   throw new Error("Invalid recipient type.");
-      // }
-      if (
+  applicationFormId,
+  schemeId,
+  schemeType,
+  subSchemeId,
+  categoryId
+) => {
+  Swal.fire({
+    title: "Generate Sanction Order",
+    text: "Select the recipient:",
+    showCancelButton: true,
+    confirmButtonText: "Farmer",
+    cancelButtonText: "Company",
+    showCloseButton: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ✅ Farmer
+      if (schemeType === "PMKSY" || schemeType === "PDMC") {
+        downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
+      } else if (
         schemeType === "Silk Samagra State" ||
         schemeType === "Silk Samagra Central"
       ) {
-        endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
+        downloadSanctionOrderAcknowledgment(
+          applicationFormId,
+          schemeId,
+          "farmer",
+          schemeType,
+          subSchemeId,
+          categoryId
+        );
       } else {
-        if (recipientType === "farmer") {
-          endpoint =
-            schemeType === "PMKSY"
-              ? baseURLReport + `getSanctionOrderPmksy`
-              : baseURLReport + `getSanctionOrderPDMC`;
-        } else if (recipientType === "company") {
-          endpoint =
-            schemeType === "PMKSY"
-              ? baseURLReport + `getSanctionOrderPmksyCompany`
-              : baseURLReport + `getSanctionOrderPDMCCompany`;
-        } else {
-          throw new Error("Invalid recipient type.");
-        }
+        console.error("Unknown scheme type for farmer sanction order.");
       }
-
-      const response = await api.post(
-        endpoint,
-        {
-          applicationFormId: applicationId,
-          schemeId: schemeId,
-        },
-        {
-          responseType: "blob", // Force to receive data in a Blob Format
-        }
-      );
-
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      console.error("Error generating sanction order:", error);
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // ✅ Company
+      if (schemeType === "PMKSY" || schemeType === "PDMC") {
+        downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
+      } else if (
+        schemeType === "Silk Samagra State" ||
+        schemeType === "Silk Samagra Central"
+      ) {
+        downloadSanctionOrderAcknowledgment(
+          applicationFormId,
+          schemeId,
+          "company",
+          schemeType,
+          subSchemeId,
+          categoryId
+        );
+      } else {
+        console.error("Unknown scheme type for company sanction order.");
+      }
     }
-  };
+  });
+};
 
-  // const generateSanctionOrderAcknowledgment = async (applicationFormId) => {
+
+  // const downloadSanctionOrderAcknowledgment = async (
+  //   applicationId,
+  //   schemeId,
+  //   recipientType,
+  //   schemeType
+  // ) => {
   //   try {
-  //     const response = await api.post(
-  //       baseURLReport + `getSanctionOrderPmksy`,
-  //       {
-  //         applicationFormId: applicationFormId,
-  //       },
-  //       {
-  //         responseType: "blob", //Force to receive data in a Blob Format
+  //     // Determine the appropriate endpoint based on the recipient type and scheme type
+  //     let endpoint;
+  //     // if (recipientType === "farmer") {
+  //     //   endpoint =
+  //     //     schemeType === "PMKSY"
+  //     //       ? baseURLReport + `getSanctionOrderPmksy`
+  //     //       : baseURLReport + `getSanctionOrderPDMC`;
+  //     // } else if (recipientType === "company") {
+  //     //   endpoint =
+  //     //     schemeType === "PMKSY"
+  //     //       ? baseURLReport + `getSanctionOrderPmksyCompany`
+  //     //       : baseURLReport + `getSanctionOrderPDMCCompany`;
+  //     // } else {
+  //     //   throw new Error("Invalid recipient type.");
+  //     // }
+  //     if (
+  //       schemeType === "Silk Samagra State" ||
+  //       schemeType === "Silk Samagra Central"
+  //     ) {
+  //       endpoint = baseURLReport + `getSanctionOrderRH`; // Call the API for Silk Samagra RH
+  //     } else {
+  //       if (recipientType === "farmer") {
+  //         endpoint =
+  //           schemeType === "PMKSY"
+  //             ? baseURLReport + `getSanctionOrderPmksy`
+  //             : baseURLReport + `getSanctionOrderPDMC`;
+  //       } else if (recipientType === "company") {
+  //         endpoint =
+  //           schemeType === "PMKSY"
+  //             ? baseURLReport + `getSanctionOrderPmksyCompany`
+  //             : baseURLReport + `getSanctionOrderPDMCCompany`;
+  //       } else {
+  //         throw new Error("Invalid recipient type.");
   //       }
-  //     );
-
-  //     const file = new Blob([response.data], { type: "application/pdf" });
-  //     const fileURL = URL.createObjectURL(file);
-  //     window.open(fileURL);
-  //   } catch (error) {
-  //     // console.log("error", error);
-  //   }
-  // };
-  // const generateSanctionOrderAcknowledgment = async (applicationId,schemeId,recipientType) => {
-  //   try {
-  //     // Determine the appropriate endpoint based on the recipient type
-  //     const endpoint =
-  //       recipientType === "farmer"
-  //         ? baseURLReport + `getSanctionOrderPDMC`
-  //         : baseURLReport + `getSanctionOrderPDMCCompany`;
+  //     }
 
   //     const response = await api.post(
   //       endpoint,
@@ -1744,67 +1694,127 @@ useEffect(() => {
   //     console.error("Error generating sanction order:", error);
   //   }
   // };
-  const generateSanctionOrderAcknowledgment = async (
-    applicationId,
-    schemeId,
-    recipientType,
-    schemeType
-  ) => {
-    try {
-      // Determine the appropriate endpoint based on the recipient type and scheme type
-      let endpoint;
-      // if (recipientType === "farmer") {
-      //   endpoint =
-      //     schemeType === "PMKSY"
-      //       ? baseURLReport + `getSanctionOrderPmksy`
-      //       : baseURLReport + `getSanctionOrderPDMC`;
-      // } else if (recipientType === "company") {
-      //   endpoint =
-      //     schemeType === "PMKSY"
-      //       ? baseURLReport + `getSanctionOrderPmksyCompany`
-      //       : baseURLReport + `getSanctionOrderPDMCCompany`;
-      // } else {
-      //   throw new Error("Invalid recipient type.");
-      // }
-      if (
-        schemeType === "Silk Samagra State" ||
-        schemeType === "Silk Samagra Central"
-      ) {
-        endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
+
+ const downloadSanctionOrderAcknowledgment = async (
+  applicationId,
+  schemeId,
+  recipientType,
+  schemeType,
+  subSchemeId,
+  categoryId,
+  userId
+) => {
+  try {
+    const userId = localStorage.getItem("userMasterId");
+    let endpoint;
+
+    if (
+      schemeType === "Silk Samagra State" ||
+      schemeType === "Silk Samagra Central"
+    ) {
+      endpoint = baseURLReport + `getSanctionOrderRH`;
+    } else {
+      if (recipientType === "farmer") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksy`
+            : baseURLReport + `getSanctionOrderPDMC`;
+      } else if (recipientType === "company") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksyCompany`
+            : baseURLReport + `getSanctionOrderPDMCCompany`;
       } else {
-        if (recipientType === "farmer") {
-          endpoint =
-            schemeType === "PMKSY"
-              ? baseURLReport + `getSanctionOrderPmksy`
-              : baseURLReport + `getSanctionOrderPDMC`;
-        } else if (recipientType === "company") {
-          endpoint =
-            schemeType === "PMKSY"
-              ? baseURLReport + `getSanctionOrderPmksyCompany`
-              : baseURLReport + `getSanctionOrderPDMCCompany`;
-        } else {
-          throw new Error("Invalid recipient type.");
-        }
+        throw new Error("Invalid recipient type.");
       }
-
-      const response = await api.post(
-        endpoint,
-        {
-          applicationFormId: applicationId,
-          schemeId: schemeId,
-        },
-        {
-          responseType: "blob", // Force to receive data in a Blob Format
-        }
-      );
-
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      console.error("Error generating sanction order:", error);
     }
-  };
+
+    const payload =
+      schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
+        ? {
+            applicationFormId: applicationId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            userId,
+          }
+        : {
+            applicationFormId: applicationId,
+            schemeId,
+          };
+
+    const response = await api.post(endpoint, payload, {
+      responseType: "blob",
+    });
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating sanction order:", error);
+  }
+};
+
+
+  const generateSanctionOrderAcknowledgment = async (
+  applicationId,
+  schemeId,
+  recipientType,
+  schemeType,
+  subSchemeId,
+  categoryId
+) => {
+  try {
+    const userId = localStorage.getItem("userMasterId"); // ✅ get userId from localStorage
+    let endpoint;
+
+    if (
+      schemeType === "Silk Samagra State" ||
+      schemeType === "Silk Samagra Central"
+    ) {
+      endpoint = baseURLReport + `getSanctionOrderRH`;
+    } else {
+      if (recipientType === "farmer") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksy`
+            : baseURLReport + `getSanctionOrderPDMC`;
+      } else if (recipientType === "company") {
+        endpoint =
+          schemeType === "PMKSY"
+            ? baseURLReport + `getSanctionOrderPmksyCompany`
+            : baseURLReport + `getSanctionOrderPDMCCompany`;
+      } else {
+        throw new Error("Invalid recipient type.");
+      }
+    }
+
+    const payload =
+      schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
+        ? {
+            applicationFormId: applicationId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            userId, // ✅ automatically added
+          }
+        : {
+            applicationFormId: applicationId,
+            schemeId,
+          };
+
+    const response = await api.post(endpoint, payload, {
+      responseType: "blob",
+    });
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating sanction order:", error);
+  }
+};
+
 
   // to get Financial Year
   const [rejectReasonListData, setRejectReasonListData] = useState([]);
@@ -2728,7 +2738,9 @@ useEffect(() => {
               setApplicationId(response.data.applicationFormId);
               handleGenerateSanctionOrder(
                 response.data.applicationFormId,
-                schemeId
+                schemeId,
+                actionFarmerData[0]?.subSchemeId,
+                actionFarmerData[0]?.categoryId
               );
               setDisplaySubmit(false);
               getList();
@@ -3064,6 +3076,8 @@ useEffect(() => {
           workOrderForScheme: workOrderForScheme,
           sanctionOrderNumber: sanctionOrderNumber,
           sanctionOrderForScheme: sanctionOrderForScheme,
+          subSchemeId: subSchemeId,  // ✅ add this
+          categoryId: categoryId,
           });
         }
       })
@@ -4621,9 +4635,7 @@ useEffect(() => {
                         <Button
                           type="button"
                           variant="primary"
-                          onClick={() =>
-                            handleGenerateSanctionOrder(applicationId)
-                          }
+                          onClick={handleGenerateSanctionOrderClick}
                         >
                           Generate Sanction Order
                         </Button>
@@ -5541,7 +5553,9 @@ useEffect(() => {
                                         handleDownloadSanctionOrder(
                                           viewDetailsData.applicationFormId,
                                           viewDetailsData.workOrderSchemeId,
-                                          viewDetailsData.sanctionOrderForScheme
+                                          viewDetailsData.sanctionOrderForScheme,
+                                          viewDetailsData.subSchemeId,     // ✅ new
+                                          viewDetailsData.categoryId
                                         )
                                       }
                                     >
