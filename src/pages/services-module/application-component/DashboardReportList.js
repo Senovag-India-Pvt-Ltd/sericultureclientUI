@@ -1507,7 +1507,7 @@ useEffect(() => {
       title: "Generate Sanction Order",
       text: "Select the recipient:",
       showCancelButton: true,
-      confirmButtonText: "Farmer",
+      confirmButtonText: "Farmer/Reeler",
       cancelButtonText: "Company",
       showCloseButton: true,
     }).then((result) => {
@@ -1586,7 +1586,7 @@ useEffect(() => {
     title: "Generate Sanction Order",
     text: "Select the recipient:",
     showCancelButton: true,
-    confirmButtonText: "Farmer",
+    confirmButtonText: "Farmer/Reeler",
     cancelButtonText: "Company",
     showCloseButton: true,
   }).then((result) => {
