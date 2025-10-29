@@ -1430,29 +1430,31 @@ useEffect(() => {
     }
   };
 
-  const generateWorkOrderAcknowledgmentRH = async (
-    applicationFormId,
-    schemeId
-  ) => {
-    try {
-      const response = await api.post(
-        baseURLReport + `getWorkOrder`,
-        {
-          applicationFormId: applicationFormId,
-          schemeId: schemeId,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
-        }
-      );
+  const generateWorkOrderAcknowledgmentRH = async (applicationFormId, schemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
 
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      // console.log("error", error);
-    }
-  };
+    const response = await api.post(
+      baseURLReport + `getWorkOrder`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        userId: userId, // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
 
   // const handleGenerateSanctionOrder = (applicationFormId) => {
   //   Swal.fire({
