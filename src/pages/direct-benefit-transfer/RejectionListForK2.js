@@ -2236,7 +2236,7 @@ const getFinancialDefaultDetails = () => {
                      </Accordion.Item>
                    )}
      
-                   <Accordion.Item eventKey="documents">
+                   {/* <Accordion.Item eventKey="documents">
                      <Accordion.Header
                        style={{
                          backgroundColor: "#0F6CBE",
@@ -2297,7 +2297,7 @@ const getFinancialDefaultDetails = () => {
                               )}
                             </div>
                         </Accordion.Body>
-                      </Accordion.Item>
+                      </Accordion.Item> */}
 
             <Accordion.Item eventKey="transaction">
               <Accordion.Header

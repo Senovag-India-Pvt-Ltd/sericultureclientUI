@@ -2347,7 +2347,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                       )}
 
      
-                   <Accordion.Item eventKey="documents">
+                   {/* <Accordion.Item eventKey="documents">
                      <Accordion.Header
                        style={{
                          backgroundColor: "#0F6CBE",
@@ -2408,7 +2408,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                               )}
                             </div>
                         </Accordion.Body>
-                      </Accordion.Item>
+                      </Accordion.Item> */}
 
             <Accordion.Item eventKey="transaction">
               <Accordion.Header

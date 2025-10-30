@@ -2361,7 +2361,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                         </Accordion.Item>
                       )}
      
-                   <Accordion.Item eventKey="documents">
+                   {/* <Accordion.Item eventKey="documents">
                      <Accordion.Header
                        style={{
                          backgroundColor: "#0F6CBE",
@@ -2373,70 +2373,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                        Download
                      </Accordion.Header>
                      <Accordion.Body>
-                       {/* {viewDetailsData?.documents?.length > 0 ? (
-                         <table className="table small table-bordered">
-                           <thead>
-                             <tr>
-                               <th>Document Name</th>
-                               <th>Action</th>
-                             </tr>
-                           </thead>
-                           <tbody>
-                             {viewDetailsData.documents.map(
-                               (fileDocuments, index) => (
-                                 <tr key={index}>
-                                   <td>{fileDocuments.documentName || "N/A"}</td>
-
-                                   <td>
-                                     <Button
-                                       variant="primary"
-                                       size="sm"
-                                       onClick={() =>
-                                         handleDocumentClick(
-                                           fileDocuments.documentPath
-                                         )
-                                       }
-                                     >
-                                       View Document
-                                     </Button>
-                                     {currentDocumentPath ===
-                                       fileDocuments.documentPath &&
-                                       selectedDocumentFile && (
-                                         <>
-                                           <img
-                                             style={{
-                                               height: "100px",
-                                               width: "100px",
-                                             }}
-                                             src={selectedDocumentFile}
-                                             alt="Selected File"
-                                           />
-                                           <Button
-                                             variant="primary"
-                                             size="sm"
-                                             className="ms-2"
-                                             onClick={() =>
-                                               downloadFile(
-                                                 fileDocuments.documentPath
-                                               )
-                                             }
-                                           >
-                                             Download Selected File
-                                           </Button>
-                                         </>
-                                       )}
-     
-                                     
-                                   </td>
-                                 </tr>
-                               )
-                             )}
-                           </tbody>
-                         </table>
-                       ) : (
-                         <p>No Documents Available</p>
-                       )}
-      */}
+                       
      
                         <div className="mt-2">
                               {viewDetailsData?.workOrderNumber && (
@@ -2485,7 +2422,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                               )}
                             </div>
                         </Accordion.Body>
-                      </Accordion.Item>
+                      </Accordion.Item> */}
 
             <Accordion.Item eventKey="transaction">
               <Accordion.Header
@@ -2579,166 +2516,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   </Modal.Footer>
 </Modal>
 
-{/* <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>Check Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <table className="table small table-bordered">
-            <tbody>
-              <tr>
-                <td style={styles.ctstyle}>DeptCode:</td>
-                <td>{checkFileDetails.deptCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>SchemeID:</td>
-                <td>{checkFileDetails.schemeId}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>ComponentTypeID:</td>
-                <td>{checkFileDetails.componentTypeId}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>ComponentID:</td>
-                <td>{checkFileDetails.componentId}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>SubComponentID:</td>
-                <td>{checkFileDetails.subComponentId}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>PaymentMode:</td>
-                <td>{checkFileDetails.paymentMode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>PaymentType:</td>
-                <td>{checkFileDetails.paymentType}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>BenRecordCount:</td>
-                <td>{checkFileDetails.benRecordCount}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>BeneficiaryID:</td>
-                <td>{checkFileDetails.beneficiaryId}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>FarmerRegNo:</td>
-                <td>{checkFileDetails.farmerRegNo}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>PeriodFrom:</td>
-                <td>{checkFileDetails.periodFrom}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>PeriodTo:</td>
-                <td>{checkFileDetails.periodTo}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>MobileNo:</td>
-                <td>{checkFileDetails.mobileNumber}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>SanctionAmount:</td>
-                <td>{checkFileDetails.sanctionAmount}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>LGDistrict:</td>
-                <td>{checkFileDetails.lgDistrict}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>LGTaluk:</td>
-                <td>{checkFileDetails.lgTaluk}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>SanctionNo:</td>
-                <td>{listData.sanctionNo}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>Finyear:</td>
-                <td>{checkFileDetails.finYear}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>DDOCode:</td>
-                <td>{checkFileDetails.ddoCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>DistrictCode:</td>
-                <td>{checkFileDetails.districtCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>TalukCode:</td>
-                <td>{checkFileDetails.talukCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>HobliCode:</td>
-                <td>{checkFileDetails.hobliCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>VillageCode:</td>
-                <td>{checkFileDetails.villageCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>SurveyNo:</td>
-                <td>{checkFileDetails.surveyNumber}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>Surnoc:</td>
-                <td>{checkFileDetails.surNoc}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>Hissano:</td>
-                <td>{checkFileDetails.hissaNumber}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>LandCode:</td>
-                <td>{checkFileDetails.landCode}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>OwnerNo:</td>
-                <td>{checkFileDetails.ownerNumber}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>MainOwnerNo:</td>
-                <td>{checkFileDetails.mainOwnerNumber}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>OwnerName:</td>
-                <td>{checkFileDetails.ownerName}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>ExtAcre:</td>
-                <td>{checkFileDetails.extAcre}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>ExtGunta:</td>
-                <td>{checkFileDetails.extGunta}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>ExtfGunta:</td>
-                <td>{checkFileDetails.extFGunta}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>DevAcre:</td>
-                <td>{checkFileDetails.devAcre}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>DevGunta:</td>
-                <td>{checkFileDetails.devGunta}</td>
-              </tr>
-              <tr>
-                <td style={styles.ctstyle}>DevfGunta:</td>
-                <td>{checkFileDetails.devFGunta}</td>
-              </tr>
-            </tbody>
-          </table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal6}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+
       <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
   <Modal.Header closeButton>
     <Modal.Title>Check Details</Modal.Title>
