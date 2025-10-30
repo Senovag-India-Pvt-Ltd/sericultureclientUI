@@ -5182,6 +5182,10 @@ useEffect(() => {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Proposal Date</td>
+                        <td>{viewDetailsData?.applicationDetails?.[0]?.proposalDate || "N/A"}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Created Date:</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
@@ -5252,6 +5256,38 @@ useEffect(() => {
                   </table>
                 </Card.Body>
               </Card>
+
+              <Card className="shadow-sm border-0 rounded-3 mt-4">
+                              <Card.Header 
+                                className="fw-bold text-white" 
+                                style={{ backgroundColor: "#0F6CBE" }}
+                              >
+                                Constructed Area
+                              </Card.Header>
+                              <Card.Body>
+                                <table className="table table-bordered table-striped small">
+                                  <tbody>
+                                    <tr>
+                                      <td style={styles.ctstyle}>Extent Of Mulberry</td>
+                                      <td>{viewDetailsData?.applicationDetails?.[0]?.extentOfMulberry || "N/A"}</td>
+                                    </tr>
+                                    <tr>
+                                      <td style={styles.ctstyle}>RH Sqft</td>
+                                      <td>{viewDetailsData?.applicationDetails?.[0]?.rhSqft || "N/A"}</td>
+                                    </tr>
+                                    <tr>
+                                      <td style={styles.ctstyle}>Estimated Cost</td>
+                                      <td>{viewDetailsData?.applicationDetails?.[0]?.estimatedCost || "N/A"}</td>
+                                    </tr>
+                                    <tr>
+                                      <td style={styles.ctstyle}>Roof Type</td>
+                                      <td>{viewDetailsData?.applicationDetails?.[0]?.roofTypeName || "N/A"}</td>
+                                    </tr>
+                                    
+                                  </tbody>
+                                </table>
+                              </Card.Body>
+                            </Card>
                 {/* )} */}
                 </Accordion.Body>
               </Accordion.Item>
