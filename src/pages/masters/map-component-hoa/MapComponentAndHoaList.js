@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button,Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../../../src/services/auth/api";
 
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MapComponentAndHoaList() {
     // Translation
@@ -24,7 +25,7 @@ function MapComponentAndHoaList() {
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 30;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -47,6 +48,109 @@ function MapComponentAndHoaList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+const [searchData, setSearchData] = useState({
+      schemeId: "",
+      subSchemeId: "",
+      scComponentId: "",
+      pageNumber: page,
+      pageSize: countPerPage,
+    });
+
+    let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
+  };
+   const search = (e) => {
+      api.get(`${baseURLDBT}master/cost/list-with-join`, { 
+          params: {
+              schemeId: searchData.schemeId,
+              subSchemeId: searchData.subSchemeId,
+              scComponentId: searchData.scComponentId,
+              pageNumber: searchData.pageNumber,
+              pageSize: searchData.pageSize,
+          },
+          headers: {
+            "Content-Type": "application/json"
+        }
+      })
+      .then((response) => {
+          setListData(response.data.content.unitCost);
+          setTotalRows(response.data.content.totalItems);
+      })
+      .catch((err) => {
+          console.error("Error fetching data:", err);
+          setListData([]);
+      });
+  };
+
+  // to get sc-scheme-details
+    const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+    const getSchemeList = () => {
+      api
+        .get(baseURLMasterData + `scSchemeDetails/get-all`)
+        .then((response) => {
+          setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+        })
+        .catch((err) => {
+          setScSchemeDetailsListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getSchemeList();
+    }, []);
+  
+    // to get sc-sub-scheme-details by sc-scheme-details
+    const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+      []
+    );
+    const getSubSchemeList = (_id) => {
+      api
+        .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+        .then((response) => {
+          if (response.data.content.unitCost) {
+            setScSubSchemeDetailsListData(response.data.content.unitCost);
+          }
+        })
+        .catch((err) => {
+          setScSubSchemeDetailsListData([]);
+          // alert(err.response.data.errorMessages[0].message[0].message);
+        });
+    };
+  
+    useEffect(() => {
+      if (searchData.schemeId) {
+        getSubSchemeList(searchData.schemeId);
+      }
+    }, [searchData.schemeId]);
+
+    // to get component
+      const [scComponentListData, setScComponentListData] = useState([]);
+    
+      const getComponentList = (schemeId, subSchemeId) => {
+        api
+          .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+            schemeId: schemeId,
+            subSchemeId: subSchemeId,
+          })
+          .then((response) => {
+            setScComponentListData(response.data.content.unitCost);
+          })
+          .catch((err) => {
+            setScComponentListData([]);
+          });
+      };
+    
+      
+      useEffect(() => {
+        if (searchData.schemeId && searchData.subSchemeId) {
+          getComponentList(searchData.schemeId, searchData.subSchemeId);
+         
+        }
+      }, [searchData.schemeId, searchData.subSchemeId]);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -343,6 +447,93 @@ function MapComponentAndHoaList() {
       </Block.Head>
 
       <Block className="mt-n4">
+      <Card>
+        <Row className="m-2">
+          <Col sm={3}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("Scheme")} </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="schemeId"
+                  value={searchData.schemeId}
+                  onChange={handleInputs}
+                 
+                >
+                  <option value="">{t("Select Scheme Names")}</option>
+                  {scSchemeDetailsListData &&
+                    scSchemeDetailsListData.map((list) => (
+                      <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                        {list.schemeName}
+                      </option>
+                    ))}
+                </Form.Select>
+              
+              </div>
+            </Form.Group>
+          </Col>
+
+          <Col sm={3}>
+            <Form.Group className="form-group" id="fid">
+              <Form.Label>{t("Search By Component Type")}</Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="subSchemeId"
+                  value={searchData.subSchemeId}
+                  onChange={handleInputs}
+                >
+                  <option value="">{t("Select Component Type")}</option>
+                  {scSubSchemeDetailsListData &&
+                    scSubSchemeDetailsListData.map((list) => (
+                      <option key={list.subSchemeId} value={list.subSchemeId}>
+                        {list.subSchemeName}
+                      </option>
+                    ))}
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
+
+          <Col sm={3}>
+            <Form.Group className="form-group">
+              <Form.Label>{t("Component")} </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="scComponentId"
+                  value={searchData.scComponentId}
+                  onChange={handleInputs}
+                  isInvalid={
+                    searchData.scComponentId === undefined ||
+                    searchData.scComponentId === "0"
+                  }
+                >
+                  <option value="">{t("Select Component")}</option>
+                  {scComponentListData &&
+                    scComponentListData.map((list) => (
+                      <option key={list.scComponentId} value={list.scComponentId}>
+                        {list.scComponentName}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  {t("Component is required")}
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+
+          
+
+          <Col sm={2}>
+            <Button type="button" variant="primary" onClick={search}>
+              {t("search")}
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+    </Block>
+
+
+      <Block className="mt-3">
         <Card>
           <DataTable
             // title="TrainingProgram List"
