@@ -447,18 +447,21 @@ const getUserMastersList = (_id) => {
           saveError("No Details Found!!!");
         } else {
           handleShowModal();
+           const appDetails = content.applicationDetailsResponses[0];
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
             landDetails: content.landDetailsResponses,
             applicationTransactionDetails: content.applicationTransactionResponses,
 
-            applicationFormId: applicationFormId, // coming from state set earlier
-            workOrderSchemeId: workOrderSchemeId,
-            workOrderNumber: workOrderNumber,
-            workOrderForScheme: workOrderForScheme,
-            sanctionOrderNumber: sanctionOrderNumber,
-            sanctionOrderForScheme: sanctionOrderForScheme,
-            workOrderApplicationFormId: scApplicationFormServiceId,
+          applicationFormId: _id, // coming from state set earlier
+          workOrderSchemeId: workOrderSchemeId,
+          workOrderNumber: appDetails.workOrderNumber || "",
+          workOrderForScheme: workOrderForScheme,
+          sanctionOrderNumber: appDetails.sanctionOrderNumber || "",
+          sanctionOrderForScheme: sanctionOrderForScheme,
+          workOrderApplicationFormId: scApplicationFormServiceId,
+          subSchemeId: appDetails.subSchemeId,  // ✅ add this
+          categoryId: categoryId
           });
         }
       })
@@ -857,6 +860,8 @@ const [applicationFormId, setApplicationFormId] = useState(null);
 const [scApplicationFormServiceId, setScApplicationFormServiceId] = useState(null);
 const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
 const [workOrderNumber, setWorkOrderNumber] = useState(null);
+const [categoryId, setCategoryId] = useState(null);
+const [subSchemeId, setSubSchemeId] = useState(null);
 const [workOrderForScheme, setWorkOrderForScheme] = useState(null);
 const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
 const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
@@ -903,6 +908,9 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
         setSanctionOrderNumber(recordData?.sanctionOrderNumber);
         setSanctionOrderForScheme(recordData?.sanctionOrderForScheme);
+
+        setCategoryId(recordData?.categoryId);
+        setSubSchemeId(recordData?.subSchemeId);
         setLoading(false);
       })
       .catch((err) => {
@@ -997,170 +1005,148 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       }
     };
   
-    const generateWorkOrderAcknowledgmentRH = async (
-      applicationFormId,
-      schemeId
-    ) => {
-      try {
-        const response = await api.post(
-          baseURLReport + `getAuthorisationLetterFromFarmer`,
-          {
-            applicationFormId: applicationFormId,
-            schemeId: schemeId,
-          },
-          {
-            responseType: "blob", //Force to receive data in a Blob Format
-          }
-        );
-  
-        const file = new Blob([response.data], { type: "application/pdf" });
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
-      } catch (error) {
-        // console.log("error", error);
-      }
-    };
+    const generateWorkOrderAcknowledgmentRH = async (applicationFormId, schemeId) => {
+     try {
+       // ✅ Get userId from localStorage
+       const userId = localStorage.getItem("userMasterId");
+   
+       const response = await api.post(
+         baseURLReport + `getWorkOrder`,
+         {
+           applicationFormId: applicationFormId,
+           schemeId: schemeId,
+           userId: userId, // ✅ Added userId
+         },
+         {
+           responseType: "blob", // Force to receive data in a Blob Format
+         }
+       );
+   
+       const file = new Blob([response.data], { type: "application/pdf" });
+       const fileURL = URL.createObjectURL(file);
+       window.open(fileURL);
+     } catch (error) {
+       console.error("Error generating work order acknowledgment:", error);
+     }
+   };
 
-     const handleDownloadSanctionOrder = (
-        applicationFormId,
-        schemeId,
-        schemeType
-      ) => {
-        // const schemeId = schemeId;
-        // const schemeType = sanctionOrderForScheme; // Fetch the scheme type from the response
-    
-        Swal.fire({
-          title: "Generate Sanction Order",
-          text: "Select the recipient:",
-          showCancelButton: true,
-          confirmButtonText: "Farmer",
-          cancelButtonText: "Company",
-          showCloseButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Call the Farmer endpoint based on the scheme type
-            if (schemeType === "PMKSY") {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "farmer",
-                "PMKSY"
-              );
-            } else if (schemeType === "PDMC") {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "farmer",
-                "PDMC"
-              );
-            } else if (
-              schemeType === "Silk Samagra State" ||
-              schemeType === "Silk Samagra Central"
-            ) {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "farmer",
-                schemeType
-              );
-            } else {
-              console.error("Unknown scheme type for farmer sanction order.");
-            }
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Call the Company endpoint based on the scheme type
-            if (schemeType === "PMKSY") {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "company",
-                "PMKSY"
-              );
-            } else if (schemeType === "PDMC") {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "company",
-                "PDMC"
-              );
-            } else if (
-              schemeType === "Silk Samagra State" ||
-              schemeType === "Silk Samagra Central"
-            ) {
-              downloadSanctionOrderAcknowledgment(
-                applicationFormId,
-                schemeId,
-                "company",
-                schemeType
-              );
-            } else {
-              console.error("Unknown scheme type for company sanction order.");
-            }
-          }
-        });
-      };
-    
-      const downloadSanctionOrderAcknowledgment = async (
-        applicationId,
-        schemeId,
-        recipientType,
-        schemeType
-      ) => {
-        try {
-          // Determine the appropriate endpoint based on the recipient type and scheme type
-          let endpoint;
-          // if (recipientType === "farmer") {
-          //   endpoint =
-          //     schemeType === "PMKSY"
-          //       ? baseURLReport + `getSanctionOrderPmksy`
-          //       : baseURLReport + `getSanctionOrderPDMC`;
-          // } else if (recipientType === "company") {
-          //   endpoint =
-          //     schemeType === "PMKSY"
-          //       ? baseURLReport + `getSanctionOrderPmksyCompany`
-          //       : baseURLReport + `getSanctionOrderPDMCCompany`;
-          // } else {
-          //   throw new Error("Invalid recipient type.");
-          // }
-          if (
+    const handleDownloadSanctionOrder = (
+      applicationFormId,
+      schemeId,
+      schemeType,
+      subSchemeId,
+      categoryId
+    ) => {
+      Swal.fire({
+        title: "Generate Sanction Order",
+        text: "Select the recipient:",
+        showCancelButton: true,
+        confirmButtonText: "Farmer/Reeler",
+        cancelButtonText: "Company",
+        showCloseButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // ✅ Farmer
+          if (schemeType === "PMKSY" || schemeType === "PDMC") {
+            downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
+          } else if (
             schemeType === "Silk Samagra State" ||
             schemeType === "Silk Samagra Central"
           ) {
-            endpoint = baseURLReport + `getSanctionOrder`; // Call the API for Silk Samagra RH
+            downloadSanctionOrderAcknowledgment(
+              applicationFormId,
+              schemeId,
+              "farmer",
+              schemeType,
+              subSchemeId,
+              categoryId
+            );
           } else {
-            if (recipientType === "farmer") {
-              endpoint =
-                schemeType === "PMKSY"
-                  ? baseURLReport + `getSanctionOrderPmksy`
-                  : baseURLReport + `getSanctionOrderPDMC`;
-            } else if (recipientType === "company") {
-              endpoint =
-                schemeType === "PMKSY"
-                  ? baseURLReport + `getSanctionOrderPmksyCompany`
-                  : baseURLReport + `getSanctionOrderPDMCCompany`;
-            } else {
-              throw new Error("Invalid recipient type.");
-            }
+            console.error("Unknown scheme type for farmer sanction order.");
           }
-    
-          const response = await api.post(
-            endpoint,
-            {
-              applicationFormId: applicationId,
-              schemeId: schemeId,
-            },
-            {
-              responseType: "blob", // Force to receive data in a Blob Format
-            }
-          );
-    
-          const file = new Blob([response.data], { type: "application/pdf" });
-          const fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
-        } catch (error) {
-          console.error("Error generating sanction order:", error);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // ✅ Company
+          if (schemeType === "PMKSY" || schemeType === "PDMC") {
+            downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
+          } else if (
+            schemeType === "Silk Samagra State" ||
+            schemeType === "Silk Samagra Central"
+          ) {
+            downloadSanctionOrderAcknowledgment(
+              applicationFormId,
+              schemeId,
+              "company",
+              schemeType,
+              subSchemeId,
+              categoryId
+            );
+          } else {
+            console.error("Unknown scheme type for company sanction order.");
+          }
         }
-      };
-
+      });
+    };
+    
+     const downloadSanctionOrderAcknowledgment = async (
+       applicationId,
+       schemeId,
+       recipientType,
+       schemeType,
+       subSchemeId,
+       categoryId,
+       userId
+     ) => {
+       try {
+         const userId = localStorage.getItem("userMasterId");
+         let endpoint;
+     
+         if (
+           schemeType === "Silk Samagra State" ||
+           schemeType === "Silk Samagra Central"
+         ) {
+           endpoint = baseURLReport + `getSanctionOrderRH`;
+         } else {
+           if (recipientType === "farmer") {
+             endpoint =
+               schemeType === "PMKSY"
+                 ? baseURLReport + `getSanctionOrderPmksy`
+                 : baseURLReport + `getSanctionOrderPDMC`;
+           } else if (recipientType === "company") {
+             endpoint =
+               schemeType === "PMKSY"
+                 ? baseURLReport + `getSanctionOrderPmksyCompany`
+                 : baseURLReport + `getSanctionOrderPDMCCompany`;
+           } else {
+             throw new Error("Invalid recipient type.");
+           }
+         }
+     
+         const payload =
+           schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
+             ? {
+                 applicationFormId: applicationId,
+                 schemeId,
+                 subSchemeId,
+                 categoryId,
+                 userId,
+               }
+             : {
+                 applicationFormId: applicationId,
+                 schemeId,
+               };
+     
+         const response = await api.post(endpoint, payload, {
+           responseType: "blob",
+         });
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         console.error("Error generating sanction order:", error);
+       }
+     };
+     
 // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
   const getSchemesList = () => {
@@ -2347,7 +2333,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                       )}
 
      
-                   {/* <Accordion.Item eventKey="documents">
+                    <Accordion.Item eventKey="documents">
                      <Accordion.Header
                        style={{
                          backgroundColor: "#0F6CBE",
@@ -2399,7 +2385,9 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                                     handleDownloadSanctionOrder(
                                       viewDetailsData.applicationFormId,
                                       viewDetailsData.workOrderSchemeId,
-                                      viewDetailsData.sanctionOrderForScheme
+                                      viewDetailsData.sanctionOrderForScheme,
+                                      viewDetailsData.subSchemeId,     // ✅ new
+                                      viewDetailsData.categoryId
                                     )
                                   }
                                 >
@@ -2408,7 +2396,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                               )}
                             </div>
                         </Accordion.Body>
-                      </Accordion.Item> */}
+                      </Accordion.Item>
 
             <Accordion.Item eventKey="transaction">
               <Accordion.Header
