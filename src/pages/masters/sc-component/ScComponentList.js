@@ -198,6 +198,14 @@ function ScComponentList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Component Name In Kannada"),
+      selector: (row) => row.scComponentNameInKannada,
+      cell: (row) => <span>{row.scComponentNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

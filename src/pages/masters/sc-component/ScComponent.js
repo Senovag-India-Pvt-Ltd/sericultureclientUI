@@ -18,6 +18,7 @@ function ScComponent() {
     scComponentName: "",
     scSubSchemeDetailsId: "",
     dbtCode: "",
+    scComponentNameInKannada: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -51,6 +52,7 @@ function ScComponent() {
           scComponentName: "",
           scSubSchemeDetailsId: "",
           dbtCode: "",
+           scComponentNameInKannada: "",
         });
         setValidated(false);
         }
@@ -76,6 +78,7 @@ function ScComponent() {
       scComponentName: "",
       scSubSchemeDetailsId: "",
       dbtCode: "",
+      scComponentNameInKannada: "",
     });
   };
 
@@ -205,6 +208,23 @@ function ScComponent() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="component Name in Kannada">{t("Component Name In Kannada")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="scComponentNameInKannada"
+                          name="scComponentNameInKannada"
+                          type="text"
+                          value={data.scComponentNameInKannada}
+                          onChange={handleInputs}
+                          placeholder={t("Enter Component Name in kannada")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
 
                   <Col lg="6">
                     <Form.Group className="form-group">

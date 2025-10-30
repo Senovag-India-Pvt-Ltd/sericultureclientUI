@@ -96,6 +96,11 @@ function ScComponentView() {
                         <td style={styles.ctstyle}> {t("Component")}</td>
                         <td>{scComponent.scComponentName}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> {t("Component Name In Kannada")}</td>
+                        <td>{scComponent.scComponentNameInKannada}</td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>{scComponent.subSchemeName}</td>
