@@ -3064,6 +3064,7 @@ useEffect(() => {
           saveError("No Details Found!!!");
         } else {
           handleShowModal2();
+          const appDetails = content.applicationDetailsResponses[0];
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
             landDetails: content.landDetailsResponses,
@@ -3072,11 +3073,11 @@ useEffect(() => {
             documents: content.documentsResponses || [],
             workflowDetails: content.workFlowDetailsResponses,
 
-          applicationFormId: applicationFormId, // coming from state set earlier
+          applicationFormId: _id, // coming from state set earlier
           workOrderSchemeId: workOrderSchemeId,
-          workOrderNumber: workOrderNumber,
+          workOrderNumber: appDetails.workOrderNumber || "",
           workOrderForScheme: workOrderForScheme,
-          sanctionOrderNumber: sanctionOrderNumber,
+          sanctionOrderNumber: appDetails.sanctionOrderNumber || "",
           sanctionOrderForScheme: sanctionOrderForScheme,
           subSchemeId: subSchemeId,  // ✅ add this
           categoryId: categoryId,
