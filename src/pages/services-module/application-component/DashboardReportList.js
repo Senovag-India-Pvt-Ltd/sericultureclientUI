@@ -2576,6 +2576,8 @@ useEffect(() => {
           dateOfPayment: item.dateOfPayment,
           referenceNo: item.referenceNo,
           userId: pushToDBTListData[index]?.userId || "",
+          schemeQuotaType: item.schemeQuotaType,
+          shareInPercentage: item.shareInPercentage,
         };
       });
 
@@ -3077,7 +3079,7 @@ useEffect(() => {
           workOrderSchemeId: workOrderSchemeId,
           workOrderNumber: appDetails.workOrderNumber || "",
           workOrderForScheme: workOrderForScheme,
-          sanctionOrderNumber: appDetails.sanctionOrderNumber || "",
+          sanctionOrderNumber: sanctionOrderNumber,
           sanctionOrderForScheme: sanctionOrderForScheme,
           subSchemeId: subSchemeId,  // ✅ add this
           categoryId: categoryId,
