@@ -1770,6 +1770,7 @@ useEffect(() => {
     const userId = localStorage.getItem("userMasterId"); // ✅ get userId from localStorage
     let endpoint;
 
+    // Determine which endpoint to call
     if (
       schemeType === "Silk Samagra State" ||
       schemeType === "Silk Samagra Central"
@@ -1791,10 +1792,11 @@ useEffect(() => {
       }
     }
 
+    // ✅ Build payload differently for Silk Samagra
     const payload =
       schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
         ? {
-            applicationFormId: applicationId,
+            applicationFormIdss: [applicationId], // ✅ send as list
             schemeId,
             subSchemeId,
             categoryId,
@@ -1805,10 +1807,12 @@ useEffect(() => {
             schemeId,
           };
 
+    // API call
     const response = await api.post(endpoint, payload, {
       responseType: "blob",
     });
 
+    // ✅ Open the PDF in a new tab
     const file = new Blob([response.data], { type: "application/pdf" });
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL);
@@ -1816,6 +1820,7 @@ useEffect(() => {
     console.error("Error generating sanction order:", error);
   }
 };
+
 
 
   // to get Financial Year
