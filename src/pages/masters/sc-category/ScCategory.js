@@ -22,6 +22,7 @@ function ScCategory() {
     codeNumber:"",
     description:"",
     dbtCode: "",
+    categoryShortName: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -55,6 +56,7 @@ function ScCategory() {
               codeNumber:"",
               description:"",
               dbtCode: "",
+              categoryShortName: "",
             });
             setValidated(false);
           }
@@ -82,6 +84,7 @@ function ScCategory() {
       codeNumber:"",
       description:"",
       dbtCode: "",
+      categoryShortName: "",
     });
   };
 
@@ -240,6 +243,29 @@ function ScCategory() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label htmlFor="title">
+                                        {t("Category Short Name")}
+                                          <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="title"
+                                            name="categoryShortName"
+                                            value={data.categoryShortName}
+                                            onChange={handleInputs}
+                                            type="text"
+                                            placeholder={t("Enter Category Short Name")}
+                                            required
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                          {t("Category Short Name is required.")}
+                                          </Form.Control.Feedback>
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
