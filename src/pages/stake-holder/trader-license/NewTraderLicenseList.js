@@ -21,7 +21,7 @@ function NewTraderLicenseList() {
    const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };

@@ -22,7 +22,7 @@ function RaceList() {
       const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -31,24 +31,24 @@ function RaceList() {
 
   // Search
   const [isActive, setIsActive] = useState(false);
-  const display = () => {
-    const marketMasterId = data.marketMasterId;
-    const response = api
-      .get(baseURL + `raceMaster/get-by-market-master-id/${marketMasterId}`)
-      .then((response) => {
-        setMarket(response.data.content);
-        setListData(response.data.content.raceMaster);
-        setLoading(false);
-        // setIsActive(true);
-      })
-      .catch((err) => {
-        setMarket({});
-        setLoading(false);
-      });
-    setIsActive((current) => !current);
-    // setIsActive(false);
-    // });
-  };
+  // const display = () => {
+  //   const marketMasterId = data.marketMasterId;
+  //   const response = api
+  //     .get(baseURL + `raceMaster/get-by-market-master-id/${marketMasterId}`)
+  //     .then((response) => {
+  //       setMarket(response.data.content);
+  //       setListData(response.data.content.raceMaster);
+  //       setLoading(false);
+  //       // setIsActive(true);
+  //     })
+  //     .catch((err) => {
+  //       setMarket({});
+  //       setLoading(false);
+  //     });
+  //   setIsActive((current) => !current);
+  //   // setIsActive(false);
+  //   // });
+  // };
 
   const [data, setData] = useState({
     marketMasterId: "",
@@ -287,14 +287,14 @@ function RaceList() {
 
       <Block className="mt-n4">
         <Card>
-          <Row className="m-2">
+          {/* <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
                   {t("Market")}
                 </Form.Label>
                 <Col sm={3}>
-                  {/* <Form.Label>Market</Form.Label> */}
+                 
                   <div className="form-control-wrap">
                     <Form.Select
                       name="marketMasterId"
@@ -327,9 +327,9 @@ function RaceList() {
                 </Col>
               </Form.Group>
             </Col>
-          </Row>
+          </Row>  */}
 
-          <div className={isActive ? "" : "d-none"}>
+          {/* <div className={isActive ? "" : "d-none"}> */}
             <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={RaceDataColumns}
@@ -347,7 +347,7 @@ function RaceList() {
               theme="solarized"
               customStyles={customStyles}
             />
-          </div>
+          {/* </div> */}
         </Card>
       </Block>
     </Layout>
