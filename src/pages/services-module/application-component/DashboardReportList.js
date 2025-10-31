@@ -1796,7 +1796,7 @@ useEffect(() => {
     const payload =
       schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
         ? {
-            applicationFormIdss: [applicationId], // ✅ send as list
+            applicationFormId: applicationId, // ✅ send as list
             schemeId,
             subSchemeId,
             categoryId,
