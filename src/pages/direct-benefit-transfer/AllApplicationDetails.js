@@ -17,6 +17,7 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import DatePicker from "react-datepicker";
+import { useMemo, useCallback } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -29,13 +30,20 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function AllApplicationDetails() {
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 500;
-  const [totalRows, setTotalRows] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
 
+ // ✅ State declarations
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState([]);
+  const [scComponentListData, setScComponentListData] = useState([]);
+  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+  const [scCategoryListData, setScCategoryListData] = useState([]);
+  const [districtListData, setDistrictListData] = useState([]);
+  const [talukListData, setTalukListData] = useState([]);
+  const [hobliListData, setHobliListData] = useState([]);
+  const [villageListData, setVillageListData] = useState([]);
+
+  const [searchData, setSearchData] = useState({ type: "2", text: "" });
   const [addressDetails, setAddressDetails] = useState({
     districtId: 0,
     talukId: 0,
@@ -44,64 +52,201 @@ function AllApplicationDetails() {
     scCategoryId: 0,
   });
 
-//   const [searchData, setSearchData] = useState({
-//   text: "",
-//   type: 0,
-//   categoryId: 0, // <-- Add this to send category filter
-// });
-
-
-  // Translation
-  const { t } = useTranslation();
-
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
-
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
-
-  // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
-  const [landData, setLandData] = useState({
-    landId: "",
-    talukId: "",
-  });
-
   const [data, setData] = useState({
     financialYearMasterId: "",
     year1: "",
     year2: "",
+  });
+
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const countPerPage = 500;
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const { t } = useTranslation();
+
+  // ✅ API Calls
+  const getFinancialYearList = () => {
+    api
+      .get(`${baseURLMasterData}financialYearMaster/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setFinancialyearListData(content?.financialYearMaster ?? []);
+      })
+      .catch(() => setFinancialyearListData([]));
+  };
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(`${baseURLMasterData}financialYearMaster/get-is-default`)
+      .then((response) => {
+        const content = response.data?.content;
+        if (content) {
+          const year = content.financialYear ?? "";
+          const [fromDate = "", toDate = ""] = year.split("-");
+          setData({
+            financialYearMasterId: content.financialYearMasterId ?? "",
+            year1: fromDate,
+            year2: toDate,
+          });
+          setSearchData((prev) => ({
+            ...prev,
+            text: content.financialYearMasterId ?? "",
+          }));
+        }
+      })
+      .catch(() => setData({ financialYearMasterId: "", year1: "", year2: "" }));
+  };
+
+  const getSubSchemeList = () => {
+    api
+      .get(`${baseURLMasterData}scSubSchemeDetails/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setScSubSchemeDetailsListData(content?.scSubSchemeDetails ?? []);
+      })
+      .catch(() => setScSubSchemeDetailsListData([]));
+  };
+
+  const getComponentList = () => {
+    api
+      .get(`${baseURLMasterData}scComponent/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setScComponentListData(content?.scComponent ?? []);
+      })
+      .catch(() => setScComponentListData([]));
+  };
+
+  const getSchemeList = () => {
+    api
+      .get(`${baseURLMasterData}scSchemeDetails/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setScSchemeDetailsListData(content?.ScSchemeDetails ?? []);
+      })
+      .catch(() => setScSchemeDetailsListData([]));
+  };
+
+  const getHeadAccountList = () => {
+    api
+      .get(`${baseURLMasterData}scHeadAccount/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setScHeadAccountListData(content?.scHeadAccount ?? []);
+      })
+      .catch(() => setScHeadAccountListData([]));
+  };
+
+  const getCategoryList = () => {
+    api
+      .get(`${baseURLMasterData}scCategory/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setScCategoryListData(content?.scCategory ?? []);
+      })
+      .catch(() => setScCategoryListData([]));
+  };
+
+  const getDistrictList = () => {
+    api
+      .get(`${baseURL}district/get-all`)
+      .then((response) => {
+        const content = response.data?.content;
+        setDistrictListData(content?.district ?? []);
+      })
+      .catch(() => setDistrictListData([]));
+  };
+
+  const getTalukList = (_id) => {
+    if (!_id) {
+      setTalukListData([]);
+      return;
+    }
+    api
+      .get(`${baseURL}taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        const content = response.data?.content;
+        setTalukListData(content?.taluk ?? []);
+      })
+      .catch(() => setTalukListData([]));
+  };
+
+  const getHobliList = (_id) => {
+    if (!_id) {
+      setHobliListData([]);
+      return;
+    }
+    api
+      .get(`${baseURL}hobli/get-by-taluk-id/${_id}`)
+      .then((response) => {
+        const content = response.data?.content;
+        setHobliListData(content?.hobli ?? []);
+      })
+      .catch(() => setHobliListData([]));
+  };
+
+  const getVillageList = (_id) => {
+    if (!_id) {
+      setVillageListData([]);
+      return;
+    }
+    api
+      .get(`${baseURL}village/get-by-hobli-id/${_id}`)
+      .then((response) => {
+        const content = response.data?.content;
+        setVillageListData(content?.village ?? []);
+      })
+      .catch(() => setVillageListData([]));
+  };
+
+  // ✅ useEffects
+  useEffect(() => {
+    getFinancialYearList();
+    getFinancialDefaultDetails();
+    getSubSchemeList();
+    getSchemeList();
+    getComponentList();
+    getHeadAccountList();
+    getCategoryList();
+    getDistrictList();
+  }, []);
+
+  useEffect(() => {
+    if (addressDetails.districtId) getTalukList(addressDetails.districtId);
+  }, [addressDetails.districtId]);
+
+  useEffect(() => {
+    if (addressDetails.talukId) getHobliList(addressDetails.talukId);
+  }, [addressDetails.talukId]);
+
+  useEffect(() => {
+    if (addressDetails.hobliId) getVillageList(addressDetails.hobliId);
+  }, [addressDetails.hobliId]);
+
+  // ✅ Memos and handlers
+  const memoizedFinancialYears = useMemo(() => financialyearListData, [financialyearListData]);
+  const memoizedComponents = useMemo(() => scComponentListData, [scComponentListData]);
+  const memoizedComponentTypes = useMemo(() => scSubSchemeDetailsListData, [scSubSchemeDetailsListData]);
+
+  const handleInputsSearch = useCallback((e) => {
+    const { name, value } = e.target;
+    setSearchData((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handleInputsAddress = (e) => {
+    const { name, value } = e.target;
+    setAddressDetails((prev) => ({
+      ...prev,
+      [name]: Number(value),
+    }));
+  };
+
+
+  const [landData, setLandData] = useState({
+    landId: "",
+    talukId: "",
   });
 
   const [farmer, setFarmer] = useState({
@@ -114,95 +259,7 @@ function AllApplicationDetails() {
     periodTo: new Date(),
   });
 
-  // To get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        } else {
-          setTalukListData([]);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (addressDetails.districtId) {
-      getTalukList(addressDetails.districtId);
-    }
-  }, [addressDetails.districtId]);
-
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    const response = api
-      .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.hobli) {
-          setHobliListData(response.data.content.hobli);
-        }
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (addressDetails.talukId) {
-      getHobliList(addressDetails.talukId);
-    }
-  }, [addressDetails.talukId]);
-
-  // to get village
-  const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    api
-      .get(baseURL + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  // useEffect(() => {
-  //   if (addressDetails.hobliId) {
-  //     getVillageList(addressDetails.hobliId);
-  //   }
-  // }, [addressDetails.hobliId]);
+ 
 
 useEffect(() => {
   if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
@@ -212,12 +269,6 @@ useEffect(() => {
   }
 }, [addressDetails.hobliId]);
 
-  // const handleInputsaddress = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   setAddressDetails({ ...addressDetails, [name]: value });
-  // };
-
   const handleInputsaddress = (e) => {
   const { name, value } = e.target;
   setAddressDetails((prev) => ({
@@ -226,30 +277,6 @@ useEffect(() => {
   }));
 };
 
-
-  // const handleInputsSearch = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   setSearchData({ ...searchData, [name]: value });
-  // };
-
-  const handleInputsSearch = (e) => {
-    const { name, value } = e.target;
-
-    // If type is 4, set the financial year ID in searchData
-    if (value == 4) {
-      setSearchData((prev) => ({
-        ...prev,
-        [name]: value,
-        text: data.financialYearMasterId, // Use the fetched financialYearMasterId
-      }));
-    } else {
-      setSearchData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
 
   // Search
   const search = (e) => {
@@ -280,25 +307,6 @@ useEffect(() => {
       });
   };
 
-  // console.log(searchData);
-
-  // to get Financial Year
-  const [financialyearListData, setFinancialyearListData] = useState([]);
-
-  const getFinancialYearList = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialyearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialyearListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getFinancialYearList();
-  }, []);
 
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
@@ -310,25 +318,6 @@ useEffect(() => {
       setValidatedDisplay(true);
     } else {
       event.preventDefault();
-
-      // const { text, select } = farmer;
-      // let sendData;
-
-      // if (select === "mobileNumber") {
-      //   sendData = {
-      //     mobileNumber: text,
-      //   };
-      // }
-      // if (select === "fruitsId") {
-      //   sendData = {
-      //     fruitsId: text,
-      //   };
-      // }
-      // if (select === "farmerNumber") {
-      //   sendData = {
-      //     farmerNumber: text,
-      //   };
-      // }
 
       const { year1, year2, type, searchText } = searchData;
 
@@ -471,37 +460,6 @@ useEffect(() => {
   };
 
   const clear = () => {
-    // e.preventDefault();
-    // window.location.reload();
-    // setAllApplicationIds([]);
-    // setUnselectedApplicationIds([]);
-    // setAllApplicationIds([]);
-  };
-
-  // Fetch default financial year details
-  const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        const year = response.data.content.financialYear;
-        const [fromDate, toDate] = year.split("-");
-        setData({
-          financialYearMasterId: response.data.content.financialYearMasterId,
-          year1: fromDate,
-          year2: toDate,
-        });
-        setSearchData((prev) => ({
-          ...prev,
-          text: response.data.content.financialYearMasterId, // Pre-fill text with financial year
-        }));
-      })
-      .catch((err) => {
-        setData({
-          financialYearMasterId: "",
-          year1: "",
-          year2: "",
-        });
-      });
   };
 
   const getList = () => {
@@ -580,125 +538,6 @@ useEffect(() => {
       });
   };
 
-  // console.log(allApplicationIds);
-
-  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
-    []
-  );
-
-  const getSubSchemeList = () => {
-    const response = api
-      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-      .then((response) => {
-        if (response.data.content.scSubSchemeDetails) {
-          setScSubSchemeDetailsListData(
-            response.data.content.scSubSchemeDetails
-          );
-        }
-      })
-      .catch((err) => {
-        setScSubSchemeDetailsListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getSubSchemeList();
-  }, []);
-
-  // to get sc-scheme-details
-  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
-
-  const getSchemeList = () => {
-    api
-      .get(baseURLMasterData + `scSchemeDetails/get-all`)
-      .then((response) => {
-        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
-      })
-      .catch((err) => {
-        setScSchemeDetailsListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getSchemeList();
-  }, []);
-
-  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
-
-  const getHeadAccountList = () => {
-    api
-      .get(baseURLMasterData + `scHeadAccount/get-all`)
-      .then((response) => {
-        if (response.data.content.scHeadAccount) {
-          setScHeadAccountListData(response.data.content.scHeadAccount);
-        }
-      })
-      .catch((err) => {
-        setScHeadAccountListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getHeadAccountList();
-  }, []);
-
-  const [scCategoryListData, setScCategoryListData] = useState([]);
-
-  const getCategoryList = () => {
-    api
-      .get(baseURLMasterData + `scCategory/get-all`)
-      .then((response) => {
-        if (response.data.content.scCategory) {
-          setScCategoryListData(response.data.content.scCategory);
-        }
-      })
-      .catch((err) => {
-        setScCategoryListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getCategoryList();
-  }, []);
-
-  // to get component
-  const [scComponentListData, setScComponentListData] = useState([]);
-
-  const getComponentList = () => {
-    api
-      .get(baseURLMasterData + `scComponent/get-all`)
-      .then((response) => {
-        setScComponentListData(response.data.content.scComponent);
-      })
-      .catch((err) => {
-        setScComponentListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getComponentList();
-  }, []);
-  // to get User Master
-  // const [userListData, setUserListData] = useState([]);
-
-  // const getUserList = () => {
-  //   api
-  //     .get(baseURL + `userMaster/get-all`)
-  //     .then((response) => {
-  //       setUserListData(response.data.content.userMaster);
-  //     })
-  //     .catch((err) => {
-  //       setUserListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getUserList();
-  // }, []);
-
   const navigate = useNavigate();
 
   const handleEdit = (_id) => {
@@ -745,13 +584,6 @@ useEffect(() => {
     });
   };
 
-  const [searchData, setSearchData] = useState({
-    // year1: "",
-    // year2: "",
-    type: 5,
-    searchText: "",
-    scCategoryId: 0,
-  });
 
   console.log(searchData);
 
@@ -780,32 +612,6 @@ useEffect(() => {
     }
   };
 
-  // Get Default Financial Year
-
-  // const getFinancialDefaultDetails = () => {
-  //   api
-  //     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-  //     .then((response) => {
-  //       const year = response.data.content.financialYear;
-  //       const [fromDate, toDate] = year.split("-");
-  //       setData((prev) => ({
-  //         ...prev,
-  //         financialYearMasterId: response.data.content.financialYearMasterId,
-  //       }));
-  //       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-  //     })
-  //     .catch((err) => {
-  //       setData((prev) => ({
-  //         ...prev,
-  //         financialYearMasterId: "",
-  //       }));
-  //       setSearchData((prev) => ({ ...prev, year1: "", year2: "" }));
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getFinancialDefaultDetails();
-  // }, []);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -1060,93 +866,99 @@ useEffect(() => {
         {/* First Row: Search By and District/Taluk */}
         <Row className="m-4">
           {/* Search By */}
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("Search By")}</Form.Label>
+          {/* Search By */}
+<Col sm={3}>
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>{t("Search By")}</Form.Label>
+    <Form.Select
+      name="type"
+      value={searchData.type}
+      onChange={handleInputsSearch}
+    >
+      <option value="2">{t("FRUITS ID")}</option>
+      <option value="4">{t("Beneficiary ID")}</option>
+      <option value="5">{t("Financial Year")}</option>
+      <option value="6">{t("Component")}</option>
+      <option value="7">{t("Component Type")}</option>
+    </Form.Select>
+  </Form.Group>
+</Col>
+
+{/* Conditional Input / Select */}
+<Col sm={3}>
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>&nbsp;</Form.Label>
+    <div className="form-control-wrap">
+      {(() => {
+        switch (Number(searchData.type)) {
+          case 5:
+            return (
               <Form.Select
-                name="type"
-                value={searchData.type}
+                name="text"
+                value={searchData.text}
                 onChange={handleInputsSearch}
               >
-                <option value="2">{t("FRUITS ID")}</option>
-                <option value="4">{t("Beneficiary ID")}</option>
-                <option value="5">{t("Financial Year")}</option>
-                <option value="6">{t("Component")}</option>
-                <option value="7">{t("Component Type")}</option>
+                <option value="">{t("Select Year")}</option>
+                {memoizedFinancialYears.map((list) => (
+                  <option
+                    key={list.financialYearMasterId}
+                    value={list.financialYearMasterId}
+                  >
+                    {list.financialYear}
+                  </option>
+                ))}
               </Form.Select>
-            </Form.Group>
-          </Col>
+            );
+          case 6:
+            return (
+              <Form.Select
+                name="text"
+                value={searchData.text}
+                onChange={handleInputsSearch}
+              >
+                <option value="">{t("Select Component")}</option>
+                {memoizedComponents.map((list) => (
+                  <option key={list.scComponentId} value={list.scComponentId}>
+                    {list.scComponentName}
+                  </option>
+                ))}
+              </Form.Select>
+            );
+          case 7:
+            return (
+              <Form.Select
+                name="text"
+                value={searchData.text}
+                onChange={handleInputsSearch}
+              >
+                <option value="">{t("Select Component Type")}</option>
+                {memoizedComponentTypes.map((list) => (
+                  <option
+                    key={list.scSubSchemeDetailsId}
+                    value={list.scSubSchemeDetailsId}
+                  >
+                    {list.subSchemeName}
+                  </option>
+                ))}
+              </Form.Select>
+            );
+          default:
+            return (
+              <Form.Control
+                id="searchInput"
+                name="text"
+                value={searchData.text}
+                onChange={handleInputsSearch}
+                type="text"
+                placeholder="Search"
+              />
+            );
+        }
+      })()}
+    </div>
+  </Form.Group>
+</Col>
 
-          {/* Conditional Input/Select */}
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>&nbsp;</Form.Label> {/* Empty label to align with above */}
-              <div className="form-control-wrap">
-                {Number(searchData.type) === 5 ? (
-                                  <Form.Select
-                                    name="text"
-                                    value={searchData.text}
-                                    onChange={handleInputsSearch}
-                                    isInvalid={searchData.text === "0"}
-                                  >
-                                    <option value="">{t("Select Year")}</option>
-                                    {financialyearListData.map((list) => (
-                                      <option
-                                        key={list.financialYearMasterId}
-                                        value={list.financialYearMasterId}
-                                      >
-                                        {list.financialYear}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                ) : Number(searchData.type) === 6 ? (
-                  <Form.Select
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    isInvalid={searchData.text === "0"}
-                  >
-                    <option value="">{t("Select Component")}</option>
-                    {scComponentListData.map((list) => (
-                      <option
-                        key={list.scComponentId}
-                        value={list.scComponentId}
-                      >
-                        {list.scComponentName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                ) : Number(searchData.type) === 7 ? (
-                  <Form.Select
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    isInvalid={searchData.text === "0"}
-                  >
-                    <option value="">{t("Select Component Type")}</option>
-                    {scSubSchemeDetailsListData.map((list) => (
-                      <option
-                        key={list.scSubSchemeDetailsId}
-                        value={list.scSubSchemeDetailsId}
-                      >
-                        {list.subSchemeName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                ) : (
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    type="text"
-                    placeholder="Search"
-                    required
-                  />
-                )}
-              </div>
-            </Form.Group>
-          </Col>
 
           {/* District */}
           <Col sm={3}>
@@ -1272,272 +1084,13 @@ useEffect(() => {
             columns={ApplicationDataColumns}
             data={listData}
             highlightOnHover
-            // pagination
-            // paginationServer
-            // paginationTotalRows={totalRows}
-            // paginationPerPage={countPerPage}
-            // paginationComponentOptions={{
-            //   noRowsPerPage: true,
-            // }}
-            // onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
           />
-        </Card>
-
-        {/* <Form
-          noValidate
-          validated={validated}
-          onSubmit={postData}
-          className="mt-1"
-        >
-          <div className="gap-col mt-1">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                <Button type="submit" variant="primary" onClick={postData}>
-                  Save
-                </Button>
-              </li>
-              .
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-        </Form> */}
+        </Card>       
       </Block>
 
-      {/* <Block className="">
-        <Row className="g-3 ">
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs ">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Form>
-        </Row>
-      </Block> */}
-
-      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {loading ? (
-      <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
-      </h1>
-    ) : (
-      <Row className="g-gs">
-        <Block className="mt-3">
-          <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Scheme Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.applicationDetails.map((detail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Fruits Id:</td>
-                          <td>{detail.fruitsId}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Farmer Name:</td>
-                          <td>{detail.farmerFirstName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sanction No:</td>
-                          <td>{detail.sanctionNo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Name:</td>
-                          <td>{detail.schemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                          <td>{detail.subSchemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Component:</td>
-                          <td>{detail.scComponentName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Component:</td>
-                          <td>{detail.categoryName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Amount:</td>
-                          <td>{detail.schemeAmount}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period From:</td>
-                          <td>{detail.periodFrom}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period To:</td>
-                          <td>{detail.periodTo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{detail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{detail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{detail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Application Status:</td>
-                          <td>{detail.applicationStatus}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
-
-          <Card className="mt-3">
-            <Card.Header style={{ fontWeight: "bold" }}>
-              RTC Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.landDetails.map((landDetail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Survey Number:</td>
-                          <td>{landDetail.surveyNumber}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{landDetail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{landDetail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{landDetail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Acre:</td>
-                          <td>{landDetail.devAcre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>F Gunta:</td>
-                          <td>{landDetail.devFGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Gunta:</td>
-                          <td>{landDetail.devGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Acre:</td>
-                          <td>{landDetail.acre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area F Gunta:</td>
-                          <td>{landDetail.fGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Gunta:</td>
-                          <td>{landDetail.gunta}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Hissa:</td>
-                          <td>{landDetail.hissa}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Land Code:</td>
-                          <td>{landDetail.landCode}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Main Owner No:</td>
-                          <td>{landDetail.mainOwnerNo}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Owner Name:</td>
-                          <td>{landDetail.ownerName}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Sur Noc:</td>
-                          <td>{landDetail.surNoc}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
-        </Block>
-      </Row>
-    )}
-  </Modal.Body>
-</Modal>  */}
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("View Details")}</Modal.Title>
