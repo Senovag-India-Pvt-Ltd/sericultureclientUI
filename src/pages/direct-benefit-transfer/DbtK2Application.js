@@ -47,45 +47,7 @@ function DbtK2Application() {
   // Translation
   const { t } = useTranslation();
 
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
-
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
-
-  // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
+  
   const [landData, setLandData] = useState({
     landId: "",
     talukId: "",
@@ -191,11 +153,6 @@ function DbtK2Application() {
       });
   };
 
-  // useEffect(() => {
-  //   if (addressDetails.hobliId) {
-  //     getVillageList(addressDetails.hobliId);
-  //   }
-  // }, [addressDetails.hobliId]);
 
   useEffect(() => {
     if (addressDetails.hobliId && addressDetails.hobliId !== 0) {
@@ -205,12 +162,7 @@ function DbtK2Application() {
     }
   }, [addressDetails.hobliId]);
 
-  // const handleInputsaddress = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   setAddressDetails({ ...addressDetails, [name]: value });
-  // };
-
+ 
   const handleInputsaddress = (e) => {
   const { name, value } = e.target;
   setAddressDetails((prev) => ({
@@ -220,29 +172,32 @@ function DbtK2Application() {
 };
 
 
-  // const handleInputsSearch = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   setSearchData({ ...searchData, [name]: value });
-  // };
-
   const handleInputsSearch = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    // If type is 4, set the financial year ID in searchData
-    if (value == 4) {
+  if (name === "type") {
+    if (value == 5) {
       setSearchData((prev) => ({
         ...prev,
-        [name]: value,
-        text: data.financialYearMasterId, // Use the fetched financialYearMasterId
+        type: value,
+        text: data.financialYearMasterId, 
       }));
     } else {
       setSearchData((prev) => ({
         ...prev,
-        [name]: value,
+        type: value,
+        text: "", 
       }));
     }
-  };
+  }
+  else if (name === "text") {
+    setSearchData((prev) => ({
+      ...prev,
+      text: value, 
+    }));
+  }
+};
+
 
   // Search
   const search = (e) => {
@@ -316,24 +271,7 @@ function DbtK2Application() {
     } else {
       event.preventDefault();
 
-      // const { text, select } = farmer;
-      // let sendData;
-
-      // if (select === "mobileNumber") {
-      //   sendData = {
-      //     mobileNumber: text,
-      //   };
-      // }
-      // if (select === "fruitsId") {
-      //   sendData = {
-      //     fruitsId: text,
-      //   };
-      // }
-      // if (select === "farmerNumber") {
-      //   sendData = {
-      //     farmerNumber: text,
-      //   };
-      // }
+      
 
       const { year1, year2, type, searchText } = searchData;
 
@@ -495,6 +433,11 @@ function DbtK2Application() {
         });
       });
   };
+
+  useEffect(() => {
+  getFinancialYearList();
+  getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
+}, []);
 
   const getList = () => {
     setLoading(true);
@@ -673,23 +616,7 @@ function DbtK2Application() {
   useEffect(() => {
     getComponentList();
   }, []);
-  // to get User Master
-  // const [userListData, setUserListData] = useState([]);
-
-  // const getUserList = () => {
-  //   api
-  //     .get(baseURL + `userMaster/get-all`)
-  //     .then((response) => {
-  //       setUserListData(response.data.content.userMaster);
-  //     })
-  //     .catch((err) => {
-  //       setUserListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getUserList();
-  // }, []);
+ 
 
   const navigate = useNavigate();
 
@@ -772,32 +699,6 @@ function DbtK2Application() {
     }
   };
 
-  // Get Default Financial Year
-
-  // const getFinancialDefaultDetails = () => {
-  //   api
-  //     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-  //     .then((response) => {
-  //       const year = response.data.content.financialYear;
-  //       const [fromDate, toDate] = year.split("-");
-  //       setData((prev) => ({
-  //         ...prev,
-  //         financialYearMasterId: response.data.content.financialYearMasterId,
-  //       }));
-  //       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-  //     })
-  //     .catch((err) => {
-  //       setData((prev) => ({
-  //         ...prev,
-  //         financialYearMasterId: "",
-  //       }));
-  //       setSearchData((prev) => ({ ...prev, year1: "", year2: "" }));
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getFinancialDefaultDetails();
-  // }, []);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -882,69 +783,7 @@ function DbtK2Application() {
     "light"
   );
 
-  //   const customStyles = {
-  //     rows: {
-  //       style: {
-  //         minHeight: "45px", // override the row height
-  //       },
-  //     },
-  //     headCells: {
-  //       style: {
-  //         backgroundColor: "#1e67a8",
-  //         color: "#fff",
-  //         fontSize: "14px",
-  //         paddingLeft: "8px", // override the cell padding for head cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //     cells: {
-  //       style: {
-  //         paddingLeft: "8px", // override the cell padding for data cells
-  //         paddingRight: "8px",
-  //       },
-  //     },
-  //   };
-
-  // const customStyles = {
-  //   header: {
-  //     style: {
-  //       minHeight: "56px",
-  //     },
-  //   },
-  //   headRow: {
-  //     style: {
-  //       borderTopStyle: "solid",
-  //       borderTopWidth: "1px",
-  //       // borderTop:"none",
-  //       // borderTopColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //     },
-  //   },
-  //   headCells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       backgroundColor: "#1e67a8",
-  //       color: "#fff",
-  //       borderStyle: "solid",
-  //       bordertWidth: "1px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  //   cells: {
-  //     style: {
-  //       // '&:not(:last-of-type)': {
-  //       borderStyle: "solid",
-  //       // borderRightWidth: "3px",
-  //       borderWidth: "1px",
-  //       padding: "10px",
-  //       // borderColor: defaultThemes.default.divider.default,
-  //       borderColor: "black",
-  //       // },
-  //     },
-  //   },
-  // };
+  
   const customStyles = {
     rows: {
       style: {
@@ -990,55 +829,7 @@ function DbtK2Application() {
   };
 
   const ApplicationDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.marketMasterId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.marketMasterId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.marketMasterId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // //   grow: 2,
-    // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   button: true,
-    // },
+    
     {
       name: t("Sl.No"),
       selector: (row) => row.scApplicationFormId,
@@ -1152,24 +943,7 @@ function DbtK2Application() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: t("Action"),
-    //   cell: (row) => (
-    //     <>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.scApplicationFormId)}
-    //         className="ms-1"
-    //       >
-    //         {t("View")}
-    //       </Button>
-    //     </>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    //   // grow: 2,
-    // },
+    
   ];
 
 return ( 
