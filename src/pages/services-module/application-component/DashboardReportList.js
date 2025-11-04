@@ -293,6 +293,9 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         size="sm"
         value={row.userId || ""}
         onChange={(e) => handleDrawingOfficerChange(i, e.target.value)}
+        style={{
+    borderColor: !row.userId ? "red" : "#ced4da",
+  }}
       >
         {/* <option value="">-- Select Officer --</option>
         {userForDrawingOfficersData.map((user) => (
@@ -308,6 +311,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         </option>
       ))}
     </Form.Select>
+    
     ),
     sortable: false,
     hide: "md",
@@ -3081,11 +3085,11 @@ useEffect(() => {
             workflowDetails: content.workFlowDetailsResponses,
 
           applicationFormId: _id, // coming from state set earlier
-          workOrderSchemeId: workOrderSchemeId,
+          workOrderSchemeId: appDetails.schemeId,
           workOrderNumber: appDetails.workOrderNumber || "",
-          workOrderForScheme: workOrderForScheme,
-          sanctionOrderNumber: sanctionOrderNumber,
-          sanctionOrderForScheme: sanctionOrderForScheme,
+          workOrderForScheme: appDetails.workOrderForScheme,
+          // sanctionOrderNumber: sanctionOrderNumber,
+          // sanctionOrderForScheme: sanctionOrderForScheme,
           subSchemeId: subSchemeId,  // ✅ add this
           categoryId: categoryId,
           });
@@ -3951,10 +3955,16 @@ useEffect(() => {
                                 </Form.Group>
                               </Col>
 
+                                {(
+                                (actionFarmerData[0]?.sanctionOrder &&
+                                actionFarmerData[0]?.financialDelegation &&
+                                isSanctionOrderAllowed
+                                ) || actionFarmerData[0]?.directlyToFruits
+                              ) && (
                               <Col lg="4">
                                 <Form.Group className="form-group">
                                   <Form.Label htmlFor="sordfl">
-                                    Proposal Date
+                                    Proposal Date  <span className="text-danger">*</span>
                                   </Form.Label>
                                   <div className="form-control-wrap">
                                     <DatePicker
@@ -3971,11 +3981,14 @@ useEffect(() => {
                                       dateFormat="dd/MM/yyyy"
                                       className="form-control"
                                       maxDate={new Date()}
+                                      required
                                      
                                     />
                                   </div>
                                 </Form.Group>
                               </Col>
+
+                            )}
 
                               {/* {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
                                 <Col lg="6">
@@ -5562,36 +5575,38 @@ useEffect(() => {
 
 
                             <div className="mt-2">
-                                  {viewDetailsData?.workOrderNumber  && viewDetailsData?.applicationFormId && (
-                                    <Button
-                                      variant="primary"
-                                      size="sm"
-                                      className="me-2"
-                                      onClick={() => {
-                                        if (
-                                          viewDetailsData.workOrderForScheme === "PDMC" ||
-                                          viewDetailsData.workOrderForScheme === "PMKSY"
-                                        ) {
-                                          generateWorkOrderAcknowledgment(
-                                            viewDetailsData.applicationFormId,
-                                            viewDetailsData.workOrderSchemeId
-                                          );
-                                        } else if (
-                                          viewDetailsData.workOrderForScheme === "Silk Samagra State" ||
-                                          viewDetailsData.workOrderForScheme === "Silk Samagra Central"
-                                        ) {
-                                          generateWorkOrderAcknowledgmentRH(
-                                            viewDetailsData.applicationFormId,
-                                            viewDetailsData.workOrderSchemeId
-                                          );
-                                        }
-                                      }}
-                                    >
-                                      Download Work Order
-                                    </Button>
-                                  )}
+                                  {viewDetailsData?.workOrderNumber !== undefined &&
+                                    viewDetailsData?.applicationFormId !== undefined && (
+                                      <Button
+                                        variant="primary"
+                                        size="sm"
+                                        className="me-2"
+                                        onClick={() => {
+                                          if (
+                                            viewDetailsData.workOrderForScheme === "PDMC" ||
+                                            viewDetailsData.workOrderForScheme === "PMKSY"
+                                          ) {
+                                            generateWorkOrderAcknowledgment(
+                                              viewDetailsData.applicationFormId,
+                                              viewDetailsData.workOrderSchemeId
+                                            );
+                                          } else if (
+                                            viewDetailsData.workOrderForScheme === "Silk Samagra State" ||
+                                            viewDetailsData.workOrderForScheme === "Silk Samagra Central"
+                                          ) {
+                                            generateWorkOrderAcknowledgmentRH(
+                                              viewDetailsData.applicationFormId,
+                                              viewDetailsData.workOrderSchemeId
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        Download Work Order
+                                      </Button>
+                                    )}
 
-                                  {viewDetailsData?.sanctionOrderNumber && viewDetailsData?.applicationFormId && (
+
+                                  {/* {viewDetailsData?.sanctionOrderNumber && viewDetailsData?.applicationFormId && (
                                     <Button
                                       variant="primary"
                                       size="sm"
@@ -5607,7 +5622,7 @@ useEffect(() => {
                                     >
                                       Download Sanction Order
                                     </Button>
-                                  )}
+                                  )} */}
                                 </div>
                 </Accordion.Body>
               </Accordion.Item>
