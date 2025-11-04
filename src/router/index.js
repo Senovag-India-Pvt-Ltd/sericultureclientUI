@@ -1057,6 +1057,10 @@ import ConfigureReelingShedList from "../pages/masters/configureReelingShed/Conf
 import ConfigureReelingShedView from "../pages/masters/configureReelingShed/ConfigureReelingShedView";
 import ConfigureReelingShedEdit from "../pages/masters/configureReelingShed/ConfigureReelingShedEdit";
 import UserMasterDetailsReport from "../pages/stake-holder/UserMasterDetailsReport";
+import ConfigureAdoptingBoiler from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoiler";
+import ConfigureAdoptingBoilerList from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerList";
+import ConfigureAdoptingBoilerView from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerView";
+import ConfigureAdoptingBoilerEdit from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerEdit";
 
 // Admin and Reports
 
@@ -2801,6 +2805,11 @@ function Router() {
             <Route path="configure-imcb-list" element={<ConfigureImcbList />} />
             <Route path="configure-imcb-view/:id" element={<ConfigureImcbView />} />
             <Route path="configure-imcb-edit/:id" element={<ConfigureImcbEdit />} />
+
+            <Route path="configure-adopting-boiler" element={<ConfigureAdoptingBoiler />} />
+            <Route path="configure-adopting-boiler-list" element={<ConfigureAdoptingBoilerList />} />
+            <Route path="configure-adopting-boiler-view/:id" element={<ConfigureAdoptingBoilerView />} />
+            <Route path="configure-adopting-boiler-edit/:id" element={<ConfigureAdoptingBoilerEdit />} />
 
             <Route path="configure-silk-incentive" element={<ConfigureSilkIncentive />} />
             <Route path="configure-silk-incentive-list" element={<ConfigureSilkIncentiveList />} />

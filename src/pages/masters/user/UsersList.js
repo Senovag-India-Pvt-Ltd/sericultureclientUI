@@ -274,6 +274,14 @@ function UsersList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Division Name"),
+      selector: (row) => row.nameInKannada,
+      cell: (row) => <span>{row.nameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

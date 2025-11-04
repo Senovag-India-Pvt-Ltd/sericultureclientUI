@@ -195,6 +195,15 @@ function ScCategoryList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: t("Category Short Name"),
+      selector: (row) => row.categoryShortName,
+      cell: (row) => <span>{row.categoryShortName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
     {
       name: t("Code  Number"),
       selector: (row) => row.codeNumber,

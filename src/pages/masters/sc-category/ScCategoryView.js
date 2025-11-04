@@ -110,6 +110,14 @@ function ScCategoryView() {
                         <td>{ScCategory.categoryNameInKannada}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          {t("Category Short Name")}
+                        </td>
+                        <td>{ScCategory.categoryShortName}</td>
+                      </tr>
+                      
+                      <tr>
                         <td style={styles.ctstyle}>  {t("Code  Number")}</td>
                         <td>{ScCategory.codeNumber}</td>
                       </tr>

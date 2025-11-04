@@ -62,6 +62,7 @@ function UsersEdit() {
               ddoCode: "",
               tscMasterId:"",
               khazaneRecipientId: "",
+              divisionMasterId: "",
             });
             setValidated(false);
           }
@@ -101,6 +102,7 @@ function UsersEdit() {
       ddoCode: "",
       tscMasterId:"",
       khazaneRecipientId: "",
+      divisionMasterId: "",
     });
   };
 
@@ -162,6 +164,24 @@ function UsersEdit() {
   useEffect(() => {
     getRoleList();
   }, []);
+
+  // to get Division
+    const [divisionListData, setDivisionListData] = useState([]);
+  
+    const getDivisionList = () => {
+      const response = api
+        .get(baseURL + `divisionMaster/get-all`)
+        .then((response) => {
+          setDivisionListData(response.data.content.DivisionMaster);
+        })
+        .catch((err) => {
+          setDivisionListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getDivisionList();
+    }, []);
 
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
@@ -778,6 +798,37 @@ function UsersEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                                                        <Form.Group className="form-group">
+                                                          <Form.Label>
+                                                            {t("Division")}<span className="text-danger">*</span>
+                                                          </Form.Label>
+                                                          <div className="form-control-wrap">
+                                                            <Form.Select
+                                                              name="divisionMasterId"
+                                                              value={data.divisionMasterId}
+                                                              onChange={handleInputs}
+                                                              onBlur={() => handleInputs}
+                                                              required
+                                                              isInvalid={
+                                                                data.divisionMasterId === undefined || data.divisionMasterId === "0"
+                                                              }
+                                                            >
+                                                              <option value="">{t("Select Division")}</option>
+                                                              {divisionListData && divisionListData.map((list) => (
+                                                                <option key={list.divisionMasterId} value={list.divisionMasterId}>
+                                                                  {list.nameInKannada}
+                                                                </option>
+                                                              ))}
+                                                            </Form.Select>
+                                                            <Form.Control.Feedback type="invalid">
+                                                              {t("Division is required")}
+                                                            </Form.Control.Feedback>
+                                                          </div>
+                                                        </Form.Group>
+                                                      </Col>
+                                                      
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="password">

@@ -419,6 +419,7 @@ function Menu() {
     Admin_Master_Service_Calculation_SILK: false,
     Admin_Master_Service_Calculation_Icb: false,
     Admin_Master_Service_Calculation_Imcb: false,
+    Admin_Master_Service_Calculation_Adopting: false,
     Admin_Master_Service_Calculation_reeling: false,
     Admin_Master_Service_Calculation_PMKSY: false,
     Admin_Master_Service_Calculation_Bonus: false,
@@ -3559,6 +3560,15 @@ function Menu() {
           <MenuItemLink
             text={t("Configure Imcb")}
             to="/seriui/configureImcb"
+          />
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Admin_Master_Service_Calculation_Adopting ? (
+        <MenuItem>
+          <MenuItemLink
+            text={t("Configure Adopting Boiler")}
+            to="/seriui/configure-adopting-boiler"
           />
         </MenuItem>
       ) : null}
