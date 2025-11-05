@@ -382,27 +382,28 @@ function HelpDesk() {
   };
   
 
-  // Upload Image to S3 Bucket
-  const handleAttachFileUpload = async (hdTicketid) => {
-    const parameters = `hdTicketId=${hdTicketid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", attachFiles);
+  // Upload Image to S3 Bucket - Same as working code style
+const handleAttachFileUpload = async (hdTicketId) => {
+  const parameters = `hdTicketId=${hdTicketId}`;
+  try {
+    const formData = new FormData();
+    formData.append("multipartFile", attachFiles);
 
-      const response = await api.post(
-        baseURL2 + `hdTicket/hd-attach-files?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
+    const response = await api.post(
+      baseURL2 + `hdTicket/hd-attach-files?${parameters}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("File upload response:", response.data);
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
+
 
   const navigate = useNavigate();
   const saveSuccess = (message) => {
