@@ -77,27 +77,40 @@ function AllApplicationDetails() {
       .catch(() => setFinancialyearListData([]));
   };
 
-  const getFinancialDefaultDetails = () => {
-    api
-      .get(`${baseURLMasterData}financialYearMaster/get-is-default`)
-      .then((response) => {
-        const content = response.data?.content;
-        if (content) {
-          const year = content.financialYear ?? "";
-          const [fromDate = "", toDate = ""] = year.split("-");
-          setData({
-            financialYearMasterId: content.financialYearMasterId ?? "",
-            year1: fromDate,
-            year2: toDate,
-          });
-          setSearchData((prev) => ({
-            ...prev,
-            text: content.financialYearMasterId ?? "",
-          }));
-        }
-      })
-      .catch(() => setData({ financialYearMasterId: "", year1: "", year2: "" }));
-  };
+ const getFinancialDefaultDetails = () => {
+  api
+    .get(`${baseURLMasterData}financialYearMaster/get-is-default`)
+    .then((response) => {
+      const content = response.data?.content;
+      if (content) {
+        const year = content.financialYear ?? "";
+        const [fromDate = "", toDate = ""] = year.split("-");
+
+        // ✅ Set financial year state
+        setData({
+          financialYearMasterId: content.financialYearMasterId ?? "",
+          year1: fromDate,
+          year2: toDate,
+        });
+
+        // ✅ Set search data safely inside same scope
+        setSearchData((prev) => ({
+          ...prev,
+          ...(prev.type === "5"
+            ? { text: content.financialYearMasterId ?? "" }
+            : { text: "" }),
+        }));
+      }
+    })
+    .catch(() => {
+      setData({
+        financialYearMasterId: "",
+        year1: "",
+        year2: "",
+      });
+    });
+};
+
 
   const getSubSchemeList = () => {
     api
@@ -231,17 +244,16 @@ function AllApplicationDetails() {
   const memoizedComponentTypes = useMemo(() => scSubSchemeDetailsListData, [scSubSchemeDetailsListData]);
 
   const handleInputsSearch = useCallback((e) => {
-    const { name, value } = e.target;
-    setSearchData((prev) => ({ ...prev, [name]: value }));
-  }, []);
+  const { name, value } = e.target;
 
-  const handleInputsAddress = (e) => {
-    const { name, value } = e.target;
-    setAddressDetails((prev) => ({
-      ...prev,
-      [name]: Number(value),
-    }));
-  };
+  setSearchData((prev) => ({
+    ...prev,
+    [name]: value,
+    // Reset text when changing search type
+    ...(name === "type" ? { text: "" } : {}),
+  }));
+}, []);
+
 
 
   const [landData, setLandData] = useState({
@@ -392,17 +404,18 @@ useEffect(() => {
     setValidated(true);
   };
 
-  const handleCategoryChange = (e) => {
+ const handleCategoryChange = (e) => {
   const value = e.target.value;
   setSearchData((prev) => ({
     ...prev,
-    scCategoryId: value,
+    ...(prev.type === "5" ? { text: data.financialYearMasterId ?? "" } : { text: "" }),
   }));
   setAddressDetails((prev) => ({
     ...prev,
     scCategoryId: value,
   }));
 };
+
 
 
   const handleFromDateChange = (date) => {
