@@ -227,22 +227,30 @@ function DbtFailureApplication() {
   // };
 
   const handleInputsSearch = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    // If type is 4, set the financial year ID in searchData
-    if (value == 4) {
+  if (name === "type") {
+    if (value == 5) {
       setSearchData((prev) => ({
         ...prev,
-        [name]: value,
-        text: data.financialYearMasterId, // Use the fetched financialYearMasterId
+        type: value,
+        text: data.financialYearMasterId, 
       }));
     } else {
       setSearchData((prev) => ({
         ...prev,
-        [name]: value,
+        type: value,
+        text: "", 
       }));
     }
-  };
+  }
+  else if (name === "text") {
+    setSearchData((prev) => ({
+      ...prev,
+      text: value, 
+    }));
+  }
+};
 
   // Search
   const search = (e) => {
@@ -495,6 +503,11 @@ function DbtFailureApplication() {
         });
       });
   };
+
+    useEffect(() => {
+  getFinancialYearList();
+  getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
+}, []);
 
   const getList = () => {
     setLoading(true);

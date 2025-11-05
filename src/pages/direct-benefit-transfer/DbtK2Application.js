@@ -172,7 +172,7 @@ function DbtK2Application() {
 };
 
 
-  const handleInputsSearch = (e) => {
+   const handleInputsSearch = (e) => {
   const { name, value } = e.target;
 
   if (name === "type") {
@@ -434,10 +434,11 @@ function DbtK2Application() {
       });
   };
 
-  useEffect(() => {
-  getFinancialYearList();
-  getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
-}, []);
+ 
+     useEffect(() => {
+   getFinancialYearList();
+   getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
+ }, []);
 
   const getList = () => {
     setLoading(true);
