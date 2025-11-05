@@ -509,38 +509,45 @@ function DbtFailureApplication() {
   getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
 }, []);
 
-  const getList = () => {
-    setLoading(true);
-    api
-      .post(
-        baseURLDBT + `service/getDbtFailureByList`,
-        {},
-        {
-          params: {
-            userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
-            status: "",
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
-        );
-        setAllApplicationIds(scApplicationFormIds);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setListData({});
-        setLoading(false);
-      });
-  };
+  // ✅ Fetch DBT Failure List
+const getList = () => {
+  setLoading(true);
+  api
+    .post(
+      baseURLDBT + `service/getDbtFailureByList`,
+      {}, // body
+      {
+        params: {
+          userMasterId: localStorage.getItem("userMasterId"),
+          displayAllRecords: true,
+          status: "",
+        },
+      }
+    )
+    .then((response) => {
+      console.log("✅ DBT Failure Response:", response.data); // <-- Debug response
 
-  useEffect(() => {
-    getFinancialDefaultDetails();
-    getList();
-  }, [page]);
+      const data = Array.isArray(response.data) ? response.data : response.data?.content || [];
+
+      setListData(data);
+
+      const scApplicationFormIds = data.map((item) => item.scApplicationFormId);
+      setAllApplicationIds(scApplicationFormIds);
+
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("❌ Error fetching DBT Failure List:", err); // <-- Debug
+      setListData([]);
+      setLoading(false);
+    });
+};
+
+// ✅ Load default financial year and list on mount
+useEffect(() => {
+  getFinancialDefaultDetails();
+  getList();
+}, [page]);
 
   // const exportCsv = (e) => {
   //   api
