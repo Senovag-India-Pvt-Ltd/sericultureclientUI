@@ -93,49 +93,47 @@ function UserTicketView() {
       }
     };
 
-   // ================================
-  // 🔹 Function to View File from S3
-  // ================================
+ const downloadHdAttachFile = async (file) => {
+  if (!file) {
+    console.error("No file provided for download");
+    return;
+  }
+
+  try {
+    const parameters = `fileName=${encodeURIComponent(file)}`;
+    const response = await api.get(baseURL + `api/s3/download?${parameters}`, {
+      responseType: "arraybuffer",
+    });
+
+    const blob = new Blob([response.data]);
+    const url = URL.createObjectURL(blob);
+
+    // ✅ Safely extract filename from S3 key or path
+    const fileParts = file.split("/");
+    const fileName = fileParts[fileParts.length - 1] || "download";
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName; // ✅ use actual filename instead of undefined variable
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading file:", error);
+  }
+};
+
+
   const viewHdAttachFile = async (file) => {
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(baseURL + `api/s3/download?${parameters}`, {
-        responseType: "arraybuffer",
-      });
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-      setSelectedFile(url);
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error viewing file:", error);
-    }
-  };
-
-  // ======================================
-  // 🔹 Function to Download File from S3
-  // ======================================
-  const downloadHdAttachFile = async (file) => {
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(baseURL + `api/s3/download?${parameters}`, {
-        responseType: "arraybuffer",
-      });
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-
-      const fileExtension = file.split(".").pop();
-      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = modifiedFileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
+  const parameters = `fileName=${file}`;
+  const response = await api.get(baseURL + `api/s3/download?${parameters}`, { responseType: "arraybuffer" });
+  const blob = new Blob([response.data]);
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+};
 
   return (
     <Layout title="View User Ticket Details">
@@ -219,33 +217,16 @@ function UserTicketView() {
                         <td>{raiseTicket.queryDetails}</td>
                       </tr>
 
-                      {/* ✅ Attach File Section */}
-                      {raiseTicket?.hdAttachFiles && (
-                        <tr>
-                          <td style={styles.ctstyle}>{t("Attached File")}</td>
-                          <td>
-                            <Button
-                              variant="info"
-                              size="sm"
-                              className="me-2"
-                              onClick={() =>
-                                viewHdAttachFile(raiseTicket.hdAttachFiles)
-                              }
-                            >
-                              <Icon name="eye" /> {t("View File")}
-                            </Button>
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              onClick={() =>
-                                downloadHdAttachFile(raiseTicket.hdAttachFiles)
-                              }
-                            >
-                              <Icon name="download" /> {t("Download File")}
-                            </Button>
-                          </td>
-                        </tr>
-                      )}
+                     {raiseTicket?.hdAttachFiles && (
+  <tr>
+    <td style={styles.ctstyle}>{t("Attached File")}</td>
+    <td>
+      <Button onClick={() => viewHdAttachFile(raiseTicket.hdAttachFiles)}>...</Button>
+      <Button onClick={() => downloadHdAttachFile(raiseTicket.hdAttachFiles)}>...</Button>
+    </td>
+  </tr>
+)}
+
 
                       <tr>
                         <td style={styles.ctstyle}>{t("Ticket Number")}</td>
