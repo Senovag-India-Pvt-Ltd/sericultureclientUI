@@ -73,6 +73,70 @@ function UserTicketView() {
     setRaiseTicket({ ...raiseTicket, [name]: value });
   };
 
+   // To get Photo
+    const [selectedFile, setSelectedFile] = useState(null);
+  
+    const getFile = async (file) => {
+      const parameters = `fileName=${file}`;
+      try {
+        const response = await api.get(
+          baseURL + `api/s3/download?${parameters}`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
+        const blob = new Blob([response.data]);
+        const url = URL.createObjectURL(blob);
+        setSelectedFile(url);
+      } catch (error) {
+        console.error("Error fetching file:", error);
+      }
+    };
+
+   // ================================
+  // 🔹 Function to View File from S3
+  // ================================
+  const viewHdAttachFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(baseURL + `api/s3/download?${parameters}`, {
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedFile(url);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error viewing file:", error);
+    }
+  };
+
+  // ======================================
+  // 🔹 Function to Download File from S3
+  // ======================================
+  const downloadHdAttachFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(baseURL + `api/s3/download?${parameters}`, {
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = modifiedFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
   return (
     <Layout title="View User Ticket Details">
       <Block.Head>
@@ -154,6 +218,35 @@ function UserTicketView() {
                         <td style={styles.ctstyle}>{t("Query Details")}</td>
                         <td>{raiseTicket.queryDetails}</td>
                       </tr>
+
+                      {/* ✅ Attach File Section */}
+                      {raiseTicket?.hdAttachFiles && (
+                        <tr>
+                          <td style={styles.ctstyle}>{t("Attached File")}</td>
+                          <td>
+                            <Button
+                              variant="info"
+                              size="sm"
+                              className="me-2"
+                              onClick={() =>
+                                viewHdAttachFile(raiseTicket.hdAttachFiles)
+                              }
+                            >
+                              <Icon name="eye" /> {t("View File")}
+                            </Button>
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={() =>
+                                downloadHdAttachFile(raiseTicket.hdAttachFiles)
+                              }
+                            >
+                              <Icon name="download" /> {t("Download File")}
+                            </Button>
+                          </td>
+                        </tr>
+                      )}
+
                       <tr>
                         <td style={styles.ctstyle}>{t("Ticket Number")}</td>
                         <td>{raiseTicket.ticketArn}</td>
