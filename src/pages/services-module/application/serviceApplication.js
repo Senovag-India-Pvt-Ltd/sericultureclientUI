@@ -87,6 +87,7 @@ function ServiceApplication() {
     silkExchangeId:"",
     form17JNo: "",
     dailyLimit: "",
+    boilerInKg: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -1561,6 +1562,51 @@ const handleCalculateUnitPrice = () => {
     return;
   }
 
+
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
+  ) {
+    if (
+      !data.boilerInKg ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    // ✅ Validate that API data is available
+    if (!adoptingBoilerAmountData || adoptingBoilerAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const adoptingBoilerRecord = adoptingBoilerAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(adoptingBoilerRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(adoptingBoilerRecord.unitCost || 0),
+    }));
+
+    return;
+  }
+
   if (
     getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF"
   ) {
@@ -1839,6 +1885,56 @@ useEffect(() => {
 }, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
 
+const [adoptingBoilerAmountData, setAdoptingBoilerAmountListData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureAdoptingBoiler/findByBoilerInKgAndComponentTypeIdAndComponentIdAndCategoryIdAndActive`, {
+      params: {
+        boilerInKg,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureAdoptingBoiler || [];
+      setAdoptingBoilerAmountListData(incentiveData);
+
+      setAmountValue({
+          ...amountValue,
+          unitPrice: incentiveData.unitCost, // Set the Unit Price
+        });
+        setData({
+              ...data,
+              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
+            });
+    })
+    .catch((err) => {
+      setAdoptingBoilerAmountListData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.boilerInKg &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getAdoptingBoilerAmountList(
+      data.boilerInKg,
+      data.scSubSchemeDetailsId,
+      data.scComponentId,
+      data.scCategoryId
+    );
+  }
+}, [data.boilerInKg,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
+
 const [icbAndArmAmountData, setIcbAndArmAmountListData] = useState([]);
 
 // ✅ API call to get Silk Incentive amount list
@@ -1982,6 +2078,7 @@ useEffect(() => {
       silkExchangeId: data.silkExchangeId,
       form17JNo: data.form17JNo,
       dailyLimit: data.dailyLimit,
+      boilerInKg: data.boilerInKg,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -2217,6 +2314,7 @@ useEffect(() => {
       silkExchangeId:"",
       form17JNo: "",
       dailyLimit: "",
+      boilerInKg: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -3697,6 +3795,32 @@ const fetchReelerDetails = () => {
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
                                     {t("ICB Basin Ends is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                               )}
+
+                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
+                           
+                            <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Boiler In Kg")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                   <Form.Control
+                                      id="boilerInKg"
+                                      type="number"
+                                      name="boilerInKg"
+                                      value={data.boilerInKg}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Boiler In Kg"
+                                      required
+                                      // readOnly
+                                    />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Boiler In Kg is required")}
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>

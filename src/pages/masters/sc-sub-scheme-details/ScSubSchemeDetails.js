@@ -441,7 +441,6 @@ function ScSubSchemeDetails() {
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
                             <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -484,7 +483,6 @@ function ScSubSchemeDetails() {
                             <option value="ICB">ICB-PSF</option>
                             <option value="MERM">MERM-PSF</option>
                             <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -527,7 +525,6 @@ function ScSubSchemeDetails() {
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
                             <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -570,7 +567,6 @@ function ScSubSchemeDetails() {
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
                             <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -614,7 +610,6 @@ function ScSubSchemeDetails() {
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
                             <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Adopting Boiler">Adopting Boiler</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
