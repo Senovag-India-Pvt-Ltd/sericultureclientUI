@@ -41,12 +41,11 @@ function RaiseTicketView() {
     api
       .get(baseURL + `hdTicket/get-join/${id}`)
       .then((response) => {
-        if (response.data.content.hdStatusId === 3) {
-          setHideByStatus(true);
-        }
-        if (response.data.content.hdStatusId === 5) {
-          setHideByStatus(true);
-        }
+ if (response.data.content.hdStatusId === 3) {
+  setHideByStatus(true);
+} else {
+  setHideByStatus(false);
+}
 
         setRaiseTicket((prev) => ({ ...prev, ...response.data.content }));
         setLoading(false);
