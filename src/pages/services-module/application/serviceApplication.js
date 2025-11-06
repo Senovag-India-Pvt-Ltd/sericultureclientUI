@@ -79,6 +79,14 @@ function ServiceApplication() {
     estimatedCost:"",
     roofTypeId:"",
     proposalDate:"",
+    raceId:"",
+    renditta:"",
+    silkTable: "",
+    noOfCocoonsNeedToProduce:"",
+    noOfRawSilkProduced:"",
+    silkExchangeId:"",
+    form17JNo: "",
+    dailyLimit: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -196,6 +204,42 @@ useEffect(() => {
     useEffect(() => {
       getRoofTypeList();
     }, []);
+
+    // to get Race
+       const [raceListData, setRaceListData] = useState([]);
+    
+       const getRaceList = () => {
+         const response = api
+           .get(baseURLMasterData + `raceMaster/get-all`)
+           .then((response) => {
+             setRaceListData(response.data.content.raceMaster);
+           })
+           .catch((err) => {
+             setRaceListData([]);
+           });
+       };
+     
+       useEffect(() => {
+         getRaceList();
+       }, []);
+
+       // to get Race
+       const [silkListData, setSilkListData] = useState([]);
+    
+       const getSilkList = () => {
+         const response = api
+           .get(baseURLMasterData + `silkExchange/get-all`)
+           .then((response) => {
+             setSilkListData(response.data.content.silkExchange);
+           })
+           .catch((err) => {
+             setSilkListData([]);
+           });
+       };
+     
+       useEffect(() => {
+         getSilkList();
+       }, []);
   // to get scheme-Quota-details
   const [spacingListData, setSpacingDetailsListData] = useState([]);
 
@@ -318,113 +362,7 @@ useEffect(() => {
 
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
-  // const handleCheckboxChange = (_id) => {
-  //   // if (landDetailsIds.includes(_id)) {
-  //   //   const dataList = [...landDetailsIds];
-  //   //   const newDataList = dataList.filter((data) => data !== _id);
-  //   //   setLandDetailsIds(newDataList);
-  //   // } else {
-  //   //   setLandDetailsIds((prev) => [...prev, _id]);
-  //   // }
-  //   setLandDetailsIds((prevIds) => {
-  //     if (prevIds.includes(_id)) {
-  //       const updatedIds = prevIds.filter(id => id !== _id);
-  //       // Remove corresponding developed area data
-  //       const { [_id]: _, ...rest } = developedArea;
-  //       setDevelopedArea(rest);
-  //       return updatedIds;
-  //     } else {
-  //       return [...prevIds, _id];
-  //     }
-  //   });
-  // };
-
-  // const handleCheckboxChange = (farmerLandDetailsId) => {
-  //   setLandDetailsIds((prevIds) => {
-  //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-  //     const newIds = isAlreadySelected
-  //       ? prevIds.filter((id) => id !== farmerLandDetailsId)
-  //       : [...prevIds, farmerLandDetailsId];
-
-  //     if (!isAlreadySelected) {
-  //       setDevelopedArea((prevData) => ({
-  //         ...prevData,
-  //         [farmerLandDetailsId]: {
-  //           acre: prevData[farmerLandDetailsId]?.acre || "0",
-  //           gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-  //           fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
-  //         },
-  //       }));
-  //     }
-
-  //     return newIds;
-  //   });
-  // };
-
-  // const handleCheckboxChange = (landId, row) => {
-  //   console.log("hello row", row);
-  //   setLandDetailsIds((prevIds) => {
-  //     const isAlreadySelected = prevIds.includes(landId);
-  //     const newIds = isAlreadySelected
-  //       ? prevIds.filter((id) => id !== landId)
-  //       : [...prevIds, landId];
-
-  //     setDevelopedArea((prevData) => {
-  //       if (isAlreadySelected) {
-  //         const { [landId]: _, ...rest } = prevData;
-  //         return rest;
-  //       } else {
-  //         // If selected, add to developedArea
-  //         return {
-  //           ...prevData,
-  //           [landId]: {
-  //             devAcre: prevData[landId]?.devAcre || "0",
-  //             devGunta: prevData[landId]?.devGunta || "0",
-  //             devFGunta: prevData[landId]?.devFGunta || "0",
-  //             ...row,
-  //           },
-  //         };
-  //       }
-  //     });
-
-  //     return newIds;
-  //   });
-  // };
-
-  // const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
-  //   console.log(selectedData);
-  //   setLandDetailsIds((prevIds) => {
-  //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-  //     // for single Select
-  //     const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
-  //     // For Multiple Select
-  //     // const newIds = isAlreadySelected
-  //     //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
-  //     //   : [...prevIds, farmerLandDetailsId];
-
-  //     setDevelopedArea((prevData) => {
-  //       console.log("Need to check", prevData);
-  //       if (isAlreadySelected) {
-  //         console.log("inside if");
-  //         const { [farmerLandDetailsId]: _, ...rest } = prevData;
-  //         return rest;
-  //       } else {
-  //         // If selected, add to developedArea
-  //         return {
-  //           // ...prevData,
-  //           [farmerLandDetailsId]: {
-  //             ...selectedData,
-  //             devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
-  //             devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
-  //             devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
-  //           },
-  //         };
-  //       }
-  //     });
-
-  //     return newIds;
-  //   });
-  // };
+  
 
   const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
   setLandDetailsIds((prevIds) => {
@@ -461,34 +399,6 @@ useEffect(() => {
 
   console.log(landDetailsIds);
 
-  // console.log(documentAttachments);
-
-  // // Upload Image to S3 Bucket
-  // const handleAttachFileUpload = async (documentId) => {
-  //   // const parameters = `applicationFormId =${data.applicationId}`;
-  //   const param = {
-  //     applicationFormId: applicationId,
-  //     documentTypeId: documentId,
-  //   };
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("multipartFile", documentAttachments[documentId]);
-
-  //     const response = await api.post(
-  //       baseURLDBT + `service/uploadDocument`,
-  //       formData,
-  //       {
-  //         params: param,
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     console.log("File upload response:", response.data);
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //   }
-  // };
 
   const [showModal, setShowModal] = useState(false);
   const [pendingPostData, setPendingPostData] = useState(null);
@@ -1557,7 +1467,7 @@ const handleCalculateUnitPrice = () => {
 
   // ✅ Special case: Silk Incentive - PSF
   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
-    if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId) {
+    if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId || !data.silkTable || !data.renditta) {
       Swal.fire({
         icon: "warning",
         title: "Validation Error",
@@ -1821,14 +1731,16 @@ const [silkIncentiveAmountData, setSilkIncentiveListData] = useState([]);
 const [maxMachineQuantity, setMaxMachineQuantity] = useState(null);
 
   // ✅ API call to get Silk Incentive amount list
-const getSilkIncentiveAmountList = (componentTypeId, componentId, categoryId, machineTypeId) => {
+const getSilkIncentiveAmountList = (componentTypeId, componentId, categoryId, machineTypeId,silkTable,renditta) => {
   api
     .get(`${baseURLMasterData}configureSilkIncentive/getAmountByMachineTypeComponentsAndSchemes`, {
       params: {
         componentTypeId,
         componentId,
         categoryId,
-        machineTypeId
+        machineTypeId,
+        silkTable,
+        renditta
       }
     })
     .then((response) => {
@@ -1862,16 +1774,20 @@ useEffect(() => {
     data.scSubSchemeDetailsId &&
     data.scComponentId &&
     data.scCategoryId &&
-    data.machineTypeId
+    data.machineTypeId &&
+    data.silkTable &&
+    data.renditta
   ) {
     getSilkIncentiveAmountList(
       data.scSubSchemeDetailsId,
       data.scComponentId,
       data.scCategoryId,
-      data.machineTypeId
+      data.machineTypeId,
+      data.silkTable,
+      data.renditta
     );
   }
-}, [data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId, data.machineTypeId]);
+}, [data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId, data.machineTypeId,data.silkTable, data.renditta]);
 
 const [imcbAndMermAmountData, setImcbAndMermAmountListData] = useState([]);
 
@@ -2058,6 +1974,14 @@ useEffect(() => {
       rhSqft: developedLand.rhSqft,
       estimatedCost: developedLand.estimatedCost,
       roofTypeId: developedLand.roofTypeId,
+      raceId:data.raceId,
+      renditta:data.renditta,
+      silkTable: data.silkTable,
+      noOfCocoonsNeedToProduce:data.noOfCocoonsNeedToProduce,
+      noOfRawSilkProduced:data.noOfRawSilkProduced,
+      silkExchangeId: data.silkExchangeId,
+      form17JNo: data.form17JNo,
+      dailyLimit: data.dailyLimit,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -2284,7 +2208,15 @@ useEffect(() => {
       imcbTable: "",
       icbBasinEnds: "",
       reelingSqft: "",
-      reelingUnit: ""
+      reelingUnit: "",
+      raceId:"",
+      renditta:"",
+      silkTable: "",
+      noOfCocoonsNeedToProduce:"",
+      noOfRawSilkProduced:"",
+      silkExchangeId:"",
+      form17JNo: "",
+      dailyLimit: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -3684,6 +3616,62 @@ const fetchReelerDetails = () => {
                                 </Form.Group>
                               </Col>
 
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="imcbTable">
+                                    {t("Table/Basin/Ends")} <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      id="silkTable"
+                                      name="silkTable"
+                                      value={data.silkTable}
+                                      onChange={handleInputs}
+                                      required
+                                    >
+                                      <option value="">{t("Select Table/Basin/Ends")}</option>
+                                      <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
+                                      <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
+                                      <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
+                                      <option value="6 Basin">6 Basin</option>
+                                      <option value="10 Basin">10 Basin</option>
+                                      <option value="36 ends">36 ends</option>
+                                      <option value="48 ends">48 ends</option>
+                                      <option value="400 ends">400 ends</option>
+                                      <option value="200 ends">200 ends</option>
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Table/Basin/Ends is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="imcbTable">
+                                    {t("Renditta/Grade")} <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      id="renditta"
+                                      name="renditta"
+                                      value={data.renditta}
+                                      onChange={handleInputs}
+                                      required
+                                    >
+                                      <option value="">{t("Select Renditta/Grade")}</option>
+                                      <option value="8.00">8.00</option>
+                                      <option value="7.50">7.50</option>
+                                      <option value="B-Grade">B-Grade</option>
+                                      <option value="2 A-Grade">2 A-Grade</option>
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Renditta/Grade is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
                               
                             </>
                           )}
@@ -4052,6 +4040,174 @@ const fetchReelerDetails = () => {
                   </Col>
                 </Row>
               </Card>
+
+{getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+                            <>
+              <Block className="mt-3">
+              <Card className="mb-4">
+                  <Card.Header>{t("Add Silk Incentive Details")}</Card.Header>
+                  <Card.Body>
+                        <Row className="mt-3">
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Race")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="raceId"
+                                  value={data.raceId}
+                                  onChange={handleInputs}
+                                  required
+                                >
+                                  <option value="">{t("Select Race")}</option>
+                                  {raceListData.map((list) => (
+                                    <option
+                                      key={list.raceMasterId}
+                                      value={list.raceMasterId}
+                                    >
+                                      {list.raceMasterName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Race is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("Daily Limit")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="dailyLimit"
+                                  value={data.dailyLimit}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter Daily Limit")}
+                                  required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("Daily Limit is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("No Of Cocoons used to Produce Raw Silk")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="noOfCocoonsNeedToProduce"
+                                  value={data.noOfCocoonsNeedToProduce}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter No Of Cocoons used to Produce Raw Silk")}
+                                  required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("No Of Cocoons used to Produce Raw Silk is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("No Of Raw Silk Produced")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="noOfRawSilkProduced"
+                                  value={data.noOfRawSilkProduced}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter No Of Raw Silk Produced")}
+                                  required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("No Of Raw Silk Produced is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                {t("Form 17J No")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="form17JNo"
+                                  value={data.form17JNo}
+                                  onChange={handleInputs}
+                                  // required
+                                  placeholder={t("Enter Form 17J No")}
+                                  required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("Form 17J No is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                          <Form.Group className="form-group">
+                            <Form.Label>
+                              {t("Silk Exchange Type")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="silkExchangeId"
+                                  value={data.silkExchangeId}
+                                  onChange={handleInputs}
+                                  required
+                                >
+                                  <option value="">{t("Select Silk Exchange Type")}</option>
+                                  {silkListData.map((list) => (
+                                    <option
+                                      key={list.silkExchangeId}
+                                      value={list.silkExchangeId}
+                                    >
+                                      {list.silkExchangeName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  {t("Silk Exchange is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Col>
+                          </Form.Group>
+                        </Col>
+                        </Row>
+                  </Card.Body>
+                </Card>
+                </Block>
+                </>
+             )}
 
               {showButton && (
                     <Block className="mt-3">

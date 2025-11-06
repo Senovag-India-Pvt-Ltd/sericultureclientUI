@@ -23,6 +23,8 @@ function ConfigureSilkIncentiveEdit() {
     amountPerKg: "",
     min: "",
     max: "",
+    rendittaGrade: "",
+    silkTableBasinEnds: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -378,6 +380,63 @@ return (
                       </div>
                     </Form.Group>
                   </Col>
+
+                   <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="imcbTable">
+                              {t("Table/Basin/Ends")} <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                id="silkTableBasinEnds"
+                                name="silkTableBasinEnds"
+                                value={data.silkTableBasinEnds}
+                                onChange={handleInputs}
+                                required
+                              >
+                                <option value="">{t("Select Table/Basin/Ends")}</option>
+                                <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
+                                <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
+                                <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
+                                <option value="6 Basin">6 Basin</option>
+                                <option value="10 Basin">10 Basin</option>
+                                <option value="36 ends">36 ends</option>
+                                <option value="48 ends">48 ends</option>
+                                <option value="400 ends">400 ends</option>
+                                <option value="200 ends">200 ends</option>
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Table/Basin/Ends is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                  
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n4">
+                                        <Form.Label htmlFor="imcbTable">
+                                          {t("Renditta/Grade")} <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Select
+                                            id="rendittaGrade"
+                                            name="rendittaGrade"
+                                            value={data.rendittaGrade}
+                                            onChange={handleInputs}
+                                            required
+                                          >
+                                            <option value="">{t("Select Renditta/Grade")}</option>
+                                            <option value="8.00">8.00</option>
+                                            <option value="7.50">7.50</option>
+                                            <option value="B-Grade">B-Grade</option>
+                                            <option value="2 A-Grade">2 A-Grade</option>
+                                          </Form.Select>
+                                          <Form.Control.Feedback type="invalid">
+                                            {t("Renditta/Grade is required")}
+                                          </Form.Control.Feedback>
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
 
                   {/* Amount Per Kg */}
                   <Col lg="6">

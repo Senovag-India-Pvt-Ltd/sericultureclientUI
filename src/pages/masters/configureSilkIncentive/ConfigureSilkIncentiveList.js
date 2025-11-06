@@ -203,6 +203,19 @@ function ConfigureSilkIncentiveList() {
       right: true,
       sortable: true,
     },
+
+    {
+      name: t("Renditta/Grade"),
+      selector: (row) => row.rendittaGrade,
+      right: true,
+      sortable: true,
+    },
+    {
+      name: t("Table/Basin/Ends"),
+      selector: (row) => row.silkTableBasinEnds,
+      right: true,
+      sortable: true,
+    },
   ];
 
   return (
