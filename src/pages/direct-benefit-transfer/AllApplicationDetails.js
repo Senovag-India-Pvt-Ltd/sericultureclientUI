@@ -1050,16 +1050,17 @@ useEffect(() => {
             </Form.Group>
           </Col>
 
-        <Col sm={3}>
+       <Col sm={3}>
   <Form.Group className="form-group mt-n4">
     <Form.Label>{t("Sub Component")}</Form.Label>
     <Form.Select
       name="scCategoryId"
-      value={searchData.scCategoryId}   // ✅ Use searchData instead of data
+      value={searchData.scCategoryId} // ✅ Use searchData instead of data
       onChange={handleInputsSearch}  // ✅ Update searchData
-      isInvalid={
-        searchData.scCategoryId === undefined || searchData.scCategoryId === "0"
-      }
+      // Remove the red border by not using isInvalid
+      // isInvalid={
+      //   searchData.scCategoryId === undefined || searchData.scCategoryId === "0"
+      // }
     >
       <option value="">{t("Select Category")}</option>
       {scCategoryListData.map((list) => (
