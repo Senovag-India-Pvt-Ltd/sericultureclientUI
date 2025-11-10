@@ -403,11 +403,11 @@ function ProductionAchievementReport() {
   ];
 
   return (
-    <Layout title={t("Production Achievement Report")}>
+    <Layout title={t("Physical Achievement Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Production Achievement Report")}</Block.Title>
+            <Block.Title tag="h2">{t("Physical Achievement Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
