@@ -4251,7 +4251,7 @@ const fetchReelerDetails = () => {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("No Of Raw Silk Produced")} 
                                 <span className="text-danger">*</span>
