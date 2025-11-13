@@ -931,13 +931,6 @@ function DbtK2Application() {
       hide: "md",
     },
     {
-      name: t("Remarks"),
-      selector: (row) => row.remarks,
-      cell: (row) => <span>{row.remarks}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: t("Quota Type"),
       selector: (row) => row.quotaType,
       cell: (row) => <span>{row.quotaType}</span>,

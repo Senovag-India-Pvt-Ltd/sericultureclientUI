@@ -386,6 +386,7 @@ function Menu() {
     Admin_Master_Service_Department: false,
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Reject_Reason: false,
+    Admin_Master_Service_Silk_Exchange: false,
     Admin_Master_Service_Program: false,
     Admin_Master_Service_Scheme_Details: false,
     Admin_Master_Service_DbtStatusCheck: false,
@@ -3672,6 +3673,15 @@ function Menu() {
                             <MenuItemLink
                               text={t("Reject Reason")}
                               to="/seriui/reject-reason"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Master_Service_Silk_Exchange? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Silk Exchange")}
+                              to="/seriui/silk-exchange"
                             />
                           </MenuItem>
                         ) : null}

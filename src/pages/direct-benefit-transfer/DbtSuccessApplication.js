@@ -1104,13 +1104,6 @@ function DbtSuccessApplication() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Remarks"),
-      selector: (row) => row.remarks,
-      cell: (row) => <span>{row.remarks}</span>,
-      sortable: true,
-      hide: "md",
-    },
     
   ];
 

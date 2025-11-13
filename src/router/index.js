@@ -1061,6 +1061,10 @@ import ConfigureAdoptingBoiler from "../pages/masters/configureAdoptingBoiler/Co
 import ConfigureAdoptingBoilerList from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerList";
 import ConfigureAdoptingBoilerView from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerView";
 import ConfigureAdoptingBoilerEdit from "../pages/masters/configureAdoptingBoiler/ConfigureAdoptingBoilerEdit";
+import SilkExchange from "../pages/masters/silkExchange/SilkExchange";
+import SilkExchangeList from "../pages/masters/silkExchange/SilkExchangeList";
+import SilkExchangeView from "../pages/masters/silkExchange/SilkExchangeView";
+import SilkExchangeEdit from "../pages/masters/silkExchange/SilkExchangeEdit";
 
 // Admin and Reports
 
@@ -2821,6 +2825,10 @@ function Router() {
             <Route path="configure-reeling-shed-view/:id" element={<ConfigureReelingShedView />} />
             <Route path="configure-reeling-shed-edit/:id" element={<ConfigureReelingShedEdit />} />
 
+            <Route path="silk-exchange" element={<SilkExchange />} />
+            <Route path="silk-exchange-list" element={<SilkExchangeList />} />
+            <Route path="silk-exchange-view/:id" element={<SilkExchangeView />} />
+            <Route path="silk-exchange-edit/:id" element={<SilkExchangeEdit />} />
 
             <Route path="cropStatus" element={<CropStatus />} />
             <Route path="crop-status-list" element={<CropStatusList />} />
