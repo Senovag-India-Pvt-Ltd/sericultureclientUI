@@ -4361,14 +4361,14 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Reports_Export_Report_Registration_Farmer_Registration_Report ? (
+                        {/* {showMenu.Reports_Export_Report_Registration_Farmer_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Farmer Wise Report")}
                               to="/seriui/farmer-wise-report"
                             />
                           </MenuItem>
-                        ) : null}
+                        ) : null} */}
                         {showMenu.Reports_Export_Report_Registration_Reeler_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
