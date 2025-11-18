@@ -16,6 +16,8 @@ function ConfigureBivoltineAmount() {
     componentId: "",
     categoryId: "",
     amountPerKg: "",
+    maxNoOfCocoonsPerKg: "",
+    minAverageYield: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -48,6 +50,8 @@ function ConfigureBivoltineAmount() {
             componentId: "",
             categoryId: "",
             amountPerKg: "",
+            maxNoOfCocoonsPerKg: "",
+            minAverageYield: "",
             });
             setValidated(false);
           }
@@ -64,6 +68,8 @@ function ConfigureBivoltineAmount() {
     componentId: "",
     categoryId: "",
     amountPerKg: "",
+    maxNoOfCocoonsPerKg: "",
+    minAverageYield: "",
     });
   };
 
@@ -233,6 +239,52 @@ function ConfigureBivoltineAmount() {
                     </div>
                     </Form.Group>
                 </Col>
+
+                <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Min Average Yield
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="minAverageYield"
+                          name="minAverageYield"
+                          type="text"
+                          value={data.minAverageYield}
+                          onChange={handleInputs}
+                          placeholder="Enter Min Average Yield"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Min Average Yield is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Max No Of Cocoons Per Kg
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="maxNoOfCocoonsPerKg"
+                          name="maxNoOfCocoonsPerKg"
+                          type="text"
+                          value={data.maxNoOfCocoonsPerKg}
+                          onChange={handleInputs}
+                          placeholder="Enter Max No Of Cocoons Per Kg"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Max No Of Cocoons Per Kg is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 <Col lg="6">
                     <Form.Group className="form-group">

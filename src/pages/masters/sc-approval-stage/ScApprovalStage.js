@@ -27,7 +27,9 @@ function ScApprovalStage() {
     inspection:"",
     pushToDbt:"",
     financialDelegation:"",
-    directlyToFruits:""
+    directlyToFruits:"",
+    allowMultipleSanction:"",
+    sanctionForReeling:""
   });
 
   const [validated, setValidated] = useState(false);
@@ -65,7 +67,9 @@ function ScApprovalStage() {
               inspection:"",
               pushToDbt:"",
               financialDelegation:"",
-              directlyToFruits:""
+              directlyToFruits:"",
+              allowMultipleSanction:"",
+              sanctionForReeling:""
             });
             setValidated(false);
           }
@@ -90,7 +94,9 @@ function ScApprovalStage() {
       inspection:"",
       pushToDbt:"",
       financialDelegation:"",
-      directlyToFruits:""
+      directlyToFruits:"",
+      allowMultipleSanction:"",
+      sanctionForReeling:""
     });
   };
 
@@ -352,6 +358,46 @@ function ScApprovalStage() {
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
                       {t("Financial Delegation")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="sanctionForReeling"
+                          checked={data.sanctionForReeling}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Sanction For Reeler")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="allowMultipleSanction"
+                          checked={data.allowMultipleSanction}
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Multiple Sanction")}
                       </Form.Label>
                     </Form.Group>
                   </Col>

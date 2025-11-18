@@ -88,6 +88,7 @@ function ServiceApplication() {
     form17JNo: "",
     dailyLimit: "",
     boilerInKg: "",
+    sanctionNo: ""
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -603,6 +604,8 @@ const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => 
         ...prev,
         cocoonsWeight: lotData.totalLotWeight || 0,
         lotWeight: lotData.lotWeightAfterWeighment || 0,
+        averageYield: lotData.averageYield || 0,
+        noOfCocoonPerKg: lotData.noOfCocoonPerKg || 0,
       }));
     } else if (schemeType == "3") {
       // Bonus
@@ -610,6 +613,8 @@ const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => 
         ...prev,
         cocoonsWeight: lotData.sumLotWeightReeling || 0,
         lotWeight: lotData.lotWeightAfterWeighment || 0,
+        averageYield: lotData.averageYield || 0,
+        noOfCocoonPerKg: lotData.noOfCocoonPerKg || 0,
       }));
     }
   })
@@ -624,6 +629,8 @@ const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => 
       ...prev,
       cocoonsWeight: 0,
       lotWeight: 0,
+      averageYield: 0,
+      noOfCocoonPerKg: 0,
     }));
     setLoading(false);
   });
@@ -1337,7 +1344,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     setAmountValue({
       ...amountValue,
       // unitPrice: calculatedAmount.toFixed(2),
-      unitPrice: calculatedAmount, // Set the Unit Price to amountPerKg
+      unitPrice: amountPerKg, // Set the Unit Price to amountPerKg
     });
     setData({
       ...data,
@@ -1462,9 +1469,46 @@ const handleCalculateUnitPrice = () => {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
       return;
     }
-    calculateBonusAmount();
-    return;
-  }
+    // 2. Check for required bonus-specific fields
+    if (!data.averageYield || !data.noOfCocoonPerKg) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
+      return;
+    }
+
+    // 3. Validate that API data for bonus is available
+    if (!bonusAmountData || bonusAmountData.length === 0) {
+      Swal.fire({ icon: "warning", title: "No Data Found", text: "No Bivoltine Bonus data available for selected parameters." });
+      return;
+    }
+
+    // 4. Extract min/max values from the bonus amount data
+    // Assuming bonusAmountData[0] contains the validation parameters
+    const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+
+    // 5. Check for minimum Average Yield
+    if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+      Swal.fire({ 
+        icon: "warning", 
+        title: "Validation Error", 
+        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).` 
+      });
+      return;
+    }
+
+    // 6. Check for maximum No. of Cocoons Per Kg
+    if (parseFloat(data.noOfCocoonPerKg) > parseFloat(maxNoOfCocoonsPerKg)) {
+      Swal.fire({ 
+        icon: "warning", 
+        title: "Validation Error", 
+        text: `No. of Cocoons Per Kg cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).` 
+      });
+      return;
+ }
+
+    // 7. If all validations pass, calculate the bonus
+    calculateBonusAmount();
+    return;
+  }
 
   // ✅ Special case: Silk Incentive - PSF
   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
@@ -2079,6 +2123,7 @@ useEffect(() => {
       form17JNo: data.form17JNo,
       dailyLimit: data.dailyLimit,
       boilerInKg: data.boilerInKg,
+      sanctionNo: data.sanctionNo
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -2315,6 +2360,7 @@ useEffect(() => {
       form17JNo: "",
       dailyLimit: "",
       boilerInKg: "",
+      sanctionNo: ""
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -4035,6 +4081,30 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
+                    {getIncentiveAndBonusData[0]?.allowMultipleSanction && (
+                       <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Sanction Number</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="sanctionNo"
+                                type="text"
+                                name="sanctionNo"
+                                value={data.sanctionNo}
+                                onChange={handleInputs}
+                                placeholder="Enter Sanction Number"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Sanction Number is required
+                              </Form.Control.Feedback>
+                          </Col>
+                        )}
+
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
@@ -4415,6 +4485,55 @@ const fetchReelerDetails = () => {
                               </Form.Control>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="3">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Average Yield
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="averageYield"
+                                type="text"
+                                name="averageYield"
+                                value={data.averageYield}
+                                onChange={handleInputs}
+                                placeholder="Enter Average Yield"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                        <Col lg="3">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                             No Of Cocoons/Kg
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="noOfCocoonPerKg"
+                                type="text"
+                                name="noOfCocoonPerKg"
+                                value={data.noOfCocoonPerKg}
+                                onChange={handleInputs}
+                                placeholder="Enter  No Of Cocoons/Kg"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                           <Col lg="3">
                           <Form.Group className="form-group">
