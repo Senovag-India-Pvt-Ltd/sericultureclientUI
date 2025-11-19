@@ -1065,6 +1065,7 @@ import SilkExchange from "../pages/masters/silkExchange/SilkExchange";
 import SilkExchangeList from "../pages/masters/silkExchange/SilkExchangeList";
 import SilkExchangeView from "../pages/masters/silkExchange/SilkExchangeView";
 import SilkExchangeEdit from "../pages/masters/silkExchange/SilkExchangeEdit";
+import GenerateSanctionOrder from "../pages/direct-benefit-transfer/GenerateSanctionOrder";
 
 // Admin and Reports
 
@@ -2824,6 +2825,8 @@ function Router() {
             <Route path="configure-reeling-shed-list" element={<ConfigureReelingShedList />} />
             <Route path="configure-reeling-shed-view/:id" element={<ConfigureReelingShedView />} />
             <Route path="configure-reeling-shed-edit/:id" element={<ConfigureReelingShedEdit />} />
+
+            <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
 
             <Route path="silk-exchange" element={<SilkExchange />} />
             <Route path="silk-exchange-list" element={<SilkExchangeList />} />
