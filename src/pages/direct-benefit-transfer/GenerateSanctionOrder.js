@@ -53,6 +53,7 @@ function GenerateSanctionOrder() {
   };
 
   const [addressDetails, setAddressDetails] = useState({
+    financialYearId: "",
       schemeId: "",
      componentId: "",
       subSchemeId: "",
@@ -64,6 +65,7 @@ function GenerateSanctionOrder() {
     const search = (details = addressDetails) => {
   api.post(baseURLDBT + `service/getSanctionOrderData`, {}, {
     params: {
+      financialYearId: details.financialYearId || 0,
       schemeId: details.scSchemeDetailsId || 0,
       subSchemeId: details.subSchemeId || 0,
       componentId: details.componentId || 0,
@@ -228,6 +230,7 @@ const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
 
   const loadSanctionOrderNumbers = () => {
   if (
+    addressDetails.financialYearId &&
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
@@ -236,7 +239,7 @@ const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
     api
       .post(
         baseURLDBT +
-          `service/getSanctionOrderNumbers?schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}`
+          `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}`
       )
       .then((res) => {
         if (res.data && res.data.content) {
@@ -251,6 +254,7 @@ const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
 
 useEffect(() => {
   if (
+    addressDetails.financialYearId &&
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
@@ -259,6 +263,7 @@ useEffect(() => {
     loadSanctionOrderNumbers(addressDetails);
   }
 }, [
+  addressDetails.financialYearId,
   addressDetails.scSchemeDetailsId,
   addressDetails.subSchemeId,
   addressDetails.componentId,
@@ -266,6 +271,23 @@ useEffect(() => {
 ]);
 
 
+// to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialYearList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialYearList();
+  }, []);
 
 
     // to get sc-scheme-details
@@ -577,20 +599,30 @@ useEffect(() => {
   const selectedSanctionOrder = addressDetails.sanctionOrderNumber;
 
   if (!selectedSanctionOrder) {
-    alert("Please select a Sanction Order Number");
-    return;
-  }
-
-  if (sanctionOrderForScheme === "Bivoltine Bonus") {
-    downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
-  } else {
-    alert("No download available for selected Sanction Order");
-  }
+  Swal.fire({
+    icon: "warning",
+    title: "Sanction Order Required",
+    text: "Please select a Sanction Order Number",
+    confirmButtonColor: "#3085d6",
+  });
+  return;
+}
+ if (sanctionOrderForScheme === "Bivoltine Bonus") {
+  downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
+} else {
+  Swal.fire({
+    icon: "error",
+    title: "Invalid Selection",
+    text: "No download available for selected Sanction Order",
+    confirmButtonColor: "#d33",
+  });
+}
 };
 
 
 const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
-  const type = Number(subSchemeType);  // <-- FIX
+  const type = Number(subSchemeType); 
+
 
   if (type === 2) {
     generateReportForIncentive(listData, selectedSanctionOrder);
@@ -810,6 +842,27 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option> */}
                           </Form.Select>
                           </Col>
+
+                        <Form.Label column sm={1}>
+                          {t("Financial Year")}
+                        </Form.Label>
+                        <Col sm={3}>
+                          <Form.Select
+                            name="financialYearId"
+                            value={addressDetails.financialYearId || 0}
+                            onChange={handleInputsaddress}
+                          >
+                            <option value="">{t("Select Year")}</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Col>
      
                <Form.Label column sm={1}>
                    Scheme
@@ -833,7 +886,9 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
                            : ""}
                    </Form.Select>
                  </Col>
+                 </Row> 
      
+     <Row className="mb-3">
                 <Form.Label column sm={1}>
                  Component Type
                </Form.Label>
@@ -856,9 +911,9 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
                    : ""}
                  </Form.Select>
                </Col>
-                </Row> 
+                
      
-     <Row className="mb-3">
+     
                  <Form.Label column sm={1}>
                    Component
                  </Form.Label>
@@ -908,7 +963,9 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
                            : ""}
                    </Form.Select>
                  </Col> 
+                 </Row>
 
+          <Row className="mb-3">
                  <Form.Label column sm={1}>
                     Sanction Order
                   </Form.Label>
