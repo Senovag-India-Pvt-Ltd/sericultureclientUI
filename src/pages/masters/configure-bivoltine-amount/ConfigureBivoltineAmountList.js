@@ -190,6 +190,20 @@ function ConfigureBivoltineAmountList() {
       hide: "md",
     },
     {
+        name: "Min Average Yield",
+        selector: (row) => row.minAverageYield,
+        cell: (row) => <span>{row.minAverageYield}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Max No Of Cocoons Per Kg",
+        selector: (row) => row.maxNoOfCocoonsPerKg,
+        cell: (row) => <span>{row.maxNoOfCocoonsPerKg}</span>,
+        sortable: true,
+        hide: "md",
+      },
+    {
         name: "Amount Per Kg",
         selector: (row) => row.amountPerKg,
         cell: (row) => <span>{row.amountPerKg}</span>,
