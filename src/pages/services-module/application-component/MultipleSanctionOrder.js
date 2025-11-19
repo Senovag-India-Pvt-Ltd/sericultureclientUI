@@ -98,19 +98,56 @@ function MultipleSanctionOrder() {
   const [isRowSelectable, setIsRowSelectable] = useState(false);
   // initially disabled
 
+  // Format JS Date → "YYYY-MM-DD"
+const formatDate = (date) => {
+  if (!date) return "";
+  return (
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0")
+  );
+};
 
-const handleDateForPropasalChange = (date, type) => {
-    const formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0");
-    console.log("formattedDate", formattedDate);
-    setActionData((prev) => ({ ...prev, [type]: formattedDate }));
+// Parse "YYYY-MM-DD" → JS Date (timezone safe)
+const parseDate = (value) => {
+  if (!value) return null;
 
-    // checkSubmitEnabled();
-  };
+  // If already a Date object → return as-is
+  if (value instanceof Date) return value;
+
+  // If value is not a string → return null (avoid crash)
+  if (typeof value !== "string") return null;
+
+  // If string is not in YYYY-MM-DD format → return null
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+  const [y, m, d] = value.split("-");
+  return new Date(y, m - 1, d);
+};
+
+
+
+// const handleDateForPropasalChange = (date, type) => {
+//     const formattedDate =
+//       date.getFullYear() +
+//       "-" +
+//       (date.getMonth() + 1).toString().padStart(2, "0") +
+//       "-" +
+//       date.getDate().toString().padStart(2, "0");
+//     console.log("formattedDate", formattedDate);
+//     setActionData((prev) => ({ ...prev, [type]: formattedDate }));
+
+//     // checkSubmitEnabled();
+//   };
+
+const handleDateChange = (date, fieldName) => {
+  const formatted = formatDate(date);
+  console.log("Formatted:", formatted);
+  setActionData((prev) => ({ ...prev, [fieldName]: formatted }));
+};
+
 
 
 
@@ -349,7 +386,9 @@ const [isDrawingOfficerFocused, setIsDrawingOfficerFocused] = useState(false);
     sanctionNo: "",
     rejectReasonWorkflowMasterId: "",
     comment: "",
-    proposalDate: ""
+    proposalDate: new Date(),
+    releaseNo: "",
+    releaseDate: new Date(),
   });
 
   //  to get data from api
@@ -1129,7 +1168,9 @@ const generateReportForSeedCocoon = async (selectedRows) => {
     farmerId: item.farmerId,
     userId: actionData.userId,
     approvalStageId: actionData.approvalStageId,
-    proposalDate: actionData.proposalDate
+    proposalDate: actionData.proposalDate,
+    releaseNo: actionData.releaseNo,
+    releaseDate: actionData.releaseDate,
   }));
 
   const sendPost = {
@@ -1137,6 +1178,8 @@ const generateReportForSeedCocoon = async (selectedRows) => {
     stepId: actionData.stepId,
     eligibleAmount: actionData.eligibleAmount,
     proposalDate: actionData.proposalDate,
+    releaseNo: actionData.releaseNo,
+    releaseDate: actionData.releaseDate,
     pushToDBTRequestList: sendResponse
   };
 
@@ -1746,30 +1789,23 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
             <Row className="align-items-end">
 
               {/* Proposal Date */}
-              <Col lg="3">
-                <Form.Group className="form-group">
-                  <Form.Label style={{ fontWeight: "bold" }}>
-                    Proposal Date <span className="text-danger">*</span>
-                  </Form.Label>
+              
 
-                  <DatePicker
-                    selected={
-                      actionData.proposalDate
-                        ? new Date(actionData.proposalDate)
-                        : null
-                    }
-                    onChange={(date) =>
-                      handleDateForPropasalChange(date, "proposalDate")
-                    }
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd/MM/yyyy"
-                    className="form-control"
-                    maxDate={new Date()}
-                    required
-                  />
+              <Col lg="3">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="schemeAmount">Release No<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="releaseNo"
+                      type="text"
+                      name="releaseNo"
+                      value={actionData.releaseNo}
+                      onChange={handleActionInputs}
+                      placeholder="Enter Release No"
+                      required
+                      // readOnly
+                    />
+                  </div>
                 </Form.Group>
               </Col>
 
@@ -1842,6 +1878,47 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
                   </Form.Select>
                 </Form.Group>
               </Col>
+
+          <Col lg="3">
+            <Form.Group className="form-group">
+              <Form.Label style={{ fontWeight: "bold" }}>
+                Proposal Date <span className="text-danger">*</span>
+              </Form.Label>
+
+              <DatePicker
+                selected={parseDate(actionData.proposalDate)}
+                onChange={(date) => handleDateChange(date, "proposalDate")}
+                dateFormat="dd/MM/yyyy"
+                className="form-control"
+                maxDate={new Date()}
+                peekNextMonth
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
+              />
+            </Form.Group>
+          </Col>
+
+
+              <Col lg="3">
+                  <Form.Group className="form-group">
+                    <Form.Label style={{ fontWeight: "bold" }}>
+                      Release Date <span className="text-danger">*</span>
+                    </Form.Label>
+
+                    <DatePicker
+                      selected={parseDate(actionData.releaseDate)}
+                      onChange={(date) => handleDateChange(date, "releaseDate")}
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      maxDate={new Date()}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                    />
+                  </Form.Group>
+                </Col>
 
 
               {/* Submit Button */}
