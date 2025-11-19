@@ -199,6 +199,7 @@ function Menu() {
     Services_Service_Dashboard: false,
     Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon: false,
     Services_Dbt_Application: false,
+    Services_Service_Download_Documents: false,
 
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
@@ -1752,6 +1753,15 @@ function Menu() {
                 <MenuItemLink
                   text={t("Applications For Incentive,Bonus,Seed Cocoon")}
                   to="/seriui/multiple-sanction-order-list"
+                />
+              </MenuItem>
+            ) : null}
+
+             {showMenu.Services_Service_Download_Documents ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Download Documents")}
+                  to="/seriui/generate-sanction-order"
                 />
               </MenuItem>
             ) : null}
