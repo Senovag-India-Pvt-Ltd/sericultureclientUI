@@ -1066,6 +1066,10 @@ import SilkExchangeList from "../pages/masters/silkExchange/SilkExchangeList";
 import SilkExchangeView from "../pages/masters/silkExchange/SilkExchangeView";
 import SilkExchangeEdit from "../pages/masters/silkExchange/SilkExchangeEdit";
 import GenerateSanctionOrder from "../pages/direct-benefit-transfer/GenerateSanctionOrder";
+import CropDetailsForCommercialMarket from "../pages/direct-benefit-transfer/CropDetailsForCommercialMarket";
+import CropDetailsForCommercialMarketList from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketList";
+import CropDetailsForSeedMarket from "../pages/direct-benefit-transfer/CropDetailsSeedMarket";
+import CropDetailsForSeedMarketList from "../pages/direct-benefit-transfer/CropDetailsSeedMarketList";
 
 // Admin and Reports
 
@@ -2827,6 +2831,12 @@ function Router() {
             <Route path="configure-reeling-shed-edit/:id" element={<ConfigureReelingShedEdit />} />
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
+            <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
+            <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />
+
+            <Route path="crop-details-seed-market" element={<CropDetailsForSeedMarket />} />
+            <Route path="crop-details-seed-market-list" element={<CropDetailsForSeedMarketList />} />
+
 
             <Route path="silk-exchange" element={<SilkExchange />} />
             <Route path="silk-exchange-list" element={<SilkExchangeList />} />

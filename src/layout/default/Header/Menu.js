@@ -200,6 +200,8 @@ function Menu() {
     Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon: false,
     Services_Dbt_Application: false,
     Services_Service_Download_Documents: false,
+    Services_Service_Crop_Details_Seed_Market: false,
+    Services_Service_Crop_Details_Commercial_Market: false,
 
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
@@ -1762,6 +1764,24 @@ function Menu() {
                 <MenuItemLink
                   text={t("Download Documents")}
                   to="/seriui/generate-sanction-order"
+                />
+              </MenuItem>
+            ) : null}
+
+             {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Commercial Market")}
+                  to="/seriui/crop-details-commercial-market"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.Services_Service_Crop_Details_Seed_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Seed Market")}
+                  to="/seriui/crop-details-seed-market"
                 />
               </MenuItem>
             ) : null}
