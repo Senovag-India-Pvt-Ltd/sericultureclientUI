@@ -183,6 +183,13 @@ function CropDetailsForCommercialMarketList() {
       hide: "md",
     },
     {
+      name: "Name Of the CRC",
+      selector: (row) => row.crcName,
+      cell: (row) => <span>{row.crcName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Race",
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,

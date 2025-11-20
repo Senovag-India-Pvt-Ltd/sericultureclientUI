@@ -38,7 +38,7 @@ function CropDetailsForSeedMarket() {
     cocoonRatePerKg: "",
     incentiveReceiptNo: "",
     fruitsId: "",
-    
+    crcName: ""
   });
 
   const { t } = useTranslation();
@@ -175,6 +175,7 @@ function CropDetailsForSeedMarket() {
             cocoonRatePerKg: "",
             incentiveReceiptNo: "",
             fruitsId: "",
+            crcName: ""
             });
             setValidated(false);
           }
@@ -209,6 +210,7 @@ function CropDetailsForSeedMarket() {
       cocoonRatePerKg: "",
       incentiveReceiptNo: "",
       fruitsId: "",
+      crcName: ""
     });
     // setLot({
     //   lotNumber: "",
@@ -468,6 +470,28 @@ function CropDetailsForSeedMarket() {
                           />
                           <Form.Control.Feedback type="invalid">
                             {t("Farmer Name is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                     <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Name Of The CRC")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="crcName"
+                            name="crcName"
+                            type="text"
+                            value={data.crcName}
+                            onChange={handleInputs}
+                            placeholder={t("Enter Name Of The CRC")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Name Of The CRC is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
