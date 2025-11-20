@@ -198,6 +198,40 @@ useEffect(() => {
 }, [data.transactionDate, data.fruitsId]);
 
 
+// State to store allottted lots
+const [lotOptionsForSeedMarket, setLotOptionsForSeedMarket] = useState([]);
+
+// Fetch allotted lots from backend
+const fetchLotOptionsForSeedMarket = () => {
+  if (!data.transactionDate || !data.fruitsId) return;
+
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api
+    .post(baseURLDBT + `cropDetailsSeedMarket/getBiddingSlipNoForSeedMarket`, {
+      transactionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+    })
+    .then((response) => {
+      // Convert response to objects for dropdown
+      const options = (response.data.content || []).map((id) => ({
+        biddingSlipNo: id,
+      }));
+      setLotOptionsForSeedMarket(options);
+    })
+    .catch((err) => {
+      console.error("Error fetching allotted lots:", err);
+      setLotOptionsForSeedMarket([]);
+    });
+};
+
+// Fetch lot options when transactionDate or fruitsId changes
+useEffect(() => {
+  fetchLotOptionsForSeedMarket();
+}, [data.transactionDate, data.fruitsId]);
+
+
 
   // console.log("nodu", data);
 
@@ -315,7 +349,8 @@ useEffect(() => {
   const [schemeDetails, setSchemeDetails] = useState({});
   const [schemeId, setSchemeId] = useState("");
   const [showButton, setShowButton] = useState(false);
-  const [showCommercialMarketTransaction, setShowCommercialMarketTransaction] = useState(false);  
+  const [showCommercialMarketTransaction, setShowCommercialMarketTransaction] = useState(false);
+  const [showSeedMarketTransaction, setShowSeedMarketTransaction] = useState(false);   
 
   // Get data from API
   // const getAreaDetailsList = () => {
@@ -686,6 +721,23 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           }));
         }
 
+        if (
+          unitForScheme ===
+            "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+        ) {
+          setShowSeedMarketTransaction(true);
+          setData((prev) => ({
+            ...prev,
+            availBonus: true,
+          }));
+        } else {
+          setShowSeedMarketTransaction(false);
+          setData((prev) => ({
+            ...prev,
+            availBonus: false,
+          }));
+        }
+
         // Extract schemeType
         const schemeType = subSchemeList[0]?.subSchemeType;
 
@@ -713,6 +765,17 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
               schemeType
             );
           }
+
+          if (
+            unitForScheme ===
+              "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+          ) {
+            getCropDetailsSeedMarketByLotNo(
+              data.lotNo,
+              schemeType
+            );
+          }
+
         }
       } else {
         setIncentiveAndBonusData([]);
@@ -851,6 +914,58 @@ const getCropDetailsCommercialMarketByLotNo = (biddingSlipNo, schemeType) => {
     });
 };
 
+
+const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api.post(
+    baseURLDBT + `cropDetailsSeedMarket/getCropDetailsSeedMarketByLotNo`,
+    {
+      transactionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+      biddingSlipNo: biddingSlipNo,
+    }
+  )
+  .then((response) => {
+    const respData = response.data.content || [];
+    // setFarmerDetailsForIB(respData);
+    // setShowFarmerDetails(true);
+
+    const lotData = respData[0] || {};
+
+    // Update fields based on schemeType
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight:lotData.quantityOfSeedCocoons || 0,
+        // lotWeight: lotData.lotWeightAfterWeighment || 0,
+        averageYield: lotData.averageYield || 0,
+        lotWeight: lotData.noOfDfls || 0,
+      }));
+    })
+    .catch((err) => {
+      console.error("Error fetching lot distribution:", err);
+
+      Swal.fire({
+        icon: "warning",
+        title: "Details Not Found for This Lot and Auction Date",
+      });
+
+      // setFarmerDetailsForIB([]);
+
+      // Reset fields
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight: 0,
+        // lotWeight: 0,
+        averageYield: 0,
+        noOfCocoonPerKg: 0,
+      }));
+
+      setLoading(false);
+    });
+};
+
 // Call when scheme or sub-scheme changes
 useEffect(() => {
   if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
@@ -912,6 +1027,17 @@ useEffect(() => {
         schemeType
       );
     }
+
+    if (
+      unitForScheme ===
+        "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+    ) {
+      getCropDetailsSeedMarketByLotNo(
+        data.lotNo,
+        schemeType
+      );
+    }
+
   }
 }, [
   data.lotNo,
@@ -1937,6 +2063,46 @@ if (
 if (
   getIncentiveAndBonusData[0]?.calculationBasedOn ===
     "Incentive For Bivoltine Chawki Rearing Cost"
+) {
+  if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please fill all required fields.",
+    });
+    return;
+  }
+
+  // 2. Check for required bonus-specific fields
+  if (!data.averageYield || !data.lotWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please provide Average Yield and No Of DFLs",
+    });
+    return;
+  }
+
+  // 3. Validate that API data for bonus is available
+  if (!bonusAmountData || bonusAmountData.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "No Data Found",
+      text: "No data available for selected parameters.",
+    });
+    return;
+  }
+
+  
+
+  // 7. If all validations pass, calculate the bonus
+  calculateChawkiBivoltineAmount();
+  return;
+}
+
+if (
+  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+    "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
 ) {
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
@@ -5206,6 +5372,196 @@ const fetchReelerDetails = () => {
                               >
                                 <option value="">-- Select Lot --</option>
                                 {lotOptionsForCommercialMarket.map((lot) => (
+                                  <option key={lot.biddingSlipNo} value={lot.biddingSlipNo}>
+                                    {lot.biddingSlipNo}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </Form.Group>
+                          </Col>
+
+                          
+
+
+                       
+
+                          <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Cocoons Transacted
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="cocoonsWeight"
+                                type="text"
+                                name="cocoonsWeight"
+                                value={data.cocoonsWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter Cocoons Transacted"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                         <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                             No Of DFLs
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="lotWeight"
+                                type="text"
+                                name="lotWeight"
+                                value={data.lotWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter  No Of DFLs"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Average Yield
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="averageYield"
+                                type="text"
+                                name="averageYield"
+                                value={data.averageYield}
+                                onChange={handleInputs}
+                                placeholder="Enter Average Yield"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                            {/* <Col lg="3">
+                              <Form.Group className="form-group">
+                                <Form.Label>Lot Weight</Form.Label>
+                                <Form.Control
+                                  id="lotWeight"
+                                  name="lotWeight"
+                                  value={data.lotWeight}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Weight"
+                                  className="form-control"
+                                  readOnly
+                                />
+                              </Form.Group>
+                            </Col> */}
+
+                            
+                          </Row>
+
+                          <Col lg="2">
+                            <Form.Group as={Row} className="form-group" controlId="availBonus">
+                              <Col sm={1}>
+                                <Form.Check
+                                  type="checkbox"
+                                  name="availBonus"
+                                  value="availBonus"
+                                  checked={data.availBonus}
+                                  onChange={handleBonusCheckBox}
+                                />
+                              </Col>
+                              <Form.Label column sm={9} className="mt-n2">
+                                {t("Avail Bonus Or Incentive")}
+                              </Form.Label>
+                            </Form.Group>
+                          </Col>
+
+                          </Card.Body>
+                  </Card>
+                </Block>
+              )}
+
+               {showSeedMarketTransaction && (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          {t("Transaction Details-Seed Market")}
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className="g-4">
+                            
+
+                            <Col lg="2">
+                              <Form.Group className="form-group">
+                                <Form.Label htmlFor="transactionDate">
+                                  {t("Transaction Date")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.transactionDate}
+                                    onChange={(date) => handleDateChange(date, "transactionDate")}
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    maxDate={new Date()}
+                                    required
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="2">
+                            <Form.Group className="form-group">
+                              <Form.Label>Bidding Slip Lot No</Form.Label>
+                              <Form.Control
+                                as="select"
+                                name="lotNo"
+                                value={data.lotNo || ""}
+                                disabled={!data.transactionDate || !data.fruitsId} 
+                               onChange={(e) => {
+                                const selectedLotId = e.target.value;
+                                setData((prev) => ({
+                                  ...prev,
+                                  lotNo: selectedLotId, // 🔥 only update lotNo (it is allottedLotId)
+                                }));
+
+
+                                  // Fetch additional details for this lot if needed
+                                  fetchLotOptionsForSeedMarket(e);
+                                  const selectedSubScheme = getIncentiveAndBonusData[0];
+                                  const schemeType = selectedSubScheme?.subSchemeType;
+
+                                  // ✅ Call only when we have auctionDate + fruitsId + allottedLotId
+                                  if (selectedLotId && data.transactionDate && data.fruitsId && schemeType) {
+                                    getCropDetailsSeedMarketByLotNo(selectedLotId, schemeType);
+                                  }
+                                }}
+                                className="form-control"
+                              >
+                                <option value="">-- Select Lot --</option>
+                                {lotOptionsForSeedMarket.map((lot) => (
                                   <option key={lot.biddingSlipNo} value={lot.biddingSlipNo}>
                                     {lot.biddingSlipNo}
                                   </option>
