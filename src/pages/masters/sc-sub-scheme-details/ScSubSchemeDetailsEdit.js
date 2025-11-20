@@ -465,6 +465,11 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                             <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -507,6 +512,11 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                             <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -549,6 +559,11 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                             <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -591,6 +606,11 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                             <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -633,6 +653,11 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                             <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required

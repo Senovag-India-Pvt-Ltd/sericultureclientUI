@@ -164,6 +164,40 @@ useEffect(() => {
 }, [data.transactionDate, data.fruitsId]);
 
 
+// State to store allottted lots
+const [lotOptionsForCommercialMarket, setLotOptionsForCommercialMarket] = useState([]);
+
+// Fetch allotted lots from backend
+const fetchLotOptionsForCommercialMarket = () => {
+  if (!data.transactionDate || !data.fruitsId) return;
+
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api
+    .post(baseURLDBT + `cropDetailsCommercialMarket/getBiddingSlipNoForCommercialMarket`, {
+      transactionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+    })
+    .then((response) => {
+      // Convert response to objects for dropdown
+      const options = (response.data.content || []).map((id) => ({
+        biddingSlipNo: id,
+      }));
+      setLotOptionsForCommercialMarket(options);
+    })
+    .catch((err) => {
+      console.error("Error fetching allotted lots:", err);
+      setLotOptionsForCommercialMarket([]);
+    });
+};
+
+// Fetch lot options when transactionDate or fruitsId changes
+useEffect(() => {
+  fetchLotOptionsForCommercialMarket();
+}, [data.transactionDate, data.fruitsId]);
+
+
 
   // console.log("nodu", data);
 
@@ -280,7 +314,8 @@ useEffect(() => {
 
   const [schemeDetails, setSchemeDetails] = useState({});
   const [schemeId, setSchemeId] = useState("");
-  const [showButton, setShowButton] = useState(false); 
+  const [showButton, setShowButton] = useState(false);
+  const [showCommercialMarketTransaction, setShowCommercialMarketTransaction] = useState(false);  
 
   // Get data from API
   // const getAreaDetailsList = () => {
@@ -508,19 +543,102 @@ useEffect(() => {
 const [getIncentiveAndBonusData, setIncentiveAndBonusData] = useState([]);
 const [isSanctionForReeling, setIsSanctionForReeling] = useState(false);
 
+// // Function to fetch incentive/bonus data
+// const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
+//   if (!scSchemeDetailsId || !scSubSchemeDetailsId) return; // avoid unnecessary calls
+
+//   api
+//     .get(
+//       baseURLMasterData + 
+//       `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${scSchemeDetailsId}/${scSubSchemeDetailsId}`
+//     )
+//     .then((response) => {
+//       const content = response.data.content;
+
+//      if (content && content.scSubSchemeDetails.length > 0) {
+//         const subSchemeList = content.scSubSchemeDetails;
+//         setIncentiveAndBonusData(subSchemeList);
+
+//         const sanctionForReeling =
+//           subSchemeList[0]?.sanctionForReeling || false;
+//         setIsSanctionForReeling(sanctionForReeling);
+
+//         // ✅ Check unitForScheme === "Bivoltine Bonus" here
+//         const unitForScheme = subSchemeList[0]?.unitForScheme;
+//         if (unitForScheme === "Bivoltine Bonus") {
+//           setShowButton(true);
+//           setData((prev) => ({
+//             ...prev,
+//             availBonus: true,
+//           }));
+//         } else {
+//           setShowButton(false);
+//           setData((prev) => ({
+//             ...prev,
+//             availBonus: false,
+//           }));
+//         }
+
+//         if (
+//         unitForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP" ||
+//         unitForScheme === "Incentive For Bivoltine Cocoons-30/kg-PSF"
+//       ) {
+//         setShowCommercialMarketTransaction(true);
+//         setData((prev) => ({
+//             ...prev,
+//             availBonus: true,
+//           }));
+//       } else {
+//         setShowCommercialMarketTransaction(false);
+//         setData((prev) => ({
+//             ...prev,
+//             availBonus: false,
+//           }));
+//         }
+
+//         // ✅ Extract schemeType and trigger next API
+//         const schemeType = subSchemeList[0]?.subSchemeType;
+//         if (data.lotNo && schemeType) {
+//           getLotDistributeResponseForInvoiceAndBonusScheme(
+//             data.lotNo,
+//             schemeType
+//           );
+//         }
+//       } else {
+//         setIncentiveAndBonusData([]);
+//         setIsSanctionForReeling(false);
+//         setShowButton(false);
+//         setData((prev) => ({
+//           ...prev,
+//           availBonus: false,
+//         }));
+//       }
+//     })
+//     .catch((err) => {
+//       setIncentiveAndBonusData([]);
+//       setIsSanctionForReeling(false);
+//       setShowButton(false);
+//       setData((prev) => ({
+//         ...prev,
+//         availBonus: false,
+//       }));
+//       console.error("Error fetching incentive/bonus data:", err);
+//     });
+// };
+
 // Function to fetch incentive/bonus data
 const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
   if (!scSchemeDetailsId || !scSubSchemeDetailsId) return; // avoid unnecessary calls
 
   api
     .get(
-      baseURLMasterData + 
-      `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${scSchemeDetailsId}/${scSubSchemeDetailsId}`
+      baseURLMasterData +
+        `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${scSchemeDetailsId}/${scSubSchemeDetailsId}`
     )
     .then((response) => {
       const content = response.data.content;
 
-     if (content && content.scSubSchemeDetails.length > 0) {
+      if (content && content.scSubSchemeDetails.length > 0) {
         const subSchemeList = content.scSubSchemeDetails;
         setIncentiveAndBonusData(subSchemeList);
 
@@ -528,8 +646,10 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           subSchemeList[0]?.sanctionForReeling || false;
         setIsSanctionForReeling(sanctionForReeling);
 
-        // ✅ Check unitForScheme === "Bivoltine Bonus" here
+        // Extract unitForScheme
         const unitForScheme = subSchemeList[0]?.unitForScheme;
+
+        // Show button for Bivoltine Bonus
         if (unitForScheme === "Bivoltine Bonus") {
           setShowButton(true);
           setData((prev) => ({
@@ -544,13 +664,55 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           }));
         }
 
-        // ✅ Extract schemeType and trigger next API
+        // Show Commercial Market Transaction section
+        if (
+          unitForScheme ===
+            "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP" ||
+          unitForScheme ===
+            "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+          unitForScheme ===
+            "Incentive For Bivoltine Chawki Rearing Cost"
+        ) {
+          setShowCommercialMarketTransaction(true);
+          setData((prev) => ({
+            ...prev,
+            availBonus: true,
+          }));
+        } else {
+          setShowCommercialMarketTransaction(false);
+          setData((prev) => ({
+            ...prev,
+            availBonus: false,
+          }));
+        }
+
+        // Extract schemeType
         const schemeType = subSchemeList[0]?.subSchemeType;
+
+        // Trigger correct API based on unitForScheme
         if (data.lotNo && schemeType) {
-          getLotDistributeResponseForInvoiceAndBonusScheme(
-            data.lotNo,
-            schemeType
-          );
+          // For Bivoltine Bonus
+          if (unitForScheme === "Bivoltine Bonus") {
+            getLotDistributeResponseForInvoiceAndBonusScheme(
+              data.lotNo,
+              schemeType
+            );
+          }
+
+          // For Commercial Market Incentive Schemes
+          if (
+            unitForScheme ===
+              "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP" ||
+            unitForScheme ===
+              "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+            unitForScheme ===
+              "Incentive For Bivoltine Chawki Rearing Cost"
+          ) {
+            getCropDetailsCommercialMarketByLotNo(
+              data.lotNo,
+              schemeType
+            );
+          }
         }
       } else {
         setIncentiveAndBonusData([]);
@@ -573,6 +735,7 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
       console.error("Error fetching incentive/bonus data:", err);
     });
 };
+
 
 
 const [farmerDetailsForIB, setFarmerDetailsForIB] = useState({});
@@ -636,6 +799,58 @@ const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => 
   });
 };
 
+
+const getCropDetailsCommercialMarketByLotNo = (biddingSlipNo, schemeType) => {
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  api.post(
+    baseURLDBT + `cropDetailsCommercialMarket/getCropDetailsCommercialMarketByLotNo`,
+    {
+      transactionDate: formattedAuctionDate,
+      marketId: localStorage.getItem("marketId"),
+      fruitsId: data.fruitsId,
+      biddingSlipNo: biddingSlipNo,
+    }
+  )
+  .then((response) => {
+    const respData = response.data.content || [];
+    // setFarmerDetailsForIB(respData);
+    // setShowFarmerDetails(true);
+
+    const lotData = respData[0] || {};
+
+    // Update fields based on schemeType
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight:lotData.quantityOfCocoonsProduced || 0,
+        // lotWeight: lotData.lotWeightAfterWeighment || 0,
+        averageYield: lotData.averageYield || 0,
+        lotWeight: lotData.noOfDfls || 0,
+      }));
+    })
+    .catch((err) => {
+      console.error("Error fetching lot distribution:", err);
+
+      Swal.fire({
+        icon: "warning",
+        title: "Details Not Found for This Lot and Auction Date",
+      });
+
+      // setFarmerDetailsForIB([]);
+
+      // Reset fields
+      setData((prev) => ({
+        ...prev,
+        cocoonsWeight: 0,
+        // lotWeight: 0,
+        averageYield: 0,
+        noOfCocoonPerKg: 0,
+      }));
+
+      setLoading(false);
+    });
+};
+
 // Call when scheme or sub-scheme changes
 useEffect(() => {
   if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
@@ -644,14 +859,67 @@ useEffect(() => {
 }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
 // Trigger lot fetch when lotNo changes, after all required data is available
+// useEffect(() => {
+//   if (data.lotNo && data.transactionDate && data.fruitsId && getIncentiveAndBonusData.length > 0) {
+//     const schemeType = getIncentiveAndBonusData[0]?.subSchemeType;
+//     if (schemeType) {
+//       getLotDistributeResponseForInvoiceAndBonusScheme(data.lotNo, schemeType);
+//     }
+//   }
+// }, [data.lotNo, data.transactionDate, data.fruitsId, getIncentiveAndBonusData]);
+
+
+// useEffect(() => {
+//   if (data.lotNo && data.transactionDate && data.fruitsId && getIncentiveAndBonusData.length > 0) {
+//     const schemeType = getIncentiveAndBonusData[0]?.subSchemeType;
+//     if (schemeType) {
+//       getCropDetailsCommercialMarketByLotNo(data.lotNo, schemeType);
+//     }
+//   }
+// }, [data.lotNo, data.transactionDate, data.fruitsId, getIncentiveAndBonusData]);
+
 useEffect(() => {
-  if (data.lotNo && data.transactionDate && data.fruitsId && getIncentiveAndBonusData.length > 0) {
+  if (
+    data.lotNo &&
+    data.transactionDate &&
+    data.fruitsId &&
+    getIncentiveAndBonusData.length > 0
+  ) {
     const schemeType = getIncentiveAndBonusData[0]?.subSchemeType;
-    if (schemeType) {
-      getLotDistributeResponseForInvoiceAndBonusScheme(data.lotNo, schemeType);
+    const unitForScheme = getIncentiveAndBonusData[0]?.unitForScheme;
+
+    if (!schemeType || !unitForScheme) return;
+
+    // 👉 Call For Bivoltine Bonus
+    if (unitForScheme === "Bivoltine Bonus") {
+      getLotDistributeResponseForInvoiceAndBonusScheme(
+        data.lotNo,
+        schemeType
+      );
+    }
+
+    // 👉 Call For Commercial Market Incentives
+    if (
+      unitForScheme ===
+        "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP" ||
+      unitForScheme ===
+        "Incentive For Bivoltine Cocoons-30/kg-PSF" || 
+        unitForScheme ===
+        "Incentive For Bivoltine Chawki Rearing Cost"
+    ) {
+      getCropDetailsCommercialMarketByLotNo(
+        data.lotNo,
+        schemeType
+      );
     }
   }
-}, [data.lotNo, data.transactionDate, data.fruitsId, getIncentiveAndBonusData]);
+}, [
+  data.lotNo,
+  data.transactionDate,
+  data.fruitsId,
+  getIncentiveAndBonusData
+]);
+
 
   // const getSubSchemeList = () => {
   //    api
@@ -1336,22 +1604,61 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 
 
 
+  // const calculateBonusAmount = () => {
+  //   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+  //   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  //   const calculatedAmount = cocoonsWeight * amountPerKg;
+  
+  //   setAmountValue({
+  //     ...amountValue,
+  //     // unitPrice: calculatedAmount.toFixed(2),
+  //     unitPrice: amountPerKg, // Set the Unit Price to amountPerKg
+  //   });
+  //   setData({
+  //     ...data,
+  //     expectedAmount: calculatedAmount, // Set the calculated amount as the Subsidy Amount
+  //   });
+  // };
+  
   const calculateBonusAmount = () => {
-    const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
-    const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
-    const calculatedAmount = cocoonsWeight * amountPerKg;
-  
-    setAmountValue({
-      ...amountValue,
-      // unitPrice: calculatedAmount.toFixed(2),
-      unitPrice: amountPerKg, // Set the Unit Price to amountPerKg
-    });
-    setData({
-      ...data,
-      expectedAmount: calculatedAmount, // Set the calculated amount as the Subsidy Amount
-    });
-  };
-  
+  const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+  const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+
+  const calculatedAmount = cocoonsWeight * amountPerKg;
+  const roundedAmount = Math.round(calculatedAmount);
+ // round to 2 decimals
+
+  setAmountValue({
+    ...amountValue,
+    unitPrice: amountPerKg,
+  });
+
+  setData({
+    ...data,
+    expectedAmount: roundedAmount,
+  });
+};
+
+ const calculateChawkiBivoltineAmount = () => {
+  const noOfDfls = parseFloat(data.lotWeight || 0);
+  const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  const unitCost = parseFloat(bonusAmountData[0]?.unitCost || 0);
+
+  const calculatedAmount = noOfDfls * amountPerKg;
+  const roundedAmount = Math.round(calculatedAmount);
+ // round to 2 decimals
+
+  setAmountValue({
+    ...amountValue,
+    unitPrice: unitCost,
+  });
+
+  setData({
+    ...data,
+    expectedAmount: roundedAmount,
+  });
+};
+
  
 //   const handleCalculateUnitPrice = () => { 
 //     if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
@@ -1509,6 +1816,164 @@ const handleCalculateUnitPrice = () => {
     calculateBonusAmount();
     return;
   }
+
+
+// ✅ Check for Incentive/Bonus-based calculations
+//   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+//     getIncentiveAndBonusData[0]?.calculationBasedOn === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+//   ) {
+//     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+//       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+//       return;
+//     }
+//     // 2. Check for required bonus-specific fields
+//     if (!data.averageYield || !data.noOfDfls) {
+//       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No Of DFLs" });
+//       return;
+//     }
+
+//     // 3. Validate that API data for bonus is available
+//     if (!bonusAmountData || bonusAmountData.length === 0) {
+//       Swal.fire({ icon: "warning", title: "No Data Found", text: "No data available for selected parameters." });
+//       return;
+//     }
+
+//     // 4. Extract min/max values from the bonus amount data
+//     // Assuming bonusAmountData[0] contains the validation parameters
+//     const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+
+//     // 5. Check for minimum Average Yield
+//     if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+//       Swal.fire({ 
+//         icon: "warning", 
+//         title: "Validation Error", 
+//         text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).` 
+//       });
+//       return;
+//     }
+
+//     // 6. Check for maximum No. of Cocoons Per Kg
+//     if (parseFloat(data.averageYield) > parseFloat(maxNoOfCocoonsPerKg)) {
+//       Swal.fire({ 
+//         icon: "warning", 
+//         title: "Validation Error", 
+//         text: `Average Yield cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).` 
+//       });
+//       return;
+//  }
+
+//     // 7. If all validations pass, calculate the bonus
+//     calculateBonusAmount();
+//     return;
+//   }
+// ✅ Check for Incentive/Bonus-based calculations
+if (
+  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+    "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+    "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+) {
+  if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please fill all required fields.",
+    });
+    return;
+  }
+
+  // 2. Check for required bonus-specific fields
+  if (!data.averageYield || !data.cocoonsWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please provide Average Yield and No Of DFLs",
+    });
+    return;
+  }
+
+  // 3. Validate that API data for bonus is available
+  if (!bonusAmountData || bonusAmountData.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "No Data Found",
+      text: "No data available for selected parameters.",
+    });
+    return;
+  }
+
+  const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+
+  // 🔥 APPLY MIN/MAX VALIDATION ONLY FOR BIVOLTINE INCENTIVE
+  if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
+    const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+
+    // 5. Check min Average Yield
+    if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).`,
+      });
+      return;
+    }
+
+    // 6. Check max No. of Cocoons Per Kg
+    if (parseFloat(data.averageYield) > parseFloat(maxNoOfCocoonsPerKg)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: `Average Yield cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).`,
+      });
+      return;
+    }
+  }
+
+  // 7. If all validations pass, calculate the bonus
+  calculateBonusAmount();
+  return;
+}
+
+if (
+  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+    "Incentive For Bivoltine Chawki Rearing Cost"
+) {
+  if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please fill all required fields.",
+    });
+    return;
+  }
+
+  // 2. Check for required bonus-specific fields
+  if (!data.averageYield || !data.lotWeight) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please provide Average Yield and No Of DFLs",
+    });
+    return;
+  }
+
+  // 3. Validate that API data for bonus is available
+  if (!bonusAmountData || bonusAmountData.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "No Data Found",
+      text: "No data available for selected parameters.",
+    });
+    return;
+  }
+
+  
+
+  // 7. If all validations pass, calculate the bonus
+  calculateChawkiBivoltineAmount();
+  return;
+}
+
 
   // ✅ Special case: Silk Incentive - PSF
   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
@@ -2397,8 +2862,11 @@ useEffect(() => {
       icon: "success",
       title: "Saved successfully",
       // text: `Generated ARN Number is ${arnNumber}`,
-    });
-    clear();
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
+    // clear();
   };
 
   const uploadFileConfirm = (post) => {
@@ -2426,6 +2894,7 @@ useEffect(() => {
         setApplicationId(response.data.content.applicationDocumentId);
         setSchemeId(response.data.content.schemeId);
         clear();
+        // window.location.reload();
         setSaveDisabled(false);
 
         // ✅ Acknowledgment logic remains same
@@ -4670,6 +5139,197 @@ const fetchReelerDetails = () => {
                         </Card>
                       )}
                     </Card.Body>
+                  </Card>
+                </Block>
+              )}
+
+
+              {showCommercialMarketTransaction && (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          {t("Transaction Details-Commercial Market")}
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className="g-4">
+                            
+
+                            <Col lg="2">
+                              <Form.Group className="form-group">
+                                <Form.Label htmlFor="transactionDate">
+                                  {t("Transaction Date")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.transactionDate}
+                                    onChange={(date) => handleDateChange(date, "transactionDate")}
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    maxDate={new Date()}
+                                    required
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="2">
+                            <Form.Group className="form-group">
+                              <Form.Label>Bidding Slip Lot No</Form.Label>
+                              <Form.Control
+                                as="select"
+                                name="lotNo"
+                                value={data.lotNo || ""}
+                                disabled={!data.transactionDate || !data.fruitsId} 
+                               onChange={(e) => {
+                                const selectedLotId = e.target.value;
+                                setData((prev) => ({
+                                  ...prev,
+                                  lotNo: selectedLotId, // 🔥 only update lotNo (it is allottedLotId)
+                                }));
+
+
+                                  // Fetch additional details for this lot if needed
+                                  fetchLotOptionsForCommercialMarket(e);
+                                  const selectedSubScheme = getIncentiveAndBonusData[0];
+                                  const schemeType = selectedSubScheme?.subSchemeType;
+
+                                  // ✅ Call only when we have auctionDate + fruitsId + allottedLotId
+                                  if (selectedLotId && data.transactionDate && data.fruitsId && schemeType) {
+                                    getCropDetailsCommercialMarketByLotNo(selectedLotId, schemeType);
+                                  }
+                                }}
+                                className="form-control"
+                              >
+                                <option value="">-- Select Lot --</option>
+                                {lotOptionsForCommercialMarket.map((lot) => (
+                                  <option key={lot.biddingSlipNo} value={lot.biddingSlipNo}>
+                                    {lot.biddingSlipNo}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </Form.Group>
+                          </Col>
+
+                          
+
+
+                       
+
+                          <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Cocoons Transacted
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="cocoonsWeight"
+                                type="text"
+                                name="cocoonsWeight"
+                                value={data.cocoonsWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter Cocoons Transacted"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                         <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                             No Of DFLs
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="lotWeight"
+                                type="text"
+                                name="lotWeight"
+                                value={data.lotWeight}
+                                onChange={handleInputs}
+                                placeholder="Enter  No Of DFLs"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Average Yield
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="averageYield"
+                                type="text"
+                                name="averageYield"
+                                value={data.averageYield}
+                                onChange={handleInputs}
+                                placeholder="Enter Average Yield"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                            {/* <Col lg="3">
+                              <Form.Group className="form-group">
+                                <Form.Label>Lot Weight</Form.Label>
+                                <Form.Control
+                                  id="lotWeight"
+                                  name="lotWeight"
+                                  value={data.lotWeight}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Weight"
+                                  className="form-control"
+                                  readOnly
+                                />
+                              </Form.Group>
+                            </Col> */}
+
+                            
+                          </Row>
+
+                          <Col lg="2">
+                            <Form.Group as={Row} className="form-group" controlId="availBonus">
+                              <Col sm={1}>
+                                <Form.Check
+                                  type="checkbox"
+                                  name="availBonus"
+                                  value="availBonus"
+                                  checked={data.availBonus}
+                                  onChange={handleBonusCheckBox}
+                                />
+                              </Col>
+                              <Form.Label column sm={9} className="mt-n2">
+                                {t("Avail Bonus Or Incentive")}
+                              </Form.Label>
+                            </Form.Group>
+                          </Col>
+
+                          </Card.Body>
                   </Card>
                 </Block>
               )}

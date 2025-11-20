@@ -48,6 +48,8 @@ function ConfigureBivoltineAmountEdit() {
               amountPerKg: "",
               maxNoOfCocoonsPerKg: "",
               minAverageYield: "",
+              unitCost: "",
+              subsidyAmount: "",
             });
             setValidated(false);
           }
@@ -67,6 +69,8 @@ function ConfigureBivoltineAmountEdit() {
     amountPerKg: "",
     maxNoOfCocoonsPerKg: "",
     minAverageYield: "",
+    unitCost: "",
+    subsidyAmount: "",
     });
   };
 
@@ -306,6 +310,29 @@ function ConfigureBivoltineAmountEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Unit Cost
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="unitCost"
+                          name="unitCost"
+                          type="text"
+                          value={data.unitCost}
+                          onChange={handleInputs}
+                          placeholder="Enter Unit Cost"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Unit Cost is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
   
                   <Col lg="6">
                       <Form.Group className="form-group">
@@ -325,6 +352,29 @@ function ConfigureBivoltineAmountEdit() {
                           />
                           <Form.Control.Feedback type="invalid">
                           Amount is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Subsidy Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="subsidyAmount"
+                            name="subsidyAmount"
+                            type="text"
+                            value={data.subsidyAmount}
+                            onChange={handleInputs}
+                            placeholder="Enter Subsidy Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Subsidy Amount is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -210,6 +210,20 @@ function ConfigureBivoltineAmountList() {
         sortable: true,
         hide: "md",
       },
+      {
+        name: "Unit Cost",
+        selector: (row) => row.unitCost,
+        cell: (row) => <span>{row.unitCost}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Subsidy Amount",
+        selector: (row) => row.subsidyAmount,
+        cell: (row) => <span>{row.subsidyAmount}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
