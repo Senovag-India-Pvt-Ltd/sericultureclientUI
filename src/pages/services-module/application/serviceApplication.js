@@ -2185,10 +2185,6 @@ if (
     "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
 ) {
 
-  if (selectedBonusMode === "Manual") {
-    return;
-  }
-
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
