@@ -88,7 +88,8 @@ function ServiceApplication() {
     form17JNo: "",
     dailyLimit: "",
     boilerInKg: "",
-    sanctionNo: ""
+    sanctionNo: "",
+    calculationBasedOn: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -661,6 +662,9 @@ const [isSanctionForReeling, setIsSanctionForReeling] = useState(false);
 //     });
 // };
 
+const [selectedBonusMode, setSelectedBonusMode] = useState(""); 
+
+
 // Function to fetch incentive/bonus data
 const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
   if (!scSchemeDetailsId || !scSubSchemeDetailsId) return; // avoid unnecessary calls
@@ -686,18 +690,20 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
 
         // Show button for Bivoltine Bonus
         if (unitForScheme === "Bivoltine Bonus") {
-          setShowButton(true);
+          setShowButton(false);
+          setSelectedBonusMode(""); 
           setData((prev) => ({
             ...prev,
             availBonus: true,
           }));
-        } else {
-          setShowButton(false);
-          setData((prev) => ({
-            ...prev,
-            availBonus: false,
-          }));
-        }
+        } 
+        // else {
+        //   setShowButton(false);
+        //   setData((prev) => ({
+        //     ...prev,
+        //     availBonus: false,
+        //   }));
+        // }
 
         // Show Commercial Market Transaction section
         if (
@@ -715,15 +721,16 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           }));
         } else {
           setShowCommercialMarketTransaction(false);
-          setData((prev) => ({
-            ...prev,
-            availBonus: false,
-          }));
+          // setData((prev) => ({
+          //   ...prev,
+          //   availBonus: false,
+          // }));
         }
 
         if (
           unitForScheme ===
-            "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+            "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" && 
+          selectedBonusMode === "Manual"
         ) {
           setShowSeedMarketTransaction(true);
           setData((prev) => ({
@@ -732,10 +739,10 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           }));
         } else {
           setShowSeedMarketTransaction(false);
-          setData((prev) => ({
-            ...prev,
-            availBonus: false,
-          }));
+          // setData((prev) => ({
+          //   ...prev,
+          //   availBonus: false,
+          // }));
         }
 
         // Extract schemeType
@@ -744,12 +751,21 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
         // Trigger correct API based on unitForScheme
         if (data.lotNo && schemeType) {
           // For Bivoltine Bonus
-          if (unitForScheme === "Bivoltine Bonus") {
-            getLotDistributeResponseForInvoiceAndBonusScheme(
-              data.lotNo,
-              schemeType
-            );
-          }
+          // if (unitForScheme === "Bivoltine Bonus") {
+          //   getLotDistributeResponseForInvoiceAndBonusScheme(
+          //     data.lotNo,
+          //     schemeType
+          //   );
+          // }
+          if (
+              unitForScheme === "Bivoltine Bonus" &&
+              selectedBonusMode === "Automatic"
+            ) {
+              getLotDistributeResponseForInvoiceAndBonusScheme(
+                data.lotNo,
+                schemeType
+              );
+            }
 
           // For Commercial Market Incentive Schemes
           if (
@@ -768,7 +784,8 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
 
           if (
             unitForScheme ===
-              "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+              "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" && 
+        selectedBonusMode === "Manual"
           ) {
             getCropDetailsSeedMarketByLotNo(
               data.lotNo,
@@ -941,6 +958,7 @@ const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
         // lotWeight: lotData.lotWeightAfterWeighment || 0,
         averageYield: lotData.averageYield || 0,
         lotWeight: lotData.noOfDfls || 0,
+        noOfCocoonPerKg: lotData.noOfCocoonsPerKg || 0,
       }));
     })
     .catch((err) => {
@@ -1006,12 +1024,21 @@ useEffect(() => {
     if (!schemeType || !unitForScheme) return;
 
     // 👉 Call For Bivoltine Bonus
-    if (unitForScheme === "Bivoltine Bonus") {
-      getLotDistributeResponseForInvoiceAndBonusScheme(
-        data.lotNo,
-        schemeType
-      );
-    }
+    // if (unitForScheme === "Bivoltine Bonus") {
+    //   getLotDistributeResponseForInvoiceAndBonusScheme(
+    //     data.lotNo,
+    //     schemeType
+    //   );
+    // }
+if (
+  unitForScheme === "Bivoltine Bonus" &&
+  selectedBonusMode === "Automatic"
+) {
+  getLotDistributeResponseForInvoiceAndBonusScheme(
+    data.lotNo,
+    schemeType
+  );
+}
 
     // 👉 Call For Commercial Market Incentives
     if (
@@ -1030,7 +1057,8 @@ useEffect(() => {
 
     if (
       unitForScheme ===
-        "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+        "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" && 
+        selectedBonusMode === "Manual"
     ) {
       getCropDetailsSeedMarketByLotNo(
         data.lotNo,
@@ -1549,6 +1577,9 @@ useEffect(() => {
     if (name === "scSchemeDetailsId") {
       setSchemeId(value); // Trigger fetching scheme details
     }
+    if (name === "calculationBasedOn") {
+  setSelectedBonusMode(value); // Manual or Automatic
+}
   };
 
   const formatDate = (date) => {
@@ -1897,7 +1928,56 @@ const handleCalculateUnitPrice = () => {
   }
 
   // ✅ Check for Incentive/Bonus-based calculations
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus") {
+  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+  selectedBonusMode === "Automatic") {
+    if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      return;
+    }
+    // 2. Check for required bonus-specific fields
+    if (!data.averageYield || !data.noOfCocoonPerKg) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
+      return;
+    }
+
+    // 3. Validate that API data for bonus is available
+    if (!bonusAmountData || bonusAmountData.length === 0) {
+      Swal.fire({ icon: "warning", title: "No Data Found", text: "No Bivoltine Bonus data available for selected parameters." });
+      return;
+    }
+
+    // 4. Extract min/max values from the bonus amount data
+    // Assuming bonusAmountData[0] contains the validation parameters
+    const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+
+    // 5. Check for minimum Average Yield
+    if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+      Swal.fire({ 
+        icon: "warning", 
+        title: "Validation Error", 
+        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).` 
+      });
+      return;
+    }
+
+    // 6. Check for maximum No. of Cocoons Per Kg
+    if (parseFloat(data.noOfCocoonPerKg) > parseFloat(maxNoOfCocoonsPerKg)) {
+      Swal.fire({ 
+        icon: "warning", 
+        title: "Validation Error", 
+        text: `No. of Cocoons Per Kg cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).` 
+      });
+      return;
+ }
+
+    // 7. If all validations pass, calculate the bonus
+    calculateBonusAmount();
+    return;
+  }
+
+
+ if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+  selectedBonusMode === "Manual") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
       return;
@@ -2104,6 +2184,11 @@ if (
   getIncentiveAndBonusData[0]?.calculationBasedOn ===
     "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
 ) {
+
+  if (selectedBonusMode === "Manual") {
+    return;
+  }
+
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
@@ -4228,6 +4313,33 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
+                         {(getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus" ||
+                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n4">
+                                  <Form.Label htmlFor="imcbTable">
+                                    {t("Manual/Automatic")} <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      id="calculationBasedOn"
+                                      name="calculationBasedOn"
+                                      value={data.calculationBasedOn}
+                                      onChange={handleInputs}
+                                      required
+                                    >
+                                      <option value="">{t("Select Manual/Automatic")}</option>
+                                      <option value="Manual">Manual</option>
+                                      <option value="Automatic">Automatic</option>
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Imcb Table is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                          )}
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
@@ -5038,7 +5150,8 @@ const fetchReelerDetails = () => {
                 </>
              )}
 
-              {showButton && (
+              {/* {showButton && ( */}
+              {selectedBonusMode === "Automatic" && (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -5500,7 +5613,8 @@ const fetchReelerDetails = () => {
                 </Block>
               )}
 
-               {showSeedMarketTransaction && (
+               {/* {showSeedMarketTransaction && ( */}
+               {selectedBonusMode === "Manual" && (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -5614,6 +5728,30 @@ const fetchReelerDetails = () => {
                                 value={data.lotWeight}
                                 onChange={handleInputs}
                                 placeholder="Enter  No Of DFLs"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                             No Of Cocoons Per Kg
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="noOfCocoonPerKg"
+                                type="text"
+                                name="noOfCocoonPerKg"
+                                value={data.noOfCocoonPerKg}
+                                onChange={handleInputs}
+                                placeholder="Enter  No Of Cocoons Per Kg"
                                 // readOnly
                                 // required
                               />

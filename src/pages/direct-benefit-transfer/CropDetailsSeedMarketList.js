@@ -321,11 +321,11 @@ function CropDetailsForSeedMarketList() {
   ];
 
   return (
-    <Layout title="List of Crop Details-Commercial Market">
+    <Layout title="List of Crop Details-Seed Market">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List of Crop Details-Commercial Market</Block.Title>
+            <Block.Title tag="h2">List of Crop Details-Seed Market</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
