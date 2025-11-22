@@ -624,42 +624,7 @@ const generateReportForSeedCocoon = async (selectedRows) => {
   const [validated, setValidated] = useState(false);
   const [sendApplicationFormServiceData, setSendApplicationFormServiceData] =
     useState([]);
-  const [applicationId, setApplicationId] = useState(null);
-  const [schemeQuotaListCount, setSchemeQuotaListCount] = useState(0);
-
-  const receiveData = (data, i) => {
-    console.log("i", i);
-    // setPushToDbtData((prev) => ({ ...prev, row: i }));
-    setSendApplicationFormServiceData((prev) => {
-      const updatedData = [...prev];
-      if (i < updatedData.length) {
-        updatedData[i] = { ...data, ...actionFarmerData[0] };
-      } else {
-        updatedData.push({ ...data, ...actionFarmerData[0] });
-      }
-      return updatedData;
-    });
-
-    // handleShowModal3(i);
-  };
-
-  const receiveDataForPushToDbt = (data, i) => {
-    console.log("i", i);
-    // setPushToDbtData((prev) => ({ ...prev, row: i }));
-    setSendApplicationFormServiceData((prev) => {
-      const updatedData = [...prev];
-      if (i < updatedData.length) {
-        // updatedData[i] = { ...data, ...actionFarmerData[0] };
-        updatedData[i] = { ...data };
-      } else {
-        // updatedData.push({ ...data, ...actionFarmerData[0] });
-        updatedData.push({ ...data });
-      }
-      return updatedData;
-    });
-
-    // handleShowModal3(i);
-  };
+  
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -1516,61 +1481,7 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
     },
   };
 
-  const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
-
-  const handleDocumentClick = async (documentPath) => {
-    setCurrentDocumentPath(documentPath);
-    await getDocumentFile(documentPath);
-  };
-
-  const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
-
-  const getDocumentFile = async (file) => {
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(
-        baseURLDBT + `service/downLoadFile?${parameters}`,
-        {
-          responseType: "arraybuffer",
-        }
-      );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-      setSelectedDocumentFile(url);
-    } catch (error) {
-      console.error("Error fetching file:", error);
-    }
-  };
-
-  const downloadFile = async (file) => {
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(
-        baseURLDBT + `service/downLoadFile?${parameters}`,
-        {
-          responseType: "arraybuffer",
-        }
-      );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-
-      const fileExtension = file.split(".").pop();
-
-      const link = document.createElement("a");
-      link.href = url;
-
-      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
-
-      link.download = modifiedFileName;
-
-      document.body.appendChild(link);
-      link.click();
-
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error fetching file:", error);
-    }
-  };
+  
   useEffect(() => {
   if (actionData.proposalDate && actionData.userId && selectedRows.length > 0) {
     setIsSubmitEnabled(true);

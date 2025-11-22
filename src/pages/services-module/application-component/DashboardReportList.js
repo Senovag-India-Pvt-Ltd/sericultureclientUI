@@ -2572,24 +2572,41 @@ useEffect(() => {
     }
 
     // Prepare common pushToDBTRequestList
-    const sendResponse = sendApplicationFormServiceData
-      .filter(item => item) // ensures no nulls
-      .map((item, index) => {
-        return {
-          schemeQuotaId: item.schemeQuotaId,
-          componentType: item.schemeQuotaId,
-          schemeAmount: item.subsidyAmount,
-          eligibleAmount: item.calculatedEligibleAmount,
-          paymentTo: item.paymentTo,
-          paymentMethod: item.paymentMethod,
-          dateOfPayment: item.dateOfPayment,
-          referenceNo: item.referenceNo,
-          userId: pushToDBTListData[index]?.userId || "",
-          schemeQuotaType: item.schemeQuotaType,
-          shareInPercentage: item.shareInPercentage,
-        };
-      });
+    // const sendResponse = sendApplicationFormServiceData
+    //   .filter(item => item) // ensures no nulls
+    //   .map((item, index) => {
+    //     return {
+    //       schemeQuotaId: item.schemeQuotaId,
+    //       componentType: item.schemeQuotaId,
+    //       schemeAmount: item.subsidyAmount,
+    //       eligibleAmount: item.calculatedEligibleAmount,
+    //       paymentTo: item.paymentTo,
+    //       paymentMethod: item.paymentMethod,
+    //       dateOfPayment: item.dateOfPayment,
+    //       referenceNo: item.referenceNo,
+    //       userId: pushToDBTListData[index]?.userId || "",
+    //       schemeQuotaType: item.schemeQuotaType,
+    //       shareInPercentage: item.shareInPercentage,
+    //     };
+    //   });
 
+    const selectedRows = pushToDBTListData.filter((_, index) =>
+        schemeDataListIds.includes(index)
+      );
+
+      const sendResponse = selectedRows.map((item) => ({
+        schemeQuotaId: item.schemeQuotaId,
+        componentType: item.schemeQuotaId,
+        schemeAmount: item.subsidyAmount,
+        eligibleAmount: item.calculatedEligibleAmount,
+        paymentTo: item.paymentTo,
+        paymentMethod: item.paymentMethod,
+        dateOfPayment: item.dateOfPayment,
+        referenceNo: item.referenceNo,
+        userId: item.userId || "",
+        schemeQuotaType: item.schemeQuotaType,
+        shareInPercentage: item.shareInPercentage,
+      }));
     let sendPost;
 
     if (actionFarmerData[0].pushToDbt) {
