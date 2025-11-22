@@ -76,11 +76,34 @@ function MultipleSanctionOrder() {
   // }
 };
 
-  const handleInputs = (e) => {
-  const { name, value } = e.target;
-  setData({ ...data, [name]: value });
+//   const handleInputs = (e) => {
+//   const { name, value } = e.target;
+//   setData({ ...data, [name]: value });
 
-  // Reset table ONLY when filters changed
+//   // Reset table ONLY when filters changed
+//   if (
+//     name === "schemeId" ||
+//     name === "subSchemeId" ||
+//     name === "scComponentId" ||
+//     name === "scCategoryId"
+//   ) {
+//     setIsRowSelectable(false);
+//     setSelectedRows([]);
+//     setIsSubmitEnabled(false);
+//   }
+// };
+const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState("");
+
+
+const handleInputs = (e) => {
+  const { name, value } = e.target;
+
+  setData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  // Reset table when filters changed
   if (
     name === "schemeId" ||
     name === "subSchemeId" ||
@@ -91,7 +114,23 @@ function MultipleSanctionOrder() {
     setSelectedRows([]);
     setIsSubmitEnabled(false);
   }
+
+  // 👉 When Component is selected, pick sanctionOrderForScheme & subSchemeType
+  if (name === "scComponentId") {
+    const comp = scComponentListData.find(
+      (item) => item.scComponentId == value
+    );
+
+    if (comp) {
+      setSanctionOrderForScheme(comp.sanctionOrderForScheme || "");
+      setSubSchemeType(comp.subSchemeType || null);
+    } else {
+      setSanctionOrderForScheme("");
+      setSubSchemeType(null);
+    }
+  }
 };
+
 
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
@@ -318,16 +357,6 @@ const [isDrawingOfficerFocused, setIsDrawingOfficerFocused] = useState(false);
   // };
   const [selectedTotalSchemeAmount, setSelectedTotalSchemeAmount] = useState(0);
 
-  
-
-
-  const [schemeDataListIds, setSchemeDataListIds] = useState([]);
-  const [recordFromAppForm, setRecordFromAppForm] = useState([]);
-  const [permission, setPermission] = useState(false);
-  const [reportingOfficerDdoCode, setReportingOfficerDdoCode] = useState("");
-
-  const [pushToDbtStatus, setPushToDbtStatus] = useState(false);
-  const [directlyToFruits, setDirectlyToFruits] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -559,6 +588,8 @@ useEffect(() => {
   }
 };
 
+
+
 const generateReportForBonus = async (selectedRows) => {
   try {
     const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
@@ -610,6 +641,109 @@ const generateReportForSeedCocoon = async (selectedRows) => {
 };
 
 
+const generateReportForNorthKarnataka = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-TransportSubsidy`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
+const generateReportFor30Rs = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-PriceStabilizationIncentive`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+const generateReportFor100Rs = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-MscSeedChawki1000`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
+const generateReportFor1500dfls = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-MscSeedChawki`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
     const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
   if (subSchemeType === 2) {
     generateReportForIncentive(selectedRows);
@@ -619,6 +753,51 @@ const generateReportForSeedCocoon = async (selectedRows) => {
     generateReportForSeedCocoon(selectedRows);
   }
 };
+
+const generateFinalReport = (selectedRows) => {
+  if (!sanctionOrderForScheme) {
+        Swal.fire({
+      icon: "error",
+      title: "Sanction Order For Scheme not found!",
+      confirmButtonText: "OK"
+    });
+    return;
+
+    
+  }
+
+  switch (sanctionOrderForScheme) {
+    case "Bivoltine Bonus":
+      generateReportForBonusIncentiveSeedCocoon(selectedRows);
+      break;
+
+    case "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP":
+      generateReportForNorthKarnataka(selectedRows);
+      break;
+
+    case "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500":
+      generateReportFor1500dfls(selectedRows);
+      break;
+
+    case "Incentive For Bivoltine Cocoons-30/kg-PSF":
+      generateReportFor30Rs(selectedRows);
+      break;
+
+    case "Incentive For Bivoltine Chawki Rearing Cost":
+      generateReportFor100Rs(selectedRows);
+      break;
+
+  default:
+  Swal.fire({
+    icon: "error",
+    title: "Invalid sanction order type!",
+    confirmButtonText: "OK"
+  });
+  break;
+
+  }
+};
+
 
   const [displaySubmit, setDisplaySubmit] = useState(true);
   const [validated, setValidated] = useState(false);
@@ -672,7 +851,7 @@ const generateReportForSeedCocoon = async (selectedRows) => {
     
       const getComponentList = (schemeId, subSchemeId) => {
         api
-          .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+          .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId-for-all-responses`, {
             schemeId: schemeId,
             subSchemeId: subSchemeId,
           })
@@ -1156,7 +1335,8 @@ const generateReportForSeedCocoon = async (selectedRows) => {
 
     if (response.data?.applicationFormId) {
       saveSuccess("Sanction Order Updated Successfully");
-      generateReportForBonusIncentiveSeedCocoon(selectedRows);
+      // generateReportForBonusIncentiveSeedCocoon(selectedRows);
+      generateFinalReport(selectedRows);
       await getMultipleSanctionOrderList();
       setIsSubmitEnabled(false);
       setIsRowSelectable(false);

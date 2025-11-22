@@ -599,25 +599,41 @@ useEffect(() => {
   const selectedSanctionOrder = addressDetails.sanctionOrderNumber;
 
   if (!selectedSanctionOrder) {
-  Swal.fire({
-    icon: "warning",
-    title: "Sanction Order Required",
-    text: "Please select a Sanction Order Number",
-    confirmButtonColor: "#3085d6",
-  });
-  return;
-}
- if (sanctionOrderForScheme === "Bivoltine Bonus") {
-  downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
-} else {
-  Swal.fire({
-    icon: "error",
-    title: "Invalid Selection",
-    text: "No download available for selected Sanction Order",
-    confirmButtonColor: "#d33",
-  });
-}
+    Swal.fire({
+      icon: "warning",
+      title: "Sanction Order Required",
+      text: "Please select a Sanction Order Number",
+      confirmButtonColor: "#3085d6",
+    });
+    return;
+  }
+
+  // --- Conditions based on sanctionOrderForScheme ---
+  if (sanctionOrderForScheme === "Bivoltine Bonus") {
+    downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
+
+  } else if (sanctionOrderForScheme === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
+    generateReportFor30Rs(selectedSanctionOrder);
+
+  } else if (sanctionOrderForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP") {
+    generateReportForNorthKarnataka(selectedSanctionOrder);
+
+  } else if (sanctionOrderForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") {
+    generateReportFor1500dfls(selectedSanctionOrder);
+
+  } else if (sanctionOrderForScheme === "Incentive For Bivoltine Chawki Rearing Cost") {
+    generateReportFor100Rs(selectedSanctionOrder);
+
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Selection",
+      text: "No download available for selected Sanction Order",
+      confirmButtonColor: "#d33",
+    });
+  }
 };
+
 
 
 const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
@@ -785,6 +801,124 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
          window.open(fileURL);
        } catch (error) {
          // console.error("Error generating seed cocoon report", error);
+       }
+     };
+
+     const generateReportForNorthKarnataka = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `get-TransportSubsidy`,
+           {
+             userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormIds: allApplicationIds,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+     
+     
+     const generateReportFor30Rs = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `get-PriceStabilizationIncentive`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormIds: allApplicationIds,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+     
+     const generateReportFor100Rs = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `get-MscSeedChawki1000`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormIds: allApplicationIds,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+     
+     
+     const generateReportFor1500dfls = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `get-MscSeedChawki`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormIds: allApplicationIds,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
        }
      };
 

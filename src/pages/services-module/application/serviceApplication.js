@@ -90,6 +90,7 @@ function ServiceApplication() {
     boilerInKg: "",
     sanctionNo: "",
     calculationBasedOn: "",
+    marketId: localStorage.getItem("marketId") || "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -727,23 +728,41 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
           // }));
         }
 
-        if (
-          unitForScheme ===
-            "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" && 
-          selectedBonusMode === "Manual"
-        ) {
-          setShowSeedMarketTransaction(true);
-          setData((prev) => ({
-            ...prev,
-            availBonus: true,
-          }));
-        } else {
-          setShowSeedMarketTransaction(false);
-          // setData((prev) => ({
-          //   ...prev,
-          //   availBonus: false,
-          // }));
-        }
+        // if (
+        //   unitForScheme ===
+        //     "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" && 
+        //   selectedBonusMode === "Manual"
+        // ) {
+        //   setShowSeedMarketTransaction(true);
+        //   setData((prev) => ({
+        //     ...prev,
+        //     availBonus: true,
+        //   }));
+        // } else {
+        //   setShowSeedMarketTransaction(false);
+        //   // setData((prev) => ({
+        //   //   ...prev,
+        //   //   availBonus: false,
+        //   // }));
+        // }
+        // Default availBonus TRUE for MSC Chawki incentive
+            if (unitForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") {
+              setData((prev) => ({
+                ...prev,
+                availBonus: true,   // <-- Make true by default
+              }));
+            }
+
+            // Show Seed Market section only if Manual mode
+            if (
+              unitForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500" &&
+              selectedBonusMode === "Manual"
+            ) {
+              setShowSeedMarketTransaction(true);
+            } else {
+              setShowSeedMarketTransaction(false);
+            }
+
 
         // Extract schemeType
         const schemeType = subSchemeList[0]?.subSchemeType;
@@ -2835,7 +2854,8 @@ useEffect(() => {
       form17JNo: data.form17JNo,
       dailyLimit: data.dailyLimit,
       boilerInKg: data.boilerInKg,
-      sanctionNo: data.sanctionNo
+      sanctionNo: data.sanctionNo,
+      marketId: localStorage.getItem("marketId"),
     };
 
     // Check what checkboxes are selected and build the request accordingly
