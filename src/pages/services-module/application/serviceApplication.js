@@ -1878,11 +1878,11 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 const [reelinShedAmountData, setReelingShedAmountListData] = useState([]);
 
 // ✅ API call to get Silk Incentive amount list
-const getreelingShedAmountList = (reelingUnit ,reelingSqft,componentTypeId, componentId, categoryId) => {
+const getreelingShedAmountList = (machineTypeId ,reelingSqft,componentTypeId, componentId, categoryId) => {
   api
     .get(`${baseURLMasterData}configureReelingShed/findByReelingUnitAndSqftAndComponentTypeIdAndComponentIdAndCategoryIdAndActive`, {
       params: {
-        reelingUnit,
+        machineTypeId,
         reelingSqft,
         componentTypeId,
         componentId,
@@ -1890,7 +1890,7 @@ const getreelingShedAmountList = (reelingUnit ,reelingSqft,componentTypeId, comp
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureIcb || [];
+      const incentiveData = response.data.content?.configureReelingShed || [];
       setReelingShedAmountListData(incentiveData);
 
       setAmountValue({
@@ -1911,21 +1911,21 @@ const getreelingShedAmountList = (reelingUnit ,reelingSqft,componentTypeId, comp
 // ✅ useEffect to fetch Silk Incentive data when dependent fields change
 useEffect(() => {
   if (
-    data.reelingUnit &&
+    data.machineTypeId &&
     data.reelingSqft &&
     data.scSubSchemeDetailsId &&
     data.scComponentId &&
     data.scCategoryId
   ) {
     getreelingShedAmountList( 
-      data.reelingUnit,
+      data.machineTypeId,
       data.reelingSqft,
       data.scSubSchemeDetailsId,
       data.scComponentId, 
       data.scCategoryId
     );
   }
-}, [data.reelingUnit,data.reelingSqft,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+}, [data.machineTypeId,data.reelingSqft,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
 const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations

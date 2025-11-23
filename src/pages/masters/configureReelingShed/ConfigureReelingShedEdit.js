@@ -261,7 +261,7 @@ function ConfigureReelingShedEdit() {
                   <Row className="g-gs">
                      {/* Unit Cost */}
                                      <Col lg="6">
-                                        <Form.Group>
+                                        <Form.Group className="form-group mt-n4">
                                           <Form.Label>
                                             {t("Machine Type")} <span className="text-danger">*</span>
                                           </Form.Label>
