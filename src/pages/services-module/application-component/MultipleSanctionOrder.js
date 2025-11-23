@@ -743,6 +743,31 @@ const generateReportFor1500dfls = async (selectedRows) => {
   }
 };
 
+const generateReportForSilkIncentive = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `sanction-silk-incentive`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
 
     const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
   if (subSchemeType === 2) {
@@ -785,6 +810,10 @@ const generateFinalReport = (selectedRows) => {
 
     case "Incentive For Bivoltine Chawki Rearing Cost":
       generateReportFor100Rs(selectedRows);
+      break;
+
+    case "Silk Incentive-PSF":
+      generateReportForSilkIncentive(selectedRows);
       break;
 
   default:

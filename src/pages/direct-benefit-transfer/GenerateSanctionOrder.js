@@ -624,6 +624,9 @@ useEffect(() => {
   } else if (sanctionOrderForScheme === "Incentive For Bivoltine Chawki Rearing Cost") {
     generateReportFor100Rs(selectedSanctionOrder);
 
+    } else if (sanctionOrderForScheme === "Silk Incentive-PSF") {
+    generateReportForSilkIncentive(selectedSanctionOrder);
+
   } else {
     Swal.fire({
       icon: "error",
@@ -867,6 +870,36 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
      
          const response = await api.post(
            baseURLReport + `get-MscSeedChawki1000`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormIds: allApplicationIds,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+
+      const generateReportForSilkIncentive = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `sanction-silk-incentive`,
            {
             //  userMasterId: localStorage.getItem("userMasterId"),
             //  schemeId,
