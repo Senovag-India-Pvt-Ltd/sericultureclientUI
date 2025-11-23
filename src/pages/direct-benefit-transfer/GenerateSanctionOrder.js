@@ -625,7 +625,7 @@ useEffect(() => {
     generateReportFor100Rs(selectedSanctionOrder);
 
     } else if (sanctionOrderForScheme === "Silk Incentive-PSF") {
-    generateReportForSilkIncentive(selectedSanctionOrder);
+    generateReportForSilkIncentive(allApplicationIds, selectedSanctionOrder);
 
   } else {
     Swal.fire({
