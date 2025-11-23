@@ -71,6 +71,23 @@ function ConfigureReelingShedEdit() {
     useEffect(() => {
       getComponentList();
     }, []);
+
+    const [machineTypeListData, setMachineTypeListData] = useState([]);
+          
+            const getMachineTypeList = () => {
+              api
+                .get(baseURL + `machine-type-master/get-all`)
+                .then((response) => {
+                  setMachineTypeListData(response.data.content.machineTypeMaster);
+                })
+                .catch((err) => {
+                  setMachineTypeListData([]);
+                });
+            };
+          
+            useEffect(() => {
+              getMachineTypeList();
+            }, []);
   
   //   // to get sc-sub-scheme-details by sc-scheme-details
   //     const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
@@ -243,25 +260,35 @@ function ConfigureReelingShedEdit() {
                 ) : (
                   <Row className="g-gs">
                      {/* Unit Cost */}
-                                      <Col lg="6">
-                                        <Form.Group className="form-group mt-n4">
-                                          <Form.Label htmlFor="reelingUnit">
-                                            {t("Reeling Unit")} <span className="text-danger">*</span>
+                                     <Col lg="6">
+                                        <Form.Group>
+                                          <Form.Label>
+                                            {t("Machine Type")} <span className="text-danger">*</span>
                                           </Form.Label>
-                                          <div className="form-control-wrap">
-                                            <Form.Control
-                                              id="reelingUnit"
-                                              name="reelingUnit"
-                                              value={data.reelingUnit}
-                                              onChange={handleInputs}
-                                              type="text"
-                                              placeholder={t("Enter Reeling Unit")}
-                                              required
-                                            />
-                                            <Form.Control.Feedback type="invalid">
-                                              {t("Reeling Unit is required")}
-                                            </Form.Control.Feedback>
-                                          </div>
+                                          <Form.Select
+                                            name="machineTypeId"
+                                            value={data.machineTypeId}
+                                            onChange={handleInputs}
+                                            onBlur={() => handleInputs}
+                                            required
+                                            isInvalid={
+                                              data.machineTypeId === undefined ||
+                                              data.machineTypeId === "0"
+                                            }
+                                          >
+                                            <option value="">{t("Select Machine Type")}</option>
+                                            {machineTypeListData.map((list) => (
+                                              <option
+                                                key={list.machineTypeId}
+                                                value={list.machineTypeId}
+                                              >
+                                                {list.machineTypeName}
+                                              </option>
+                                            ))}
+                                          </Form.Select>
+                                          <Form.Control.Feedback type="invalid">
+                                            {t("Machine Type is required")}
+                                          </Form.Control.Feedback>
                                         </Form.Group>
                                       </Col>
                     

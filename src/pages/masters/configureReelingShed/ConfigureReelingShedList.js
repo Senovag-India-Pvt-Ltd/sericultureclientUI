@@ -192,6 +192,12 @@ function ConfigureReelingShedList() {
       wrap: true,
     },
     {
+      name: t("Machine Type"),
+      selector: (row) => row.machineTypeName,
+      sortable: true,
+      wrap: true,
+    },
+    {
       name: t("Unit Cost"),
       selector: (row) => row.unitCost,
       right: true,

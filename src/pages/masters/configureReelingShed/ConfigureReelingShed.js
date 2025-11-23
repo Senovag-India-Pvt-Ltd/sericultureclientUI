@@ -15,6 +15,7 @@ function ConfigureReelingShed() {
   const navigate = useNavigate();
 
   const [data, setData] = useState({
+    machineTypeId: "",
     reelingUnit: "",
     reelingSqft: "",
     categoryId: "",
@@ -121,6 +122,23 @@ const handleInputs = (e) => {
         getSubSchemeList();
       }, []);
 
+       const [machineTypeListData, setMachineTypeListData] = useState([]);
+            
+              const getMachineTypeList = () => {
+                api
+                  .get(baseURL + `machine-type-master/get-all`)
+                  .then((response) => {
+                    setMachineTypeListData(response.data.content.machineTypeMaster);
+                  })
+                  .catch((err) => {
+                    setMachineTypeListData([]);
+                  });
+              };
+            
+              useEffect(() => {
+                getMachineTypeList();
+              }, []);
+
 
   const saveSuccess = () => {
     Swal.fire({
@@ -172,6 +190,7 @@ const handleInputs = (e) => {
 
   const clear = () => {
     setData({
+      machineTypeId: "",
       reelingUnit: "",
       reelingSqft: "",
       categoryId: "",
@@ -224,26 +243,36 @@ const handleInputs = (e) => {
 
                      {/* Unit Cost */}
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="reelingUnit">
-                        {t("Reeling Unit")} <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reelingUnit"
-                          name="reelingUnit"
-                          value={data.reelingUnit}
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          {t("Machine Type")} <span className="text-danger">*</span>
+                        </Form.Label>
+                        <Form.Select
+                          name="machineTypeId"
+                          value={data.machineTypeId}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Reeling Unit")}
+                          onBlur={() => handleInputs}
                           required
-                        />
+                          isInvalid={
+                            data.machineTypeId === undefined ||
+                            data.machineTypeId === "0"
+                          }
+                        >
+                          <option value="">{t("Select Machine Type")}</option>
+                          {machineTypeListData.map((list) => (
+                            <option
+                              key={list.machineTypeId}
+                              value={list.machineTypeId}
+                            >
+                              {list.machineTypeName}
+                            </option>
+                          ))}
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          {t("Reeling Unit is required")}
+                          {t("Machine Type is required")}
                         </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      </Form.Group>
+                    </Col>
 
                    {/* Unit Cost */}
                   <Col lg="6">

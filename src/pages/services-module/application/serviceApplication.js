@@ -2432,7 +2432,7 @@ if (
     getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF"
   ) {
     if (
-      !data.reelingUnit ||
+      !data.machineTypeId ||
       !data.reelingSqft ||
       !data.scSubSchemeDetailsId ||
       !data.scComponentId ||
@@ -4640,30 +4640,38 @@ const fetchReelerDetails = () => {
                             {getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
                             <>
                             <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
-                                <Form.Label htmlFor="icbBasinEnds">
-                                  {t("Reeling Unit")} <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    id="reelingUnit"
-                                    name="reelingUnit"
-                                    value={data.reelingUnit}
-                                    onChange={handleInputs}
-                                    required
-                                  >
-                                    <option value="">{t("Select Reeling Unit")}</option>
-                                    <option value="10 Ends">10 Ends</option>
-                                    <option value="6 Ends">6 Ends</option>
-                                    <option value="48 Ends">48 Ends</option>
-                                    <option value="36 Ends">36 Ends</option>
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Reeling Unit is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
 
                              <Col lg="6">
                                   <Form.Group className="form-group mt-n4">

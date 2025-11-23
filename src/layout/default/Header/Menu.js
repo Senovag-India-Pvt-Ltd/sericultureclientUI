@@ -3589,7 +3589,7 @@ function Menu() {
       {showMenu.Admin_Master_Service_Calculation_Imcb ? (
         <MenuItem>
           <MenuItemLink
-            text={t("Configure Imcb")}
+            text={t("Configure Imcb/MERM")}
             to="/seriui/configureImcb"
           />
         </MenuItem>
