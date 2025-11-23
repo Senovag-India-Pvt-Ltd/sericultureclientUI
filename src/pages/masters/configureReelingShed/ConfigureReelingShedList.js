@@ -162,23 +162,25 @@ function ConfigureReelingShedList() {
       sortable: false,
     },
     {
-      name: t("Reeling Unit"),
-      selector: (row) => row.reelingUnit,
+      name: t("Machine Type"),
+      selector: (row) => row.machineTypeName,
       sortable: true,
       wrap: true,
     },
+   
     {
-      name: t("Sqft"),
+      name: t("Sqft/KW/Generator Capacity/Water Heater Capacity"),
       selector: (row) => row.reelingSqft,
       sortable: true,
       wrap: true,
     },
-    {
-      name: t("Category"),
-      selector: (row) => row.categoryName,
+     {
+      name: t("Model(Only For Solar Water Heater)"),
+      selector: (row) => row.reelingUnit,
       sortable: true,
       wrap: true,
     },
+    
     {
       name: t("Component"),
       selector: (row) => row.scComponentName,
@@ -191,12 +193,14 @@ function ConfigureReelingShedList() {
       sortable: true,
       wrap: true,
     },
+
     {
-      name: t("Machine Type"),
-      selector: (row) => row.machineTypeName,
+      name: t("Category"),
+      selector: (row) => row.categoryName,
       sortable: true,
       wrap: true,
     },
+    
     {
       name: t("Unit Cost"),
       selector: (row) => row.unitCost,
@@ -218,11 +222,11 @@ function ConfigureReelingShedList() {
   ];
 
   return (
-    <Layout title={t("Configure Reeling Shed List")}>
+    <Layout title={t("List Of Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure Reeling Shed List")}</Block.Title>
+            <Block.Title tag="h2">{t("List Of Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

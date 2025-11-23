@@ -43,11 +43,11 @@ function ConfigureReelingShedView() {
   }, [id]);
 
   return (
-    <Layout title={t("Configure Reeling Shed View")} content="container">
+    <Layout title={t("View Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")} content="container">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure Reeling Shed View")}</Block.Title>
+            <Block.Title tag="h2">{t("View Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -76,7 +76,7 @@ function ConfigureReelingShedView() {
 
       <Block className="mt-4">
         <Card>
-          <Card.Header>{t("Configure Reeling Shed Details")}</Card.Header>
+          <Card.Header>{t("Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h5 className="d-flex justify-content-center align-items-center">
@@ -87,16 +87,19 @@ function ConfigureReelingShedView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                      
-     
                       <tr>
-                        <td style={styles.label}>{t("Reeling Unit")}:</td>
-                        <td>{configureReelingShed.reelingUnit}</td>
+                        <td style={styles.label}>{t("Machine Type")}:</td>
+                        <td>{configureReelingShed.machineTypeName}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.label}>{t("Sqfts")}:</td>
+     <tr>
+                        <td style={styles.label}>{t("Sqft/KW/Generator Capacity/Water Heater Capacity")}:</td>
                         <td>{configureReelingShed.reelingSqft}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.label}>{t("Model(Only For Solar Water Heater)")}:</td>
+                        <td>{configureReelingShed.reelingUnit}</td>
+                      </tr>
+                      
                       <tr>
                         <td style={styles.label}>{t("Category Name")}:</td>
                         <td>{configureReelingShed.categoryName}</td>

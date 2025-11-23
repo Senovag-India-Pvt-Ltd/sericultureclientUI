@@ -465,6 +465,9 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
                             <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
                             <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
@@ -512,6 +515,9 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
                             <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
                             <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
@@ -559,6 +565,9 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
                             <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
                             <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
@@ -606,6 +615,9 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
                             <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
                             <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
@@ -653,6 +665,9 @@ function ScSubSchemeDetailsEdit() {
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
                             <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
                             <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>

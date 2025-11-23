@@ -1927,6 +1927,62 @@ useEffect(() => {
   }
 }, [data.machineTypeId,data.reelingSqft,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
+
+const [reelinShedSolarWaterHeaterAmountData, setReelingShedSolarWaterHeaterAmountListData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getreelingShedSolarWaterHeaterAmountList = (machineTypeId ,reelingSqft,reelingUnit,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureReelingShed/getDetailsForSolarWaterHeater`, {
+      params: {
+        machineTypeId,
+        reelingSqft,
+        reelingUnit,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureReelingShed || [];
+      setReelingShedSolarWaterHeaterAmountListData(incentiveData);
+
+      setAmountValue({
+          ...amountValue,
+          unitPrice: incentiveData.unitCost, // Set the Unit Price
+        });
+        setData({
+              ...data,
+              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
+            });
+    })
+    .catch((err) => {
+      setReelingShedSolarWaterHeaterAmountListData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.machineTypeId &&
+    data.reelingSqft &&
+    data.reelingUnit &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getreelingShedSolarWaterHeaterAmountList( 
+      data.machineTypeId,
+      data.reelingSqft,
+      data.reelingUnit,
+      data.scSubSchemeDetailsId,
+      data.scComponentId, 
+      data.scCategoryId
+    );
+  }
+}, [data.machineTypeId,data.reelingSqft,data.reelingUnit,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
 const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations
   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
@@ -2434,6 +2490,147 @@ if (
     if (
       !data.machineTypeId ||
       !data.reelingSqft ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+
+  // ✅ Validate that API data is available
+    if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No Reeling Shed data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const icbRecord = reelinShedAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    return;
+  } 
+
+
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator"
+  ) {
+    if (
+      !data.machineTypeId ||
+      !data.reelingSqft ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+
+  // ✅ Validate that API data is available
+    if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No Reeling Shed data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const icbRecord = reelinShedAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    return;
+  } 
+
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator"
+  ) {
+    if (
+      !data.machineTypeId ||
+      !data.reelingSqft ||
+      !data.scSubSchemeDetailsId ||
+      !data.scComponentId ||
+      !data.scCategoryId
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+
+  // ✅ Validate that API data is available
+    if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No Reeling Shed data available for selected parameters.",
+      });
+      return;
+    }
+
+    // ✅ Use first record (or modify if multiple expected)
+    const icbRecord = reelinShedAmountData[0];
+
+    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: Math.round(icbRecord.unitCost || 0),
+    }));
+
+    return;
+  } 
+
+
+  if (
+    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater"
+  ) {
+    if (
+      !data.machineTypeId ||
+      !data.reelingSqft ||
+      !data.reelingUnit ||
       !data.scSubSchemeDetailsId ||
       !data.scComponentId ||
       !data.scCategoryId
@@ -4700,6 +4897,308 @@ const fetchReelerDetails = () => {
                             </Col>
 
 
+                            </>
+                               )}
+
+                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator" && (
+                            <>
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                             {/* <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Reeling SQFT")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingSqft"
+                                    name="reelingSqft"
+                                    value={data.reelingSqft}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="1200">1200</option>
+                                    <option value="900">900</option>
+                                    <option value="600">600</option>
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col> */}
+
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Silent generator Capacity( KW )</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingSqft"
+                                type="text"
+                                name="reelingSqft"
+                                value={data.reelingSqft}
+                                onChange={handleInputs}
+                                placeholder="Enter Silent genera tor Capacity( KW )"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Silent generator Capacity( KW ) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
+                               )}
+
+                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
+                            <>
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                             {/* <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Reeling SQFT")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingSqft"
+                                    name="reelingSqft"
+                                    value={data.reelingSqft}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="1200">1200</option>
+                                    <option value="900">900</option>
+                                    <option value="600">600</option>
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col> */}
+
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Solar Power Generator Capacity(HP)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingSqft"
+                                type="text"
+                                name="reelingSqft"
+                                value={data.reelingSqft}
+                                onChange={handleInputs}
+                                placeholder="Enter Silent genera tor Capacity( KW )"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Solar Power Generator Capacity(HP) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
+                               )}
+
+                                {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
+                            <>
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                             {/* <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Reeling SQFT")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingSqft"
+                                    name="reelingSqft"
+                                    value={data.reelingSqft}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="1200">1200</option>
+                                    <option value="900">900</option>
+                                    <option value="600">600</option>
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col> */}
+
+                            {/* <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Solar Power Generator Capacity(HP)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingSqft"
+                                type="text"
+                                name="reelingSqft"
+                                value={data.reelingSqft}
+                                onChange={handleInputs}
+                                placeholder="Enter Silent genera tor Capacity( KW )"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Solar Power Generator Capacity(HP) is required
+                              </Form.Control.Feedback>
+                          </Col> */}
+
+                           <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Solar Water heater Capcity(In Ltrs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingSqft"
+                                type="text"
+                                name="reelingSqft"
+                                value={data.reelingSqft}
+                                onChange={handleInputs}
+                                placeholder="Enter Silent genera tor Capacity( KW )"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Solar Water heater Capcity(In Ltrs) is required
+                              </Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Model</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingUnit"
+                                type="text"
+                                name="reelingUnit"
+                                value={data.reelingUnit}
+                                onChange={handleInputs}
+                                placeholder="Enter Model"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Model is required
+                              </Form.Control.Feedback>
+                          </Col>
                             </>
                                )}
 

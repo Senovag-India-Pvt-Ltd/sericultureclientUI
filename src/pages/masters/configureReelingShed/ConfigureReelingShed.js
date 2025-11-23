@@ -203,11 +203,11 @@ const handleInputs = (e) => {
   };
 
   return (
-    <Layout title={t("Configure Reeling Shed")}>
+    <Layout title={t("Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Configure Reeling Shed")}</Block.Title>
+            <Block.Title tag="h2">{t("Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -278,7 +278,7 @@ const handleInputs = (e) => {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="reelingSqft">
-                        {t("Sqft")} <span className="text-danger">*</span>
+                        {t("Sqft/KW/Generator Capacity/Water Heater Capacity")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -293,6 +293,29 @@ const handleInputs = (e) => {
                         <Form.Control.Feedback type="invalid">
                           {t("Sqft is required")}
                         </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="reelingUnit">
+                        {t("Model(Only For Solar Water Heater)")} <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="reelingUnit"
+                          name="reelingUnit"
+                          value={data.reelingUnit}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t("Enter Reeling Unit")}
+                          // required
+                        />
+                        {/* <Form.Control.Feedback type="invalid">
+                          {t("Reeling Unit is required")}
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>

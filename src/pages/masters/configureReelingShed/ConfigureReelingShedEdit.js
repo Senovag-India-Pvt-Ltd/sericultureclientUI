@@ -217,11 +217,11 @@ function ConfigureReelingShedEdit() {
   };
 
   return (
-    <Layout title={t("Edit Configure Reeling Shed")}>
+    <Layout title={t("Edit Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Edit Configure Reeling Shed")}</Block.Title>
+            <Block.Title tag="h2">{t("Edit Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -296,7 +296,7 @@ function ConfigureReelingShedEdit() {
                                       <Col lg="6">
                                         <Form.Group className="form-group mt-n4">
                                           <Form.Label htmlFor="reelingSqft">
-                                            {t("reelingSqft")} <span className="text-danger">*</span>
+                                            {t("Sqft/KW/Generator Capacity/Water Heater Capacity")} <span className="text-danger">*</span>
                                           </Form.Label>
                                           <div className="form-control-wrap">
                                             <Form.Control
@@ -315,35 +315,57 @@ function ConfigureReelingShedEdit() {
                                         </Form.Group>
                                       </Col>
 
+                                     <Col lg="6">
+                                        <Form.Group className="form-group mt-n4">
+                                          <Form.Label htmlFor="reelingUnit">
+                                            {t("Model(Only For Solar Water Heater)")} <span className="text-danger">*</span>
+                                          </Form.Label>
+                                          <div className="form-control-wrap">
+                                            <Form.Control
+                                              id="reelingUnit"
+                                              name="reelingUnit"
+                                              value={data.reelingUnit}
+                                              onChange={handleInputs}
+                                              type="text"
+                                              placeholder={t("Enter Reeling Unit")}
+                                              // required
+                                            />
+                                            {/* <Form.Control.Feedback type="invalid">
+                                              {t("Reeling Unit is required")}
+                                            </Form.Control.Feedback> */}
+                                          </div>
+                                        </Form.Group>
+                                      </Col>
+
                   
 
                   {/* Component */}
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>{t("Component")}</Form.Label>
-                      <Form.Select
-                        name="componentId"
-                        value={data.componentId}
-                        onChange={handleInputs}
-                        required
-                      >
-                        <option value="">{t("Select Component")}</option>
-                        {scComponentListData.map((list) => (
-                          <option key={list.scComponentId} value={list.scComponentId}>
-                            {list.scComponentName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {t("Component is required")}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
+                                  <Col lg="6">
+                                    <Form.Group className="form-group mt-n4">
+                                      <Form.Label>{t("Component")}</Form.Label>
+                                      <Form.Select
+                                        name="componentId"
+                                        value={data.componentId}
+                                        onChange={handleInputs}
+                                        required
+                                      >
+                                        <option value="">{t("Select Component")}</option>
+                                        {scComponentListData.map((list) => (
+                                          <option key={list.scComponentId} value={list.scComponentId}>
+                                            {list.scComponentName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        {t("Component is required")}
+                                      </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
 
 
 
 
-<Col lg="6">
+              <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       {t("Component Type")}
@@ -365,11 +387,11 @@ function ConfigureReelingShedEdit() {
                         {subSchemeListData &&
                           subSchemeListData.map((list) => (
                             <option
-  key={list.scSubSchemeDetailsId}
-  value={list.scSubSchemeDetailsId} // ✅ sending numeric ID
->
-  {list.subSchemeName}
-</option>
+                          key={list.scSubSchemeDetailsId}
+                          value={list.scSubSchemeDetailsId} // ✅ sending numeric ID
+                        >
+                          {list.subSchemeName}
+                        </option>
 
                           ))}
                       </Form.Select>

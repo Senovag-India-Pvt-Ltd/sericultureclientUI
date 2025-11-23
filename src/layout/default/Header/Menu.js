@@ -3607,7 +3607,7 @@ function Menu() {
       {showMenu.Admin_Master_Service_Calculation_reeling ? (
         <MenuItem>
           <MenuItemLink
-            text={t("Configure Reeling Shed")}
+            text={t("Configure Reeling Shed/Adopting Silent Generator/Adopting Solar power Generator/Adopting Solar Water Heater")}
             to="/seriui/configure-reeling-shed"
           />
         </MenuItem>
