@@ -36,7 +36,10 @@ function CropDetailsForCommercialMarket() {
     cocoonRatePerKg: "",
     fruitsId: "",
     spunOnToDate: "",
-    crcName: ""
+    crcName: "",
+    externalUnitRegistrationId: "",
+    eligibleQuantityCocoonsTransacted: "",
+    farmerName: "",
   });
 
   const { t } = useTranslation();
@@ -172,7 +175,10 @@ const handleInputs = (e) => {
             cocoonRatePerKg: "",
             fruitsId: "",
             spunOnToDate: "",
-            crcName: ""
+            crcName: "",
+            externalUnitRegistrationId: "",
+            eligibleQuantityCocoonsTransacted: "",
+            farmerName: "",
             });
             setValidated(false);
           }
@@ -205,7 +211,10 @@ const handleInputs = (e) => {
     cocoonRatePerKg: "",
     fruitsId: "",
     spunOnToDate: "",
-    crcName: ""
+    crcName: "",
+    externalUnitRegistrationId: "",
+    eligibleQuantityCocoonsTransacted: "",
+    farmerName: "",
     });
     // setLot({
     //   lotNumber: "",
@@ -276,6 +285,29 @@ const handleInputs = (e) => {
   useEffect(() => {
     getMarketList();
   }, []);
+
+  // to get Race
+      const [externalListData, setExternalListData] = useState([]);
+    
+      const getExternalList = (_id) => {
+        const response = api
+          .get(baseURLFarmer + `external-unit-registration/get-all`)
+          .then((response) => {
+            setExternalListData(response.data.content.externalUnitRegistration);
+            // setLoading(false);
+            if (response.data.content.error) {
+                setExternalListData([]);
+            }
+          })
+          .catch((err) => {
+            setExternalListData([]);
+            // setLoading(false);
+          });
+      };
+    
+      useEffect(() => {
+            getExternalList();
+      }, []);
 
 
   
@@ -524,7 +556,7 @@ const handleInputs = (e) => {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
                               {t("Name Of The CRC")}<span className="text-danger">*</span>
@@ -544,7 +576,38 @@ const handleInputs = (e) => {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
+
+                        <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("RSP/CRC License Number")}
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="externalUnitRegistrationId"
+                              value={data.externalUnitRegistrationId}
+                              onChange={handleInputs}
+                              // onBlur={handleInputs} // Correctly set as function reference
+                              
+                            >
+                              <option value="">{t("Select License Number")}</option>
+                              {externalListData.map((list) => (
+                                <option
+                                  key={list.externalUnitRegistrationId}
+                                  value={list.externalUnitRegistrationId}
+                                >
+                                  {list.licenseNumber}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            {/* <Form.Control.Feedback type="invalid">
+                              {t("License Number is required")}
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                      <Col lg="4">
                         <Form.Group className="form-group mt-n4">
@@ -637,7 +700,7 @@ const handleInputs = (e) => {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Lot No")}
+                          {t("Lot No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -647,11 +710,11 @@ const handleInputs = (e) => {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Lot No")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          Lot No is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -693,6 +756,28 @@ const handleInputs = (e) => {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Quantity Of Cocoons Produced")}
+                            // required
+                          />
+                          {/* <Form.Control.Feedback type="invalid">
+                          Screening Batch No is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Eligible Quantity Of Cocoons Produced")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="eligibleQuantityCocoonsTransacted"
+                            name="eligibleQuantityCocoonsTransacted"
+                            value={data.eligibleQuantityCocoonsTransacted}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Eligible Quantity Of Cocoons Produced")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -749,7 +834,7 @@ const handleInputs = (e) => {
                      <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                            {t("Market")}
+                            {t("Market")}<span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                             <div className="form-control-wrap">
@@ -757,6 +842,8 @@ const handleInputs = (e) => {
                                 name="marketId"
                                 value={data.marketId}
                                 onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
                                 >
                                 <option value="">{t("Select Market")}</option>
                                 {marketListData.map((list) => (
@@ -779,7 +866,7 @@ const handleInputs = (e) => {
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Bidding Slip No")}
+                          {t("Bidding Slip No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -789,11 +876,11 @@ const handleInputs = (e) => {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Bidding Slip No")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -820,7 +907,7 @@ const handleInputs = (e) => {
                       </Form.Group>
                     </Col>
 
-<Col lg="2">
+                <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                         {t("Transaction Date")}<span className="text-danger">*</span>
@@ -847,7 +934,8 @@ const handleInputs = (e) => {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        {t("Brushing Date")}<span className="text-danger">*</span>
+                        {t("Brushing Date")}
+                        {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
@@ -862,7 +950,7 @@ const handleInputs = (e) => {
                             // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                         />
                         </div>
                     </Form.Group>
@@ -872,7 +960,8 @@ const handleInputs = (e) => {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        {t("Date Of Chawki Distribution")}<span className="text-danger">*</span>
+                        {t("Date Of Chawki Distribution")}
+                        {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
@@ -887,7 +976,7 @@ const handleInputs = (e) => {
                             // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                         />
                         </div>
                     </Form.Group>
@@ -896,7 +985,8 @@ const handleInputs = (e) => {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        {t("Spun on Date(From)")}<span className="text-danger">*</span>
+                        {t("Spun on Date(From)")}
+                        {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
@@ -911,7 +1001,7 @@ const handleInputs = (e) => {
                             // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                         />
                         </div>
                     </Form.Group>
@@ -920,7 +1010,8 @@ const handleInputs = (e) => {
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        {t("Spun on Date(To)")}<span className="text-danger">*</span>
+                        {t("Spun on Date(To)")}
+                        {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
@@ -935,7 +1026,7 @@ const handleInputs = (e) => {
                             // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            required
+                            // required
                         />
                         </div>
                     </Form.Group>

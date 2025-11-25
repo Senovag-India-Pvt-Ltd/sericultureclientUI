@@ -1,132 +1,34 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
-
 import { Icon, Select } from "../../components";
-import { useTranslation } from "react-i18next";
-
+import { useState, useEffect } from "react";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
+import CropDetailsForSeedMarket from "./CropDetailsSeedMarket";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function CropDetailsForSeedMarket() {
-  const [data, setData] = useState({
-    raceMasterId: "",
-    grainageId: "",
-    bonusReceiptNo: "",
-    transactionDate: "",
-    lotNo: "",
-    noOfDfls: "",
-    dateOfBrushing: "",
-    dateOfDistributionOfChawkiWorms: "",
-    chawkiPercentage: "",
-    spunOnDate: "",
-    spunOnToDate: "",
-    noOfCocoonsPerKg: "",
-    quantityOfSeedCocoons: "",
-    averageYield: "",
-    marketId: "",
-    biddingSlipNo: "",
-    cocoonRatePerKg: "",
-    incentiveReceiptNo: "",
-    fruitsId: "",
-    crcName: "",
-    crcBillNo: "",
-    chawkiReceiptNo: "",
-    cocoonTransactedForReelingInNos: "",
-    cocoonTransactedForReelingInKg:"",
-    cocoonTransactedForSeedInNos: "",
-    cocoonTransactedForSeedInKg: "",
-    externalUnitRegistrationId: "",
-    farmerName: "",
-  });
-
-  const { t } = useTranslation();
-
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "20%",
-    },
-  };
+function CropDetailsCommercialMarketEdit() {
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
-
-  // let name, value;
-  // const handleInputs = (e) => {
-  //   name = e.target.name;
-  //   value = e.target.value;
-  //   setData({ ...data, [name]: value });
-
-  //   if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-  //     e.target.classList.add("is-invalid");
-  //     e.target.classList.remove("is-valid");
-  //   } else if (name === "fruitsId" && value.length === 16) {
-  //     e.target.classList.remove("is-invalid");
-  //     e.target.classList.add("is-valid");
-  //   }
-  // };
-
+const { t } = useTranslation();
   let name, value;
   const handleInputs = (e) => {
-  name = e.target.name;
-  value = e.target.value;
-
-  // Update field value first
-  const updatedData = { ...data, [name]: value };
-
-  // Auto-calculate Average Yield = (quantity / dfl) * 100
-  if (
-    (name === "quantityOfSeedCocoons" || name === "noOfDfls") &&
-    updatedData.quantityOfSeedCocoons &&
-    updatedData.noOfDfls &&
-    !isNaN(updatedData.quantityOfSeedCocoons) &&
-    !isNaN(updatedData.noOfDfls) &&
-    Number(updatedData.noOfDfls) !== 0
-  ) {
-    const qty = Number(updatedData.quantityOfSeedCocoons);
-    const dfl = Number(updatedData.noOfDfls);
-
-    updatedData.averageYield = ((qty / dfl) * 100).toFixed(2);  
-  }
-
-  setData(updatedData);
-
-  // Fruits ID Validation (keeping your existing logic)
-  if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-    e.target.classList.add("is-invalid");
-    e.target.classList.remove("is-valid");
-  } else if (name === "fruitsId" && value.length === 16) {
-    e.target.classList.remove("is-invalid");
-    e.target.classList.add("is-valid");
-  }
-};
-
-  const _header = {
-    "Content-Type": "application/json",
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
   };
-
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -137,69 +39,42 @@ function CropDetailsForSeedMarket() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-
-    const formattedSpunDate = formatDate(data.spunOnDate);
-    const formattedSpunToDate = formatDate(data.spunOnToDate);
-    const formattedTransactionDate = formatDate(data.transactionDate);
-    const formattedBrushingDate = formatDate(data.dateOfBrushing);
-    const formattedChawkiDistribution = formatDate(data.dateOfDistributionOfChawkiWorms);
-
-    const payload = {
-      ...data,
-      spunOnDate: formattedSpunDate,
-      spunOnToDate:formattedSpunToDate,
-      transactionDate: formattedTransactionDate,
-      dateOfBrushing: formattedBrushingDate,
-      dateOfDistributionOfChawkiWorms: formattedChawkiDistribution,
-    };
       api
-        .post(baseURL + `cropDetailsSeedMarket/add`, payload)
+        .post(baseURLDBT + `cropDetailsCommercialMarket/edit`, data)
         .then((response) => {
-          if (response.data.error) {
-            saveError(response.data.message);
+          if (response.data.content.error) {
+            updateError();
           } else {
-            saveSuccess();
+            updateSuccess();
             setData({
-            raceMasterId: "",
-            grainageId: "",
-            bonusReceiptNo: "",
-            transactionDate: "",
-            lotNo: "",
-            noOfDfls: "",
-            dateOfBrushing: "",
-            dateOfDistributionOfChawkiWorms: "",
-            chawkiPercentage: "",
-            spunOnDate: "",
-            spunOnToDate: "",
-            noOfCocoonsPerKg: "",
-            quantityOfSeedCocoons: "",
-            averageYield: "",
-            marketId: "",
-            biddingSlipNo: "",
-            cocoonRatePerKg: "",
-            incentiveReceiptNo: "",
-            fruitsId: "",
-            crcName: "",
-            crcBillNo: "",
-            chawkiReceiptNo: "",
-            cocoonTransactedForReelingInNos: "",
-            cocoonTransactedForReelingInKg:"",
-            cocoonTransactedForSeedInNos: "",
-            cocoonTransactedForSeedInKg: "",
-            externalUnitRegistrationId: "",
-            farmerName: "",
+                raceMasterId: "",
+                grainageId: "",
+                receiptNo: "",
+                transactionDate: "",
+                lotNo: "",
+                noOfDfls: "",
+                dateOfBrushing: "",
+                dateOfDistributionOfChawkiWorms: "",
+                chawkiPercentage: "",
+                spunOnDate: "",
+                quantityOfCocoonsProduced: "",
+                averageYield: "",
+                marketId: "",
+                biddingSlipNo: "",
+                cocoonRatePerKg: "",
+                fruitsId: "",
+                spunOnToDate: "",
+                crcName: "",
+                externalUnitRegistrationId: "",
+                eligibleQuantityCocoonsTransacted: "",
+                farmerName: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
         });
       setValidated(true);
     }
@@ -208,92 +83,56 @@ function CropDetailsForSeedMarket() {
   const clear = () => {
     setData({
      raceMasterId: "",
-      grainageId: "",
-      bonusReceiptNo: "",
-      transactionDate: "",
-      lotNo: "",
-      noOfDfls: "",
-      dateOfBrushing: "",
-      dateOfDistributionOfChawkiWorms: "",
-      chawkiPercentage: "",
-      spunOnDate: "",
-      spunOnToDate: "",
-      noOfCocoonsPerKg: "",
-      quantityOfSeedCocoons: "",
-      averageYield: "",
-      marketId: "",
-      biddingSlipNo: "",
-      cocoonRatePerKg: "",
-      incentiveReceiptNo: "",
-      fruitsId: "",
-      crcName: "",
-      crcBillNo: "",
-      chawkiReceiptNo: "",
-      cocoonTransactedForReelingInNos: "",
-      cocoonTransactedForReelingInKg:"",
-      cocoonTransactedForSeedInNos: "",
-      cocoonTransactedForSeedInKg: "",
-      externalUnitRegistrationId: "",
-      farmerName: "",
+    grainageId: "",
+    receiptNo: "",
+    transactionDate: "",
+    lotNo: "",
+    noOfDfls: "",
+    dateOfBrushing: "",
+    dateOfDistributionOfChawkiWorms: "",
+    chawkiPercentage: "",
+    spunOnDate: "",
+    quantityOfCocoonsProduced: "",
+    averageYield: "",
+    marketId: "",
+    biddingSlipNo: "",
+    cocoonRatePerKg: "",
+    fruitsId: "",
+    spunOnToDate: "",
+    crcName: "",
+    externalUnitRegistrationId: "",
+    eligibleQuantityCocoonsTransacted: "",
+    farmerName: "",
     });
-    // setLot({
-    //   lotNumber: "",
-    //   raceName: "",
-    //   generationDetails: "",
-    //   laidOnDate: "",
-    // });
   };
 
-  const [searchValidated, setSearchValidated] = useState(false);
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLDBT + `cropDetailsCommercialMarket/get/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        editError(message);
+        setLoading(false);
+      });
+  };
 
-  const search = (event) => {
-      const form = event.currentTarget;
-      if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-        setSearchValidated(true);
-      } else {
-        event.preventDefault();
-        if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-          return;
-        }
-        api
-          .post(
-            baseURLFarmer +
-              `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-            { fruitsId: data.fruitsId }
-          )
-          .then((response) => {
-            console.log(response);
-            if (!response.data.content.error) {
-              if (response.data.content.farmerResponse) {
-                const firstName = response.data.content.farmerResponse.firstName;
-                const fatherName =
-                  response.data.content.farmerResponse.fatherName;
-                setData((prev) => ({
-                  ...prev,
-                  farmerName: firstName,
-                  fatherName: fatherName,
-                }));
-              }
-            } else {
-              saveError(response.data.content.error_description);
-            }
-          })
-          .catch((err) => {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          });
-      }
-    };
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
-     // to get Market
+   // to get Market
   const [marketListData, setMarketListData] = useState([]);
 
   const getMarketList = () => {
     const response = api
-      .get(baseURL2 + `marketMaster/get-all`)
+      .get(baseURL + `marketMaster/get-all`)
       .then((response) => {
         setMarketListData(response.data.content.marketMaster);
       })
@@ -313,7 +152,7 @@ function CropDetailsForSeedMarket() {
 
   const getGrainageList = () => {
     const response = api
-      .get(baseURL2 + `grainageMaster/get-all`)
+      .get(baseURL + `grainageMaster/get-all`)
       .then((response) => {
         setGrainageListData(response.data.content.grainageMaster);
       })
@@ -326,117 +165,99 @@ function CropDetailsForSeedMarket() {
     getGrainageList();
   }, []);
 
-  // // to get Lot
-  // const [lotListData, setLotListData] = useState([]);
-
-  // const getLotList = () => {
-  //   const response = api
-  //     .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
-  //     .then((response) => {
-  //       setLotListData(response.data);
-  //     })
-  //     .catch((err) => {
-  //       setLotListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getLotList();
-  // }, []);
-
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL2 + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRaceList();
-  }, []);
-
-   // to get Race
-    const [externalListData, setExternalListData] = useState([]);
+   const [raceListData, setRaceListData] = useState([]);
   
-    const getExternalList = (_id) => {
+    const getRaceList = () => {
       const response = api
-        .get(baseURLFarmer + `external-unit-registration/get-all`)
+        .get(baseURL + `raceMaster/get-all`)
         .then((response) => {
-          setExternalListData(response.data.content.externalUnitRegistration);
-          // setLoading(false);
-          if (response.data.content.error) {
-              setExternalListData([]);
-          }
+          setRaceListData(response.data.content.raceMaster);
         })
         .catch((err) => {
-          setExternalListData([]);
-          // setLoading(false);
+          setRaceListData([]);
         });
     };
   
     useEffect(() => {
-          getExternalList();
+      getRaceList();
     }, []);
- 
 
-  const navigate = useNavigate();
-  const saveSuccess = (message) => {
-    Swal.fire({
-      icon: "success",
-      title: t("Saved successfully"),
-      text: message,
-    });
-  };
-  const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
-    Swal.fire({
-      icon: "error",
-      title: t("Attempt was not successful"),
-      html: errorMessage,
-    });
-  };
+    // to get Race
+        const [externalListData, setExternalListData] = useState([]);
+      
+        const getExternalList = (_id) => {
+          const response = api
+            .get(baseURLFarmer + `external-unit-registration/get-all`)
+            .then((response) => {
+              setExternalListData(response.data.content.externalUnitRegistration);
+              // setLoading(false);
+              if (response.data.content.error) {
+                  setExternalListData([]);
+              }
+            })
+            .catch((err) => {
+              setExternalListData([]);
+              // setLoading(false);
+            });
+        };
+      
+        useEffect(() => {
+              getExternalList();
+        }, []);
 
-  const handleDateChange = (date, type) => {
+         const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
+  const navigate = useNavigate();
+
+  const updateSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Updated successfully",
+      // text: "You clicked the button!",
+    }).then(() => navigate("#"));
+  };
+  const updateError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    });
+  };
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
+
   return (
-    <Layout title={t("Crop Details-Seed Market")}>
+    <Layout title="Edit Crop Details-Commercial Market">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Crop Details-Seed Market")}</Block.Title>
+            <Block.Title tag="h2">Edit Crop Details-Commercial Market</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/crop-details-seed-market-list"
+                  to="/seriui/crop-details-commercial-market-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
+                  <span>Go to List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/crop-details-seed-market-list"
+                  to="/seriui/crop-details-commercial-market-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
+                  <span>Go to List</span>
                 </Link>
               </li>
             </ul>
@@ -446,7 +267,8 @@ function CropDetailsForSeedMarket() {
 
       <Block className="mt-n4">
               {/* <Form action="#"> */}
-              <Form noValidate validated={searchValidated} onSubmit={search}>
+              <Form noValidate validated={validated} onSubmit={postData}>
+              <Row className="g-1 ">
                 <Card>
                   <Card.Body>
                     <Row className="g-gs">
@@ -490,12 +312,13 @@ function CropDetailsForSeedMarket() {
                     </Row>
                   </Card.Body>
                 </Card>
-              </Form>
-            <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-0">
+              {/* </Form> */}
+            {/* <Form noValidate validated={validated} onSubmit={postData}> */}
+          {/* <Row className="g-0"> */}
+          <Block className="mt-3">
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
-                {t("Crop Details-Seed Market")}
+                {t("Crop Details-Commercial Market")}
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
@@ -521,29 +344,29 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
-                     {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Name Of The CRC")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="crcName"
-                            name="crcName"
-                            type="text"
-                            value={data.crcName}
-                            onChange={handleInputs}
-                            placeholder={t("Enter Name Of The CRC")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {t("Name Of The CRC is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
+                    {/* <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Name Of The CRC")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="crcName"
+                                name="crcName"
+                                type="text"
+                                value={data.crcName}
+                                onChange={handleInputs}
+                                placeholder={t("Enter Name Of The CRC")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Name Of The CRC is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col> */}
 
-                     <Col lg="4">
+                        <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
                             {t("RSP/CRC License Number")}
@@ -638,117 +461,19 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
-                        <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                            {t("Market")}<span className="text-danger">*</span>
-                            </Form.Label>
-                            <Col>
-                            <div className="form-control-wrap">
-                                <Form.Select
-                                name="marketId"
-                                value={data.marketId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                 required
-                                >
-                                <option value="">{t("Select Market")}</option>
-                                {marketListData.map((list) => (
-                                    <option
-                                    key={list.marketMasterId}
-                                    value={list.marketMasterId}
-                                    >
-                                    {list.marketMasterName}
-                                    </option>
-                                ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                {t("Market is required")}
-                                </Form.Control.Feedback>
-                            </div>
-                            </Col>
-                        </Form.Group>
-                        </Col>
-
                      <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Bonus Receipt No")}
+                          {t("Receipt No")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="bonusReceiptNo"
-                            name="bonusReceiptNo"
-                            value={data.bonusReceiptNo}
+                            id="receiptNo"
+                            name="receiptNo"
+                            value={data.receiptNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Bonus Receipt No")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                     <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Incentive Receipt No")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="incentiveReceiptNo"
-                            name="incentiveReceiptNo"
-                            value={data.incentiveReceiptNo}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Incentive Receipt No")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Chawki Receipt No")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="chawkiReceiptNo"
-                            name="chawkiReceiptNo"
-                            value={data.chawkiReceiptNo}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Chawki Receipt No")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("CRC Bill No")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="crcBillNo"
-                            name="crcBillNo"
-                            value={data.crcBillNo}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("CRC Bill No")}
+                            placeholder={t("Enter Receipt No")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -763,7 +488,7 @@ function CropDetailsForSeedMarket() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Lot No")} <span className="text-danger">*</span>
+                          {t("Lot No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -806,43 +531,19 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
-                    
-
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Cocoons Transacted For Seed In Kg")}
+                          {t("Quantity Of Cocoons Produced")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="cocoonTransactedForSeedInKg"
-                            name="cocoonTransactedForSeedInKg"
-                            value={data.cocoonTransactedForSeedInKg}
+                            id="quantityOfCocoonsProduced"
+                            name="quantityOfCocoonsProduced"
+                            value={data.quantityOfCocoonsProduced}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Cocoons Transacted For Seed In Kg")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                     <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Cocoons Transacted For Seed In Nos")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="cocoonTransactedForSeedInNos"
-                            name="cocoonTransactedForSeedInNos"
-                            value={data.cocoonTransactedForSeedInNos}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Cocoons Transacted For Seed In Nos")}
+                            placeholder={t("Quantity Of Cocoons Produced")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -855,16 +556,16 @@ function CropDetailsForSeedMarket() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Cocoons Transacted For Reeling In Kg")}
+                          {t("Eligible Quantity Of Cocoons Produced")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="cocoonTransactedForReelingInKg"
-                            name="cocoonTransactedForReelingInKg"
-                            value={data.cocoonTransactedForReelingInKg}
+                            id="eligibleQuantityCocoonsTransacted"
+                            name="eligibleQuantityCocoonsTransacted"
+                            value={data.eligibleQuantityCocoonsTransacted}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Cocoons Transacted For Reeling In Kg")}
+                            placeholder={t("Eligible Quantity Of Cocoons Produced")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -873,75 +574,6 @@ function CropDetailsForSeedMarket() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                     <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Cocoons Transacted For Reeling In Nos")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="cocoonTransactedForReelingInNos"
-                            name="cocoonTransactedForReelingInNos"
-                            value={data.cocoonTransactedForReelingInNos}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Cocoons Transacted For Reeling In Nos")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Total No Of Cocoons Per Kg")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="noOfCocoonsPerKg"
-                            name="noOfCocoonsPerKg"
-                            value={data.noOfCocoonsPerKg}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("No Of Cocoons Per Kg")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Total Quantity Of Seed Cocoons")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="quantityOfSeedCocoons"
-                            name="quantityOfSeedCocoons"
-                            value={data.quantityOfSeedCocoons}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Quantity Of Seed Cocoons")}
-                            // required
-                          />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                   
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -987,11 +619,42 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
+                     <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                            {t("Market")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                            <div className="form-control-wrap">
+                                <Form.Select
+                                name="marketId"
+                                value={data.marketId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                >
+                                <option value="">{t("Select Market")}</option>
+                                {marketListData.map((list) => (
+                                    <option
+                                    key={list.marketMasterId}
+                                    value={list.marketMasterId}
+                                    >
+                                    {list.marketMasterName}
+                                    </option>
+                                ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                {t("Market is required")}
+                                </Form.Control.Feedback>
+                            </div>
+                            </Col>
+                        </Form.Group>
+                        </Col>
 
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
+                          {t("Bidding Slip No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1000,11 +663,11 @@ function CropDetailsForSeedMarket() {
                             value={data.biddingSlipNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Bidding Slip Lot No")}
+                            placeholder={t("Bidding Slip No")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                         Bidding Slip Lot No is required
+                          Screening Batch No is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1022,7 +685,7 @@ function CropDetailsForSeedMarket() {
                             value={data.cocoonRatePerKg}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Cocoon Rate Per Kg")}
+                            placeholder={t("Bidding Slip No")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -1032,14 +695,14 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
-              <Col lg="2">
+                <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                         {t("Transaction Date")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.transactionDate}
+                            selected={data.transactionDate ? new Date(data.transactionDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "transactionDate")
                             }
@@ -1064,7 +727,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.dateOfBrushing}
+                            selected={data.dateOfBrushing ? new Date(data.dateOfBrushing) : null}
                             onChange={(date) =>
                             handleDateChange(date, "dateOfBrushing")
                             }
@@ -1090,7 +753,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.dateOfDistributionOfChawkiWorms}
+                            selected={data.dateOfDistributionOfChawkiWorms ? new Date(data.dateOfDistributionOfChawkiWorms) : null}
                             onChange={(date) =>
                             handleDateChange(date, "dateOfDistributionOfChawkiWorms")
                             }
@@ -1115,7 +778,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.spunOnDate}
+                            selected={data.spunOnDate ? new Date(data.spunOnDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "spunOnDate")
                             }
@@ -1140,7 +803,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.spunOnToDate}
+                            selected={data.spunOnToDate ? new Date(data.spunOnToDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "spunOnToDate")
                             }
@@ -1160,6 +823,7 @@ function CropDetailsForSeedMarket() {
                 </Row>
               </Card.Body>
             </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -1183,4 +847,4 @@ function CropDetailsForSeedMarket() {
   );
 }
 
-export default CropDetailsForSeedMarket;
+export default CropDetailsCommercialMarketEdit;

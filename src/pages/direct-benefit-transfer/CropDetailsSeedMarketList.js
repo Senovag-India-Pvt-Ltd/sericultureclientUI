@@ -47,7 +47,7 @@ function CropDetailsForSeedMarketList() {
 //   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/configure-pmkys-amount-edit/${_id}`);
+    navigate(`/seriui/crop-details-seed-market-edit/${_id}`);
     // navigate("/seriui/taluk");
   };
 
@@ -153,14 +153,14 @@ function CropDetailsForSeedMarketList() {
           >
             View
           </Button> */}
-          {/* <Button
+          <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.configurePmkysAmountId)}
+            onClick={() => handleEdit(row.cropDetailsSeedMarketId)}
           >
             Edit
-          </Button> */}
+          </Button>
           <Button
             variant="danger"
             size="sm"
@@ -173,6 +173,7 @@ function CropDetailsForSeedMarketList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
 
 {

@@ -5351,7 +5351,7 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                    {getIncentiveAndBonusData[0]?.allowMultipleSanction && (
+                    {/* {getIncentiveAndBonusData[0]?.allowMultipleSanction && (
                        <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
@@ -5373,7 +5373,7 @@ const fetchReelerDetails = () => {
                                 Sanction Number is required
                               </Form.Control.Feedback>
                           </Col>
-                        )}
+                        )} */}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">

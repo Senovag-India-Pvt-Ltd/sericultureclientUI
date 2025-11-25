@@ -1,24 +1,94 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
-
 import { Icon, Select } from "../../components";
-import { useTranslation } from "react-i18next";
-
+import { useState, useEffect } from "react";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
+import CropDetailsForSeedMarket from "./CropDetailsSeedMarket";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function CropDetailsForSeedMarket() {
-  const [data, setData] = useState({
+function CropDetailsForSeedMarketEdit() {
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const [validated, setValidated] = useState(false);
+const { t } = useTranslation();
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLDBT + `cropDetailsSeedMarket/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError();
+          } else {
+            updateSuccess();
+            setData({
+                raceMasterId: "",
+                grainageId: "",
+                bonusReceiptNo: "",
+                transactionDate: "",
+                lotNo: "",
+                noOfDfls: "",
+                dateOfBrushing: "",
+                dateOfDistributionOfChawkiWorms: "",
+                chawkiPercentage: "",
+                spunOnDate: "",
+                spunOnToDate: "",
+                noOfCocoonsPerKg: "",
+                quantityOfSeedCocoons: "",
+                averageYield: "",
+                marketId: "",
+                biddingSlipNo: "",
+                cocoonRatePerKg: "",
+                incentiveReceiptNo: "",
+                fruitsId: "",
+                crcName: "",
+                crcBillNo: "",
+                chawkiReceiptNo: "",
+                cocoonTransactedForReelingInNos: "",
+                cocoonTransactedForReelingInKg:"",
+                cocoonTransactedForSeedInNos: "",
+                cocoonTransactedForSeedInKg: "",
+                externalUnitRegistrationId: "",
+                farmerName: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
+        });
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
     raceMasterId: "",
     grainageId: "",
     bonusReceiptNo: "",
@@ -47,253 +117,36 @@ function CropDetailsForSeedMarket() {
     cocoonTransactedForSeedInKg: "",
     externalUnitRegistrationId: "",
     farmerName: "",
-  });
-
-  const { t } = useTranslation();
-
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "20%",
-    },
-  };
-
-  const [validated, setValidated] = useState(false);
-
-  // let name, value;
-  // const handleInputs = (e) => {
-  //   name = e.target.name;
-  //   value = e.target.value;
-  //   setData({ ...data, [name]: value });
-
-  //   if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-  //     e.target.classList.add("is-invalid");
-  //     e.target.classList.remove("is-valid");
-  //   } else if (name === "fruitsId" && value.length === 16) {
-  //     e.target.classList.remove("is-invalid");
-  //     e.target.classList.add("is-valid");
-  //   }
-  // };
-
-  let name, value;
-  const handleInputs = (e) => {
-  name = e.target.name;
-  value = e.target.value;
-
-  // Update field value first
-  const updatedData = { ...data, [name]: value };
-
-  // Auto-calculate Average Yield = (quantity / dfl) * 100
-  if (
-    (name === "quantityOfSeedCocoons" || name === "noOfDfls") &&
-    updatedData.quantityOfSeedCocoons &&
-    updatedData.noOfDfls &&
-    !isNaN(updatedData.quantityOfSeedCocoons) &&
-    !isNaN(updatedData.noOfDfls) &&
-    Number(updatedData.noOfDfls) !== 0
-  ) {
-    const qty = Number(updatedData.quantityOfSeedCocoons);
-    const dfl = Number(updatedData.noOfDfls);
-
-    updatedData.averageYield = ((qty / dfl) * 100).toFixed(2);  
-  }
-
-  setData(updatedData);
-
-  // Fruits ID Validation (keeping your existing logic)
-  if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-    e.target.classList.add("is-invalid");
-    e.target.classList.remove("is-valid");
-  } else if (name === "fruitsId" && value.length === 16) {
-    e.target.classList.remove("is-invalid");
-    e.target.classList.add("is-valid");
-  }
-};
-
-  const _header = {
-    "Content-Type": "application/json",
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-  };
-
-  const formatDate = (date) => {
-    if (!date) return ""; // Handle null or undefined dates
-    return (
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0")
-    );
-  };
-
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-
-    const formattedSpunDate = formatDate(data.spunOnDate);
-    const formattedSpunToDate = formatDate(data.spunOnToDate);
-    const formattedTransactionDate = formatDate(data.transactionDate);
-    const formattedBrushingDate = formatDate(data.dateOfBrushing);
-    const formattedChawkiDistribution = formatDate(data.dateOfDistributionOfChawkiWorms);
-
-    const payload = {
-      ...data,
-      spunOnDate: formattedSpunDate,
-      spunOnToDate:formattedSpunToDate,
-      transactionDate: formattedTransactionDate,
-      dateOfBrushing: formattedBrushingDate,
-      dateOfDistributionOfChawkiWorms: formattedChawkiDistribution,
-    };
-      api
-        .post(baseURL + `cropDetailsSeedMarket/add`, payload)
-        .then((response) => {
-          if (response.data.error) {
-            saveError(response.data.message);
-          } else {
-            saveSuccess();
-            setData({
-            raceMasterId: "",
-            grainageId: "",
-            bonusReceiptNo: "",
-            transactionDate: "",
-            lotNo: "",
-            noOfDfls: "",
-            dateOfBrushing: "",
-            dateOfDistributionOfChawkiWorms: "",
-            chawkiPercentage: "",
-            spunOnDate: "",
-            spunOnToDate: "",
-            noOfCocoonsPerKg: "",
-            quantityOfSeedCocoons: "",
-            averageYield: "",
-            marketId: "",
-            biddingSlipNo: "",
-            cocoonRatePerKg: "",
-            incentiveReceiptNo: "",
-            fruitsId: "",
-            crcName: "",
-            crcBillNo: "",
-            chawkiReceiptNo: "",
-            cocoonTransactedForReelingInNos: "",
-            cocoonTransactedForReelingInKg:"",
-            cocoonTransactedForSeedInNos: "",
-            cocoonTransactedForSeedInKg: "",
-            externalUnitRegistrationId: "",
-            farmerName: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
-    }
-  };
-
-  const clear = () => {
-    setData({
-     raceMasterId: "",
-      grainageId: "",
-      bonusReceiptNo: "",
-      transactionDate: "",
-      lotNo: "",
-      noOfDfls: "",
-      dateOfBrushing: "",
-      dateOfDistributionOfChawkiWorms: "",
-      chawkiPercentage: "",
-      spunOnDate: "",
-      spunOnToDate: "",
-      noOfCocoonsPerKg: "",
-      quantityOfSeedCocoons: "",
-      averageYield: "",
-      marketId: "",
-      biddingSlipNo: "",
-      cocoonRatePerKg: "",
-      incentiveReceiptNo: "",
-      fruitsId: "",
-      crcName: "",
-      crcBillNo: "",
-      chawkiReceiptNo: "",
-      cocoonTransactedForReelingInNos: "",
-      cocoonTransactedForReelingInKg:"",
-      cocoonTransactedForSeedInNos: "",
-      cocoonTransactedForSeedInKg: "",
-      externalUnitRegistrationId: "",
-      farmerName: "",
     });
-    // setLot({
-    //   lotNumber: "",
-    //   raceName: "",
-    //   generationDetails: "",
-    //   laidOnDate: "",
-    // });
   };
 
-  const [searchValidated, setSearchValidated] = useState(false);
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLDBT + `cropDetailsSeedMarket/get/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        editError(message);
+        setLoading(false);
+      });
+  };
 
-  const search = (event) => {
-      const form = event.currentTarget;
-      if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-        setSearchValidated(true);
-      } else {
-        event.preventDefault();
-        if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-          return;
-        }
-        api
-          .post(
-            baseURLFarmer +
-              `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-            { fruitsId: data.fruitsId }
-          )
-          .then((response) => {
-            console.log(response);
-            if (!response.data.content.error) {
-              if (response.data.content.farmerResponse) {
-                const firstName = response.data.content.farmerResponse.firstName;
-                const fatherName =
-                  response.data.content.farmerResponse.fatherName;
-                setData((prev) => ({
-                  ...prev,
-                  farmerName: firstName,
-                  fatherName: fatherName,
-                }));
-              }
-            } else {
-              saveError(response.data.content.error_description);
-            }
-          })
-          .catch((err) => {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          });
-      }
-    };
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
-     // to get Market
+   // to get Market
   const [marketListData, setMarketListData] = useState([]);
 
   const getMarketList = () => {
     const response = api
-      .get(baseURL2 + `marketMaster/get-all`)
+      .get(baseURL + `marketMaster/get-all`)
       .then((response) => {
         setMarketListData(response.data.content.marketMaster);
       })
@@ -313,7 +166,7 @@ function CropDetailsForSeedMarket() {
 
   const getGrainageList = () => {
     const response = api
-      .get(baseURL2 + `grainageMaster/get-all`)
+      .get(baseURL + `grainageMaster/get-all`)
       .then((response) => {
         setGrainageListData(response.data.content.grainageMaster);
       })
@@ -326,98 +179,80 @@ function CropDetailsForSeedMarket() {
     getGrainageList();
   }, []);
 
-  // // to get Lot
-  // const [lotListData, setLotListData] = useState([]);
-
-  // const getLotList = () => {
-  //   const response = api
-  //     .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
-  //     .then((response) => {
-  //       setLotListData(response.data);
-  //     })
-  //     .catch((err) => {
-  //       setLotListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getLotList();
-  // }, []);
-
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL2 + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRaceList();
-  }, []);
-
-   // to get Race
-    const [externalListData, setExternalListData] = useState([]);
+   const [raceListData, setRaceListData] = useState([]);
   
-    const getExternalList = (_id) => {
+    const getRaceList = () => {
       const response = api
-        .get(baseURLFarmer + `external-unit-registration/get-all`)
+        .get(baseURL + `raceMaster/get-all`)
         .then((response) => {
-          setExternalListData(response.data.content.externalUnitRegistration);
-          // setLoading(false);
-          if (response.data.content.error) {
-              setExternalListData([]);
-          }
+          setRaceListData(response.data.content.raceMaster);
         })
         .catch((err) => {
-          setExternalListData([]);
-          // setLoading(false);
+          setRaceListData([]);
         });
     };
   
     useEffect(() => {
-          getExternalList();
+      getRaceList();
     }, []);
- 
 
-  const navigate = useNavigate();
-  const saveSuccess = (message) => {
-    Swal.fire({
-      icon: "success",
-      title: t("Saved successfully"),
-      text: message,
-    });
-  };
-  const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
-    Swal.fire({
-      icon: "error",
-      title: t("Attempt was not successful"),
-      html: errorMessage,
-    });
-  };
+    // to get Race
+        const [externalListData, setExternalListData] = useState([]);
+      
+        const getExternalList = (_id) => {
+          const response = api
+            .get(baseURLFarmer + `external-unit-registration/get-all`)
+            .then((response) => {
+              setExternalListData(response.data.content.externalUnitRegistration);
+              // setLoading(false);
+              if (response.data.content.error) {
+                  setExternalListData([]);
+              }
+            })
+            .catch((err) => {
+              setExternalListData([]);
+              // setLoading(false);
+            });
+        };
+      
+        useEffect(() => {
+              getExternalList();
+        }, []);
 
-  const handleDateChange = (date, type) => {
+         const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
+  const navigate = useNavigate();
+
+  const updateSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Updated successfully",
+      // text: "You clicked the button!",
+    }).then(() => navigate("#"));
+  };
+  const updateError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    });
+  };
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
+
   return (
-    <Layout title={t("Crop Details-Seed Market")}>
+    <Layout title="Edit Crop Details-Seed Market">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Crop Details-Seed Market")}</Block.Title>
+            <Block.Title tag="h2">Edit Crop Details-Seed Market</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -427,7 +262,7 @@ function CropDetailsForSeedMarket() {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
+                  <span>Go to List</span>
                 </Link>
               </li>
               <li>
@@ -436,7 +271,7 @@ function CropDetailsForSeedMarket() {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
+                  <span>Go to List</span>
                 </Link>
               </li>
             </ul>
@@ -446,7 +281,8 @@ function CropDetailsForSeedMarket() {
 
       <Block className="mt-n4">
               {/* <Form action="#"> */}
-              <Form noValidate validated={searchValidated} onSubmit={search}>
+              <Form noValidate validated={validated} onSubmit={postData}>
+              <Row className="g-1 ">
                 <Card>
                   <Card.Body>
                     <Row className="g-gs">
@@ -490,9 +326,10 @@ function CropDetailsForSeedMarket() {
                     </Row>
                   </Card.Body>
                 </Card>
-              </Form>
-            <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-0">
+              {/* </Form> */}
+            {/* <Form noValidate validated={validated} onSubmit={postData}> */}
+          {/* <Row className="g-0"> */}
+          <Block className="mt-3">
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
                 {t("Crop Details-Seed Market")}
@@ -1039,7 +876,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.transactionDate}
+                            selected={data.transactionDate ? new Date(data.transactionDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "transactionDate")
                             }
@@ -1064,7 +901,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.dateOfBrushing}
+                            selected={data.dateOfBrushing ? new Date(data.dateOfBrushing) : null}
                             onChange={(date) =>
                             handleDateChange(date, "dateOfBrushing")
                             }
@@ -1090,7 +927,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.dateOfDistributionOfChawkiWorms}
+                            selected={data.dateOfDistributionOfChawkiWorms ? new Date(data.dateOfDistributionOfChawkiWorms) : null}
                             onChange={(date) =>
                             handleDateChange(date, "dateOfDistributionOfChawkiWorms")
                             }
@@ -1115,7 +952,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.spunOnDate}
+                            selected={data.spunOnDate ? new Date(data.spunOnDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "spunOnDate")
                             }
@@ -1140,7 +977,7 @@ function CropDetailsForSeedMarket() {
                         </Form.Label>
                         <div className="Date of seed cocoon supply">
                         <DatePicker
-                            selected={data.spunOnToDate}
+                            selected={data.spunOnToDate ? new Date(data.spunOnToDate) : null}
                             onChange={(date) =>
                             handleDateChange(date, "spunOnToDate")
                             }
@@ -1160,6 +997,7 @@ function CropDetailsForSeedMarket() {
                 </Row>
               </Card.Body>
             </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -1183,4 +1021,4 @@ function CropDetailsForSeedMarket() {
   );
 }
 
-export default CropDetailsForSeedMarket;
+export default CropDetailsForSeedMarketEdit;

@@ -1070,6 +1070,8 @@ import CropDetailsForCommercialMarket from "../pages/direct-benefit-transfer/Cro
 import CropDetailsForCommercialMarketList from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketList";
 import CropDetailsForSeedMarket from "../pages/direct-benefit-transfer/CropDetailsSeedMarket";
 import CropDetailsForSeedMarketList from "../pages/direct-benefit-transfer/CropDetailsSeedMarketList";
+import CropDetailsForSeedMarketEdit from "../pages/direct-benefit-transfer/CropDetailsSeedMarketEdit";
+import CropDetailsCommercialMarketEdit from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketEdit";
 
 // Admin and Reports
 
@@ -2836,6 +2838,8 @@ function Router() {
 
             <Route path="crop-details-seed-market" element={<CropDetailsForSeedMarket />} />
             <Route path="crop-details-seed-market-list" element={<CropDetailsForSeedMarketList />} />
+            <Route path="crop-details-seed-market-edit/:id" element={<CropDetailsForSeedMarketEdit />} />
+            <Route path="crop-details-commercial-market-edit/:id" element={<CropDetailsCommercialMarketEdit />} />  
 
 
             <Route path="silk-exchange" element={<SilkExchange />} />
