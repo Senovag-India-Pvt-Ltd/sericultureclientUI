@@ -1352,6 +1352,7 @@ const generateFinalReport = (selectedRows) => {
     eligibleAmount: actionData.eligibleAmount,
     proposalDate: actionData.proposalDate,
     releaseNo: actionData.releaseNo,
+    sanctionNo: actionData.sanctionNo,
     releaseDate: actionData.releaseDate,
     pushToDBTRequestList: sendResponse
   };
@@ -1909,7 +1910,26 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
             <Row className="align-items-end">
 
               {/* Proposal Date */}
-              
+               <Col lg="3">
+                <Form.Group className="form-group mt-n3">
+                  <Form.Label htmlFor="schemeAmount">Sanction No<span className="text-danger">*</span></Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="sanctionNo"
+                      type="text"
+                      name="sanctionNo"
+                      value={actionData.sanctionNo}
+                      onChange={handleActionInputs}
+                      placeholder="Enter Sanction No"
+                      required
+                      // readOnly
+                    />
+                  </div>
+                </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                Sanction Number is required
+              </Form.Control.Feedback>
+              </Col>
 
               <Col lg="3">
                 <Form.Group className="form-group mt-n3">

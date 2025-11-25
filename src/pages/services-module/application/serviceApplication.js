@@ -90,7 +90,7 @@ function ServiceApplication() {
     boilerInKg: "",
     sanctionNo: "",
     calculationBasedOn: "",
-    marketId: localStorage.getItem("marketId") || "",
+    marketId: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -178,7 +178,7 @@ const fetchLotOptionsForCommercialMarket = () => {
   api
     .post(baseURLDBT + `cropDetailsCommercialMarket/getBiddingSlipNoForCommercialMarket`, {
       transactionDate: formattedAuctionDate,
-      marketId: localStorage.getItem("marketId"),
+      marketId: data.marketId,
       fruitsId: data.fruitsId,
     })
     .then((response) => {
@@ -212,7 +212,7 @@ const fetchLotOptionsForSeedMarket = () => {
   api
     .post(baseURLDBT + `cropDetailsSeedMarket/getBiddingSlipNoForSeedMarket`, {
       transactionDate: formattedAuctionDate,
-      marketId: localStorage.getItem("marketId"),
+      marketId: data.marketId,
       fruitsId: data.fruitsId,
     })
     .then((response) => {
@@ -258,6 +258,24 @@ useEffect(() => {
   useEffect(() => {
     getSchemeQuotaList();
   }, []);
+
+   // to get Market
+    const [marketListData, setMarketListData] = useState([]);
+  
+    const getMarketList = () => {
+      const response = api
+        .get(baseURLMasterData + `marketMaster/get-all`)
+        .then((response) => {
+          setMarketListData(response.data.content.marketMaster);
+        })
+        .catch((err) => {
+          setMarketListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getMarketList();
+    }, []);
 
   // to get roofType
     const [roofTypeListData, setRoofTypeListData] = useState([]);
@@ -767,6 +785,11 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
         // Extract schemeType
         const schemeType = subSchemeList[0]?.subSchemeType;
 
+        setData((prev) => ({
+          ...prev,
+          schemeType: schemeType,
+        }));
+
         // Trigger correct API based on unitForScheme
         if (data.lotNo && schemeType) {
           // For Bivoltine Bonus
@@ -906,7 +929,7 @@ const getCropDetailsCommercialMarketByLotNo = (biddingSlipNo, schemeType) => {
     baseURLDBT + `cropDetailsCommercialMarket/getCropDetailsCommercialMarketByLotNo`,
     {
       transactionDate: formattedAuctionDate,
-      marketId: localStorage.getItem("marketId"),
+      marketId: data.marketId,
       fruitsId: data.fruitsId,
       biddingSlipNo: biddingSlipNo,
     }
@@ -958,7 +981,7 @@ const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
     baseURLDBT + `cropDetailsSeedMarket/getCropDetailsSeedMarketByLotNo`,
     {
       transactionDate: formattedAuctionDate,
-      marketId: localStorage.getItem("marketId"),
+      marketId: data.marketId,
       fruitsId: data.fruitsId,
       biddingSlipNo: biddingSlipNo,
     }
@@ -978,6 +1001,8 @@ const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
         averageYield: lotData.averageYield || 0,
         lotWeight: lotData.noOfDfls || 0,
         noOfCocoonPerKg: lotData.noOfCocoonsPerKg || 0,
+        noOfRawSilkProduced: lotData.cocoonTransactedForReelingInKg || 0,
+        noOfCocoonsNeedToProduce: lotData.quantityOfSeedCocoons || 0,
       }));
     })
     .catch((err) => {
@@ -1796,13 +1821,77 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
   //   });
   // };
   
-  const calculateBonusAmount = () => {
+//   const calculateBonusAmount = () => {
+//   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+//   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+
+//   const calculatedAmount = cocoonsWeight * amountPerKg;
+//   const roundedAmount = Math.round(calculatedAmount);
+//  // round to 2 decimals
+
+//   setAmountValue({
+//     ...amountValue,
+//     unitPrice: amountPerKg,
+//   });
+
+//   setData({
+//     ...data,
+//     expectedAmount: roundedAmount,
+//   });
+// };
+
+const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  const avgYield = parseFloat(data.averageYield || 0);
+
+  let baseQuantity;
+
+  // ⭐ Special rule:
+  // If calcType is Bivoltine incentive AND averageYield > maxNoOfCocoonsPerKg,
+  // then calculate based on: maxNoOfCocoonsPerKg * amountPerKg
+  if (
+    calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" &&
+    maxNoOfCocoonsPerKg &&
+    avgYield > parseFloat(maxNoOfCocoonsPerKg)
+  ) {
+    baseQuantity = parseFloat(maxNoOfCocoonsPerKg);
+  } else {
+    // Default: use cocoonsWeight as before
+    baseQuantity = cocoonsWeight;
+  }
+
+  const calculatedAmount = baseQuantity * amountPerKg;
+
+  // Round to 2 decimals
+  const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+
+  setAmountValue((prev) => ({
+    ...prev,
+    unitPrice: amountPerKg,
+  }));
+
+  setData((prev) => ({
+    ...prev,
+    expectedAmount: roundedAmount,
+  }));
+};
+
+
+
+const calculateAmountFor30Kg = () => {
+  const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+
+  // If averageYield > max limit, use max slab's amountPerKg
+  let amountPerKg;
+  if (data.useMaxSlab) {
+    amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  } else {
+    amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  }
 
   const calculatedAmount = cocoonsWeight * amountPerKg;
-  const roundedAmount = Math.round(calculatedAmount);
- // round to 2 decimals
+  const roundedAmount = Math.round(calculatedAmount * 100) / 100; // round to 2 decimals
 
   setAmountValue({
     ...amountValue,
@@ -1814,6 +1903,43 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
     expectedAmount: roundedAmount,
   });
 };
+
+const calculateAmountForBivoltineBonus = () => {
+  const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+  const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
+
+  const schemeType = data.schemeType; // 2 = incentive, 3 = Bivoltine Bonus
+
+  let calculatedAmount = 0;
+
+  // ⭐ CASE 1: Bivoltine Bonus (subSchemeType = 3)
+  if (schemeType === 3) {
+    const rawSilk = parseFloat(data.noOfRawSilkProduced || 0);
+
+    calculatedAmount = rawSilk * amountPerKg; // <-- Your new rule
+
+  } 
+  // ⭐ CASE 2: Other Incentive Schemes (subSchemeType = 2)
+  else if (schemeType === 2) {
+    const baseQuantity = parseFloat(data.cocoonsWeight || 0);
+    calculatedAmount = baseQuantity * amountPerKg;
+  }
+
+  // Round to 2 decimals
+  const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+
+  setAmountValue((prev) => ({
+    ...prev,
+    unitPrice: amountPerKg,
+  }));
+
+  setData((prev) => ({
+    ...prev,
+    expectedAmount: roundedAmount,
+  }));
+};
+
+
 
  const calculateChawkiBivoltineAmount = () => {
   const noOfDfls = parseFloat(data.lotWeight || 0);
@@ -2094,7 +2220,7 @@ const handleCalculateUnitPrice = () => {
  }
 
     // 7. If all validations pass, calculate the bonus
-    calculateBonusAmount();
+    calculateAmountForBivoltineBonus();
     return;
   }
 
@@ -2148,11 +2274,80 @@ const handleCalculateUnitPrice = () => {
 //     return;
 //   }
 // ✅ Check for Incentive/Bonus-based calculations
+// if (
+//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//     "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//     "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+// ) {
+//   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: "Validation Error",
+//       text: "Please fill all required fields.",
+//     });
+//     return;
+//   }
+
+//   // 2. Check for required bonus-specific fields
+//   if (!data.averageYield || !data.cocoonsWeight) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: "Validation Error",
+//       text: "Please provide Average Yield and No Of DFLs",
+//     });
+//     return;
+//   }
+
+//   // 3. Validate that API data for bonus is available
+//   if (!bonusAmountData || bonusAmountData.length === 0) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: "No Data Found",
+//       text: "No data available for selected parameters.",
+//     });
+//     return;
+//   }
+
+//   const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+
+//   // 🔥 APPLY MIN/MAX VALIDATION ONLY FOR BIVOLTINE INCENTIVE
+//   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
+//     const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+
+//     // 5. Check min Average Yield
+//     if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Validation Error",
+//         text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).`,
+//       });
+//       return;
+//     }
+
+//     // 6. Check max No. of Cocoons Per Kg
+//     if (parseFloat(data.averageYield) > parseFloat(maxNoOfCocoonsPerKg)) {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Validation Error",
+//         text: `Average Yield cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).`,
+//       });
+//       return;
+//     }
+//   }
+
+//   // 7. If all validations pass, calculate the bonus
+//   calculateBonusAmount();
+//   return;
+// }
+
+// ... inside your function/handler
+
+const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+
 if (
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
-    "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
-    "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+  calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+  calcType === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
 ) {
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
@@ -2183,13 +2378,14 @@ if (
     return;
   }
 
-  const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+  // 🔥 EXTRA: MIN validation only for Bivoltine incentive
+  let maxNoOfCocoonsPerKg;
 
-  // 🔥 APPLY MIN/MAX VALIDATION ONLY FOR BIVOLTINE INCENTIVE
   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-    const { minAverageYield, maxNoOfCocoonsPerKg } = bonusAmountData[0];
+    const { minAverageYield, maxNoOfCocoonsPerKg: maxCocoons } = bonusAmountData[0];
+    maxNoOfCocoonsPerKg = maxCocoons;
 
-    // 5. Check min Average Yield
+    // 5. Check min Average Yield (still blocked if less than min)
     if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
       Swal.fire({
         icon: "warning",
@@ -2199,21 +2395,17 @@ if (
       return;
     }
 
-    // 6. Check max No. of Cocoons Per Kg
-    if (parseFloat(data.averageYield) > parseFloat(maxNoOfCocoonsPerKg)) {
-      Swal.fire({
-        icon: "warning",
-        title: "Validation Error",
-        text: `Average Yield cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).`,
-      });
-      return;
-    }
+    // ⚠️ IMPORTANT:
+    // If Average Yield > maxNoOfCocoonsPerKg -> DO NOT block.
+    // We'll handle it inside calculateBonusAmount by using
+    // maxNoOfCocoonsPerKg for the calculation.
   }
 
   // 7. If all validations pass, calculate the bonus
-  calculateBonusAmount();
+  calculateBonusAmount({ calcType, maxNoOfCocoonsPerKg });
   return;
 }
+
 
 if (
   getIncentiveAndBonusData[0]?.calculationBasedOn ===
@@ -3052,7 +3244,7 @@ useEffect(() => {
       dailyLimit: data.dailyLimit,
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
-      marketId: localStorage.getItem("marketId"),
+      marketId: data.marketId,
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -5396,9 +5588,10 @@ const fetchReelerDetails = () => {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 maxDate={new Date()}
-                                readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
-                                  schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-                                  !schemeDetails.calculationBasedOn}
+                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                //   !schemeDetails.calculationBasedOn}
+                                readOnly 
                                 required
                               />
                             </div>
@@ -5426,9 +5619,10 @@ const fetchReelerDetails = () => {
                                 className="form-control"
                                 maxDate={new Date()}
                                 required
-                                readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
-                                  schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-                                  !schemeDetails.calculationBasedOn}
+                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                //   !schemeDetails.calculationBasedOn}
+                                readOnly 
                               />
                             </div>
                           </Form.Group>
@@ -5593,7 +5787,7 @@ const fetchReelerDetails = () => {
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label>
-                                {t("No Of Raw Silk Produced")} 
+                                {t("Raw Silk Produced in Kgs")} 
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -5954,7 +6148,37 @@ const fetchReelerDetails = () => {
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-4">
-                            
+                             <Col lg="2">
+                        <Form.Group className="form-group">
+                            <Form.Label>
+                            {t("Market")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                            <div className="form-control-wrap">
+                                <Form.Select
+                                name="marketId"
+                                value={data.marketId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                >
+                                <option value="">{t("Select Market")}</option>
+                                {marketListData.map((list) => (
+                                    <option
+                                    key={list.marketMasterId}
+                                    value={list.marketMasterId}
+                                    >
+                                    {list.marketMasterName}
+                                    </option>
+                                ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                {t("Market is required")}
+                                </Form.Control.Feedback>
+                            </div>
+                            </Col>
+                        </Form.Group>
+                        </Col>
 
                             <Col lg="2">
                               <Form.Group className="form-group">
@@ -6145,6 +6369,38 @@ const fetchReelerDetails = () => {
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-4">
+
+                          <Col lg="2">
+                        <Form.Group className="form-group">
+                            <Form.Label>
+                            {t("Market")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col>
+                            <div className="form-control-wrap">
+                                <Form.Select
+                                name="marketId"
+                                value={data.marketId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                >
+                                <option value="">{t("Select Market")}</option>
+                                {marketListData.map((list) => (
+                                    <option
+                                    key={list.marketMasterId}
+                                    value={list.marketMasterId}
+                                    >
+                                    {list.marketMasterName}
+                                    </option>
+                                ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                {t("Market is required")}
+                                </Form.Control.Feedback>
+                            </div>
+                            </Col>
+                        </Form.Group>
+                        </Col>
                             
 
                             <Col lg="2">
@@ -6215,7 +6471,7 @@ const fetchReelerDetails = () => {
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                              Cocoons Transacted
+                              Total Cocoons Transacted
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -6299,6 +6555,56 @@ const fetchReelerDetails = () => {
                                 value={data.averageYield}
                                 onChange={handleInputs}
                                 placeholder="Enter Average Yield"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                        <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Eligible For Bonus
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="noOfRawSilkProduced"
+                                type="text"
+                                name="noOfRawSilkProduced"
+                                value={data.noOfRawSilkProduced}
+                                onChange={handleInputs}
+                                placeholder="Eligible For Bonus"
+                                // readOnly
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                              Total Cocoons Weight is required
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                        <Col lg="2">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="schemeAmount">
+                              Eligible For Incentive
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="noOfCocoonsNeedToProduce"
+                                type="text"
+                                name="noOfCocoonsNeedToProduce"
+                                value={data.noOfCocoonsNeedToProduce}
+                                onChange={handleInputs}
+                                placeholder="Eligible For Incentive"
                                 // readOnly
                                 // required
                               />
