@@ -866,7 +866,7 @@ const handleInputs = (e) => {
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Bidding Slip No")}<span className="text-danger">*</span>
+                          {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -875,11 +875,11 @@ const handleInputs = (e) => {
                             value={data.biddingSlipNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Bidding Slip No")}
+                            placeholder={t("Bidding Slip Lot No")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
+                          Bidding Slip Lot No is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

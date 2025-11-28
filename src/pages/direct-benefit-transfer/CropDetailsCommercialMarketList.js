@@ -291,7 +291,7 @@ function CropDetailsForCommercialMarketList() {
         hide: "md",
       },
       {
-        name: "Bidding slip No",
+        name: "Bidding Slip LOt No",
         selector: (row) => row.biddingSlipNo,
         cell: (row) => <span>{row.biddingSlipNo}</span>,
         sortable: true,
