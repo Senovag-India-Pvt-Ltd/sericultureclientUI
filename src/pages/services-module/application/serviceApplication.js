@@ -2653,7 +2653,7 @@ if (
       Swal.fire({
         icon: "warning",
         title: "No Data Found",
-        text: "No ICB/ARM data available for selected parameters.",
+        text: "No ICB data available for selected parameters.",
       });
       return;
     }
@@ -2747,7 +2747,7 @@ if (
       Swal.fire({
         icon: "warning",
         title: "No Data Found",
-        text: "No Reeling Shed data available for selected parameters.",
+        text: "No Adopting Silent Generator data available for selected parameters.",
       });
       return;
     }
@@ -2793,7 +2793,7 @@ if (
       Swal.fire({
         icon: "warning",
         title: "No Data Found",
-        text: "No Reeling Shed data available for selected parameters.",
+        text: "No Adopting Solar power Generator data available for selected parameters.",
       });
       return;
     }
@@ -2841,7 +2841,7 @@ if (
       Swal.fire({
         icon: "warning",
         title: "No Data Found",
-        text: "No Reeling Shed data available for selected parameters.",
+        text: "No Adopting Solar Water Heater data available for selected parameters.",
       });
       return;
     }
@@ -5069,9 +5069,9 @@ const fetchReelerDetails = () => {
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select
-                                    id="reelingSqft"
-                                    name="reelingSqft"
-                                    value={data.reelingSqft}
+                                    id="reelingShedSqft"
+                                    name="reelingShedSqft"
+                                    value={data.reelingShedSqft}
                                     onChange={handleInputs}
                                     required
                                   >
@@ -6724,7 +6724,7 @@ const fetchReelerDetails = () => {
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="landDeveloped">
-                            {t("Unit Price")}
+                            {t("Unit Cost")}
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -6734,11 +6734,11 @@ const fetchReelerDetails = () => {
                               name="unitPrice"
                               value={amountValue.unitPrice}
                               onChange={handleDevelopedLandInputs}
-                              placeholder={t("Enter Unit Price")}
+                              placeholder={t("Enter Unit Cost")}
                               readOnly
                             />
                             <Form.Control.Feedback type="invalid">
-                              {t("Unit Price is required")}
+                              {t("Unit Cost is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -6785,7 +6785,7 @@ const fetchReelerDetails = () => {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Unit")}
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -6795,11 +6795,11 @@ const fetchReelerDetails = () => {
                                 value={developedLand.landDeveloped}
                                 onChange={handleDevelopedLandInputs}
                                 placeholder="Enter Unit"
-                                required
+                                // required
                               />
-                              <Form.Control.Feedback type="invalid">
+                              {/* <Form.Control.Feedback type="invalid">
                                 {t("Unit Quantity is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
