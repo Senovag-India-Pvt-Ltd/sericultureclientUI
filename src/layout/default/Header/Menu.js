@@ -333,6 +333,7 @@ function Menu() {
     Inspection_Tracking_Status_of_Mulberry: false,
     Inspection_Supply_of_Disinfectants_to_Farmers: false,
     Inspection_Implementation_of_MGNREGA: false,
+    Inspection_Download_Inspection_Mobile_App: false,
 
     Training: false,
     Training_Schedule: false,
@@ -3124,7 +3125,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Inspection_Implementation_of_MGNREGA ? (
+            {showMenu.Inspection_Download_Inspection_Mobile_App ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Download Inspection Mobile App")}
