@@ -91,6 +91,7 @@ function ServiceApplication() {
     sanctionNo: "",
     calculationBasedOn: "",
     marketId: "",
+  
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -1207,27 +1208,41 @@ if (
       });
   };
 
+  const [sharePercentage, setSharePercentage] = useState(0);
+
   const getHeadAccountbyschemeIdAndSubSchemeIdList = (
-    schemeId,
-    subSchemeId,
-    categoryId
-  ) => {
-    api
-      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId-and-categoryId`, {
-        schemeId: schemeId,
-        subSchemeId: subSchemeId,
-        categoryId: categoryId,
-      })
-      .then((response) => {
-        if (response.data.content.unitCost) {
-          setScHeadAccountListData(response.data.content.unitCost);
+  schemeId,
+  subSchemeId,
+  scComponentId,
+  categoryId
+) => {
+  api
+    .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId-and-categoryId`, {
+      schemeId,
+      subSchemeId,
+      scComponentId,
+      categoryId,
+    })
+    .then((response) => {
+      const unitCost = response.data.content.unitCost;
+      if (unitCost) {
+        setScHeadAccountListData(unitCost);
+
+        const first = unitCost[0];
+        if (first) {
+          setSharePercentage(first.shareInPercentage);  // ✅ correct field
         }
-      })
-      .catch((err) => {
-        setScHeadAccountListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
+      }
+    })
+    .catch(() => {
+      setScHeadAccountListData([]);
+      setSharePercentage(0);
+    });
+};
+
+
+
+
 
   useEffect(() => {
     if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
@@ -1235,10 +1250,22 @@ if (
       getHeadAccountbyschemeIdAndSubSchemeIdList(
         data.scSchemeDetailsId,
         data.scSubSchemeDetailsId,
+        data.scComponentId,
         data.scCategoryId
       );
     }
-  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId,data.scCategoryId]);
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId,data.scComponentId,data.scCategoryId]);
+
+  useEffect(() => {
+  if (data.expectedAmount && sharePercentage) {
+    const subsidy = (Number(data.expectedAmount) * Number(sharePercentage)) / 100;
+
+    setData((prev) => ({
+      ...prev,
+      subsidyAmount: Math.round(subsidy)   // 🔥 rounded value
+    }));
+  }
+}, [data.expectedAmount, sharePercentage]);
 
   console.log(data);
 
@@ -1648,6 +1675,13 @@ if (
     setDevelopedLand({ ...developedLand, [name]: value });
   };
 
+  
+  const handleAmountValueInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setAmountValue({ ...amountValue, [name]: value });
+  };
+
   const [listData, setListData] = useState({});
 
  
@@ -2054,7 +2088,7 @@ useEffect(() => {
 }, [data.machineTypeId,data.reelingSqft,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
 
-const [reelinShedSolarWaterHeaterAmountData, setReelingShedSolarWaterHeaterAmountListData] = useState([]);
+const [reelingShedSolarWaterHeaterAmountData, setReelingShedSolarWaterHeaterAmountListData] = useState([]);
 
 // ✅ API call to get Silk Incentive amount list
 const getreelingShedSolarWaterHeaterAmountList = (machineTypeId ,reelingSqft,reelingUnit,componentTypeId, componentId, categoryId) => {
@@ -2108,6 +2142,46 @@ useEffect(() => {
     );
   }
 }, [data.machineTypeId,data.reelingSqft,data.reelingUnit,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
+const [allDetailsData, setAllDetailsData] = useState([]);
+
+// ✅ API call to get Silk Incentive amount list
+const getAllDetailsDataForReelingShedSWSG = (machineTypeId,componentTypeId, componentId, categoryId) => {
+  api
+    .get(`${baseURLMasterData}configureReelingShed/getAllDetails`, {
+      params: {
+        machineTypeId,
+        componentTypeId,
+        componentId,
+        categoryId
+      }
+    })
+    .then((response) => {
+      const incentiveData = response.data.content?.configureReelingShed || [];
+      setAllDetailsData(incentiveData);
+    })
+    .catch((err) => {
+      setAllDetailsData([]);
+      console.error(err);
+    });
+};
+
+// ✅ useEffect to fetch Silk Incentive data when dependent fields change
+useEffect(() => {
+  if (
+    data.machineTypeId &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getAllDetailsDataForReelingShedSWSG( 
+      data.machineTypeId,
+      data.scSubSchemeDetailsId,
+      data.scComponentId, 
+      data.scCategoryId
+    );
+  }
+}, [data.machineTypeId,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
 const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations
@@ -2837,7 +2911,7 @@ if (
 
 
   // ✅ Validate that API data is available
-    if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
+    if (!reelingShedSolarWaterHeaterAmountData || reelingShedSolarWaterHeaterAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
         title: "No Data Found",
@@ -2847,7 +2921,7 @@ if (
     }
 
     // ✅ Use first record (or modify if multiple expected)
-    const icbRecord = reelinShedAmountData[0];
+    const icbRecord = reelingShedSolarWaterHeaterAmountData[0];
 
     // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
     setAmountValue((prev) => ({
@@ -3245,6 +3319,7 @@ useEffect(() => {
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
       marketId: data.marketId,
+      unitPrice:amountValue.unitPrice
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -4926,6 +5001,7 @@ const fetchReelerDetails = () => {
                                       required
                                     >
                                       <option value="">{t("Select Table/Basin/Ends")}</option>
+                                      <option value="4 Charaka">4 Charaka</option>
                                       <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
                                       <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
                                       <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
@@ -5062,7 +5138,7 @@ const fetchReelerDetails = () => {
                                 </Form.Group>
                               </Col>
 
-                             <Col lg="6">
+                             {/* <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Reeling SQFT")} <span className="text-danger">*</span>
@@ -5086,7 +5162,41 @@ const fetchReelerDetails = () => {
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
-                            </Col>
+                            </Col> */}
+
+                             <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Reeling Sqft")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="reelingSqft"
+                                      value={data.reelingSqft}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.reelingSqft === undefined ||
+                                        data.reelingSqft === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Reeling Sqft")}</option>
+                                      {allDetailsData.map((list) => (
+                                        <option
+                                          key={list.reelingShedId}
+                                          value={list.reelingSqft}
+                                        >
+                                          {list.reelingSqft}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Reeling Sqft is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
 
 
                             </>
@@ -5154,7 +5264,7 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col> */}
 
-                            <Col lg="6">
+                            {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 <strong>Silent generator Capacity( KW )</strong>
@@ -5174,7 +5284,41 @@ const fetchReelerDetails = () => {
                              <Form.Control.Feedback type="invalid">
                                 Silent generator Capacity( KW ) is required
                               </Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
+
+                          <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Silent generator Capacity( KW )")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="reelingSqft"
+                                      value={data.reelingSqft}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.reelingSqft === undefined ||
+                                        data.reelingSqft === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {allDetailsData.map((list) => (
+                                        <option
+                                          key={list.reelingShedId}
+                                          value={list.reelingSqft}
+                                        >
+                                          {list.reelingSqft}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Silent generator Capacity( KW ) is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
                             </>
                                )}
 
@@ -5240,7 +5384,7 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col> */}
 
-                            <Col lg="6">
+                            {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 <strong>Solar Power Generator Capacity(HP)</strong>
@@ -5260,7 +5404,41 @@ const fetchReelerDetails = () => {
                              <Form.Control.Feedback type="invalid">
                                 Solar Power Generator Capacity(HP) is required
                               </Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
+
+                          <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Solar Power Generator Capacity(HP)")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="reelingSqft"
+                                      value={data.reelingSqft}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.reelingSqft === undefined ||
+                                        data.reelingSqft === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Solar Power Generator Capacity(HP)")}</option>
+                                      {allDetailsData.map((list) => (
+                                        <option
+                                          key={list.reelingShedId}
+                                          value={list.reelingSqft}
+                                        >
+                                          {list.reelingSqft}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Solar Power Generator Capacity(HP) is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
                             </>
                                )}
 
@@ -5348,7 +5526,7 @@ const fetchReelerDetails = () => {
                               </Form.Control.Feedback>
                           </Col> */}
 
-                           <Col lg="6">
+                           {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 <strong>Solar Water heater Capcity(In Ltrs)</strong>
@@ -5368,9 +5546,45 @@ const fetchReelerDetails = () => {
                              <Form.Control.Feedback type="invalid">
                                 Solar Water heater Capcity(In Ltrs) is required
                               </Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="6">
+                           <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Solar Water Heater Capcity(In Ltrs)")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="reelingSqft"
+                                      value={data.reelingSqft}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.reelingSqft === undefined ||
+                                        data.reelingSqft === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Solar Water Heater Capcity(In Ltrs)")}</option>
+                                      {allDetailsData.map((list) => (
+                                        <option
+                                          key={list.reelingShedId}
+                                          value={list.reelingSqft}
+                                        >
+                                          {list.reelingSqft}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Solar Water heater Capcity(In Ltrs) is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                          
+
+                          {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 <strong>Model</strong>
@@ -5390,7 +5604,40 @@ const fetchReelerDetails = () => {
                              <Form.Control.Feedback type="invalid">
                                 Model is required
                               </Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
+                          <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Model")}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="reelingUnit"
+                                      value={data.reelingUnit}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.reelingUnit === undefined ||
+                                        data.reelingUnit === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Model")}</option>
+                                      {allDetailsData.map((list) => (
+                                        <option
+                                          key={list.reelingShedId}
+                                          value={list.reelingUnit}
+                                        >
+                                          {list.reelingUnit}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    <Form.Control.Feedback type="invalid">
+                                      {t("Model is required")}
+                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
                             </>
                                )}
 
@@ -6733,7 +6980,7 @@ const fetchReelerDetails = () => {
                               type="text"
                               name="unitPrice"
                               value={amountValue.unitPrice}
-                              onChange={handleDevelopedLandInputs}
+                              onChange={handleAmountValueInputs}
                               placeholder={t("Enter Unit Cost")}
                               readOnly
                             />
@@ -6744,6 +6991,31 @@ const fetchReelerDetails = () => {
                         </Form.Group>
                       </Col>
 
+                      {/* <Col lg="4">
+                        <Form.Group className="form-group mt-n5">
+                          <Form.Label htmlFor="expectedAmount">
+                            {t("Subsidy/Bonus/Incentive Amount")}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="expectedAmount"
+                              type="text"
+                              name="expectedAmount"
+                              value={data.expectedAmount}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Expected Amount")}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {t("Subsidy Amount is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col> */}
+
+                      {/* IF NOT sanctionForReeling → Show normal field */}
+                    {!getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
@@ -6766,6 +7038,51 @@ const fetchReelerDetails = () => {
                           </div>
                         </Form.Group>
                       </Col>
+                    )}
+
+
+                    {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
+                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n5">
+                          <Form.Label htmlFor="totalExpectedAmount">
+                            {t("Total Subsidy/Bonus/Incentive Amount")}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="totalExpectedAmount"
+                              type="text"
+                              name="expectedAmount"
+                              value={data.expectedAmount}
+                              disabled
+                              placeholder={t("Enter Expected Amount")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
+
+
+                    {/* IF sanctionForReeling → Show Subsidy Amount */}
+                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n5">
+                          <Form.Label>
+                            <strong>Subsidy Amount</strong>
+                          </Form.Label>
+                          <Form.Control
+                            id="subsidyAmount"
+                            type="text"
+                            name="subsidyAmount"
+                            value={data.subsidyAmount}
+                            // disabled
+                            placeholder="Auto Calculated"
+                          />
+                        </Form.Group>
+                      </Col>
+                    )}
+
                     </Row>
                   </Card.Body>
                 </Card>

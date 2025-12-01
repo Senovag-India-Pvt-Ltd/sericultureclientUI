@@ -546,6 +546,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
   const [userId, setId] = useState(localStorage.getItem("userMasterId"));
 
   const [districtId, setDistrictId] = useState(null);
+  const [divisionId, setDivisionId] = useState(null);
   const [talukId, setTalukId] = useState(null);
   const [designationId, setDesignationId] = useState(null);
   const [userFromDistrictData, setUserFromDistrictData] = useState([]);
@@ -578,6 +579,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         setDistrictId(response.data.content.districtId);
         setTalukId(response.data.content.talukId);
         setDesignationId(response.data.content.designationId);
+        setDivisionId(response.data.content.divisionMasterId);
         getList(
           response.data.content.districtId,
           response.data.content.talukId
@@ -1207,13 +1209,14 @@ const getUserForDrawingOfficer = (
   subSchemeId,
   scComponentId,
   schemeQuotaId,
-  talukId,
-  districtId
+  divisionId
+  // talukId,
+  // districtId
 ) => {
   api
     .post(
       baseURLDBT +
-        `service/getUserForDrawingOfficer?subSchemeId=${subSchemeId}&scComponentId=${scComponentId}&schemeQuotaId=${schemeQuotaId}&districtId=${districtId}&talukId=${talukId}`
+        `service/getUserForDrawingOfficerByDivision?subSchemeId=${subSchemeId}&scComponentId=${scComponentId}&schemeQuotaId=${schemeQuotaId}&divisionId=${divisionId}`
     )
     .then((response) => {
       if (response.data.content) {
@@ -1237,11 +1240,12 @@ useEffect(() => {
       row.subSchemeId,
       row.scComponentId,
       row.schemeQuotaId,
-      talukId,
-      districtId
+      // talukId,
+      // districtId
+      divisionId
     );
   });
-}, [pushToDBTListData, talukId, districtId]);
+}, [pushToDBTListData, divisionId]);
 
 // useEffect(() => {
 //   if (actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder) {
@@ -2564,6 +2568,24 @@ useEffect(() => {
   } else {
     event.preventDefault();
     setDisplaySubmit(true);
+
+    const missingOfficer = pushToDBTListData.some((row, index) => {
+    if (schemeDataListIds.includes(index)) {
+      return !row.userId || row.userId === "";
+    }
+    return false;
+  });
+
+  if (missingOfficer) {
+    Swal.fire({
+      icon: "warning",
+      title: "Drawing Officer Required",
+      text: "Please select Drawing Officer for all selected schemes before submitting!"
+    });
+
+    setDisplaySubmit(false);
+    return; // Stop further execution
+  }
 
     // Check if Reject Type is "Permanent", then call rejectServiceApplication
     if (actionData.rejectType === "Permanent") {

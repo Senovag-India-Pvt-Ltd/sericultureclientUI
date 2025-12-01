@@ -1933,7 +1933,7 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
 
               <Col lg="3">
                 <Form.Group className="form-group mt-n3">
-                  <Form.Label htmlFor="schemeAmount">Release No<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="schemeAmount">Allotment Release Order Details<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="releaseNo"
@@ -1941,7 +1941,7 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
                       name="releaseNo"
                       value={actionData.releaseNo}
                       onChange={handleActionInputs}
-                      placeholder="Enter Release No"
+                      placeholder="Allotment Release Order Details"
                       required
                       // readOnly
                     />

@@ -386,6 +386,7 @@ const handleInputs = (e) => {
                           required
                         >
                           <option value="">{t("Select Table/Basin/Ends")}</option>
+                          <option value="4 Charaka">4 Charaka</option>
                           <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
                           <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
                           <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
