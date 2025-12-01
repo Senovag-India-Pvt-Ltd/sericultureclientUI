@@ -3454,13 +3454,14 @@ useEffect(() => {
     }
   };
 
-  const generateAcknowledgmentRH = async (applicationFormId,schemeId) => {
+  const generateAcknowledgmentRH = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
         baseURLReport + `getBlankSample`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
+          subSchemeId: subSchemeId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -3475,13 +3476,14 @@ useEffect(() => {
     }
   };
 
-  const generateAcknowledgmentReelingShed = async (applicationFormId,schemeId) => {
+  const generateAcknowledgmentReelingShed = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
         baseURLReport + `getReelerAcknowledgement`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
+          subSchemeId: subSchemeId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -3496,13 +3498,14 @@ useEffect(() => {
     }
   };
 
-  const generateAcknowledgmentHRU = async (applicationFormId,schemeId) => {
+  const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
         baseURLReport + `getReelerAcknowledgementHRU`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
+          subSchemeId: subSchemeId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -3832,7 +3835,7 @@ const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId,
     acknowledgementForScheme === "Silk Samagra State" || 
     acknowledgementForScheme === "Silk Samagra Central"
   ) {
-    generateAcknowledgmentRH(applicationFormId, schemeId);
+    generateAcknowledgmentRH(applicationFormId, schemeId,subSchemeId);
 
   } else if (
     acknowledgementForScheme === "PDMC" || 

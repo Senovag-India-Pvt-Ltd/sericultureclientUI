@@ -1418,7 +1418,8 @@ useEffect(() => {
   workOrderForScheme,
   applicationFormId,
   workOrderSchemeId,
-  subSchemeId
+  subSchemeId,
+  categoryId
 ) => {
 
   if (
@@ -1437,10 +1438,10 @@ useEffect(() => {
     workOrderForScheme === "Reeling Shed-PSF" ||
     workOrderForScheme === "Silk Incentive-PSF"
   ) {
-    generateWorkOrderReelingShed(applicationFormId, workOrderSchemeId, subSchemeId);
+    generateWorkOrderReelingShed(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
 
   } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateWorkOrderOrderHRU(applicationFormId, workOrderSchemeId, subSchemeId);
+    generateWorkOrderOrderHRU(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
   }
 };
 
@@ -1494,7 +1495,7 @@ useEffect(() => {
   }
 };
 
-const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchemeId) => {
+const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
     const userId = localStorage.getItem("userMasterId");
@@ -1504,7 +1505,8 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
-        subSchemeId: subSchemeId, // ✅ Added userId
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
@@ -1519,7 +1521,7 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
   }
 };
 
-const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId) => {
+const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
     const userId = localStorage.getItem("userMasterId");
@@ -1529,7 +1531,8 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
-        subSchemeId: subSchemeId, // ✅ Added userId
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
@@ -1656,6 +1659,8 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            subSchemeId,
+            categoryId,
             "company",
             schemeType
           );
@@ -1667,6 +1672,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
             applicationFormId,
             schemeId,
             subSchemeId,
+            categoryId,
             "company",
             schemeType
           );
@@ -1678,6 +1684,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
             applicationFormId,
             schemeId,
             subSchemeId,
+            categoryId,
             "company",
             schemeType
           );
@@ -2993,7 +3000,8 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                 actionFarmerData[0].workOrderForScheme,
                 applicationFormId,
                 workOrderSchemeId,
-                actionFarmerData[0]?.subSchemeId
+                actionFarmerData[0]?.subSchemeId,
+                actionFarmerData[0]?.categoryId
               );
             }
 
