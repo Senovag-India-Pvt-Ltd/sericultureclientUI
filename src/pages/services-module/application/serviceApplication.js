@@ -3475,6 +3475,48 @@ useEffect(() => {
     }
   };
 
+  const generateAcknowledgmentReelingShed = async (applicationFormId,schemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getReelerAcknowledgement`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentHRU = async (applicationFormId,schemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getReelerAcknowledgementHRU`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -3630,9 +3672,10 @@ useEffect(() => {
 
         // ✅ Acknowledgment logic remains same
         callAcknowledgmentFunction(
-          schemeDetails.acknowledgementForScheme,
+          getIncentiveAndBonusData[0]?.acknowledgementForScheme,
           response.data.content.applicationDocumentId,
-          response.data.content.schemeId
+          response.data.content.schemeId,
+          response.data.content.subSchemeId
         );
 
         if (showModal) handleShowModal();
@@ -3776,11 +3819,35 @@ useEffect(() => {
   // };
   
  // Function to decide which acknowledgment method to call
- const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
-  if (acknowledgementForScheme === "Silk Samagra State" || acknowledgementForScheme === "Silk Samagra Central") {
+//  const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId) => {
+//   if (acknowledgementForScheme === "Silk Samagra State" || acknowledgementForScheme === "Silk Samagra Central") {
+//     generateAcknowledgmentRH(applicationFormId, schemeId);
+//   } else if (acknowledgementForScheme === "PDMC" || acknowledgementForScheme === "PMKSY") {
+//     generateAcknowledgment(applicationFormId, schemeId);
+//   }
+// };
+
+const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId,subSchemeId) => {
+  if (
+    acknowledgementForScheme === "Silk Samagra State" || 
+    acknowledgementForScheme === "Silk Samagra Central"
+  ) {
     generateAcknowledgmentRH(applicationFormId, schemeId);
-  } else if (acknowledgementForScheme === "PDMC" || acknowledgementForScheme === "PMKSY") {
+
+  } else if (
+    acknowledgementForScheme === "PDMC" || 
+    acknowledgementForScheme === "PMKSY"
+  ) {
     generateAcknowledgment(applicationFormId, schemeId);
+
+  } else if (
+    acknowledgementForScheme === "Reeling Shed-PSF" ||
+    acknowledgementForScheme === "Silk Incentive-PSF"
+  ) {
+    generateAcknowledgmentReelingShed(applicationFormId, schemeId,subSchemeId);
+
+  } else if (acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF") {
+    generateAcknowledgmentHRU(applicationFormId, schemeId,subSchemeId);
   }
 };
 

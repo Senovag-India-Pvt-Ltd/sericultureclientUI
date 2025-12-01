@@ -627,6 +627,12 @@ useEffect(() => {
     } else if (sanctionOrderForScheme === "Silk Incentive-PSF") {
     generateReportForSilkIncentive(allApplicationIds, selectedSanctionOrder);
 
+  } else if (sanctionOrderForScheme === "Reeling Shed-PSF") {
+    generateReportForReelingShed(applicationFormId, selectedSanctionOrder);
+
+    } else if (sanctionOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+    generateReportForHRU(applicationFormId, selectedSanctionOrder);
+
   } else {
     Swal.fire({
       icon: "error",
@@ -923,6 +929,67 @@ const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
          // console.error("Error generating bonus report", error);
        }
      };
+
+      const generateReportForReelingShed = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `sanction-psfa-reeling-shed`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            // userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormId: applicationFormId,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+
+     const generateReportForHRU = async (rows, selectedSanctionOrder) => {
+       try {
+        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+     
+         const response = await api.post(
+           baseURLReport + `sanction-heat-unit`,
+           {
+            //  userMasterId: localStorage.getItem("userMasterId"),
+            //  schemeId,
+            //  subSchemeId,
+            //  applicationFormIds,
+            // userMasterId: localStorage.getItem("userMasterId"),
+            schemeId:addressDetails.scSchemeDetailsId,
+            subSchemeId:addressDetails.subSchemeId,
+            applicationFormId: applicationFormId,
+            sanctionOrderNumber: selectedSanctionOrder,
+           },
+           {
+             responseType: "blob",
+           }
+         );
+     
+         const file = new Blob([response.data], { type: "application/pdf" });
+         const fileURL = URL.createObjectURL(file);
+         window.open(fileURL);
+       } catch (error) {
+         // console.error("Error generating bonus report", error);
+       }
+     };
+     
      
      
      const generateReportFor1500dfls = async (rows, selectedSanctionOrder) => {

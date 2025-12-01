@@ -1414,6 +1414,37 @@ useEffect(() => {
   //   }
   // }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
+  const callWorkOrderAcknowledgment = (
+  workOrderForScheme,
+  applicationFormId,
+  workOrderSchemeId,
+  subSchemeId
+) => {
+
+  if (
+    workOrderForScheme === "Silk Samagra State" ||
+    workOrderForScheme === "Silk Samagra Central"
+  ) {
+    generateWorkOrderAcknowledgmentRH(applicationFormId, workOrderSchemeId);
+
+  } else if (
+    workOrderForScheme === "PDMC" ||
+    workOrderForScheme === "PMKSY"
+  ) {
+    generateWorkOrderAcknowledgment(applicationFormId, workOrderSchemeId);
+
+  } else if (
+    workOrderForScheme === "Reeling Shed-PSF" ||
+    workOrderForScheme === "Silk Incentive-PSF"
+  ) {
+    generateWorkOrderReelingShed(applicationFormId, workOrderSchemeId, subSchemeId);
+
+  } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+    generateWorkOrderOrderHRU(applicationFormId, workOrderSchemeId, subSchemeId);
+  }
+};
+
+
   const generateWorkOrderAcknowledgment = async (
     applicationFormId,
     schemeId
@@ -1449,6 +1480,56 @@ useEffect(() => {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
         userId: userId, // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderReelingShed`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId, // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderHRU`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId, // ✅ Added userId
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
@@ -1578,7 +1659,30 @@ useEffect(() => {
             "company",
             schemeType
           );
-        } else {
+        } 
+        else if (
+          schemeType === "Reeling Shed-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            "company",
+            schemeType
+          );
+        }
+        else if (
+          schemeType === "Adopting Heat Recovery Unit-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            "company",
+            schemeType
+          );
+        }
+        else {
           console.error("Unknown Scheme type for company sanction order.");
         }
       }
@@ -1775,16 +1879,33 @@ useEffect(() => {
   categoryId
 ) => {
   try {
-    const userId = localStorage.getItem("userMasterId"); // ✅ get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
     let endpoint;
 
-    // Determine which endpoint to call
+    // -------------------------------
+    // 1️⃣ Silk Samagra Schemes
+    // -------------------------------
     if (
       schemeType === "Silk Samagra State" ||
       schemeType === "Silk Samagra Central"
     ) {
       endpoint = baseURLReport + `getSanctionOrderRH`;
-    } else {
+
+    }
+    // -------------------------------
+    // 2️⃣ PSF Schemes
+    // -------------------------------
+    else if (schemeType === "Reeling Shed-PSF") {
+      endpoint = baseURLReport + `sanction-psfa-reeling-shed`;  // ✅ NEW
+
+    } else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+      endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
+
+    }
+    // -------------------------------
+    // 3️⃣ PMKSY / PDMC (farmer/company)
+    // -------------------------------
+    else {
       if (recipientType === "farmer") {
         endpoint =
           schemeType === "PMKSY"
@@ -1800,27 +1921,33 @@ useEffect(() => {
       }
     }
 
-    // ✅ Build payload differently for Silk Samagra
+    // -------------------------------
+    // Build Payload
+    // -------------------------------
     const payload =
-      schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
+      schemeType === "Silk Samagra State" ||
+      schemeType === "Silk Samagra Central" ||
+      schemeType === "Reeling Shed-PSF" ||
+      schemeType === "Adopting Heat Recovery Unit-PSF"
         ? {
-            applicationFormId: applicationId, // ✅ send as list
+            applicationFormId: applicationId,
             schemeId,
             subSchemeId,
             categoryId,
-            userId, // ✅ automatically added
+            userId,
           }
         : {
             applicationFormId: applicationId,
             schemeId,
           };
 
-    // API call
+    // -------------------------------
+    // Call API & Open PDF
+    // -------------------------------
     const response = await api.post(endpoint, payload, {
       responseType: "blob",
     });
 
-    // ✅ Open the PDF in a new tab
     const file = new Blob([response.data], { type: "application/pdf" });
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL);
@@ -1828,6 +1955,7 @@ useEffect(() => {
     console.error("Error generating sanction order:", error);
   }
 };
+
 
 
 
@@ -2860,26 +2988,13 @@ useEffect(() => {
             saveError(response.data.error_description);
           } else {
             // Work order acknowledgment
-            if (actionFarmerData[0].workOrder) {
-              if (
-                actionFarmerData[0].workOrderForScheme === "PDMC" ||
-                actionFarmerData[0].workOrderForScheme === "PMKSY"
-              ) {
-                generateWorkOrderAcknowledgment(
-                  applicationFormId,
-                  workOrderSchemeId
-                );
-              } else if (
-                actionFarmerData[0].workOrderForScheme ===
-                  "Silk Samagra State" ||
-                actionFarmerData[0].workOrderForScheme ===
-                  "Silk Samagra Central"
-              ) {
-                generateWorkOrderAcknowledgmentRH(
-                  applicationFormId,
-                  workOrderSchemeId
-                );
-              }
+           if (actionFarmerData[0].workOrder) {
+              callWorkOrderAcknowledgment(
+                actionFarmerData[0].workOrderForScheme,
+                applicationFormId,
+                workOrderSchemeId,
+                actionFarmerData[0]?.subSchemeId
+              );
             }
 
             saveSuccess();
