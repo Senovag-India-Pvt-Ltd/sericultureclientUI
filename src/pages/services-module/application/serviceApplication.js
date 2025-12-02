@@ -2217,6 +2217,55 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 
 const handleCalculateUnitPrice = () => {
+
+  const incentiveCalcBasedOn = getIncentiveAndBonusData[0]?.calculationBasedOn;
+  const isChawki =
+    incentiveCalcBasedOn ===
+    "Registered Private Bivoltine Chawki Rearing Center Subsidy";
+
+  // const schemeCalcBasedOn = schemeDetails.calculationBasedOn;
+
+  // 1️⃣ FIRST: Chawki – Registered Private Bivoltine...
+  if (isChawki) {
+    const totals = calculateTotals(chawkiData);
+    const { totalEligible, totalClaimed } = totals;
+
+    // finalAmount = min(totalEligible, totalClaimed)
+    const finalAmount =
+      Number(totalEligible || 0) > Number(totalClaimed || 0)
+        ? Number(totalClaimed || 0)
+        : Number(totalEligible || 0);
+
+    // Set Unit Cost
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: finalAmount,
+    }));
+
+    // Set Total Subsidy/Bonus/Incentive Amount (expectedAmount)
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: finalAmount,
+    }));
+
+    // (Optional) If you also want to store in subsidyAmount when sanctionForReeling is true:
+    if (getIncentiveAndBonusData[0]?.sanctionForReeling) {
+      setData((prev) => ({
+        ...prev,
+        subsidyAmount: finalAmount,
+      }));
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Calculated Successfully",
+      text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`,
+    });
+
+    return; // ✅ stop further checks
+  }
+
+
   // ✅ Check scheme-based calculations
   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
     if (!data.spacingId) {
@@ -3047,39 +3096,39 @@ if (
 //   return;
 // }
 
-if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+// if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
       
-      const totals = calculateTotals(chawkiData);
-      const { totalEligible, totalClaimed } = totals;
+//       const totals = calculateTotals(chawkiData);
+//       const { totalEligible, totalClaimed } = totals;
 
-      // Apply logic
-      let finalAmount = 0;
+//       // Apply logic
+//       let finalAmount = 0;
 
-      if (totalEligible > totalClaimed) {
-        finalAmount = totalClaimed;
-      } else {
-        finalAmount = totalEligible;
-      }
+//       if (totalEligible > totalClaimed) {
+//         finalAmount = totalClaimed;
+//       } else {
+//         finalAmount = totalEligible;
+//       }
 
-      setAmountValue((prev) => ({
-      ...prev,
-      unitPrice: finalAmount
-    }));
+//       setAmountValue((prev) => ({
+//       ...prev,
+//       unitPrice: finalAmount
+//     }));
 
-      // Store in expectedAmount field (Total Subsidy/Bonus/Incentive Amount)
-      setData(prev => ({
-        ...prev,
-        expectedAmount: finalAmount
-      }));
+//       // Store in expectedAmount field (Total Subsidy/Bonus/Incentive Amount)
+//       setData(prev => ({
+//         ...prev,
+//         expectedAmount: finalAmount
+//       }));
 
-      Swal.fire({
-        icon: "success",
-        title: "Calculated Successfully",
-        text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`
-      });
+//       Swal.fire({
+//         icon: "success",
+//         title: "Calculated Successfully",
+//         text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`
+//       });
 
-      return;
-  }
+//       return;
+//   }
 
 
   // ❌ Default fallback for anything unmatched
@@ -7952,7 +8001,6 @@ const fetchReelerDetails = () => {
                 </Block>
               )}
 
-              {/* Common Sanction Amount Section */}
               <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
@@ -8063,11 +8111,7 @@ const fetchReelerDetails = () => {
                       </Col> */}
 
                       {/* IF NOT sanctionForReeling → Show normal field */}
-                    {(
-                      !getIncentiveAndBonusData[0]?.sanctionForReeling &&
-                      getIncentiveAndBonusData[0]?.calculationBasedOn !==
-                        "Registered Private Bivoltine Chawki Rearing Center Subsidy"
-                    ) && (
+                    {!getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
@@ -8094,7 +8138,7 @@ const fetchReelerDetails = () => {
 
 
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
-                    {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="totalExpectedAmount">
@@ -8113,33 +8157,7 @@ const fetchReelerDetails = () => {
                           </div>
                         </Form.Group>
                       </Col>
-                    )} */}
-
-                    {(
-                      getIncentiveAndBonusData[0]?.sanctionForReeling ||
-                      getIncentiveAndBonusData[0]?.calculationBasedOn === 
-                        "Registered Private Bivoltine Chawki Rearing Center Subsidy"
-                    ) && (
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
-                          <Form.Label htmlFor="totalExpectedAmount">
-                            {t("Total Subsidy/Bonus/Incentive Amount")}
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="totalExpectedAmount"
-                              type="text"
-                              name="expectedAmount"
-                              value={data.expectedAmount}
-                              // disabled
-                              placeholder={t("Enter Expected Amount")}
-                            />
-                          </div>
-                        </Form.Group>
-                      </Col>
                     )}
-
 
 
                     {/* IF sanctionForReeling → Show Subsidy Amount */}
@@ -8154,7 +8172,7 @@ const fetchReelerDetails = () => {
                             type="text"
                             name="subsidyAmount"
                             value={data.subsidyAmount}
-                            disabled
+                            // disabled
                             placeholder="Auto Calculated"
                           />
                         </Form.Group>
