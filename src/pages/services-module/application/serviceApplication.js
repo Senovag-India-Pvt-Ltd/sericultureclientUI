@@ -2104,22 +2104,29 @@ const getreelingShedSolarWaterHeaterAmountList = (machineTypeId ,reelingSqft,ree
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureReelingShed || [];
-      setReelingShedSolarWaterHeaterAmountListData(incentiveData);
+      const incentiveData = response.data?.content?.configureReelingShed || [];
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
-    })
-    .catch((err) => {
-      setReelingShedSolarWaterHeaterAmountListData([]);
-      console.error(err);
-    });
+    setReelingShedSolarWaterHeaterAmountListData(incentiveData);
+
+    // If record found, update unit price & expected amount
+    if (incentiveData.length > 0) {
+      const record = incentiveData[0];
+
+      setAmountValue((prev) => ({
+        ...prev,
+        unitPrice: record.unitCost || 0,
+      }));
+
+      setData((prev) => ({
+        ...prev,
+        expectedAmount: record.unitCost || 0,
+      }));
+    }
+  })
+  .catch((err) => {
+    setReelingShedSolarWaterHeaterAmountListData([]);
+    console.error(err);
+  });
 };
 
 // ✅ useEffect to fetch Silk Incentive data when dependent fields change
@@ -5924,7 +5931,7 @@ const fetchReelerDetails = () => {
                                 {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -6150,7 +6157,7 @@ const fetchReelerDetails = () => {
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
-                                  {t("Solar Power Generator Capacity(HP)")} <span className="text-danger">*</span>
+                                  {t("Model")} <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select
@@ -6160,14 +6167,14 @@ const fetchReelerDetails = () => {
                                     onChange={handleInputs}
                                     required
                                   >
-                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="">{t("Select Model")}</option>
                                     <option value="FPC">FPC</option>
                                     <option value="ETC">ETC</option>
                                     {/* <option value="600">600</option> */}
                                     
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
-                                    {t("Reeling SQFT is required")}
+                                    {t("Model is required")}
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
@@ -8056,7 +8063,11 @@ const fetchReelerDetails = () => {
                       </Col> */}
 
                       {/* IF NOT sanctionForReeling → Show normal field */}
-                    {!getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                    {(
+                      !getIncentiveAndBonusData[0]?.sanctionForReeling &&
+                      getIncentiveAndBonusData[0]?.calculationBasedOn !==
+                        "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+                    ) && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
@@ -8083,7 +8094,7 @@ const fetchReelerDetails = () => {
 
 
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
-                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                    {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="totalExpectedAmount">
@@ -8102,7 +8113,33 @@ const fetchReelerDetails = () => {
                           </div>
                         </Form.Group>
                       </Col>
+                    )} */}
+
+                    {(
+                      getIncentiveAndBonusData[0]?.sanctionForReeling ||
+                      getIncentiveAndBonusData[0]?.calculationBasedOn === 
+                        "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+                    ) && (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n5">
+                          <Form.Label htmlFor="totalExpectedAmount">
+                            {t("Total Subsidy/Bonus/Incentive Amount")}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="totalExpectedAmount"
+                              type="text"
+                              name="expectedAmount"
+                              value={data.expectedAmount}
+                              // disabled
+                              placeholder={t("Enter Expected Amount")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
                     )}
+
 
 
                     {/* IF sanctionForReeling → Show Subsidy Amount */}
@@ -8117,7 +8154,7 @@ const fetchReelerDetails = () => {
                             type="text"
                             name="subsidyAmount"
                             value={data.subsidyAmount}
-                            // disabled
+                            disabled
                             placeholder="Auto Calculated"
                           />
                         </Form.Group>
