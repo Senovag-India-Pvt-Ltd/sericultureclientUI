@@ -429,6 +429,7 @@ function Menu() {
     Admin_Master_Service_Calculation_PMKSY: false,
     Admin_Master_Service_Calculation_Bonus: false,
     Admin_Master_Service_Calculation_RH_Amount: false,
+    Admin_Master_Service_Calculation_Registered_Private_Chawki: false,
     
 
     Admin_Master_Training: false,
@@ -3508,7 +3509,7 @@ function Menu() {
                         {showMenu.Admin_Master_Land_Subsidy_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Subsidy Details")}
+                              text={t("Rearing Equipment Details")}
                               to="/seriui/subsidy-details"
                             />
                           </MenuItem>
@@ -3638,10 +3639,18 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Calculation_Registered_Private_Chawki ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Configure Registered Private Bivoltine Chawki Rearing Center Subsidy")}
+                              to="/seriui/registered-private-chawki"
+                            />
+                          </MenuItem>
+                        ) : null}
 
-    </MenuSub>
-  </MenuItem>
-) : null}
+                        </MenuSub>
+                      </MenuItem>
+                    ) : null}
 
                         {showMenu.Admin_Master_Service_DbtStatusCheck ? (
                           <MenuItem>

@@ -160,6 +160,7 @@ function ConfigureReelingShedList() {
       ),
       width: "200px",
       sortable: false,
+      grow: 2
     },
     {
       name: t("Machine Type"),

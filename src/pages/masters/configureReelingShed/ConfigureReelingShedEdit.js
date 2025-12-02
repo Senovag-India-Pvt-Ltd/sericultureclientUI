@@ -337,35 +337,7 @@ function ConfigureReelingShedEdit() {
                                         </Form.Group>
                                       </Col>
 
-                  
-
-                  {/* Component */}
-                                  <Col lg="6">
-                                    <Form.Group className="form-group mt-n4">
-                                      <Form.Label>{t("Component")}</Form.Label>
-                                      <Form.Select
-                                        name="componentId"
-                                        value={data.componentId}
-                                        onChange={handleInputs}
-                                        required
-                                      >
-                                        <option value="">{t("Select Component")}</option>
-                                        {scComponentListData.map((list) => (
-                                          <option key={list.scComponentId} value={list.scComponentId}>
-                                            {list.scComponentName}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                        {t("Component is required")}
-                                      </Form.Control.Feedback>
-                                    </Form.Group>
-                                  </Col>
-
-
-
-
-              <Col lg="6">
+<Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       {t("Component Type")}
@@ -401,6 +373,35 @@ function ConfigureReelingShedEdit() {
                     </div>
                   </Form.Group>
                 </Col>
+                  
+
+                  {/* Component */}
+                                  <Col lg="6">
+                                    <Form.Group className="form-group mt-n4">
+                                      <Form.Label>{t("Component")}</Form.Label>
+                                      <Form.Select
+                                        name="componentId"
+                                        value={data.componentId}
+                                        onChange={handleInputs}
+                                        required
+                                      >
+                                        <option value="">{t("Select Component")}</option>
+                                        {scComponentListData.map((list) => (
+                                          <option key={list.scComponentId} value={list.scComponentId}>
+                                            {list.scComponentName}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                        {t("Component is required")}
+                                      </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+
+
+
+
+              
 
 {/* Category */}
                   <Col lg="6">

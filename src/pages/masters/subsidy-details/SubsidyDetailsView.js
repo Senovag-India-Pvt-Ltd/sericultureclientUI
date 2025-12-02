@@ -54,11 +54,11 @@ function SubsidyDetailsView() {
   }, [id]);
 
   return (
-    <Layout title="Subsidy Details View">
+    <Layout title="Rearing Equipment Details View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Subsidy Details View")}</Block.Title>
+            <Block.Title tag="h2">{t("Rearing Equipment Details View")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -87,7 +87,7 @@ function SubsidyDetailsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>{t("Subsidy Details")}</Card.Header>
+          <Card.Header>{t("Rearing Equipment Details")}</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -103,13 +103,13 @@ function SubsidyDetailsView() {
                         <td>{Subsidy.subsidyId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Subsidy Details")}</td>
+                        <td style={styles.ctstyle}>{t("Rearing Equipment Details")}</td>
                         <td>{Subsidy.subsidyName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          {t("Subsidy Details in Kannada")}
+                          {t("Rearing Equipment Details in Kannada")}
                         </td>
                         <td>{Subsidy.subsidyNameInKannada}</td>
                       </tr>

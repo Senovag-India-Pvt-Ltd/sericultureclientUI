@@ -320,6 +320,43 @@ const handleInputs = (e) => {
                     </Form.Group>
                   </Col>
                   
+                   <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                    <Form.Label>
+                                      {t("Component Type")}
+                                      <span className="text-danger">*</span>
+                                    </Form.Label>
+                                    <div className="form-control-wrap">
+                                      <Form.Select
+                                        name="componentTypeId"
+                                        value={data.componentTypeId}
+                                        onChange={handleInputs}
+                                        onBlur={() => handleInputs}
+                                        required
+                                        isInvalid={
+                                          data.componentTypeId === undefined ||
+                                          data.componentTypeId === "0"
+                                        }
+                                      >
+                                        <option value="">{t("Select Component Type")}</option>
+                                        {subSchemeListData &&
+                                          subSchemeListData.map((list) => (
+                                            <option
+                                            key={list.scSubSchemeDetailsId}
+                                            value={list.scSubSchemeDetailsId} // ✅ sending numeric ID
+                                          >
+                                            {list.subSchemeName}
+                                          </option>
+                
+                                          ))}
+                                      </Form.Select>
+                                      <Form.Control.Feedback type="invalid">
+                                      {t("Component Type is required")}
+                                      </Form.Control.Feedback>
+                                    </div>
+                                  </Form.Group>
+                                </Col>
+                
 
                   
 
@@ -349,43 +386,7 @@ const handleInputs = (e) => {
                 
                 
                 
-                <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
-                                    <Form.Label>
-                                      {t("Component Type")}
-                                      <span className="text-danger">*</span>
-                                    </Form.Label>
-                                    <div className="form-control-wrap">
-                                      <Form.Select
-                                        name="componentTypeId"
-                                        value={data.componentTypeId}
-                                        onChange={handleInputs}
-                                        onBlur={() => handleInputs}
-                                        required
-                                        isInvalid={
-                                          data.componentTypeId === undefined ||
-                                          data.componentTypeId === "0"
-                                        }
-                                      >
-                                        <option value="">{t("Select Component Type")}</option>
-                                        {subSchemeListData &&
-                                          subSchemeListData.map((list) => (
-                                            <option
-                  key={list.scSubSchemeDetailsId}
-                  value={list.scSubSchemeDetailsId} // ✅ sending numeric ID
-                >
-                  {list.subSchemeName}
-                </option>
-                
-                                          ))}
-                                      </Form.Select>
-                                      <Form.Control.Feedback type="invalid">
-                                      {t("Component Type is required")}
-                                      </Form.Control.Feedback>
-                                    </div>
-                                  </Form.Group>
-                                </Col>
-                
+               
                 {/* Category */}
                                   <Col lg="6">
                                     <Form.Group className="form-group mt-n4">

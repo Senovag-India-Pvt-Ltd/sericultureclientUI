@@ -3,38 +3,33 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
-import api from "../../../../src/services/auth/api";
-import { useTranslation } from "react-i18next";
-import SubsidyDetailsDatas from "../../../store/masters/subsidy-details/SubsidyDetailsData";
+import Swal from "sweetalert2";
+import api from "../../../services/auth/api";
+import { useState, useEffect } from "react";
+import RegisteredPrivateChawki from "./RegisteredPrivateChawki";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-function SubsidyDetailsList() {
-    // Translation
-    const { t } = useTranslation();
-
+function RegisteredPrivateChawkiList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, pageSize: countPerPage } };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `subsidy/list`, _params)
+      .get(baseURLDBT + `registeredPrivateChawki/getChawkiSanctionOrderActiveList`, _params)
       .then((response) => {
-        setListData(response.data.content.subsidy);
-        setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content);
+        setTotalRows(response.data.content.totalRecords);
         setLoading(false);
       })
       .catch((err) => {
@@ -48,13 +43,13 @@ function SubsidyDetailsList() {
   }, [page]);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/subsidy-details-view/${_id}`);
-  };
+//   const handleView = (_id) => {
+//     navigate(`/seriui/race-mapping-view/${_id}`);
+//   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/subsidy-details-edit/${_id}`);
-    // navigate("/seriui/state");
+    navigate(`/seriui/registered-private-chawki-edit/${_id}`);
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -75,7 +70,7 @@ function SubsidyDetailsList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `subsidy/delete/${_id}`)
+          .delete(baseURLDBT + `registeredPrivateChawki/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -145,35 +140,35 @@ function SubsidyDetailsList() {
     },
   };
 
-  const SubsidyDetailsDataColumns = [
+  const RaceMappingDataColumns = [
     {
-      name: t("Action"),
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.subsidyId)}
+            onClick={() => handleView(row.raceMarketMasterId)}
           >
-            {t("View")}
-          </Button>
-          <Button
+            View
+          </Button> */}
+          {/* <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.subsidyId)}
+            onClick={() => handleEdit(row.configureRHAmountId)}
           >
-            {t("Edit")}
-          </Button>
+            Edit
+          </Button> */}
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.subsidyId)}
+            onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
-            {t("delete")}
+            Delete
           </Button>
         </div>
       ),
@@ -181,46 +176,114 @@ function SubsidyDetailsList() {
       hide: "md",
     },
     {
-      name: t("Rearing Equipment Details"),
-      selector: (row) => row.subsidyName,
-      cell: (row) => <span>{row.subsidyName}</span>,
+        name: "Component Type",
+        selector: (row) => row.subSchemeName,
+        cell: (row) => <span>{row.subSchemeName}</span>,
+        sortable: true,
+        hide: "md",
+      },
+
+    {
+      name: "Component",
+      selector: (row) => row.componentName,
+      cell: (row) => <span>{row.componentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("Rearing Equipment Details in Kannada"),
-      selector: (row) => row.subsidyNameInKannada,
-      cell: (row) => <span>{row.subsidyNameInKannada}</span>,
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
+    },
+    {
+        name: "Rearing Equipment Details",
+        selector: (row) => row.subsidyName,
+        cell: (row) => <span>{row.subsidyName}</span>,
+        sortable: true,
+        hide: "md",
+      },
+    {
+        name: "Eligible Equipment In Nos",
+        selector: (row) => row.eligibleEquipmentInNos,
+        cell: (row) => <span>{row.eligibleEquipmentInNos}</span>,
+        sortable: true,
+        hide: "md",
+    },
+
+    {
+        name: "Eligible Total Value In Rs",
+        selector: (row) => row.eligibleTotalValueInRs,
+        cell: (row) => <span>{row.eligibleTotalValueInRs}</span>,
+        sortable: true,
+        hide: "md",
+    },
+
+    {
+        name: "Rate",
+        selector: (row) => row.ratePerEligibleEquipment,
+        cell: (row) => <span>{row.ratePerEligibleEquipment}</span>,
+        sortable: true,
+        hide: "md",
+    },
+    {
+        name: "Max Amount Of Subsidy",
+        selector: (row) => row.maxAmountOfSubsidyEligible,
+        cell: (row) => <span>{row.maxAmountOfSubsidyEligible}</span>,
+        sortable: true,
+        hide: "md",
+    },
+    {
+        name: "Establishment Of Mulberry Garden Eligible Amount",
+        selector: (row) => row.establishmentOfMulberryGardenEligibleAmount,
+        cell: (row) => <span>{row.establishmentOfMulberryGardenEligibleAmount}</span>,
+        sortable: true,
+        hide: "md",
+    },
+
+    {
+        name: "Installation Of Drip Irrigation Eligible Amount",
+        selector: (row) => row.installationOfDripIrrigationEligibleAmount,
+        cell: (row) => <span>{row.installationOfDripIrrigationEligibleAmount}</span>,
+        sortable: true,
+        hide: "md",
+    },
+
+    {
+        name: "Chawki Rearing Building  Eligible Amount",
+        selector: (row) => row.chawkiRearingBuildingEligibleAmount,
+        cell: (row) => <span>{row.chawkiRearingBuildingEligibleAmount}</span>,
+        sortable: true,
+        hide: "md",
     },
   ];
 
   return (
-    <Layout title="Rearing Equipment Details List">
+    <Layout title="List of Registered Private Bivoltine Chawki Rearing Center Subsidy">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> {t("Rearing Equipment Details List")}</Block.Title>
+            <Block.Title tag="h2">List of Registered Private Bivoltine Chawki Rearing Center Subsidy</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/subsidy-details"
+                  to="/seriui/registered-private-chawki"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/subsidy-details"
+                  to="/seriui/registered-private-chawki"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>{t("create")}</span>
+                  <span>Create</span>
                 </Link>
               </li>
             </ul>
@@ -231,8 +294,9 @@ function SubsidyDetailsList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
+            // title="Crate List"
             tableClassName="data-table-head-light table-responsive"
-            columns={SubsidyDetailsDataColumns}
+            columns={RaceMappingDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -253,4 +317,4 @@ function SubsidyDetailsList() {
   );
 }
 
-export default SubsidyDetailsList;
+export default RegisteredPrivateChawkiList;

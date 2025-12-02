@@ -95,11 +95,11 @@ function SubsidyDetails() {
   };
 
   return (
-    <Layout title="Subsidy Details">
+    <Layout title="Rearing Equipment Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Subsidy Details")}</Block.Title>
+            <Block.Title tag="h2">{t("Rearing Equipment Details")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -137,7 +137,7 @@ function SubsidyDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="subsidy">
-                      {t("Subsidy Details")}<span className="text-danger">*</span>
+                      {t("Rearing Equipment Details")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -150,7 +150,7 @@ function SubsidyDetails() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Subsidy Details is required.")}
+                          {t("Rearing Equipment Details is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -159,7 +159,7 @@ function SubsidyDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="subsidy">
-                        {t("Subsidy Details in Kannada")}
+                        {t("Rearing Equipment Details in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -169,11 +169,11 @@ function SubsidyDetails() {
                           type="text"
                           value={data.subsidyNameInKannada}
                           onChange={handleInputs}
-                          placeholder={t("Enter Subsidy Details in Kannada")}
+                          placeholder={t("Enter Rearing Equipment Details in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Subsidy Details in Kannada is required.")}
+                          {t("Rearing Equipment Details in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

@@ -1072,6 +1072,8 @@ import CropDetailsForSeedMarket from "../pages/direct-benefit-transfer/CropDetai
 import CropDetailsForSeedMarketList from "../pages/direct-benefit-transfer/CropDetailsSeedMarketList";
 import CropDetailsForSeedMarketEdit from "../pages/direct-benefit-transfer/CropDetailsSeedMarketEdit";
 import CropDetailsCommercialMarketEdit from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketEdit";
+import RegisteredPrivateChawki from "../pages/services-module/application-component/RegisteredPrivateChawki";
+import RegisteredPrivateChawkiList from "../pages/services-module/application-component/RegisteredPrivateChawkiList";
 
 // Admin and Reports
 
@@ -2831,6 +2833,9 @@ function Router() {
             <Route path="configure-reeling-shed-list" element={<ConfigureReelingShedList />} />
             <Route path="configure-reeling-shed-view/:id" element={<ConfigureReelingShedView />} />
             <Route path="configure-reeling-shed-edit/:id" element={<ConfigureReelingShedEdit />} />
+
+            <Route path="registered-private-chawki" element={<RegisteredPrivateChawki />} /> 
+            <Route path="registered-private-chawki-list" element={<RegisteredPrivateChawkiList  />} /> 
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />

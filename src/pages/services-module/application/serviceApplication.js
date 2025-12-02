@@ -2183,6 +2183,32 @@ useEffect(() => {
   }
 }, [data.machineTypeId,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
+const calculateEquipmentRow = (item, sharePerc) => {
+  const purchasedNos = Number(item.purchasedEquipmentInNos || 0);
+  const rate = Number(item.ratePerEligibleEquipment || 0);
+
+  // Purchased Total Value
+  const purchasedTotal = purchasedNos * rate;
+
+  const eligibleValue = Number(item.eligibleTotalValueInRs || 0);
+  const maxEligible = Number(item.maxAmountOfSubsidyEligible || 0);
+
+  let subsidyAmount = 0;
+
+  if (purchasedTotal > eligibleValue) {
+    subsidyAmount = (maxEligible * sharePerc) / 100;
+  } else {
+    subsidyAmount = (purchasedTotal * sharePerc) / 100;
+  }
+
+  return {
+    ...item,
+    purchasedTotalValueInRs: purchasedTotal,
+    percentageOfSubsidyAmount: subsidyAmount
+  };
+};
+
+
 const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations
   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
@@ -2972,6 +2998,83 @@ if (
     return;
   }
 
+  // ===============================================
+// FOR REGISTERED PRIVATE CHAWKI SUBSIDY CALCULATION
+// ===============================================
+// if (
+//   getIncentiveAndBonusData[0]?.calculationBasedOn === 
+//   "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+// ) {
+//   let sharePerc = getIncentiveAndBonusData[0]?.shareInPercentage || 0;
+
+//   setChawkiData((prev) => {
+//     const updatedList = prev.equipmentList.map((item) => {
+//       const purchasedNos = Number(item.purchasedEquipmentInNos || 0);
+//       const rate = Number(item.ratePerEligibleEquipment || 0);
+
+//       // 1️⃣ Purchased Total Value
+//       const purchasedTotal = purchasedNos * rate;
+
+//       const eligibleValue = Number(item.eligibleTotalValueInRs || 0);
+//       const maxEligible = Number(item.maxAmountOfSubsidyEligible || 0);
+
+//       let subsidyAmount = 0;
+
+//       // 2️⃣ Subsidy Calculation Logic
+//       if (purchasedTotal > eligibleValue) {
+//         subsidyAmount = (maxEligible * sharePerc) / 100;
+//       } else {
+//         subsidyAmount = (purchasedTotal * sharePerc) / 100;
+//       }
+
+//       return {
+//         ...item,
+//         purchasedTotalValueInRs: purchasedTotal,
+//         percentageOfSubsidyAmount: subsidyAmount
+//       };
+//     });
+
+//     return { ...prev, equipmentList: updatedList };
+//   });
+
+//   return;
+// }
+
+if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+      
+      const totals = calculateTotals(chawkiData);
+      const { totalEligible, totalClaimed } = totals;
+
+      // Apply logic
+      let finalAmount = 0;
+
+      if (totalEligible > totalClaimed) {
+        finalAmount = totalClaimed;
+      } else {
+        finalAmount = totalEligible;
+      }
+
+      setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: finalAmount
+    }));
+
+      // Store in expectedAmount field (Total Subsidy/Bonus/Incentive Amount)
+      setData(prev => ({
+        ...prev,
+        expectedAmount: finalAmount
+      }));
+
+      Swal.fire({
+        icon: "success",
+        title: "Calculated Successfully",
+        text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`
+      });
+
+      return;
+  }
+
+
   // ❌ Default fallback for anything unmatched
   Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
 };
@@ -3010,6 +3113,112 @@ if (
       getBonusAmountList(data.scComponentId,data.scCategoryId);
     }
   }, [data.scComponentId, data.scCategoryId]);
+
+  const [chawkiData, setChawkiData] = useState({
+  equipmentList: [],  // repeating rows
+  mulberry: {
+    eligible: 0,
+    claimed: "",
+    percentage: ""
+  },
+  drip: {
+    eligible: 0,
+    claimed: "",
+    percentage: ""
+  },
+  building: {
+    eligible: 0,
+    claimed: "",
+    percentage: ""
+  }
+});
+
+
+  const getChawkiDetails = () => {
+ api.post(
+    baseURLDBT + `registeredPrivateChawki/getChawkiSanctionOrderDetails`,
+    {
+    subSchemeId: data.scSubSchemeDetailsId,
+    componentId: data.scComponentId,
+    categoryId: data.scCategoryId
+  })
+  .then(res => {
+    const list = res.data.content || [];
+
+    if (list.length === 0) return;
+
+    // Extract 3 single-value blocks
+    const first = list[0];
+
+    setChawkiData({
+      equipmentList: list.map(item => ({
+        rearingEquipmentDetailsId: item.rearingEquipmentDetailsId,
+        subsidyName: item.subsidyName,
+        eligibleEquipmentInNos: item.eligibleEquipmentInNos,
+        eligibleTotalValueInRs: item.eligibleTotalValueInRs,
+        ratePerEligibleEquipment: item.ratePerEligibleEquipment,
+        maxAmountOfSubsidyEligible: item.maxAmountOfSubsidyEligible,
+
+        purchasedEquipmentInNos: "",
+        purchasedTotalValueInRs: "",
+        percentageOfSubsidyAmount: "",
+
+        selected: false
+      })),
+
+      mulberry: {
+        eligible: first.establishmentOfMulberryGardenEligibleAmount,
+        // claimed: first.establishmentOfMulberryGardenClaimedAmount || "",
+        // percentage: first.establishmentOfMulberryGardenPercentageOfSubsidyAmount || ""
+        claimed: "",
+        percentage: ""
+      },
+      drip: {
+        eligible: first.installationOfDripIrrigationEligibleAmount,
+        // claimed: first.installationOfDripIrrigationClaimedAmount || "",
+        // percentage: first.installationOfDripIrrigationPercentageOfSubsidyAmount || ""
+        claimed: "",
+        percentage: ""
+      },
+      building: {
+        eligible: first.chawkiRearingBuildingEligibleAmount,
+        // claimed: first.chawkiRearingBuildingClaimedAmount || "",
+        // percentage: first.chawkiRearingBuildingPercentageOfSubsidyAmount || ""
+        claimed: "",
+        percentage: ""
+      }
+    });
+  })
+.catch((err) => {
+    console.error("Error fetching details:", err);
+    Swal.fire({
+      icon: "warning",
+      title: "Details Not Found",
+    });
+    // setFarmerDetailsForIB([]);
+ 
+    setLoading(false);
+  });
+};
+
+
+useEffect(() => {
+  if (
+    data.scSubSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    getChawkiDetails(
+      data.scSubSchemeDetailsId,
+      data.scComponentId,
+      data.scCategoryId
+    );
+  }
+}, [data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
+
+
+
+
 
 const [silkIncentiveAmountData, setSilkIncentiveListData] = useState([]);
 const [maxMachineQuantity, setMaxMachineQuantity] = useState(null);
@@ -3228,6 +3437,166 @@ useEffect(() => {
     setEquipment({ ...equipment, [name]: value });
   };
 
+  const handleEquipmentListChange = (index, e) => {
+  const { name, value, type, checked } = e.target;
+  const sharePerc = sharePercentage;
+
+  setChawkiData((prev) => {
+    const updated = [...prev.equipmentList];
+    updated[index] = {
+      ...updated[index],
+      [name]: type === "checkbox" ? checked : value
+    };
+
+    if (name === "purchasedEquipmentInNos") {
+      updated[index] = calculateEquipmentRow(updated[index], sharePerc);
+    }
+    return { ...prev, equipmentList: updated };
+  });
+};
+
+// const handleSingleBlockChange = (block, e) => {
+//   const { name, value } = e.target;
+
+//   setChawkiData((prev) => ({
+//     ...prev,
+//     [block]: {
+//       ...prev[block],
+//       [name]: value
+//     }
+//   }));
+// };
+const handleSingleBlockChange = (block, e) => {
+  const { name, value } = e.target;
+  const sharePerc = sharePercentage;
+
+  setChawkiData((prev) => {
+    const updatedBlock = {
+      ...prev[block],
+      [name]: value
+    };
+
+    // 🔥 Auto-calculate percentage only when claimed value changes
+    if (name === "claimed") {
+      const claimedVal = Number(value || 0);
+      const eligibleVal = Number(prev[block].eligible || 0);
+
+      let subsidy = 0;
+
+      if (claimedVal >= eligibleVal) {
+        subsidy = (eligibleVal * sharePerc) / 100;
+      } else {
+        subsidy = (claimedVal * sharePerc) / 100;
+      }
+
+      updatedBlock.percentage = subsidy;
+    }
+
+    return {
+      ...prev,
+      [block]: updatedBlock
+    };
+  });
+};
+
+// const calculateTotals = (data) => {
+//   const equipmentEligibleTotal = data.equipmentList
+//     .filter(item => item.selected)
+//     .reduce((sum, item) => sum + Number(item.eligibleTotalValueInRs || 0), 0);
+
+//   const equipmentPurchasedTotal = data.equipmentList
+//     .filter(item => item.selected)
+//     .reduce((sum, item) => sum + Number(item.purchasedTotalValueInRs || 0), 0);
+
+//   const equipmentPercentageTotal = data.equipmentList
+//     .filter(item => item.selected)
+//     .reduce((sum, item) => sum + Number(item.percentageOfSubsidyAmount || 0), 0);
+
+//   const mulberry = Number(data.mulberry.percentage || 0);
+//   const drip = Number(data.drip.percentage || 0);
+//   const building = Number(data.building.percentage || 0);
+
+//   const totalClaimed =
+//     Number(data.mulberry.claimed || 0) +
+//     Number(data.drip.claimed || 0) +
+//     Number(data.building.claimed || 0) +
+//     equipmentPurchasedTotal;
+
+//   const totalEligible =
+//     Number(data.mulberry.eligible || 0) +
+//     Number(data.drip.eligible || 0) +
+//     Number(data.building.eligible || 0) +
+//     equipmentEligibleTotal;
+
+//   const totalSubsidy =
+//     mulberry + drip + building + equipmentPercentageTotal;
+
+//   return {
+//     equipmentEligibleTotal,
+//     equipmentPurchasedTotal,
+//     equipmentPercentageTotal,
+//     totalClaimed,
+//     totalEligible,
+//     totalSubsidy
+//   };
+// };
+
+const calculateTotals = (data) => {
+  const equipmentEligibleTotal = Math.round(
+    data.equipmentList
+      .filter(item => item.selected)
+      .reduce((sum, item) => sum + Number(item.eligibleTotalValueInRs || 0), 0)
+  );
+
+  const equipmentPurchasedTotal = Math.round(
+    data.equipmentList
+      .filter(item => item.selected)
+      .reduce((sum, item) => sum + Number(item.purchasedTotalValueInRs || 0), 0)
+  );
+
+  const equipmentPercentageTotal = Math.round(
+    data.equipmentList
+      .filter(item => item.selected)
+      .reduce((sum, item) => sum + Number(item.percentageOfSubsidyAmount || 0), 0)
+  );
+
+  const mulberry = Number(data.mulberry.percentage || 0);
+  const drip = Number(data.drip.percentage || 0);
+  const building = Number(data.building.percentage || 0);
+
+  const totalClaimed = Math.round(
+    Number(data.mulberry.claimed || 0) +
+    Number(data.drip.claimed || 0) +
+    Number(data.building.claimed || 0) +
+    equipmentPurchasedTotal
+  );
+
+  const totalEligible = Math.round(
+    Number(data.mulberry.eligible || 0) +
+    Number(data.drip.eligible || 0) +
+    Number(data.building.eligible || 0) +
+    equipmentEligibleTotal
+  );
+
+  const totalSubsidy = Math.round(
+    mulberry + drip + building + equipmentPercentageTotal
+  );
+
+  return {
+    equipmentEligibleTotal,
+    equipmentPurchasedTotal,
+    equipmentPercentageTotal,
+    totalClaimed,
+    totalEligible,
+    totalSubsidy
+  };
+};
+
+
+
+
+
+
   const postData = (event) => {
     event.preventDefault(); // Prevent the default form submission
     const form = event.currentTarget;
@@ -3249,7 +3618,39 @@ useEffect(() => {
       ...developedArea[id],
     }));
 
+    const chawkiSanctionOrderList = chawkiData.equipmentList
+  .filter(e => e.selected)
+  .map(e => ({
+    rearingEquipmentDetailsId: e.rearingEquipmentDetailsId,
+
+    eligibleEquipmentInNos: e.eligibleEquipmentInNos,
+    eligibleTotalValueInRs: e.eligibleTotalValueInRs,
+    ratePerEligibleEquipment: e.ratePerEligibleEquipment,
+    eligibleAmount: e.eligibleAmount,
+    maxAmountOfSubsidyEligible: e.maxAmountOfSubsidyEligible,
+
+    purchasedEquipmentInNos: Number(e.purchasedEquipmentInNos || 0),
+    purchasedTotalValueInRs: Number(e.purchasedTotalValueInRs || 0),
+    percentageOfSubsidyAmount: Number(e.percentageOfSubsidyAmount || 0),
+
+    establishmentOfMulberryGardenEligibleAmount: chawkiData.mulberry.eligible,
+    establishmentOfMulberryGardenClaimedAmount: Number(chawkiData.mulberry.claimed || 0),
+    establishmentOfMulberryGardenPercentageOfSubsidyAmount: Number(chawkiData.mulberry.percentage || 0),
+
+    installationOfDripIrrigationEligibleAmount: chawkiData.drip.eligible,
+    installationOfDripIrrigationClaimedAmount: Number(chawkiData.drip.claimed || 0),
+    installationOfDripIrrigationPercentageOfSubsidyAmount: Number(chawkiData.drip.percentage || 0),
+
+    chawkiRearingBuildingEligibleAmount: chawkiData.building.eligible,
+    chawkiRearingBuildingClaimedAmount: Number(chawkiData.building.claimed || 0),
+    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0)
+  }));
+
+  const totals = calculateTotals(chawkiData);
+
+
     const sendPost = {
+      
       approvalStageId: data.approvalStageId,
       userMasterId: data.userId,
       farmerId: data.farmerId,
@@ -3319,7 +3720,15 @@ useEffect(() => {
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
       marketId: data.marketId,
-      unitPrice:amountValue.unitPrice
+      unitPrice:amountValue.unitPrice,
+      equipmentEligibleTotal: totals.equipmentEligibleTotal,
+    equipmentPurchasedTotal: totals.equipmentPurchasedTotal,
+    equipmentPercentageTotal: totals.equipmentPercentageTotal,
+    totalClaimed: totals.totalClaimed,
+    totalEligible: totals.totalEligible,
+    totalSubsidy: totals.totalSubsidy,
+
+      chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
     // Check what checkboxes are selected and build the request accordingly
@@ -5618,7 +6027,29 @@ const fetchReelerDetails = () => {
                               </Form.Control.Feedback>
                           </Col> */}
 
-                           <Col lg="6">
+                           {/* <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Model</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="reelingUnit"
+                                type="text"
+                                name="reelingUnit"
+                                value={data.reelingUnit}
+                                onChange={handleInputs}
+                                placeholder="Enter Model"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Model is required
+                              </Form.Control.Feedback>
+                          </Col> */}
+
+                           {/* <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Solar Water Heater Capcity(In Ltrs)")}<span className="text-danger">*</span>
@@ -5654,27 +6085,7 @@ const fetchReelerDetails = () => {
 
                           
 
-                          {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                <strong>Model</strong>
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <Form.Control
-                                id="reelingUnit"
-                                type="text"
-                                name="reelingUnit"
-                                value={data.reelingUnit}
-                                onChange={handleInputs}
-                                placeholder="Enter Model"
-                                required
-                                // disabled={actionData.rejectType === "Permanent"}
-                              />
-                            </Form.Group>
-                             <Form.Control.Feedback type="invalid">
-                                Model is required
-                              </Form.Control.Feedback>
-                          </Col> */}
+                         
                           <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="schemeAmount">
@@ -5707,7 +6118,60 @@ const fetchReelerDetails = () => {
                                     </Form.Control.Feedback>
                                   </div>
                                 </Form.Group>
-                              </Col>
+                              </Col> */}
+
+                              <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Solar Power Generator Capacity(HP)")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingSqft"
+                                    name="reelingSqft"
+                                    value={data.reelingSqft}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="1000">1000</option>
+                                    <option value="500">500</option>
+                                    <option value="200">200</option>
+                                    {/* <option value="600">600</option> */}
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Solar Power Generator Capacity(HP)")} <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    id="reelingUnit"
+                                    name="reelingUnit"
+                                    value={data.reelingUnit}
+                                    onChange={handleInputs}
+                                    required
+                                  >
+                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="FPC">FPC</option>
+                                    <option value="ETC">ETC</option>
+                                    {/* <option value="600">600</option> */}
+                                    
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    {t("Reeling SQFT is required")}
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
                             </>
                                )}
 
@@ -6455,6 +6919,513 @@ const fetchReelerDetails = () => {
                   </Card>
                 </Block>
               )}
+
+
+               {/* {getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          {t("Registered Private Bivoltine Chawki Rearing Center Subsidy Details")}
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className="g-4">
+                           
+
+                           <Card>
+                            <Card.Header>Rearing Equipment Details</Card.Header>
+                            <Card.Body>
+                              <table className="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Select</th>
+                                    <th>Subsidy Name</th>
+                                    <th>Eligible Nos</th>
+                                    <th>Eligible Value</th>
+                                    <th>Rate</th>
+                                    <th>Max Subsidy</th>
+                                    <th>Purchased Nos</th>
+                                    <th>Purchased Value</th>
+                                    <th>Percentage</th>
+                                  </tr>
+                                </thead>
+
+                                <tbody>
+                                  {chawkiData.equipmentList.map((row, index) => (
+                                    <tr key={row.rearingEquipmentDetailsId}>
+                                      <td>
+                                        <input
+                                          type="checkbox"
+                                          checked={row.selected}
+                                          onChange={(e) => {
+                                            const updated = [...chawkiData.equipmentList];
+                                            updated[index].selected = e.target.checked;
+                                            setChawkiData({ ...chawkiData, equipmentList: updated });
+                                          }}
+                                        />
+                                      </td>
+
+                                      <td>{row.subsidyName}</td>
+                                      <td>{row.eligibleEquipmentInNos}</td>
+                                      <td>{row.eligibleTotalValueInRs}</td>
+                                      <td>{row.ratePerEligibleEquipment}</td>
+                                      <td>{row.maxAmountOfSubsidyEligible}</td>
+
+                                      <td>
+                                        <input
+                                          type="number"
+                                          className="form-control"
+                                          value={row.purchasedEquipmentInNos}
+                                          onChange={(e) => {
+                                            const updated = [...chawkiData.equipmentList];
+                                            updated[index].purchasedEquipmentInNos = e.target.value;
+                                            setChawkiData({ ...chawkiData, equipmentList: updated });
+                                          }}
+                                        />
+                                      </td>
+
+                                      <td>
+                                        <input
+                                          type="number"
+                                          className="form-control"
+                                          value={row.purchasedTotalValueInRs}
+                                          onChange={(e) => {
+                                            const updated = [...chawkiData.equipmentList];
+                                            updated[index].purchasedTotalValueInRs = e.target.value;
+                                            setChawkiData({ ...chawkiData, equipmentList: updated });
+                                          }}
+                                        />
+                                      </td>
+
+                                      <td>
+                                        <input
+                                          type="number"
+                                          className="form-control"
+                                          value={row.percentageOfSubsidyAmount}
+                                          onChange={(e) => {
+                                            const updated = [...chawkiData.equipmentList];
+                                            updated[index].percentageOfSubsidyAmount = e.target.value;
+                                            setChawkiData({ ...chawkiData, equipmentList: updated });
+                                          }}
+                                        />
+                                      </td>
+
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </Card.Body>
+                          </Card>
+
+                              <Card className="mt-3">
+                                <Card.Header>Establishment Of Mulberry Garden</Card.Header>
+                                <Card.Body>
+                                  <div><strong>Eligible Amount:</strong> {chawkiData.mulberry.eligible}</div>
+
+                                  <Row>
+                                    <Col lg="6">
+                                      <label>Claimed Amount</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.mulberry.claimed}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            mulberry: { ...chawkiData.mulberry, claimed: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+
+                                    <Col lg="6">
+                                      <label>Percentage of Subsidy</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.mulberry.percentage}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            mulberry: { ...chawkiData.mulberry, percentage: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+
+                              <Card className="mt-3">
+                                <Card.Header>Installation Of Drip Irrigation</Card.Header>
+
+                                <Card.Body>
+                                  <div>
+                                    <strong>Eligible Amount:</strong> {chawkiData.drip.eligible}
+                                  </div>
+
+                                  <Row className="mt-3">
+                                    <Col lg="6">
+                                      <label>Claimed Amount</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.drip.claimed}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            drip: { ...chawkiData.drip, claimed: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+
+                                    <Col lg="6">
+                                      <label>Percentage of Subsidy</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.drip.percentage}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            drip: { ...chawkiData.drip, percentage: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+
+                              <Card className="mt-3">
+                                <Card.Header>Chawki Rearing Building</Card.Header>
+
+                                <Card.Body>
+                                  <div>
+                                    <strong>Eligible Amount:</strong> {chawkiData.building.eligible}
+                                  </div>
+
+                                  <Row className="mt-3">
+                                    <Col lg="6">
+                                      <label>Claimed Amount</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.building.claimed}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            building: { ...chawkiData.building, claimed: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+
+                                    <Col lg="6">
+                                      <label>Percentage of Subsidy</label>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        value={chawkiData.building.percentage}
+                                        onChange={(e) =>
+                                          setChawkiData({
+                                            ...chawkiData,
+                                            building: { ...chawkiData.building, percentage: e.target.value }
+                                          })
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Card.Body>
+                              </Card>
+
+
+
+                            
+                          </Row>
+
+                        
+
+                      
+                     
+                    </Card.Body>
+                  </Card>
+                </Block>
+              )} */}
+
+              {
+                getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                  "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+                  <Block className="mt-3">
+                    <Card>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        {t("Registered Private Bivoltine Chawki Rearing Center Subsidy Details")}
+                      </Card.Header>
+
+                      <Card.Body>
+                        <Row className="g-4">
+
+                          {/* ============================
+                              CARD 1: Rearing Equipment
+                          ============================= */}
+                          <Card>
+                            <Card.Header>Rearing Equipment Details</Card.Header>
+                            <Card.Body>
+                              <table className="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Select</th>
+                                    <th>Subsidy Name</th>
+                                    <th>Eligible Nos</th>
+                                    <th>Eligible Value</th>
+                                    <th>Rate</th>
+                                    <th>Max Subsidy</th>
+                                    <th>Purchased Nos</th>
+                                    <th>Purchased Total Value</th>
+                                    <th>Percentage Of Subsidy(In Rs.)</th>
+                                  </tr>
+                                </thead>
+
+                                <tbody>
+                                  {chawkiData.equipmentList.map((row, index) => (
+                                    <tr key={row.rearingEquipmentDetailsId}>
+                                      <td>
+                                        <input
+                                          type="checkbox"
+                                          checked={row.selected}
+                                          onChange={(e) =>
+                                            setChawkiData((prev) => {
+                                              const updated = [...prev.equipmentList];
+                                              updated[index] = {
+                                                ...updated[index],
+                                                selected: e.target.checked
+                                              };
+                                              return { ...prev, equipmentList: updated };
+                                            })
+                                          }
+                                        />
+                                      </td>
+
+                                      <td>{row.subsidyName}</td>
+                                      <td>{row.eligibleEquipmentInNos}</td>
+                                      <td>{row.eligibleTotalValueInRs}</td>
+                                      <td>{row.ratePerEligibleEquipment}</td>
+                                      <td>{row.maxAmountOfSubsidyEligible}</td>
+
+                                      {/* Purchased Nos */}
+                                      <td>
+                                        {/* <input
+                                          type="number"
+                                          className="form-control"
+                                          value={row.purchasedEquipmentInNos?.toString() || ""}
+                                          onChange={(e) =>
+                                            setChawkiData((prev) => {
+                                              const updated = [...prev.equipmentList];
+                                              updated[index] = {
+                                                ...updated[index],
+                                                purchasedEquipmentInNos: e.target.value
+                                              };
+                                              return { ...prev, equipmentList: updated };
+                                            })
+                                          }
+                                        /> */}
+                                        <input
+                                      type="number"
+                                      className="form-control"
+                                      name="purchasedEquipmentInNos"
+                                      value={row.purchasedEquipmentInNos}
+                                      onChange={(e) => handleEquipmentListChange(index, e)}
+                                      
+                                    />
+                                      </td>
+
+                                      {/* Purchased Value */}
+                                      <td>
+                                        <input
+                                        type="number"
+                                        className="form-control"
+                                        name="purchasedTotalValueInRs"
+                                        value={row.purchasedTotalValueInRs}
+                                        onChange={(e) => handleEquipmentListChange(index, e)}
+                                        readOnly
+                                      />
+
+                                      </td>
+
+                                      {/* Percentage */}
+                                      <td>
+                                        <input
+                                      type="number"
+                                      className="form-control"
+                                      name="percentageOfSubsidyAmount"
+                                      value={row.percentageOfSubsidyAmount}
+                                      onChange={(e) => handleEquipmentListChange(index, e)}
+                                      readOnly
+                                    />
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <tr style={{ fontWeight: "bold", background: "#f8f9fa" }}>
+                                <td colSpan="3" className="text-end">TOTAL</td>
+
+                                {/* Eligible Value */}
+                                <td>{calculateTotals(chawkiData).equipmentEligibleTotal}</td>
+
+                                <td></td> {/* Rate */}
+                                <td></td> {/* Max Subsidy */}
+
+                                {/* Purchased Nos skip */}
+                                <td></td>
+
+                                {/* Purchased Value */}
+                                <td>{calculateTotals(chawkiData).equipmentPurchasedTotal}</td>
+
+                                {/* Percentage Total */}
+                                <td>{calculateTotals(chawkiData).equipmentPercentageTotal}</td>
+                              </tr>
+
+                                </tbody>
+                              </table>
+                            </Card.Body>
+                          </Card>
+
+                          {/* ============================
+                              CARD 2: Mulberry Garden
+                          ============================= */}
+                          <Card className="mt-3">
+                            <Card.Header>Establishment Of Mulberry Garden</Card.Header>
+                            <Card.Body>
+                              <div>
+                                <strong>Eligible Amount:</strong> {chawkiData.mulberry.eligible}
+                              </div>
+
+                              <Row className="mt-3">
+                                <Col lg="6">
+                                  <label>Claimed Amount</label>
+                                 <input
+                                    type="number"
+                                    className="form-control"
+                                    name="claimed"
+                                    value={chawkiData.mulberry.claimed}
+                                    onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                                  />
+                                </Col>
+
+                                <Col lg="6">
+                                  <label>Percentage of Subsidy</label>
+                                  <input
+                                          type="number"
+                                          className="form-control"
+                                          name="percentage"
+                                          value={chawkiData.mulberry.percentage}
+                                          onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                                          readOnly
+                                        />
+                                    </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+
+                          {/* ============================
+                              CARD 3: Drip Irrigation
+                          ============================= */}
+                          <Card className="mt-3">
+                            <Card.Header>Installation Of Drip Irrigation</Card.Header>
+                            <Card.Body>
+                              <div>
+                                <strong>Eligible Amount:</strong> {chawkiData.drip.eligible}
+                              </div>
+
+                              <Row className="mt-3">
+                                <Col lg="6">
+                                  <label>Claimed Amount</label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    name="claimed"
+                                    value={chawkiData.drip.claimed}
+                                    onChange={(e) => handleSingleBlockChange("drip", e)}
+                                  />
+                                </Col>
+
+                                <Col lg="6">
+                                  <label>Percentage of Subsidy</label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    name="percentage"
+                                    value={chawkiData.drip.percentage}
+                                    onChange={(e) => handleSingleBlockChange("drip", e)}
+                                    readOnly
+                                  />
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+
+                          {/* ============================
+                              CARD 4: Chawki Rearing Building
+                          ============================= */}
+                          <Card className="mt-3">
+                            <Card.Header>Chawki Rearing Building</Card.Header>
+                            <Card.Body>
+                              <div>
+                                <strong>Eligible Amount:</strong> {chawkiData.building.eligible}
+                              </div>
+
+                              <Row className="mt-3">
+                                <Col lg="6">
+                                  <label>Claimed Amount</label>
+                                  <input
+                                      type="number"
+                                      className="form-control"
+                                      name="claimed"
+                                      value={chawkiData.building.claimed}
+                                      onChange={(e) => handleSingleBlockChange("building", e)}
+                                    />
+                                </Col>
+
+                                <Col lg="6">
+                                  <label>Percentage of Subsidy</label>
+                                  <input
+                                  type="number"
+                                  className="form-control"
+                                  name="percentage"
+                                  value={chawkiData.building.percentage}
+                                  onChange={(e) => handleSingleBlockChange("building", e)}
+                                  readOnly
+                                />
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+
+                          <Card className="mt-4">
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          Final Total Summary
+                        </Card.Header>
+
+                        <Card.Body>
+                          {(() => {
+                            const t = calculateTotals(chawkiData);
+                            return (
+                              <>
+                                <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
+                                <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
+                                <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
+                              </>
+                            );
+                          })()}
+                        </Card.Body>
+                      </Card>
+
+
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Block>
+                )
+              }
 
 
               {showCommercialMarketTransaction && (
