@@ -473,6 +473,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
                             <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                            <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -523,6 +524,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
                             <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                             <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -573,6 +575,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
                             <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                             <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -623,6 +626,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
                             <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                             <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -673,6 +677,7 @@ function ScSubSchemeDetailsEdit() {
                             <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
                             <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                             <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required

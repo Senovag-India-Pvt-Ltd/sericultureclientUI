@@ -91,7 +91,10 @@ function ServiceApplication() {
     sanctionNo: "",
     calculationBasedOn: "",
     marketId: "",
-  
+    taxInvoiceNo: "",
+    taxInvoiceDate: new Date(),
+    rearingEquipmentDetailsId: "",
+    beneficiaryShareAmount: "",
   });
 
   const formatAuctionDate = (auctionDate) => {
@@ -1898,7 +1901,9 @@ const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
   const calculatedAmount = baseQuantity * amountPerKg;
 
   // Round to 2 decimals
-  const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+  // const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+
+  const roundedAmount = Math.round(calculatedAmount);
 
   setAmountValue((prev) => ({
     ...prev,
@@ -1960,7 +1965,8 @@ const calculateAmountForBivoltineBonus = () => {
   }
 
   // Round to 2 decimals
-  const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+  // const roundedAmount = Math.round(calculatedAmount * 100) / 100;
+  const roundedAmount = Math.round(calculatedAmount);
 
   setAmountValue((prev) => ({
     ...prev,
@@ -1995,6 +2001,23 @@ const calculateAmountForBivoltineBonus = () => {
   });
 };
 
+// to get Program
+  const [rearingEquipmentDetailsData, setRearingEquipmentDetailsDataListData] = useState([]);
+
+  const getRearingEquipmentDetailsDataList = () => {
+    const response = api
+      .get(baseURLMasterData + `subsidy/get-all`)
+      .then((response) => {
+        setRearingEquipmentDetailsDataListData(response.data.content.subsidy);
+      })
+      .catch((err) => {
+        setRearingEquipmentDetailsDataListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRearingEquipmentDetailsDataList();
+  }, []);
  
 //   const handleCalculateUnitPrice = () => { 
 //     if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
@@ -3212,9 +3235,10 @@ if (
         subsidyName: item.subsidyName,
         eligibleEquipmentInNos: item.eligibleEquipmentInNos,
         eligibleTotalValueInRs: item.eligibleTotalValueInRs,
-        ratePerEligibleEquipment: item.ratePerEligibleEquipment,
+        // ratePerEligibleEquipment: item.ratePerEligibleEquipment,
         maxAmountOfSubsidyEligible: item.maxAmountOfSubsidyEligible,
 
+        ratePerEligibleEquipment: "",
         purchasedEquipmentInNos: "",
         purchasedTotalValueInRs: "",
         percentageOfSubsidyAmount: "",
@@ -3604,6 +3628,12 @@ const calculateTotals = (data) => {
       .reduce((sum, item) => sum + Number(item.eligibleTotalValueInRs || 0), 0)
   );
 
+  const equipmentMaxSubsidyTotal = Math.round(
+    data.equipmentList
+      .filter(item => item.selected)
+      .reduce((sum, item) => sum + Number(item.maxAmountOfSubsidyEligible || 0), 0)
+  );
+
   const equipmentPurchasedTotal = Math.round(
     data.equipmentList
       .filter(item => item.selected)
@@ -3619,6 +3649,13 @@ const calculateTotals = (data) => {
   const mulberry = Number(data.mulberry.percentage || 0);
   const drip = Number(data.drip.percentage || 0);
   const building = Number(data.building.percentage || 0);
+
+  const totalMaxSubsidy = Math.round(
+    Number(data.mulberry.eligible || 0) +
+    Number(data.drip.eligible || 0) +
+    Number(data.building.eligible || 0) +
+    equipmentMaxSubsidyTotal
+  );
 
   const totalClaimed = Math.round(
     Number(data.mulberry.claimed || 0) +
@@ -3642,6 +3679,8 @@ const calculateTotals = (data) => {
     equipmentEligibleTotal,
     equipmentPurchasedTotal,
     equipmentPercentageTotal,
+    equipmentMaxSubsidyTotal,
+    totalMaxSubsidy,
     totalClaimed,
     totalEligible,
     totalSubsidy
@@ -3776,8 +3815,13 @@ const calculateTotals = (data) => {
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
       marketId: data.marketId,
+      taxInvoiceNo: data.taxInvoiceNo,
+      taxInvoiceDate: data.taxInvoiceDate,
+      rearingEquipmentDetailsId: data.rearingEquipmentDetailsId,
+      beneficiaryShareAmount: data.beneficiaryShareAmount,
       unitPrice:amountValue.unitPrice,
       equipmentEligibleTotal: totals.equipmentEligibleTotal,
+      equipmentMaxSubsidyTotal: totals.equipmentMaxSubsidyTotal,
     equipmentPurchasedTotal: totals.equipmentPurchasedTotal,
     equipmentPercentageTotal: totals.equipmentPercentageTotal,
     totalClaimed: totals.totalClaimed,
@@ -5429,6 +5473,146 @@ const fetchReelerDetails = () => {
                             </div>
                           </Form.Group>
                         </Col>
+
+                         {getIncentiveAndBonusData[0]?.unitForScheme === "Rearing Equipment SS" && (
+                            <>
+
+                            <Col lg="6">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="sordfl">{("Rearing Equipment Details")}</Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    name="rearingEquipmentDetailsId"
+                                    value={data.rearingEquipmentDetailsId}
+                                    onChange={handleInputs}
+                                    // onBlur={() => handleInputs}
+                                    // required
+                                    // isInvalid={
+                                    //   data.rearingEquipmentDetailsId === undefined ||
+                                    //   data.rearingEquipmentDetailsId === "0"
+                                    // }
+                                  >
+                                    <option value="">{t("Select Rearing Equipment Details")}</option>
+                                    {rearingEquipmentDetailsData && rearingEquipmentDetailsData.length ?(rearingEquipmentDetailsData.map((list) => (
+                                      <option
+                                        key={list.subsidyId}
+                                        value={list.subsidyId}
+                                      >
+                                        {list.subsidyName}
+                                      </option>
+                                    ))):""}
+                                  </Form.Select>
+                                  {/* <Form.Control.Feedback type="invalid">
+                                    {t("Rearing Equipment Details is required")}
+                                  </Form.Control.Feedback> */}
+                                </div>
+                              </Form.Group>
+                            </Col>
+                            
+                            <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="taxInvoiceNo"
+                                      type="text"
+                                      name="taxInvoiceNo"
+                                      value={data.taxInvoiceNo}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Tax Invoice No"
+                                      // required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Tax Invoice Date")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.taxInvoiceDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "taxInvoiceDate")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                maxDate={new Date()}
+                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                //   !schemeDetails.calculationBasedOn}
+                                // readOnly 
+                                // required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                              
+                            </>
+                          )}
+
+                          {(
+                          getIncentiveAndBonusData[0]?.unitForScheme === 
+                            "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
+                          getIncentiveAndBonusData[0]?.sanctionForReeling
+                        ) && (
+                          <>
+                            <Col lg="6">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="schemeAmount">
+                                  Tax Invoice No
+                                  {/* <span className="text-danger">*</span> */}
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="taxInvoiceNo"
+                                    type="text"
+                                    name="taxInvoiceNo"
+                                    value={data.taxInvoiceNo}
+                                    onChange={handleInputs}
+                                    placeholder="Enter Tax Invoice No"
+                                    // required
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="2">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="sordfl">
+                                  {t("Tax Invoice Date")}
+                                  {/* <span className="text-danger">*</span> */}
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <DatePicker
+                                    selected={data.taxInvoiceDate}
+                                    onChange={(date) => handleDateChange(date, "taxInvoiceDate")}
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    maxDate={new Date()}
+                                    // readOnly
+                                    // required
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+                          </>
+                        )}
+
 
                         {getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
@@ -7234,8 +7418,9 @@ const fetchReelerDetails = () => {
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
-                                    <th>Rate</th>
+                                    {/* <th>Rate</th> */}
                                     <th>Max Subsidy</th>
+                                    <th>Rate</th>
                                     <th>Purchased Nos</th>
                                     <th>Purchased Total Value</th>
                                     <th>Percentage Of Subsidy(In Rs.)</th>
@@ -7265,26 +7450,24 @@ const fetchReelerDetails = () => {
                                       <td>{row.subsidyName}</td>
                                       <td>{row.eligibleEquipmentInNos}</td>
                                       <td>{row.eligibleTotalValueInRs}</td>
-                                      <td>{row.ratePerEligibleEquipment}</td>
+                                      {/* <td>{row.ratePerEligibleEquipment}</td> */}
                                       <td>{row.maxAmountOfSubsidyEligible}</td>
 
                                       {/* Purchased Nos */}
                                       <td>
-                                        {/* <input
-                                          type="number"
-                                          className="form-control"
-                                          value={row.purchasedEquipmentInNos?.toString() || ""}
-                                          onChange={(e) =>
-                                            setChawkiData((prev) => {
-                                              const updated = [...prev.equipmentList];
-                                              updated[index] = {
-                                                ...updated[index],
-                                                purchasedEquipmentInNos: e.target.value
-                                              };
-                                              return { ...prev, equipmentList: updated };
-                                            })
-                                          }
-                                        /> */}
+                                        
+                                        <input
+                                      type="number"
+                                      className="form-control"
+                                      name="ratePerEligibleEquipment"
+                                      value={row.ratePerEligibleEquipment}
+                                      onChange={(e) => handleEquipmentListChange(index, e)}
+                                      
+                                    />
+                                      </td>
+
+                                      <td>
+                                        
                                         <input
                                       type="number"
                                       className="form-control"
@@ -7326,12 +7509,15 @@ const fetchReelerDetails = () => {
 
                                 {/* Eligible Value */}
                                 <td>{calculateTotals(chawkiData).equipmentEligibleTotal}</td>
+                                
+                                <td>{calculateTotals(chawkiData).equipmentMaxSubsidyTotal}</td>
+
 
                                 <td></td> {/* Rate */}
-                                <td></td> {/* Max Subsidy */}
+                                <td></td>  {/* Purchased Nos skip */}
 
-                                {/* Purchased Nos skip */}
-                                <td></td>
+    
+                                {/* <td></td> */}
 
                                 {/* Purchased Value */}
                                 <td>{calculateTotals(chawkiData).equipmentPurchasedTotal}</td>
@@ -7466,6 +7652,7 @@ const fetchReelerDetails = () => {
                             const t = calculateTotals(chawkiData);
                             return (
                               <>
+                              {/* <p><strong>Total Max Subsidy Amount:</strong> {t.totalMaxSubsidy}</p> */}
                                 <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
                                 <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
                                 <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
@@ -8111,34 +8298,37 @@ const fetchReelerDetails = () => {
                       </Col> */}
 
                       {/* IF NOT sanctionForReeling → Show normal field */}
-                    {!getIncentiveAndBonusData[0]?.sanctionForReeling && (
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
-                          <Form.Label htmlFor="expectedAmount">
-                            {t("Subsidy/Bonus/Incentive Amount")}
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="expectedAmount"
-                              type="text"
-                              name="expectedAmount"
-                              value={data.expectedAmount}
-                              onChange={handleInputs}
-                              placeholder={t("Enter Expected Amount")}
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {t("Subsidy Amount is required")}
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
-                    )}
+                    {!getIncentiveAndBonusData[0]?.sanctionForReeling &&
+                      getIncentiveAndBonusData[0]?.calculationBasedOn !==
+                        "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n5">
+                            <Form.Label htmlFor="expectedAmount">
+                              {t("Subsidy/Bonus/Incentive Amount")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="expectedAmount"
+                                type="text"
+                                name="expectedAmount"
+                                value={data.expectedAmount}
+                                onChange={handleInputs}
+                                placeholder={t("Enter Expected Amount")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Subsidy Amount is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      )}
+
 
 
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
-                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                    {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="totalExpectedAmount">
@@ -8157,11 +8347,11 @@ const fetchReelerDetails = () => {
                           </div>
                         </Form.Group>
                       </Col>
-                    )}
+                    )} */}
 
 
                     {/* IF sanctionForReeling → Show Subsidy Amount */}
-                    {getIncentiveAndBonusData[0]?.sanctionForReeling && (
+                    {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label>
@@ -8177,7 +8367,49 @@ const fetchReelerDetails = () => {
                           />
                         </Form.Group>
                       </Col>
-                    )}
+                    )} */}
+                    {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
+                    getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                      "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n5">
+                        <Form.Label htmlFor="totalExpectedAmount">
+                          {t("Total Subsidy/Bonus/Incentive Amount")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="totalExpectedAmount"
+                            type="text"
+                            name="expectedAmount"
+                            value={data.expectedAmount}
+                            disabled
+                            placeholder={t("Enter Expected Amount")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  )}
+
+                    {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
+                        getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n5">
+                            <Form.Label>
+                              <strong>Subsidy Amount</strong>
+                            </Form.Label>
+                            <Form.Control
+                              id="subsidyAmount"
+                              type="text"
+                              name="subsidyAmount"
+                              value={data.subsidyAmount}
+                              placeholder="Auto Calculated"
+                            />
+                          </Form.Group>
+                        </Col>
+                      )}
+
 
                     </Row>
                   </Card.Body>
