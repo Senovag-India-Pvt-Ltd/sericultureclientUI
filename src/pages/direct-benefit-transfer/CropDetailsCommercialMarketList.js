@@ -28,7 +28,7 @@ function CropDetailsForCommercialMarketList() {
       .get(baseURL + `cropDetailsCommercialMarket/getListOfCropDetailsCommercialMarketDetails`, _params)
       .then((response) => {
         setListData(response.data.content);
-        setTotalRows(response.data.content.totalRecords);
+        setTotalRows(response.data.totalRecords);
         setLoading(false);
       })
       .catch((err) => {

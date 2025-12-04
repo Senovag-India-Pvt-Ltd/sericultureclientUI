@@ -17,7 +17,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
 function CropDetailsForSeedMarketList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 50;
+  const countPerPage = 10;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, pageSize: countPerPage } };
@@ -28,7 +28,7 @@ function CropDetailsForSeedMarketList() {
       .get(baseURL + `cropDetailsSeedMarket/getListOfCropDetailsSeedMarketDetails`, _params)
       .then((response) => {
         setListData(response.data.content);
-        setTotalRows(response.data.content.totalRecords);
+        setTotalRows(response.data.totalRecords);
         setLoading(false);
       })
       .catch((err) => {
