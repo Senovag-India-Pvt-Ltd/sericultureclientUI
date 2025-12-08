@@ -51,6 +51,14 @@ function MarketEdit() {
     }));
   };
 
+  const handleCheckBoxForRequiredBasePrice = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      requiredBasePrice: e.target.checked,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -108,6 +116,7 @@ function MarketEdit() {
               paymentMode: "",
               cocoonAge: "",
               isTest: "",
+              requiredBasePrice: ""
             });
             setValidated(false);
           }
@@ -168,6 +177,7 @@ function MarketEdit() {
       paymentMode: "",
       cocoonAge: "",
       isTest:"",
+      requiredBasePrice: ""
     });
   };
 
@@ -1317,6 +1327,22 @@ function MarketEdit() {
                         Is Test
                       </Form.Label>
                     </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                        <Col sm={1}>
+                          <Form.Check
+                            type="checkbox"
+                            id="requiredBasePrice"
+                            checked={data.requiredBasePrice}
+                            onChange={handleCheckBoxForRequiredBasePrice}
+                            // Optional: disable the checkbox in view mode
+                            // defaultChecked
+                          />
+                        </Col>
+                        <Form.Label column sm={11} className="mt-n2">
+                          Require Base Price
+                        </Form.Label>
+                      </Form.Group>
                   </Col>
                 </Row>
               </Card.Body>

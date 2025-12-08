@@ -58,6 +58,7 @@ function Market() {
     paymentMode: "",
     cocoonAge: "",
     isTest: false,
+    requiredBasePrice:false,
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -90,6 +91,14 @@ function Market() {
     setData((prev) => ({
       ...prev,
       isTest: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxForRequiredBasePrice = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      requiredBasePrice: e.target.checked,
     }));
   };
 
@@ -157,6 +166,7 @@ function Market() {
               divisionMasterId:"",
               paymentMode: "",
               cocoonAge: "",
+              requiredBasePrice:false,
             });
             setValidated(false);
           }
@@ -213,6 +223,7 @@ function Market() {
       clientCode: "",
       weighmentTripletGeneration: true,
       bidAmountFlag: false,
+      requiredBasePrice:false,
       divisionMasterId:"",
       paymentMode: "",
       cocoonAge: "",
@@ -1300,6 +1311,22 @@ function Market() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         Is Test
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="requiredBasePrice"
+                          checked={data.requiredBasePrice}
+                          onChange={handleCheckBoxForRequiredBasePrice}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Require Base Price
                       </Form.Label>
                     </Form.Group>
                   </Col>

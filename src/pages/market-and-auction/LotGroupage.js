@@ -55,6 +55,42 @@ const [dataLotList, setDataLotList] = useState([]);
   })
  }
 
+ const [id, setId] = useState(localStorage.getItem("userMasterId"));
+ const [marketMasterId, setMarketMasterId] = useState(null);
+
+ const getIdList = () => {
+     setLoading(true);
+     const response = api
+       .get(baseURL + `userMaster/get-join/${id}`)
+       .then((response) => {
+         setMarketMasterId(response.data.content.marketMasterId);
+        //  setTalukId(response.data.content.talukId);
+         setLoading(false);
+       })
+       .catch((err) => {
+         const message = err.response.data.errorMessages[0].message[0].message;
+         setData({});
+         // editError(message);
+         setLoading(false);
+       });
+   };
+ 
+   useEffect(() => {
+     getIdList();
+   }, [id]);
+
+   const [requiredBasePrice, setRequiredBasePrice] = useState(false);
+
+// Example API call (adjust to your actual API)
+useEffect(() => {
+  api.get(`${baseURL}marketMaster/get/${localStorage.getItem("marketId")}`)
+    .then(response => {
+      setRequiredBasePrice(response.data.content.requiredBasePrice); 
+    });
+}, []);
+
+
+
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
 const handleDateChange = (date) => {
@@ -76,14 +112,12 @@ const handleDateChange = (date) => {
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   // const handleShowModal = () => setShowModal(true);
-  const handleShowModal = () => {
-    // Use the stored price directly when opening the modal
+ const handleShowModal = () => {
+  // CASE 1️⃣: Market requires base price → price must exist
+  if (requiredBasePrice) {
     if (price) {
-      setData((prevData) => ({
-        ...prevData,
-        amount: price, // Automatically set the stored price
-      }));
-      // Open the modal to add new details
+      // Auto-fill price since it's mandatory and available
+      setData(prev => ({ ...prev, amount: price }));
       setShowModal(true);
     } else {
       Swal.fire({
@@ -91,7 +125,14 @@ const handleDateChange = (date) => {
         title: "Price not available. Please perform a search first.",
       });
     }
-  };
+    return;
+  }
+
+  // CASE 2️⃣: Market does NOT require base price → manual entry allowed
+  // Do NOT enforce price
+  setShowModal(true);
+};
+
   
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal1 = () => setShowModal1(true);
@@ -211,33 +252,63 @@ const handleUpdateLotDetails = (e, i, changes) => {
 };
   
 
-  const handleInputs = (e) => {
-    const { name, value } = e.target;
+  // const handleInputs = (e) => {
+  //   const { name, value } = e.target;
 
-    setData((prevData) => {
-      const newData = { ...prevData, [name]: value };
+  //   setData((prevData) => {
+  //     const newData = { ...prevData, [name]: value };
   
-      // Calculate soldAmount if both lotWeight and amount are present
-      if (newData.buyerType !== "Reeling" && newData.lotWeight && newData.amount) {
-        // Calculate total and fix to 2 decimal points, then convert to an integer
-        newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount));
-      } else {
-        newData.soldAmount = ''; // Clear soldAmount if inputs are missing
-      }
+  //     // Calculate soldAmount if both lotWeight and amount are present
+  //     if (newData.buyerType !== "Reeling" && newData.lotWeight && newData.amount) {
+  //       // Calculate total and fix to 2 decimal points, then convert to an integer
+  //       newData.soldAmount = Math.floor(parseFloat(newData.lotWeight) * parseFloat(newData.amount));
+  //     } else {
+  //       newData.soldAmount = ''; // Clear soldAmount if inputs are missing
+  //     }
   
-      // Prevent editing 'amount' if it's already fetched
-      if (name === 'amount' && prevData.amount) {
-        return prevData; // Return the previous state to prevent updates to the price field
-      }
+  //     // Prevent editing 'amount' if it's already fetched
+  //     if (name === 'amount' && prevData.amount) {
+  //       return prevData; // Return the previous state to prevent updates to the price field
+  //     }
   
-      return newData; // Return the new data state
-    });
+  //     return newData; // Return the new data state
+  //   });
   
-    // Set the new state for allottedLotId
-    if (name === 'allottedLotId') {
-      setAllottedLotId(value);
+  //   // Set the new state for allottedLotId
+  //   if (name === 'allottedLotId') {
+  //     setAllottedLotId(value);
+  //   }
+  // };
+
+  const handleInputs = (e) => {
+  const { name, value } = e.target;
+
+  setData((prevData) => {
+    // Do NOT block user typing unless requiredBasePrice is true
+    if (name === "amount" && requiredBasePrice) {
+      return prevData;
     }
-  };
+
+    const newData = { ...prevData, [name]: value };
+
+    // Recalculate soldAmount
+    if (newData.lotWeight && newData.amount) {
+      newData.soldAmount = Math.floor(
+        parseFloat(newData.lotWeight) * parseFloat(newData.amount)
+      );
+    } else {
+      newData.soldAmount = "";
+    }
+
+    return newData;
+  });
+
+  if (name === "allottedLotId") {
+    setAllottedLotId(value);
+  }
+};
+
+
    
 
    const [searchValidated, setSearchValidated] = useState(false);
@@ -435,7 +506,9 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
             remainingCocoonWeight: remainingCocoonWeight,
-            fruitsId : fruitsId
+            fruitsId : fruitsId,
+            marketId: localStorage.getItem("marketId"),
+            godownId: localStorage.getItem("godownId"),
           }))
         };
   
@@ -449,10 +522,13 @@ const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
               .join("<br>");
   
             // Show the success message
-            Swal.fire({
+              Swal.fire({
               icon: 'success',
               title: 'Updated successfully',
-              html: `Invoice Details:<br>${invoiceDetails}`,  // Display invoice details in SweetAlert
+              html: `Invoice Details:<br>${invoiceDetails}`,
+            }).then(() => {
+              // Reload the page once user clicks OK
+              window.location.reload();
             });
   
             clear();
@@ -810,7 +886,8 @@ setAllottedLotId("");
       title: "Saved successfully",
       html: `Invoice Details:<br>${invoiceDetails}`, // Use 'html' instead of 'text'
     }).then(() => {
-      navigate("#");
+      // navigate("#");
+      window.location.reload();
     });
   };
 
@@ -1523,8 +1600,8 @@ const handlePurchaseModeChange = (e) => {
                   </Col> */}
 
 
-                  {data.buyerType !== "Reeling" && (
-          <>
+                {/* {data.buyerType !== "Reeling" && (
+          <> */}
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="amount">
@@ -1540,7 +1617,8 @@ const handlePurchaseModeChange = (e) => {
                     type="number"
                     placeholder={t("Enter Price(In Rs.)")}
                     required
-                    readOnly
+                    // readOnly
+                    readOnly={requiredBasePrice} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {t("Price(In Rs.) is required.")}
@@ -1571,8 +1649,8 @@ const handlePurchaseModeChange = (e) => {
                 </div>
               </Form.Group>
             </Col>
-          </>
-        )}
+          {/* </>
+        )} */}
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
@@ -1894,8 +1972,8 @@ const handlePurchaseModeChange = (e) => {
                     </Form.Group>
                   </Col> */}
 
-          {data.buyerType !== "Reeling" && (
-          <>
+          {/* {data.buyerType !== "Reeling" && (
+          <> */}
             <Col lg="6">
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="amount">
@@ -1911,7 +1989,8 @@ const handlePurchaseModeChange = (e) => {
                     type="number"
                     placeholder={t("Enter Price(In Rs.)")}
                     required
-                    readOnly
+                    // readOnly
+                    readOnly={requiredBasePrice}
                   />
                   <Form.Control.Feedback type="invalid">
                     {t("Price(In Rs.) is required.")}
@@ -1942,8 +2021,8 @@ const handlePurchaseModeChange = (e) => {
                 </div>
               </Form.Group>
             </Col>
-          </>
-        )}
+          {/* </>
+        )} */}
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
