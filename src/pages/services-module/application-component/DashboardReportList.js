@@ -1689,6 +1689,30 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
             schemeType
           );
         }
+        else if (
+          schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+        else if (
+          schemeType === "Rearing Equipment SS"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -1909,6 +1933,13 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
       endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
 
     }
+
+    else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+      endpoint = baseURLReport + `getChawkiSanctionOrderPdf`;
+    }
+    else if (schemeType === "Rearing Equipment SS") {
+      endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+    }
     // -------------------------------
     // 3️⃣ PMKSY / PDMC (farmer/company)
     // -------------------------------
@@ -1935,7 +1966,9 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
       schemeType === "Silk Samagra State" ||
       schemeType === "Silk Samagra Central" ||
       schemeType === "Reeling Shed-PSF" ||
-      schemeType === "Adopting Heat Recovery Unit-PSF"
+      schemeType === "Adopting Heat Recovery Unit-PSF" ||
+      schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
+      schemeType === "Rearing Equipment SS"
         ? {
             applicationFormId: applicationId,
             schemeId,
