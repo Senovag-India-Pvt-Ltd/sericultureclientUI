@@ -26,6 +26,15 @@ function UsersEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+   const handleCheckBox = (e) => {
+    const { name, checked } = e.target; // Get the name and checked state from the event
+    setData((prev) => ({
+      ...prev,
+      [name]: checked, // Dynamically update the correct field based on the checkbox name
+    }));
+  };
+  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -63,6 +72,7 @@ function UsersEdit() {
               tscMasterId:"",
               khazaneRecipientId: "",
               divisionMasterId: "",
+              allowAnyUser:""
             });
             setValidated(false);
           }
@@ -103,6 +113,7 @@ function UsersEdit() {
       tscMasterId:"",
       khazaneRecipientId: "",
       divisionMasterId: "",
+      allowAnyUser:""
     });
   };
 
@@ -865,6 +876,26 @@ function UsersEdit() {
                           </div>
                         </Form.Group>
                       </Col>
+
+                       <Col lg="2">
+                          <Form.Group as={Row} className="form-group mt-4">
+                            <Col sm={1}>
+                              <Form.Check
+                                type="checkbox"
+                                name="allowAnyUser"
+                                checked={data.allowAnyUser}
+                                id="allowAnyUser"
+                                // checked={data.weighmentTripletGeneration}
+                                onChange={handleCheckBox}
+                                // Optional: disable the checkbox in view mode
+                                // defaultChecked
+                              />
+                            </Col>
+                            <Form.Label column sm={8} className="mt-n2">
+                            {t("Allow Any User")}
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
                   
                 </Row>
               </Card.Body>

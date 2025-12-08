@@ -113,6 +113,7 @@ useEffect(() => {
                 if (nestedErrorCode === 0) {
                     // Success condition based on nested errorCode
                     saveSuccess();
+                    handleCloseModalAssesment();
                     getList();
                     // setData({
                     //     marketAuctionId: "",

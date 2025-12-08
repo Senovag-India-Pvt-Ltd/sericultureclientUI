@@ -17,7 +17,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
 function CropDetailsForSeedMarketList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 10;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, pageSize: countPerPage } };
