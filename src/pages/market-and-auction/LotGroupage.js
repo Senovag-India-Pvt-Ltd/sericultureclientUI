@@ -442,12 +442,17 @@ const handleUpdateLotDetails = (e, i, changes) => {
   // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
   // const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
   // Conditionally update remainingCocoonWeight based on totalLotWeight
-const remainingCocoonWeight = totalLotWeight > 0 
-? farmerdetails.netWeight - totalLotWeight 
-: farmerdetails.netWeight;
+const remainingCocoonWeight =
+  totalLotWeight > 0
+    ? Number(farmerdetails?.netWeight || 0) - Number(totalLotWeight || 0)
+    : Number(farmerdetails?.netWeight || 0);
+
+// Format only for display (ensure it's a number first)
+const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
 
 // Disable Add button if lotWeight exceeds remaining cocoon weight
-const isAddDisabled = parseFloat(data.lotWeight) > remainingCocoonWeight;
+const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
+
 
  
    const searchError = (message = "Something went wrong!") => {
@@ -1039,7 +1044,7 @@ const handlePurchaseModeChange = (e) => {
                               <td style={styles.ctstyle}>{t("Sold Cocoon in Kgs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.soldCocoonInKgs}</td>
                                 <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
-                                <td style={styles.cell}>{remainingCocoonWeight}</td>
+                                <td style={styles.cell}>{formattedRemainingCocoonWeight}</td>
                                 <td style={styles.ctstyle}>{t("Remaining Cocoon in Store:")}</td>
                                 <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
                               </tr>

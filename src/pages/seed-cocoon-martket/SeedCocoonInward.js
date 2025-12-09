@@ -1619,7 +1619,7 @@ const getIdList = (farmerId) => {
             onSubmit={handleinitialWeighment}
           >
             <Row className="g-3">
-            {fitnessLotOptions.length > 1 && (
+            {/* {fitnessLotOptions.length > 1 && (
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="lotParentLevel">
@@ -1669,7 +1669,68 @@ const getIdList = (farmerId) => {
                   </div>
                 </Form.Group>
               </Col>
+            )} */}
+
+            {fitnessLotOptions.length > 1 && (
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="lotParentalLevel">
+                    {t("Parental Lot Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      id="lotParentalLevel"
+                      name="lotParentalLevel"
+                      value={selectedParentalLotNumber}
+                      onChange={(e) => {
+                        const selectedValue = e.target.value;
+                        setSelectedParentalLotNumber(selectedValue);
+
+                        const matchedLot = fitnessLotOptions.find(
+                          (item) => item.lotNumberRsp === selectedValue
+                        );
+
+                        if (matchedLot) {
+                          setData((prev) => ({
+                            ...prev,
+                            lotParentalLevel: matchedLot.lotNumberRsp,
+                            dflLotNumber: matchedLot.numbersOfDfls,
+                            lotVariety: matchedLot.raceOfDfls,
+                            spunFromDate: matchedLot.spunFromDate,
+                            spunToDate: matchedLot.spunToDate,
+                          }));
+                        } else {
+                          setData((prev) => ({
+                            ...prev,
+                            lotParentalLevel: selectedValue,
+                            dflLotNumber: "",
+                            lotVariety: "",
+                            spunFromDate: "",
+                            spunToDate: "",
+                          }));
+                        }
+                      }}
+                      required
+                    >
+                      <option value="">{t("Select Parental Lot Number")}</option>
+
+                      {fitnessLotOptions.map((item, index) => (
+                        <option key={index} value={item.lotNumberRsp}>
+                          {item.lotNumberRsp}
+                        </option>
+                      ))}
+                    </Form.Select>
+
+                    <Form.Control.Feedback type="invalid">
+                      {t("Parental Lot Number is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
             )}
+
 
               <Col lg="6">
                 <Form.Group className="form-group">

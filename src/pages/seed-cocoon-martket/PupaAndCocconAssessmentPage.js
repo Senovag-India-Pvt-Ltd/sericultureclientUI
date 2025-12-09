@@ -115,6 +115,7 @@ useEffect(() => {
                     saveSuccess();
                     handleCloseModalAssesment();
                     getList();
+                    
                     // setData({
                     //     marketAuctionId: "",
                     //     testDate: "",
@@ -401,7 +402,10 @@ const saveSuccess = () => {
     icon: "success",
     title: "Pupa Testing And Cocoon Assessment Completed  Successfully",
     text: "You Can Proceed To Allotment",
-  });
+  }).then(() => {
+      // navigate("#");
+      window.location.reload();
+    });
 };
 
 const saveError = (message = "Something went wrong!") => {
