@@ -5616,7 +5616,7 @@ const fetchReelerDetails = () => {
 
                         {getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
-                            <Col lg="3">
+                            <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="schemeAmount">Quantity in kg<span className="text-danger">*</span></Form.Label>
                                   <div className="form-control-wrap">
@@ -5634,7 +5634,7 @@ const fetchReelerDetails = () => {
                                 </Form.Group>
                               </Col>
 
-                              <Col lg="3">
+                              <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
                                   <Form.Label>
                                     {t('Month')}<span className="text-danger">*</span>
