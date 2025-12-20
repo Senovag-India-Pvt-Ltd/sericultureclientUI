@@ -1881,8 +1881,10 @@ const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
   const avgYield = parseFloat(data.averageYield || 0);
+  const noOfDFLs = parseFloat(data.lotWeight || 0);
 
-  let baseQuantity;
+  // let baseQuantity;
+  let baseQuantity = cocoonsWeight;
 
   // ⭐ Special rule:
   // If calcType is Bivoltine incentive AND averageYield > maxNoOfCocoonsPerKg,
@@ -1892,10 +1894,13 @@ const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
     maxNoOfCocoonsPerKg &&
     avgYield > parseFloat(maxNoOfCocoonsPerKg)
   ) {
-    baseQuantity = parseFloat(maxNoOfCocoonsPerKg);
-  } else {
-    // Default: use cocoonsWeight as before
-    baseQuantity = cocoonsWeight;
+    if (noOfDFLs < 100) {
+      // 🔥 BELOW 100 DFLs RULE
+      baseQuantity = (noOfDFLs * maxNoOfCocoonsPerKg) / 100;
+    } else {
+      // 🔥 100 OR MORE DFLs RULE
+      baseQuantity = maxNoOfCocoonsPerKg;
+    }
   }
 
   const calculatedAmount = baseQuantity * amountPerKg;

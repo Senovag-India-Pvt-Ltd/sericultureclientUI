@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../components";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useMemo  } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReactSelect from "react-select";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -758,6 +759,12 @@ setAllottedLotId("");
         getExternalList();
   }, []);
 
+   const addressOptions = externalListData?.map((list) => ({
+  value: `${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`,
+  label: `${list.address} (${list.licenseNumber})`,
+}));
+
+
   // to get Grainage
   const [grainageListData, setGrainageListData] = useState([]);
 
@@ -1432,27 +1439,41 @@ const handlePurchaseModeChange = (e) => {
                             {t("Address")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
-                            <Form.Select
-                              name="buyerId"
-                              value={`${data.buyerId}_${data.address}_${data.externalUnitId}`}
-                              onChange={handleReelerOption}
-                              onBlur={handleReelerOption} // Correctly set as function reference
-                              required
-                              isInvalid={
-                                data.buyerId === undefined ||
-                                data.buyerId === "0"
-                              }
-                            >
-                              <option value="">{t("Select Address")}</option>
-                              {externalListData.map((list) => (
-                                <option
-                                  key={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
-                                  value={`${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`}
-                                >
-                                  {list.address}
-                                </option>
-                              ))}
-                            </Form.Select>
+                           <ReactSelect
+                              options={addressOptions}
+                              placeholder={t("Select Address")}
+                              isSearchable
+                              menuPlacement="auto"
+                              value={addressOptions?.find(
+                                (opt) =>
+                                  opt.value ===
+                                  `${data.buyerId}_${data.address}_${data.externalUnitId}`
+                              )}
+                              onChange={(selectedOption) => {
+                                if (!selectedOption) {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    buyerId: "",
+                                    address: "",
+                                    buyerName: "",
+                                    externalUnitId: "",
+                                  }));
+                                  return;
+                                }
+
+                                const [chooseId, chooseAddress, chooseUnit] =
+                                  selectedOption.value.split("_");
+
+                                setData((prev) => ({
+                                  ...prev,
+                                  buyerId: chooseId,
+                                  address: chooseAddress,
+                                  buyerName: chooseAddress,
+                                  externalUnitId: chooseUnit,
+                                }));
+                              }}
+                            />
+
                             <Form.Control.Feedback type="invalid">
                               {t("Address is required")}
                             </Form.Control.Feedback>
@@ -1503,7 +1524,7 @@ const handlePurchaseModeChange = (e) => {
                           {t("License Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Select
+                          {/* <Form.Select
                             name="buyerId"
                             value={`${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`}
                             onChange={handleExternalOption}
@@ -1523,7 +1544,41 @@ const handlePurchaseModeChange = (e) => {
                                 {list.licenseNumber}
                               </option>
                             ))}
-                          </Form.Select>
+                          </Form.Select> */}
+                          <ReactSelect
+                              options={addressOptions}
+                              placeholder={t("Select Address")}
+                              isSearchable
+                              menuPlacement="auto"
+                              value={addressOptions?.find(
+                                (opt) =>
+                                  opt.value ===
+                                  `${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`
+                              )}
+                              onChange={(selectedOption) => {
+                                if (!selectedOption) {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    buyerId: "",
+                                    licenseNumber: "",
+                                    buyerName: "",
+                                    externalUnitId: "",
+                                  }));
+                                  return;
+                                }
+
+                                const [chooseId, chooseAddress, chooseUnit] =
+                                  selectedOption.value.split("_");
+
+                                setData((prev) => ({
+                                  ...prev,
+                                  buyerId: chooseId,
+                                  licenseNumber: chooseAddress,
+                                  buyerName: chooseAddress,
+                                  externalUnitId: chooseUnit,
+                                }));
+                              }}
+                            />
                           <Form.Control.Feedback type="invalid">
                             {t("License Number is required")}
                           </Form.Control.Feedback>
@@ -1803,7 +1858,7 @@ const handlePurchaseModeChange = (e) => {
                             {t("Address")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
-                            <Form.Select
+                            {/* <Form.Select
                               name="buyerId"
                               value={`${data.buyerId}_${data.address}_${data.externalUnitId}`}
                               onChange={handleReelerOption}
@@ -1823,7 +1878,41 @@ const handlePurchaseModeChange = (e) => {
                                   {list.address}
                                 </option>
                               ))}
-                            </Form.Select>
+                            </Form.Select> */}
+                             <ReactSelect
+                              options={addressOptions}
+                              placeholder={t("Select Address")}
+                              isSearchable
+                              menuPlacement="auto"
+                              value={addressOptions?.find(
+                                (opt) =>
+                                  opt.value ===
+                                  `${data.buyerId}_${data.address}_${data.externalUnitId}`
+                              )}
+                              onChange={(selectedOption) => {
+                                if (!selectedOption) {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    buyerId: "",
+                                    address: "",
+                                    buyerName: "",
+                                    externalUnitId: "",
+                                  }));
+                                  return;
+                                }
+
+                                const [chooseId, chooseAddress, chooseUnit] =
+                                  selectedOption.value.split("_");
+
+                                setData((prev) => ({
+                                  ...prev,
+                                  buyerId: chooseId,
+                                  address: chooseAddress,
+                                  buyerName: chooseAddress,
+                                  externalUnitId: chooseUnit,
+                                }));
+                              }}
+                            />
                             <Form.Control.Feedback type="invalid">
                               {t("Address is required")}
                             </Form.Control.Feedback>
@@ -1874,7 +1963,7 @@ const handlePurchaseModeChange = (e) => {
                           {t("License Number")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Select
+                          {/* <Form.Select
                             name="buyerId"
                             value={`${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`}
                             onChange={handleExternalOption}
@@ -1894,7 +1983,41 @@ const handlePurchaseModeChange = (e) => {
                                 {list.licenseNumber}
                               </option>
                             ))}
-                          </Form.Select>
+                          </Form.Select> */}
+                           <ReactSelect
+                              options={addressOptions}
+                              placeholder={t("Select Address")}
+                              isSearchable
+                              menuPlacement="auto"
+                              value={addressOptions?.find(
+                                (opt) =>
+                                  opt.value ===
+                                  `${data.buyerId}_${data.licenseNumber}_${data.externalUnitId}`
+                              )}
+                              onChange={(selectedOption) => {
+                                if (!selectedOption) {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    buyerId: "",
+                                    licenseNumber: "",
+                                    buyerName: "",
+                                    externalUnitId: "",
+                                  }));
+                                  return;
+                                }
+
+                                const [chooseId, chooseAddress, chooseUnit] =
+                                  selectedOption.value.split("_");
+
+                                setData((prev) => ({
+                                  ...prev,
+                                  buyerId: chooseId,
+                                  licenseNumber: chooseAddress,
+                                  buyerName: chooseAddress,
+                                  externalUnitId: chooseUnit,
+                                }));
+                              }}
+                            />
                           <Form.Control.Feedback type="invalid">
                             {t("License Number is required")}
                           </Form.Control.Feedback>
