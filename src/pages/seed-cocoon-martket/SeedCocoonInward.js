@@ -983,8 +983,11 @@ const getIdList = (farmerId) => {
       title: "Bidding Slip has been generated",
       text: `${lot} ${big} ${small}`,
       width: 300,
+    }).then(() => {
+      // navigate("#");
+      window.location.reload();
     });
-  };
+};
 
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({

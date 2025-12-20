@@ -13,6 +13,9 @@ import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+// import Select from "react-select";
+import ReactSelect from "react-select";
+
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -108,6 +111,12 @@ function InvoicePermitAndMarketReceipt() {
   useEffect(() => {
     getExternalList();
   }, []);
+
+     const externalUserOptions = externalListData?.map((list) => ({
+      value: list.externalUnitRegistrationId,
+      label: `${list.name} (${list.licenseNumber})`,
+    }));
+
 
     const generateInvoiceReport = async () => {
         const { fromDate, toDate } = data;
@@ -401,7 +410,7 @@ const handleGenerateReport = (e) => {
                             <>
                             <Form.Label>{t("External Users")}<span className="text-danger">*</span></Form.Label>
                             <Col>
-                                <Form.Select
+                                {/* <Form.Select
                                 name="externalUnitRegistrationId"
                                 value={data.externalUnitRegistrationId}
                                 onChange={handleInputs}
@@ -410,10 +419,26 @@ const handleGenerateReport = (e) => {
                                 <option value="">{t("Select External Users")}</option>
                                 {externalListData?.map((list) => (
                                     <option key={list.externalUnitRegistrationId} value={list.externalUnitRegistrationId}>
-                                    {list.name}
+                                     {list.name} ({list.licenseNumber})
                                     </option>
                                 ))}
-                                </Form.Select>
+                                </Form.Select> */}
+                                <ReactSelect
+                                options={externalUserOptions}
+                                placeholder={t("Select External Users")}
+                                isSearchable
+                                menuPlacement="auto"
+                                value={externalUserOptions?.find(
+                                  (opt) => opt.value === data.externalUnitRegistrationId
+                                )}
+                                onChange={(selectedOption) => {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    externalUnitRegistrationId: selectedOption?.value || "",
+                                  }));
+                                }}
+                              />
+                                
                             </Col>
                             </>
                         )}

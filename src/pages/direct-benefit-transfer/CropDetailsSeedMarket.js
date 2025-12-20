@@ -10,6 +10,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
+import ReactSelect from "react-select";
 
 import api from "../../services/auth/api";
 
@@ -362,6 +363,9 @@ function CropDetailsForSeedMarket() {
     getRaceList();
   }, []);
 
+ 
+
+
    // to get Race
     const [externalListData, setExternalListData] = useState([]);
   
@@ -384,6 +388,11 @@ function CropDetailsForSeedMarket() {
     useEffect(() => {
           getExternalList();
     }, []);
+
+     const licenseOptions = externalListData?.map((list) => ({
+  value: list.externalUnitRegistrationId,
+  label: `${list.licenseNumber} (${list.name})`,
+})); 
  
 
   const navigate = useNavigate();
@@ -550,7 +559,7 @@ function CropDetailsForSeedMarket() {
                             {/* <span className="text-danger">*</span> */}
                           </Form.Label>
                           <div className="form-control-wrap">
-                            <Form.Select
+                            {/* <Form.Select
                               name="externalUnitRegistrationId"
                               value={data.externalUnitRegistrationId}
                               onChange={handleInputs}
@@ -563,10 +572,25 @@ function CropDetailsForSeedMarket() {
                                   key={list.externalUnitRegistrationId}
                                   value={list.externalUnitRegistrationId}
                                 >
-                                  {list.licenseNumber}
+                                  {list.licenseNumber} ({list.name})
                                 </option>
                               ))}
-                            </Form.Select>
+                            </Form.Select> */}
+                            <ReactSelect
+                                options={licenseOptions}
+                                placeholder={t("Select License Number")}
+                                isSearchable
+                                menuPlacement="auto"
+                                value={licenseOptions?.find(
+                                  (opt) => opt.value === data.externalUnitRegistrationId
+                                )}
+                                onChange={(selectedOption) => {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    externalUnitRegistrationId: selectedOption?.value || "",
+                                  }));
+                                }}
+                              />
                             {/* <Form.Control.Feedback type="invalid">
                               {t("License Number is required")}
                             </Form.Control.Feedback> */}
