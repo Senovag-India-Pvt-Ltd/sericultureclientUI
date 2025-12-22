@@ -27,7 +27,25 @@ const { t } = useTranslation();
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    // Update field value first
+  const updatedData = { ...data, [name]: value };
+
+  // Auto-calculate Average Yield = (quantity / dfl) * 100
+  if (
+    (name === "quantityOfSeedCocoons" || name === "noOfDfls") &&
+    updatedData.quantityOfSeedCocoons &&
+    updatedData.noOfDfls &&
+    !isNaN(updatedData.quantityOfSeedCocoons) &&
+    !isNaN(updatedData.noOfDfls) &&
+    Number(updatedData.noOfDfls) !== 0
+  ) {
+    const qty = Number(updatedData.quantityOfSeedCocoons);
+    const dfl = Number(updatedData.noOfDfls);
+
+    updatedData.averageYield = ((qty / dfl) * 100).toFixed(2);  
+  }
+
+  setData(updatedData);
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 

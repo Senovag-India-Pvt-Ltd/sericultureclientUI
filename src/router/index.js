@@ -1074,6 +1074,7 @@ import CropDetailsForSeedMarketEdit from "../pages/direct-benefit-transfer/CropD
 import CropDetailsCommercialMarketEdit from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketEdit";
 import RegisteredPrivateChawki from "../pages/services-module/application-component/RegisteredPrivateChawki";
 import RegisteredPrivateChawkiList from "../pages/services-module/application-component/RegisteredPrivateChawkiList";
+import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 
 // Admin and Reports
 
@@ -3870,6 +3871,8 @@ function Router() {
             <Route path="seed-cocoon-inward" element={<SeedCocoonInward />} />
 
             <Route path="base-price-fixation" element={<BasePriceFixation />} />
+
+            <Route path="lot-wise-base-price-fixation" element={<LotWisePriceFixation />} /> 
 
             <Route
               path="pupa-test-and-assessment"

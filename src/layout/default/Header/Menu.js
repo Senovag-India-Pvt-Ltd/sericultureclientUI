@@ -254,6 +254,7 @@ function Menu() {
     Market_SeedCocoonMarket: false,
     Market_SeedCocoonMarket_Inward: false,
     Market_SeedCocoonMarket_Base_Price_Fixation: false,
+    Market_SeedCocoonMarket_Lot_Wise_Price_Fixation: false,
     Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
 
     Market_SeedCocoonMarket_Payment: false,
@@ -2272,11 +2273,20 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                    {showMenu.Market_SeedCocoonMarket_Base_Price_Fixation ? (
+                    {/* {showMenu.Market_SeedCocoonMarket_Base_Price_Fixation ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("Base Price Fixation")}
                           to="/seriui/base-price-fixation"
+                        />
+                      </MenuItem>
+                    ) : null} */}
+
+                    {showMenu.Market_SeedCocoonMarket_Lot_Wise_Price_Fixation ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Lot Wise Price Fixation")}
+                          to="/seriui/lot-wise-base-price-fixation"
                         />
                       </MenuItem>
                     ) : null}
