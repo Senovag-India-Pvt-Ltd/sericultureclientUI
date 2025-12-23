@@ -6766,8 +6766,8 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Daily Limit")} 
-                                <span className="text-danger">*</span>
+                                {t("Monthly Limit")} 
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -6776,11 +6776,11 @@ const fetchReelerDetails = () => {
                                   value={data.dailyLimit}
                                   onChange={handleInputs}
                                   // required
-                                  placeholder={t("Enter Daily Limit")}
-                                  required
+                                  placeholder={t("Enter Monthly Limit")}
+                                  // required
                                 />
                                  <Form.Control.Feedback type="invalid">
-                                  {t("Daily Limit is required")}
+                                  {t("Monthly Limit is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -6790,7 +6790,7 @@ const fetchReelerDetails = () => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("No Of Cocoons used to Produce Raw Silk")} 
+                                {t("Quantity Of Cocoons in Kgs used to Produce Raw Silk")} 
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -6800,11 +6800,11 @@ const fetchReelerDetails = () => {
                                   value={data.noOfCocoonsNeedToProduce}
                                   onChange={handleInputs}
                                   // required
-                                  placeholder={t("Enter No Of Cocoons used to Produce Raw Silk")}
+                                  placeholder={t("Enter Quantity Of Cocoons in Kgs used to Produce Raw Silk")}
                                   required
                                 />
                                  <Form.Control.Feedback type="invalid">
-                                  {t("No Of Cocoons used to Produce Raw Silk is required")}
+                                  {t("Quantity Of Cocoons in Kgs used to Produce Raw Silk is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -6859,7 +6859,7 @@ const fetchReelerDetails = () => {
                           <Col lg="4">
                           <Form.Group className="form-group">
                             <Form.Label>
-                              {t("Silk Exchange Type")}<span className="text-danger">*</span>
+                              {t("Silk Exchange Place")}<span className="text-danger">*</span>
                             </Form.Label>
                             <Col>
                               <div className="form-control-wrap">
@@ -6869,7 +6869,7 @@ const fetchReelerDetails = () => {
                                   onChange={handleInputs}
                                   required
                                 >
-                                  <option value="">{t("Select Silk Exchange Type")}</option>
+                                  <option value="">{t("Select Silk Exchange Place")}</option>
                                   {silkListData.map((list) => (
                                     <option
                                       key={list.silkExchangeId}

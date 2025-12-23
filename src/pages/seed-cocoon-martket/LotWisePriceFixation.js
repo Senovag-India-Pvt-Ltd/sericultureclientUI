@@ -113,8 +113,10 @@ useEffect(() => {
       icon: "success",
       title: t("Price Added successfully"),
       // text: "Auction Accepted Successfully",
-    });
+    }).then(() => {
     // setIsActive(true);
+    window.location.reload();
+  });
   };
 
   const acceptError = (message = t("Something went wrong!")) => {
@@ -213,6 +215,7 @@ const postData = (event) => {
             marketId: localStorage.getItem("marketId"),
             fixationDate: new Date(),
             pricePerKg: "",
+            allottedLotId: "",
           }); // Optionally reset the form
         } else if (response.data.errorCode === -1) {
           if (response.data.content) {
