@@ -929,6 +929,9 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
   //     });
   // };
 
+  const [allowDbtPush, setAllowDbtPush] = useState(true);
+
+
   const getActionFarmerList = async (fid, schemeId, componentType) => {
     setLoading(true);
     api
@@ -949,6 +952,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         const data = response.data.content;
         const recordData = data[0];
         setActionFarmerData(data);
+        setAllowDbtPush(recordData.allowDbtPush === true);
         if (recordData.pushToDbt) {
           setFieldsDisabled(recordData.pushToDbt);
         }
@@ -956,11 +960,36 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
           setFieldsDisabled(recordData.directlyToFruits);
         }
 
-        if(recordData.directlyToFruits){
+        setDirectlyToFruits(recordData.directlyToFruits === true);
+
+          /* ===========================
+            🎯 MAIN RULE — ACTION CLICK
+          =========================== */
+        if (recordData.directlyToFruits === true) {
+          // Submit must start as DISABLED always
           setDisplaySubmit(true);
-        }else{
+        } else {
+          // Keep existing behavior
           setDisplaySubmit(false);
         }
+
+        // if(recordData.directlyToFruits){
+        //   setDisplaySubmit(true);
+        // }else{
+        //   setDisplaySubmit(false);
+        // }
+  //       if (recordData.directlyToFruits) {
+  // // 👇 NEW CONDITION
+  //       if (recordData.allowDbtPush === false) {
+  //             setDisplaySubmit(true);   // disable Submit
+  //           } else {
+  //             setDisplaySubmit(false);  // enable Submit (existing behavior)
+  //           }
+  //         } else {
+  //           // ❗ DO NOT TOUCH existing non-direct logic
+  //           setDisplaySubmit(false);
+  //         }
+
 
         setPushToDbtStatus(recordData.pushToDbt);
         setDirectlyToFruits(recordData.directlyToFruits);
@@ -3133,6 +3162,15 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
       });
   };
 
+  const startThirtySecondHold = () => {
+  clearTimeout(timeoutIdRef.current);
+
+  timeoutIdRef.current = setTimeout(() => {
+    setDisplaySubmit(false);   // ENABLE Submit
+  }, 30000); // 30 seconds
+};
+
+
   const [checkFileDetails, setCheckFileDetails] = useState({});
   const getCheckFileDetails = (appId, ddoCode) => {
     if (
@@ -3163,7 +3201,9 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
           setCheckFileDetails(response.data);
         }
         setShowModal6(true);
-        thirtyMinHold();
+        if (directlyToFruits && allowDbtPush) {
+          thirtyMinHold();
+        }
       })
       .catch((err) => {
         // setApprovalStageAfterNextStepListData([]);

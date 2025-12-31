@@ -206,6 +206,7 @@ const handleCheckXmlFile = (rows, ddoCode) => {
   
 const [showCheckboxes, setShowCheckboxes] = useState(false);
 
+const [allowDbtPush, setAllowDbtPush] = useState(false);
 
   // Search
   const search = (e) => {
@@ -232,7 +233,15 @@ const [showCheckboxes, setShowCheckboxes] = useState(false);
       }
     )
     .then((response) => {
-      setListData(response.data.content);
+      // setListData(response.data.content);
+      const data = response.data.content || [];
+       setListData(data);
+
+      if (data.length > 0) {
+      setAllowDbtPush(data[0].allowDbtPush === true);
+      } else {
+        setAllowDbtPush(false);
+      }
 
       // Show checkboxes only if mandatory fields are selected
       if (
@@ -897,6 +906,11 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
           (item) => item.scApplicationFormId
         );
         const data = response.data.content;
+        if (data.length > 0) {
+          setAllowDbtPush(data[0].allowDbtPush === true);
+        } else {
+          setAllowDbtPush(false);
+        }
         const recordData = data[0];
         setAllApplicationIds(scApplicationFormIds);
 
@@ -2044,7 +2058,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
               type="button"
               variant="primary"
               onClick={() => handlePush()}
-              disabled={pushing || selectedRows.length === 0}
+              disabled={pushing || selectedRows.length === 0 || !allowDbtPush}
             >
               {/* {t("Push")} */}
               {pushing ? t("Pushing...") : t("Push")}
