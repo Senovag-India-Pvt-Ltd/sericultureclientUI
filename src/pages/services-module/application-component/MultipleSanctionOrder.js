@@ -359,6 +359,7 @@ const [isDrawingOfficerFocused, setIsDrawingOfficerFocused] = useState(false);
 
 
   const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
 
   // const handleShowModal = () => setShowModal(true);
   const handleShowModal = (fid) => {
@@ -1447,6 +1448,17 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
   });
 };
 
+const saveRejectSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Rejected successfully",
+      text: message,
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
+  };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -1495,9 +1507,122 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
     // Add other states that need to be reset
   };
 
-  
+   const [viewDetailsData, setViewDetailsData] = useState({
+      applicationDetails: [],
+      landDetails: [],
+      applicationTransactionDetails: [],
+      documents: [],
+      workflowDetails: [],
+    });
 
-  console.log("selected row", selectedRows);
+   const handleView = (_id) => {
+    api
+      .post(baseURLDBT + `service/viewServiceApplicationDetails`, {
+        applicationFormId: _id,
+      })
+      .then((response) => {
+        const content = response.data.content[0];
+
+        if (content.applicationDetailsResponses.length <= 0) {
+          saveError("No Details Found!!!");
+        } else {
+          handleShowModal2();
+          const appDetails = content.applicationDetailsResponses[0];
+          setViewDetailsData({
+            applicationDetails: content.applicationDetailsResponses,
+            landDetails: content.landDetailsResponses,
+            applicationTransactionDetails:content.applicationTransactionResponses,
+            // documents: content.documentsResponses,
+            documents: content.documentsResponses || [],
+            workflowDetails: content.workFlowDetailsResponses,
+
+          applicationFormId: _id, // coming from state set earlier
+          workOrderSchemeId: appDetails.schemeId,
+          workOrderNumber: appDetails.workOrderNumber || "",
+          workOrderForScheme: appDetails.workOrderForScheme,
+          // sanctionOrderNumber: sanctionOrderNumber,
+          // sanctionOrderForScheme: sanctionOrderForScheme,
+          subSchemeId: subSchemeId,  // ✅ add this
+        
+          });
+        }
+      })
+      .catch((err) => {
+        // saveError(err.response.data.validationErrors);
+      });
+  };
+
+   // to get Financial Year
+    const [rejectReasonListData, setRejectReasonListData] = useState([]);
+  
+    const getRejectReasonList = () => {
+      api
+        .get(baseURLMasterData + `rejectReasonWorkFlowMaster/get-all`)
+        .then((response) => {
+          setRejectReasonListData(
+            response.data.content.rejectReasonWorkFlowMaster
+          );
+        })
+        .catch((err) => {
+          setRejectReasonListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getRejectReasonList();
+    }, []);
+
+  const rejectServiceApplication = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const form = e.currentTarget;
+
+  // 🔴 Validate form
+  if (form.checkValidity() === false) {
+    setValidated(true);
+    return;
+  }
+
+  const sendPost = {
+    applicationFormId: applicationFormId,
+    rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+    description: actionData.comment,
+  };
+
+  Swal.fire({
+    title: "Do you want to Reject the Application?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      api
+        .post(`${baseURLDBT}service/rejectServiceApplication`, sendPost)
+        .then((response) => {
+          if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          } else if (response.data && response.data.error) {
+            saveError(response.data.error_description);
+          } else {
+            saveRejectSuccess();
+            clear();
+            handleCloseModal();
+            getMultipleSanctionOrderList();
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (err.response?.data?.validationErrors) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+    }
+  });
+};
+
+
 
   const ApplicationDataColumns = [
     {
@@ -1579,7 +1704,102 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
       sortable: true,
       hide: "md",
     },
+
+    {
+          name: "Action",
+          cell: (row) => (
+            <div className="text-start w-100">
+              <div
+                style={{
+                  display: "flex",
+                  overflowX: "auto",
+                  whiteSpace: "nowrap",
+                  gap: "0.5rem", // Adds space between buttons
+                }}
+              >
+                
+    
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => handleView(row.applicationDocumentId)}
+                >
+                  View
+                </Button>
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => handleShowModal(row.applicationDocumentId)}
+                >
+                  Reject
+                </Button>
+    
+               
+              </div>
+            </div>
+          ),
+          sortable: false,
+          hide: "md",
+          grow: 2,
+        },
   ];
+
+  const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
+  
+    const handleDocumentClick = async (documentPath) => {
+      setCurrentDocumentPath(documentPath);
+      await getDocumentFile(documentPath);
+    };
+  
+    const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+  
+    const getDocumentFile = async (file) => {
+      const parameters = `fileName=${file}`;
+      try {
+        const response = await api.get(
+          baseURLDBT + `service/downLoadFile?${parameters}`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
+        const blob = new Blob([response.data]);
+        const url = URL.createObjectURL(blob);
+        setSelectedDocumentFile(url);
+      } catch (error) {
+        console.error("Error fetching file:", error);
+      }
+    };
+  
+    const downloadFile = async (file) => {
+      const parameters = `fileName=${file}`;
+      try {
+        const response = await api.get(
+          baseURLDBT + `service/downLoadFile?${parameters}`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
+        const blob = new Blob([response.data]);
+        const url = URL.createObjectURL(blob);
+  
+        const fileExtension = file.split(".").pop();
+  
+        const link = document.createElement("a");
+        link.href = url;
+  
+        const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+  
+        link.download = modifiedFileName;
+  
+        document.body.appendChild(link);
+        link.click();
+  
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error fetching file:", error);
+      }
+    };
 
   const customStyles = {
     rows: {
@@ -2079,6 +2299,770 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
           </Form>
         </Card>
       </Block>
+
+
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>View Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {loading ? (
+                  <h1 className="d-flex justify-content-center align-items-center">
+                    Loading...
+                  </h1>
+                ) : (
+                  <Accordion defaultActiveKey="0">
+                    {/* Application Details Accordion */}
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header
+                        style={{
+                          backgroundColor: "#0F6CBE",
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                        className="mb-2"
+                      >
+                        Application Details
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        <table className="table small table-bordered">
+                          <tbody>
+                            <tr>
+                              <td style={styles.ctstyle}>Fruits Id:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]?.fruitsId ||
+                                  "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.farmerFirstName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Sanction No:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.sanctionNo || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.subSchemeName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Component:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.scComponentName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Scheme Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.schemeName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Sub Component:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.categoryName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Spacing:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.spacingName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Hectare:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.hectareName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Scheme Amount:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.schemeAmount || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Eligible Amount:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.eligibleAmount || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Period From:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.periodFrom || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Period To:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]?.periodTo ||
+                                  "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>District Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.districtName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Taluk Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.talukName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Village Name:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.villageName || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Application Status:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.applicationStatus || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Month(Silk Incentive):</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.month || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Machine Quantity(Silk Incentive):</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.machineQuantity || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Machine Type(Silk Incentive):</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.machineTypeName || 'N/A'}</td>
+                            </tr>
+                            
+                            <tr>
+                              <td style={styles.ctstyle}>Remarks:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]?.remarks ||
+                                  "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Work Order No:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.workOrderNumber || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Sanction Order No:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.sanctionOrderNumber || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Proposal Date</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.proposalDate || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Created Date:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.createdDate || "N/A"}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Modified Date:</td>
+                              <td>
+                                {viewDetailsData?.applicationDetails?.[0]
+                                  ?.modifiedDate || "N/A"}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+      
+                        <Card className="shadow-sm border-0 rounded-3 mt-4">
+                      <Card.Header 
+                        className="fw-bold text-white" 
+                        style={{ backgroundColor: "#0F6CBE" }}
+                      >
+                        Kanesh Land Details
+                      </Card.Header>
+                      <Card.Body>
+                        <table className="table table-bordered table-striped small">
+                          <tbody>
+                            <tr>
+                              <td style={styles.ctstyle}>District Name</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshDistrictName || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Taluk Name</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshTalukName || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Village Name</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshVillageName || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Kanesh No</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshNo || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Panchayat Name</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.panchaytName || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>Square Feet</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.sqft || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>East</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.east || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>West</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.west || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>North</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.north || "N/A"}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.ctstyle}>South</td>
+                              <td>{viewDetailsData?.applicationDetails?.[0]?.south || "N/A"}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Card.Body>
+                    </Card>
+      
+                    <Card className="shadow-sm border-0 rounded-3 mt-4">
+                                    <Card.Header 
+                                      className="fw-bold text-white" 
+                                      style={{ backgroundColor: "#0F6CBE" }}
+                                    >
+                                      Constructed Area
+                                    </Card.Header>
+                                    <Card.Body>
+                                      <table className="table table-bordered table-striped small">
+                                        <tbody>
+                                          <tr>
+                                            <td style={styles.ctstyle}>Extent Of Mulberry</td>
+                                            <td>{viewDetailsData?.applicationDetails?.[0]?.extentOfMulberry || "N/A"}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style={styles.ctstyle}>RH Sqft</td>
+                                            <td>{viewDetailsData?.applicationDetails?.[0]?.rhSqft || "N/A"}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style={styles.ctstyle}>Estimated Cost</td>
+                                            <td>{viewDetailsData?.applicationDetails?.[0]?.estimatedCost || "N/A"}</td>
+                                          </tr>
+                                          <tr>
+                                            <td style={styles.ctstyle}>Roof Type</td>
+                                            <td>{viewDetailsData?.applicationDetails?.[0]?.roofTypeName || "N/A"}</td>
+                                          </tr>
+                                          
+                                        </tbody>
+                                      </table>
+                                    </Card.Body>
+                                  </Card>
+                      {/* )} */}
+                      </Accordion.Body>
+                    </Accordion.Item>
+      
+                    {/* Land Details Accordion */}
+                    {/* {viewDetailsData?.landDetails?.length > 0 ? (
+                      viewDetailsData.landDetails.map((landDetail, index) => (
+                        <Accordion.Item eventKey={index + 1} key={index}>
+                          <Accordion.Header
+                            style={{
+                              backgroundColor: "#0F6CBE",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                            className="mb-2"
+                          >
+                            Land Details
+                          </Accordion.Header>
+                          <Accordion.Body>
+                            <table className="table small table-bordered">
+                              <tbody>
+                                <tr>
+                                  <td style={styles.ctstyle}>Survey Number:</td>
+                                  <td>{landDetail.surveyNumber || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>District Name:</td>
+                                  <td>{landDetail.districtName || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Taluk Name:</td>
+                                  <td>{landDetail.talukName || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Village Name:</td>
+                                  <td>{landDetail.villageName || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Acre:</td>
+                                  <td>{landDetail.acre || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>F Gunta:</td>
+                                  <td>{landDetail.fGunta || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Gunta:</td>
+                                  <td>{landDetail.gunta || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Developed Area Acre:</td>
+                                  <td>{landDetail.devAcre || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Developed Area F Gunta:
+                                  </td>
+                                  <td>{landDetail.devFGunta || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Developed Area Gunta:
+                                  </td>
+                                  <td>{landDetail.devGunta || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Hissa:</td>
+                                  <td>{landDetail.hissa || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Land Code:</td>
+                                  <td>{landDetail.landCode || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Main Owner No:</td>
+                                  <td>{landDetail.mainOwnerNo || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Owner Name:</td>
+                                  <td>{landDetail.ownerName || "N/A"}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      ))
+                    ) : (
+                      <Accordion.Item eventKey="land">
+                        <Accordion.Header
+                          style={{
+                            backgroundColor: "#0F6CBE",
+                            color: "white",
+                            fontWeight: "bold",
+                          }}
+                          className="mb-2"
+                        >
+                          Land Details
+                        </Accordion.Header>
+                        <Accordion.Body>No Land Details Available</Accordion.Body>
+                      </Accordion.Item>
+                    )} */}
+      
+                {viewDetailsData?.landDetails?.length > 0 ? (
+                <Accordion.Item eventKey="landDetails">
+                  <Accordion.Header
+                    style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+                    className="mb-2"
+                  >
+                    Land Details
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    {viewDetailsData.landDetails.map((landDetail, index) => (
+                      <table className="table small table-bordered mb-3" key={index}>
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}>Survey Number:</td>
+                            <td>{landDetail.surveyNumber || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>District Name:</td>
+                            <td>{landDetail.districtName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Taluk Name:</td>
+                            <td>{landDetail.talukName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Village Name:</td>
+                            <td>{landDetail.villageName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Acre:</td>
+                            <td>{landDetail.acre || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>F Gunta:</td>
+                            <td>{landDetail.fGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Gunta:</td>
+                            <td>{landDetail.gunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Developed Area Acre:</td>
+                            <td>{landDetail.devAcre || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                            <td>{landDetail.devFGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                            <td>{landDetail.devGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Hissa:</td>
+                            <td>{landDetail.hissa || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Land Code:</td>
+                            <td>{landDetail.landCode || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Main Owner No:</td>
+                            <td>{landDetail.mainOwnerNo || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Owner Name:</td>
+                            <td>{landDetail.ownerName || "N/A"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              ) : (
+                <Accordion.Item eventKey="land">
+                  <Accordion.Header
+                    style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+                    className="mb-2"
+                  >
+                    Land Details
+                  </Accordion.Header>
+                  <Accordion.Body>No Land Details Available</Accordion.Body>
+                </Accordion.Item>
+              )}
+      
+                    <Accordion.Item eventKey="documents">
+                      <Accordion.Header
+                        style={{
+                          backgroundColor: "#0F6CBE",
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                        className="mb-2"
+                      >
+                        Documents
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        {viewDetailsData?.documents?.length > 0 ? (
+                          <table className="table small table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Document Name</th>
+                                {/* <th>Document Path</th> */}
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {viewDetailsData.documents.map(
+                                (fileDocuments, index) => (
+                                  <tr key={index}>
+                                    <td>{fileDocuments.documentName || "N/A"}</td>
+                                    {/* <td>{fileDocuments.documentPath || 'N/A'}</td> */}
+                                    <td>
+                                      <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleDocumentClick(
+                                            fileDocuments.documentPath
+                                          )
+                                        }
+                                      >
+                                        View Document
+                                      </Button>
+                                      {currentDocumentPath ===
+                                        fileDocuments.documentPath &&
+                                        selectedDocumentFile && (
+                                          <>
+                                            <img
+                                              style={{
+                                                height: "100px",
+                                                width: "100px",
+                                              }}
+                                              src={selectedDocumentFile}
+                                              alt="Selected File"
+                                            />
+                                            <Button
+                                              variant="primary"
+                                              size="sm"
+                                              className="ms-2"
+                                              onClick={() =>
+                                                downloadFile(
+                                                  fileDocuments.documentPath
+                                                )
+                                              }
+                                            >
+                                              Download Selected File
+                                            </Button>
+                                          </>
+                                        )}
+      
+                                      
+                                    </td>
+                                  </tr>
+                                )
+                              )}
+                            </tbody>
+                          </table>
+                        ) : (
+                          <p>No Documents Available</p>
+                        )}
+      
+                      </Accordion.Body>
+                    </Accordion.Item>
+      
+                    {viewDetailsData?.workflowDetails?.length > 0 ? (
+                      <Accordion.Item eventKey="workflow-details">
+                        <Accordion.Header
+                          style={{
+                            backgroundColor: "#0F6CBE",
+                            color: "white",
+                            fontWeight: "bold",
+                          }}
+                          className="mb-2"
+                        >
+                          Work Flow Details
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          {viewDetailsData.workflowDetails.map((workFlow, index) => (
+                            <table className="table small table-bordered" key={index}>
+                              <tbody>
+                                <tr>
+                                  <td style={styles.ctstyle}>Step Name:</td>
+                                  <td>{workFlow.stepName || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Status:</td>
+                                  <td>{workFlow.status || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Assigned By:</td>
+                                  <td>{workFlow.assignedBy || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Reject Reason:</td>
+                                  <td>{workFlow.rejectReason || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Rejected By:</td>
+                                  <td>{workFlow.rejectReason || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style={{
+                                      ...styles.ctstyle,
+                                      fontWeight: "bold",
+                                      color: "green",
+                                    }}
+                                  >
+                                    Comment:
+                                  </td>
+                                  <td style={{ fontWeight: "bold", color: "green" }}>
+                                    {workFlow.comment || "N/A"}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Reason:</td>
+                                  <td>{workFlow.reason || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Assigned To:</td>
+                                  <td>{workFlow.assignedTo || "N/A"}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          ))}
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    ) : (
+                      <Accordion.Item eventKey="land">
+                        <Accordion.Header
+                          style={{
+                            backgroundColor: "#0F6CBE",
+                            color: "white",
+                            fontWeight: "bold",
+                          }}
+                          className="mb-2"
+                        >
+                          Work Flow Details
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          No Work Flow Details Available
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    )}
+                  </Accordion>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal2}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+             <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                    <Modal.Body>
+                      {loading ? (
+                        <h1 className="d-flex justify-content-center align-items-center">
+                          Loading...
+                        </h1>
+                      ) : (
+                        <>
+                          <Form noValidate validated={validated} onSubmit={rejectServiceApplication}>
+                            <Accordion defaultActiveKey="0">
+                              <Accordion.Item eventKey="0">
+                                <Accordion.Header
+                                  style={{
+                                    backgroundColor: "#0F6CBE",
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    fontSize: "3rem",
+                                    padding: "3px",
+                                    borderRadius: "5px",
+                                    position: "relative",
+                                    overflow: "hidden",
+                                  }}
+                                  className="mb-3"
+                                >
+                                 Reject Reason
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                  <Block className="mt-3">
+                                    <Card
+                                      className="mt-3"
+                                      style={{
+                                        border: "none",
+                                        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                                      }}
+                                    >
+                                      <Card.Body>
+                                        <Row>
+                                          
+            
+                                          <Col lg="6">
+                                            <Form.Group className="form-group">
+                                              <Form.Label>
+                                                <strong>Reject Reason<span className="text-danger">*</span></strong>
+                                              </Form.Label>
+                                              <Form.Select
+                                                name="rejectReasonWorkflowMasterId"
+                                                value={
+                                                  actionData.rejectReasonWorkflowMasterId
+                                                }
+                                                onChange={handleActionInputs}
+                                                required
+                                              >
+                                                <option value="">
+                                                  Select Reject Reason
+                                                </option>
+                                                {rejectReasonListData.map((list) => (
+                                                  <option
+                                                    key={list.rejectReasonWorkFlowMasterId}
+                                                    value={
+                                                      list.rejectReasonWorkFlowMasterId
+                                                    }
+                                                  >
+                                                    {list.reason}
+                                                  </option>
+                                                ))}
+                                              </Form.Select>
+                                            </Form.Group>
+                                          </Col>
+                                          <Col lg="6">
+                                            <Form.Group className="form-group">
+                                              <Form.Label>
+                                                <strong>Remarks/Description</strong>
+                                              </Form.Label>
+                                              <Form.Control
+                                                id="comment"
+                                                type="text"
+                                                name="comment"
+                                                value={actionData.comment}
+                                                onChange={handleActionInputs}
+                                                placeholder="Enter Description"
+                                                // required
+                                              />
+                                            </Form.Group>
+                                          </Col>
+                                        </Row>
+                                      </Card.Body>
+                                    </Card>
+                                  </Block>
+            
+                                  
+                                </Accordion.Body>
+                              </Accordion.Item>
+                            </Accordion>
+            
+                            <Col lg="12">
+                              <div className="d-flex justify-content-center gap-2 mt-3">
+                              
+                                  <Button
+                                    type="submit"
+                                    variant="success"
+                                    // disabled={displaySubmit}
+                                  >
+                                    Reject
+                                  </Button>
+                               
+                                
+                              </div>
+                            </Col>
+                          </Form>
+                        </>
+                      )}
+                    </Modal.Body>
+            
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
     </Layout>
   );
 }
