@@ -11,8 +11,10 @@ import Swal from "sweetalert2";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
-
+import ReactSelect from "react-select";
 import api from "../../../../src/services/auth/api";
+import React, { useMemo } from "react";
+
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -1361,16 +1363,22 @@ if (
   const [districtId, setDistrictId] = useState(null);
   const [talukId, setTalukId] = useState(null);
   const [userFromDistrictData, setUserFromDistrictData] = useState([]);
+  const [allowAnyUser, setAllowAnyUser] = useState(false);
 
   //  to get data from api
   const getIdList = () => {
     setLoading(true);
     const response = api
       .get(baseURLMasterData + `userMaster/get-join/${id}`)
+      // .then((response) => {
+      //   setDistrictId(response.data.content.districtId);
+      //   setTalukId(response.data.content.talukId);
       .then((response) => {
-        setDistrictId(response.data.content.districtId);
-        setTalukId(response.data.content.talukId);
-        setLoading(false);
+      const res = response.data.content;
+
+      setDistrictId(res.districtId);
+      setTalukId(res.talukId);
+      setAllowAnyUser(res.allowAnyUser === true);
       })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
@@ -1441,6 +1449,29 @@ if (
   useEffect(() => {
     getVendorList();
   }, []);
+
+  
+
+  // to get user list
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = () => {
+    api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+  if (allowAnyUser) {
+    getUserList();
+  }
+}, [allowAnyUser]);
+
 
    // to get District
      const [districtListData, setDistrictListData] = useState([]);
@@ -3694,12 +3725,20 @@ const calculateTotals = (data) => {
 
 
 
+const isUserValid = React.useMemo(() => {
+  return data.userId !== "" && data.userId !== null && data.userId !== undefined;
+}, [data.userId]);
 
 
 
   const postData = (event) => {
     event.preventDefault(); // Prevent the default form submission
     const form = event.currentTarget;
+
+      if (!isUserValid) {
+      setValidated(true);
+      return;
+    }
 
     // Validate the form
     if (form.checkValidity() === false) {
@@ -6532,7 +6571,7 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               {t("User Master")}
@@ -6546,6 +6585,7 @@ const fetchReelerDetails = () => {
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs}
                                   required
+                                  disabled={allowAnyUser}
                                   isInvalid={
                                     data.userId === undefined ||
                                     data.userId === "0"
@@ -6567,7 +6607,88 @@ const fetchReelerDetails = () => {
                               </div>
                             </Col>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
+
+                        {/* ============ USER MASTER DROPDOWN ============ */}
+                        {!allowAnyUser && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("User Master")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+
+                              <div className="form-control-wrap">
+                                <ReactSelect
+                                  options={userFromDistrictData.map((list) => ({
+                                    value: list.userId,
+                                    label: list.userName,
+                                  }))}
+                                  placeholder={t("Select User")}
+                                  isSearchable
+                                  menuPlacement="auto"
+                                  value={userFromDistrictData
+                                    .map((list) => ({ value: list.userId, label: list.userName }))
+                                    .find((opt) => opt.value === data.userId)}
+                                  onChange={(selectedOption) => {
+                                    setData((prev) => ({
+                                      ...prev,
+                                      userId: selectedOption?.value || "",
+                                    }));
+                                    if (validated) setValidated(false);
+                                  }}
+                                  className={validated && !isUserValid ? "is-invalid" : ""}
+                                />
+
+                                {validated && !isUserValid && (
+                                  <div className="invalid-feedback d-block">
+                                    User Master is required
+                                  </div>
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
+                        {/* ============ SELECT USER DROPDOWN ============ */}
+                        {allowAnyUser && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>{t("Select User")}</Form.Label>
+
+                              <ReactSelect
+                                options={userListData.map((u) => ({
+                                  value: u.userId,
+                                  label: `${u.username} (${u.userMasterId})`,
+                                }))}
+                                isSearchable
+                                placeholder={t("Select User")}
+                                value={userListData
+                                  .map((u) => ({
+                                    value: u.userId,
+                                    label: `${u.username} (${u.userMasterId})`,
+                                  }))
+                                  .find((opt) => opt.value === data.userId)}
+                                onChange={(selectedOption) => {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    userId: selectedOption?.value || "",
+                                  }));
+                                  if (validated) setValidated(false);
+                                }}
+                                className={validated && !isUserValid ? "is-invalid" : ""}
+                              />
+
+                              {validated && !isUserValid && (
+                                <div className="invalid-feedback d-block">
+                                  User is required
+                                </div>
+                              )}
+                            </Form.Group>
+                          </Col>
+                        )}
+
+
 
                     {/* {getIncentiveAndBonusData[0]?.allowMultipleSanction && (
                        <Col lg="6">

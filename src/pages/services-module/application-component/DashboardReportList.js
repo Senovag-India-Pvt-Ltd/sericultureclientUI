@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import ReactSelect from "react-select";
+import { useTranslation } from "react-i18next";
 import { reference } from "@popperjs/core";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -29,6 +31,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DashboardReportList() {
+   const { t } = useTranslation();
   const { id } = useParams();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -570,6 +573,8 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     proposalDate: "",
   });
 
+  const [allowAnyUser, setAllowAnyUser] = useState(false);
+
   //  to get data from api
   const getIdList = () => {
     setLoading(true);
@@ -584,6 +589,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
           response.data.content.districtId,
           response.data.content.talukId
         );
+        setAllowAnyUser(response.data.content.allowAnyUser === true);
         setLoading(false);
       })
       .catch((err) => {
@@ -593,6 +599,26 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         setLoading(false);
       });
   };
+
+  // to get user list
+    const [userListData, setUserListData] = useState([]);
+  
+    const getUserList = () => {
+      api
+        .get(baseURLMasterData + `userMaster/get-all`)
+        .then((response) => {
+          setUserListData(response.data.content.userMaster);
+        })
+        .catch((err) => {
+          setUserListData([]);
+        });
+    };
+  
+    useEffect(() => {
+    if (allowAnyUser) {
+      getUserList();
+    }
+  }, [allowAnyUser]);
 
   const getUserFromDistrictList = (
     subSchemeId,
@@ -2211,9 +2237,20 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
 
   //   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
   // setApplicationFormId(applicationDocumentId);
+  const isUserValid = React.useMemo(() => {
+    return data.userId !== "" && data.userId !== null && data.userId !== undefined;
+  }, [data.userId]);
+
+  const showDefaultUserField = !allowAnyUser;
 
   const postData = (event) => {
     const form = event.currentTarget;
+
+     if (!isUserValid) {
+      setValidated(true);
+      return;
+    }
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -4273,6 +4310,46 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                 </Col>
                               )}
 
+                              {allowAnyUser && (
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      User <span className="text-danger">*</span>
+                                    </Form.Label>
+
+                                    <ReactSelect
+                                      options={userListData.map((u) => ({
+                                        value: u.userId,
+                                        label: `${u.username} (${u.userMasterId})`,
+                                      }))}
+                                      isSearchable
+                                      placeholder={t("Select User")}
+                                      value={userListData
+                                        .map((u) => ({
+                                          value: u.userId,
+                                          label: `${u.username} (${u.userMasterId})`,
+                                        }))
+                                        .find((opt) => opt.value === actionData.userId)}
+                                      onChange={(selectedOption) => {
+                                        setActionData((prev) => ({
+                                          ...prev,
+                                          userId: selectedOption?.value || "",
+                                        }));
+                                        if (validated) setValidated(false);
+                                      }}
+                                      className={validated && !isUserValid ? "is-invalid" : ""}
+                                    />
+
+                                    {validated && !isUserValid && (
+                                      <div className="invalid-feedback d-block">
+                                        User is required
+                                      </div>
+                                    )}
+                                  </Form.Group>
+                                </Col>
+                              )}
+
+
 
                               
 
@@ -4321,6 +4398,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                       </Form.Group>
                                     </Col>
 
+                                    {showDefaultUserField && (
                                     <Col lg="6">
                                       <Form.Group className="form-group">
                                         <Form.Label>
@@ -4373,10 +4451,12 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                         </Col>
                                       </Form.Group>
                                     </Col>
+                                    )}
                                   </>
                                 ) : (
                                   // When financialDelegation is true and isSanctionOrderAllowed is false
                                   <>
+                                  
                                     <Col lg="6">
                                       <Form.Group className="form-group">
                                         <Form.Label>
@@ -4412,6 +4492,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                       </Form.Group>
                                     </Col>
 
+                                  {showDefaultUserField && (
                                     <Col lg="6">
                                       <Form.Group className="form-group">
                                         <Form.Label>
@@ -4446,6 +4527,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                         </Form.Control.Feedback>
                                       </Form.Group>
                                     </Col>
+                                    )}
                                   </>
                                 )
                               ) : (
@@ -4488,6 +4570,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                     </Form.Group>
                                   </Col>
 
+                              {showDefaultUserField && (
                                   <Col lg="6">
                                     <Form.Group className="form-group">
                                       <Form.Label>
@@ -4523,6 +4606,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                       </Form.Control.Feedback>
                                     </Form.Group>
                                   </Col>
+                                  )}
                                 </>
                               )}
 
