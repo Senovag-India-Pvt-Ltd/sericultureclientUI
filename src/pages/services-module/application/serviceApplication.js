@@ -6658,14 +6658,14 @@ const fetchReelerDetails = () => {
 
                               <ReactSelect
                                 options={userListData.map((u) => ({
-                                  value: u.userId,
+                                  value: u.userMasterId,
                                   label: `${u.username} (${u.userMasterId})`,
                                 }))}
                                 isSearchable
                                 placeholder={t("Select User")}
                                 value={userListData
                                   .map((u) => ({
-                                    value: u.userId,
+                                    value: u.userMasterId,
                                     label: `${u.username} (${u.userMasterId})`,
                                   }))
                                   .find((opt) => opt.value === data.userId)}

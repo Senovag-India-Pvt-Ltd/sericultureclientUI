@@ -1355,6 +1355,7 @@ const generateFinalReport = (selectedRows) => {
     releaseNo: actionData.releaseNo,
     sanctionNo: actionData.sanctionNo,
     releaseDate: actionData.releaseDate,
+    pradesha: actionData.pradesha,
     pushToDBTRequestList: sendResponse
   };
 
@@ -1425,8 +1426,10 @@ const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
 }, [selectedRows]);
 
 
+const [showPradesha, setShowPradesha] = useState(false);
 
   
+
 
   
 
@@ -2279,6 +2282,37 @@ const saveRejectSuccess = (message) => {
                     />
                   </Form.Group>
                 </Col>
+
+                <Col lg="3">
+                  <Form.Group className="form-group mt-2">
+                    <Form.Check
+                      type="checkbox"
+                      label="Choose Pradesha"
+                      checked={showPradesha}
+                      onChange={(e) => setShowPradesha(e.target.checked)}
+                    />
+                  </Form.Group>
+                </Col>
+
+                {showPradesha && (
+                    <Col lg="3">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="schemeAmount">Pradesha</Form.Label>
+
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="pradesha"
+                            type="text"
+                            name="pradesha"
+                            value={actionData.pradesha}
+                            onChange={handleActionInputs}
+                            placeholder="Enter Pradesha"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  )}
+
 
 
               {/* Submit Button */}

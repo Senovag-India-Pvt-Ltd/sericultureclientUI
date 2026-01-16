@@ -2237,19 +2237,10 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
 
   //   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
   // setApplicationFormId(applicationDocumentId);
-  const isUserValid = React.useMemo(() => {
-    return data.userId !== "" && data.userId !== null && data.userId !== undefined;
-  }, [data.userId]);
 
-  const showDefaultUserField = !allowAnyUser;
 
   const postData = (event) => {
     const form = event.currentTarget;
-
-     if (!isUserValid) {
-      setValidated(true);
-      return;
-    }
 
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -2793,14 +2784,29 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
   // };
   const [canSubmit, setCanSubmit] = useState(true);
 
+   const isUserValid = React.useMemo(() => {
+  return actionData.userId !== "" && actionData.userId !== null && actionData.userId !== undefined;
+}, [actionData.userId]);
+
+
+  const showDefaultUserField = !allowAnyUser;
+
   const postActionData = (event) => {
   const form = event.currentTarget;
+
+
   if (form.checkValidity() === false) {
     event.preventDefault();
     event.stopPropagation();
     setValidated(true);
   } else {
     event.preventDefault();
+
+    if (allowAnyUser && !isUserValid) {
+      setValidated(true);
+      return;
+    }
+
     setDisplaySubmit(true);
 
     const missingOfficer = pushToDBTListData.some((row, index) => {
@@ -4319,14 +4325,14 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
 
                                     <ReactSelect
                                       options={userListData.map((u) => ({
-                                        value: u.userId,
+                                        value: u.userMasterId,
                                         label: `${u.username} (${u.userMasterId})`,
                                       }))}
                                       isSearchable
                                       placeholder={t("Select User")}
                                       value={userListData
                                         .map((u) => ({
-                                          value: u.userId,
+                                          value: u.userMasterId,
                                           label: `${u.username} (${u.userMasterId})`,
                                         }))
                                         .find((opt) => opt.value === actionData.userId)}
