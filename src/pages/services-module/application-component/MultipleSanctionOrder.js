@@ -362,10 +362,11 @@ const [isDrawingOfficerFocused, setIsDrawingOfficerFocused] = useState(false);
   const handleCloseModal = () => setShowModal(false);
 
   // const handleShowModal = () => setShowModal(true);
-  const handleShowModal = (fid) => {
-    setShowModal(true);
-    // getActionFarmerList(fid); // Call getList with userId and stepId
-  };
+ const handleShowModal = (appId) => {
+  setApplicationFormId(appId);   // ✅ IMPORTANT FIX
+  setShowModal(true);
+};
+
 
   const [showModal1, setShowModal1] = useState(false);
 
