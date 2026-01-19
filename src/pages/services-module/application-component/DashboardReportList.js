@@ -6124,7 +6124,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+      {/* <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>Check Details</Modal.Title>
         </Modal.Header>
@@ -6277,6 +6277,175 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
               </tr>
             </tbody>
           </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal6}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+      <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Check Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {checkFileDetails.length > 0 ? (
+            checkFileDetails.map((detail, index) => (
+              <div key={index} className="mb-4">
+                <h6 className="mt-3 text-primary">Application #{index + 1}</h6>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>DeptCode:</td>
+                      <td>{detail.deptCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>SchemeID:</td>
+                      <td>{detail.schemeId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ComponentTypeID:</td>
+                      <td>{detail.componentTypeId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ComponentID:</td>
+                      <td>{detail.componentId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>SubComponentID:</td>
+                      <td>{detail.subComponentId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>PaymentMode:</td>
+                      <td>{detail.paymentMode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>PaymentType:</td>
+                      <td>{detail.paymentType}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>BenRecordCount:</td>
+                      <td>{detail.benRecordCount}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>BeneficiaryID:</td>
+                      <td>{detail.beneficiaryId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>RegNo:</td>
+                      <td>{detail.farmerRegNo}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>PeriodFrom:</td>
+                      <td>{detail.periodFrom}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>PeriodTo:</td>
+                      <td>{detail.periodTo}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>MobileNo:</td>
+                      <td>{detail.mobileNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>SanctionAmount:</td>
+                      <td>{detail.sanctionAmount}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>LGDistrict:</td>
+                      <td>{detail.lgDistrict}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>LGTaluk:</td>
+                      <td>{detail.lgTaluk}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>SanctionNo:</td>
+                      <td>{actionData.sanctionNo}</td> {/* ✅ correct field */}
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Finyear:</td>
+                      <td>{detail.finYear}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>DDOCode:</td>
+                      <td>{detail.ddoCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>DistrictCode:</td>
+                      <td>{detail.districtCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>TalukCode:</td>
+                      <td>{detail.talukCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>HobliCode:</td>
+                      <td>{detail.hobliCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>VillageCode:</td>
+                      <td>{detail.villageCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>SurveyNo:</td>
+                      <td>{detail.surveyNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Surnoc:</td>
+                      <td>{detail.surNoc}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Hissano:</td>
+                      <td>{detail.hissaNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>LandCode:</td>
+                      <td>{detail.landCode}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>OwnerNo:</td>
+                      <td>{detail.ownerNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>MainOwnerNo:</td>
+                      <td>{detail.mainOwnerNumber}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>OwnerName:</td>
+                      <td>{detail.ownerName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ExtAcre:</td>
+                      <td>{detail.extAcre}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ExtGunta:</td>
+                      <td>{detail.extGunta}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ExtfGunta:</td>
+                      <td>{detail.extFGunta}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>DevAcre:</td>
+                      <td>{detail.devAcre}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>DevGunta:</td>
+                      <td>{detail.devGunta}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>DevfGunta:</td>
+                      <td>{detail.devFGunta}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))
+          ) : (
+            <p>No details found.</p>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal6}>
