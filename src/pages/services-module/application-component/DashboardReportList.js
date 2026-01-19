@@ -3067,10 +3067,18 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
               saveError(response.data.content.error_description);
               setDisplaySubmit(false);
             } else {
-              pushedSuccess(
-                checkFileDetails.beneficiaryId,
-                checkFileDetails.farmerRegNo
-              );
+              // pushedSuccess(
+              //   checkFileDetails.beneficiaryId,
+              //   checkFileDetails.farmerRegNo
+              // );
+              const firstRecord = Array.isArray(checkFileDetails) 
+                  ? checkFileDetails[0] 
+                  : checkFileDetails;
+
+                pushedSuccess(
+                  firstRecord?.beneficiaryId,
+                  firstRecord?.farmerRegNo
+                );
               setDisplaySubmit(false);
               getList();
               handleCloseModal();
