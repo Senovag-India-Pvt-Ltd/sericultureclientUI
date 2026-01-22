@@ -4535,6 +4535,7 @@ const search = (event) => {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
+      setLoading(false);
       if (
         response.data &&
         response.data.content &&
@@ -4571,6 +4572,7 @@ const search = (event) => {
     })
     .catch((err) => {
       console.error("Farmer API error:", err);
+      setLoading(false);
       // If farmer API fails, try reeler as fallback
       fetchReelerDetails();
     });
@@ -4582,6 +4584,7 @@ const fetchReelerDetails = () => {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
+      setLoading(false);
       const reeler = response.data?.content?.reelerResponse;
 
       if (reeler) {
@@ -4616,6 +4619,7 @@ const fetchReelerDetails = () => {
       }
     })
     .catch((error) => {
+      setLoading(false);
       console.error("Reeler API error:", error);
       saveError("An error occurred while fetching reeler details.");
     });
