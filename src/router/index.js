@@ -1075,6 +1075,8 @@ import CropDetailsCommercialMarketEdit from "../pages/direct-benefit-transfer/Cr
 import RegisteredPrivateChawki from "../pages/services-module/application-component/RegisteredPrivateChawki";
 import RegisteredPrivateChawkiList from "../pages/services-module/application-component/RegisteredPrivateChawkiList";
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
+import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
+import CumulativeReport from "../pages/services-module/application/CumulativeReport";
 
 // Admin and Reports
 
@@ -1595,6 +1597,14 @@ function Router() {
             <Route
               path="application-dashboard"
               element={<ApplicationDashboard />}
+            />
+            <Route
+              path="sakala-dashboard"
+              element={<SakalaDashboard />}
+            />
+            <Route
+              path="cumulative-report"
+              element={<CumulativeReport />}
             />
             <Route path="dbt-application" element={<DbtApplication />} />
             <Route

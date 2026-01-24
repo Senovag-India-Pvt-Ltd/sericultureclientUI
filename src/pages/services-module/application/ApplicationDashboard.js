@@ -67,11 +67,7 @@ const { t } = useTranslation();
     setData({ ...data, [name]: value });
   };
 
-  // const handleSearchInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setSchemeId({ ...schemeId, [name]: value });
-  // };
+
   const handleSearchInputs = (e) => {
     const { value } = e.target; // Destructure the selected value
     setSchemeId(value); // Update schemeId with the selected value
@@ -98,22 +94,7 @@ const { t } = useTranslation();
     userMasterId: localStorage.getItem("userMasterId"),
   });
 
-  // let sessionsDevice = {
-  //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
-  //   datasets: [
-  //     {
-  //       backgroundColor: [
-  //         Colors.info,
-  //         Colors.yellow,
-  //         Colors.green,
-  //         Colors.purple,
-  //       ],
-  //       data: [35, 23, 10, 27],
-  //       hoverOffset: 4,
-  //     },
-  //   ],
-  // };
-
+  
   // Get Dashboards
   const [dashboardList, setDashboardList] = useState([]);
   const getDashboard = (e) => {
@@ -191,115 +172,10 @@ const { t } = useTranslation();
     navigate(`/seriui/user-ticket-view/${_id}`);
   };
 
-  //   const HelpdeskDataColumns = [
-  //     {
-  //       name: "Ticket No.",
-  //       selector: (row) => row.ticketArn,
-  //       cell: (row) => <span>{row.ticketArn}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "User Profile",
-  //       selector: (row) => row.username,
-  //       cell: (row) => <span>{row.username}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Query",
-  //       selector: (row) => row.query,
-  //       cell: (row) => <span>{row.query}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Query Details",
-  //       selector: (row) => row.queryDetails,
-  //       cell: (row) => <span>{row.queryDetails}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Category",
-  //       selector: (row) => row.hdCategoryName,
-  //       cell: (row) => <span>{row.hdCategoryName}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "User Affected",
-  //       selector: (row) => row.hdUsersAffected,
-  //       cell: (row) => <span>{row.hdUsersAffected}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Module",
-  //       selector: (row) => row.hdModuleName,
-  //       cell: (row) => <span>{row.hdModuleName}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Feature",
-  //       selector: (row) => row.hdFeatureName,
-  //       cell: (row) => <span>{row.hdFeatureName}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Status",
-  //       selector: (row) => row.hdStatusName,
-  //       cell: (row) => <span>{row.hdStatusName}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //     {
-  //       name: "Attachments",
-  //       selector: (row) => row.hdAttachFiles,
-  //       cell: (row) => <span>{row.hdAttachFiles}</span>,
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-
-  //     {
-  //       name: "Action",
-  //       cell: (row) => (
-  //         <div text-start w-100>
-  //           {/* <Button variant="primary" size="sm" onClick={() => edit(row)}>
-  //               Update
-  //             </Button> */}
-  //           <Button
-  //             variant="primary"
-  //             size="sm"
-  //             onClick={() => handleView(row.hdTicketId, row)}
-  //           >
-  //             View
-  //           </Button>
-  //         </div>
-  //       ),
-  //       sortable: true,
-  //       hide: "md",
-  //     },
-  //   ];
+ 
 
   const goto = (id) => {
-    // if (name === "Pre Inspection") {
-    //   navigate(`/seriui/dashboard-report-list/1`);
-    // } else if (name === "Work Order Issue") {
-    //   navigate(`/seriui/application-dashboard-list/2`);
-    // } else if (name === "Work Order Complete") {
-    //   navigate(`/seriui/application-dashboard-list/3`);
-    // } else if (name === "Inspection") {
-    //   navigate(`/seriui/application-dashboard-list/4`);
-    // } else if (name === "Sanction Order Generation") {
-    //   navigate(`/seriui/application-dashboard-list/5`);
-    // } else if (name === "Sanction Order Verification") {
-    //   navigate(`/seriui/application-dashboard-list/6`);
-    // } else {
-    //   navigate(`/seriui/application-dashboard-list/7`);
-    // }
+  
     navigate(`/seriui/dashboard-report-list/${id}`)
   };
 
@@ -391,13 +267,7 @@ const { t } = useTranslation();
                         {dashboard.count}
                       </div>
                     </div>
-                    {/* <Button
-                      size="sm"
-                      variant="primary"
-                      // onClick={() => goto(dashboard.stepName)}
-                    >
-                      View
-                    </Button> */}
+                    
                   </div>
                 </div>
               </Card.Body>
