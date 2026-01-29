@@ -50,6 +50,7 @@ function MultipleSanctionOrder() {
     subSchemeId: "",
     scComponentId: "",
     scCategoryId: "",
+    tscId: "",
   });
 
   let name, value;
@@ -290,6 +291,9 @@ const handleDateChange = (date, fieldName) => {
           subSchemeId: data.subSchemeId,
           componentId: data.scComponentId,
           scCategoryId: data.scCategoryId,
+          // tscId: data.tscId || 0,
+          tscId: data.tscId > 0 ? data.tscId : null,
+
         },
       }
     )
@@ -925,6 +929,24 @@ const generateFinalReport = (selectedRows) => {
             
           }
         }, [data.schemeId, data.subSchemeId ,data.scComponentId]);
+
+        // to get tsc
+          const [tscListData, setTscListData] = useState([]);
+        
+          const getTscList = () => {
+            const response = api
+              .get(baseURL + `tscMaster/get-all`)
+              .then((response) => {
+                setTscListData(response.data.content.tscMaster);
+              })
+              .catch((err) => {
+                setTscListData([]);
+              });
+          };
+        
+          useEffect(() => {
+            getTscList();
+          }, []);
 
   // const postActionData = async (event) => {
   //   const form = event.currentTarget;
@@ -1679,13 +1701,13 @@ const saveRejectSuccess = (message) => {
       hide: "md",
     },
 
-    {
-      name: "Eligible Amount",
-      selector: (row) => row.eligibleAmount,
-      cell: (row) => <span>{row.eligibleAmount}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Eligible Amount",
+    //   selector: (row) => row.eligibleAmount,
+    //   cell: (row) => <span>{row.eligibleAmount}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
     {
       name: "Scheme Name",
@@ -1705,6 +1727,13 @@ const saveRejectSuccess = (message) => {
       name: "Khazane Recipient Id",
       selector: (row) => row.khazaneRecipientId,
       cell: (row) => <span>{row.khazaneRecipientId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "TSC",
+      selector: (row) => row.tscName,
+      cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -2085,6 +2114,34 @@ const saveRejectSuccess = (message) => {
                       value={list.categoryId}
                     >
                       {list.categoryName}
+                  </option>
+                ))
+                      : ""}
+                    </Form.Select>
+                  </div>
+                </Col>
+                </Row>
+
+            <Row className="mb-3">
+                <Form.Label column sm={1}>
+                  {t("TSC")}
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="tscId"
+                      value={data.tscId}
+                      onChange={handleInputs}
+                      // style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">{t("Select TSC")}</option>
+                      {tscListData &&
+                  tscListData.length ? tscListData.map((list) => (
+                    <option
+                      key={list.tscMasterId}
+                      value={list.tscMasterId}
+                    >
+                      {list.name}
                   </option>
                 ))
                       : ""}
