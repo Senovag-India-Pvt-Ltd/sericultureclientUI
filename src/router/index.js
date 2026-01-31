@@ -1599,7 +1599,7 @@ function Router() {
               element={<ApplicationDashboard />}
             />
             <Route
-              path="sakala-dashboard"
+              path="pendency-dashboard"
               element={<SakalaDashboard />}
             />
             <Route

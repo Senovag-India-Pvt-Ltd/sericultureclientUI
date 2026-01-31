@@ -523,6 +523,234 @@ const [subSchemeData, setSubSchemeData] = useState([]);
 const [showSubSchemeTable, setShowSubSchemeTable] = useState(false);
 const [subSchemeLoading, setSubSchemeLoading] = useState(false);
 
+const [showDivisionTable, setShowDivisionTable] = useState(false);
+const [divisionData, setDivisionData] = useState([]);
+const [selectedSubScheme, setSelectedSubScheme] = useState(null);
+
+const [showDistrictTable, setShowDistrictTable] = useState(false);
+const [districtData, setDistrictData] = useState([]);
+const [selectedDivision, setSelectedDivision] = useState(null);
+
+const [showTscTable, setShowTscTable] = useState(false);
+const [tscData, setTscData] = useState([]);
+const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+const tscMasterList = [
+  "Test", "Devanahalli", "Yaliyur", "Chintamani", "Ronuru",
+  "Honganur", "Vijayapura R", "Kodambali", "Hosakote", "Nandagudi",
+  "Thittamaranahalli", "Doddalahalli", "Doddaballapur", "Kanakpur",
+  "Tubagere", "Santekodihalli", "Nelamangala", "Kanakapur R",
+  "Bannikuppe", "Ramanagara R", "Lakshmipur", "Cikkajala",
+  "Yalahanka", "Chikkaballapur", "Kengeri", "Kaiwara", "K R Pete",
+  "Bookanakere", "Yagavakote", "Kikkeri", "Shidlaghatta",
+  "Shidlaghatta R", "Gauribidanur", "Darinayakanapalya", "Bagepally",
+  "Cheluru", "Gudibande", "Byadagi", "Nagamangala", "Hangal",
+  "Hirekerur", "Chinya", "Baburayanakoppal", "Ranebennur",
+  "Savanur", "Mandya", "Keragodu", "Koppa", "Belakavadi",
+  "Byrakur", "Yeldur", "Kolar", "Vemagal", "Chitradurga",
+  "Chitradurga R", "Hosadurga", "Holakere", "Heriyur",
+  "Challakere", "Parashrampura", "Molakalmoor", "Bellary R",
+  "Hagari bommanahalli", "Kaluburgi", "Afjalpura", "Bhadravathi",
+  "Hosanagra", "Chikkaballapura", "Nandhi", "Kaivara",
+  "Chintamani R", "Gowribidanur", "Bagepalli", "Yelduru",
+  "Kasaba", "Rayalpad", "Muthakapalli", "Bevur", "Jadigenahalli",
+  "Sulibele", "Doddamaralavadi", "Harohalli", "Mayaganahalli",
+  "Shanubhoganahalli", "Nandi", "Andarlahalli", "Enigadele",
+  "Dibburuhalli", "Sheelanere", "Melur", "Jangamkote",
+  "Varthur", "Anekal", "Pandavapura", "Bellale", "Haveri",
+  "Shiggaon", "Doddagarudanahalli", "Mandya R", "K M Doddi",
+  "Toreshettyhalli", "Malavalli", "Halaguru", "Halasahalli",
+  "Purigali", "H H Koppalu", "Mulbagilu", "Tayalur",
+  "Srinivasapura", "Gownipalli", "Holoor", "Vakkaleri",
+  "Kolar R", "Bangarpet", "Kamasamudra", "Bethamangala",
+  "Malur", "Masti", "Tekal", "Suliya", "Kaluburgi R",
+  "Alanda", "Madanahepparaga", "Hoovenahadagali", "Hosapet",
+  "Kudligi", "Hosahalli", "Sandoor", "Jevargi",
+  "S N Hipparaga", "Shikaripura", "Shivamoga", "Haranahalli",
+  "Miloor", "Chelur", "Harave", "Kuderu", "ChIlakavadi",
+  "Hanooru", "Kamagere", "Palya", "Ramapura",
+  "Chamarajanagra", "Vedeyarapalya", "Kollegala Reeling",
+  "Honnuru", "Davanagere", "Yalanduru", "Jagalur",
+  "Channagiri", "Tumakur", "Tumakur Reeling", "Madhugiri",
+  "KodIgenahalli", "Holuvanahalli", "Koratgere", "Pavagada",
+  "Y N Hosakote", "Chikkanayakanahalli", "Baraguru",
+  "Tipturu", "Chikkamagaluru", "Kaduru", "Narshimhapura",
+  "Aluru", "Beluru", "Arsikere", "Holenarasipura",
+  "Hallymysore", "Shilanare", "Kadakola", "Bannur", "Muguru"
+];
+
+const TscDataColumns = [
+  {
+    name: "Sl.No",
+    selector: (row) => row.serialNo,
+    width: "100px",
+    center: true,
+  },
+  {
+    name: "TSC Name",
+    selector: (row) => row.tscName,
+    sortable: true,
+  },
+  {
+    name: "Total Applications Received",
+    selector: (row) => row.count,
+    cell: (row) => (
+      <span className="stat-pill stat-primary">{row.count}</span>
+    ),
+  },
+  {
+    name: "Total Applications Processed",
+    selector: (row) => row.dbtPushedCount,
+    cell: (row) => (
+      <span className="stat-pill stat-success">{row.dbtPushedCount}</span>
+    ),
+  },
+  {
+    name: "Total Applications Rejected",
+    selector: (row) => row.dbtRejectedCount,
+    cell: (row) => (
+      <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>
+    ),
+  },
+  {
+    name: "Pendency After Due Date",
+    selector: (row) => row.pendencyAfterDueDate,
+    cell: (row) => (
+      <span className="stat-pill stat-warning">
+        {row.pendencyAfterDueDate}
+      </span>
+    ),
+  },
+];
+
+const getTscDataByDistrict = (districtRow) => {
+  return tscMasterList.map((name, index) => {
+    // realistic dummy numbers
+    const total = Math.floor(Math.random() * 40) + 20; // 20–60
+    const processed = Math.floor(total * (0.6 + Math.random() * 0.3)); // 60–90%
+    const rejected = Math.floor((total - processed) * 0.3); // some rejected
+    const pending = total - processed - rejected;
+
+    return {
+      serialNo: index + 1,
+      tscName: name,
+
+      count: total,
+      dbtPushedCount: processed,
+      dbtRejectedCount: rejected,
+      pendencyAfterDueDate: pending,
+    };
+  });
+};
+
+
+
+
+const divisionDistrictMap = {
+  BANGALORE: [
+    "Bengaluru Urban",
+    "Bengaluru Rural",
+    "Ramanagara",
+    "Kolar",
+    "Chikkaballapur",
+  ],
+  BELAGAVI: [
+    "Belagavi",
+    "Bagalkot",
+    "Vijayapura",
+    "Gadag",
+    "Dharwad",
+    "Haveri",
+  ],
+  MYSORE: [
+    "Mysuru",
+    "Mandya",
+    "Hassan",
+    "Kodagu",
+    "Chamarajanagar",
+  ],
+  KALABURAGI: [
+    "Kalaburagi",
+    "Bidar",
+    "Yadgir",
+    "Raichur",
+    "Koppal",
+    "Ballari",
+    "Vijayanagara",
+  ],
+  "MYSORE SEED AREA": [
+    "Mysuru Seed Area – 1",
+    "Mysuru Seed Area – 2",
+  ],
+};
+
+const getDistrictWiseDataByDivision = (divisionRow) => {
+  const districts = divisionDistrictMap[divisionRow.divisionName] || [];
+
+  const districtCount = districts.length || 1;
+
+  return districts.map((district, index) => ({
+    serialNo: index + 1,
+    districtName: district,
+
+    // distribute division counts (simple split)
+    count: Math.floor(divisionRow.count / districtCount),
+    dbtPushedCount: Math.floor(divisionRow.dbtPushedCount / districtCount),
+    dbtRejectedCount: Math.floor(divisionRow.dbtRejectedCount / districtCount),
+    pendencyAfterDueDate: Math.floor(
+      divisionRow.pendencyAfterDueDate / districtCount
+    ),
+  }));
+};
+
+
+
+const getDivisionWiseHardcodedData = () => {
+  return [
+    {
+      serialNo: 1,
+      divisionName: "BANGALORE",
+      count: 120,
+      dbtPushedCount: 90,
+      dbtRejectedCount: 20,
+      pendencyAfterDueDate: 10,
+    },
+    {
+      serialNo: 2,
+      divisionName: "BELAGAVI",
+      count: 80,
+      dbtPushedCount: 60,
+      dbtRejectedCount: 10,
+      pendencyAfterDueDate: 10,
+    },
+    {
+      serialNo: 3,
+      divisionName: "MYSORE",
+      count: 70,
+      dbtPushedCount: 55,
+      dbtRejectedCount: 5,
+      pendencyAfterDueDate: 10,
+    },
+    {
+      serialNo: 4,
+      divisionName: "KALABURAGI",
+      count: 65,
+      dbtPushedCount: 40,
+      dbtRejectedCount: 15,
+      pendencyAfterDueDate: 10,
+    },
+    {
+      serialNo: 5,
+      divisionName: "MYSORE SEED AREA",
+      count: 50,
+      dbtPushedCount: 35,
+      dbtRejectedCount: 5,
+      pendencyAfterDueDate: 10,
+    },
+  ];
+};
+
+
 
   const FarmerDataColumns = [
     {
@@ -615,6 +843,53 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
     
   ];
 
+  const DistrictDataColumns = [
+  {
+    name: "Sl.No",
+    selector: (row) => row.serialNo,
+    width: "100px",
+    center: true,
+  },
+  {
+  name: "District Name",
+  selector: (row) => row.districtName,
+  cell: (row) => (
+    <span
+      className="scheme-link"
+      onClick={() => {
+        setSelectedDistrict(row);
+        setTscData(getTscDataByDistrict(row));
+        setShowTscTable(true);
+        setShowDistrictTable(false);
+      }}
+    >
+      {row.districtName}
+    </span>
+  ),
+},
+  {
+    name: "Total Applications Received",
+    selector: (row) => row.count,
+    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
+  },
+  {
+    name: "Total Applications Processed",
+    selector: (row) => row.dbtPushedCount,
+    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
+  },
+  {
+    name: "Total Applications Rejected",
+    selector: (row) => row.dbtRejectedCount,
+    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
+  },
+  {
+    name: "Pendency After Due Date",
+    selector: (row) => row.pendencyAfterDueDate,
+    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
+  },
+];
+
+
   const SubSchemeDataColumns = [
     {
       name: "Sl.No",
@@ -634,13 +909,33 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
       width: "150px", 
     },
 
+    // {
+    //   name: "Sub Scheme Name",
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Sub Scheme Name",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Sub Scheme Name",
+        selector: (row) => row.subSchemeName,
+        cell: (row) => (
+          <span
+            className="scheme-link"
+            onClick={() => {
+              resetAllTables();  
+              setSelectedSubScheme(row);
+              setDivisionData(getDivisionWiseHardcodedData());
+              setShowDivisionTable(true);
+              setShowSubSchemeTable(false);
+            }}
+          >
+            {row.subSchemeName}
+          </span>
+        ),
+        sortable: true,
+        hide: "md",
+      },
     {
       name: "Total Applications Received",
       selector: (row) => row.count,
@@ -673,6 +968,300 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
     },
     
   ];
+
+  const DivisionDataColumns = [
+  {
+    name: "Sl.No",
+    selector: (row) => row.serialNo,
+    width: "100px",
+    center: true,
+  },
+  {
+  name: "Division Name",
+  selector: (row) => row.divisionName,
+  cell: (row) => (
+    <span
+      className="scheme-link"
+      onClick={() => {
+        setSelectedDivision(row);
+        setDistrictData(getDistrictWiseDataByDivision(row));
+        setShowDistrictTable(true);
+        setShowDivisionTable(false);
+      }}
+    >
+      {row.divisionName}
+    </span>
+  ),
+},
+  {
+    name: "Total Applications Received",
+    selector: (row) => row.count,
+    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
+  },
+  {
+    name: "Total Applications Processed",
+    selector: (row) => row.dbtPushedCount,
+    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
+  },
+  {
+    name: "Total Applications Rejected",
+    selector: (row) => row.dbtRejectedCount,
+    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
+  },
+  {
+    name: "Pendency After Due Date",
+    selector: (row) => row.pendencyAfterDueDate,
+    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
+  },
+];
+
+const resetAllTables = () => {
+  setShowSubSchemeTable(false);
+  setShowDivisionTable(false);
+  setShowDistrictTable(false);
+  setShowTscTable(false);
+  setShowDistrictWiseTable(false);
+  setShowDistrictSubSchemeTable(false);
+};
+
+
+
+const [districtWiseData, setDistrictWiseData] = useState([]);
+const [showDistrictWiseTable, setShowDistrictWiseTable] = useState(false);
+
+const [districtSubSchemeData, setDistrictSubSchemeData] = useState([]);
+const [showDistrictSubSchemeTable, setShowDistrictSubSchemeTable] = useState(false);
+const [selectedDistrictWise, setSelectedDistrictWise] = useState(null);
+
+
+const loadDistrictWiseData = () => {
+  setDistrictWiseData([
+    {
+      serialNo: 1,
+      districtName: "Bengaluru Urban",
+      count: 500,
+      dbtPushedCount: 380,
+      dbtRejectedCount: 70,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 2,
+      districtName: "Bengaluru Rural",
+      count: 360,
+      dbtPushedCount: 260,
+      dbtRejectedCount: 50,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 3,
+      districtName: "Mysuru",
+      count: 420,
+      dbtPushedCount: 300,
+      dbtRejectedCount: 60,
+      pendencyAfterDueDate: 60,
+    },
+    {
+      serialNo: 4,
+      districtName: "Mandya",
+      count: 310,
+      dbtPushedCount: 220,
+      dbtRejectedCount: 40,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 5,
+      districtName: "Tumakuru",
+      count: 340,
+      dbtPushedCount: 240,
+      dbtRejectedCount: 45,
+      pendencyAfterDueDate: 55,
+    },
+    {
+      serialNo: 6,
+      districtName: "Hassan",
+      count: 330,
+      dbtPushedCount: 235,
+      dbtRejectedCount: 40,
+      pendencyAfterDueDate: 55,
+    },
+    {
+      serialNo: 7,
+      districtName: "Shivamogga",
+      count: 295,
+      dbtPushedCount: 210,
+      dbtRejectedCount: 35,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 8,
+      districtName: "Davanagere",
+      count: 280,
+      dbtPushedCount: 200,
+      dbtRejectedCount: 30,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 9,
+      districtName: "Belagavi",
+      count: 390,
+      dbtPushedCount: 280,
+      dbtRejectedCount: 50,
+      pendencyAfterDueDate: 60,
+    },
+    {
+      serialNo: 10,
+      districtName: "Vijayapura",
+      count: 260,
+      dbtPushedCount: 180,
+      dbtRejectedCount: 35,
+      pendencyAfterDueDate: 45,
+    },
+    {
+      serialNo: 11,
+      districtName: "Ballari",
+      count: 275,
+      dbtPushedCount: 195,
+      dbtRejectedCount: 35,
+      pendencyAfterDueDate: 45,
+    },
+    {
+      serialNo: 12,
+      districtName: "Kalaburagi",
+      count: 300,
+      dbtPushedCount: 200,
+      dbtRejectedCount: 40,
+      pendencyAfterDueDate: 60,
+    },
+    {
+      serialNo: 13,
+      districtName: "Raichur",
+      count: 245,
+      dbtPushedCount: 165,
+      dbtRejectedCount: 30,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 14,
+      districtName: "Koppal",
+      count: 230,
+      dbtPushedCount: 155,
+      dbtRejectedCount: 25,
+      pendencyAfterDueDate: 50,
+    },
+    {
+      serialNo: 15,
+      districtName: "Chitradurga",
+      count: 255,
+      dbtPushedCount: 175,
+      dbtRejectedCount: 30,
+      pendencyAfterDueDate: 50,
+    },
+  ]);
+};
+
+
+const DistrictWiseColumns = [
+  {
+    name: "Sl.No",
+    selector: (row) => row.serialNo,
+    width: "80px",
+    center: true,
+  },
+  {
+    name: "District Name",
+    selector: (row) => row.districtName,
+    cell: (row) => (
+      <span
+        className="scheme-link"
+       onClick={() => {
+      resetAllTables(); // 🔥 IMPORTANT
+
+      setSelectedDistrictWise(row);
+      setDistrictSubSchemeData(getSubSchemeDataForDistrict(row));
+
+      setShowDistrictSubSchemeTable(true); // 🔥 only this stays
+    }}
+      >
+        {row.districtName}
+      </span>
+    ),
+  },
+  {
+    name: "Total Applications Received",
+    selector: (row) => row.count,
+    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
+  },
+  {
+    name: "Total Applications Processed",
+    selector: (row) => row.dbtPushedCount,
+    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
+  },
+  {
+    name: "Total Applications Rejected",
+    selector: (row) => row.dbtRejectedCount,
+    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
+  },
+  {
+    name: "Pendency After Due Date",
+    selector: (row) => row.pendencyAfterDueDate,
+    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
+  },
+];
+
+const subSchemeMasterList = [
+  "Subsidy For Construction of Rearing House (1000 sq ft)",
+  "NA",
+  "Per Drop More Crop (PDMC)",
+  "Central State Mandatory",
+  "Bonus for BIVOLTINE/Bivoltine Cocoons",
+  "Incentive for Bivoltine Cocoons",
+  "North Karnataka Cocoon Transportation lncentive",
+  "Pure Mysore Bonus - Rs.225 Per Kg",
+  "Rearing Equipment SDP",
+  "Rearing Equipment SS",
+  "Rearing House",
+  "Reeling Shed SDP",
+  "Reeling Shed PSF",
+  "Subsidy For Construction of Rearing House (600 sq ft)",
+  "Multi End Reeling Machinery MERM",
+  "Multi End Reeling Machinery MERM-SDP",
+  "Improved Cottage Basin (ICB)-SDP",
+  "Subsidy for Adopting Boiler-SDP",
+  "Subsidy For Adopting Boiler-PSF",
+  "Adopting Silent Generator-PSF",
+  "Adopting Solar power Generator-SDP",
+  "Adopting Solar Water Heater-PSF",
+  "Adopting Heat Recovery Unit-PSF",
+  "Silk Incentive-PSF",
+  "Silk Incentive-SDP",
+  "Silk Incentive",
+  "Bivoltine Chawki Incentive",
+  "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500",
+  "Registered Private Bivoltine Chawki Rearing Center Subsidy",
+  "Drip Irrigation State Top Up (PMKSY)",
+  "Incentive for MSC Cocoons Rs 120 per Kg",
+  "Rearing House SS",
+  "Improved Cottage Basin (ICB)-PSF",
+  "Italian Model Cottage Basin (IMCB)-SDP",
+  "Italian Model Cottage Basin (IMCB)-PSF",
+  "Multi End Reeling Machinery MERM-PSF",
+];
+
+const getSubSchemeDataForDistrict = (districtRow) => {
+  const size = subSchemeMasterList.length;
+
+  return subSchemeMasterList.map((name, index) => ({
+    serialNo: index + 1,
+    subSchemeName: name,
+    count: Math.floor(districtRow.count / size),
+    dbtPushedCount: Math.floor(districtRow.dbtPushedCount / size),
+    dbtRejectedCount: Math.floor(districtRow.dbtRejectedCount / size),
+    pendencyAfterDueDate: Math.floor(
+      districtRow.pendencyAfterDueDate / size
+    ),
+  }));
+};
+
 
   return (
     <Layout title={t("Cumulative Report")}>
@@ -733,9 +1322,17 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
           onMouseEnter={() => setHovered("SCHEME")}
           onMouseLeave={() => setHovered(null)}
           onClick={() => {
-            setViewType("SCHEME");
-            setPage(0);
-          }}
+          setViewType("SCHEME");
+          setPage(0);
+
+          // 🔥 RESET DISTRICT FLOW
+          setShowDistrictWiseTable(false);
+          setShowDistrictSubSchemeTable(false);
+          setSelectedDistrictWise(null);
+
+          // Scheme table will show by default
+        }}
+
         >
           <span style={radioToggleStyles.icon}>📑</span>
           Scheme Wise
@@ -748,10 +1345,15 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
           onClick={() => {
             setViewType("DISTRICT");
             setPage(0);
-          }}
+        resetAllTables(); // 🔥
+
+          setShowDistrictWiseTable(true);
+          loadDistrictWiseData();
+                  }}
+
         >
           <span style={radioToggleStyles.icon}>📍</span>
-          District Wise
+          All Schemes Consolidated
         </div>
       </div>
     </div>
@@ -760,6 +1362,11 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
 
 
     {/* 📊 Data Table */}
+    {viewType === "SCHEME" &&
+ !showSubSchemeTable &&
+ !showDivisionTable &&
+ !showDistrictTable &&
+ !showTscTable && (
     <DataTable
       tableClassName="data-table-head-light table-responsive"
       columns={FarmerDataColumns}
@@ -775,6 +1382,7 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
       theme="solarized"
       customStyles={customStyles}
     />
+    )}
   </Card>
 
   {showSubSchemeTable && (
@@ -814,6 +1422,155 @@ const [subSchemeLoading, setSubSchemeLoading] = useState(false);
     />
   </Card>
 )}
+
+{showDivisionTable && (
+  <Card className="mt-4 p-3 border-success">
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <h5 className="fw-bold text-success">
+        📍 Division Details
+        <span className="text-muted fs-6">
+          {" "}({selectedSubScheme?.subSchemeName})
+        </span>
+      </h5>
+
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={() => {
+          setShowDivisionTable(false);
+          setDivisionData([]);
+          setShowSubSchemeTable(true);
+        }}
+      >
+        ⬅ Back
+      </Button>
+    </div>
+
+    <DataTable
+      columns={DivisionDataColumns}
+      data={divisionData}
+      highlightOnHover
+      pagination
+      theme="solarized"
+      customStyles={customStyles}
+    />
+  </Card>
+)}
+
+{showDistrictTable && (
+  <Card className="mt-4 p-3 border-info">
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <h5 className="fw-bold text-info">
+        🏙️ District Details
+        <span className="text-muted fs-6">
+          {" "}({selectedDivision?.divisionName})
+        </span>
+      </h5>
+
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={() => {
+          setShowDistrictTable(false);
+          setDistrictData([]);
+          setShowDivisionTable(true);
+        }}
+      >
+        ⬅ Back
+      </Button>
+    </div>
+
+    <DataTable
+      columns={DistrictDataColumns}
+      data={districtData}
+      highlightOnHover
+      pagination
+      theme="solarized"
+      customStyles={customStyles}
+    />
+  </Card>
+)}
+
+{showTscTable && (
+  <Card className="mt-4 p-3 border-dark">
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <h5 className="fw-bold">
+        🧵 TSC Details
+        <span className="text-muted fs-6">
+          {" "}({selectedDistrict?.districtName})
+        </span>
+      </h5>
+
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={() => {
+          setShowTscTable(false);
+          setTscData([]);
+
+          // show District back
+          setShowDistrictTable(true);
+        }}
+      >
+        ⬅ Back
+      </Button>
+    </div>
+
+    <DataTable
+      columns={TscDataColumns}
+      data={tscData}
+      highlightOnHover
+      pagination
+      theme="solarized"
+      customStyles={customStyles}
+    />
+  </Card>
+)}
+
+{showDistrictSubSchemeTable && (
+  <Card className="mt-4 p-3 border-primary">
+    <div className="d-flex justify-content-between mb-3">
+      <h5 className="fw-bold text-primary">
+        📌 Sub-Scheme Details
+        <span className="text-muted fs-6">
+          {" "}({selectedDistrictWise?.districtName})
+        </span>
+      </h5>
+
+      <Button
+        size="sm"
+        variant="outline-secondary"
+        onClick={() => {
+          setShowDistrictSubSchemeTable(false);
+          setShowDistrictWiseTable(true);
+        }}
+      >
+        ⬅ Back
+      </Button>
+    </div>
+
+    <DataTable
+      columns={SubSchemeDataColumns}
+      data={districtSubSchemeData}
+      pagination
+      highlightOnHover
+      theme="solarized"
+      customStyles={customStyles}
+    />
+  </Card>
+)}
+
+{viewType === "DISTRICT" && showDistrictWiseTable && (
+  <DataTable
+    columns={DistrictWiseColumns}
+    data={districtWiseData}
+    pagination
+    highlightOnHover
+    theme="solarized"
+    customStyles={customStyles}
+  />
+)}
+
 
 </Block>
 

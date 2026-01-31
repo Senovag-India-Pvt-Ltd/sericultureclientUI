@@ -228,37 +228,44 @@ const [showTable, setShowTable] = useState(false);
 const dashboardDetailsData = [
   {
     dashboard: "Pending Beyond Due Date",
-    farmerName: "Ramesh Kumar",
-    slaDays: 30,
-    daysCompleted: 42,
+    beneficiaryName: "Ramesh Kumar",
+    fid: "FID123456789012",
+    applicationSubmissionDate: "2025-12-01",
+    applicationDueDate: "2025-12-31",
+    breachedDays: 12,
     daysPending: 12,
-    status: "SLA Breached",
+    status: "Breached",
   },
   {
     dashboard: "Disposed Within Prescribed Time",
-    farmerName: "Suresh Naik",
-    slaDays: 30,
-    daysCompleted: 25,
+    beneficiaryName: "Suresh Naik",
+    fid: "FID987654321098",
+    applicationSubmissionDate: "2025-12-05",
+    applicationDueDate: "2026-01-04",
+    breachedDays: 0,
     daysPending: 0,
     status: "Completed On Time",
   },
   {
     dashboard: "Disposed After Due Date",
-    farmerName: "Mahesh Gowda",
-    slaDays: 30,
-    daysCompleted: 35,
-    daysPending: 5,
+    beneficiaryName: "Mahesh Gowda",
+    fid: "FID456789123456",
+    applicationSubmissionDate: "2025-12-10",
+    applicationDueDate: "2026-01-09",
+    breachedDays: 5,
+    daysPending: 0,
     status: "Delayed",
   },
 ];
 
 
+
   return (
-    <Layout title="Sakala Dashboard">
+    <Layout title="Pendency Dashboard">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Sakala Dashboard")}</Block.Title>
+            <Block.Title tag="h2">{t("Pendency Dashboard")}</Block.Title>
           </Block.HeadContent>
           
         </Block.HeadBetween>
@@ -347,7 +354,7 @@ const dashboardDetailsData = [
 
 
           <span className="badge bg-light text-danger px-3 py-1">
-            SLA Breached
+            Breached
           </span>
         </Card.Body>
       </Card>
@@ -455,11 +462,13 @@ const dashboardDetailsData = [
         <table className="table table-bordered table-hover align-middle">
           <thead className="table-light">
             <tr>
-              <th>Farmer Name</th>
-              <th>SLA Days</th>
-              <th>Days Completed</th>
+              <th>Beneficiary Name</th>
+              <th>FID</th>
+              <th>Application Submission Date </th>
+              <th>Application Due Date </th>
+              <th>Breached Days</th>
               <th>Days Pending</th>
-              <th>Sakala Status</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -469,10 +478,12 @@ const dashboardDetailsData = [
               )
               .map((item, index) => (
                 <tr key={index}>
-                  <td>{item.farmerName}</td>
-                  <td>{item.slaDays}</td>
-                  <td>{item.daysCompleted}</td>
-                  <td>{item.daysPending}</td>
+                   <td>{item.beneficiaryName}</td>
+                    <td>{item.fid}</td>
+                    <td>{item.applicationSubmissionDate}</td>
+                    <td>{item.applicationDueDate}</td>
+                    <td>{item.breachedDays}</td>
+                    <td>{item.daysPending}</td>
                   <td>
                     <span
                       className={`badge ${
