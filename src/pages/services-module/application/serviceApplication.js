@@ -825,7 +825,7 @@ const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
               "Incentive For Bivoltine Chawki Rearing Cost"
           ) {
             getCropDetailsCommercialMarketByLotNo(
-              data.lotNo,
+              // data.lotNo,
               schemeType
             );
           }
@@ -937,7 +937,7 @@ const getCropDetailsCommercialMarketByLotNo = (biddingSlipNo, schemeType) => {
       transactionDate: formattedAuctionDate,
       marketId: data.marketId,
       fruitsId: data.fruitsId,
-      biddingSlipNo: biddingSlipNo,
+      // biddingSlipNo: biddingSlipNo,
     }
   )
   .then((response) => {
@@ -1063,7 +1063,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (
-    data.lotNo &&
+    // data.lotNo &&
     data.transactionDate &&
     data.fruitsId &&
     getIncentiveAndBonusData.length > 0
@@ -1100,7 +1100,7 @@ if (
         "Incentive For Bivoltine Chawki Rearing Cost"
     ) {
       getCropDetailsCommercialMarketByLotNo(
-        data.lotNo,
+        // data.lotNo,
         schemeType
       );
     }
@@ -7874,7 +7874,7 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
 
-                            <Col lg="2">
+                            {/* <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label>Bidding Slip Lot No</Form.Label>
                               <Form.Control
@@ -7910,7 +7910,7 @@ const fetchReelerDetails = () => {
                                 ))}
                               </Form.Control>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           
 
