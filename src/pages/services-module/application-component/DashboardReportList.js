@@ -4639,6 +4639,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                       type="text"
                                       placeholder="Enter Eligible Subsidy Amount "
                                       style={modalStyles.formControl}
+                                      disabled
                                       // required
                                     />
                                     {/* <Form.Control.Feedback type="invalid">

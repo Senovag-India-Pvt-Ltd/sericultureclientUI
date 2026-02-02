@@ -8579,6 +8579,7 @@ const fetchReelerDetails = () => {
                                 onChange={handleInputs}
                                 placeholder={t("Enter Expected Amount")}
                                 required
+                                disabled
                               />
                               <Form.Control.Feedback type="invalid">
                                 {t("Subsidy Amount is required")}
@@ -8668,6 +8669,7 @@ const fetchReelerDetails = () => {
                               name="subsidyAmount"
                               value={data.subsidyAmount}
                               placeholder="Auto Calculated"
+                              disabled
                             />
                           </Form.Group>
                         </Col>
