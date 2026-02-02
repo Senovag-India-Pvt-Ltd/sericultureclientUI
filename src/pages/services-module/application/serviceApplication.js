@@ -1908,7 +1908,7 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 //   });
 // };
 
-const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
+const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg,minAverageYield } = {}) => {
   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
   const avgYield = parseFloat(data.averageYield || 0);
@@ -1920,18 +1920,29 @@ const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg } = {}) => {
   // ⭐ Special rule:
   // If calcType is Bivoltine incentive AND averageYield > maxNoOfCocoonsPerKg,
   // then calculate based on: maxNoOfCocoonsPerKg * amountPerKg
-  if (
-    calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" &&
-    maxNoOfCocoonsPerKg &&
-    avgYield > parseFloat(maxNoOfCocoonsPerKg)
-  ) {
-    if (noOfDFLs < 100) {
-      // 🔥 BELOW 100 DFLs RULE
-      baseQuantity = (noOfDFLs * maxNoOfCocoonsPerKg) / 100;
-    } else {
-      // 🔥 100 OR MORE DFLs RULE
-      baseQuantity = maxNoOfCocoonsPerKg;
+  // if (
+  //   calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" &&
+  //   maxNoOfCocoonsPerKg &&
+  //   avgYield > parseFloat(maxNoOfCocoonsPerKg)
+  // ) {
+  //   if (noOfDFLs < 100) {
+  //     // 🔥 BELOW 100 DFLs RULE
+  //     baseQuantity = (noOfDFLs * maxNoOfCocoonsPerKg) / 100;
+  //   } else {
+  //     // 🔥 100 OR MORE DFLs RULE
+  //     baseQuantity = maxNoOfCocoonsPerKg;
+  //   }
+  // }
+  if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
+
+    // ❌ Below minimum → should already be blocked before calling this
+    if (avgYield < minAverageYield) return;
+
+    // 🔥 If avgYield exceeds max → LIMIT the cocoons weight
+    if (avgYield > maxNoOfCocoonsPerKg) {
+      baseQuantity = (noOfDFLs / 100) * maxNoOfCocoonsPerKg;
     }
+    // else → use actual cocoonsWeight (no change)
   }
 
   const calculatedAmount = baseQuantity * amountPerKg;
@@ -4535,6 +4546,7 @@ const search = (event) => {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
+      setLoading(false);
       if (
         response.data &&
         response.data.content &&
@@ -4571,6 +4583,7 @@ const search = (event) => {
     })
     .catch((err) => {
       console.error("Farmer API error:", err);
+      setLoading(false);
       // If farmer API fails, try reeler as fallback
       fetchReelerDetails();
     });
@@ -4582,6 +4595,7 @@ const fetchReelerDetails = () => {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
+      setLoading(false);
       const reeler = response.data?.content?.reelerResponse;
 
       if (reeler) {
@@ -4616,6 +4630,7 @@ const fetchReelerDetails = () => {
       }
     })
     .catch((error) => {
+      setLoading(false);
       console.error("Reeler API error:", error);
       saveError("An error occurred while fetching reeler details.");
     });

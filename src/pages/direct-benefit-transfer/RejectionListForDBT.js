@@ -302,12 +302,25 @@ const handlePush = (id) => {
     const getCheckFileDetails = (applicationFormIds) => {
   const recordData = listData[0];
 
+  let pushType = "R"; // default
+
+  const hasAckFailed = listData.some(
+    (item) =>
+      applicationFormIds.includes(item.scApplicationFormId) &&
+      item.applicationStatus === "ACKNOWLEDGEMENT FAILED"
+  );
+
+  if (hasAckFailed) {
+    pushType = "P";
+  }
+
   api
     .post(baseURLDBT + `service/checkXmlFileDetailsForMultiple`, {
       applicationFormIds: applicationFormIds,
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",
-      pushType: "R",
+      // pushType: "R",
+      pushType: pushType,
       ddoCode: reportingOfficerDdoCode,
       categoryId: recordData.categoryId,
       componentId: recordData.componentId,

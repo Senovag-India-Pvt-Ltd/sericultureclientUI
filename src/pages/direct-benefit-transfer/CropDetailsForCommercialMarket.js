@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button,Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
@@ -42,6 +42,15 @@ function CropDetailsForCommercialMarket() {
     eligibleQuantityCocoonsTransacted: "",
     farmerName: "",
   });
+
+  const [transactionList, setTransactionList] = useState([]);
+    const [transactionDetails, setTransactionDetails] = useState({
+      eligibleQuantityCocoonsTransacted: "",
+      transactionDate: "",
+      marketId: "",
+      biddingSlipNo: "",
+      cocoonRatePerKg: "",
+    });
 
   const { t } = useTranslation();
 
@@ -105,6 +114,123 @@ const handleInputs = (e) => {
   }
 };
 
+const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+ const handleAdd = (e) => {
+  const form = e.currentTarget;
+  e.preventDefault();
+
+  if (form.checkValidity() === false) {
+    e.stopPropagation();
+    setValidatedDesignationDetails(true); // ✅ THIS IS REQUIRED
+    return;
+  }
+
+  // ✅ If form is valid
+  setTransactionList((prev) => [...prev, transactionDetails]);
+
+  setTransactionDetails({
+    transactionDate: "",
+    marketId: "",
+    biddingSlipNo: "",
+    cocoonRatePerKg: "",
+    eligibleQuantityCocoonsTransacted: "",
+  });
+
+  setShowModal(false);
+  setValidatedDesignationDetails(false);
+};
+
+  
+    const handleDelete = (i) => {
+      setTransactionList((prev) => {
+        const newArray = prev.filter((item, place) => place !== i);
+        return newArray;
+      });
+    };
+  
+    const [transactionDetailsId, setMapComponentId] = useState();
+    const handleGet = (i) => {
+      setTransactionDetails(transactionList[i]);
+      setShowModal2(true);
+      setMapComponentId(i);
+    };
+  
+    console.log(transactionList);
+  
+   const handleUpdate = (e, i, changes) => {
+  const form = e.currentTarget;
+  e.preventDefault();
+
+  // ❌ Invalid form → show validation messages
+  if (form.checkValidity() === false) {
+    e.stopPropagation();
+    setValidatedDesignationDetailsEdit(true);
+    return;
+  }
+
+  // ✅ Valid form → update list
+  setTransactionList((prev) =>
+    prev.map((item, ix) =>
+      ix === i ? { ...item, ...changes } : item
+    )
+  );
+
+  // Reset & close modal
+  setShowModal2(false);
+  setValidatedDesignationDetailsEdit(false);
+  setTransactionDetails({
+    transactionDate: "",
+    marketId: "",
+    biddingSlipNo: "",
+    cocoonRatePerKg: "",
+    eligibleQuantityCocoonsTransacted: "",
+  });
+};
+
+  
+    const handleMapInputs = (e) => {
+      const { name, value } = e.target;
+      setTransactionDetails({ ...transactionDetails, [name]: value });
+    };
+
+    useEffect(() => {
+  if (!transactionList || transactionList.length === 0) {
+    setData(prev => ({
+      ...prev,
+      quantityOfCocoonsProduced: "",
+      averageYield: ""
+    }));
+    return;
+  }
+
+  // ✅ Total Quantity = Sum of Quantity Of Cocoons Produced
+  const totalQuantity = transactionList.reduce(
+    (sum, item) => sum + Number(item.eligibleQuantityCocoonsTransacted || 0),
+    0
+  );
+
+  // ✅ Average Yield = (totalQuantity / DFL) * 100
+  let avgYield = "";
+  if (data.noOfDfls && Number(data.noOfDfls) !== 0) {
+    avgYield = ((totalQuantity / Number(data.noOfDfls)) * 100).toFixed(2);
+  }
+
+  setData(prev => ({
+    ...prev,
+    quantityOfCocoonsProduced: totalQuantity,
+    averageYield: avgYield
+  }));
+}, [transactionList, data.noOfDfls]);
+
+
 
   const _header = {
     "Content-Type": "application/json",
@@ -124,13 +250,33 @@ const handleInputs = (e) => {
   };
 
   const postData = (event) => {
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   setValidated(true);
+    // } else {
+    //   event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
+  event.preventDefault();
+
+  // ❌ Bootstrap form validation
+  if (form.checkValidity() === false) {
+    event.stopPropagation();
+    setValidated(true);
+    return;
+  }
+
+  // ❌ TRANSACTION LIST EMPTY CHECK (IMPORTANT)
+  if (transactionList.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Transaction Details Required",
+      text: "Please fill the transaction details before saving.",
+      confirmButtonText: "OK",
+    });
+    return; // ⛔ stop save
+  }
       // event.stopPropagation();
 
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
@@ -150,6 +296,14 @@ const handleInputs = (e) => {
       transactionDate: formattedTransactionDate,
       dateOfBrushing: formattedBrushingDate,
       dateOfDistributionOfChawkiWorms: formattedChawkiDistribution,
+
+      cropDetailsCommercialMarketDetailsRequests: transactionList.map((t) => ({
+      eligibleQuantityCocoonsTransacted: t.eligibleQuantityCocoonsTransacted,
+      transactionDate: formatDate(t.transactionDate),
+      marketId: t.marketId,
+      biddingSlipNo: t.biddingSlipNo,
+      cocoonRatePerKg: t.cocoonRatePerKg,
+    })),
     };
       api
         .post(baseURL + `cropDetailsCommercialMarket/add`, payload)
@@ -181,6 +335,7 @@ const handleInputs = (e) => {
             eligibleQuantityCocoonsTransacted: "",
             farmerName: "",
             });
+            setTransactionList([]); // ✅ CLEAR LIST
             setValidated(false);
           }
         })
@@ -190,8 +345,7 @@ const handleInputs = (e) => {
           }
         });
       setValidated(true);
-    }
-  };
+    };
 
   const clear = () => {
     setData({
@@ -268,6 +422,17 @@ const handleInputs = (e) => {
           });
       }
     };
+
+
+    const handleMarketOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setTransactionDetails({
+      ...transactionDetails,
+      marketId: chooseId,
+      marketMasterName: chooseName,
+    });
+  };
 
      // to get Market
   const [marketListData, setMarketListData] = useState([]);
@@ -408,6 +573,11 @@ const handleInputs = (e) => {
    useEffect(() => {
      getGenerationList();
    }, []);
+  
+     const [validatedDesignationDetails, setValidatedDesignationDetails] =
+       useState(false);
+     const [validatedDesignationDetailsEdit, setValidatedDesignationDetailsEdit] =
+       useState(false);
 
    // to get Line Year
    const [lineYearListData, setLineYearListData] = useState([]);
@@ -433,7 +603,11 @@ const handleInputs = (e) => {
       icon: "success",
       title: t("Saved successfully"),
       text: message,
-    });
+   }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
+    // clear();
   };
   const saveError = (message) => {
     let errorMessage;
@@ -451,6 +625,21 @@ const handleInputs = (e) => {
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
+  };
+
+   const handleTransactionDateChange = (date, type) => {
+    setTransactionDetails({ ...transactionDetails, [type]: date });
+  };
+
+  const designationClear = () => {
+    setTransactionDetails({
+      transactionDate: "",
+      marketId: "",
+      marketName: "",
+      biddingSlipNo: "",
+      cocoonRatePerKg: "",
+    });
+    setTransactionList([]);
   };
 
   return (
@@ -747,7 +936,7 @@ const handleInputs = (e) => {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           {t("Quantity Of Cocoons Produced")}
@@ -762,39 +951,36 @@ const handleInputs = (e) => {
                             placeholder={t("Quantity Of Cocoons Produced")}
                             // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Eligible Quantity Of Cocoons Produced")}
+                          {t("Total Quantity Of Cocoons Produced")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="eligibleQuantityCocoonsTransacted"
+                            id="quantit"
                             name="eligibleQuantityCocoonsTransacted"
                             value={data.eligibleQuantityCocoonsTransacted}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Eligible Quantity Of Cocoons Produced")}
-                            // required
+                            placeholder={t("Total Quantity Of Cocoons Produced")}
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("No Of DFL's")}
+                          {t("No Of DFL's")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -804,16 +990,17 @@ const handleInputs = (e) => {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("No Of DFL's")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                            No Of DFL's is required
+                            </Form.Control.Feedback>
+                         
                         </div>
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           {t("Average Yield")}
@@ -828,14 +1015,14 @@ const handleInputs = (e) => {
                             placeholder={t("Average Yield")}
                             // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
-                     <Col lg="4">
+                     {/* <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                             <Form.Label>
                             {t("Market")}<span className="text-danger">*</span>
@@ -865,9 +1052,9 @@ const handleInputs = (e) => {
                             </div>
                             </Col>
                         </Form.Group>
-                        </Col>
+                        </Col> */}
 
-                        <Col lg="4">
+                        {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
@@ -904,14 +1091,11 @@ const handleInputs = (e) => {
                             placeholder={t("Bidding Slip No")}
                             // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
-                <Col lg="2">
+                {/* <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                         {t("Transaction Date")}<span className="text-danger">*</span>
@@ -933,7 +1117,7 @@ const handleInputs = (e) => {
                         />
                         </div>
                     </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
@@ -1040,6 +1224,163 @@ const handleInputs = (e) => {
               </Card.Body>
             </Card>
 
+                        <Block className="mt-3">
+                          <Card>
+                            <Card.Header>{t("Add Transaction Details")}</Card.Header>
+                            <Card.Body>
+                              {/* <h3>Virtual Bank account</h3> */}
+                              <Row className="g-gs mb-1">
+                                <Col lg="6">
+                                  <Form.Group className="form-group mt-1">
+                                    <div className="form-control-wrap"></div>
+                                  </Form.Group>
+                                </Col>
+            
+                                <Col lg="6">
+                                  <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
+                                    <div className="form-control-wrap">
+                                      <ul className="">
+                                        <li>
+                                          <Button
+                                            className="d-md-none"
+                                            size="md"
+                                            variant="primary"
+                                            onClick={handleShowModal}
+                                          >
+                                            <Icon name="plus" />
+                                            <span>{t("add")}</span>
+                                          </Button>
+                                        </li>
+                                        <li>
+                                          <Button
+                                            className="d-none d-md-inline-flex"
+                                            variant="primary"
+                                            onClick={handleShowModal}
+                                          >
+                                            <Icon name="plus" />
+                                            <span>{t("add")}</span>
+                                          </Button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </Form.Group>
+                                </Col>
+                              </Row>
+                              {transactionList.length > 0 ? (
+                                <Row className="g-gs">
+                                  <Block>
+                                    <Card>
+                                      <div
+                                        className="table-responsive"
+                                        // style={{ paddingBottom: "30px" }}
+                                      >
+                                        <table className="table small">
+                                          <thead>
+                                            <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                              {/* <th></th> */}
+                                              <th>{t("Action")}</th>
+                                              <th>{t("Market")}</th>
+                                              <th>{t("Bidding Slip Lot No")}</th>
+                                              <th>{t("Cocoon Rate Per Kg")}</th>
+                                              <th>{t("Quantity Of Cocoon Produced")}</th>
+                                              <th>{t("Transaction Date")}</th>
+                                              
+                                              {/* <th>Share in %</th> */}
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {transactionList.map((item, i) => (
+                                              <tr>
+                                                <td>
+                                                  <div>
+                                                    <Button
+                                                      variant="primary"
+                                                      size="sm"
+                                                      onClick={() => handleGet(i)}
+                                                    >
+                                                      {t("Edit")}
+                                                    </Button>
+                                                    <Button
+                                                      variant="danger"
+                                                      size="sm"
+                                                      onClick={() => handleDelete(i)}
+                                                      className="ms-2"
+                                                    >
+                                                      {t("delete")}
+                                                    </Button>
+                                                  </div>
+                                                </td>
+                                                <td>{item.marketMasterName}</td>
+                                                <td>{item.biddingSlipNo}</td>
+                                                <td>{item.cocoonRatePerKg}</td>
+                                                <td>{item.eligibleQuantityCocoonsTransacted}</td>
+                                                <td>{formatDate(item.transactionDate)}</td>
+                                                
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </Card>
+                                  </Block>
+                                </Row>
+                              ) : (
+                                ""
+                              )}
+                            </Card.Body>
+                          </Card>
+                        </Block>
+
+                        {transactionList.length > 0 && (
+                        <Block className="mt-4">
+                          <Card
+                            className="shadow-sm"
+                            style={{ backgroundColor: "#f9fafb", borderLeft: "5px solid #0d6efd" }}
+                          >
+                            <Card.Body>
+                              <Row className="g-gs align-items-center">
+                                {/* 🧮 Total Quantity */}
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label className="fw-bold text-primary">
+                                      {t("Total Quantity Of Cocoons Produced")}
+                                    </Form.Label>
+                                    <Form.Control
+                                      type="text"
+                                      value={data.quantityOfCocoonsProduced}
+                                      readOnly
+                                      className="fw-bold text-primary bg-light"
+                                    />
+                                    <small className="text-muted">
+                                      {t("Auto calculated from transaction details")}
+                                    </small>
+                                  </Form.Group>
+                                </Col>
+
+                                {/* 📊 Average Yield */}
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label className="fw-bold text-success">
+                                      {t("Average Yield")}
+                                    </Form.Label>
+                                    <Form.Control
+                                      type="text"
+                                      value={data.averageYield}
+                                      readOnly
+                                      className="fw-bold text-success bg-light"
+                                    />
+                                    <small className="text-muted">
+                                      {t("Calculated as (Total Quantity / No of DFLs) × 100")}
+                                    </small>
+                                  </Form.Group>
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+                        </Block>
+                      )}
+
+
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
@@ -1058,6 +1399,328 @@ const handleInputs = (e) => {
           </Row>
         </Form>
       </Block>
+
+       <Modal show={showModal} onHide={handleCloseModal} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>{t("Add Transaction Details")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* <Form action="#"> */}
+                <Form
+                  noValidate
+                  validated={validatedDesignationDetails}
+                  onSubmit={handleAdd}
+                >
+                  <Row className="g-5">
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">{("Market")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketId"
+                            value={`${transactionDetails.marketId}_${transactionDetails.marketMasterName}`}
+                            onChange={handleMarketOption}
+                            onBlur={() => handleMarketOption}
+                            required
+                            isInvalid={
+                              transactionDetails.marketId === undefined ||
+                              transactionDetails.marketId === "0"
+                            }
+                          >
+                            <option value="">{t("Select Market")}</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={`${list.marketMasterId}_${list.marketMasterName}`}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Market is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNo"
+                            name="biddingSlipNo"
+                            type="number"
+                            value={transactionDetails.biddingSlipNo}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Bidding Slip Lot No")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Bidding Slip Lot No is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="program">{t("Cocoon Rate Per Kg")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="cocoonRatePerKg"
+                            name="cocoonRatePerKg"
+                            type="number"
+                            value={transactionDetails.cocoonRatePerKg}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Cocoon Rate Per Kg")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Cocoon Rate Per Kg is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="program">{t("Quantity Of Cocoons Produced")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="eligibleQuantityCocoonsTransacted"
+                            name="eligibleQuantityCocoonsTransacted"
+                            type="number"
+                            value={transactionDetails.eligibleQuantityCocoonsTransacted}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Quantity Of Cocoons Produced")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Quantity Of Cocoons Produced is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    
+
+                    
+
+                    <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                        {t("Transaction Date")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="Date of seed cocoon supply">
+                        <DatePicker
+                            selected={transactionDetails.transactionDate}
+                            onChange={(date) =>
+                            handleTransactionDateChange(date, "transactionDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            // maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                        />
+                        </div>
+                    </Form.Group>
+                    </Col>
+
+      
+                   
+      
+                    <Col lg="12">
+                      <div className="d-flex justify-content-center gap g-2">
+                        <div className="gap-col">
+                          {/* <Button variant="success" onClick={handleAdd}> */}
+                          <Button type="submit" variant="success">
+                          {t("add")}
+                          </Button>
+                        </div>
+      
+                        <div className="gap-col">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={designationClear}
+                          >
+                             {t("Clear")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+            </Modal>
+      
+            <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>{t("Edit Transaction Details")}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {/* <Form action="#"> */}
+                <Form
+                  noValidate
+                  validated={validatedDesignationDetailsEdit}
+                  onSubmit={(e) =>
+                    handleUpdate(e, transactionDetailsId, transactionDetails)
+                  }
+                >
+                  <Row className="g-5">
+
+                  <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">{("Market")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketId"
+                            value={`${transactionDetails.marketId}_${transactionDetails.marketMasterName}`}
+                            onChange={handleMarketOption}
+                            onBlur={() => handleMarketOption}
+                            required
+                            isInvalid={
+                              transactionDetails.marketId === undefined ||
+                              transactionDetails.marketId === "0"
+                            }
+                          >
+                            <option value="">{t("Select Market")}</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={`${list.marketMasterId}_${list.marketMasterName}`}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Market is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNo"
+                            name="biddingSlipNo"
+                            type="number"
+                            value={transactionDetails.biddingSlipNo}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Bidding Slip Lot No")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Bidding Slip Lot No is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="program">{t("Cocoon Rate Per Kg")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="cocoonRatePerKg"
+                            name="cocoonRatePerKg"
+                            type="number"
+                            value={transactionDetails.cocoonRatePerKg}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Cocoon Rate Per Kg")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Cocoon Rate Per Kg is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="program">{t("Quantity Of Cocoons Produced")}<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="eligibleQuantityCocoonsTransacted"
+                            name="eligibleQuantityCocoonsTransacted"
+                            type="number"
+                            value={transactionDetails.eligibleQuantityCocoonsTransacted}
+                            onChange={handleMapInputs}
+                            placeholder={t("Enter Quantity Of Cocoons Produced")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Quantity Of Cocoons Produced is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    
+
+                    
+
+                    <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                        {t("Transaction Date")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="Date of seed cocoon supply">
+                        <DatePicker
+                            selected={transactionDetails.transactionDate}
+                            onChange={(date) =>
+                            handleTransactionDateChange(date, "transactionDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            // maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                        />
+                        </div>
+                    </Form.Group>
+                    </Col>
+
+                    
+      
+                    <Col lg="12">
+                      <div className="d-flex justify-content-center gap g-2">
+                        <div className="gap-col">
+                          <Button type="submit" variant="success">
+                          {t("update")}
+                          </Button>
+                        </div>
+      
+                        <div className="gap-col">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={designationClear}
+                          >
+                            {t("Clear")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal.Body>
+            </Modal>
     </Layout>
   );
 }

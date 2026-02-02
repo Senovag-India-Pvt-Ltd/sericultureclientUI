@@ -32,14 +32,14 @@ const { t } = useTranslation();
 
   // Auto-calculate Average Yield = (quantity / dfl) * 100
   if (
-    (name === "quantityOfSeedCocoons" || name === "noOfDfls") &&
-    updatedData.quantityOfSeedCocoons &&
+    (name === "quantityOfCocoonsProduced" || name === "noOfDfls") &&
+    updatedData.quantityOfCocoonsProduced &&
     updatedData.noOfDfls &&
-    !isNaN(updatedData.quantityOfSeedCocoons) &&
+    !isNaN(updatedData.quantityOfCocoonsProduced) &&
     !isNaN(updatedData.noOfDfls) &&
     Number(updatedData.noOfDfls) !== 0
   ) {
-    const qty = Number(updatedData.quantityOfSeedCocoons);
+    const qty = Number(updatedData.quantityOfCocoonsProduced);
     const dfl = Number(updatedData.noOfDfls);
 
     updatedData.averageYield = ((qty / dfl) * 100).toFixed(2);  
@@ -575,7 +575,7 @@ const { t } = useTranslation();
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           {t("Eligible Quantity Of Cocoons Produced")}
@@ -590,17 +590,17 @@ const { t } = useTranslation();
                             placeholder={t("Eligible Quantity Of Cocoons Produced")}
                             // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("No Of DFL's")}
+                          {t("No Of DFL's")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -610,11 +610,11 @@ const { t } = useTranslation();
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("No Of DFL's")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          No Of DFL's is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>

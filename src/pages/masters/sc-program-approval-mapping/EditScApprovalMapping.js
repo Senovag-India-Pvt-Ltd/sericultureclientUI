@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { act } from "react";
 import { useTranslation } from "react-i18next";
+import ReactSelect from "react-select";
+import React, { useMemo } from "react";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
@@ -32,7 +34,21 @@ function ScProgramApprovalMappingEdit() {
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const isSubSchemeValid = React.useMemo(() => {
+      return data.subSchemeId !== "" && data.subSchemeId !== null && data.subSchemeId !== undefined;
+    }, [data.subSchemeId]);
+  
+    const isApprovalStageValid = React.useMemo(() => {
+      return data.scApprovalStageId !== "" && data.scApprovalStageId !== null && data.scApprovalStageId !== undefined;
+    }, [data.scApprovalStageId]);
+
+
   const postData = (event) => {
+    if (!isSubSchemeValid || !isApprovalStageValid) {
+    event.preventDefault();
+    setValidated(true);
+    return; // ⛔ STOP — API will NOT be called
+  }
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -217,8 +233,13 @@ function ScProgramApprovalMappingEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
+    // clear();
   };
+  
   const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -280,7 +301,7 @@ function ScProgramApprovalMappingEdit() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         {t("Component Type")}
@@ -351,7 +372,85 @@ function ScProgramApprovalMappingEdit() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>       
+                  </Col>        */}
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Component Type")} <span className="text-danger">*</span>
+                      </Form.Label>
+  
+                      <div className="form-control-wrap">
+                        <ReactSelect
+                          options={scSubSchemeDetailsListData?.map((list) => ({
+                            value: list.scSubSchemeDetailsId,
+                            label: list.subSchemeName,
+                          }))}
+                          placeholder={t("Select Component Type")}
+                          isSearchable
+                          menuPlacement="auto"
+                          value={scSubSchemeDetailsListData
+                            ?.map((list) => ({
+                              value: list.scSubSchemeDetailsId,
+                              label: list.subSchemeName,
+                            }))
+                            .find((opt) => opt.value === data.subSchemeId)}
+                          onChange={(selectedOption) => {
+                            setData((prev) => ({
+                              ...prev,
+                              subSchemeId: selectedOption?.value || "",
+                            }));
+                         if (validated) setValidated(false);
+                        }}
+                        className={validated && !isSubSchemeValid ? "is-invalid" : ""}
+                      />
+  
+                        {validated && !isSubSchemeValid && (
+                        <div className="invalid-feedback d-block">
+                          {t("Component Type is required")}
+                        </div>
+                      )}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Approval Stage")} <span className="text-danger">*</span>
+                      </Form.Label>
+  
+                      <div className="form-control-wrap">
+                        <ReactSelect
+                          options={approvalListData?.map((list) => ({
+                            value: list.scApprovalStageId,
+                            label: list.stageName,
+                          }))}
+                          placeholder={t("Select Approval Stage")}
+                          isSearchable
+                          menuPlacement="auto"
+                          value={approvalListData
+                            ?.map((list) => ({
+                              value: list.scApprovalStageId,
+                              label: list.stageName,
+                            }))
+                            .find((opt) => opt.value === data.scApprovalStageId)}
+                          onChange={(selectedOption) => {
+                            setData((prev) => ({
+                              ...prev,
+                              scApprovalStageId: selectedOption?.value || "",
+                             }));
+                          if (validated) setValidated(false);
+                        }}
+                        className={validated && !isApprovalStageValid ? "is-invalid" : ""}
+                      />
+
+                      {validated && !isApprovalStageValid && (
+                        <div className="invalid-feedback d-block">
+                          {t("Approval Stage Name is required")}
+                        </div>
+                      )}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">

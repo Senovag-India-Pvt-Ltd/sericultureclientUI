@@ -1,0 +1,56 @@
+.scheme-link {
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.scheme-link:hover {
+  color: #1e40af;
+}
+
+.scheme-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  transition: width 0.3s ease;
+}
+
+.scheme-link:hover::after {
+  width: 100%;
+}
+
+
+.stat-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.stat-primary {
+  background: rgba(37,99,235,0.1);
+  color: #2563eb;
+}
+
+.stat-success {
+  background: rgba(34,197,94,0.15);
+  color: #16a34a;
+}
+
+.stat-danger {
+  background: rgba(239,68,68,0.15);
+  color: #dc2626;
+}
+
+.stat-warning {
+  background: rgba(234,179,8,0.2);
+  color: #a16207;
+}
+
