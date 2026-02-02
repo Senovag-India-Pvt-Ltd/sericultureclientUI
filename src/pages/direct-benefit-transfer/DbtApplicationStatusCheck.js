@@ -1,373 +1,203 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2/src/sweetalert2.js";
-import { useNavigate } from "react-router-dom";
-import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
-import { Icon } from "../../components";
 import { useState } from "react";
-// import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import LoginLogo from "../../components/Logo/LoginLogo";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function DbtApplicationStatusCheck() {
-  // Translation
   const { t } = useTranslation();
-  const [data, setData] = useState({
-    title: "",
-    code: "",
-    nameInKannada: "",
-  });
 
   const [validated, setValidated] = useState(false);
-
-//   let name, value;
-//   const handleInputs = (e) => {
-//     name = e.target.name;
-//     value = e.target.value;
-//     setData({ ...data, [name]: value });
-//   };
+  const [applicationList, setApplicationList] = useState([]);
 
   const [searchData, setSearchData] = useState({
+    select: "fid",
     text: "",
-    select: "arn",
   });
+
   const handleSearchInputs = (e) => {
-    let { name, value } = e.target;
+    const { name, value } = e.target;
     setSearchData({ ...searchData, [name]: value });
   };
 
-  const [applicationList, setApplicationList] = useState([]);
+  const getDynamicLabel = () => {
+    if (searchData.select === "mobileNo") return "Enter Mobile Number";
+    if (searchData.select === "fid") return "Enter FRUITS ID";
+    return "Enter ARN Number";
+  };
 
   const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      const { text, select } = searchData;
-      let sendData;
-      if (select === "mobileNo") {
-        sendData = {
-          mobileNo: text,
-        };
-      }
-      if (select === "fid") {
-        sendData = {
-          fid: text,
-        };
-      }
-      if (select === "arn") {
-        sendData = {
-          arn: text,
-        };
-      }
+    event.preventDefault();
+    setValidated(true);
+    if (!searchData.text) return;
 
-      api
-        .post(baseURLDBT + `service/getApplicationStatus`,{},{params: sendData})
-        .then((response) => {
-          setApplicationList(response.data.content);
-          setValidated(false);
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
-    }
+    api
+      .post(
+        baseURLDBT + "dashboard/getApplicationStatus",
+        {},
+        { params: { [searchData.select]: searchData.text } }
+      )
+      .then((response) => {
+        setApplicationList(response.data.content || []);
+      });
   };
 
-  const clear = () => {
-    setSearchData({
-      text: "",
-      select: "arn",
-    });
-    setValidated(false);
-  };
-
-  const navigate = useNavigate();
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    });
-  };
-  const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      html: errorMessage,
-    });
-  };
   return (
-    // <Layout title="Caste">
-    <div className="p-5">
-      <Block.Head className="d-flex justify-content-center">
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2"> {t("Check Application Status")}</Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
-
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 d-flex justify-content-center">
-            <Col lg="3">
-              <Card>
-                <Card.Body>
-                  {/* <h3>Farmers Details</h3> */}
-                  <Row className="g-gs">
-                    <Col lg="6">
-                      <div className="form-control-wrap">
-                        <Form.Label htmlFor="title">
-                          {t("Search By")}
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <Form.Select
-                          name="select"
-                          value={searchData.select}
-                          onChange={handleSearchInputs}
-                        >
-                          {/* <option value="">Select</option> */}
-                          <option value="mobileNo">{t("Mobile Number")}</option>
-                          <option value="fid">{t("Fruits Id")}</option>
-                          <option value="arn">{t("ARN")}</option>
-                        </Form.Select>
-                      </div>
-                    </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          {t("Mobile Number/ ARN / FID")}
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="title"
-                            name="text"
-                            value={searchData.text}
-                            onChange={handleSearchInputs}
-                            type="text"
-                            placeholder={t("Enter Mbl No/Arn/Fid")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {t("Title Name is required.")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-
-              <div className="gap-col mt-2">
-                <ul className="d-flex align-items-center justify-content-center gap g-3">
-                  <li>
-                    <Button type="submit" variant="primary">
-                      {t("check status")}
-                    </Button>
-                  </li>
-                  <li>
-                    <Button type="button" variant="secondary" onClick={clear}>
-                      {t("cancel")}
-                    </Button>
-                  </li>
-                </ul>
-              </div>
-            </Col>
-          </Row>
-        </Form>
-
-        <Row className="g-gs">
-          {applicationList && applicationList.length ? (
-            <div
-            //  className={isActive ? "" : "d-none"}
+    <div className="p-4">
+      {/* ================= ULTRA COMPACT BLUE HEADER ================= */}
+      <Row className="justify-content-center mb-2">
+        <Col lg={6} md={8}>
+          <Card
+            className="border-0 shadow-sm"
+            style={{ backgroundColor: "#0f6cbe" }}
+          >
+            <Card.Body
+              className="py-0 text-center"
+              style={{ minHeight: "63px" }}   // 👈 15% smaller
             >
-              <Row className="d-flex justify-content-end mt-2">
-                <Col sm={2}>
-                  {/* <Button
-                      type="submit"
-                      variant="primary"
-                      size="sm"
-                      onClick={generateDtrReport}
-                    >
-                      Print
-                    </Button> */}
-                </Col>
-              </Row>
+              <div style={{ marginTop: "3px" }}>
+                <LoginLogo style={{ height: "13px" }} /> {/* 👈 smaller logo */}
+              </div>
 
-              <Row className="g-gs pt-2 d-flex justify-content-center">
-                <Col lg="8">
-                  <Card>
-                    {/* <Card.Header className="d-flex flex-column justify-content-center align-items-center">
-                      <div style={{fontSize:"150%",fontWeight:"bold"}}>{t("Government Cocoon Market")}:<span style={{color:"#a1ffe5"}}> {marketData.marketMasterName} </span> </div>
-                    </Card.Header> */}
-                    <Card.Body className="overflow-auto">
-                      <table
-                        className="table table-striped table-bordered"
-                        style={{ backgroundColor: "white", borderRadius: "10px" }}
-                      >
-                        <thead>
-                          <tr>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಕ್ರಮ ಸಂಖ್ಯೆ */}
-                              {t("SL No")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಲಾಟ್ ಸಂಖ್ಯೆ */}
-                              {t("ARN No.")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ರೈತರ ವಿವರಗಳು */}
-                              {t("Status")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ತೂಕ */}
-                              {t("Scheme Amount")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಗೂಡಿನ  ವಯಸ್ಸು  */}
-                              {t("Component Type")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              {t("Scheme Name")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              {t("Sub Scheme Name")}
-                            </th>
-                            <th
-                              style={{
-                                backgroundColor: "#0f6cbe",
-                                color: "#fff",
-                              }}
-                              // colSpan="2"
-                            >
-                              {/* ಬಿಡ್ ಮೊತ್ತ */}
-                              {t("Component Name")}
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {applicationList.map((list, i) => (
-                            <tr key={i}>
-                              <td>{i+1}</td>
-                              <td>{list.arn}</td>
-                              <td className="green-font">{list.applicationStatus}</td>
-                              <td>{list.schemeAmount}</td>
-                              <td>{list.componentType}</td>
-                              <td>{list.schemeName}</td>
-                              <td>{list.subSchemeName}</td>
-                              <td>{list.componentName}</td>
-                              {/* <td>{parseFloat(list.farmerAmount.toFixed(2))}</td>
-                            <td>
-                              {parseFloat(
-                                (
-                                  list.farmerMarketFee + list.reelerMarketFee
-                                ).toFixed(2)
-                              )}
-                            </td>
-                            <td>{parseFloat(list.reelerAmount.toFixed(2))}</td> */}
-                              {/* <td>{list.reelerName}</td>
-                            <td>{list.bankName}</td>
-                            <td>{list.ifscCode}</td> */}
-                              {/* <td>{list.accountNumber}</td>
-                            <td>{list.auctionDate}</td>
-                            <td>{list.raceName}</td>
-                            <td>{list.raceName}</td>
-                            <td>{list.raceName}</td> */}
-                            </tr>
-                          ))}
-                          <tr>
-                          {/* <td></td>
-                          <td></td>
-                          <td></td>
-                          <td style={{fontWeight:"bold"}}>{t("Total")}:</td>
-                          <td>{total?total:0}</td>
-                          <td></td>
-                          <td></td> */}
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-          ) : (
-            ""
-          )}
+              <div
+                className="fw-bold"
+                style={{ color: "#ffffff", fontSize: "17px", lineHeight: "1.1" }}
+              >
+                Department of Sericulture
+              </div>
+
+              <div
+                className="fw-bold"
+                style={{ color: "#ffffff", fontSize: "15px", lineHeight: "1.1" }}
+              >
+                Government of Karnataka
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* ================= SEARCH CARD ================= */}
+      <Row className="justify-content-center">
+        <Col lg={6} md={8}>
+          <Card className="shadow border-0">
+            <Card.Header
+              className="text-center fw-bold"
+              style={{
+                backgroundColor: "#0f6cbe",
+                color: "#ffffff",
+                fontSize: "16px",
+              }}
+            >
+              View Application Status
+            </Card.Header>
+
+            <Card.Body>
+              <Form noValidate validated={validated} onSubmit={postData}>
+                <Row className="g-3">
+                  <Col md={5}>
+                    <Form.Label>
+                      Search By <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="select"
+                      value={searchData.select}
+                      onChange={handleSearchInputs}
+                    >
+                      <option value="mobileNo">Mobile Number</option>
+                      <option value="fid">FRUITS ID</option>
+                      <option value="arn">ARN</option>
+                    </Form.Select>
+                  </Col>
+
+                  <Col md={7}>
+                    <Form.Label>
+                      {getDynamicLabel()}{" "}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="text"
+                      value={searchData.text}
+                      onChange={handleSearchInputs}
+                      placeholder={getDynamicLabel()}
+                      required
+                    />
+                  </Col>
+                </Row>
+
+                <Row className="mt-4">
+                  <Col className="d-flex justify-content-center gap-3">
+                    <Button type="submit" variant="primary">
+                      Check Status
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => {
+                        setSearchData({ select: "fid", text: "" });
+                        setApplicationList([]);
+                        setValidated(false);
+                      }}
+                    >
+                      Clear
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* ================= RESULT TABLE ================= */}
+      {applicationList.length > 0 && (
+        <Row className="justify-content-center mt-5">
+          <Col lg={11}>
+            <Card className="shadow border-0">
+              <Card.Body className="table-responsive">
+                <table className="table table-bordered table-striped text-center align-middle">
+                  <thead>
+                    <tr style={{ backgroundColor: "#0f6cbe", color: "#fff" }}>
+                      <th>SL No</th>
+                      <th>Beneficiary Name</th>
+                      <th>FRUITS ID</th>
+                      <th>ARN No</th>
+                      <th>Scheme Name</th>
+                      <th>Component Name</th>
+                      <th>Stage</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Currently With</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {applicationList.map((item, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item.farmerName}</td>
+                        <td>{item.fruitsId}</td>
+                        <td>{item.arn}</td>
+                        <td>{item.schemeName}</td>
+                        <td>{item.componentName}</td>
+                        <td>{item.stageName}</td>
+                        <td>{item.schemeAmount}</td>
+                        <td className="fw-bold text-success">
+                          {item.applicationStatus}
+                        </td>
+                        <td>{item.userName}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
-      </Block>
+      )}
     </div>
-    // </Layout>
   );
 }
 

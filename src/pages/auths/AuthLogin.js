@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
@@ -6,586 +6,431 @@ import Swal from "sweetalert2";
 
 import Layout from "../../layout/fullpage";
 import { login } from "../../services/authService";
-
-// import {Media, MediaGroup, Image, OverlineTitle, Logo} from '../../components';
 import LoginLogo from "../../components/Logo/LoginLogo";
 import axios from "axios";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const AuthLoginPage = () => {
-  const inputRef1 = useRef(null);
-  const inputRef2 = useRef(null);
-
   const navigate = useNavigate();
-  const [toggle, setToggle] = useState(false);
 
-  const [otp, setOtp] = useState("");
-  const [data, setData] = useState({
-    username: "",
-    password: "",
-  });
+  /* ========= UI STATES ========= */
+  const [showLoginForm, setShowLoginForm] = useState(false); // step 1 → step 2
+  const [toggle, setToggle] = useState(false); // step 2 → step 3
 
-  const [mobileNumber, setMobileNumber] = useState("");
-
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
+  /* ========= FORM ========= */
+  const [data, setData] = useState({ username: "", password: "" });
   const [validated, setValidated] = useState(false);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-
-  // const handleOtp = (e) =>{
-  //   setOtp(e.target.value);
-  // }
-
+  /* ========= OTP ========= */
+  const [otp, setOtp] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [display, setDisplay] = useState(false);
-  const [checked, setChecked] = useState(false);
 
-  const handleCheckBox = (e) => {
-    setChecked(e.target.checked);
-  };
-
-  const clickSubmit = async (ev) => {
-    setToggle((prev) => !prev);
-    ev.preventDefault();
-    const input = inputRef1.current.value.toLowerCase();
-    const pass = inputRef2.current.value;
-    // console.log(inputRef1.current.value);
-
-    // Test JWT code goes here...
-    try {
-      // debugger
-      const isLoginSuccess = await login(input, pass);
-      // Store the token in local storage or a secure storage mechanism
-      if (isLoginSuccess) {
-        navigate("/seriui/homepage");
-      } else {
-        // alert("Login Failed");
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: "Please Check Again!",
-        });
-      }
-    } catch (error) {
-      console.error("Login failed:", error.message);
-    }
-
-    // if (
-    //   (input === "ro" && pass === "*India*12") ||
-    //   (input === "seo" && pass === "*India*12") ||
-    //   (input === "admin" && pass === "*India*12")
-    // ) {
-    //   localStorage.setItem("role", input);
-    //   localStorage.setItem("sidemenu", "my-dashboard");
-    //   navigate("/seriui/stake-holder-registration");
-    // } else if (input === "ads" && pass === "*India*12") {
-    //   localStorage.setItem("role", input);
-    //   localStorage.setItem("sidemenu", "my-dashboard");
-    //   navigate("/seriui/my-dashboard");
-    // } else if (input === "crm") {
-    //   localStorage.setItem("role", input);
-    //   navigate("/seriui/home");
-    // } else if (input === "account") {
-    //   localStorage.setItem("role", input);
-    //   navigate("/seriui/home");
-    // } else if (input === "customer") {
-    //   navigate("/seriui/add-request");
-    // } else if (input === "technician") {
-    //   navigate("/seriui/technician-dashboard");
-    // } else if (!pass) {
-    //   alert("Please enter your Password");
-    // } else {
-    //   alert("Invalid username and Password");
-    // }
-  };
-
+  /* ========= TIMER ========= */
   const [timer, setTimer] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  const startTimer = () => {
-    setIsTimerRunning(true);
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  /* ========= HANDLERS ========= */
+
+  const handleInputs = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleResendOTP = () => {
-    setTimer(60);
-    startTimer();
-    resendOTP();
-  };
+  const startTimer = () => setIsTimerRunning(true);
 
-  const resendOTP = () => {
-    axios
-      .post(
-        baseURL + `userMaster/generate-otp-by-user-name-and-password`,
-        data,
-        {
-          headers: _header,
-        }
-      )
-      .then((response) => {
-        // debugger;
-        const temp = response.data.content;
-        // console.log(response);
-        if (!temp.error) {
-          setToggle(true);
-          startTimer();
-          if (temp.phoneNumber) {
-            // const visibleNumber = temp.phoneNumber.slice(0, 6);
-            const star = "*".repeat(6);
-            const maskedNumber = star + temp.phoneNumber.slice(6);
-            setMobileNumber(maskedNumber);
-          }
-        } else {
-          // alert("Username is invalid");
-          // setToggle(false);
-          Swal.fire({
-            icon: "error",
-            title: "Invalid Username",
-            text: "Please enter a valid username",
-          });
-        }
-      })
-      .catch((err) => {
-        // debugger;
-        // saveError();
-      });
-  };
+  /* ========= GENERATE OTP ========= */
 
   const generateOTP = (event) => {
     const form = event.currentTarget;
+    event.preventDefault();
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
       setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      axios
-        .post(
-          baseURL + `userMaster/generate-otp-by-user-name-and-password`,
-          data,
-          {
-            headers: _header,
-          }
-        )
-        .then((response) => {
-          // debugger;
-          const temp = response.data.content;
-          // console.log(response);
-          if (!temp.error) {
-            setToggle(true);
-            startTimer();
-            if (temp.phoneNumber) {
-              // const visibleNumber = temp.phoneNumber.slice(0, 6);
-              const star = "*".repeat(6);
-              const maskedNumber = star + temp.phoneNumber.slice(6);
-              setMobileNumber(maskedNumber);
-            }
-          } else {
-            // alert("Username is invalid");
-            // setToggle(false);
-            Swal.fire({
-              icon: "error",
-              title: "Invalid Username or Password",
-              text: "Please enter a valid Username and Password",
-            });
-          }
-        })
-        .catch((err) => {
-          // debugger;
-          // saveError();
-        });
-      setValidated(true);
+      return;
     }
-  };
 
-  const verifyotp = async (e) => {
     axios
       .post(
-        baseURL + `userMaster/verify-otp-by-user-name`,
-        { username: data.username, enteredOtpByUser: otp },
-        {
-          headers: _header,
-        }
+        baseURL + "userMaster/generate-otp-by-user-name-and-password",
+        data,
+        { headers: _header }
       )
-      .then((response) => {
-        const temp = response.data.content;
-        // console.log(response);
-        if (temp.otpVerified) {
-          //  Call login on successfull otp verification
-          postData();
+      .then((res) => {
+        const temp = res.data.content;
+        if (!temp?.error) {
+          setToggle(true);
+          startTimer();
+          setMobileNumber("*".repeat(6) + temp.phoneNumber?.slice(6));
+        } else {
+          Swal.fire(
+            "Invalid Username or Password",
+            "Please enter valid credentials",
+            "error"
+          );
+        }
+      });
+
+    setValidated(true);
+  };
+
+  /* ========= VERIFY OTP ========= */
+
+  const verifyotp = () => {
+    axios
+      .post(
+        baseURL + "userMaster/verify-otp-by-user-name",
+        { username: data.username, enteredOtpByUser: otp },
+        { headers: _header }
+      )
+      .then((res) => {
+        if (res.data.content?.otpVerified) {
+          postLogin();
         } else {
           setOtp("");
           setDisplay(true);
         }
-      })
-      .catch((err) => {
-        // saveError();
       });
   };
 
-  const loginCall = async (e) => {};
+  /* ========= FINAL LOGIN ========= */
 
-  const postData = async (e) => {
+  const postLogin = async () => {
     try {
-      // debugger
-      const isLoginSuccess = await login(data.username, data.password);
-      // Store the token in local storage or a secure storage mechanism
-      if (isLoginSuccess) {
+      const success = await login(data.username, data.password);
+      if (success) {
         navigate("/seriui/homepage");
       } else {
-        Swal.fire({
-          icon: "warning",
-          title: "Login failed!!!",
-          // text: "You clicked the button!",
-        });
+        Swal.fire("Login failed", "Invalid credentials", "error");
       }
-    } catch (error) {
-      console.error("Login failed:", error.message);
+    } catch {
+      Swal.fire("Error", "Login failed", "error");
     }
-
-    //   axios
-    //     .post(baseURL + `userMaster/generate-otp-by-user-name`, data, {
-    //       headers: _header,
-    //     })
-    //     .then((response) => {
-    //       const temp = response.data.content;
-    //       // console.log(response);
-    //       if (!temp.error) {
-    //         setToggle(true);
-    //         startTimer();
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       // saveError();
-    //     });
-    // };
-
-    // const back = () => {
-    //   setToggle(false);
-    //   setOtp("");
   };
 
-  // console.log(otp);
+  /* ========= RESEND OTP ========= */
+
+  const handleResendOTP = () => {
+    setTimer(60);
+    startTimer();
+    generateOTP({
+      preventDefault: () => {},
+      currentTarget: { checkValidity: () => true },
+    });
+  };
+
+  /* ========= TIMER ========= */
 
   useEffect(() => {
     let interval;
     if (isTimerRunning) {
       interval = setInterval(() => {
-        setTimer((prevTimer) => {
-          if (prevTimer > 0) {
-            return prevTimer - 1;
-          } else {
-            setIsTimerRunning(false);
-            clearInterval(interval);
-            return 0;
-          }
+        setTimer((t) => {
+          if (t > 0) return t - 1;
+          setIsTimerRunning(false);
+          clearInterval(interval);
+          return 0;
         });
       }, 1000);
     }
-
     return () => clearInterval(interval);
   }, [isTimerRunning]);
 
-  const minutes = Math.floor(timer / 60);
-  const seconds = timer % 60;
-  const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
-    .toString()
-    .padStart(2, "0")}`;
+  const formattedTime = `${String(Math.floor(timer / 60)).padStart(
+    2,
+    "0"
+  )}:${String(timer % 60).padStart(2, "0")}`;
 
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/roles-list"));
-  };
+  /* ========= UI ========= */
 
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
+return (
+    <Layout title="Login" centered>
+      <style>{`
 
-  return (
-    <>
-      <Layout title="Login" centered>
-        <div className="container p-2 p-sm-4">
-          <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh">
+.service-tile {
+  display: flex;
+  align-items: center;
+  padding: 24px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: 180px;
+
+  background: #ffffff;              /* WHITE CARD */
+  border-top: 6px solid transparent;/* TOP BORDER ONLY */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+.tile-blue {
+  border-top-color: #1976d2; /* BLUE BORDER */
+  color: #1f2933;
+}
+
+.tile-blue .tile-icon {
+  background: #1976d2;       /* BLUE ICON */
+  color: #ffffff;
+}
+
+
+.tile-yellow {
+  border-top-color: #f9a825; /* YELLOW BORDER */
+  color: #1f2933;
+}
+
+.tile-yellow .tile-icon {
+  background: #f9a825;       /* YELLOW ICON */
+  color: #ffffff;
+}
+
+
+.tile-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;        /* ROUND ICON */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.tile-text {
+  flex-grow: 1;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tile-arrow {
+  font-size: 20px;
+}
+
+.tile-spacing {
+  margin-bottom: 40px;
+}
+`}</style>
+
+      {/* <div className="container-fluid p-2 p-sm-4">
+        <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh">
+          <Row className="g-0 flex-column-reverse flex-lg-row-reverse"> */}
+
+           <div className="container-lg p-2 p-sm-4">
+          {/* <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh"> */}
+<Card
+  className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh"
+  style={{ transform: "scale(1.13)" }}
+>
+
             <Row className="g-0 flex-column-reverse flex-lg-row-reverse">
-              {!toggle ? (
-                <Col lg="5">
-                  <Card.Body className="h-100 d-flex flex-column justify-content-center">
-                    <div className="nk-block-head text-center">
-                      <div className="nk-block-head-content">
-                        <h3 className="nk-block-title mb-1" style={{color:"#000"}}>Login</h3>
-                        <p className="small">Please sign-in to your account.</p>
-                      </div>
-                    </div>
-                    <Form
-                      noValidate
-                      validated={validated}
-                      onSubmit={generateOTP}
-                    >
-                      <Row className="gy-3">
-                        <Col className="col-12">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="email">User Name</Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                type="text"
-                                id="email"
-                                name="username"
-                                value={data.username}
-                                onChange={handleInputs}
-                                placeholder="Enter username"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Username is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col className="col-12">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="password">Password</Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                type="password"
-                                id="password"
-                                placeholder="Enter password"
-                                name="password"
-                                value={data.password}
-                                onChange={handleInputs}
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Password is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col className="col-12">
-                          <div className="d-flex flex-wrap justify-content-between">
-                            {/* <Form.Check
-                                className="form-check-sm"
-                                type="checkbox"
-                                id="rememberMe"
-                                label="Remember Me"
-                              /> */}
-                            {/* <Form.Check
-                              type="checkbox"
-                              className="form-check-sm"
-                              id="defaultAddress"
-                              label="Remember Me"
-                              checked={checked}
-                              onChange={handleCheckBox}
-                              Optional: disable the checkbox in view mode
-                              defaultChecked
-                            />
-                            <Link
-                              to="/seriui/auths/auth-reset"
-                              className="small"
-                            >
-                              Forgot Password?
-                            </Link> */}
-                          </div>
-                        </Col>
-                        <Col className="col-12">
-                          <div className="d-grid">
-                            <Button type="submit" variant="primary">
-                              Login to account
-                            </Button>
-                          </div>
-                        </Col>
-                        {/* <Col className="col-12">
-                              <div className="d-grid">
-                                <Button type="button" onClick={generateOTP}>
-                                  GENERATE OTP
-                                </Button>
-                              </div>
-                            </Col> */}
-                        {/* {toggle ? (
-                          <Col className="col-12">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="otp">OTP</Form.Label>
-                              <div className="form-control-wrap">
-                                <OtpInput
-                                  value={otp}
-                                  onChange={setOtp}
-                                  numInputs={6}
-                                  renderSeparator={<span> </span>}
-                                  renderInput={(props) => <input {...props} />}
-                                  inputType="password"
-                                  inputStyle={{
-                                    width: "2rem",
-                                    height: "2rem",
-                                    fontSize: "1.5rem",
-                                    margin: "0 0.5rem",
-                                    padding: "0.5rem",
-                                    borderRadius: "5px",
-                                    border: "1px solid #ccc",
-                                  }}
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                        ) : (
-                          ""
-                        )} */}
-                      </Row>
-                    </Form>
-                  </Card.Body>
-                </Col>
-              ) : (
-                <Col lg="5">
-                  <Card.Body className="h-100 d-flex flex-column justify-content-center">
-                    <div className="nk-block-head text-center">
-                      <div className="nk-block-head-content">
-                        <h3 className="nk-block-title mb-1">Verification</h3>
-                        <p className="small">
-                          Enter the one time password received to:{" "}
-                          {`+91 ${mobileNumber}`}
-                        </p>
-                      </div>
-                    </div>
-                    <Form action="#">
-                      <Row className="gy-3">
-                        <Col className="col-12">
-                          <Form.Group className="form-group">
-                            <div className="d-flex justify-content-center">
-                              {/* <Form.Label htmlFor="otp">OTP</Form.Label> */}
-                              <div className="form-control-wrap">
-                                <OtpInput
-                                  value={otp}
-                                  onChange={setOtp}
-                                  numInputs={6}
-                                  renderSeparator={<span> </span>}
-                                  autoFocus
-                                  renderInput={(props, i) => (
-                                    <input {...props} autoFocus={i === 0} />
-                                  )}
-                                  inputType="password"
-                                  // isInputNum={true}
-                                  inputStyle={{
-                                    width: "2rem",
-                                    height: "2rem",
-                                    fontSize: "1.5rem",
-                                    margin: "0 0.5rem",
-                                    padding: "0.5rem",
-                                    borderRadius: "5px",
-                                    border: "1px solid #ccc",
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col className="col-12">
-                          <p
-                            className={`small d-flex justify-content-center ${
-                              display ? "" : "d-none"
-                            }`}
-                            style={{ color: "red", fontWeight: "bold" }}
-                          >
-                            Either OTP is not Valid or has Expired
-                          </p>
-                          <div className="d-flex flex-wrap justify-content-between">
-                            {/* <Form.Check
-                              className="form-check-sm"
-                              type="checkbox"
-                              id="rememberMe"
-                              label="Remember Me"
-                            /> */}
-                            <p className="small">
-                              Wait for {formattedTime} mins
-                            </p>
-                            <Link
-                              onClick={handleResendOTP}
-                              className={`small ${
-                                isTimerRunning ? "disabled-link" : ""
-                              }`}
-                              disabled={isTimerRunning}
-                              style={{
-                                pointerEvents: isTimerRunning ? "none" : "auto",
-                                color: isTimerRunning ? "gray" : "blue",
-                              }}
-                            >
-                              Resend OTP
-                            </Link>
-                          </div>
-                        </Col>
-                        <Col className="col-12">
-                          <div className="d-grid">
-                            <Button type="button" onClick={verifyotp}>
-                              Verify OTP
-                            </Button>
-                          </div>
-                        </Col>
-                        <Col className="col-12">
-                          <div className="d-grid">
-                            {/* <Link onClick={back} className="small">
-                                  Back
-                                </Link> */}
-                          </div>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </Card.Body>
-                </Col>
-              )}
 
-              <Col lg="7">
-                <Card.Body className="bg-primary bg-darker1 is-theme has-mask has-mask-1 h-100 d-flex align-items-start justify-content-center">
-                  <div className="mask mask-1"></div>
-                  <div className="d-flex flex-column justify-content-center align-items-center mt-n5">
-                    <div className="brand-logo">
-                      <LoginLogo />
+            {/* ===== LEFT PANEL ===== */}
+            <Col lg="5">
+                  <Card.Body className="h-100 d-flex flex-column justify-content-center">
+
+                {/* STEP 1: TWO BUTTONS */}
+                {/* {!showLoginForm ? (
+                  <div className="d-grid gap-3">
+                    <Button size="lg" onClick={() => setShowLoginForm(true)}>
+                      Department Login
+                    </Button>
+
+                    <Button
+                      size="lg"
+                      onClick={() =>
+                        (window.location.href =
+                          window.location.hostname === "localhost"
+                            ? "http://localhost:3000/seriui/application-status"
+                            : "https://e-reshme.karnataka.gov.in/seriui/application-status")
+                      }
+                    >
+                      View Application Status
+                    </Button>
+                  </div>
+)  */}
+{!showLoginForm ? (
+  <Row className="g-5">
+    {/* 🔶 Department Login – ORANGE TOP BORDER */}
+<Col sm={14} className="tile-spacing">
+  <div
+    className="service-tile tile-blue"
+    onClick={() => setShowLoginForm(true)}
+  >
+    {/* ICON IN FRONT */}
+    <div className="tile-icon">🏛️</div>
+
+    {/* TEXT */}
+    <div className="tile-text">
+      Government User
+    </div>
+
+    {/* ARROW */}
+    <div className="tile-arrow">➜</div>
+  </div>
+</Col>
+
+
+{/* ================= Citizen Access – YELLOW TILE ================= */}
+<Col sm={14}>
+  <div
+    className="service-tile tile-yellow"
+    onClick={() =>
+      (window.location.href =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000/seriui/application-status"
+          : "https://e-reshme.karnataka.gov.in/seriui/application-status")
+    }
+  >
+    {/* ICON IN FRONT */}
+    <div className="tile-icon">👤</div>
+
+    {/* TEXT */}
+    <div className="tile-text">
+      Citizen Access
+    </div>
+
+    {/* ARROW */}
+    <div className="tile-arrow">➜</div>
+  </div>
+</Col>
+  </Row>
+) 
+
+: !toggle ? (
+                  /* STEP 2: LOGIN FORM */
+                  <>
+                    <div className="nk-block-head text-center">
+                      <h3 style={{ color: "#000" }}>Login</h3>
+                      <p className="small">Please sign-in to your account.</p>
                     </div>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div className="mt-2 ms-3 d-flex flex-column align-items-center justify-content-center">
-                          <h2>Department of Sericulture</h2>
-                          <h2>Government of Karnataka</h2>
-                          {/* <div className="h1 title mb-3">
-                             Department of Sericulture
-                          </div> */}
-                        </div>
+
+                    <Form noValidate validated={validated} onSubmit={generateOTP}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>User Name</Form.Label>
+                        <Form.Control
+                          name="username"
+                          value={data.username}
+                          onChange={handleInputs}
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          name="password"
+                          value={data.password}
+                          onChange={handleInputs}
+                          required
+                        />
+                      </Form.Group>
+
+                      <div className="d-grid gap-2">
+                        <Button type="submit">Login to account</Button>
+                        <Button
+  variant="outline-primary"
+  onClick={() => setShowLoginForm(false)}
+>
+  Back
+</Button>
+
                       </div>
+                    </Form>
+                  </>
+
+                ) : (
+                  /* STEP 3: OTP SCREEN */
+                  <>
+                    <div className="nk-block-head text-center">
+                      {/* <h3>Verification</h3> */}
+                      <p className="small">
+                        Enter the one time password received to: +91 {mobileNumber}
+                      </p>
                     </div>
-                  </div>
-                  <div className="mt-5">
-                    {/* <MediaGroup className="media-group-overlap">
-                                        <Media size="sm" shape="circle" border className="border-white">
-                                            <Image src="/images/avatar/a.jpg" alt="" />
-                                        </Media>
-                                        <Media size="sm" shape="circle" border className="border-white">
-                                            <Image src="/images/avatar/b.jpg" alt="" />
-                                        </Media>
-                                        <Media size="sm" shape="circle" border className="border-white">
-                                            <Image src="/images/avatar/c.jpg" alt="" />
-                                        </Media>
-                                        <Media size="sm" shape="circle" border className="border-white">
-                                            <Image src="/images/avatar/d.jpg" alt="" />
-                                        </Media>
-                                    </MediaGroup> */}
-                    {/* <p className="small mt-2">More than 2k people joined us, it's your turn</p> */}
-                  </div>
-                </Card.Body>
-              </Col>
-            </Row>
-          </Card>
+
+                    <div className="d-flex justify-content-center mt-2">
+                      <OtpInput
+                        value={otp}
+                        onChange={setOtp}
+                        numInputs={6}
+                        renderSeparator={<span> </span>}
+                        inputType="password"
+                        renderInput={(props, i) => (
+                          <input {...props} autoFocus={i === 0} />
+                        )}
+                        inputStyle={{
+                          width: "2rem",
+                          height: "2rem",
+                          fontSize: "1.5rem",
+                          margin: "0 0.5rem",
+                          padding: "0.5rem",
+                          borderRadius: "5px",
+                          border: "1px solid #ccc",
+                        }}
+                      />
+                    </div>
+
+                    <p
+                      className={`small text-center mt-2 ${
+                        display ? "" : "d-none"
+                      }`}
+                      style={{ color: "red", fontWeight: "bold" }}
+                    >
+                      Either OTP is not Valid or has Expired
+                    </p>
+
+                    <div className="d-flex justify-content-between mt-2">
+                      <p className="small">Wait for {formattedTime} mins</p>
+                      <Link
+                        onClick={handleResendOTP}
+                        style={{
+                          pointerEvents: isTimerRunning ? "none" : "auto",
+                          color: isTimerRunning ? "gray" : "blue",
+                        }}
+                      >
+                        Resend OTP
+                      </Link>
+                    </div>
+
+                    <div className="d-grid mt-3">
+                      <Button onClick={verifyotp}>Verify OTP</Button>
+                    </div>
+                  </>
+                )}
+              </Card.Body>
+            </Col>
+
+            {/* ===== RIGHT PANEL ===== */}
+           {/* ===== RIGHT PANEL ===== */}
+<Col lg="7">
+  <Card.Body className="bg-primary bg-darker1 is-theme has-mask has-mask-1 h-100 d-flex align-items-start justify-content-center">
+    <div className="mask mask-1"></div>
+
+    {/* 🔹 SAME WRAPPER AS OLD CODE */}
+    <div className="d-flex flex-column justify-content-center align-items-center mt-n5">
+      <div className="brand-logo">
+        <LoginLogo />
+      </div>
+
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="mt-2 ms-3 d-flex flex-column align-items-center justify-content-center">
+            <h2 style={{ color: "#fff" }}>Department of Sericulture</h2>
+            <h2 style={{ color: "#fff" }}>Government of Karnataka</h2>
+          </div>
         </div>
-      </Layout>
-    </>
+      </div>
+    </div>
+  </Card.Body>
+</Col>
+
+          </Row>
+        </Card>
+      </div>
+    </Layout>
   );
 };
 
