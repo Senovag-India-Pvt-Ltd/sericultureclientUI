@@ -4062,6 +4062,73 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+
+  const generateAcknowledgmentSilkIncentive = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getSilkIncentive`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentTransportation = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getTransportationAck`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentBivoltineChawkiIncentive30 = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIncentive30Ack`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
@@ -4394,29 +4461,84 @@ const isUserValid = React.useMemo(() => {
 //   }
 // };
 
-const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId,subSchemeId) => {
+// const callAcknowledgmentFunction = (acknowledgementForScheme, applicationFormId, schemeId,subSchemeId) => {
+//   if (
+//     acknowledgementForScheme === "Silk Samagra State" || 
+//     acknowledgementForScheme === "Silk Samagra Central"
+//   ) {
+//     generateAcknowledgmentRH(applicationFormId, schemeId,subSchemeId);
+
+//   } else if (
+//     acknowledgementForScheme === "PDMC" || 
+//     acknowledgementForScheme === "PMKSY"
+//   ) {
+//     generateAcknowledgment(applicationFormId, schemeId);
+
+//   } else if (
+//     acknowledgementForScheme === "Reeling Shed-PSF" ||
+//     acknowledgementForScheme === "Silk Incentive-PSF"
+//   ) {
+//     generateAcknowledgmentReelingShed(applicationFormId, schemeId,subSchemeId);
+
+//   } else if (acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF") {
+//     generateAcknowledgmentHRU(applicationFormId, schemeId,subSchemeId);
+//   }
+// };
+
+const callAcknowledgmentFunction = (
+  acknowledgementForScheme,
+  applicationFormId,
+  schemeId,
+  subSchemeId
+) => {
   if (
-    acknowledgementForScheme === "Silk Samagra State" || 
+    acknowledgementForScheme === "Silk Samagra State" ||
     acknowledgementForScheme === "Silk Samagra Central"
   ) {
-    generateAcknowledgmentRH(applicationFormId, schemeId,subSchemeId);
+    generateAcknowledgmentRH(applicationFormId, schemeId, subSchemeId);
 
   } else if (
-    acknowledgementForScheme === "PDMC" || 
+    acknowledgementForScheme === "PDMC" ||
     acknowledgementForScheme === "PMKSY"
   ) {
     generateAcknowledgment(applicationFormId, schemeId);
 
   } else if (
-    acknowledgementForScheme === "Reeling Shed-PSF" ||
+    acknowledgementForScheme === "Reeling Shed-PSF"
+  ) {
+    generateAcknowledgmentReelingShed(applicationFormId, schemeId, subSchemeId);
+
+  } else if (
+    acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  ) {
+    generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
+
+  } else if (
+    acknowledgementForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+  ) {
+    generateAcknowledgmentTransportation(applicationFormId, schemeId, subSchemeId);
+
+  } else if (
+    acknowledgementForScheme === "Incentive For Bivoltine Cocoons-30/kg-PSF"
+  ) {
+    generateAcknowledgmentBivoltineChawkiIncentive30(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  } else if (
     acknowledgementForScheme === "Silk Incentive-PSF"
   ) {
-    generateAcknowledgmentReelingShed(applicationFormId, schemeId,subSchemeId);
-
-  } else if (acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateAcknowledgmentHRU(applicationFormId, schemeId,subSchemeId);
+    generateAcknowledgmentSilkIncentive(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
   }
 };
+
+
 
   
 
