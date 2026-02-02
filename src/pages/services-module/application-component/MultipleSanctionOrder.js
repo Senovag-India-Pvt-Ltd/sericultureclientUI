@@ -1686,13 +1686,13 @@ const saveRejectSuccess = (message) => {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Bidding Slip Lot No",
-      selector: (row) => row.biddingSlipLotNo,
-      cell: (row) => <span>{row.biddingSlipLotNo}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Bidding Slip Lot No",
+    //   selector: (row) => row.biddingSlipLotNo,
+    //   cell: (row) => <span>{row.biddingSlipLotNo}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Mobile Number",
       selector: (row) => row.mobileNumber,
