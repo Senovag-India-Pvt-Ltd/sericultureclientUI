@@ -1429,9 +1429,9 @@ function ReelerLicenceEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="reelingUnitBoundary"
-                            name="reelingUnitBoundary"
-                            value={data.reelingUnitBoundary}
+                            id="numberOfBasins"
+                            name="numberOfBasins"
+                            value={data.numberOfBasins}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Number of Basins/Charaka"
