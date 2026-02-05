@@ -421,6 +421,13 @@ const handleDateChange = (date, type) => {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "User Type",
+      selector: (row) => row.userType,
+      cell: (row) => <span>{row.userType}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -622,7 +629,8 @@ const handleDateChange = (date, type) => {
                         >
                           <option value="0">{t("Select User Type")}</option>
                           <option value="farmer">farmer</option>
-                          <option value="farm">farm</option>    
+                          <option value="farm">farm</option>  
+                          <option value="crc">Crc</option>      
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
                         {t("Scheme Quota Type is required")}

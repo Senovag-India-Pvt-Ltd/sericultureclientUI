@@ -623,23 +623,38 @@ const handleAttachFileUpload = async (hdTicketId) => {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="trDuration">
-                        {t("Users Affected")}
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="hdUsersAffected"
-                          name="hdUsersAffected"
-                          value={data.hdUsersAffected}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Users Affected")}
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
+
+                 <Col lg="4">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="hdUsersAffected">
+      {t("Number Of Users Affected   (Numeric  Only)")}
+    </Form.Label>
+
+    <div className="form-control-wrap">
+      <Form.Control
+        id="hdUsersAffected"
+        name="hdUsersAffected"
+        value={data.hdUsersAffected}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (/^\d*$/.test(value)) {
+            handleInputs(e);
+          }
+        }}
+        type="text"
+        placeholder={t("Enter Number Of Users Affected")}
+      />
+
+      {/* Smaller helper text (non-italic) */}
+      <small
+        className="text-secondary d-block mt-1"
+        style={{ fontSize: "11px", letterSpacing: "0.3px" }}
+      >
+        {t("")}
+      </small>
+    </div>
+  </Form.Group>
+</Col>
 
                   <Col lg="4">
                     <Form.Group as={Row} className="form-group mt-2">
@@ -718,14 +733,37 @@ const handleAttachFileUpload = async (hdTicketId) => {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="12">
+                  {/* <Col lg="12">
                     <Form.Group className="form-group mt-n1">
                       <Card.Header>{t("Query Details")} </Card.Header>
                       <div className="form-control-wrap">
                         <div ref={quillRef} />
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
+
+                  <Col lg="12">
+  <Form.Group className="form-group mt-n1">
+
+    <Form.Label
+      className="fw-bold text-dark mb-2 text-center w-100"
+      style={{ fontSize: "22px" }}   
+    >
+      {t(
+        "Please  include  your  Name and Mobile Number in the Query details  for  any  clarification  regarding   the   raised   Query."
+      )}
+    </Form.Label>
+
+    <Card.Header className="mt-2">
+      {t("Query Details")}
+    </Card.Header>
+
+    <div className="form-control-wrap">
+      <div ref={quillRef} />
+    </div>
+  </Form.Group>
+</Col>
+
 
                   {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">

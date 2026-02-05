@@ -42,7 +42,7 @@ function ScSubSchemeDetails() {
     schemeCircularDate: "",
     deptDelegationDate: "",
     allotReleaseDate: "",
-    sanctionEnable: false,
+    sanctionEnable: true,
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -64,65 +64,37 @@ function ScSubSchemeDetails() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURL + `scSubSchemeDetails/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            setData({
-                scSchemeDetailsId: "",
-                subSchemeName: "",
-                subSchemeNameInKannada: "",
-                subSchemeType:"",
-                subSchemeStartDate:"",
-                subSchemeEndDate:"",
-                dbtCode: "",
-                withLand: "",
-                beneficiaryType: "",
-                allowMultipleSanction: "",
-                schemeForReeling: "",
-                calculationBasedOn: "",
-                workOrderForScheme: "",
-                sanctionOrderForScheme: "",
-                unitForScheme: "",
-                acknowledgementForScheme: "",
-                admGovtOrder: "",
-    schemeCircularNo: "",
-    deptDelegationNo: "",
-    allotReleaseNo: "",
-    admGovtDate: "",
-    schemeCircularDate: "",
-    deptDelegationDate: "",
-    allotReleaseDate: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
-    }
+  const form = event.currentTarget;
+
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+    return;
+  }
+
+  event.preventDefault();
+
+  const payload = {
+    ...data,
+    sanctionEnable: data.sanctionEnable, // ✅ boolean only
   };
+
+  api.post(baseURL + `scSubSchemeDetails/add`, payload)
+    .then((response) => {
+      if (response.data.content.error) {
+        saveError(response.data.content.error_description);
+      } else {
+        saveSuccess();
+        clear();
+      }
+    })
+    .catch((err) => {
+      if (err.response?.data?.validationErrors) {
+        saveError(err.response.data.validationErrors);
+      }
+    });
+};
 
   const clear = () => {
     setData({
@@ -150,7 +122,7 @@ function ScSubSchemeDetails() {
     schemeCircularDate: "",
     deptDelegationDate: "",
     allotReleaseDate: "",
-    sanctionEnable: false,
+    sanctionEnable: true,
     });
   };
 
@@ -912,12 +884,17 @@ function ScSubSchemeDetails() {
   <Form.Check
     type="checkbox"
     id="sanctionEnable"
-    checked={data.sanctionEnable}
-    onChange={handleSanctionEnableCheckBox}
+    checked={!!data.sanctionEnable}
+    onChange={(e) =>
+      setData((prev) => ({
+        ...prev,
+        sanctionEnable: e.target.checked,
+      }))
+    }
     className="me-2"
   />
   <Form.Label htmlFor="sanctionEnable" className="mb-0">
-    {t("Disable  Sanction")}
+    {t("Enable Sanction")}
   </Form.Label>
 </Col>
                       </Row>
