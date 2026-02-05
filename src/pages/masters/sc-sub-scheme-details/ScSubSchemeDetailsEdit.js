@@ -41,57 +41,39 @@ function ScSubSchemeDetailsEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURL + `scSubSchemeDetails/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            // setData({
-            //     scSchemeDetailsId: "",
-            //     subSchemeName: "",
-            //     subSchemeNameInKannada: "",
-            //     subSchemeType:"",
-            //     subSchemeStartDate:"",
-            //     subSchemeEndDate:"",
-            //     dbtCode: "",
-            //     withLand: "",
-            //     beneficiaryType: "",
-            //     allowMultipleSanction: "",
-            //     schemeForReeling: "",
-            //     calculationBasedOn: "",
-            //     workOrderForScheme: "",
-            //     sanctionOrderForScheme: "",
-            //     unitForScheme: "",
-            //     acknowledgementForScheme: "",
-            // });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              updateError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
-    }
+  const form = event.currentTarget;
+  if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+    return;
+  }
+
+  event.preventDefault();
+
+  // ✅ FIX: Convert boolean → 1/0 before API call
+  const payload = {
+    ...data,
+    sanctionEnable: data.sanctionEnable ? 1 : 0,
   };
+
+  api
+    .post(baseURL + `scSubSchemeDetails/edit`, payload)
+    .then((response) => {
+      if (response.data.content?.error) {
+        updateError(response.data.content.error_description);
+      } else {
+        updateSuccess();
+        setValidated(false);
+      }
+    })
+    .catch((err) => {
+      if (err.response?.data?.validationErrors) {
+        updateError(err.response.data.validationErrors);
+      }
+    });
+};
+
 
   // ✅ FIX 1 — Safe Date Parsing Helper (Prevents “Invalid time value”)
   const safeDate = (val) => {
@@ -126,6 +108,7 @@ function ScSubSchemeDetailsEdit() {
     schemeCircularDate: "",
     deptDelegationDate: "",
     allotReleaseDate: "",
+    sanctionEnable: false,
     });
   };
 
@@ -138,14 +121,21 @@ function ScSubSchemeDetailsEdit() {
         const content = response.data.content;
 
         const sanitizedData = {
-          ...content,
-          subSchemeStartDate: safeDate(content.subSchemeStartDate),
-          subSchemeEndDate: safeDate(content.subSchemeEndDate),
-          admGovtDate: safeDate(content.admGovtDate),
-          schemeCircularDate: safeDate(content.schemeCircularDate),
-          deptDelegationDate: safeDate(content.deptDelegationDate),
-          allotReleaseDate: safeDate(content.allotReleaseDate),
-        };
+  ...content,
+
+  sanctionEnable: !!content.sanctionEnable,
+  withLand: !!content.withLand,
+  allowMultipleSanction: !!content.allowMultipleSanction,
+  sanctionForReeling: !!content.sanctionForReeling,
+
+  subSchemeStartDate: safeDate(content.subSchemeStartDate),
+  subSchemeEndDate: safeDate(content.subSchemeEndDate),
+  admGovtDate: safeDate(content.admGovtDate),
+  schemeCircularDate: safeDate(content.schemeCircularDate),
+  deptDelegationDate: safeDate(content.deptDelegationDate),
+  allotReleaseDate: safeDate(content.allotReleaseDate),
+};
+
 
         setData(sanitizedData);
         setLoading(false);
@@ -209,6 +199,14 @@ function ScSubSchemeDetailsEdit() {
       sanctionForReeling: e.target.checked,
     }));
   };
+
+  const handleSanctionEnableCheckBox = (e) => {
+  setData((prev) => ({
+    ...prev,
+    sanctionEnable: e.target.checked,
+  }));
+};
+
 
 
   // to get Scheme Details
@@ -952,6 +950,21 @@ function ScSubSchemeDetailsEdit() {
                             {t("Sanction for Reeling")}
                           </Form.Label>
                         </Col>
+
+                        {/* Enable Sanction Order */}
+<Col sm={3} className="d-flex align-items-center">
+  <Form.Check
+    type="checkbox"
+    id="sanctionEnable"
+    checked={!!data.sanctionEnable}
+    onChange={handleSanctionEnableCheckBox}
+    className="me-2"
+  />
+  <Form.Label htmlFor="sanctionEnable" className="mb-0">
+    {t("Disable Sanction ")}
+  </Form.Label>
+</Col>
+
                       </Row>
 
                   </Row>

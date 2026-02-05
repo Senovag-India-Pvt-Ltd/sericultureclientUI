@@ -42,6 +42,7 @@ function ScSubSchemeDetails() {
     schemeCircularDate: "",
     deptDelegationDate: "",
     allotReleaseDate: "",
+    sanctionEnable: false,
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -149,6 +150,7 @@ function ScSubSchemeDetails() {
     schemeCircularDate: "",
     deptDelegationDate: "",
     allotReleaseDate: "",
+    sanctionEnable: false,
     });
   };
 
@@ -175,6 +177,14 @@ function ScSubSchemeDetails() {
       sanctionForReeling: e.target.checked,
     }));
   };
+
+  const handleSanctionEnableCheckBox = (e) => {
+  setData((prev) => ({
+    ...prev,
+    sanctionEnable: e.target.checked,
+  }));
+};
+
 
   // to get Scheme Details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -897,6 +907,19 @@ function ScSubSchemeDetails() {
                             {t("Sanction for Reeling")}
                           </Form.Label>
                         </Col>
+
+                        <Col sm={3} className="d-flex align-items-center">
+  <Form.Check
+    type="checkbox"
+    id="sanctionEnable"
+    checked={data.sanctionEnable}
+    onChange={handleSanctionEnableCheckBox}
+    className="me-2"
+  />
+  <Form.Label htmlFor="sanctionEnable" className="mb-0">
+    {t("Disable  Sanction")}
+  </Form.Label>
+</Col>
                       </Row>
 
                 </Row>

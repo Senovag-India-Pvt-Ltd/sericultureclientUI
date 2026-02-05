@@ -64,6 +64,22 @@ function MultipleSanctionOrder() {
   //   setIsSubmitEnabled(false);
   // };
 
+ const isSanctionEnabledFromDB = async (subSchemeDetailsId) => {
+  if (!subSchemeDetailsId) return false;
+
+  try {
+    const resp = await api.get(
+      baseURLMasterData +
+        `scSubSchemeDetails/is-sanction-enabled/${subSchemeDetailsId}`
+    );
+    return resp.data === true;
+  } catch (err) {
+    console.error("Sanction check failed", err);
+    return false;
+  }
+};
+
+
   const handleActionInputs = (e) => {
   const { name, value } = e.target;
 
@@ -103,6 +119,12 @@ const handleInputs = (e) => {
     ...prev,
     [name]: value,
   }));
+
+  if (name === "schemeId" || name === "subSchemeId") {
+  setSanctionOrderForScheme("");
+  setSubSchemeType(null);
+}
+
 
   // Reset table when filters changed
   if (
@@ -186,6 +208,22 @@ const handleDateChange = (date, fieldName) => {
   const formatted = formatDate(date);
   console.log("Formatted:", formatted);
   setActionData((prev) => ({ ...prev, [fieldName]: formatted }));
+};
+
+
+const enableSanctionIfRequired = async () => {
+  if (!data.subSchemeId) return;
+
+  try {
+    await api.post(
+      baseURLMasterData + "scSubSchemeDetails/enable-sanction",
+      {
+        scSubSchemeDetailsId: data.subSchemeId,
+      }
+    );
+  } catch (err) {
+    console.log("Enable-sanction failed");
+  }
 };
 
 
@@ -785,52 +823,96 @@ const generateReportForSilkIncentive = async (selectedRows) => {
   }
 };
 
-const generateFinalReport = (selectedRows) => {
-  if (!sanctionOrderForScheme) {
-        Swal.fire({
-      icon: "error",
-      title: "Sanction Order For Scheme not found!",
-      confirmButtonText: "OK"
-    });
-    return;
+// const generateFinalReport = (selectedRows) => {
+//   if (!sanctionOrderForScheme) {
+//         Swal.fire({
+//       icon: "error",
+//       title: "Sanction Order For Scheme not found!",
+//       confirmButtonText: "OK"
+//     });
+//     return;
 
     
-  }
+//   }
+
+//   switch (sanctionOrderForScheme) {
+//     case "Bivoltine Bonus":
+//       generateReportForBonusIncentiveSeedCocoon(selectedRows);
+//       break;
+
+//     case "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP":
+//       generateReportForNorthKarnataka(selectedRows);
+//       break;
+
+//     case "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500":
+//       generateReportFor1500dfls(selectedRows);
+//       break;
+
+//     case "Incentive For Bivoltine Cocoons-30/kg-PSF":
+//       generateReportFor30Rs(selectedRows);
+//       break;
+
+//     case "Incentive For Bivoltine Chawki Rearing Cost":
+//       generateReportFor100Rs(selectedRows);
+//       break;
+
+//     case "Silk Incentive-PSF":
+//       generateReportForSilkIncentive(selectedRows);
+//       break;
+
+//   default:
+//   Swal.fire({
+//     icon: "error",
+//     title: "Invalid sanction order type!",
+//     confirmButtonText: "OK"
+//   });
+//   break;
+
+//   }
+// };
+
+const generateFinalReport = async (selectedRows) => {
+  const subSchemeDetailsId = selectedRows[0]?.subSchemeId;
+
+  const alreadyGenerated =
+    await isSanctionEnabledFromDB(subSchemeDetailsId);
+
+  // ❌ If sanction_enable = 1 → NO REPORT
+  if (alreadyGenerated) return;
+
+  if (!sanctionOrderForScheme) return;
 
   switch (sanctionOrderForScheme) {
     case "Bivoltine Bonus":
-      generateReportForBonusIncentiveSeedCocoon(selectedRows);
+      await generateReportForBonusIncentiveSeedCocoon(selectedRows);
       break;
 
     case "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP":
-      generateReportForNorthKarnataka(selectedRows);
+      await generateReportForNorthKarnataka(selectedRows);
       break;
 
     case "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500":
-      generateReportFor1500dfls(selectedRows);
+      await generateReportFor1500dfls(selectedRows);
       break;
 
     case "Incentive For Bivoltine Cocoons-30/kg-PSF":
-      generateReportFor30Rs(selectedRows);
+      await generateReportFor30Rs(selectedRows);
       break;
 
     case "Incentive For Bivoltine Chawki Rearing Cost":
-      generateReportFor100Rs(selectedRows);
+      await generateReportFor100Rs(selectedRows);
       break;
 
     case "Silk Incentive-PSF":
-      generateReportForSilkIncentive(selectedRows);
+      await generateReportForSilkIncentive(selectedRows);
       break;
 
-  default:
-  Swal.fire({
-    icon: "error",
-    title: "Invalid sanction order type!",
-    confirmButtonText: "OK"
-  });
-  break;
-
+    default:
+      return;
   }
+
+  // 🔐 LOCK AFTER FIRST SUCCESS
+  await enableSanctionIfRequired();
 };
 
 
@@ -1224,7 +1306,7 @@ const generateFinalReport = (selectedRows) => {
   // ----------------------------------------------------
   const approvalStageId = selectedRows[0]?.approvalStageId;
   const schemeAmount = selectedTotalSchemeAmount || totalSchemeAmount;
-  const subSchemeId = data.subSchemeId;       // <-- As required
+  const subSchemeId = selectedRows[0]?.subSchemeId;
   const designationIdValue = designationId;        // <-- from getIdList()
 
   try {
@@ -1391,7 +1473,7 @@ const generateFinalReport = (selectedRows) => {
     if (response.data?.applicationFormId) {
       saveSuccess("Sanction Order Updated Successfully");
       // generateReportForBonusIncentiveSeedCocoon(selectedRows);
-      generateFinalReport(selectedRows);
+await generateFinalReport(selectedRows);
       await getMultipleSanctionOrderList();
       setIsSubmitEnabled(false);
       setIsRowSelectable(false);
@@ -1468,9 +1550,6 @@ const [showPradesha, setShowPradesha] = useState(false);
     icon: "success",
     title: "Saved successfully",
     text: message,
-  }).then(() => {
-    // Refresh entire page AFTER clicking OK
-    window.location.reload();
   });
 };
 
@@ -2062,7 +2141,7 @@ const saveRejectSuccess = (message) => {
                       <option value="0">{t("Select Component Type")}</option>
                       {scSubSchemeDetailsListData.map((list) => (
                         <option
-                          key={list.scSubSchemeDetailsId}
+                          key={list.subSchemeId}
                           value={list.subSchemeId}
                         >
                           {list.subSchemeName}

@@ -25,6 +25,39 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ServiceApplication() {
+
+  const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
+  if (!scSubSchemeDetailsId) return false;
+
+  try {
+    const resp = await api.get(
+      baseURLMasterData +
+        `scSubSchemeDetails/is-sanction-enabled/${scSubSchemeDetailsId}`
+    );
+    return resp.data === true; // true = sanction already generated
+  } catch (err) {
+    console.error("Sanction check failed", err);
+    return false; // fail-safe → allow generation
+  }
+};
+
+
+
+const enableSanctionIfRequired = async (scSubSchemeDetailsId) => {
+  if (!scSubSchemeDetailsId) return;
+
+  try {
+    await api.post(
+      baseURLMasterData + "scSubSchemeDetails/enable-sanction",
+      {
+        scSubSchemeDetailsId: scSubSchemeDetailsId,
+      }
+    );
+  } catch (err) {
+    console.log("Enable-sanction failed");
+  }
+};
+
   // Translation
   const { t } = useTranslation();
   const [data, setData] = useState({
@@ -4284,72 +4317,78 @@ const isUserValid = React.useMemo(() => {
     confirmButtonText: "Yes",
     cancelButtonText: "Later",
   }).then((result) => {
-    // ✅ Decide the correct API endpoint based on sanctionForReeling
+
     const apiEndpoint = isSanctionForReeling
       ? `${baseURLDBT}service/saveApplicationFormForReeler`
       : `${baseURLDBT}service/saveApplicationForm`;
 
-    const handleResponse = (response, showModal = false) => {
+    const handleResponse = async (response, showModal = false) => {
       if (response.data.errorCode === -1) {
         saveError(response.data.errorMessages[0]);
         setSaveDisabled(false);
-      } else if (response.data && response.data.error) {
+        return;
+      }
+
+      if (response.data && response.data.error) {
         saveError(response.data.error_description);
         setSaveDisabled(false);
-      } else {
-        if (!showModal) saveSuccess();
-        setApplicationId(response.data.content.applicationDocumentId);
-        setSchemeId(response.data.content.schemeId);
-        clear();
-        // window.location.reload();
-        setSaveDisabled(false);
+        return;
+      }
 
-        // ✅ Acknowledgment logic remains same
+      if (!showModal) saveSuccess();
+
+      setApplicationId(response.data.content.applicationDocumentId);
+      setSchemeId(response.data.content.schemeId);
+      clear();
+      setSaveDisabled(false);
+
+      const subSchemeDetailsId = response.data.content.subSchemeId;
+
+      const alreadyGenerated =
+        await isSanctionEnabledFromDB(subSchemeDetailsId);
+
+      if (!alreadyGenerated) {
         callAcknowledgmentFunction(
           getIncentiveAndBonusData[0]?.acknowledgementForScheme,
           response.data.content.applicationDocumentId,
           response.data.content.schemeId,
-          response.data.content.subSchemeId
+          subSchemeDetailsId
         );
 
-        if (showModal) handleShowModal();
-        setValidated(false);
+        await enableSanctionIfRequired(subSchemeDetailsId);
       }
+
+      if (showModal) handleShowModal();
+      setValidated(false);
     };
 
-    // ✅ Case 1: User clicked "Yes" → Upload + Show Modal
+    // ✅ YES → Save + Upload
     if (result.value) {
       api
         .post(apiEndpoint, post)
         .then((response) => handleResponse(response, true))
         .catch((err) => {
           if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
+            err.response?.data?.validationErrors &&
+            Object.keys(err.response.data.validationErrors).length > 0
           ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+            saveError(err.response.data.validationErrors);
           }
           setSaveDisabled(false);
         });
       setValidated(true);
 
-    // ✅ Case 2: User clicked "Later" → Just save, no modal
+    // ✅ LATER → Save only
     } else {
       api
         .post(apiEndpoint, post)
         .then((response) => handleResponse(response, false))
         .catch((err) => {
           if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
+            err.response?.data?.validationErrors &&
+            Object.keys(err.response.data.validationErrors).length > 0
           ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+            saveError(err.response.data.validationErrors);
           }
           setSaveDisabled(false);
         });
