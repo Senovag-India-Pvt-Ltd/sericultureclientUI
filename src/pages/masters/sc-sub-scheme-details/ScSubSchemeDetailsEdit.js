@@ -51,11 +51,12 @@ function ScSubSchemeDetailsEdit() {
 
   event.preventDefault();
 
-  // ✅ FIX: Convert boolean → 1/0 before API call
   const payload = {
-    ...data,
-sanctionEnable: data.sanctionEnable,
-  };
+  ...data,
+  sanctionEnable: data.sanctionEnable ? 0 : 1,
+};
+
+
 
   api
     .post(baseURL + `scSubSchemeDetails/edit`, payload)
@@ -126,7 +127,7 @@ sanctionForReeling: false,
         const sanitizedData = {
   ...content,
 
-sanctionEnable: !!content.sanctionEnable,
+sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   withLand: !!content.withLand,
   allowMultipleSanction: !!content.allowMultipleSanction,
   sanctionForReeling: !!content.sanctionForReeling,

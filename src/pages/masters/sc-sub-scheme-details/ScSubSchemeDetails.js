@@ -77,7 +77,7 @@ function ScSubSchemeDetails() {
 
   const payload = {
     ...data,
-    sanctionEnable: data.sanctionEnable, // ✅ boolean only
+    sanctionEnable: data.sanctionEnable ? 0 : 1,
   };
 
   api.post(baseURL + `scSubSchemeDetails/add`, payload)
