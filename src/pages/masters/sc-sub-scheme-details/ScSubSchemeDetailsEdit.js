@@ -51,11 +51,12 @@ function ScSubSchemeDetailsEdit() {
 
   event.preventDefault();
 
-  // ✅ FIX: Convert boolean → 1/0 before API call
   const payload = {
-    ...data,
-    sanctionEnable: data.sanctionEnable ? 1 : 0,
-  };
+  ...data,
+  sanctionEnable: data.sanctionEnable ? 0 : 1,
+};
+
+
 
   api
     .post(baseURL + `scSubSchemeDetails/edit`, payload)
@@ -91,9 +92,9 @@ function ScSubSchemeDetailsEdit() {
         subSchemeStartDate:"",
         subSchemeEndDate:"",
         dbtCode: "",
-        withLand: "",
+        // withLand: "",
         beneficiaryType: "",
-        allowMultipleSanction: "",
+        // allowMultipleSanction: "",
         schemeForReeling: "",
         calculationBasedOn: "",
         workOrderForScheme: "",
@@ -109,6 +110,9 @@ function ScSubSchemeDetailsEdit() {
     deptDelegationDate: "",
     allotReleaseDate: "",
     sanctionEnable: false,
+    withLand: false,
+allowMultipleSanction: false,
+sanctionForReeling: false,
     });
   };
 
@@ -123,7 +127,7 @@ function ScSubSchemeDetailsEdit() {
         const sanitizedData = {
   ...content,
 
-  sanctionEnable: !!content.sanctionEnable,
+sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   withLand: !!content.withLand,
   allowMultipleSanction: !!content.allowMultipleSanction,
   sanctionForReeling: !!content.sanctionForReeling,
@@ -230,12 +234,13 @@ function ScSubSchemeDetailsEdit() {
   const navigate = useNavigate();
 
   const updateSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Updated successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("#"));
-  };
+  Swal.fire({
+    icon: "success",
+    title: "Updated successfully",
+  }).then(() => {
+    getIdList();   // ✅ re-fetch updated data
+  });
+};
 
   const updateError = (message) => {
     let errorMessage;
@@ -951,17 +956,21 @@ function ScSubSchemeDetailsEdit() {
                           </Form.Label>
                         </Col>
 
-                        {/* Enable Sanction Order */}
-<Col sm={3} className="d-flex align-items-center">
+                        <Col sm={3} className="d-flex align-items-center">
   <Form.Check
     type="checkbox"
     id="sanctionEnable"
     checked={!!data.sanctionEnable}
-    onChange={handleSanctionEnableCheckBox}
+    onChange={(e) =>
+      setData((prev) => ({
+        ...prev,
+        sanctionEnable: e.target.checked,
+      }))
+    }
     className="me-2"
   />
   <Form.Label htmlFor="sanctionEnable" className="mb-0">
-    {t("Disable Sanction ")}
+    {t("Enable Sanction")}
   </Form.Label>
 </Col>
 
