@@ -387,6 +387,14 @@ const [HelpDesks, setHelpDesks] = useState({});
                         <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>{t("Contact Name")}</td>
+                        <td>{raiseTicket.contactPerson}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Contact Number")}</td>
+                        <td>{raiseTicket.contactNumber}</td>
+                      </tr>
+                      <tr>
                       <td style={styles.ctstyle}> {t("Attach File")}:</td>
                       {/* <td>{StakeHolder.taluk}</td> */}
                       <td>
