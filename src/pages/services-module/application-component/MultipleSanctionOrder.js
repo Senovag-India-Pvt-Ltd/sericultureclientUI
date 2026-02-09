@@ -736,6 +736,57 @@ const generateReportFor30Rs = async (selectedRows) => {
   }
 };
 
+const clearAllAfterSubmit = () => {
+  // 🔹 Clear filter dropdowns
+  setData({
+    userMasterId: "",
+    stepId: "",
+    schemeId: "",
+    subSchemeId: "",
+    scComponentId: "",
+    scCategoryId: "",
+    tscId: "",
+  });
+
+  // 🔹 Clear sanction/action form
+  setActionData({
+    applicationFormId: "",
+    workOrderNumber: "",
+    sanctionOrderNumber: "",
+    sanctionAmount: "",
+    lat: "",
+    lon: "",
+    description: "",
+    rejectedReasonId: "",
+    userId: "",
+    stepId: "",
+    rejectType: "",
+    eligibleAmount: "",
+    sanctionNo: "",
+    rejectReasonWorkflowMasterId: "",
+    comment: "",
+    // proposalDate: null,
+    releaseNo: "",
+    // releaseDate: null,
+  });
+
+  // 🔹 Clear table + selections
+  setListData([]);
+  setSelectedRows([]);
+  setIsRowSelectable(false);
+  setIsSubmitEnabled(false);
+
+  // 🔹 Clear totals & helpers
+  setTotalSchemeAmount(0);
+  setSelectedTotalSchemeAmount(0);
+  setSanctionOrderForScheme("");
+  setSubSchemeType(null);
+
+  // 🔹 Clear validation state
+  setValidated(false);
+};
+
+
 const generateReportFor100Rs = async (selectedRows) => {
   try {
     const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
@@ -874,11 +925,17 @@ const generateReportForSilkIncentive = async (selectedRows) => {
 const generateFinalReport = async (selectedRows) => {
   const subSchemeDetailsId = selectedRows[0]?.subSchemeId;
 
-  const alreadyGenerated =
-    await isSanctionEnabledFromDB(subSchemeDetailsId);
+  // const alreadyGenerated =
+  //   await isSanctionEnabledFromDB(subSchemeDetailsId);
 
-  // ❌ If sanction_enable = 1 → NO REPORT
-  if (alreadyGenerated) return;
+  // // ❌ If sanction_enable = 1 → NO REPORT
+  // if (alreadyGenerated) return;
+
+
+  const isAllowed =
+  await isSanctionEnabledFromDB(subSchemeDetailsId);
+
+if (!isAllowed) return;   // ❌ block only when DB has 1
 
   if (!sanctionOrderForScheme) return;
 
@@ -1474,6 +1531,7 @@ const generateFinalReport = async (selectedRows) => {
       saveSuccess("Sanction Order Updated Successfully");
       // generateReportForBonusIncentiveSeedCocoon(selectedRows);
 await generateFinalReport(selectedRows);
+  clearAllAfterSubmit();   
       await getMultipleSanctionOrderList();
       setIsSubmitEnabled(false);
       setIsRowSelectable(false);

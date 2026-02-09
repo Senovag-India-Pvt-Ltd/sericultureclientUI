@@ -128,6 +128,7 @@ sanctionForReeling: false,
   ...content,
 
 sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
+// sanctionEnable: content.sanctionEnable !== 1,
   withLand: !!content.withLand,
   allowMultipleSanction: !!content.allowMultipleSanction,
   sanctionForReeling: !!content.sanctionForReeling,
@@ -958,17 +959,16 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
 
                         <Col sm={3} className="d-flex align-items-center">
   <Form.Check
-    type="checkbox"
-    id="sanctionEnable"
-    checked={!!data.sanctionEnable}
-    onChange={(e) =>
-      setData((prev) => ({
-        ...prev,
-        sanctionEnable: e.target.checked,
-      }))
-    }
-    className="me-2"
-  />
+  type="checkbox"
+  id="sanctionEnable"
+  checked={data.sanctionEnable === true}
+  onChange={(e) =>
+    setData((prev) => ({
+      ...prev,
+      sanctionEnable: e.target.checked,
+    }))
+  }
+/>
   <Form.Label htmlFor="sanctionEnable" className="mb-0">
     {t("Enable Sanction")}
   </Form.Label>
