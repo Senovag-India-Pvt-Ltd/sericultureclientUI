@@ -1020,6 +1020,8 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         setPushToDbtStatus(recordData.pushToDbt);
         setDirectlyToFruits(recordData.directlyToFruits);
         const subSchemeId = recordData?.subSchemeId;
+        isSanctionEnabledFromDB(subSchemeId);
+
         const designationStep = recordData?.designationStep;
         const applicationDocumentId = recordData?.applicationDocumentId;
         const categoryId = recordData?.categoryId;
@@ -1469,36 +1471,182 @@ useEffect(() => {
   //   }
   // }, [data.scSubSchemeDetailsId, data.approvalStageId]);
 
-  const callWorkOrderAcknowledgment = (
+   const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
+  if (!scSubSchemeDetailsId) return false;
+
+  try {
+    const resp = await api.get(
+      baseURLMasterData +
+        `scSubSchemeDetails/is-sanction-enabled/${scSubSchemeDetailsId}`
+    );
+    return resp.data === true; // true = sanction already generated
+  } catch (err) {
+    console.error("Sanction check failed", err);
+    return false; // fail-safe → allow generation
+  }
+};
+
+//   const callWorkOrderAcknowledgment = (
+//   workOrderForScheme,
+//   applicationFormId,
+//   workOrderSchemeId,
+//   subSchemeId,
+//   categoryId
+// ) => {
+
+//   if (
+//     workOrderForScheme === "Silk Samagra State" ||
+//     workOrderForScheme === "Silk Samagra Central"
+//   ) {
+//     generateWorkOrderAcknowledgmentRH(applicationFormId, workOrderSchemeId);
+
+//   } else if (
+//     workOrderForScheme === "PDMC" ||
+//     workOrderForScheme === "PMKSY"
+//   ) {
+//     generateWorkOrderAcknowledgment(applicationFormId, workOrderSchemeId);
+
+//   } else if (
+//     workOrderForScheme === "Reeling Shed-PSF" ||
+//     workOrderForScheme === "Silk Incentive-PSF"
+//   ) {
+//     generateWorkOrderReelingShed(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
+
+//   } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+//     generateWorkOrderOrderHRU(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
+//   }
+// };
+
+const callWorkOrderAcknowledgment = async (
   workOrderForScheme,
   applicationFormId,
   workOrderSchemeId,
   subSchemeId,
   categoryId
 ) => {
+  // 🔴 DB check
+  const isEnabled = await isSanctionEnabledFromDB(subSchemeId);
 
+  if (!isEnabled) {
+    Swal.fire({
+      icon: "warning",
+      title: "Work Order Not Allowed",
+      text: "Work Order generation is not enabled for this scheme.",
+    });
+    return; // ❌ STOP here
+  }
+
+  // ✅ Existing logic continues
   if (
     workOrderForScheme === "Silk Samagra State" ||
     workOrderForScheme === "Silk Samagra Central"
   ) {
-    generateWorkOrderAcknowledgmentRH(applicationFormId, workOrderSchemeId);
+    generateWorkOrderAcknowledgmentRH(
+      applicationFormId,
+      workOrderSchemeId
+    );
 
   } else if (
     workOrderForScheme === "PDMC" ||
     workOrderForScheme === "PMKSY"
   ) {
-    generateWorkOrderAcknowledgment(applicationFormId, workOrderSchemeId);
+    generateWorkOrderAcknowledgment(
+      applicationFormId,
+      workOrderSchemeId
+    );
 
   } else if (
     workOrderForScheme === "Reeling Shed-PSF" ||
     workOrderForScheme === "Silk Incentive-PSF"
   ) {
-    generateWorkOrderReelingShed(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
+    generateWorkOrderReelingShed(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
 
   } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateWorkOrderOrderHRU(applicationFormId, workOrderSchemeId, subSchemeId,categoryId);
+    generateWorkOrderOrderHRU(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
   }
 };
+
+const handleDownloadWorkOrder = async (viewDetailsData) => {
+  try {
+    // 🔴 DB check (sanction/work-order enabled or not)
+
+    const isEnabled = await isSanctionEnabledFromDB(
+      actionFarmerData[0]?.subSchemeId
+    );
+
+    if (!isEnabled) {
+      Swal.fire({
+        icon: "warning",
+        title: "Work Order Not Allowed",
+        text: "Work Order generation is not enabled for this scheme.",
+      });
+      return; // ❌ STOP execution
+    }
+
+    // ✅ Allowed → generate work order
+    if (
+      viewDetailsData.workOrderForScheme === "PDMC" ||
+      viewDetailsData.workOrderForScheme === "PMKSY"
+    ) {
+      generateWorkOrderAcknowledgment(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    } else if (
+      viewDetailsData.workOrderForScheme === "Silk Samagra State" ||
+      viewDetailsData.workOrderForScheme === "Silk Samagra Central"
+    ) {
+      generateWorkOrderAcknowledgmentRH(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    } else if (
+      viewDetailsData.workOrderForScheme === "Reeling Shed-PSF" ||
+      viewDetailsData.workOrderForScheme === "Silk Incentive-PSF"
+    ) {
+      generateWorkOrderReelingShed(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else if (
+      viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
+    ) {
+      generateWorkOrderOrderHRU(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else {
+      console.error("Unknown Work Order scheme type");
+    }
+  } catch (error) {
+    console.error("Error while downloading work order:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to download work order. Please try again.",
+    });
+  }
+};
+
+
 
 
   const generateWorkOrderAcknowledgment = async (
@@ -1636,8 +1784,34 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
   //   });
   // };
 
-  const handleGenerateSanctionOrderClick = () => {
+//   const handleGenerateSanctionOrderClick = () => {
+//   const userId = localStorage.getItem("userMasterId");
+//   handleGenerateSanctionOrder(
+//     applicationId,
+//     actionFarmerData[0]?.schemeId,
+//     actionFarmerData[0]?.subSchemeId,
+//     actionFarmerData[0]?.categoryId,
+//     userId
+//   );
+// };
+
+const handleGenerateSanctionOrderClick = async () => {
   const userId = localStorage.getItem("userMasterId");
+  const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
+
+  // 🔴 Check from DB
+  const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
+
+  if (!isEnabled) {
+    Swal.fire({
+      icon: "warning",
+      title: "Sanction Not Allowed",
+      text: "Sanction Order and Work Order are not enabled for this scheme.",
+    });
+    return; // ❌ STOP HERE
+  }
+
+  // ✅ Allowed → continue
   handleGenerateSanctionOrder(
     applicationId,
     actionFarmerData[0]?.schemeId,
@@ -1646,11 +1820,28 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
     userId
   );
 };
+ 
 
+ const handleGenerateSanctionOrder = async (
+  applicationFormId,
+  schemeId,
+  subSchemeId,
+  categoryId
+) => {
+  // 🔴 HARD GUARD (centralized)
+  const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
 
-  const handleGenerateSanctionOrder = (applicationFormId, schemeId, subSchemeId, categoryId) => {
-    // const schemeId = actionFarmerData[0]?.schemeId;
-    const schemeType = actionFarmerData[0]?.sanctionOrderForScheme; // Fetch the scheme type from the response
+  const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
+
+  if (!isEnabled) {
+    Swal.fire({
+      icon: "warning",
+      title: "Sanction Not Allowed",
+      text: "Sanction Order and Work Order are not enabled for this scheme.",
+    });
+    return; // ❌ STOP — Swal will NOT open
+  }
+  const schemeType = actionFarmerData[0]?.sanctionOrderForScheme;
 
     Swal.fire({
       title: "Generate Sanction Order",
@@ -1775,62 +1966,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
     });
   };
 
-  const handleDownloadSanctionOrder = (
-  applicationFormId,
-  schemeId,
-  schemeType,
-  subSchemeId,
-  categoryId
-) => {
-  Swal.fire({
-    title: "Generate Sanction Order",
-    text: "Select the recipient:",
-    showCancelButton: true,
-    confirmButtonText: "Farmer/Reeler",
-    cancelButtonText: "Company",
-    showCloseButton: true,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // ✅ Farmer
-      if (schemeType === "PMKSY" || schemeType === "PDMC") {
-        downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
-      } else if (
-        schemeType === "Silk Samagra State" ||
-        schemeType === "Silk Samagra Central"
-      ) {
-        downloadSanctionOrderAcknowledgment(
-          applicationFormId,
-          schemeId,
-          "farmer",
-          schemeType,
-          subSchemeId,
-          categoryId
-        );
-      } else {
-        console.error("Unknown scheme type for farmer sanction order.");
-      }
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      // ✅ Company
-      if (schemeType === "PMKSY" || schemeType === "PDMC") {
-        downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
-      } else if (
-        schemeType === "Silk Samagra State" ||
-        schemeType === "Silk Samagra Central"
-      ) {
-        downloadSanctionOrderAcknowledgment(
-          applicationFormId,
-          schemeId,
-          "company",
-          schemeType,
-          subSchemeId,
-          categoryId
-        );
-      } else {
-        console.error("Unknown scheme type for company sanction order.");
-      }
-    }
-  });
-};
+ 
 
 
   // const downloadSanctionOrderAcknowledgment = async (
@@ -1895,66 +2031,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
   //   }
   // };
 
- const downloadSanctionOrderAcknowledgment = async (
-  applicationId,
-  schemeId,
-  recipientType,
-  schemeType,
-  subSchemeId,
-  categoryId,
-  userId
-) => {
-  try {
-    const userId = localStorage.getItem("userMasterId");
-    let endpoint;
-
-    if (
-      schemeType === "Silk Samagra State" ||
-      schemeType === "Silk Samagra Central"
-    ) {
-      endpoint = baseURLReport + `getSanctionOrderRH`;
-    } else {
-      if (recipientType === "farmer") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksy`
-            : baseURLReport + `getSanctionOrderPDMC`;
-      } else if (recipientType === "company") {
-        endpoint =
-          schemeType === "PMKSY"
-            ? baseURLReport + `getSanctionOrderPmksyCompany`
-            : baseURLReport + `getSanctionOrderPDMCCompany`;
-      } else {
-        throw new Error("Invalid recipient type.");
-      }
-    }
-
-    const payload =
-      schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
-        ? {
-            applicationFormId: applicationId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            userId,
-          }
-        : {
-            applicationFormId: applicationId,
-            schemeId,
-          };
-
-    const response = await api.post(endpoint, payload, {
-      responseType: "blob",
-    });
-
-    const file = new Blob([response.data], { type: "application/pdf" });
-    const fileURL = URL.createObjectURL(file);
-    window.open(fileURL);
-  } catch (error) {
-    console.error("Error generating sanction order:", error);
-  }
-};
-
+ 
 
   const generateSanctionOrderAcknowledgment = async (
   applicationId,
@@ -5909,7 +5986,7 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
 
 
                             <div className="mt-2">
-                                  {viewDetailsData?.workOrderNumber !== undefined &&
+                                  {/* {viewDetailsData?.workOrderNumber !== undefined &&
                                     viewDetailsData?.applicationFormId !== undefined && (
                                       <Button
                                         variant="primary"
@@ -5934,6 +6011,18 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
                                             );
                                           }
                                         }}
+                                      >
+                                        Download Work Order
+                                      </Button>
+                                    )} */}
+
+                                    {viewDetailsData?.workOrderNumber !== undefined &&
+                                    viewDetailsData?.applicationFormId !== undefined && (
+                                       <Button
+                                        variant="primary"
+                                        size="sm"
+                                        className="me-2"
+                                        onClick={() => handleDownloadWorkOrder(viewDetailsData)}
                                       >
                                         Download Work Order
                                       </Button>
