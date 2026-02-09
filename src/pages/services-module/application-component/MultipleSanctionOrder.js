@@ -737,7 +737,7 @@ const generateReportFor30Rs = async (selectedRows) => {
 };
 
 const clearAllAfterSubmit = () => {
-  // 🔹 Clear filter dropdowns
+  // 🔹 Clear filters
   setData({
     userMasterId: "",
     stepId: "",
@@ -748,8 +748,9 @@ const clearAllAfterSubmit = () => {
     tscId: "",
   });
 
-  // 🔹 Clear sanction/action form
-  setActionData({
+  // 🔹 Clear action form BUT KEEP DATES
+  setActionData((prev) => ({
+    ...prev,
     applicationFormId: "",
     workOrderNumber: "",
     sanctionOrderNumber: "",
@@ -765,26 +766,30 @@ const clearAllAfterSubmit = () => {
     sanctionNo: "",
     rejectReasonWorkflowMasterId: "",
     comment: "",
-    // proposalDate: null,
     releaseNo: "",
-    // releaseDate: null,
-  });
+    // ❌ DO NOT TOUCH proposalDate
+    // ❌ DO NOT TOUCH releaseDate
+  }));
 
-  // 🔹 Clear table + selections
+  // 🔹 Clear table & selections
   setListData([]);
   setSelectedRows([]);
   setIsRowSelectable(false);
   setIsSubmitEnabled(false);
 
-  // 🔹 Clear totals & helpers
+  // 🔹 Clear helpers
   setTotalSchemeAmount(0);
   setSelectedTotalSchemeAmount(0);
   setSanctionOrderForScheme("");
   setSubSchemeType(null);
 
-  // 🔹 Clear validation state
-  setValidated(false);
+  // ✅ MOST IMPORTANT
+  setValidated(false);   // 🔥 removes red borders
+
+  // Optional: hide pradesha
+  setShowPradesha(false);
 };
+
 
 
 const generateReportFor100Rs = async (selectedRows) => {
