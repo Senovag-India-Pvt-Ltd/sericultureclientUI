@@ -291,6 +291,20 @@ const { t } = useTranslation();
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name:t("Contact Name"),
+    //   selector: (row) => row.contactPerson ,
+    //   cell: (row) => <span>{row.contactPerson}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name:t("Contact Number"),
+      selector: (row) => row.contactNumber,
+      cell: (row) => <span>{row.contactNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: t("Query"),
       selector: (row) => row.query,

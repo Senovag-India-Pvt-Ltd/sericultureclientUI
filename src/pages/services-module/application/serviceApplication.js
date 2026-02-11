@@ -34,29 +34,45 @@ function ServiceApplication() {
       baseURLMasterData +
         `scSubSchemeDetails/is-sanction-enabled/${scSubSchemeDetailsId}`
     );
-    return resp.data === true; // true = sanction already generated
+    return resp.data === false;
   } catch (err) {
     console.error("Sanction check failed", err);
-    return false; // fail-safe → allow generation
+    return false;
   }
 };
 
 
+const generateFinalReport = async (selectedRows) => {
+  const subSchemeDetailsId = selectedRows?.[0]?.subSchemeId;
 
-const enableSanctionIfRequired = async (scSubSchemeDetailsId) => {
-  if (!scSubSchemeDetailsId) return;
-
-  try {
-    await api.post(
-      baseURLMasterData + "scSubSchemeDetails/enable-sanction",
-      {
-        scSubSchemeDetailsId: scSubSchemeDetailsId,
-      }
-    );
-  } catch (err) {
-    console.log("Enable-sanction failed");
+  if (!subSchemeDetailsId) {
+    Swal.fire({
+      icon: "warning",
+      title: "Invalid Selection",
+      text: "Sub Scheme not found",
+    });
+    return;
   }
+
+  // 🔹 Sanction enable check (DB driven)
+  const isAllowed = await isSanctionEnabledFromDB(subSchemeDetailsId);
+
+  // ❌ DB = 1 → STOP
+  if (!isAllowed) {
+    Swal.fire({
+      icon: "warning",
+      title: "Sanction Disabled",
+      text: "Sanction Order is disabled for this Component Type",
+    });
+    return;
+  }
+
+  // ✅ DB = 0 or null → CONTINUE
+  // 🔹 Do NOTHING extra here
+  // Your existing flow already continues correctly
 };
+
+
 
   // Translation
   const { t } = useTranslation();
@@ -4355,7 +4371,7 @@ const isUserValid = React.useMemo(() => {
           subSchemeDetailsId
         );
 
-        await enableSanctionIfRequired(subSchemeDetailsId);
+        // await enableSanctionIfRequired(subSchemeDetailsId);
       }
 
       if (showModal) handleShowModal();
@@ -4397,6 +4413,29 @@ const isUserValid = React.useMemo(() => {
   });
 };
 
+const handleSubmitApplication = async () => {
+  // 🔐 Sanction enable check
+  const canGenerateSanction = await isSanctionEnabledFromDB(
+    data.scSubSchemeDetailsId
+  );
+
+  if (!canGenerateSanction) {
+    Swal.fire({
+      icon: "warning",
+      title: "Sanction Disabled",
+      text: "Sanction Order is disabled for this component type",
+    });
+    return; // ❌ STOP FLOW
+  }
+
+  // ✅ CONTINUE NORMAL PROCESS
+  api.post(
+    baseURLDBT + "service/saveApplication",
+    data
+  ).then((res) => {
+    // existing success logic
+  });
+};
 
   // const uploadFileConfirm = (post) => {
   //   Swal.fire({

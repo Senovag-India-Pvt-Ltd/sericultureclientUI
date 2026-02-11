@@ -3,8 +3,21 @@ import { useState } from "react";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 import LoginLogo from "../../components/Logo/LoginLogo";
+import Swal from "sweetalert2";
 
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+
+// 🔹 Small popup config
+const smallPopup = {
+  width: "320px",
+  padding: "12px",
+  customClass: {
+    popup: "small-swal-popup",
+    title: "small-swal-title",
+    htmlContainer: "small-swal-text",
+    confirmButton: "small-swal-btn",
+  },
+};
 
 function DbtApplicationStatusCheck() {
   const { t } = useTranslation();
@@ -23,15 +36,31 @@ function DbtApplicationStatusCheck() {
   };
 
   const getDynamicLabel = () => {
-    if (searchData.select === "mobileNo") return "Enter Mobile Number";
-    if (searchData.select === "fid") return "Enter FRUITS ID";
-    return "Enter ARN Number";
+    if (searchData.select === "mobileNo") return "Mobile Number";
+    if (searchData.select === "fid") return "FRUITS ID";
+    return "ARN Number";
+  };
+
+  const getNotExistMessage = () => {
+    if (searchData.select === "mobileNo") return "Mobile Number does not exist";
+    if (searchData.select === "fid") return "FRUITS ID does not exist";
+    return "ARN does not exist";
   };
 
   const postData = (event) => {
     event.preventDefault();
     setValidated(true);
-    if (!searchData.text) return;
+
+    // 🔴 Empty input
+    if (!searchData.text.trim()) {
+      Swal.fire({
+        ...smallPopup,
+        icon: "warning",
+        title: `Please enter ${getDynamicLabel()}`,
+        text: "Please try again!",
+      });
+      return;
+    }
 
     api
       .post(
@@ -40,38 +69,47 @@ function DbtApplicationStatusCheck() {
         { params: { [searchData.select]: searchData.text } }
       )
       .then((response) => {
-        setApplicationList(response.data.content || []);
+        const list = response.data?.content || [];
+
+        // 🔴 Not exists
+        if (list.length === 0) {
+          Swal.fire({
+            ...smallPopup,
+            icon: "warning",
+            title: getNotExistMessage(),
+            text: "Please try again!",
+          });
+          setApplicationList([]);
+          return;
+        }
+
+        setApplicationList(list);
+      })
+      .catch(() => {
+        Swal.fire({
+          ...smallPopup,
+          icon: "warning",
+          title: getNotExistMessage(),
+          text: "Please try again!",
+        });
+        setApplicationList([]);
       });
   };
 
   return (
     <div className="p-4">
-      {/* ================= ULTRA COMPACT BLUE HEADER ================= */}
+      {/* ================= HEADER ================= */}
       <Row className="justify-content-center mb-2">
         <Col lg={6} md={8}>
-          <Card
-            className="border-0 shadow-sm"
-            style={{ backgroundColor: "#0f6cbe" }}
-          >
-            <Card.Body
-              className="py-0 text-center"
-              style={{ minHeight: "63px" }}   // 👈 15% smaller
-            >
+          <Card className="border-0 shadow-sm" style={{ backgroundColor: "#0f6cbe" }}>
+            <Card.Body className="py-0 text-center" style={{ minHeight: "63px" }}>
               <div style={{ marginTop: "3px" }}>
-                <LoginLogo style={{ height: "13px" }} /> {/* 👈 smaller logo */}
+                <LoginLogo style={{ height: "13px" }} />
               </div>
-
-              <div
-                className="fw-bold"
-                style={{ color: "#ffffff", fontSize: "17px", lineHeight: "1.1" }}
-              >
+              <div className="fw-bold text-white" style={{ fontSize: "17px" }}>
                 Department of Sericulture
               </div>
-
-              <div
-                className="fw-bold"
-                style={{ color: "#ffffff", fontSize: "15px", lineHeight: "1.1" }}
-              >
+              <div className="fw-bold text-white" style={{ fontSize: "15px" }}>
                 Government of Karnataka
               </div>
             </Card.Body>
@@ -83,14 +121,7 @@ function DbtApplicationStatusCheck() {
       <Row className="justify-content-center">
         <Col lg={6} md={8}>
           <Card className="shadow border-0">
-            <Card.Header
-              className="text-center fw-bold"
-              style={{
-                backgroundColor: "#0f6cbe",
-                color: "#ffffff",
-                fontSize: "16px",
-              }}
-            >
+            <Card.Header className="text-center fw-bold" style={{ backgroundColor: "#0f6cbe", color: "#fff" }}>
               View Application Status
             </Card.Header>
 
@@ -101,11 +132,7 @@ function DbtApplicationStatusCheck() {
                     <Form.Label>
                       Search By <span className="text-danger">*</span>
                     </Form.Label>
-                    <Form.Select
-                      name="select"
-                      value={searchData.select}
-                      onChange={handleSearchInputs}
-                    >
+                    <Form.Select name="select" value={searchData.select} onChange={handleSearchInputs}>
                       <option value="mobileNo">Mobile Number</option>
                       <option value="fid">FRUITS ID</option>
                       <option value="arn">ARN</option>
@@ -114,15 +141,14 @@ function DbtApplicationStatusCheck() {
 
                   <Col md={7}>
                     <Form.Label>
-                      {getDynamicLabel()}{" "}
-                      <span className="text-danger">*</span>
+                      Enter {getDynamicLabel()} <span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
                       name="text"
                       value={searchData.text}
                       onChange={handleSearchInputs}
-                      placeholder={getDynamicLabel()}
+                      placeholder={`Enter ${getDynamicLabel()}`}
                       required
                     />
                   </Col>
@@ -184,9 +210,7 @@ function DbtApplicationStatusCheck() {
                         <td>{item.componentName}</td>
                         <td>{item.stageName}</td>
                         <td>{item.schemeAmount}</td>
-                        <td className="fw-bold text-success">
-                          {item.applicationStatus}
-                        </td>
+                        <td className="fw-bold text-success">{item.applicationStatus}</td>
                         <td>{item.userName}</td>
                       </tr>
                     ))}

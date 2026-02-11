@@ -35,6 +35,8 @@ function HelpDesk() {
     hdStatusId: "1",
     hdSeverityId: "4",
     onBehalfOf: localStorage.getItem("userMasterId"),
+    contactPerson: "",
+  contactNumber: "",
   });
 
   const placeholder = t("Enter your Query");
@@ -92,7 +94,52 @@ function HelpDesk() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+
+      const isContactPersonEmpty =
+  !data.contactPerson || data.contactPerson.trim() === "";
+
+const isContactNumberEmpty =
+  !data.contactNumber || data.contactNumber.trim() === "";
+
+if (isContactPersonEmpty && isContactNumberEmpty) {
+  Swal.fire({
+    icon: "warning",
+    title: "Validation Required",
+    text: "Please enter the Contact Name and Contact Number",
+    confirmButtonText: "OK",
+  });
+  return;
+}
+
+if (isContactPersonEmpty) {
+  Swal.fire({
+    icon: "warning",
+    title: "Validation Required",
+    text: "Please enter the Contact Name",
+    confirmButtonText: "OK",
+  });
+  return;
+}
+
+if (isContactNumberEmpty) {
+  Swal.fire({
+    icon: "warning",
+    title: "Validation Required",
+    text: "Please enter the Contact Number",
+    confirmButtonText: "OK",
+  });
+  return;
+}
+
+if (data.contactNumber.length !== 10) {
+  Swal.fire({
+    icon: "warning",
+    title: "Invalid Contact Number",
+    text: "Contact Number must be 10 digits",
+    confirmButtonText: "OK",
+  });
+  return;
+}
       api
         .post(baseURL2 + `hdTicket/add`, data)
         .then((response) => {
@@ -119,6 +166,8 @@ function HelpDesk() {
               hdStatusId: "1",
               hdSeverityId: "4",
               onBehalfOf: localStorage.getItem("userMasterId"),
+              contactPerson: "",
+              contactNumber: "",
             });
             setAttachFiles("");
             document.getElementById("hdAttachFiles").value = "";
@@ -151,6 +200,8 @@ function HelpDesk() {
       hdStatusId: "1",
       hdSeverityId: "4",
       onBehalfOf: localStorage.getItem("userMasterId"),
+      contactPerson: "",
+      contactNumber: "",
     });
     setAttachFiles("");
     document.getElementById("hdAttachFiles").value = "";
@@ -656,6 +707,56 @@ const handleAttachFileUpload = async (hdTicketId) => {
   </Form.Group>
 </Col>
 
+<Col lg="4">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>
+      {t("Contact Name")}
+      <span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        type="text"
+        name="contactPerson"                 // ✅ backend expects this
+        value={data.contactPerson}
+        onChange={handleInputs}
+        placeholder={t("Enter Contact Name")}
+        required
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Contact Name is mandatory")}
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="4">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label>
+      {t("Contact Number")}
+      <span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        type="text"
+        name="contactNumber"                // ✅ backend expects this
+        value={data.contactNumber}
+        maxLength={10}
+        required
+        placeholder={t("Enter Contact Number")}
+        onChange={(e) => {
+          // ✅ numbers only
+          if (/^\d*$/.test(e.target.value)) {
+            handleInputs(e);
+          }
+        }}
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Contact Number is mandatory")}
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+
                   <Col lg="4">
                     <Form.Group as={Row} className="form-group mt-2">
                       <Form.Label column sm={3} className="mt-n2">
@@ -750,7 +851,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
       style={{ fontSize: "22px" }}   
     >
       {t(
-        "Please  include  your  Name and Mobile Number in the Query details  for  any  clarification  regarding   the   raised   Query."
+        // "Please  include  your  Name and Mobile Number in the Query details  for  any  clarification  regarding   the   raised   Query."
       )}
     </Form.Label>
 
