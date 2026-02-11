@@ -186,7 +186,8 @@ function ReportSuccessList() {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS",
+            // status: "ACKNOWLEDGEMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
           },
         }
       )
@@ -420,7 +421,8 @@ const getFinancialDefaultDetails = () => {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS",
+            // status: "ACKNOWLEDGEMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
           },
         }
       )
@@ -457,7 +459,7 @@ const getFinancialDefaultDetails = () => {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
           },
           responseType: 'blob',
           headers: {
