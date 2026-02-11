@@ -187,7 +187,7 @@ function ReportSuccessList() {
             type: searchData.type,
             displayAllRecords: true,
             // status: "ACKNOWLEDGEMENT SUCCESS",
-            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS IN DBT",
           },
         }
       )
@@ -422,7 +422,7 @@ const getFinancialDefaultDetails = () => {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
             // status: "ACKNOWLEDGEMENT SUCCESS",
-            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS IN DBT",
           },
         }
       )
@@ -459,7 +459,7 @@ const getFinancialDefaultDetails = () => {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS",
+            status: "ACKNOWLEDGEMENT SUCCESS,PAYMENT SUCCESS IN DBT",
           },
           responseType: 'blob',
           headers: {
