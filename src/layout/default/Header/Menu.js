@@ -625,6 +625,13 @@ function Menu() {
     Reports_Export_Report_Helpdesk_Details_Report: false,
 
 
+    // Reports_Pendency_Report: false,
+
+    // Reports_Cumulative_Report: false,
+
+    // Reports_Sanction_Order: false,
+
+
 
     // Admin_Report_Admin: false,
     // Admin_Report_Transaction: false,
@@ -1697,14 +1704,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Registration_Farmer_Without_FruitsId ? (
+            {/* {showMenu.Registration_Farmer_Without_FruitsId ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Farmer Without FruitsId")}
                   to="/seriui/farmer-without-fruits"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.Registration_Other_State_Farmer ? (
               <MenuItem>
                 <MenuItemLink
@@ -1762,14 +1769,14 @@ function Menu() {
               </MenuItem>
             ) : null}
 
-             {showMenu.Services_Service_Download_Documents ? (
+             {/* {showMenu.Services_Service_Download_Documents ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Download Documents")}
                   to="/seriui/generate-sanction-order"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
              {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
               <MenuItem>
@@ -5406,6 +5413,40 @@ function Menu() {
                   />
                 </MenuItem>
               ) : null}
+
+              {/* {showMenu.Reports_Sanction_Order ? (
+                <MenuItem>
+                  <MenuItemLink
+                    text={t("Sanction Orders")}
+                    to="/seriui/generate-sanction-order"
+                    blank={true}
+                  />
+                </MenuItem>
+              ) : null}
+
+            
+
+              {showMenu.Reports_Pendency_Report ? (
+                <MenuItem>
+                  <MenuItemLink
+                    text={t("Pendency Reports")}
+                    to="/seriui/pendency-dashboard"
+                    blank={true}
+                  />
+                </MenuItem>
+              ) : null}
+
+              {showMenu.Reports_Cumulative_Report ? (
+                <MenuItem>
+                  <MenuItemLink
+                    text={t("Cumulative Reports")}
+                    to="/seriui/cumulative-report"
+                    blank={true}
+                  />
+                </MenuItem>
+              ) : null} */}
+
+              
 
               
           </MenuSub>
