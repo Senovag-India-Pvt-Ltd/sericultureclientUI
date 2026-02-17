@@ -1697,14 +1697,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Registration_Farmer_Without_FruitsId ? (
+            {/* {showMenu.Registration_Farmer_Without_FruitsId ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Farmer Without FruitsId")}
                   to="/seriui/farmer-without-fruits"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.Registration_Other_State_Farmer ? (
               <MenuItem>
                 <MenuItemLink
