@@ -230,8 +230,8 @@ useEffect(() => {
         description: datas.description,
         hectareId: datas.hectareId,
         spacingId: datas.spacingId,
-        periodFrom: new Date("2024-04-01"),
-        periodTo: new Date("2025-03-31"),
+        periodFrom: new Date("2025-04-01"),
+        periodTo: new Date("2026-03-31"),
       }));
 
       setFarmerId(datas.farmerId);

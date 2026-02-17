@@ -906,7 +906,7 @@ function AllApplicationList() {
       ),
       sortable: false,
       hide: "md",
-      //   grow: 2,
+        grow: 2,
     },
   ];
 

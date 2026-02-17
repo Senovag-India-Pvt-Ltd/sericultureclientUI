@@ -5978,17 +5978,22 @@ const fetchReelerDetails = () => {
                                       onChange={handleInputs}
                                       required
                                     >
-                                      <option value="">{t("Select Table/Basin/Ends")}</option>
-                                      <option value="4 Charaka">4 Charaka</option>
-                                      <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
-                                      <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
-                                      <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
-                                      <option value="6 Basin">6 Basin</option>
-                                      <option value="10 Basin">10 Basin</option>
-                                      <option value="36 ends">36 ends</option>
-                                      <option value="48 ends">48 ends</option>
-                                      <option value="400 ends">400 ends</option>
-                                      <option value="200 ends">200 ends</option>
+                                       <option value="">{t("Select Table/Basin/Ends")}</option>
+                                        <option value="1 Charaka">1 Charaka</option>
+                                        <option value="2 Charaka">2 Charaka</option>
+                                        <option value="3 Charaka">3 Charaka</option>
+                                        <option value="4 Charaka">4 Charaka</option>
+                                        <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
+                                        <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
+                                        <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
+                                        <option value="3 Basin">3 Basin</option>
+                                        <option value="5 Basin">5 Basin</option>
+                                        <option value="6 Basin">6 Basin</option>
+                                        <option value="10 Basin">10 Basin</option>
+                                        <option value="36 ends">36 ends</option>
+                                        <option value="48 ends">48 ends</option>
+                                        <option value="400 ends">400 ends</option>
+                                        <option value="200 ends">200 ends</option>
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                       {t("Table/Basin/Ends is required")}
