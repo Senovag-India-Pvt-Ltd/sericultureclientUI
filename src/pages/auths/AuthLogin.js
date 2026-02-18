@@ -330,12 +330,16 @@ return (
 
                       <div className="d-grid gap-2">
                         <Button type="submit">Login to account</Button>
-                        <Button
-  variant="outline-primary"
-  onClick={() => setShowLoginForm(false)}
+                        <Link
+  to="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn btn-primary"
 >
-  Back
-</Button>
+  Download Mobile App
+</Link>
+
+                      {/* </div> */}
 
                       </div>
                     </Form>
