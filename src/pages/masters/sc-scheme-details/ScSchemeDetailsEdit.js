@@ -67,6 +67,7 @@ function ScSchemeDetailsEdit() {
                 sanctionOrderForScheme: "",
                 unitForScheme: "",
                 acknowledgementForScheme: "",
+                schemeCodeForSanctionOrder: "",
             });
             setValidated(false);
           }
@@ -101,6 +102,7 @@ function ScSchemeDetailsEdit() {
         sanctionOrderForScheme: "",
         unitForScheme: "",
         acknowledgementForScheme: "",
+        schemeCodeForSanctionOrder: "",
     });
   };
 
@@ -447,6 +449,29 @@ function ScSchemeDetailsEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="title">
+                          {t("Scheme Code For Sanction Order")}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="schemeCodeForSanctionOrder"
+                              name="schemeCodeForSanctionOrder"
+                              type="text"
+                              value={data.schemeCodeForSanctionOrder}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Scheme Code For Sanction Order")}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            {t("Scheme Code For Sanction Order is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">

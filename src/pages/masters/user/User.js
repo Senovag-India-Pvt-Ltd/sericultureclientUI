@@ -33,7 +33,8 @@ function User() {
     tscMasterId:"",
     khazaneRecipientId: "",
     divisionMasterId: "",
-    allowAnyUser:""
+    allowAnyUser:"",
+    designationNameInKannadaForSanctionOrder: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -95,7 +96,8 @@ function User() {
               tscMasterId:"",
               khazaneRecipientId: "",
               divisionMasterId: "",
-              allowAnyUser:""
+              allowAnyUser:"",
+              designationNameInKannadaForSanctionOrder: "",
             });
             setValidated(false);
           }
@@ -136,7 +138,8 @@ function User() {
       tscMasterId:"",
       khazaneRecipientId: "",
       divisionMasterId: "",
-      allowAnyUser:""
+      allowAnyUser:"",
+      designationNameInKannadaForSanctionOrder: "",
     });
   };
 
@@ -867,6 +870,24 @@ function User() {
                           type="text"
                           placeholder={t("Enter Khazane ID")}
                           // required
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                 <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="vibhaga">
+                        {t("Division Name For Sanction Order")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="designationNameInKannadaForSanctionOrder"
+                          name="designationNameInKannadaForSanctionOrder"
+                          value={data.designationNameInKannadaForSanctionOrder}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t("Enter Division")}
                         />
                       </div>
                     </Form.Group>

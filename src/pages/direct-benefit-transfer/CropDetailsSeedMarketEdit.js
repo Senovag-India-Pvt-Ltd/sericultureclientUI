@@ -615,7 +615,7 @@ const { t } = useTranslation();
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("CRC Bill No")}
+                          {t("CRC Bill Date")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -624,7 +624,7 @@ const { t } = useTranslation();
                             value={data.crcBillNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("CRC Bill No")}
+                            placeholder={t("CRC Bill Date")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">

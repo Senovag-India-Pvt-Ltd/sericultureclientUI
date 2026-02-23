@@ -869,15 +869,119 @@ const generateReportForSilkIncentive = async (selectedRows) => {
 };
 
 
-    const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
-  if (subSchemeType === 2) {
-    generateReportForIncentive(selectedRows);
-  } else if (subSchemeType === 3) {
-    generateReportForBonus(selectedRows);
-  } else if (subSchemeType === 4) {
-    generateReportForSeedCocoon(selectedRows);
+const generateReportForBonusPM = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-BonusPM`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
   }
 };
+
+
+const generateAcknowledgmentBonusBV = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-Bonus`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
+const generateAcknowledgmentIncentivePM = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-Incentive`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
+const generateAcknowledgmentIncentiveBV = async (selectedRows) => {
+  try {
+    const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
+
+    const response = await api.post(
+      baseURLReport + `get-IncentiveBV`,
+      {
+        userMasterId: localStorage.getItem("userMasterId"),
+        schemeId,
+        subSchemeId,
+        applicationFormIds,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    // console.error("Error generating bonus report", error);
+  }
+};
+
+
+//     const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
+//   if (subSchemeType === 2) {
+//     generateReportForIncentive(selectedRows);
+//   } else if (subSchemeType === 3) {
+//     generateReportForBonus(selectedRows);
+//   } else if (subSchemeType === 4) {
+//     generateReportForSeedCocoon(selectedRows);
+//   }
+// };
 
 // const generateFinalReport = (selectedRows) => {
 //   if (!sanctionOrderForScheme) {
@@ -945,8 +1049,20 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
   if (!sanctionOrderForScheme) return;
 
   switch (sanctionOrderForScheme) {
-    case "Bivoltine Bonus":
-      await generateReportForBonusIncentiveSeedCocoon(selectedRows);
+    case "Bonus PM":
+      await generateReportForBonusPM(selectedRows);
+      break;
+
+      case "Bonus BV":
+      await generateAcknowledgmentBonusBV(selectedRows);
+      break;
+
+      case "Incentive PM":
+      await generateAcknowledgmentIncentivePM(selectedRows);
+      break;
+
+      case "Incentive BV":
+      await generateAcknowledgmentIncentiveBV(selectedRows);
       break;
 
     case "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP":
@@ -1613,8 +1729,12 @@ const [showPradesha, setShowPradesha] = useState(false);
     icon: "success",
     title: "Saved successfully",
     text: message,
+  }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
   });
-};
+    // clear();
+  };
 
 const saveRejectSuccess = (message) => {
     Swal.fire({

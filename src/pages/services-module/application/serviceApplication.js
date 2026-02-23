@@ -1222,24 +1222,27 @@ if (
     }
   }, [data.scSubSchemeDetailsId]);
 
+  const [defaultFinancialYearId, setDefaultFinancialYearId] = useState("");
+
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-      });
-  };
+  api
+    .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+    .then((response) => {
+      const id = response.data.content.financialYearMasterId;
+
+      setDefaultFinancialYearId(id);  // separate state
+
+      setData((prev) => ({
+        ...prev,
+        financialYearMasterId: id,
+      }));
+    })
+    .catch(() => {
+      setDefaultFinancialYearId("");
+    });
+};
 
   useEffect(() => {
     getFinancialDefaultDetails();
@@ -3863,7 +3866,7 @@ const isUserValid = React.useMemo(() => {
       talukId: landData.talukId,
       newFarmer: true,
       componentId: data.scComponentId,
-      financialYearMasterId: data.financialYearMasterId,
+      financialYearMasterId: defaultFinancialYearId,
       devAcre: 0,
       devGunta: 0,
       devFGunta: 0,
@@ -4116,6 +4119,117 @@ const isUserValid = React.useMemo(() => {
     try {
       const response = await api.post(
         baseURLReport + `getSilkIncentive`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+
+  const generateAcknowledgmentChawki1500 = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getChawkiAck1500`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentBonusPM = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBonus225ACKPM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentBonusBV = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBonus225ACKBV`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentIncentivePM = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIncentive120ACKPM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentIncentiveBV = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIncentive120ACKBV`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4613,6 +4727,52 @@ const callAcknowledgmentFunction = (
       schemeId,
       subSchemeId
     );
+
+    } else if (
+    acknowledgementForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+  ) {
+    generateAcknowledgmentChawki1500(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Bonus PM"
+  ) {
+    generateAcknowledgmentBonusPM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Bonus BV"
+  ) {
+    generateAcknowledgmentBonusBV(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive PM"
+  ) {
+    generateAcknowledgmentIncentivePM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive BV"
+  ) {
+    generateAcknowledgmentIncentiveBV(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
   }
 };
 

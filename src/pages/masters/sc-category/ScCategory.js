@@ -23,6 +23,7 @@ function ScCategory() {
     description:"",
     dbtCode: "",
     categoryShortName: "",
+    categoryCodeForSanctionOrder: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -57,6 +58,7 @@ function ScCategory() {
               description:"",
               dbtCode: "",
               categoryShortName: "",
+              categoryCodeForSanctionOrder:""
             });
             setValidated(false);
           }
@@ -85,6 +87,7 @@ function ScCategory() {
       description:"",
       dbtCode: "",
       categoryShortName: "",
+      categoryCodeForSanctionOrder: "",
     });
   };
 
@@ -193,6 +196,29 @@ function ScCategory() {
                         />
                         <Form.Control.Feedback type="invalid">
                         {t("Sub Component in Kannada is required.")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      {t("Category Code For Sanction Order")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="categoryCodeForSanctionOrder"
+                          name="categoryCodeForSanctionOrder"
+                          type="text"
+                          value={data.categoryCodeForSanctionOrder}
+                          onChange={handleInputs}
+                          placeholder={t("Enter Category Code For Sanction Order")}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        {t("Category Code For Sanction Order is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
