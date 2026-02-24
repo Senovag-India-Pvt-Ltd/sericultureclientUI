@@ -1077,6 +1077,7 @@ import RegisteredPrivateChawkiList from "../pages/services-module/application-co
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
+import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 
 // Admin and Reports
 
@@ -1106,6 +1107,11 @@ function Router() {
         <Route
           path="/seriui/display-all-lot/:marketId"
           element={<DisplayAllLot />}
+        />
+
+       <Route
+          path="/seriui/download-sanction-order"
+          element={<DownloadSanctionOrder />}
         />
         {/* Application Check */}
          <Route
