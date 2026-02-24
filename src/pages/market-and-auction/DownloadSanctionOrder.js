@@ -67,7 +67,7 @@ useEffect(() => {
 
 const searchSanctionByURL = (fullUrl) => {
   api
-    .get(baseURLDBT + "service/by-url", {
+    .get(baseURLDBT + "dashboard/by-url", {
       params: { url: fullUrl },
     })
     .then((response) => {

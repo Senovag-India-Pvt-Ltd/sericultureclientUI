@@ -1090,11 +1090,20 @@ function Router() {
     const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
     const applicationCheck = /^\/seriui\/application-status$/;
+    const downloadSanctionOrder = /^\/seriui\/download-sanction-order$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
-      navigate("/seriui");
-    }
+    // if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+    //   navigate("/seriui");
+    // }
+    if (
+    !isAuthenticated &&
+    !displayAllLotPathPattern.test(pathname) &&
+    !applicationCheck.test(pathname) &&
+    !downloadSanctionOrder.test(pathname)
+  ) {
+    navigate("/seriui");
+  }
   }, [isAuthenticated, navigate]);
 
   return (
