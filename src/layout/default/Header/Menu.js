@@ -1712,14 +1712,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
-            {showMenu.Registration_Other_State_Farmer ? (
+            {/* {showMenu.Registration_Other_State_Farmer ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Other State Farmer")}
                   to="/seriui/other-state-farmer"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
