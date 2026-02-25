@@ -38,7 +38,7 @@ function DbtApplicationStatusCheck() {
   const getDynamicLabel = () => {
     if (searchData.select === "mobileNo") return "Mobile Number";
     if (searchData.select === "fid") return "FRUITS ID";
-    return "ARN Number";
+    return "Acknowledgement Reference Number(ARN)";
   };
 
   const getNotExistMessage = () => {
@@ -96,6 +96,12 @@ function DbtApplicationStatusCheck() {
       });
   };
 
+  const allPaymentSuccess = applicationList.every(
+  item =>
+    item.applicationStatus?.trim().toUpperCase() ===
+    "PAYMENT SUCCESS IN DBT"
+);
+
   return (
     <div className="p-4">
       {/* ================= HEADER ================= */}
@@ -135,7 +141,7 @@ function DbtApplicationStatusCheck() {
                     <Form.Select name="select" value={searchData.select} onChange={handleSearchInputs}>
                       <option value="mobileNo">Mobile Number</option>
                       <option value="fid">FRUITS ID</option>
-                      <option value="arn">ARN</option>
+                      <option value="arn">Acknowledgement Reference Number(ARN)</option>
                     </Form.Select>
                   </Col>
 
@@ -190,16 +196,16 @@ function DbtApplicationStatusCheck() {
                       <th>SL No</th>
                       <th>Beneficiary Name</th>
                       <th>FRUITS ID</th>
-                      <th>ARN No</th>
+                      <th>Acknowledgement Reference Number(ARN NO)</th>
                       <th>Scheme Name</th>
                       <th>Component Name</th>
-                      <th>Stage</th>
+                      {!allPaymentSuccess && <th>Stage</th>}
                       <th>Amount</th>
                       <th>Status</th>
-                      <th>Currently With</th>
+                      {!allPaymentSuccess && <th>Currently With</th>}
                     </tr>
                   </thead>
-                  <tbody>
+                  {/* <tbody>
                     {applicationList.map((item, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -214,6 +220,50 @@ function DbtApplicationStatusCheck() {
                         <td>{item.userName}</td>
                       </tr>
                     ))}
+                  </tbody> */}
+                 <tbody>
+                    {applicationList.map((item, index) => {
+
+                      const status = item.applicationStatus?.trim().toUpperCase();
+
+                      const isPaymentSuccess = status === "PAYMENT SUCCESS IN DBT";
+                      const isAckSuccess = status === "ACKNOWLEDGEMENT SUCCESS";
+
+                      const isFailedStatus =
+                        status === "PAYMENT FAILED IN DBT" ||
+                        status === "ACKNOWLEDGEMENT FAILED";
+
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.farmerName}</td>
+                          <td>{item.fruitsId}</td>
+                          <td>{item.arn}</td>
+                          <td>{item.schemeName}</td>
+                          <td>{item.componentName}</td>
+
+                          {/* Hide column cell if header hidden */}
+                          {!allPaymentSuccess && <td>{item.stageName}</td>}
+
+                          <td>{item.schemeAmount}</td>
+
+                          <td
+                            className={`fw-bold ${
+                              isFailedStatus
+                                ? "text-danger"
+                                : isPaymentSuccess || isAckSuccess
+                                ? "text-success"
+                                : "text-primary"
+                            }`}
+                          >
+                            {item.applicationStatus}
+                          </td>
+
+                          {/* Hide column cell if header hidden */}
+                          {!allPaymentSuccess && <td>{item.userName}</td>}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </Card.Body>
