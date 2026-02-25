@@ -627,20 +627,18 @@ const { t } = useTranslation();
           </Card>
         </Col>
 
-        <Col xxl="3">
+        {/* <Col xxl="3">
           <Card className="h-100">
             <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
                     <h4 className="title mb-1">{t("Escalated Tickets")}</h4>
-                    {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary ">
                       {hdTicketData.escalatedTickets}
                     </div>
-                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button
                     href="#"
@@ -651,9 +649,6 @@ const { t } = useTranslation();
                     {t("View")}
                   </Button>
                 </div>
-                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
-                          <Image src="/images/award/a.png" alt=""/>
-                      </div> */}
               </div>
             </Card.Body>
           </Card>
@@ -666,13 +661,11 @@ const { t } = useTranslation();
                 <div>
                   <div className="card-title">
                     <h4 className="title mb-1">{t("Resolved Tickets")}</h4>
-                    {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary ">
                       {hdTicketData.resolvedTickets}
                     </div>
-                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button
                     href="#"
@@ -683,13 +676,10 @@ const { t } = useTranslation();
                     {t("View")}
                   </Button>
                 </div>
-                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
-                          <Image src="/images/award/a.png" alt=""/>
-                      </div> */}
               </div>
             </Card.Body>
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       <Row className="g-gs mt-2">
         <Col xxl="12">
