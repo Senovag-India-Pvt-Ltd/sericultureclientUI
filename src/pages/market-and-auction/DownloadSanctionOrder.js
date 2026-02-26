@@ -226,7 +226,7 @@ const downloadFile = async () => {
     const fileNameWithExtension = `${securityKeyFromDB}.pdf`;  // ✅ add .pdf
 
     const response = await api.get(
-      baseURLDBT + "service/downLoadFile",
+      baseURLDBT + "dashboard/downLoadFile",
       {
         params: { fileName: fileNameWithExtension }, // ✅ send securityKey.pdf
         responseType: "arraybuffer",
