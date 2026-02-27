@@ -4292,6 +4292,28 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+   const generateAcknowledgmentIncentiveForBivoltineChawki = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getChawki1000Ack`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
@@ -4768,6 +4790,15 @@ const callAcknowledgmentFunction = (
     acknowledgementForScheme === "Incentive BV"
   ) {
     generateAcknowledgmentIncentiveBV(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive For Bivoltine Chawki Rearing Cost"
+  ) {
+    generateAcknowledgmentIncentiveForBivoltineChawki(
       applicationFormId,
       schemeId,
       subSchemeId
