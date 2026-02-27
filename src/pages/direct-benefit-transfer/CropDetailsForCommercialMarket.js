@@ -51,6 +51,7 @@ function CropDetailsForCommercialMarket() {
       marketId: "",
       biddingSlipNo: "",
       cocoonRatePerKg: "",
+      biddingSlipNumber: "",
     });
 
   const { t } = useTranslation();
@@ -143,6 +144,7 @@ const [showModal, setShowModal] = useState(false);
     biddingSlipNo: "",
     cocoonRatePerKg: "",
     eligibleQuantityCocoonsTransacted: "",
+    biddingSlipNumber: "",
   });
 
   setShowModal(false);
@@ -193,6 +195,7 @@ const [showModal, setShowModal] = useState(false);
     biddingSlipNo: "",
     cocoonRatePerKg: "",
     eligibleQuantityCocoonsTransacted: "",
+    biddingSlipNumber: "",
   });
 };
 
@@ -916,27 +919,7 @@ const [showModal, setShowModal] = useState(false);
                     </Col>
 
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          {t("Bidding Slip Number")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="biddingSlipNumber"
-                            name="biddingSlipNumber"
-                            value={data.biddingSlipNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Enter Bidding Slip Number")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                          Bidding Slip Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                   
 
                     
 
@@ -1306,6 +1289,7 @@ const [showModal, setShowModal] = useState(false);
                                               {/* <th></th> */}
                                               <th>{t("Action")}</th>
                                               <th>{t("Market")}</th>
+                                              <th>{t("Bidding Slip Number")}</th>
                                               <th>{t("Bidding Slip Lot No")}</th>
                                               <th>{t("Cocoon Rate Per Kg")}</th>
                                               <th>{t("Quantity Of Cocoon Produced")}</th>
@@ -1337,6 +1321,7 @@ const [showModal, setShowModal] = useState(false);
                                                   </div>
                                                 </td>
                                                 <td>{item.marketMasterName}</td>
+                                                <td>{item.biddingSlipNumber}</td>
                                                 <td>{item.biddingSlipNo}</td>
                                                 <td>{item.cocoonRatePerKg}</td>
                                                 <td>{item.eligibleQuantityCocoonsTransacted}</td>
@@ -1471,8 +1456,30 @@ const [showModal, setShowModal] = useState(false);
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                     <Col lg="6">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={transactionDetails.biddingSlipNumber}
+                            onChange={handleMapInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1636,6 +1643,28 @@ const [showModal, setShowModal] = useState(false);
 
                     <Col lg="6">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={transactionDetails.biddingSlipNumber}
+                            onChange={handleMapInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

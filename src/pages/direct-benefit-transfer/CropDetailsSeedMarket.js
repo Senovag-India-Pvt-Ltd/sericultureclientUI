@@ -48,6 +48,7 @@ function CropDetailsForSeedMarket() {
     cocoonTransactedForSeedInKg: "",
     externalUnitRegistrationId: "",
     farmerName: "",
+    biddingSlipNumber: "",
   });
 
   const { t } = useTranslation();
@@ -193,6 +194,7 @@ function CropDetailsForSeedMarket() {
             cocoonTransactedForSeedInKg: "",
             externalUnitRegistrationId: "",
             farmerName: "",
+            biddingSlipNumber: "",
             });
             setValidated(false);
           }
@@ -236,6 +238,7 @@ function CropDetailsForSeedMarket() {
       cocoonTransactedForSeedInKg: "",
       externalUnitRegistrationId: "",
       farmerName: "",
+      biddingSlipNumber: "",
     });
     // setLot({
     //   lotNumber: "",
@@ -801,6 +804,28 @@ function CropDetailsForSeedMarket() {
                           />
                           <Form.Control.Feedback type="invalid">
                           Lot No is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")} <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={data.biddingSlipNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
