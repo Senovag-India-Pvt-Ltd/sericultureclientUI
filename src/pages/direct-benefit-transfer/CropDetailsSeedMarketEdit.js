@@ -687,7 +687,7 @@ const { t } = useTranslation();
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Chawki Percentage")}
+                          {t("Chawki Percentage")} <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -697,11 +697,11 @@ const { t } = useTranslation();
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Chawki Percentage")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          Chawki Percentage is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
