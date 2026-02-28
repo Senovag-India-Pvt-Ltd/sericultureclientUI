@@ -309,6 +309,7 @@ const [showModal, setShowModal] = useState(false);
       transactionDate: formatDate(t.transactionDate),
       marketId: t.marketId,
       biddingSlipNo: t.biddingSlipNo,
+      biddingSlipNumber: t.biddingSlipNumber,
       cocoonRatePerKg: t.cocoonRatePerKg,
     })),
     };
