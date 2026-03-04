@@ -9683,7 +9683,7 @@ const fetchReelerDetails = () => {
               <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="accountImagePath">
-                    {t("Upload Documents(PDF/jpg/png)(Max:2mb)")}
+                    {t("Upload Documents(PDF/jpg/png)(Max:5MB)")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control

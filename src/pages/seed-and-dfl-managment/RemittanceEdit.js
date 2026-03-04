@@ -534,7 +534,7 @@ const getUploadReceipt = async (file) => {
                 {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="fileUploadPath">
-                      Upload Bank Challan(png/jpg/pdf)(Max:2mb)
+                      Upload Bank Challan(png/jpg/pdf)(Max:5MB)
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control

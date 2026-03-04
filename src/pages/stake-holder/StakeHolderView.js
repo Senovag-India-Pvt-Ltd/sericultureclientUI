@@ -362,7 +362,7 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.khazaneRecipientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Farmer_Photo_(PDF/jpg/png)_(Max: 2mb)")}:</td>
+                      <td style={styles.ctstyle}> {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}:</td>
                       {/* <td>{StakeHolder.taluk}</td> */}
                       <td>
                         {" "}

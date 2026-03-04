@@ -2566,7 +2566,7 @@ function StakeHolderEdit() {
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:5MB)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2579,7 +2579,7 @@ function StakeHolderEdit() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                        {t("Farmer_Photo_(PDF/jpg/png)_(Max: 2mb)")}
+                        {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
