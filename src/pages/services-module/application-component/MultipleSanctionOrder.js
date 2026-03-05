@@ -51,6 +51,8 @@ function MultipleSanctionOrder() {
     scComponentId: "",
     scCategoryId: "",
     tscId: "",
+    machineTypeId: "",
+    raceId: "",
   });
 
   let name, value;
@@ -296,6 +298,9 @@ const enableSanctionIfRequired = async () => {
   const search = (e) => {
   e.preventDefault();
 
+  const isMachineTypeRequired =
+  sanctionOrderForScheme === "Silk Incentive-PSF";
+
   // 🔍 Validate all fields before calling API
   const areAllFieldsSelected =
     data.schemeId > 0 &&
@@ -311,6 +316,26 @@ const enableSanctionIfRequired = async () => {
     });
     return;
   }
+
+   // ⭐ ADD THIS BLOCK HERE
+  if (isMachineTypeRequired && data.machineTypeId <= 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Machine Type Required",
+      text: "Please select Machine Type",
+    });
+    return;
+  }
+
+  if (isMachineTypeRequired && data.raceId <= 0) {
+  Swal.fire({
+    icon: "warning",
+    title: "Race Required",
+    text: "Please select Race",
+  });
+  return;
+}
+
 
   // Reset
   setSelectedRows([]);
@@ -331,6 +356,8 @@ const enableSanctionIfRequired = async () => {
           scCategoryId: data.scCategoryId,
           // tscId: data.tscId || 0,
           tscId: data.tscId > 0 ? data.tscId : null,
+          machineTypeId: data.machineTypeId > 0 ? data.machineTypeId : null,
+          raceId: data.raceId > 0 ? data.raceId : null,
 
         },
       }
@@ -591,12 +618,14 @@ useEffect(() => {
       const categoryId = data[0]?.categoryId;
       const applicationDocumentId = data[0]?.applicationDocumentId;
       const subSchemeType = data[0]?.subSchemeType;
+      const sanctionOrderForScheme = data[0]?.sanctionOrderForScheme;
       setApplicationFormId(applicationDocumentId);
       setSchemeId(schemeId);
       setSubSchemeId(subSchemeId);
       setComponentId(componentId);
       setCategoryId(categoryId);
       setSubSchemeType(subSchemeType);
+      setSanctionOrderForScheme(sanctionOrderForScheme);
     } catch (err) {
       setListData({});
       setTotalSchemeAmount(0);
@@ -1132,6 +1161,43 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
             getTscList();
           }, []);
 
+          // to get Machine Type
+              const [machineTypeListData, setMachineTypeListData] = useState([]);
+            
+              const getMachineTypeList = () => {
+                api
+                  .get(baseURLMasterData + `machine-type-master/get-all`)
+                  .then((response) => {
+                    setMachineTypeListData(response.data.content.machineTypeMaster);
+                  })
+                  .catch((err) => {
+                    setMachineTypeListData([]);
+                  });
+              };
+            
+              useEffect(() => {
+                getMachineTypeList();
+              }, []);
+
+               // to get Race
+                     const [raceListData, setRaceListData] = useState([]);
+                  
+                     const getRaceList = () => {
+                       const response = api
+                         .get(baseURLMasterData + `raceMaster/get-all`)
+                         .then((response) => {
+                           setRaceListData(response.data.content.raceMaster);
+                         })
+                         .catch((err) => {
+                           setRaceListData([]);
+                         });
+                     };
+                   
+                     useEffect(() => {
+                       getRaceList();
+                     }, []);
+          
+
   // const postActionData = async (event) => {
   //   const form = event.currentTarget;
   //   if (form.checkValidity() === false) {
@@ -1486,7 +1552,8 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
       {
         applicationFormIds: applicationFormIds,
         userId: selectedUserId,
-        approvalStageId: approvalStageId
+        approvalStageId: approvalStageId,
+        assignedByProposalDate: data.proposalDate
       }
     );
 
@@ -1924,6 +1991,29 @@ const saveRejectSuccess = (message) => {
       hide: "md",
     },
 
+    // {
+    //   name: "Machine Type",
+    //   selector: (row) => row.machineTypeName,
+    //   cell: (row) => <span>{row.machineTypeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name: "Machine Type",
+      selector: (row) => row.machineTypeName,
+      cell: (row) => <span>{row.machineTypeName}</span>,
+      sortable: true,
+      hide: sanctionOrderForScheme !== "Silk Incentive-PSF" ? "all" : "md",
+    },
+
+    {
+      name: "Race",
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
+      sortable: true,
+      hide: sanctionOrderForScheme !== "Silk Incentive-PSF" ? "all" : "md",
+    },
+
     {
           name: "Action",
           cell: (row) => (
@@ -2334,6 +2424,89 @@ const saveRejectSuccess = (message) => {
                     </Form.Select>
                   </div>
                 </Col>
+
+
+                {/* <Form.Label column sm={1}>
+                  {t("Machine Type")}
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="machineTypeId"
+                      value={data.machineTypeId}
+                      onChange={handleInputs}
+                      // style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">{t("Select Machine Type")}</option>
+                      {machineTypeListData &&
+                            machineTypeListData.length ? machineTypeListData.map((list) => (
+                              <option
+                                key={list.machineTypeId}
+                                value={list.machineTypeId}
+                              >
+                                {list.machineTypeName}
+                            </option>
+                          ))
+                      : ""}
+                    </Form.Select>
+                  </div>
+                </Col> */}
+
+                {sanctionOrderForScheme === "Silk Incentive-PSF" && (
+                    <>
+                      <Form.Label column sm={1}>
+                        {t("Machine Type")}
+                      </Form.Label>
+
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="machineTypeId"
+                            value={data.machineTypeId}
+                            onChange={handleInputs}
+                          >
+                            <option value="0">{t("Select Machine Type")}</option>
+                            {machineTypeListData && machineTypeListData.length
+                              ? machineTypeListData.map((list) => (
+                                  <option
+                                    key={list.machineTypeId}
+                                    value={list.machineTypeId}
+                                  >
+                                    {list.machineTypeName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                        </div>
+                      </Col>
+
+                       <Form.Label column sm={1}>
+                        {t("Race")}
+                      </Form.Label>
+
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceId"
+                            value={data.raceId}
+                            onChange={handleInputs}
+                          >
+                            <option value="0">{t("Select Race")}</option>
+                            {raceListData && raceListData.length
+                              ? raceListData.map((list) => (
+                                  <option
+                                    key={list.raceMasterId}
+                                    value={list.raceMasterId}
+                                  >
+                                    {list.raceMasterName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                        </div>
+                      </Col>
+                    </>
+                  )}
                 </Row>
 
                 <Col sm={1}>

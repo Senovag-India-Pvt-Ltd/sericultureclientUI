@@ -138,6 +138,7 @@ const generateFinalReport = async (selectedRows) => {
     silkExchangeId:"",
     form17JNo: "",
     dailyLimit: "",
+    monthlyLimit: "",
     boilerInKg: "",
     sanctionNo: "",
     calculationBasedOn: "",
@@ -3919,6 +3920,7 @@ const isUserValid = React.useMemo(() => {
       silkExchangeId: data.silkExchangeId,
       form17JNo: data.form17JNo,
       dailyLimit: data.dailyLimit,
+       monthlyLimit:data.monthlyLimit,
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
       marketId: data.marketId,
@@ -4416,6 +4418,7 @@ const isUserValid = React.useMemo(() => {
       silkExchangeId:"",
       form17JNo: "",
       dailyLimit: "",
+       monthlyLimit: "",
       boilerInKg: "",
       sanctionNo: ""
     });
@@ -6157,7 +6160,7 @@ const fetchReelerDetails = () => {
                               </Col>
 
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Table/Basin/Ends")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -6194,7 +6197,7 @@ const fetchReelerDetails = () => {
                               </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Renditta/Grade")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -7298,8 +7301,8 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Monthly Limit")} 
-                                {/* <span className="text-danger">*</span> */}
+                                {t("Daily Limit")} 
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -7307,9 +7310,32 @@ const fetchReelerDetails = () => {
                                   name="dailyLimit"
                                   value={data.dailyLimit}
                                   onChange={handleInputs}
+                                  required
+                                  placeholder={t("Enter Daily Limit")}
+                                  // required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("Daily Limit is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("Monthly Limit")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="monthlyLimit"
+                                  value={data.monthlyLimit}
+                                  onChange={handleInputs}
                                   // required
                                   placeholder={t("Enter Monthly Limit")}
-                                  // required
+                                  required
                                 />
                                  <Form.Control.Feedback type="invalid">
                                   {t("Monthly Limit is required")}
@@ -7320,7 +7346,7 @@ const fetchReelerDetails = () => {
 
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("Quantity Of Cocoons in Kgs used to Produce Raw Silk")} 
                                 <span className="text-danger">*</span>

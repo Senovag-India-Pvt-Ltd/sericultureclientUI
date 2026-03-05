@@ -69,6 +69,22 @@ function DashboardReportList() {
     setPushToDbtData((prev) => ({ ...prev, [type]: formattedDate }));
   };
 
+  const parseDate = (value) => {
+  if (!value) return null;
+
+  // If already a Date object → return as-is
+  if (value instanceof Date) return value;
+
+  // If value is not a string → return null (avoid crash)
+  if (typeof value !== "string") return null;
+
+  // If string is not in YYYY-MM-DD format → return null
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+  const [y, m, d] = value.split("-");
+  return new Date(y, m - 1, d);
+};
+
   const handleDateForPropasalChange = (date, type) => {
     const formattedDate =
       date.getFullYear() +
@@ -571,6 +587,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     rejectReasonWorkflowMasterId:"",
     comment: "",
     proposalDate: "",
+    selectionLetterDate: "",
   });
 
   const [allowAnyUser, setAllowAnyUser] = useState(false);
@@ -2987,6 +3004,7 @@ const handleGenerateSanctionOrderClick = async () => {
         ddoCode: ddoCodeToSend,
         sanctionNo: actionData.sanctionNo,
         proposalDate: actionData.proposalDate,
+        selectionLetterDate: actionData.proposalDate,
         categoryId: actionFarmerData[0]?.categoryId,
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
@@ -2997,6 +3015,7 @@ const handleGenerateSanctionOrderClick = async () => {
 
       sendPost = {
         proposalDate: actionData.proposalDate,
+        selectionLetterDate: actionData.selectionLetterDate,
         description: actionData.comment,
         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
         applicationFormId: applicationFormId,
@@ -3023,8 +3042,22 @@ const handleGenerateSanctionOrderClick = async () => {
       apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
     } else {
       // Case 2: workOrder update
-      if (actionFarmerData[0].workOrder) {
-        apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+      // if (actionFarmerData[0].workOrder) {
+      //   apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+      // }
+      if (actionFarmerData[0]?.workOrder) {
+
+        if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
+          // Call workOrderUpdate
+
+          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+
+        } else {
+          // If financialDelegation is false OR not allowed → call inspectionUpdate
+
+          apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+        }
+
       }
 
       // Case 3: sanctionOrder update 
@@ -3185,14 +3218,29 @@ const handleGenerateSanctionOrderClick = async () => {
             saveError(response.data.error_description);
           } else {
             // Work order acknowledgment
-           if (actionFarmerData[0].workOrder) {
-              callWorkOrderAcknowledgment(
-                actionFarmerData[0].workOrderForScheme,
-                applicationFormId,
-                workOrderSchemeId,
-                actionFarmerData[0]?.subSchemeId,
-                actionFarmerData[0]?.categoryId
-              );
+          //  if (actionFarmerData[0].workOrder) {
+          //     callWorkOrderAcknowledgment(
+          //       actionFarmerData[0].workOrderForScheme,
+          //       applicationFormId,
+          //       workOrderSchemeId,
+          //       actionFarmerData[0]?.subSchemeId,
+          //       actionFarmerData[0]?.categoryId
+          //     );
+          //   }
+          if (actionFarmerData[0]?.workOrder) {
+
+              if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
+                
+                callWorkOrderAcknowledgment(
+                  actionFarmerData[0].workOrderForScheme,
+                  applicationFormId,
+                  workOrderSchemeId,
+                  actionFarmerData[0]?.subSchemeId,
+                  actionFarmerData[0]?.categoryId
+                );
+
+              }
+
             }
 
             saveSuccess();
@@ -4510,12 +4558,20 @@ const handleGenerateSanctionOrderClick = async () => {
                                                 actionData.userId === "0"
                                               }
                                               // disabled={fieldsDisabled}
+                                              // disabled={
+                                              //   true || 
+                                              //   fieldsDisabled ||
+                                              //   fieldsSanctionOrderDisabled ||
+                                              //   pushToDbtStatus
+                                              // }
                                               disabled={
-                                                true || 
-                                                fieldsDisabled ||
-                                                fieldsSanctionOrderDisabled ||
-                                                pushToDbtStatus
-                                              }
+                                                  !actionFarmerData[0]?.workOrder &&
+                                                  (
+                                                    fieldsDisabled ||
+                                                    fieldsSanctionOrderDisabled ||
+                                                    pushToDbtStatus
+                                                  )
+                                                }
                                               // isInvalid={
                                               //   actionData.userId === undefined ||
                                               //   actionData.userId === "0"
@@ -4736,7 +4792,10 @@ const handleGenerateSanctionOrderClick = async () => {
 
                   {/* Work Order Details Accordion */}
                   {actionFarmerData.length > 0 &&
-                    actionFarmerData[0].workOrder && (
+                  !actionFarmerData[0].workOrderNumber &&
+                  (actionFarmerData[0].financialDelegation
+                    ? actionFarmerData[0].workOrder && isSanctionOrderAllowed
+                    : actionFarmerData[0].workOrder) && (
                       <Accordion.Item eventKey="transaction">
                         <Accordion.Header
                           style={{
@@ -4751,6 +4810,27 @@ const handleGenerateSanctionOrderClick = async () => {
                           Generate Work Order
                         </Accordion.Header>
                         <Accordion.Body>
+
+                        <Col lg="3">
+                          <Form.Group className="form-group">
+                            <Form.Label style={{ fontWeight: "bold" }}>
+                              Selection Letter Date <span className="text-danger">*</span>
+                            </Form.Label>
+              
+                            <DatePicker
+                              selected={parseDate(actionData.selectionLetterDate)}
+                              onChange={(date) => handleDateForPropasalChange(date, "selectionLetterDate")}
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              maxDate={new Date()}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
                           
                         </Accordion.Body>
                       </Accordion.Item>
