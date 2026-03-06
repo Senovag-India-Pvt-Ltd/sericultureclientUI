@@ -3004,7 +3004,12 @@ const handleGenerateSanctionOrderClick = async () => {
         ddoCode: ddoCodeToSend,
         sanctionNo: actionData.sanctionNo,
         proposalDate: actionData.proposalDate,
-        selectionLetterDate: actionData.proposalDate,
+        userId: actionData.userId,
+        // userId: selectedUserId, 
+        stepId: actionData.stepId,
+        selectionLetterDate: actionData.selectionLetterDate,
+        ejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+        description: actionData.comment,
         categoryId: actionFarmerData[0]?.categoryId,
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
@@ -3047,14 +3052,16 @@ const handleGenerateSanctionOrderClick = async () => {
       // }
       if (actionFarmerData[0]?.workOrder) {
 
-        if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
-          // Call workOrderUpdate
+        if (!actionFarmerData[0]?.financialDelegation) {
+          // financialDelegation false → always WorkOrder API
+          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
 
+        } else if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
+          // financialDelegation true and allowed
           apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
 
         } else {
-          // If financialDelegation is false OR not allowed → call inspectionUpdate
-
+          // financialDelegation true but not allowed
           apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
         }
 
@@ -3229,8 +3236,8 @@ const handleGenerateSanctionOrderClick = async () => {
           //   }
           if (actionFarmerData[0]?.workOrder) {
 
-              if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
-                
+              if (!actionFarmerData[0]?.financialDelegation || isSanctionOrderAllowed) {
+
                 callWorkOrderAcknowledgment(
                   actionFarmerData[0].workOrderForScheme,
                   applicationFormId,
@@ -4564,14 +4571,26 @@ const handleGenerateSanctionOrderClick = async () => {
                                               //   fieldsSanctionOrderDisabled ||
                                               //   pushToDbtStatus
                                               // }
+                                               // disabled={fieldsDisabled}
+                                              // disabled={
+                                              //   true || 
+                                              //   fieldsDisabled ||
+                                              //   fieldsSanctionOrderDisabled ||
+                                              //   pushToDbtStatus
+                                              // }
+                                              // disabled={
+                                              //     !actionFarmerData[0]?.workOrder &&
+                                              //     (
+                                              //       fieldsDisabled ||
+                                              //       fieldsSanctionOrderDisabled ||
+                                              //       pushToDbtStatus
+                                              //     )
+                                              //   }
                                               disabled={
-                                                  !actionFarmerData[0]?.workOrder &&
-                                                  (
-                                                    fieldsDisabled ||
-                                                    fieldsSanctionOrderDisabled ||
-                                                    pushToDbtStatus
-                                                  )
-                                                }
+                                                actionFarmerData?.[0]?.workOrder
+                                                  ? false
+                                                  : (true || fieldsDisabled || fieldsSanctionOrderDisabled || pushToDbtStatus)
+                                              }
                                               // isInvalid={
                                               //   actionData.userId === undefined ||
                                               //   actionData.userId === "0"
@@ -4792,10 +4811,12 @@ const handleGenerateSanctionOrderClick = async () => {
 
                   {/* Work Order Details Accordion */}
                   {actionFarmerData.length > 0 &&
-                  !actionFarmerData[0].workOrderNumber &&
-                  (actionFarmerData[0].financialDelegation
-                    ? actionFarmerData[0].workOrder && isSanctionOrderAllowed
-                    : actionFarmerData[0].workOrder) && (
+  !actionFarmerData[0].workOrderNumber &&
+  actionFarmerData[0].workOrder &&
+  (
+    !actionFarmerData[0].financialDelegation || 
+    (actionFarmerData[0].financialDelegation && isSanctionOrderAllowed)
+  ) && (
                       <Accordion.Item eventKey="transaction">
                         <Accordion.Header
                           style={{
@@ -4814,7 +4835,7 @@ const handleGenerateSanctionOrderClick = async () => {
                         <Col lg="3">
                           <Form.Group className="form-group">
                             <Form.Label style={{ fontWeight: "bold" }}>
-                              Selection Letter Date <span className="text-danger">*</span>
+                              Selection Letter/Work Order Date <span className="text-danger">*</span>
                             </Form.Label>
               
                             <DatePicker

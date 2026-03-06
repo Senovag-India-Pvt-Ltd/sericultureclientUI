@@ -471,6 +471,9 @@ useEffect(() => {
     estimatedCost:"",
     roofTypeId:"",
     proposalDate:"",
+    length:"",
+    breadth:"",
+    height:"",
   });
 
   const [equipment, setEquipment] = useState({
@@ -3911,6 +3914,9 @@ const isUserValid = React.useMemo(() => {
       extentOfMulberry: developedLand.extentOfMulberry,
       rhSqft: developedLand.rhSqft,
       estimatedCost: developedLand.estimatedCost,
+      length: developedLand.length,
+      breadth: developedLand.breadth,
+      height: developedLand.height,
       roofTypeId: developedLand.roofTypeId,
       raceId:data.raceId,
       renditta:data.renditta,
@@ -6945,7 +6951,7 @@ const fetchReelerDetails = () => {
                         
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
+                          <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               {t("Approval Stage")}
                               <span className="text-danger">*</span>
@@ -7026,7 +7032,7 @@ const fetchReelerDetails = () => {
                         {/* ============ USER MASTER DROPDOWN ============ */}
                         {!allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 {t("User Master")}
                                 <span className="text-danger">*</span>
@@ -7067,7 +7073,7 @@ const fetchReelerDetails = () => {
                         {/* ============ SELECT USER DROPDOWN ============ */}
                         {allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>{t("Select User")}</Form.Label>
 
                               <ReactSelect
@@ -9113,6 +9119,76 @@ const fetchReelerDetails = () => {
                               {/* <Form.Control.Feedback type="invalid">
                                 {t("Vendor Name is required")}
                               </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Length")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="length"
+                                type="text"
+                                name="length"
+                                value={developedLand.length}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Length"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Length is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Breadth")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="breadth"
+                                type="text"
+                                name="breadth"
+                                value={developedLand.breadth}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Breadth"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Breadth is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Height")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="height"
+                                type="text"
+                                name="height"
+                                value={developedLand.height}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Height"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Height is required")}
+                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
