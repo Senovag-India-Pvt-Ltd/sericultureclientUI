@@ -3529,7 +3529,7 @@ const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, c
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureAdoptingBoiler || [];
+      const incentiveData = response.data?.content?.configureAdoptingBoiler || [];
       setAdoptingBoilerAmountListData(incentiveData);
 
       setAmountValue({

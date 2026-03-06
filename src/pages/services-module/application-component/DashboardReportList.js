@@ -588,6 +588,9 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     comment: "",
     proposalDate: "",
     selectionLetterDate: "",
+    empanelledVendorApprovedBy: "",
+    letterNo: "",
+    empanelledVendorDate: "",
   });
 
   const [allowAnyUser, setAllowAnyUser] = useState(false);
@@ -2145,6 +2148,18 @@ const handleGenerateSanctionOrderClick = async () => {
   }
 };
 
+const allowedSchemes = [
+  "IMCB-PSF",
+  "ICB-PSF",
+  "MERM-PSF",
+  "Atomatic Reeling Machine",
+  "Adopting Heat Recovery Unit-PSF",
+  "Adopting Boiler-PSF",
+  "Adopting Silent Generator",
+  "Adopting Solar power Generator",
+  "Adopting Solar Water Heater"
+];
+
 
 
 
@@ -3008,8 +3023,11 @@ const handleGenerateSanctionOrderClick = async () => {
         // userId: selectedUserId, 
         stepId: actionData.stepId,
         selectionLetterDate: actionData.selectionLetterDate,
-        ejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+        rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
         description: actionData.comment,
+        empanelledVendorApprovedBy: actionData.empanelledVendorApprovedBy,
+        letterNo: actionData.letterNo,
+        empanelledVendorDate: actionData.empanelledVendorDate,
         categoryId: actionFarmerData[0]?.categoryId,
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
@@ -3031,6 +3049,9 @@ const handleGenerateSanctionOrderClick = async () => {
         stepId: actionData.stepId,
         sanctionNo: actionData.sanctionNo,
         eligibleAmount: actionData.eligibleAmount,
+        empanelledVendorApprovedBy: actionData.empanelledVendorApprovedBy,
+        letterNo: actionData.letterNo,
+        empanelledVendorDate: actionData.empanelledVendorDate,
         pushToDBTRequestList: sendResponse,
       };
     }
@@ -4408,6 +4429,98 @@ const handleGenerateSanctionOrderClick = async () => {
 
                             )}
 
+                              {(
+                                (
+                                  (actionFarmerData[0]?.sanctionOrder &&
+                                    actionFarmerData[0]?.financialDelegation &&
+                                    isSanctionOrderAllowed) ||
+                                  actionFarmerData[0]?.directlyToFruits
+                                ) &&
+                                allowedSchemes.includes(actionFarmerData[0]?.sanctionOrderForScheme)
+                              ) && (
+                                <>
+                              <Col lg="6">
+                                    <Form.Group className="form-group mt-n4">
+                                      <Form.Label>
+                                      {t("Empanelled Vendor Approved By")}<span className="text-danger">*</span>
+                                      </Form.Label>
+                                      <div className="form-control-wrap">
+                                        <Form.Select
+                                          name="empanelledVendorApprovedBy"
+                                          value={actionData.empanelledVendorApprovedBy}
+                                          onChange={handleActionInputs}
+                                          onBlur={() => handleActionInputs}
+                                          required
+                                          isInvalid={
+                                            data.subSchemeType === undefined || data.subSchemeType === "0"
+                                          }
+                                        >
+                                          <option value="0">{t("Select Empanelled Vendor Approved By")}</option>
+                                          <option value="ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು">ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು</option>
+                                          <option value="ರೇಷ್ಮೆ ಕೃಷಿ ಅಭಿವೃದ್ಧಿ ಆಯುಕ್ತರು ಹಾಗೂ ರೇಷ್ಮೆ ನಿರ್ದೇಶಕರು, ಬೆಂಗಳೂರು ">ರೇಷ್ಮೆ ಕೃಷಿ ಅಭಿವೃದ್ಧಿ ಆಯುಕ್ತರು ಹಾಗೂ ರೇಷ್ಮೆ ನಿರ್ದೇಶಕರು, ಬೆಂಗಳೂರು </option>
+                                          
+                                        </Form.Select>
+                                      </div>
+                                      <Form.Control.Feedback type="invalid">
+                                        Empanelled Vendor Approved By is required
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+
+                                  <Col lg="6">
+                                      <Form.Group className="form-group mt-n4">
+                                        <Form.Label htmlFor="subSchemeNameInKannada">
+                                        {t("Letter No")}<span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="letterNo"
+                                            type="text"
+                                            name="letterNo"
+                                            value={data.letterNo}
+                                            onChange={handleActionInputs}
+                                            placeholder={t("Enter Letter No")}
+                                            required
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                          {t("Letter No is required")}
+                                          </Form.Control.Feedback>
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+
+                                  <Col lg="4">
+                                <Form.Group className="form-group">
+                                  <Form.Label htmlFor="sordfl">
+                                    Letter Date  <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <DatePicker
+                                      selected={actionData.empanelledVendorDate ? new Date(actionData.empanelledVendorDate) : null}
+                                      onChange={(date) =>
+                                        handleDateForPropasalChange(date, "empanelledVendorDate")
+                                      }
+                                      // minDate={new Date("01/04/2023")}
+                                      // maxDate={new Date("31/03/2024")}
+                                      peekNextMonth
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      dateFormat="dd/MM/yyyy"
+                                      className="form-control"
+                                      maxDate={new Date()}
+                                      required
+                                     
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                                  </>
+
+                            )}
+
+
+                            
                               {/* {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
                                 <Col lg="6">
                                   <Form.Group className="form-group">
