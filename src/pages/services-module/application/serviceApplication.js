@@ -3579,7 +3579,7 @@ const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, cate
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureIcb || [];
+      const incentiveData = response.data?.content?.configureIcb || [];
       setIcbAndArmAmountListData(incentiveData);
 
       setAmountValue({
@@ -4081,7 +4081,7 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentRH = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        baseURLReport + `getRHAck`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4103,7 +4103,7 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentReelingShed = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getReelerAcknowledgement`,
+        baseURLReport + `getReelingShedACK`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4126,7 +4126,7 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentSilkIncentive = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getSilkIncentive`,
+        baseURLReport + `getSilkIncentiveACK`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,

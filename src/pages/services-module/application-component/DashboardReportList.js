@@ -1724,7 +1724,7 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
     const userId = localStorage.getItem("userMasterId");
 
     const response = await api.post(
-      baseURLReport + `getWorkOrderReelingShed`,
+      baseURLReport + `selection-reeling-shed`,
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
