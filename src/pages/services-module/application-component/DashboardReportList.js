@@ -1593,6 +1593,38 @@ const callWorkOrderAcknowledgment = async (
       subSchemeId,
       categoryId
     );
+
+    } else if (workOrderForScheme === "Adopting Boiler-PSF") {
+    generateWorkOrderOrderAdoptingBoiler(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "ICB-PSF") {
+    generateWorkOrderOrderICB(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+    generateWorkOrderOrderAdoptingHeatRecoveryUnit(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "IMCB-PSF") {
+    generateWorkOrderOrderIMCB(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
   }
 };
 
@@ -1703,7 +1735,8 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
-        userId: userId, // ✅ Added userId
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
@@ -1751,6 +1784,112 @@ const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId
 
     const response = await api.post(
       baseURLReport + `getWorkOrderHRU`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+
+const generateWorkOrderOrderAdoptingBoiler = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-boiler`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+
+const generateWorkOrderOrderAdoptingHeatRecoveryUnit= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-heat-recovery-unit`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderICB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-icb`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-imcb`,
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
@@ -1899,7 +2038,54 @@ const handleGenerateSanctionOrderClick = async () => {
             subSchemeId,
             categoryId
           );
-        } else {
+        }
+
+        else if (schemeType === "Adopting Boiler-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "ICB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+         else if (schemeType === "Reeling Shed-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+        
+        
+        else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1970,6 +2156,40 @@ const handleGenerateSanctionOrderClick = async () => {
         else if (
           schemeType === "Rearing Equipment SS"
         ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+        else if (
+          schemeType === "Adopting Boiler-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+
+        else if (schemeType === "ICB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+
+        else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
@@ -2081,9 +2301,32 @@ const handleGenerateSanctionOrderClick = async () => {
     else if (schemeType === "Reeling Shed-PSF") {
       endpoint = baseURLReport + `sanction-psfa-reeling-shed`;  // ✅ NEW
 
-    } else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
-      endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
+    } 
+    // else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+    //   endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
 
+    // }
+
+    else if (schemeType === "Adopting Boiler-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getBoilerSDPCompany`
+      : baseURLReport + `getBoilerSDPBeneficiary`;
+    }
+
+    
+    else if (schemeType === "ICB-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getICBCompany`
+      : baseURLReport + `getICBBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getHRUCompany`
+      : baseURLReport + `getHRUBeneficiary`;
     }
 
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
@@ -2111,6 +2354,8 @@ const handleGenerateSanctionOrderClick = async () => {
       }
     }
 
+    
+
     // -------------------------------
     // Build Payload
     // -------------------------------
@@ -2119,6 +2364,8 @@ const handleGenerateSanctionOrderClick = async () => {
       schemeType === "Silk Samagra Central" ||
       schemeType === "Reeling Shed-PSF" ||
       schemeType === "Adopting Heat Recovery Unit-PSF" ||
+      schemeType === "Adopting Boiler-PSF" ||
+      schemeType === "ICB-PSF" ||
       schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
       schemeType === "Rearing Equipment SS"
         ? {
@@ -4569,44 +4816,7 @@ const allowedSchemes = [
                                 </Col>
                               )}
 
-                              {allowAnyUser && (
-                                <Col lg="6">
-                                  <Form.Group className="form-group">
-                                    <Form.Label>
-                                      User <span className="text-danger">*</span>
-                                    </Form.Label>
-
-                                    <ReactSelect
-                                      options={userListData.map((u) => ({
-                                        value: u.userMasterId,
-                                        label: `${u.username} (${u.userMasterId})`,
-                                      }))}
-                                      isSearchable
-                                      placeholder={t("Select User")}
-                                      value={userListData
-                                        .map((u) => ({
-                                          value: u.userMasterId,
-                                          label: `${u.username} (${u.userMasterId})`,
-                                        }))
-                                        .find((opt) => opt.value === actionData.userId)}
-                                      onChange={(selectedOption) => {
-                                        setActionData((prev) => ({
-                                          ...prev,
-                                          userId: selectedOption?.value || "",
-                                        }));
-                                        if (validated) setValidated(false);
-                                      }}
-                                      className={validated && !isUserValid ? "is-invalid" : ""}
-                                    />
-
-                                    {validated && !isUserValid && (
-                                      <div className="invalid-feedback d-block">
-                                        User is required
-                                      </div>
-                                    )}
-                                  </Form.Group>
-                                </Col>
-                              )}
+                              
 
 
 
@@ -4887,6 +5097,45 @@ const allowedSchemes = [
                                   </Col>
                                   )}
                                 </>
+                              )}
+
+                              {allowAnyUser && (
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      User <span className="text-danger">*</span>
+                                    </Form.Label>
+
+                                    <ReactSelect
+                                      options={userListData.map((u) => ({
+                                        value: u.userMasterId,
+                                        label: `${u.username} (${u.userMasterId})`,
+                                      }))}
+                                      isSearchable
+                                      placeholder={t("Select User")}
+                                      value={userListData
+                                        .map((u) => ({
+                                          value: u.userMasterId,
+                                          label: `${u.username} (${u.userMasterId})`,
+                                        }))
+                                        .find((opt) => opt.value === actionData.userId)}
+                                      onChange={(selectedOption) => {
+                                        setActionData((prev) => ({
+                                          ...prev,
+                                          userId: selectedOption?.value || "",
+                                        }));
+                                        if (validated) setValidated(false);
+                                      }}
+                                      className={validated && !isUserValid ? "is-invalid" : ""}
+                                    />
+
+                                    {validated && !isUserValid && (
+                                      <div className="invalid-feedback d-block">
+                                        User is required
+                                      </div>
+                                    )}
+                                  </Form.Group>
+                                </Col>
                               )}
 
                               <Col lg="6">

@@ -1553,7 +1553,7 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
         applicationFormIds: applicationFormIds,
         userId: selectedUserId,
         approvalStageId: approvalStageId,
-        assignedByProposalDate: data.proposalDate
+        assignedByProposalDate: actionData.proposalDate
       }
     );
 
