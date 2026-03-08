@@ -1985,7 +1985,8 @@ const handleGenerateSanctionOrderClick = async () => {
   applicationFormId,
   schemeId,
   subSchemeId,
-  categoryId
+  categoryId,
+  applicationFormIds = [] 
 ) => {
   // 🔴 HARD GUARD (centralized)
   const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
@@ -2036,7 +2037,8 @@ const handleGenerateSanctionOrderClick = async () => {
             "farmer",
             schemeType,
             subSchemeId,
-            categoryId
+            categoryId,
+            applicationFormIds
           );
         }
 
@@ -2279,7 +2281,8 @@ const handleGenerateSanctionOrderClick = async () => {
   recipientType,
   schemeType,
   subSchemeId,
-  categoryId
+  categoryId,
+  applicationFormIds = [] 
 ) => {
   try {
     const userId = localStorage.getItem("userMasterId");
@@ -2359,26 +2362,66 @@ const handleGenerateSanctionOrderClick = async () => {
     // -------------------------------
     // Build Payload
     // -------------------------------
-    const payload =
-      schemeType === "Silk Samagra State" ||
-      schemeType === "Silk Samagra Central" ||
-      schemeType === "Reeling Shed-PSF" ||
-      schemeType === "Adopting Heat Recovery Unit-PSF" ||
-      schemeType === "Adopting Boiler-PSF" ||
-      schemeType === "ICB-PSF" ||
-      schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
-      schemeType === "Rearing Equipment SS"
-        ? {
-            applicationFormId: applicationId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            userId,
+    // const payload =
+    //   schemeType === "Silk Samagra State" ||
+    //   schemeType === "Silk Samagra Central" ||
+    //   schemeType === "Reeling Shed-PSF" ||
+    //   schemeType === "Adopting Heat Recovery Unit-PSF" ||
+    //   schemeType === "Adopting Boiler-PSF" ||
+    //   schemeType === "ICB-PSF" ||
+    //   schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
+    //   schemeType === "Rearing Equipment SS"
+    //     ? {
+    //         applicationFormId: applicationId,
+    //         schemeId,
+    //         subSchemeId,
+    //         categoryId,
+    //         userId,
+    //       }
+    //     : {
+    //         applicationFormId: applicationId,
+    //         schemeId,
+    //       };
+
+    // -------------------------------
+// Build Payload
+// -------------------------------
+          let payload;
+
+          if (
+            schemeType === "Silk Samagra State" ||
+            schemeType === "Silk Samagra Central"
+          ) {
+            payload = {
+              applicationFormIds: applicationFormIds,   // ✅ ARRAY
+              schemeId,
+              subSchemeId,
+              categoryId,
+              userId,
+            };
           }
-        : {
-            applicationFormId: applicationId,
-            schemeId,
-          };
+          else if (
+            schemeType === "Reeling Shed-PSF" ||
+            schemeType === "Adopting Heat Recovery Unit-PSF" ||
+            schemeType === "Adopting Boiler-PSF" ||
+            schemeType === "ICB-PSF" ||
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
+            schemeType === "Rearing Equipment SS"
+          ) {
+            payload = {
+              applicationFormId: applicationId,
+              schemeId,
+              subSchemeId,
+              categoryId,
+              userId,
+            };
+          }
+          else {
+            payload = {
+              applicationFormId: applicationId,
+              schemeId,
+            };
+          }
 
     // -------------------------------
     // Call API & Open PDF
@@ -3412,12 +3455,17 @@ const allowedSchemes = [
           .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
           .then((response) => {
             if (response.data.applicationFormId) {
+              const applicationFormIds =
+              response.data.applicationFormResponseList?.map(
+                (item) => item.applicationFormId
+              ) || [];
               setApplicationId(response.data.applicationFormId);
               handleGenerateSanctionOrder(
                 response.data.applicationFormId,
                 schemeId,
                 actionFarmerData[0]?.subSchemeId,
-                actionFarmerData[0]?.categoryId
+                actionFarmerData[0]?.categoryId,
+                applicationFormIds
               );
               setDisplaySubmit(false);
               getList();
