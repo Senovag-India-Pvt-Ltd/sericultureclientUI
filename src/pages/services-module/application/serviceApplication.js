@@ -4388,6 +4388,28 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+  const generateAcknowledgmentIMCB = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIMCBACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
@@ -4901,6 +4923,16 @@ const callAcknowledgmentFunction = (
     acknowledgementForScheme === "ICB-PSF"
   ) {
     generateAcknowledgmentICB(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+
+    } else if (
+    acknowledgementForScheme === "IMCB-PSF"
+  ) {
+    generateAcknowledgmentIMCB(
       applicationFormId,
       schemeId,
       subSchemeId

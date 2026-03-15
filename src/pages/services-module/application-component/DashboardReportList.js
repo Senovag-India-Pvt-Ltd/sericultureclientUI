@@ -2064,6 +2064,17 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
+        else if (schemeType === "IMCB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2181,6 +2192,17 @@ const handleGenerateSanctionOrderClick = async () => {
         }
 
         else if (schemeType === "ICB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+
+        else if (schemeType === "IMCB-PSF") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
@@ -2318,6 +2340,13 @@ const handleGenerateSanctionOrderClick = async () => {
     }
 
     
+    else if (schemeType === "IMCB-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getIMCBCompany`
+      : baseURLReport + `getIMCBBeneficiary`;
+    }
+
     else if (schemeType === "ICB-PSF") {
   endpoint =
     recipientType === "company"
@@ -4735,7 +4764,7 @@ const allowedSchemes = [
                               ) && (
                                 <>
                               <Col lg="6">
-                                    <Form.Group className="form-group mt-n4">
+                                    <Form.Group className="form-group">
                                       <Form.Label>
                                       {t("Empanelled Vendor Approved By")}<span className="text-danger">*</span>
                                       </Form.Label>
@@ -4763,7 +4792,7 @@ const allowedSchemes = [
                                   </Col>
 
                                   <Col lg="6">
-                                      <Form.Group className="form-group mt-n4">
+                                      <Form.Group className="form-group">
                                         <Form.Label htmlFor="subSchemeNameInKannada">
                                         {t("Letter No")}<span className="text-danger">*</span>
                                         </Form.Label>
@@ -4784,7 +4813,7 @@ const allowedSchemes = [
                                       </Form.Group>
                                     </Col>
 
-                                  <Col lg="4">
+                                  <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label htmlFor="sordfl">
                                     Letter Date  <span className="text-danger">*</span>
