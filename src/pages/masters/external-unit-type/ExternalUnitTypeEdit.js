@@ -20,16 +20,36 @@ function ExternalUnitTypeEdit() {
 
   const [validated, setValidated] = useState(false);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+const handleInputs = (e) => {
+  const { name, value, type, checked } = e.target;
+
+  if (name === "paymentViaBank") {
+    setData({
+      ...data,
+      paymentViaBank: checked,
+      paymentViaK2: false, // only one allowed
+    });
+  } else if (name === "paymentViaK2") {
+    setData({
+      ...data,
+      paymentViaK2: checked,
+      paymentViaBank: false,
+    });
+  } else {
+    setData({
+      ...data,
+      [name]: value,
+    });
+  }
+};
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
     const form = event.currentTarget;
+    if (!data.paymentViaBank && !data.paymentViaK2) {
+  updateError("Please select one payment method");
+  return;
+}
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -47,6 +67,8 @@ function ExternalUnitTypeEdit() {
             setData({
               externalUnitTypeName: "",
               externalUnitTypeNameInKannada: "",
+                paymentViaBank: false,
+                paymentViaK2: false,
             });
             setValidated(false);
           }
@@ -71,6 +93,8 @@ function ExternalUnitTypeEdit() {
     setData({
       externalUnitTypeName: "",
       externalUnitTypeNameInKannada: "",
+      paymentViaBank: false,
+      paymentViaK2: false,
     });
   };
 
@@ -212,6 +236,29 @@ function ExternalUnitTypeEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+                                                       <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Check
+      type="checkbox"
+      label={t("Payment via Bank")}
+      name="paymentViaBank"
+      checked={data.paymentViaBank}
+      onChange={handleInputs}
+    />
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Check
+      type="checkbox"
+      label={t("Payment via K2")}
+      name="paymentViaK2"
+      checked={data.paymentViaK2}
+      onChange={handleInputs}
+    />
+  </Form.Group>
+</Col>
                   </Row>
                 )}
               </Card.Body>

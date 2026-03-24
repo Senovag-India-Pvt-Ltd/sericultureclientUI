@@ -19,16 +19,35 @@ function ExternalUnitType() {
   const [data, setData] = useState({
     externalUnitTypeName: "",
     externalUnitTypeNameInKannada: "",
+    paymentViaBank: false,
+    paymentViaK2: false,
   });
 
   const [validated, setValidated] = useState(false);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+
+const handleInputs = (e) => {
+  const { name, value, type, checked } = e.target;
+
+  if (name === "paymentViaBank") {
+    setData({
+      ...data,
+      paymentViaBank: checked,
+      paymentViaK2: false, // only one allowed
+    });
+  } else if (name === "paymentViaK2") {
+    setData({
+      ...data,
+      paymentViaK2: checked,
+      paymentViaBank: false,
+    });
+  } else {
+    setData({
+      ...data,
+      [name]: value,
+    });
+  }
+};
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -74,6 +93,8 @@ function ExternalUnitType() {
     setData({
       externalUnitTypeName: "",
       externalUnitTypeNameInKannada: "",
+      paymentViaBank: false,
+      paymentViaK2: false,
     });
   };
 
@@ -85,6 +106,7 @@ function ExternalUnitType() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -138,6 +160,7 @@ function ExternalUnitType() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
+
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="externalUnitType">
@@ -176,12 +199,36 @@ function ExternalUnitType() {
                           placeholder={t("Enter External Unit Type Name in Kannada")}
                           required
                         />
+                        
                         <Form.Control.Feedback type="invalid">
                           {t("External Unit Type Name in Kannada is required")}.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
+                                    <Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Check
+      type="checkbox"
+      label={t("Payment via Bank")}
+      name="paymentViaBank"
+      checked={data.paymentViaBank}
+      onChange={handleInputs}
+    />
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group">
+    <Form.Check
+      type="checkbox"
+      label={t("Payment via K2")}
+      name="paymentViaK2"
+      checked={data.paymentViaK2}
+      onChange={handleInputs}
+    />
+  </Form.Group>
+</Col>
                 </Row>
               </Card.Body>
             </Card>
