@@ -479,6 +479,7 @@ useEffect(() => {
   const [equipment, setEquipment] = useState({
     unitType: "",
     description: "",
+    l1Rate: "",
     price: "",
     vendorId: "",
     payToVendor: false,
@@ -3296,12 +3297,42 @@ if (
     }
   }, [data.scComponentId, data.scCategoryId]);
 
-  const [chawkiData, setChawkiData] = useState({
-  equipmentList: [],  // repeating rows
+//   const [chawkiData, setChawkiData] = useState({
+//   equipmentList: [],  // repeating rows
+//   mulberry: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   },
+//   drip: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   },
+//   building: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   }
+// });
+
+const [chawkiData, setChawkiData] = useState({
+  equipmentList: [],
   mulberry: {
     eligible: 0,
     claimed: "",
-    percentage: ""
+    percentage: "",
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    trainingFromDate: "",
+    trainingToDate: "",
+    registerDate: "",
+    registerNo: "",
+    surveyNo: "",
+    acre: "",
+    vibhaga: ""
   },
   drip: {
     eligible: 0,
@@ -3311,7 +3342,23 @@ if (
   building: {
     eligible: 0,
     claimed: "",
-    percentage: ""
+    percentage: "",
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    surveyNo: "",
+    acre: "",
+    sqft: "",
+    length: "",
+    breadth: ""
+  },
+  equipment: {
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    place: ""
   }
 });
 
@@ -3901,6 +3948,7 @@ const isUserValid = React.useMemo(() => {
       transactionDate: formattedDates.transactionDate,
       availBonus: data.availBonus,
       description: equipment.description,
+      l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
       month: data.month,
       machineQuantity: data.machineQuantity,
@@ -4409,6 +4457,95 @@ const isUserValid = React.useMemo(() => {
       // console.log("error", error);
     }
   };
+
+  const generateAcknowledgmentSolarWaterHeater = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSolarWaterHeater`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentSilentGenerator= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSilentGenerator`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentSolarPowerGenerator= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSolarPowerGenerator`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentMERM= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKMERM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
@@ -4938,9 +5075,53 @@ const callAcknowledgmentFunction = (
       subSchemeId
     );
 
+  }
 
+  else if (
+    acknowledgementForScheme === "Adopting Solar Water Heater"
+  ) {
+    generateAcknowledgmentSolarWaterHeater(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
 
   }
+
+  else if (
+    acknowledgementForScheme === "Adopting Solar power Generator"
+  ) {
+    generateAcknowledgmentSolarPowerGenerator(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "Adopting Silent Generator"
+  ) {
+    generateAcknowledgmentSilentGenerator(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "MERM-PSF"
+  ) {
+    generateAcknowledgmentMERM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  
 };
 
 
@@ -6954,7 +7135,7 @@ const fetchReelerDetails = () => {
                               <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
-                                  {t("Solar Power Generator Capacity(HP)")} <span className="text-danger">*</span>
+                                  {t("Water Heater Capacity")} <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select
@@ -6964,7 +7145,7 @@ const fetchReelerDetails = () => {
                                     onChange={handleInputs}
                                     required
                                   >
-                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="">{t("Select Water Heater Capacity")}</option>
                                     <option value="1000">1000</option>
                                     <option value="500">500</option>
                                     <option value="200">200</option>
@@ -6972,7 +7153,7 @@ const fetchReelerDetails = () => {
                                     
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
-                                    {t("Reeling SQFT is required")}
+                                    {t("Water Heater Capacity is required")}
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
@@ -9385,6 +9566,133 @@ const fetchReelerDetails = () => {
                               {/* <Form.Control.Feedback type="invalid">
                                 {t("Description is required")}
                               </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="description">
+                              {t("L1 Rate")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="l1Rate"
+                                type="text"
+                                name="l1Rate"
+                                value={equipment.l1Rate}
+                                onChange={handleEquipmentInputs}
+                                placeholder={t("Enter L1 Rate")}
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Description is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Quantity in kg
+                                  {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="machineQuantity"
+                                      type="text"
+                                      name="machineQuantity"
+                                      value={data.machineQuantity}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Quantity in kg"
+                                      required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="taxInvoiceNo"
+                                      type="text"
+                                      name="taxInvoiceNo"
+                                      value={data.taxInvoiceNo}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Tax Invoice No"
+                                      // required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Tax Invoice Date")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.taxInvoiceDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "taxInvoiceDate")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                maxDate={new Date()}
+                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                //   !schemeDetails.calculationBasedOn}
+                                // readOnly 
+                                // required
+                              />
                             </div>
                           </Form.Group>
                         </Col>

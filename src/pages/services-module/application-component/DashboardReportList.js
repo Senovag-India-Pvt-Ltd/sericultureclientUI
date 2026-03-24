@@ -1586,13 +1586,13 @@ const callWorkOrderAcknowledgment = async (
       categoryId
     );
 
-  } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateWorkOrderOrderHRU(
-      applicationFormId,
-      workOrderSchemeId,
-      subSchemeId,
-      categoryId
-    );
+  // } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+  //   generateWorkOrderOrderHRU(
+  //     applicationFormId,
+  //     workOrderSchemeId,
+  //     subSchemeId,
+  //     categoryId
+  //   );
 
     } else if (workOrderForScheme === "Adopting Boiler-PSF") {
     generateWorkOrderOrderAdoptingBoiler(
@@ -1612,6 +1612,39 @@ const callWorkOrderAcknowledgment = async (
 
     } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
     generateWorkOrderOrderAdoptingHeatRecoveryUnit(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Silent Generator") {
+    generateWorkOrderOrderAdoptingSilentGenerator(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+
+    } else if (workOrderForScheme === "Adopting Solar power Generator") {
+    generateWorkOrderOrderAdoptingSolarPowerGenerator(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Solar Water Heater") {
+    generateWorkOrderOrderAdoptingSolarWaterHeater(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "MERM-PSF") {
+    generateWorkOrderOrderMERM(
       applicationFormId,
       workOrderSchemeId,
       subSchemeId,
@@ -1675,15 +1708,15 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         viewDetailsData.categoryId
       );
 
-    } else if (
-      viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
-    ) {
-      generateWorkOrderOrderHRU(
-        viewDetailsData.applicationFormId,
-        viewDetailsData.workOrderSchemeId,
-        viewDetailsData.subSchemeId,
-        viewDetailsData.categoryId
-      );
+    // } else if (
+    //   viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
+    // ) {
+    //   generateWorkOrderOrderHRU(
+    //     viewDetailsData.applicationFormId,
+    //     viewDetailsData.workOrderSchemeId,
+    //     viewDetailsData.subSchemeId,
+    //     viewDetailsData.categoryId
+    //   );
 
     } else {
       console.error("Unknown Work Order scheme type");
@@ -1777,31 +1810,31 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
   }
 };
 
-const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
-  try {
-    // ✅ Get userId from localStorage
-    const userId = localStorage.getItem("userMasterId");
+// const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+//   try {
+//     // ✅ Get userId from localStorage
+//     const userId = localStorage.getItem("userMasterId");
 
-    const response = await api.post(
-      baseURLReport + `getWorkOrderHRU`,
-      {
-        applicationFormId: applicationFormId,
-        schemeId: schemeId,
-        subSchemeId: subSchemeId,
-        categoryId:categoryId // ✅ Added userId
-      },
-      {
-        responseType: "blob", // Force to receive data in a Blob Format
-      }
-    );
+//     const response = await api.post(
+//       baseURLReport + `getWorkOrderHRU`,
+//       {
+//         applicationFormId: applicationFormId,
+//         schemeId: schemeId,
+//         subSchemeId: subSchemeId,
+//         categoryId:categoryId // ✅ Added userId
+//       },
+//       {
+//         responseType: "blob", // Force to receive data in a Blob Format
+//       }
+//     );
 
-    const file = new Blob([response.data], { type: "application/pdf" });
-    const fileURL = URL.createObjectURL(file);
-    window.open(fileURL);
-  } catch (error) {
-    console.error("Error generating work order acknowledgment:", error);
-  }
-};
+//     const file = new Blob([response.data], { type: "application/pdf" });
+//     const fileURL = URL.createObjectURL(file);
+//     window.open(fileURL);
+//   } catch (error) {
+//     console.error("Error generating work order acknowledgment:", error);
+//   }
+// };
 
 
 const generateWorkOrderOrderAdoptingBoiler = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
@@ -1838,6 +1871,110 @@ const generateWorkOrderOrderAdoptingHeatRecoveryUnit= async (applicationFormId, 
 
     const response = await api.post(
       baseURLReport + `selection-heat-recovery-unit`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSilentGenerator= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-silent-generator`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSolarPowerGenerator= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-solar-generator`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSolarWaterHeater= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-solar-water-heater`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderMERM= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-MERM`,
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
@@ -2096,6 +2233,50 @@ const handleGenerateSanctionOrderClick = async () => {
             categoryId
           );
         }
+
+        else if (schemeType === "Adopting Silent Generator") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+         else if (schemeType === "Adopting Solar power Generator") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Adopting Solar Water Heater") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "MERM-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
         
         
         else {
@@ -2144,6 +2325,54 @@ const handleGenerateSanctionOrderClick = async () => {
         }
         else if (
           schemeType === "Adopting Heat Recovery Unit-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "MERM-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Silent Generator"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Solar power Generator"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Solar Water Heater"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2355,6 +2584,35 @@ const handleGenerateSanctionOrderClick = async () => {
     }
 
     else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getHRUCompany`
+      : baseURLReport + `getHRUBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Silent Generator") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSilentGeneratorCompany`
+      : baseURLReport + `getSilentGeneratorBeneficiary`;
+    }
+
+
+    else if (schemeType === "Adopting Solar power Generator") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSolarPowerGeneratorCompany`
+      : baseURLReport + `getSolarPowerGeneratorBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Solar Water Heater") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSolarWaterHeaterCompany`
+      : baseURLReport + `getSolarWaterHeaterBeneficiary`;
+    }
+
+    else if (schemeType === "MERM-PSF") {
   endpoint =
     recipientType === "company"
       ? baseURLReport + `getHRUCompany`

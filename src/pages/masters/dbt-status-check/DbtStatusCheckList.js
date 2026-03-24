@@ -151,6 +151,7 @@ function DbtStatusCheckList() {
           ),
           sortable: false,
           hide: "md",
+          grow : 2
         },
         {
           name: t("Dept Code"),
