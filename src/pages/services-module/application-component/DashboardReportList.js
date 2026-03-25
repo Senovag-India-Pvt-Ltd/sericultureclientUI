@@ -1658,6 +1658,14 @@ const callWorkOrderAcknowledgment = async (
       subSchemeId,
       categoryId
     );
+
+    } else if (workOrderForScheme === "Rearing Equipment SS") {
+    generateWorkOrderOrderRearingEquipmentSS(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
   }
 };
 
@@ -1994,6 +2002,32 @@ const generateWorkOrderOrderMERM= async (applicationFormId, schemeId,subSchemeId
   }
 };
 
+const generateWorkOrderOrderRearingEquipmentSS= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `SelectionRearingEquipmentSS`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
 const generateWorkOrderOrderICB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
@@ -2179,6 +2213,22 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
+        else if (
+          schemeType === "Rearing Equipment SS"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        
+
         else if (schemeType === "Adopting Boiler-PSF") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2301,6 +2351,19 @@ const handleGenerateSanctionOrderClick = async () => {
         } else if (
           schemeType === "Silk Samagra State" ||
           schemeType === "Silk Samagra Central"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        } 
+
+        else if (
+          schemeType === "Rearing Equipment SS"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2549,6 +2612,14 @@ const handleGenerateSanctionOrderClick = async () => {
       endpoint = baseURLReport + `getSanctionOrderRH`;
 
     }
+
+    else if (schemeType === "Rearing Equipment SS") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `RearingEquipmentSSCompany`
+      : baseURLReport + `RearingEquipmentSSBeneficiary`;
+    }
+
     // -------------------------------
     // 2️⃣ PSF Schemes
     // -------------------------------
@@ -2677,7 +2748,8 @@ const handleGenerateSanctionOrderClick = async () => {
 
           if (
             schemeType === "Silk Samagra State" ||
-            schemeType === "Silk Samagra Central"
+            schemeType === "Silk Samagra Central" ||
+            schemeType === "Rearing Equipment SS"
           ) {
             payload = {
               applicationFormIds: applicationFormIds,   // ✅ ARRAY
@@ -2692,8 +2764,7 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType === "Adopting Heat Recovery Unit-PSF" ||
             schemeType === "Adopting Boiler-PSF" ||
             schemeType === "ICB-PSF" ||
-            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
-            schemeType === "Rearing Equipment SS"
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
           ) {
             payload = {
               applicationFormId: applicationId,
