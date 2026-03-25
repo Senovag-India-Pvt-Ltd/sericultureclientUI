@@ -51,6 +51,14 @@ function ExternalUnitTypeView() {
     getIdList();
   }, [id]);
 
+
+  const paymentMethod =
+  ExternalUnitType.paymentViaBank
+    ? "Bank"
+    : ExternalUnitType.paymentViaK2
+    ? "K2"
+    : "-";
+
   return (
     <Layout title={t("External Unit Type View")} content="container">
       <Block.Head>
@@ -108,6 +116,10 @@ function ExternalUnitTypeView() {
                         <td style={styles.ctstyle}>{t("External Unit Type Name in Kannada")}:</td>
                         <td>{ExternalUnitType.externalUnitTypeNameInKannada}</td>
                       </tr>
+                    <tr>
+                       <td style={styles.ctstyle}>{t("Payment Method")}:</td>
+                        <td>{paymentMethod}</td>
+                        </tr>
                     </tbody>
                   </table>
                 </Col>
