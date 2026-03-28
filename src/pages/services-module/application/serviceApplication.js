@@ -4568,6 +4568,28 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+  const generateAcknowledgmentRegisteredPrivateBivCRC= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKCRC`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
@@ -4978,10 +5000,10 @@ const callAcknowledgmentFunction = (
   ) {
     generateAcknowledgmentReelingShed(applicationFormId, schemeId, subSchemeId);
 
-  } else if (
-    acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
-  ) {
-    generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
+  // } else if (
+  //   acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  // ) {
+  //   generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
 
   } else if (
     acknowledgementForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
@@ -5147,6 +5169,17 @@ const callAcknowledgmentFunction = (
     acknowledgementForScheme === "Rearing Equipment SS"
   ) {
     generateAcknowledgmentRearingEquipmentSS(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+  ) {
+    generateAcknowledgmentRegisteredPrivateBivCRC(
       applicationFormId,
       schemeId,
       subSchemeId

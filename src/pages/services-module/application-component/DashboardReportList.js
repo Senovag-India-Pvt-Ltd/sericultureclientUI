@@ -1666,6 +1666,14 @@ const callWorkOrderAcknowledgment = async (
       subSchemeId,
       categoryId
     );
+
+    } else if (workOrderForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+    generateWorkOrderOrderRegisteredPrivateBivCRC(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
   }
 };
 
@@ -2028,6 +2036,32 @@ const generateWorkOrderOrderRearingEquipmentSS= async (applicationFormId, scheme
   }
 };
 
+const generateWorkOrderOrderRegisteredPrivateBivCRC= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `SelectionCRC`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
 const generateWorkOrderOrderICB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
@@ -2327,6 +2361,17 @@ const handleGenerateSanctionOrderClick = async () => {
             categoryId
           );
         }
+
+        else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
         
         
         else {
@@ -2458,18 +2503,7 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType
           );
         }
-        else if (
-          schemeType === "Rearing Equipment SS"
-        ) {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            "company",
-            schemeType
-          );
-        }
+        
         else if (
           schemeType === "Adopting Boiler-PSF"
         ) {
@@ -2505,16 +2539,7 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
-        else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            "company",
-            schemeType
-          );
-        }
+       
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -2691,11 +2716,11 @@ const handleGenerateSanctionOrderClick = async () => {
     }
 
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
-      endpoint = baseURLReport + `getChawkiSanctionOrderPdf`;
+      endpoint = baseURLReport + `PrivateCRCSanction`;
     }
-    else if (schemeType === "Rearing Equipment SS") {
-      endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
-    }
+    // else if (schemeType === "Rearing Equipment SS") {
+    //   endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+    // }
     // -------------------------------
     // 3️⃣ PMKSY / PDMC (farmer/company)
     // -------------------------------
@@ -2764,6 +2789,11 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType === "Adopting Heat Recovery Unit-PSF" ||
             schemeType === "Adopting Boiler-PSF" ||
             schemeType === "ICB-PSF" ||
+            schemeType === "IMCB-PSF" ||          // ✅ was missing
+            schemeType === "Adopting Silent Generator" ||   // ✅ THE FIX
+            schemeType === "Adopting Solar power Generator" ||  // ✅ was missing
+            schemeType === "Adopting Solar Water Heater" ||     // ✅ was missing
+            schemeType === "MERM-PSF" ||                        // ✅ was missing
             schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
           ) {
             payload = {
@@ -5104,9 +5134,9 @@ const allowedSchemes = [
                                           onChange={handleActionInputs}
                                           onBlur={() => handleActionInputs}
                                           required
-                                          isInvalid={
-                                            data.subSchemeType === undefined || data.subSchemeType === "0"
-                                          }
+                                          // isInvalid={
+                                          //   data.subSchemeType === undefined || data.subSchemeType === "0"
+                                          // }
                                         >
                                           <option value="0">{t("Select Empanelled Vendor Approved By")}</option>
                                           <option value="ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು">ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು</option>
