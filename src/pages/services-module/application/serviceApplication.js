@@ -3401,22 +3401,52 @@ const [chawkiData, setChawkiData] = useState({
         // claimed: first.establishmentOfMulberryGardenClaimedAmount || "",
         // percentage: first.establishmentOfMulberryGardenPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "",
+        district: "",
+        taluk: "",
+        village: "",
+        tsc: "",
+        trainingFromDate: "",
+        trainingToDate: "",
+        registerDate: "",
+        registerNo: "",
+        surveyNo: "",
+        acre: "",
+        vibhaga: ""
       },
       drip: {
         eligible: first.installationOfDripIrrigationEligibleAmount,
         // claimed: first.installationOfDripIrrigationClaimedAmount || "",
         // percentage: first.installationOfDripIrrigationPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "" 
       },
       building: {
         eligible: first.chawkiRearingBuildingEligibleAmount,
         // claimed: first.chawkiRearingBuildingClaimedAmount || "",
         // percentage: first.chawkiRearingBuildingPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
-      }
+        percentage: "",
+
+        district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          surveyNo: "",
+          acre: "",
+          sqft: "",
+          length: "",
+          breadth: ""
+      },
+
+      equipment: {
+          // input fields - null by default
+          district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          place: ""
+        }
     });
   })
 .catch((err) => {
@@ -3896,7 +3926,38 @@ const isUserValid = React.useMemo(() => {
 
     chawkiRearingBuildingEligibleAmount: chawkiData.building.eligible,
     chawkiRearingBuildingClaimedAmount: Number(chawkiData.building.claimed || 0),
-    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0)
+    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0),
+
+    // Establishment of Mulberry new fields
+    establishmentOfMulberryDistrict: chawkiData.mulberry.district,
+    establishmentOfMulberryTaluk: chawkiData.mulberry.taluk,
+    establishmentOfMulberryVillage: chawkiData.mulberry.village,
+    establishmentOfMulberryTsc: chawkiData.mulberry.tsc,
+    establishmentOfMulberryTrainingFromDate: chawkiData.mulberry.trainingFromDate,
+    establishmentOfMulberryTrainingToDate: chawkiData.mulberry.trainingToDate,
+    establishmentOfMulberryRegisterDate: chawkiData.mulberry.registerDate,
+    establishmentOfMulberryRegisterNo: chawkiData.mulberry.registerNo,
+    establishmentOfMulberrySurveyNo: chawkiData.mulberry.surveyNo,
+    establishmentOfMulberryAcre: chawkiData.mulberry.acre,
+    establishmentOfMulberryVibhaga: chawkiData.mulberry.vibhaga,
+
+    // Chawki Rearing Building new fields
+    chawkiRearingBuildingDistrict: chawkiData.building.district,
+    chawkiRearingBuildingTaluk: chawkiData.building.taluk,
+    chawkiRearingBuildingVillage: chawkiData.building.village,
+    chawkiRearingBuildingTsc: chawkiData.building.tsc,
+    chawkiRearingBuildingSurveyNo: chawkiData.building.surveyNo,
+    chawkiRearingBuildingAcre: chawkiData.building.acre,
+    chawkiRearingBuildingSqft: chawkiData.building.sqft,
+    chawkiRearingBuildingLength: chawkiData.building.length,
+    chawkiRearingBuildingBreadth: chawkiData.building.breadth,
+
+    // Purchase of Equipment new fields
+    purchaseOfEquipmentDistrict: chawkiData.equipment.district,
+    purchaseOfEquipmentTaluk: chawkiData.equipment.taluk,
+    purchaseOfEquipmentVillage: chawkiData.equipment.village,
+    purchaseOfEquipmentTsc: chawkiData.equipment.tsc,
+    purchaseOfEquipmentPlace: chawkiData.equipment.place,
   }));
 
   const totals = calculateTotals(chawkiData);
@@ -8348,10 +8409,8 @@ const fetchReelerDetails = () => {
                       <Card.Body>
                         <Row className="g-4">
 
-                          {/* ============================
-                              CARD 1: Rearing Equipment
-                          ============================= */}
-                          <Card>
+                          
+                          <Card className="p-0">
                             <Card.Header>Rearing Equipment Details</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
@@ -8361,7 +8420,7 @@ const fetchReelerDetails = () => {
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
-                                    {/* <th>Rate</th> */}
+                                  
                                     <th>Max Subsidy</th>
                                     <th>Rate</th>
                                     <th>Purchased Nos</th>
@@ -8393,10 +8452,10 @@ const fetchReelerDetails = () => {
                                       <td>{row.subsidyName}</td>
                                       <td>{row.eligibleEquipmentInNos}</td>
                                       <td>{row.eligibleTotalValueInRs}</td>
-                                      {/* <td>{row.ratePerEligibleEquipment}</td> */}
+                                      
                                       <td>{row.maxAmountOfSubsidyEligible}</td>
 
-                                      {/* Purchased Nos */}
+                              
                                       <td>
                                         
                                         <input
@@ -8421,7 +8480,7 @@ const fetchReelerDetails = () => {
                                     />
                                       </td>
 
-                                      {/* Purchased Value */}
+                                    
                                       <td>
                                         <input
                                         type="number"
@@ -8434,7 +8493,7 @@ const fetchReelerDetails = () => {
 
                                       </td>
 
-                                      {/* Percentage */}
+                                     
                                       <td>
                                         <input
                                       type="number"
@@ -8450,22 +8509,22 @@ const fetchReelerDetails = () => {
                                   <tr style={{ fontWeight: "bold", background: "#f8f9fa" }}>
                                 <td colSpan="3" className="text-end">TOTAL</td>
 
-                                {/* Eligible Value */}
+                              
                                 <td>{calculateTotals(chawkiData).equipmentEligibleTotal}</td>
                                 
                                 <td>{calculateTotals(chawkiData).equipmentMaxSubsidyTotal}</td>
 
 
-                                <td></td> {/* Rate */}
-                                <td></td>  {/* Purchased Nos skip */}
+                                <td></td> 
+                                <td></td>  
 
     
-                                {/* <td></td> */}
+                                
 
-                                {/* Purchased Value */}
+                               
                                 <td>{calculateTotals(chawkiData).equipmentPurchasedTotal}</td>
 
-                                {/* Percentage Total */}
+                                
                                 <td>{calculateTotals(chawkiData).equipmentPercentageTotal}</td>
                               </tr>
 
@@ -8474,10 +8533,8 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 2: Mulberry Garden
-                          ============================= */}
-                          <Card className="mt-3">
+                         
+                          <Card className="p-0">
                             <Card.Header>Establishment Of Mulberry Garden</Card.Header>
                             <Card.Body>
                               <div>
@@ -8508,13 +8565,130 @@ const fetchReelerDetails = () => {
                                         />
                                     </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.mulberry.district}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.mulberry.taluk}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.mulberry.village}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.mulberry.tsc}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="3">
+                              <label>Training From Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingFromDate"
+                                value={chawkiData.mulberry.trainingFromDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Training To Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingToDate"
+                                value={chawkiData.mulberry.trainingToDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="registerDate"
+                                value={chawkiData.mulberry.registerDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="registerNo"
+                                value={chawkiData.mulberry.registerNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.mulberry.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.mulberry.acre}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Vibhaga</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="vibhaga"
+                                value={chawkiData.mulberry.vibhaga}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 3: Drip Irrigation
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+                          <Card className="p-0">
                             <Card.Header>Installation Of Drip Irrigation</Card.Header>
                             <Card.Body>
                               <div>
@@ -8548,10 +8722,9 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 4: Chawki Rearing Building
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+
+                          <Card className="p-0">
                             <Card.Header>Chawki Rearing Building</Card.Header>
                             <Card.Body>
                               <div>
@@ -8582,8 +8755,168 @@ const fetchReelerDetails = () => {
                                 />
                                 </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.building.district}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.building.taluk}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.building.village}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.building.tsc}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.building.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.building.acre}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Sqft</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="sqft"
+                                value={chawkiData.building.sqft}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="6">
+                              <label>Length</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="length"
+                                value={chawkiData.building.length}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="6">
+                              <label>Breadth</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="breadth"
+                                value={chawkiData.building.breadth}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
+
+                          <Card className="p-0">
+                          <Card.Header>Purchase of Equipment</Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col lg="3">
+                                <label>District</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="district"
+                                  value={chawkiData.equipment.district}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Taluk</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="taluk"
+                                  value={chawkiData.equipment.taluk}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Village</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="village"
+                                  value={chawkiData.equipment.village}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>TSC</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="tsc"
+                                  value={chawkiData.equipment.tsc}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg="6">
+                                <label>Place</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="place"
+                                  value={chawkiData.equipment.place}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
 
                           <Card className="mt-4">
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -8595,7 +8928,7 @@ const fetchReelerDetails = () => {
                             const t = calculateTotals(chawkiData);
                             return (
                               <>
-                              {/* <p><strong>Total Max Subsidy Amount:</strong> {t.totalMaxSubsidy}</p> */}
+                             
                                 <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
                                 <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
                                 <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
@@ -8612,6 +8945,8 @@ const fetchReelerDetails = () => {
                   </Block>
                 )
               }
+
+              
 
 
               {showCommercialMarketTransaction && (
