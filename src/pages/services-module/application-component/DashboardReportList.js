@@ -2652,6 +2652,11 @@ const handleGenerateSanctionOrderClick = async () => {
       endpoint = baseURLReport + `sanction-psfa-reeling-shed`;  // ✅ NEW
 
     } 
+
+    else if (schemeType === "MERM-PSF") {
+      endpoint = baseURLReport + `getMERMSanction`;  // ✅ NEW
+
+    } 
     // else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
     //   endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
 
@@ -2708,12 +2713,12 @@ const handleGenerateSanctionOrderClick = async () => {
       : baseURLReport + `getSolarWaterHeaterBeneficiary`;
     }
 
-    else if (schemeType === "MERM-PSF") {
-  endpoint =
-    recipientType === "company"
-      ? baseURLReport + `getHRUCompany`
-      : baseURLReport + `getHRUBeneficiary`;
-    }
+  //   else if (schemeType === "MERM-PSF") {
+  // endpoint =
+  //   recipientType === "company"
+  //     ? baseURLReport + `getHRUCompany`
+  //     : baseURLReport + `getHRUBeneficiary`;
+  //   }
 
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
       endpoint = baseURLReport + `PrivateCRCSanction`;
