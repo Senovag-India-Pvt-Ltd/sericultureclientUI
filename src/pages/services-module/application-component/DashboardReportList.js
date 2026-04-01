@@ -2779,7 +2779,8 @@ const handleGenerateSanctionOrderClick = async () => {
           if (
             schemeType === "Silk Samagra State" ||
             schemeType === "Silk Samagra Central" ||
-            schemeType === "Rearing Equipment SS"
+            schemeType === "Rearing Equipment SS" ||                        // ✅ was missing
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
           ) {
             payload = {
               applicationFormIds: applicationFormIds,   // ✅ ARRAY
@@ -2798,8 +2799,7 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType === "Adopting Silent Generator" ||   // ✅ THE FIX
             schemeType === "Adopting Solar power Generator" ||  // ✅ was missing
             schemeType === "Adopting Solar Water Heater" ||     // ✅ was missing
-            schemeType === "MERM-PSF" ||                        // ✅ was missing
-            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+            schemeType === "MERM-PSF"
           ) {
             payload = {
               applicationFormId: applicationId,
