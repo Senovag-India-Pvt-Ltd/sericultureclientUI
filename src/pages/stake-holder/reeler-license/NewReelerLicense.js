@@ -12,7 +12,6 @@ import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
@@ -83,7 +82,7 @@ function NewReelerLicense() {
           return { ...item, ...changes };
         }
         return item;
-      })
+      }),
     );
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -117,16 +116,13 @@ function NewReelerLicense() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-    if(name === "branchName"){
+    if (name === "branchName") {
       setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
-    }
-    else if(name === "ifscCode"){
+    } else if (name === "ifscCode") {
       setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
-    }
-    else{
+    } else {
       setVbAccount({ ...vbAccount, [name]: value });
-    } 
-  
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -137,8 +133,8 @@ function NewReelerLicense() {
       branchName: "",
       ifscCode: "",
       marketMasterId: "",
-    })
-  }
+    });
+  };
 
   const clear = (event) => {
     setDisable(false);
@@ -204,12 +200,11 @@ function NewReelerLicense() {
       reelerNumber: "",
       reelerTypeMasterId: "",
       transferReelerId: "0",
-      username:"",
-      aadhaarNumber:"",
+      username: "",
+      aadhaarNumber: "",
     });
     setSearchValidated(false);
   };
-
 
   const [data, setData] = useState({
     fruitsId: "",
@@ -273,9 +268,8 @@ function NewReelerLicense() {
     reelerNumber: "",
     reelerTypeMasterId: "",
     transferReelerId: "0",
-    username:"",
-    aadhaarNumber:"",
-
+    username: "",
+    aadhaarNumber: "",
   });
 
   const [searchValidated, setSearchValidated] = useState(false);
@@ -290,13 +284,13 @@ function NewReelerLicense() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
-      }else{
+      } else {
         setDisable(true);
       }
       api
         .post(
           baseURLFarmer + `reeler/get-reeler-details-by-fruits-id`,
-          { fruitsId: data.fruitsId }
+          { fruitsId: data.fruitsId },
           // {
           //   headers: _header,
           // }
@@ -311,7 +305,7 @@ function NewReelerLicense() {
               .post(
                 baseURLFarmer +
                   `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-                { fruitsId: data.fruitsId }
+                { fruitsId: data.fruitsId },
                 // {
                 //   headers: _header,
                 // }
@@ -358,7 +352,7 @@ function NewReelerLicense() {
             .post(
               baseURLFarmer +
                 `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-              { fruitsId: data.fruitsId }
+              { fruitsId: data.fruitsId },
               // {
               //   headers: _header,
               // }
@@ -395,7 +389,6 @@ function NewReelerLicense() {
     }
   };
 
-
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
@@ -429,7 +422,7 @@ function NewReelerLicense() {
     if (["bankName", "branchName", "ifscCode"].includes(name)) {
       value = value.toUpperCase();
     }
-  
+
     setData({ ...data, [name]: value });
   };
 
@@ -471,12 +464,23 @@ function NewReelerLicense() {
 
       const FormDob = dateFormatter(data.dob);
       const FormDateOfMachineInstallation = dateFormatter(
-        data.dateOfMachineInstallation
+        data.dateOfMachineInstallation,
       );
       const FormInspectionDate = dateFormatter(data.inspectionDate);
       const FormLicenseExpiryDate = dateFormatter(data.licenseExpiryDate);
       const FormReceiptDate = dateFormatter(data.receiptDate);
       const FormLicenseRenewalDate = dateFormatter(data.licenseRenewalDate);
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const date = String(now.getDate()).padStart(2, "0");
+
+      const timeString = hours + minutes + seconds + date + month + year;
+      setData((prev) => ({ ...prev, reelerNumber: timeString }));
 
       api
         .post(baseURL + `reeler/add`, {
@@ -539,7 +543,7 @@ function NewReelerLicense() {
           ) {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
-              return
+              return;
             }
           }
         });
@@ -605,7 +609,7 @@ function NewReelerLicense() {
       getUserList(data.tscMasterId);
     }
   }, [data.tscMasterId]);
-  
+
   // to get Caste
   const [casteListData, setCasteListData] = useState([]);
 
@@ -798,8 +802,6 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
-  
-
   // Display Image
   const [mahajar, setMahajar] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
@@ -825,7 +827,7 @@ function NewReelerLicense() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("File upload response:", response.data);
     } catch (error) {
@@ -839,6 +841,7 @@ function NewReelerLicense() {
       icon: "success",
       title: "Saved successfully",
       text: `Generated ARN Number is ${arn}`,
+      text: `Reeler Number: ${data.reelerNumber}`,
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = (message) => {
@@ -877,28 +880,27 @@ function NewReelerLicense() {
   // };
 
   const handleRenewedDateChange = (date) => {
-  if (!date) return;
+    if (!date) return;
 
-  const receiptDate = new Date(date);
-  let expiryYear;
+    const receiptDate = new Date(date);
+    let expiryYear;
 
-  if (receiptDate.getMonth() + 1 >= 4) {
-    // If April (4) or later → expiry = 31st March (year + 3)
-    expiryYear = receiptDate.getFullYear() + 3;
-  } else {
-    // If Jan–Mar → expiry = 31st March (year + 2)
-    expiryYear = receiptDate.getFullYear() + 2;
-  }
+    if (receiptDate.getMonth() + 1 >= 4) {
+      // If April (4) or later → expiry = 31st March (year + 3)
+      expiryYear = receiptDate.getFullYear() + 3;
+    } else {
+      // If Jan–Mar → expiry = 31st March (year + 2)
+      expiryYear = receiptDate.getFullYear() + 2;
+    }
 
-  const expirationDate = new Date(expiryYear, 2, 31); // March is month=2 (0-indexed)
+    const expirationDate = new Date(expiryYear, 2, 31); // March is month=2 (0-indexed)
 
-  setData({
-    ...data,
-    receiptDate,
-    licenseExpiryDate: expirationDate,
-  });
-}; 
-
+    setData({
+      ...data,
+      receiptDate,
+      licenseExpiryDate: expirationDate,
+    });
+  };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -980,7 +982,8 @@ function NewReelerLicense() {
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                    {t("FRUITS ID")}<span className="text-danger">*</span>
+                      {t("FRUITS ID")}
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -999,12 +1002,12 @@ function NewReelerLicense() {
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
-                      {t("search")}
+                        {t("search")}
                       </Button>
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary" onClick={clear}>
-                      {t( "Clear")}
+                        {t("Clear")}
                       </Button>
                     </Col>
                     <Col sm={2}>
@@ -1015,7 +1018,7 @@ function NewReelerLicense() {
                         target="_blank"
                         // onClick={search}
                       >
-                       {t( "Generate_FRUITS_ID")}
+                        {t("Generate_FRUITS_ID")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -1034,7 +1037,8 @@ function NewReelerLicense() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerName">
-                          {t("Reeler Name")}<span className="text-danger">*</span>
+                          {t("Reeler Name")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1073,14 +1077,14 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("DOB")}</Form.Label>
-                        <div className="form-control-wrap">
-                          {/* <DatePicker
+                        <div className="form-control-wrap"> */}
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                           /> */}
-                          <DatePicker
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                             peekNextMonth
@@ -1091,10 +1095,10 @@ function NewReelerLicense() {
                             className="form-control"
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("gender")}</Form.Label>
+                        <Form.Label>{t("Gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="gender"
@@ -1104,14 +1108,15 @@ function NewReelerLicense() {
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
-                            <option value="3">Third Gender</option>
+                            <option value="3">Other</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("Caste")}<span className="text-danger">*</span>
+                          {t("Caste")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1132,14 +1137,15 @@ function NewReelerLicense() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("caste_is_required")}
+                            {t("caste_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="mobileNumber">
-                        {t("mobile_number")}<span className="text-danger">*</span>
+                          {t("mobile_number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1160,7 +1166,9 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="emailId">{t("email_id")}</Form.Label>
+                        <Form.Label htmlFor="emailId">
+                          {t("email_id")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="emailId"
@@ -1173,24 +1181,26 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="aadhaarNumber">{t("Aadhaar Number")}</Form.Label>
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="aadhaarNumber">
+                          {t("Aadhaar Number")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="aadhaarNumber"
                             name="aadhaarNumber"
                             value={data.aadhaarNumber}
-                          //  onChange={handleInputs}
+                            //  onChange={handleInputs}
                             type="aadhaarNumber"
                             placeholder={t("Enter Aadhaar Number")}
                           />
                         </div>
-                      </Form.Group>
-                      
-                      
+                      </Form.Group> */}
+
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("tsc")}<span className="text-danger">*</span>
+                          {t("tsc")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1200,7 +1210,8 @@ function NewReelerLicense() {
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                              data.tscMasterId === undefined ||
+                              data.tscMasterId === "0"
                             }
                           >
                             <option value="">{t("select_tsc")}</option>
@@ -1214,9 +1225,9 @@ function NewReelerLicense() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("tsc_is_required")}
+                            {t("tsc_is_required")}
                           </Form.Control.Feedback>
-                        </div>        
+                        </div>
                       </Form.Group>
 
                       {/* <Form.Group className="form-group mt-3">
@@ -1235,38 +1246,7 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>
-                        {t("Assign To Inspect")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="assignToInspectId"
-                            value={data.assignToInspectId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
-                            }
-                          >
-                            <option value="">{t("Select Assign To Inspect")}</option>
-                            {userListData.map((list) => (
-                              <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
-                              >
-                                {list.username}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            {t("Assign To Inspect is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="reelerNumber">
                           {t("Reeler Number")}
                         </Form.Label>
@@ -1278,17 +1258,16 @@ function NewReelerLicense() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Reeler Number")}
-                            // required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                             Reeler Number is required.
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="wnumber">{t("Ward Number")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1300,10 +1279,13 @@ function NewReelerLicense() {
                             placeholder={t("Enter Ward Number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("education")}</Form.Label>
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          {t("education")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="educationId"
@@ -1320,7 +1302,7 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rationCard">
                         {t("ration_number")}
                         </Form.Label>
@@ -1334,11 +1316,12 @@ function NewReelerLicense() {
                             placeholder={t("enter_ration_number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rrno">
                           {t("Electricity RR Numbers")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1395,7 +1378,9 @@ function NewReelerLicense() {
                             value={data.representativeNameAddress}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Enter Representative/Agent name and Address")}
+                            placeholder={t(
+                              "Enter Representative/Agent name and Address",
+                            )}
                           />
                         </div>
                       </Form.Group>
@@ -1414,7 +1399,7 @@ function NewReelerLicense() {
                           />
                         </div>
                       </Form.Group> */}
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="chakbandi">
                           {t("GPS Coordinates of reeling unit")}
                         </Form.Label>
@@ -1440,10 +1425,11 @@ function NewReelerLicense() {
                             />
                           </Col>
                         </Row>
-                      </Form.Group>
+                      </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          {t("Reeler Type")}<span className="text-danger">*</span>
+                          {t("Reeler Type")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1470,14 +1456,49 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
                       <Form.Control.Feedback type="invalid">
-                        {("Reeler Type is required")}
+                        {"Reeler Type is required"}
                       </Form.Control.Feedback>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          {t("Assign To Inspect")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.assignToInspectId === undefined ||
+                              data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">
+                              {t("Select Assign To Inspect")}
+                            </option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Assign To Inspect is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
                     </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="passbook">
-                        {t("passbook_number")}<span className="text-danger">*</span>
+                          {t("passbook_number")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1512,7 +1533,8 @@ function NewReelerLicense() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                          {t("Machine Type")}<span className="text-danger">*</span>
+                          {t("Machine Type")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1543,7 +1565,10 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("Date of Machine Installation")}</Form.Label>
+                        <Form.Label>
+                          {t("Date of Machine Installation")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
                             selected={data.dateOfMachineInstallation}
@@ -1559,7 +1584,7 @@ function NewReelerLicense() {
                             onChange={(date) =>
                               handleDateChange(
                                 date,
-                                "dateOfMachineInstallation"
+                                "dateOfMachineInstallation",
                               )
                             }
                             peekNextMonth
@@ -1648,9 +1673,9 @@ function NewReelerLicense() {
                       </Form.Group>
                       {/* </Col> */}
 
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="loanDetails">
-                        {t("loan_details")}
+                          {t("loan_details")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1663,8 +1688,6 @@ function NewReelerLicense() {
                           />
                         </div>
                       </Form.Group>
-
-                      
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("Mahajar/Inspection Date")}</Form.Label>
@@ -1703,7 +1726,8 @@ function NewReelerLicense() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("state")}<span className="text-danger">*</span>
+                          {t("state")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1724,14 +1748,15 @@ function NewReelerLicense() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("state_is_required")}
+                            {t("state_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("district")}<span className="text-danger">*</span>
+                          {t("district")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1758,13 +1783,14 @@ function NewReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("district_is_required")}
+                            {t("district_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("taluk")}<span className="text-danger">*</span>
+                          {t("taluk")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1790,7 +1816,7 @@ function NewReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("taluk_is_required")}
+                            {t("taluk_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1798,7 +1824,8 @@ function NewReelerLicense() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>
-                        {t("hobli")}<span className="text-danger">*</span>
+                          {t("hobli")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1824,13 +1851,14 @@ function NewReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("hobli_is_required")}
+                            {t("hobli_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("village")}<span className="text-danger">*</span>
+                          {t("village")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1857,14 +1885,15 @@ function NewReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("village_is_required")}
+                            {t("village_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="pincode">
-                        {t("pin_code")}<span className="text-danger">*</span>
+                          {t("pin_code")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1886,7 +1915,8 @@ function NewReelerLicense() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="address">
-                        {t("address")}<span className="text-danger">*</span>
+                          {t("address")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1981,7 +2011,9 @@ function NewReelerLicense() {
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="feeAmount">{t("Fee Amount")}</Form.Label>
+                        <Form.Label htmlFor="feeAmount">
+                          {t("Fee Amount")}
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="feeAmount"
@@ -2015,44 +2047,43 @@ function NewReelerLicense() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>{t("Receipt Date")}</Form.Label>
-                            <div className="form-control-wrap">
-                             
-                              <DatePicker
-                                selected={data.receiptDate}
-                                onChange={(date) =>
-                                  handleRenewedDateChange(date, "receiptDate")
-                                }
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                              />
-                            </div>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.receiptDate}
+                            onChange={(date) =>
+                              handleRenewedDateChange(date, "receiptDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>{t("License Expiry Date")}</Form.Label>
-                      <div className="form-control-wrap">
-                        <DatePicker
-                          selected={data.licenseExpiryDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "licenseExpiryDate")
-                          }
-                          disabled={data.licenseRenewalDate !== null}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                        />
-                      </div>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.licenseExpiryDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "licenseExpiryDate")
+                            }
+                            disabled={data.licenseRenewalDate !== null}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -2163,7 +2194,8 @@ function NewReelerLicense() {
                     <Col lg="6">
                       <Form.Group className="form-group ">
                         <Form.Label htmlFor="bankName">
-                        {t("bank_name")}<span className="text-danger">*</span>
+                          {t("bank_name")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2183,7 +2215,8 @@ function NewReelerLicense() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="branchName">
-                        {t("branch_name")}<span className="text-danger">*</span>
+                          {t("branch_name")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2205,7 +2238,7 @@ function NewReelerLicense() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="accno">
-                        {t("bank_account_number")}
+                          {t("bank_account_number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -2226,7 +2259,8 @@ function NewReelerLicense() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="ifsc">
-                        {t("ifsc_code")}<span className="text-danger">*</span>
+                          {t("ifsc_code")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2357,7 +2391,7 @@ function NewReelerLicense() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                  {t("save")}
+                    {t("save")}
                   </Button>
                 </li>
                 <li>
@@ -2385,7 +2419,8 @@ function NewReelerLicense() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="virtualAccountNumber">
-                  {t("Virtual Account Number")}<span className="text-danger">*</span>
+                    {t("Virtual Account Number")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2398,14 +2433,15 @@ function NewReelerLicense() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("Virtual Account Number is required")}
+                      {t("Virtual Account Number is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="branchNamevb">
-                  {t("branch_name")}<span className="text-danger">*</span>
+                    {t("branch_name")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2427,7 +2463,8 @@ function NewReelerLicense() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="ifscCodevb">
-                  {t("ifsc_code")}<span className="text-danger">*</span>
+                    {t("ifsc_code")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2448,7 +2485,8 @@ function NewReelerLicense() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    {t("Market")}<span className="text-danger">*</span>
+                    {t("Market")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2487,7 +2525,7 @@ function NewReelerLicense() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
-                    {t("add")}
+                      {t("add")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -2497,7 +2535,7 @@ function NewReelerLicense() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
-                    {t("cancel")}
+                      {t("cancel")}
                     </Button>
                   </div>
                 </div>
@@ -2522,7 +2560,8 @@ function NewReelerLicense() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="virtualAccountNumber">
-                    {t("Virtual Account Number")}<span className="text-danger">*</span>
+                    {t("Virtual Account Number")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2535,14 +2574,15 @@ function NewReelerLicense() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                     {t("Virtual Account Number is required")}
+                      {t("Virtual Account Number is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="branchNamevb">
-                  {t("branch_name")}<span className="text-danger">*</span>
+                    {t("branch_name")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2564,7 +2604,8 @@ function NewReelerLicense() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="ifscCodevb">
-                  {t("ifsc_code")}<span className="text-danger">*</span>
+                    {t("ifsc_code")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2584,7 +2625,8 @@ function NewReelerLicense() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    {t("Market")}<span className="text-danger">*</span>
+                    {t("Market")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -2626,7 +2668,7 @@ function NewReelerLicense() {
                       onClick={() => handleUpdate(vbId, vbAccount)}
                     > */}
                     <Button type="submit" variant="success">
-                    {t("update")}
+                      {t("update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -2636,7 +2678,7 @@ function NewReelerLicense() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
-                    {t("cancel")}
+                      {t("cancel")}
                     </Button>
                   </div>
                 </div>

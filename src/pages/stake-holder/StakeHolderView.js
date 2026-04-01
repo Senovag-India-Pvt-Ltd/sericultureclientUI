@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col,Button } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
@@ -8,13 +8,12 @@ import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function StakeHolderViewPage() {
-   // Translation
-   const { t } = useTranslation();
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -125,7 +124,7 @@ function StakeHolderViewPage() {
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
@@ -145,7 +144,7 @@ function StakeHolderViewPage() {
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
@@ -172,7 +171,7 @@ function StakeHolderViewPage() {
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
@@ -248,7 +247,10 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.firstName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("farmer_name_kannada")}:</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        {t("farmer_name_kannada")}:
+                      </td>
                       <td>{StakeHolder.nameKan}</td>
                     </tr>
                     <tr>
@@ -256,23 +258,26 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.tscName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>  {t("fathers_husbands_name")}:</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        {t("fathers_husbands_name")}:
+                      </td>
                       <td>{StakeHolder.fatherName}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>{t("farmer_dob")}:</td>
                       <td>{formatDate(StakeHolder.dob)}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}> {t("gender")}:</td>
+                      <td style={styles.ctstyle}> {t("Gender")}:</td>
                       <td>
                         {StakeHolder.genderId === 1
                           ? "Male"
                           : StakeHolder.genderId === 2
-                          ? "Female"
-                          : StakeHolder.genderId === 3
-                          ? "Third Gender"
-                          : "Other"}
+                            ? "Female"
+                            : StakeHolder.genderId === 3
+                              ? "Third Gender"
+                              : "Other"}
                       </td>
                     </tr>
                     <tr>
@@ -285,8 +290,8 @@ function StakeHolderViewPage() {
                         {StakeHolder.differentlyAbled === true
                           ? "Yes"
                           : StakeHolder.differentlyAbled === false
-                          ? "No"
-                          : null}
+                            ? "No"
+                            : null}
                       </td>
                     </tr>
                     <tr>
@@ -311,19 +316,19 @@ function StakeHolderViewPage() {
                       <td style={styles.ctstyle}>Aadhar Number:</td>
                       <td>{StakeHolder.aadhaarNumber}</td>
                     </tr> */}
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>  {t("epic_number")}:</td>
                       <td>{StakeHolder.epicNumber}</td>
-                    </tr>
-                    <tr>
+                    </tr> */}
+                    {/* <tr>
                       <td style={styles.ctstyle}> {t("ration_number")}:</td>
                       <td>{StakeHolder.rationCardNumber}</td>
-                    </tr>
+                    </tr> */}
 
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}> {t("Aadhaar Number")}:</td>
                       <td>{StakeHolder.aadhaarNumber}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}>
                         {" "}
@@ -358,11 +363,14 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.representativeId}</td>
                     </tr> */}
                     <tr>
-                      <td style={styles.ctstyle}>  {t("recipient_id")}:</td>
+                      <td style={styles.ctstyle}> {t("recipient_id")}:</td>
                       <td>{StakeHolder.khazaneRecipientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}:</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}:
+                      </td>
                       {/* <td>{StakeHolder.taluk}</td> */}
                       <td>
                         {" "}
@@ -400,7 +408,10 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> {t("Farmer Family Id")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("Farmer Family Id")}
+                            </td>
                             <td>{familyMembers.farmerFamilyId}</td>
                           </tr>
                           <tr>
@@ -412,7 +423,10 @@ function StakeHolderViewPage() {
                             <td>{familyMembers.farmerFamilyName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>  {t("relationship")}:</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("relationship")}:
+                            </td>
                             <td>{familyMembers.relationshipName}</td>
                           </tr>
                         </tbody>
@@ -435,7 +449,9 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}>{t("Farmer Address Id")}</td>
+                            <td style={styles.ctstyle}>
+                              {t("Farmer Address Id")}
+                            </td>
                             <td>{farmerAddressDetails.farmerAddressId}</td>
                           </tr>
                           <tr>
@@ -476,7 +492,9 @@ function StakeHolderViewPage() {
                           </tr>
                           {farmerAddressDetails.defaultAddress && (
                             <tr>
-                              <td style={styles.ctstyle}>{t("Default Address")} </td>
+                              <td style={styles.ctstyle}>
+                                {t("Default Address")}{" "}
+                              </td>
                               <td>
                                 {farmerAddressDetails.defaultAddress.toString()}
                               </td>
@@ -513,7 +531,10 @@ function StakeHolderViewPage() {
                             <td>{farmerLand.farmerId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>  {t("land_ownership")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("land_ownership")}
+                            </td>
                             <td>{farmerLand.landOwnershipName}</td>
                           </tr>
                           <tr>
@@ -521,7 +542,9 @@ function StakeHolderViewPage() {
                             <td>{farmerLand.surveyNumber}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>{t("plantation_type")}</td>
+                            <td style={styles.ctstyle}>
+                              {t("plantation_type")}
+                            </td>
                             <td>{farmerLand.plantationTypeName}</td>
                           </tr>
                           {/* <tr>
@@ -544,15 +567,22 @@ function StakeHolderViewPage() {
                             <td>{farmerLand.hissa}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>{t("source_of_Mulberry")}</td>
+                            <td style={styles.ctstyle}>
+                              {t("source_of_Mulberry")}
+                            </td>
                             <td>{farmerLand.mulberrySourceName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>{t("Mulberry Area(in Acres)")}</td>
+                            <td style={styles.ctstyle}>
+                              {t("Mulberry Area(in Acres)")}
+                            </td>
                             <td>{farmerLand.mulberryArea}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> {t("Mulberry_Variety")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("Mulberry_Variety")}
+                            </td>
                             <td>{farmerLand.mulberryVarietyName}</td>
                           </tr>
                           {/* <tr>
@@ -560,7 +590,10 @@ function StakeHolderViewPage() {
                       <td>{farmerLand.plantationDate}</td>
                     </tr> */}
                           <tr>
-                            <td style={styles.ctstyle}> {t("Plantation Spacing")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("Plantation Spacing")}
+                            </td>
                             <td>{farmerLand.spacing}</td>
                           </tr>
                         </tbody>
@@ -570,21 +603,30 @@ function StakeHolderViewPage() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> {t("irrigation_source")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("irrigation_source")}
+                            </td>
                             <td>{farmerLand.irrigationSourceName}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> {t("irrigation_type")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("irrigation_type")}
+                            </td>
                             <td>{farmerLand.irrigationTypeName}</td>
                           </tr>
                           <tr>
                             <td style={styles.ctstyle}>
-                            {t("Rearing House (In Sq ft)")}
+                              {t("Rearing House (In Sq ft)")}
                             </td>
                             <td>{farmerLand.rearingHouseDetails}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> {t("rearing_house_roof_type")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("rearing_house_roof_type")}
+                            </td>
                             <td>{farmerLand.roofTypeName}</td>
                           </tr>
                           <tr>
@@ -593,7 +635,7 @@ function StakeHolderViewPage() {
                           </tr>
                           <tr>
                             <td style={styles.ctstyle}>
-                            {t("rearing_capacity_crops_per_Annum")}
+                              {t("rearing_capacity_crops_per_Annum")}
                             </td>
                             <td>{farmerLand.rearingCapacityCrops}</td>
                           </tr>
@@ -623,7 +665,10 @@ function StakeHolderViewPage() {
                             <td>{farmerLand.loanDetails}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> {t("equipment_details")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("equipment_details")}
+                            </td>
                             <td>{farmerLand.equipmentDetails}</td>
                           </tr>
                           <tr>
@@ -635,7 +680,10 @@ function StakeHolderViewPage() {
                             <td>{farmerLand.ownerNo}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> {t("Main Owner Number")}</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              {t("Main Owner Number")}
+                            </td>
                             <td>{farmerLand.mainOwnerNo}</td>
                           </tr>
                           <tr>
@@ -705,7 +753,10 @@ function StakeHolderViewPage() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Farmer Bank Account Id")}</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        {t("Farmer Bank Account Id")}
+                      </td>
                       <td>{bank.farmerBankAccountId}</td>
                     </tr>
                     <tr>
@@ -717,7 +768,10 @@ function StakeHolderViewPage() {
                       <td>{bank.farmerBankName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Bank Account Number")}</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        {t("Bank Account Number")}
+                      </td>
                       <td>{bank.farmerBankAccountNumber}</td>
                     </tr>
                     <tr>
@@ -728,7 +782,6 @@ function StakeHolderViewPage() {
                       <td style={styles.ctstyle}> {t("IFSC Code")}</td>
                       <td>{bank.farmerBankIfscCode}</td>
                     </tr>
-
 
                     <tr>
                       <td style={styles.ctstyle}> {t("Bank Passbook")}</td>
@@ -741,22 +794,22 @@ function StakeHolderViewPage() {
                         /> */}
                         {selectedDocumentFile && (
                           <>
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={selectedDocumentFile}
-                            alt="Selected File"
-                          />
-                          <Button
-                                variant="primary"
-                                size="sm"
-                                className="ms-2"
-                                onClick={() =>
-                                  downloadFile(bank.accountImagePath)
-                                }
-                              >
-                                Download File
-                              </Button>
-                            </>
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedDocumentFile}
+                              alt="Selected File"
+                            />
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              className="ms-2"
+                              onClick={() =>
+                                downloadFile(bank.accountImagePath)
+                              }
+                            >
+                              Download File
+                            </Button>
+                          </>
                         )}
                       </td>
                     </tr>
