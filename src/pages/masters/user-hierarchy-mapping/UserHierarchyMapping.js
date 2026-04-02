@@ -15,7 +15,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function UserHierarchyMapping() {
   // Translation
   const { t } = useTranslation();
-  
+
   const [data, setData] = useState({
     actualDesignationId: "",
     actualUserId: "",
@@ -28,6 +28,7 @@ function UserHierarchyMapping() {
   });
 
   const [validated, setValidated] = useState(false);
+  const [hierarchyList, setHierarchyList] = useState([]);
 
   let name, value;
   const handleInputs = (e) => {
@@ -35,10 +36,10 @@ function UserHierarchyMapping() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
-    if(name === "actualUserId"){
+    if (name === "actualUserId") {
       getUsersList(value);
     }
-    if(name === "reportUserMasterId"){
+    if (name === "reportUserMasterId") {
       getUserMastersList(value);
     }
   };
@@ -91,7 +92,7 @@ function UserHierarchyMapping() {
   //     setValidated(true);
   //   }
   // };
-  const postData = async (event) => { 
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -99,10 +100,62 @@ function UserHierarchyMapping() {
       setValidated(true);
     } else {
       event.preventDefault();
-      
+      // ❌ SAME USER
+      if (Number(data.actualUserId) === Number(data.reportUserMasterId)) {
+        Swal.fire({
+          icon: "error",
+          title: "Employee and Manager cannot be same",
+        });
+        return;
+      }
+
+      // ❌ EMPLOYEE ALREADY HAS MANAGER
+      const alreadyHasManager = hierarchyList.some(
+        (item) => Number(item.employeeId) === Number(data.actualUserId),
+      );
+
+      if (alreadyHasManager) {
+        Swal.fire({
+          icon: "error",
+          title: "This employee already has a manager",
+        });
+        return;
+      }
+
+      // ❌ REVERSE HIERARCHY
+      const isReverse = hierarchyList.some(
+        (item) =>
+          Number(item.employeeId) === Number(data.reportUserMasterId) &&
+          Number(item.managerId) === Number(data.actualUserId),
+      );
+
+      if (isReverse) {
+        Swal.fire({
+          icon: "error",
+          title:
+            "Invalid hierarchy! Manager cannot report to their own employee",
+        });
+        return;
+      }
+
+      // ❌ DUPLICATE
+      const duplicate = hierarchyList.some(
+        (item) =>
+          Number(item.employeeId) === Number(data.actualUserId) &&
+          Number(item.managerId) === Number(data.reportUserMasterId),
+      );
+
+      if (duplicate) {
+        Swal.fire({
+          icon: "error",
+          title: "Mapping already exists",
+        });
+        return;
+      }
+
       // Check the response from getIdList
       getIdList(data.actualUserId);
-  
+
       // If there is a response, show confirmation
       // if (userIdList.length > 0) {
       //   Swal.fire({
@@ -123,14 +176,15 @@ function UserHierarchyMapping() {
       // }
     }
   };
-  
+
   const submitForm = () => {
     const sendPost = {
       reporteeUserMasterId: data.actualUserId,
       reportToUserMasterId: data.reportUserMasterId,
     };
-  
-    api.post(baseURL + `userHierarchyMapping/add`, sendPost)
+
+    api
+      .post(baseURL + `userHierarchyMapping/add`, sendPost)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
@@ -161,18 +215,18 @@ function UserHierarchyMapping() {
       });
   };
 
-   const getIdList = (userId) => {
+  const getIdList = (userId) => {
     api
       .get(baseURL + `userHierarchyMapping/getByReporteeUserMasterId/${userId}`)
       .then((response) => {
         if (response.data.content) {
           Swal.fire({
-            title: 'Are you sure?',
+            title: "Are you sure?",
             text: "You are updating your senior officer. Is that okay?",
-            icon: 'warning',
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: 'Yes, save it!',
-            cancelButtonText: 'No, cancel!',
+            confirmButtonText: "Yes, save it!",
+            cancelButtonText: "No, cancel!",
             reverseButtons: true,
           }).then((result) => {
             if (result.isConfirmed) {
@@ -203,23 +257,22 @@ function UserHierarchyMapping() {
         setData({});
       });
   };
-    // useEffect(() => {
-    //   getIdList();
-    // }, [reporteeUserMasterId]);
+  // useEffect(() => {
+  //   getIdList();
+  // }, [reporteeUserMasterId]);
 
   const clear = () => {
     setData({
-    actualDesignationId: "",
-    actualUserId: "",
-    actualDistrictId: "",
-    actualFirstName: "",
-    reportUserMasterId: "",
-    reportDesignationId: "",
-    reportDistrictId: "",
-    reportFirstName: "",
+      actualDesignationId: "",
+      actualUserId: "",
+      actualDistrictId: "",
+      actualFirstName: "",
+      reportUserMasterId: "",
+      reportDesignationId: "",
+      reportDistrictId: "",
+      reportFirstName: "",
     });
   };
-
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -241,7 +294,6 @@ function UserHierarchyMapping() {
   useEffect(() => {
     getDistrictList();
   }, []);
-
 
   // to get designation
   const [designationListData, setDesignationListData] = useState([]);
@@ -266,16 +318,16 @@ function UserHierarchyMapping() {
 
   const getUserList = (designationId, districtId) => {
     const response = api
-      .post(baseURL + `userMaster/get-by-designationId-and-districtId`,{
-        designationId:designationId,
-        districtId:districtId
+      .post(baseURL + `userMaster/get-by-designationId-and-districtId`, {
+        designationId: designationId,
+        districtId: districtId,
       })
       .then((response) => {
         if (response.data.content.userMaster) {
           setUserListData(response.data.content.userMaster);
-        }else{
+        } else {
           setUserListData([]);
-          setData(prev=>({...prev,actualFirstName:""}))
+          setData((prev) => ({ ...prev, actualFirstName: "" }));
         }
       })
       .catch((err) => {
@@ -284,23 +336,21 @@ function UserHierarchyMapping() {
       });
   };
 
-  
-
-    // to get hobli
+  // to get hobli
   const [userMasterListData, setUserMasterListData] = useState([]);
 
   const getUserMasterList = (designationId, districtId) => {
     const response = api
-      .post(baseURL + `userMaster/get-by-designationId-and-districtId`,{
-        designationId:designationId,
-        districtId:districtId
+      .post(baseURL + `userMaster/get-by-designationId-and-districtId`, {
+        designationId: designationId,
+        districtId: districtId,
       })
       .then((response) => {
         if (response.data.content.userMaster) {
           setUserMasterListData(response.data.content.userMaster);
-        }else{
+        } else {
           setUserMasterListData([]);
-          setData(prev=>({...prev,reportFirstName:""}))
+          setData((prev) => ({ ...prev, reportFirstName: "" }));
         }
       })
       .catch((err) => {
@@ -309,53 +359,106 @@ function UserHierarchyMapping() {
       });
   };
 
+  /// ✅ Pending Excel (FINAL)
+  const downloadPending = async () => {
+    try {
+      const response = await api.post(
+        baseURL + "userHierarchyMapping/pending-report",
+        {},
+        { responseType: "blob" }, // ✅ IMPORTANT FIX
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.setAttribute("download", "pending_user_hierarchy.xlsx");
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      Swal.fire("Error downloading pending report");
+    }
+  };
+
+  // ✅ Completed Excel (FINAL)
+  const downloadCompleted = async () => {
+    try {
+      const response = await api.post(
+        baseURL + "userHierarchyMapping/completed-report",
+        {},
+        { responseType: "blob" }, // ✅ IMPORTANT FIX
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.setAttribute("download", "completed_user_hierarchy.xlsx");
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      Swal.fire("Error downloading completed report");
+    }
+  };
   useEffect(() => {
     if (data.actualDesignationId && data.actualDistrictId) {
-        getUserList(data.actualDesignationId, data.actualDistrictId);
-      }
-    }, [data.actualDesignationId, data.actualDistrictId]);
+      getUserList(data.actualDesignationId, data.actualDistrictId);
+    }
+  }, [data.actualDesignationId, data.actualDistrictId]);
 
   useEffect(() => {
     if (data.reportDesignationId && data.reportDistrictId) {
-        getUserMasterList(data.reportDesignationId, data.reportDistrictId);
-      }
-    }, [data.reportDesignationId, data.reportDistrictId]);
+      getUserMasterList(data.reportDesignationId, data.reportDistrictId);
+    }
+  }, [data.reportDesignationId, data.reportDistrictId]);
+  useEffect(() => {
+    api
+      .get(
+        baseURL + "userHierarchyMapping/list-with-join?pageNumber=0&size=100",
+      )
+      .then((res) => {
+        setHierarchyList(res.data.content.userHierarchyMapping || []);
+      })
+      .catch(() => setHierarchyList([]));
+  }, []);
 
-   
-  
-    const getUsersList = (_id) => {
-       api
-        .get(baseURL + `userMaster/get-join/${_id}`)
-        .then((response) => {
-          if (response.data) {
-            setData(prev=>({...prev,
-              actualFirstName:response.data.content.firstName
-            }));
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          setValidated(false);
-        });
-    };
-
-    const getUserMastersList = (_id) => {
-      api
-       .get(baseURL + `userMaster/get-join/${_id}`)
-       .then((response) => {
-         if (response.data) {
-          setData(prev=>({...prev,
-            reportFirstName:response.data.content.firstName
+  const getUsersList = (_id) => {
+    api
+      .get(baseURL + `userMaster/get-join/${_id}`)
+      .then((response) => {
+        if (response.data) {
+          setData((prev) => ({
+            ...prev,
+            actualFirstName: response.data.content.firstName,
           }));
-           setValidated(false);
-         }
-       })
-       .catch((err) => {
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
         setValidated(false);
-       });
-   };
-    
-  
+      });
+  };
+
+  const getUserMastersList = (_id) => {
+    api
+      .get(baseURL + `userMaster/get-join/${_id}`)
+      .then((response) => {
+        if (response.data) {
+          setData((prev) => ({
+            ...prev,
+            reportFirstName: response.data.content.firstName,
+          }));
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        setValidated(false);
+      });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -387,8 +490,8 @@ function UserHierarchyMapping() {
           <Block.HeadContent>
             <Block.Title tag="h2">{t("User Hierarchy Mapping")}</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
+          <Block.HeadContent>
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 <Link
                   to="/seriui/user-hierarchy-mapping-list"
@@ -407,8 +510,18 @@ function UserHierarchyMapping() {
                   <span>Go to List</span>
                 </Link>
               </li>
+              <li>
+                <Button variant="success" onClick={downloadPending}>
+                  Pending List
+                </Button>
+              </li>
+              <li>
+                <Button variant="info" onClick={downloadCompleted}>
+                  Completed List
+                </Button>
+              </li>
             </ul>
-          </Block.HeadContent> */}
+          </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
@@ -416,295 +529,311 @@ function UserHierarchyMapping() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-            <Card>
-            <Card.Header>{t("Actual User")}</Card.Header>
-              <Card.Body>
-                <Row className="g-gs">
+          <Card>
+            <Card.Header>{t("Employee")}</Card.Header>
+            <Card.Body>
+              <Row className="g-gs">
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        {t("Designation")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="actualDesignationId"
-                          value={data.actualDesignationId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.actualDesignationId === undefined ||
-                            data.actualDesignationId === "0"
-                          }
-                        >
-                          <option value="">{t("Select Designation")}</option>
-                          {designationListData && designationListData.length
-                            ? designationListData.map((list) => (
-                                <option
-                                  key={list.designationId}
-                                  value={list.designationId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          {t("Designation is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                      {t("district")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="actualDistrictId"
-                          value={data.actualDistrictId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            !data.actualDistrictId === undefined ||
-                            data.actualDistrictId === "0"
-                          }
-                        >
-                          <option value="">{t("select_district")}</option>
-                          {districtListData && districtListData.length
-                            ? districtListData.map((list) => (
-                                <option
-                                  key={list.districtId}
-                                  value={list.districtId}
-                                >
-                                  {list.districtName}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          {t("District Name is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                      {t("User")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="actualUserId"
-                          value={data.actualUserId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.actualUserId === undefined || data.actualUserId === "0"
-                          }
-                        >
-                          <option value="">{t("Select User")}</option>
-                          {userListData && userListData.length
-                            ? userListData.map((list) => (
-                                <option key={list.userMasterId} value={list.userMasterId}>
-                                  {list.username}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        {t("User is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="emailID">
-                         {t("First Name")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="actualFirstName"
-                          name="actualFirstName"
-                          value={data.actualFirstName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter First Name")}
-                          readOnly
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        {("First Name is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            {/* </Block> */}
-
-        {/* <Block> */}
-            <Card >
-            <Card.Header>{t("Reported User")}</Card.Header>
-              <Card.Body>
-                <Row className="g-gs">
-                <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                      {t("Designation")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="reportDesignationId"
-                          value={data.reportDesignationId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.reportDesignationId === undefined ||
-                            data.reportDesignationId === "0"
-                          }
-                        >
-                          <option value="">{t("Select Designation")}</option>
-                          {designationListData && designationListData.length
-                            ? designationListData.map((list) => (
-                                <option
-                                  key={list.designationId}
-                                  value={list.designationId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("Designation")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="actualDesignationId"
+                        value={data.actualDesignationId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.actualDesignationId === undefined ||
+                          data.actualDesignationId === "0"
+                        }
+                      >
+                        <option value="">{t("Select Designation")}</option>
+                        {designationListData && designationListData.length
+                          ? designationListData.map((list) => (
+                              <option
+                                key={list.designationId}
+                                value={list.designationId}
+                              >
+                                {list.name}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
                         {t("Designation is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                      {t("district")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="reportDistrictId"
-                          value={data.reportDistrictId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            !data.reportDistrictId === undefined ||
-                            data.reportDistrictId === "0"
-                          }
-                        >
-                          <option value="">{t("select_district")}</option>
-                          {districtListData && districtListData.length
-                            ? districtListData.map((list) => (
-                                <option
-                                  key={list.districtId}
-                                  value={list.districtId}
-                                >
-                                  {list.districtName}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("district")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="actualDistrictId"
+                        value={data.actualDistrictId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          !data.actualDistrictId === undefined ||
+                          data.actualDistrictId === "0"
+                        }
+                      >
+                        <option value="">{t("select_district")}</option>
+                        {districtListData && districtListData.length
+                          ? districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
                         {t("District Name is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                      {t("User")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="reportUserMasterId"
-                          value={data.reportUserMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.reportUserMasterId === undefined || data.reportUserMasterId === "0"
-                          }
-                        >
-                          <option value="">{t("Select User")}</option>
-                          {userMasterListData && userMasterListData.length
-                            ? userMasterListData.map((list) => (
-                                <option key={list.userMasterId} value={list.userMasterId}>
-                                  {list.username}
-                                </option>
-                              ))
-                            : ""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("User")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="actualUserId"
+                        value={data.actualUserId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.actualUserId === undefined ||
+                          data.actualUserId === "0"
+                        }
+                      >
+                        <option value="">{t("Select User")}</option>
+                        {userListData && userListData.length
+                          ? userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.userName || list.username}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
                         {t("User is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="emailID">
-                      {t("First Name")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reportFirstName"
-                          name="reportFirstName"
-                          value={data.reportFirstName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter First Name")}
-                          readOnly
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        {("First Name is required")}
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="emailID">
+                      {t("First Name")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="actualFirstName"
+                        name="actualFirstName"
+                        value={data.actualFirstName}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder={t("Enter First Name")}
+                        readOnly
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {"First Name is required"}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+          {/* </Block> */}
+
+          {/* <Block> */}
+          <Card>
+            <Card.Header>{t("Reports To(Manager)")}</Card.Header>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("Designation")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="reportDesignationId"
+                        value={data.reportDesignationId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.reportDesignationId === undefined ||
+                          data.reportDesignationId === "0"
+                        }
+                      >
+                        <option value="">{t("Select Designation")}</option>
+                        {designationListData && designationListData.length
+                          ? designationListData.map((list) => (
+                              <option
+                                key={list.designationId}
+                                value={list.designationId}
+                              >
+                                {list.name}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("Designation is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("district")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="reportDistrictId"
+                        value={data.reportDistrictId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          !data.reportDistrictId === undefined ||
+                          data.reportDistrictId === "0"
+                        }
+                      >
+                        <option value="">{t("select_district")}</option>
+                        {districtListData && districtListData.length
+                          ? districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("District Name is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("User")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="reportUserMasterId"
+                        value={data.reportUserMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.reportUserMasterId === undefined ||
+                          data.reportUserMasterId === "0"
+                        }
+                      >
+                        <option value="">{t("Select User")}</option>
+                        {userMasterListData && userMasterListData.length
+                          ? userMasterListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.userName || list.username}
+                              </option>
+                            ))
+                          : ""}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("User is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="emailID">
+                      {t("First Name")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="reportFirstName"
+                        name="reportFirstName"
+                        value={data.reportFirstName}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder={t("Enter First Name")}
+                        readOnly
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {"First Name is required"}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
                   {t("save")}
-                  </Button>
-                </li>
-                <li>
-                  {/* <Link
+                </Button>
+              </li>
+              <li>
+                {/* <Link
                     to="/seriui/village-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
                   </Link> */}
-                  <Button type="button" variant="secondary" onClick={clear}>
+                <Button type="button" variant="secondary" onClick={clear}>
                   {t("cancel")}
-                  </Button>
-                </li>
-              </ul>
-            </div>
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>
