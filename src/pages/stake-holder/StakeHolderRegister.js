@@ -3123,7 +3123,7 @@ function StakeHolderRegister() {
               </Card>
             </Block>
 
-            {/* <Block className="mt-3">
+            <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
                   {t("bank_account_details")}
@@ -3238,7 +3238,7 @@ function StakeHolderRegister() {
                             {bankCheck}
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
             {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
@@ -3255,7 +3255,7 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group> */}
 
-            {/* <Form.Group className="form-group mt-3">
+            <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
                           {t("upload_bank")}
                         </Form.Label>
@@ -3267,10 +3267,10 @@ function StakeHolderRegister() {
                             onChange={handleDocumentChange}
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
             {/* Preview section for uploaded file */}
-            {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
+            <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {documentFile ? (
                           <>
                             {documentFile.type.startsWith("image/") ||
@@ -3303,7 +3303,7 @@ function StakeHolderRegister() {
                         ) : (
                           <p>No file selected or file was canceled.</p>
                         )}
-                      </Form.Group> */}
+                      </Form.Group>
 
             {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {document ? (
@@ -3315,9 +3315,9 @@ function StakeHolderRegister() {
                           ""
                         )}
                       </Form.Group> */}
-            {/* </Col> */}
+            </Col>
 
-            {/* <Col lg="6">
+            <Col lg="6">
                       <Form.Group as={Row} className="form-group">
                         <Col sm={1}>
                           <Form.Check
@@ -3336,7 +3336,7 @@ function StakeHolderRegister() {
                   </Row>
                 </Card.Body>
               </Card>
-            </Block> */}
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

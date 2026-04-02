@@ -161,7 +161,7 @@ function UserAndManagerHierarchyMapping() {
           <Block.HeadContent>
             <Block.Title tag="h2">{t("User Hierarchy Mapping")}</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
+          {<Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -182,7 +182,7 @@ function UserAndManagerHierarchyMapping() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent> */}
+          </Block.HeadContent> }
         </Block.HeadBetween>
       </Block.Head>
 

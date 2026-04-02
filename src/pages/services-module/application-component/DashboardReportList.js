@@ -2369,7 +2369,8 @@ const handleGenerateSanctionOrderClick = async () => {
             "farmer",
             schemeType,
             subSchemeId,
-            categoryId
+            categoryId,
+            applicationFormIds
           );
         }
         
