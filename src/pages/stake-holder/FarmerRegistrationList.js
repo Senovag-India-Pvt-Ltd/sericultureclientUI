@@ -58,7 +58,7 @@ function FarmerRegistrationList() {
             pageNumber: page,
             pageSize: countPerPage,
           },
-        }
+        },
       )
       .then((response) => {
         setListData(response.data.content);
@@ -83,12 +83,12 @@ function FarmerRegistrationList() {
             casteId: data.casteId || 0,
             landFilter: data.landFilter || null,
           },
-          responseType: 'blob',
+          responseType: "blob",
           headers: {
             accept: "text/csv",
             "Content-Type": "application/json",
           },
-        }
+        },
       )
       .then((response) => {
         const blob = new Blob([response.data], { type: "text/csv" });
@@ -106,7 +106,7 @@ function FarmerRegistrationList() {
           title: "No record found!!!",
         });
       });
-};
+  };
 
   const getFarmerList = (e) => {
     api
@@ -124,7 +124,7 @@ function FarmerRegistrationList() {
             pageNumber: page,
             pageSize: countPerPage,
           },
-        }
+        },
       )
       .then((response) => {
         setListData(response.data.content);
@@ -172,21 +172,21 @@ function FarmerRegistrationList() {
   }, []);
 
   // to get caste
-    const [casteListData, setCasteListData] = useState([]);
-  
-    const getCasteList = () =>
-      api
-        .get(baseURL + `caste/get-all`)
-        .then((response) => {
-          setCasteListData(response.data.content.caste);
-        })
-        .catch((err) => {
-          setCasteListData([]);
-        });
-  
-    useEffect(() => {
-      getCasteList();
-    }, []);
+  const [casteListData, setCasteListData] = useState([]);
+
+  const getCasteList = () =>
+    api
+      .get(baseURL + `caste/get-all`)
+      .then((response) => {
+        setCasteListData(response.data.content.caste);
+      })
+      .catch((err) => {
+        setCasteListData([]);
+      });
+
+  useEffect(() => {
+    getCasteList();
+  }, []);
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -314,7 +314,7 @@ function FarmerRegistrationList() {
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
-              "success"
+              "success",
             );
           })
           .catch((err) => {
@@ -351,7 +351,7 @@ function FarmerRegistrationList() {
         disabled: "rgba(0,0,0,.12)",
       },
     },
-    "light"
+    "light",
   );
 
   const customStyles = {
@@ -426,12 +426,12 @@ function FarmerRegistrationList() {
       hide: "md",
     },
     {
-  name: "Land Status",    // 🆕 CHANGE
-  selector: (row) => row.landStatus,  // Backend must send mapped field if needed
-  cell: (row) => <span>{row.landStatus}</span>,
-  sortable: true,
-  hide: "md",
-},
+      name: "Land Status", // 🆕 CHANGE
+      selector: (row) => row.landStatus, // Backend must send mapped field if needed
+      cell: (row) => <span>{row.landStatus}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
       name: "Father Name",
@@ -476,62 +476,75 @@ function FarmerRegistrationList() {
       hide: "md",
     },
     // 🆕 New Land + Mulberry Variety Columns
-  {
-    name: "Mulberry Area",
-    selector: (row) => row.mulberryArea,
-    cell: (row) => <span>{row.mulberryArea}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Owner Name",
-    selector: (row) => row.ownerName,
-    cell: (row) => <span>{row.ownerName}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Survey Number",
-    selector: (row) => row.surveyNumber,
-    cell: (row) => <span>{row.surveyNumber}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Spacing",
-    selector: (row) => row.spacing,
-    cell: (row) => <span>{row.spacing}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Hissa",
-    selector: (row) => row.hissa,
-    cell: (row) => <span>{row.hissa}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Rearing House Details",
-    selector: (row) => row.rearingHouseDetails,
-    cell: (row) => <span>{row.rearingHouseDetails}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Land Address",
-    selector: (row) => row.landAddress,
-    cell: (row) => <span>{row.landAddress}</span>,
-    sortable: true,
-    hide: "md",
-  },
-  {
-    name: "Mulberry Variety",
-    selector: (row) => row.mulberryVarietyName,
-    cell: (row) => <span>{row.mulberryVarietyName}</span>,
-    sortable: true,
-    hide: "md",
-  },
+    {
+      name: "Mulberry Area",
+      selector: (row) => row.mulberryArea,
+      cell: (row) => <span>{row.mulberryArea}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Owner Name",
+      selector: (row) => row.ownerName,
+      cell: (row) => <span>{row.ownerName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Survey Number",
+      selector: (row) => row.surveyNumber,
+      cell: (row) => <span>{row.surveyNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Spacing",
+      selector: (row) => row.spacing,
+      cell: (row) => <span>{row.spacing}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Hissa",
+      selector: (row) => row.hissa,
+      cell: (row) => <span>{row.hissa}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Rearing House Details",
+      selector: (row) => row.rearingHouseDetails,
+      cell: (row) => <span>{row.rearingHouseDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Land Address",
+      selector: (row) => row.landAddress,
+      cell: (row) => <span>{row.landAddress}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mulberry Variety",
+      selector: (row) => row.mulberryVarietyName,
+      cell: (row) => <span>{row.mulberryVarietyName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mobile Number",
+      selector: (row) => row.mobileNumber,
+      cell: (row) => <span>{row.mobileNumber}</span>,
+      sortable: true,
+    },
+
+    {
+      name: "TSC Name",
+      selector: (row) => row.tscName,
+      cell: (row) => <span>{row.tscName}</span>,
+      sortable: true,
+    },
   ];
 
   return (
@@ -697,51 +710,50 @@ function FarmerRegistrationList() {
               </Form.Group>
             </Col>
 
-<Col sm={3} className="d-flex align-items-end gap-2"> 
-  
-  <Form.Group className="w-100 mb-0"> 
-    <Form.Label>{t("Caste")}</Form.Label>
-    <Form.Select
-      name="casteId"
-      value={data.casteId}
-      onChange={handleInputs}
-    >
-      <option value="0">{t("Select Caste")}</option>
-      {casteListData.map((list) => (
-        <option key={list.id} value={list.id}>
-          {list.title}
-        </option>
-      ))}
-    </Form.Select>
-  </Form.Group>
+            <Col sm={3} className="d-flex align-items-end gap-2">
+              <Form.Group className="w-100 mb-0">
+                <Form.Label>{t("Caste")}</Form.Label>
+                <Form.Select
+                  name="casteId"
+                  value={data.casteId}
+                  onChange={handleInputs}
+                >
+                  <option value="0">{t("Select Caste")}</option>
+                  {casteListData.map((list) => (
+                    <option key={list.id} value={list.id}>
+                      {list.title}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
 
-  <Col sm={4}>
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>{t("Land Filter")}</Form.Label>
-    <div className="form-control-wrap">
-      <Form.Select
-        name="landFilter"   // 🆕 CHANGE
-        value={data.landFilter}
-        onChange={handleInputs}
-      >
-        <option value="">{t("All Farmers")}</option>   {/* default = null */}
-        <option value="WITH">{t("With Land")}</option>  {/* 🆕 */}
-        <option value="WITHOUT">{t("Without Land")}</option>  {/* 🆕 */}
-      </Form.Select>
-    </div>
-  </Form.Group>
-</Col>
+              <Col sm={4}>
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>{t("Land Filter")}</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="landFilter" // 🆕 CHANGE
+                      value={data.landFilter}
+                      onChange={handleInputs}
+                    >
+                      <option value="">{t("All Farmers")}</option>{" "}
+                      {/* default = null */}
+                      <option value="WITH">{t("With Land")}</option> {/* 🆕 */}
+                      <option value="WITHOUT">{t("Without Land")}</option>{" "}
+                      {/* 🆕 */}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
 
+              <Button type="button" variant="primary" onClick={search}>
+                {t("Search")}
+              </Button>
 
-  <Button type="button" variant="primary" onClick={search}>
-    {t("Search")}
-  </Button>
-
-  <Button type="button" variant="primary" onClick={exportCsv}>
-    {t("Export")}
-  </Button>
-</Col>
-
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                {t("Export")}
+              </Button>
+            </Col>
           </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
